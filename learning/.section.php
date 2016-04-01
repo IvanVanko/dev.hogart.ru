@@ -1,0 +1,4 @@
+<?
+$sSectionName = "Обучение";
+$arDirProperties = Array();
+?>

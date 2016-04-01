@@ -1,0 +1,32 @@
+<?
+$aMenuLinks = Array(
+	Array(
+		"Новости", 
+		"/company/news/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Отзывы", 
+		"/company/comments/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Склады и офисы", 
+		"/contacts/tsentralnyy-ofis-khogart-v-moskve-sklad-i-servisnaya-sluzhba/",
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Вакансии", 
+		"/company/jobs/", 
+		Array(), 
+		Array(), 
+		"" 
+	)
+);
+?>

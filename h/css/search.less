@@ -1,0 +1,280 @@
+.search_page{
+  .perechen-produts {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-top: 35px;
+    overflow: hidden;
+    > li {
+      float: left;
+      width: 100%/3;
+      min-width: 224px;
+      margin-bottom: 40px;
+      &.clearfix-col2{
+        clear: none;
+      }
+      &.clearfix-col3{
+        clear: both;
+      }
+      &.clearfix-col2, &.clearfix-col3{
+        width: 0px;
+        margin: 0;
+      }
+      @media screen and (max-width: 1355px) {
+        width: 50%;
+        &.clearfix-col2{
+          clear: both !important;
+        }
+        &.clearfix-col3{
+          clear: none !important;
+        }
+      }
+
+      @media screen and (max-width: 1130px) {
+        width: 100%;
+      }
+
+      > div {
+        padding-right: 40px;
+      }
+      img {
+        margin: 0 auto;
+        display: block;
+        max-width: 100%;
+      }
+      a {
+        text-decoration: none;
+        display: block;
+        &:first-child{
+          height: 300px;
+          position: relative;
+          img {
+            position: absolute;
+            margin: auto;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+          }
+        }
+      }
+
+      h3 {
+        font-size: 12px;
+        line-height: 22px;
+        color: #000;
+        font-weight: normal;
+        text-transform: uppercase;
+        text-decoration: none;
+      }
+      ul.param {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        li {
+          &, * {
+            font-size: 11px;
+            line-height: 11px;
+            color: #4c4c4c;
+            font-weight: 100;
+            vertical-align: bottom;
+          }
+          overflow: hidden;
+          margin-bottom: 10px;
+          .background('/images/dotted.png');
+          background-repeat: repeat-x;
+          background-position: left bottom;
+          > span.pr {
+            float: right;
+          }
+          span {
+            background: #fff;
+          }
+        }
+      }
+
+      .price {
+        margin-top: 28px;
+        font-size: 20px;
+        line-height: 22px;
+        color: #000;
+        //text-transform: uppercase;
+        font-family: 'Roboto Condensed', sans-serif;
+        font-weight: normal;
+      }
+    }
+  }
+  .pagination{
+    padding: 0;
+    margin-top: 40px;
+  }
+
+  .side_href{
+    width: 100%;
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    padding: 36px;
+  }
+
+  .search-category-links{
+    &,ul{
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    li,a{
+      font-family: 'Roboto Condensed', sans-serif;
+      font-size: 12px;
+      line-height: 16px;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: #fff;
+    }
+    li>a{
+      border-bottom: dotted 1px #fff;
+    }
+    li{
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .sub-menu{
+      padding-left: 18px;
+      overflow: hidden;
+      .transition(all 1s);
+    }
+
+    .active+.sub-menu{
+      margin-top: 14px;
+    }
+
+    .active{
+      border-bottom: 1px solid transparent;
+    }
+
+    .current-page{
+      color: @lightGreen;
+      border-bottom: 1px solid transparent;
+    }
+
+  }
+
+  .site-tab-list{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    li{
+      margin-top: 35px;
+    }
+    .head{
+      font-family: 'Roboto Condensed', sans-serif;
+      font-size: 20px;
+      line-height: 28px;
+      font-weight: normal;
+      //text-transform: uppercase;
+      text-decoration: none;
+      color: #000;
+      padding-right: 50px;
+      display: block;
+      margin: 11px 0;
+    }
+  }
+
+  .doc-tab-list{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    li {
+      margin-bottom: 10px;
+    }
+    .breadcrumbs{
+      list-style: none;
+      padding: 0;
+      margin: 28px 0 10px 0;
+      overflow: hidden;
+      li{
+        float: left;
+        &,a{
+          font-family: 'Roboto Condensed', sans-serif;
+          font-size: 12px;
+          line-height: 16px;
+          font-weight: normal;
+          text-transform: uppercase;
+          text-decoration: none;
+          color: @lightGreen;
+          display: block;
+        }
+        a:before{
+          content: '>';
+          font-size: 14px;
+          position: relative;
+          top: -1px;
+          margin: 0 5px;
+        }
+        &:first-child a:before{
+          display: none;
+        }
+      }
+    }
+    .head{
+      font-family: 'Roboto Condensed', sans-serif;
+      font-size: 20px;
+      line-height: 28px;
+      font-weight: normal;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: #000;
+      padding-right: 50px;
+      display: block;
+    }
+  }
+
+
+  .sidebar{
+    .company-side-cnt{
+      padding-top: 110px;
+      /*.direction-list{
+        list-style: none;
+        padding: 0;
+        margin: 42px 0 0 0;
+        li{
+          font-family: 'Roboto Condensed', sans-serif;
+          font-size: 12px;
+          line-height: 20px;
+          text-transform: uppercase;
+          color: #fff;
+          margin-bottom: 60px;
+          padding: 0 60px 0 0;
+          i{
+            margin-bottom: 20px;
+          }
+        }
+      }*/
+      .direction-list{
+        list-style: none;
+        padding: 0;
+        margin: 42px 0 0 0;
+        li{
+          font-family: 'Roboto Condensed', sans-serif;
+          font-size: 12px;
+          line-height: 20px;
+          text-transform: uppercase;
+          color: #fff;
+          margin-bottom: 60px;
+          padding: 0 60px 0 0;
+          i{
+            margin-bottom: 20px;
+            &.icon-full{
+              display: block;
+              padding-left: 0;
+              width: 50px;
+              height: 50px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

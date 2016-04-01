@@ -1,0 +1,86 @@
+<?
+if((!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) &&
+        (empty($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest')) die();
+    else if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+        require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
+        extract($_POST);
+    }
+
+$APPLICATION->IncludeComponent(
+    "bitrix:form.result.new",
+    "hogart_request",
+    Array(
+        "SEF_MODE" => "N",
+        "WEB_FORM_ID" => $FORM_ID,
+        "LIST_URL" => "",
+        "EDIT_URL" => "",
+        "SUCCESS_URL" => "",
+        "CHAIN_ITEM_TEXT" => "",
+        "CHAIN_ITEM_LINK" => "",
+        "IGNORE_CUSTOM_TEMPLATE" => "N",
+        "USE_EXTENDED_ERRORS" => "N",
+        "CACHE_TYPE" => "A",
+        "CACHE_TIME" => "3600",
+        "CACHE_NOTES" => "",
+        "VARIABLE_ALIASES" => Array(
+            "WEB_FORM_ID" => "WEB_FORM_ID",
+            "RESULT_ID" => "RESULT_ID"
+        ),
+
+        /*"DISPLAY_LEFT_COL" => array(
+            "FBK_NAME",
+            "FBK_PHONE",
+            "FBK_EMAIL",
+            "FBK_ORDER_WHERE",
+            "FBK_CITY",
+        ),
+        "DISPLAY_RIGHT_COL" => array(
+            "FBK_ORDER_DATE",
+            "FBK_ORDER_ID",
+            "FBK_COMMENT",
+            "FBK_FILE64",
+        ),
+        "MERGED_FIELDS" => array(
+            array("FBK_ORDER_DATE", "FBK_ORDER_ID")
+        ),*/
+
+        "CUSTOM_INPUT_PARAMS" => array(
+            "SEMINAR_USER_EMAIL" => array(
+                "data-rule-email" => "true",
+                "data-msg-email" => "Введите правильный email адрес"
+            ),
+        ),
+
+        "CUSTOM_WRAPPER_PARAMS" => array(
+            "SEMINAR_USER_EMAIL" => "data-clone-hidden=\"seminar_user_email\"",
+            "SEMINAR_USER_PHONE" => "data-clone-hidden=\"seminar_user_phone\"",
+            "SEMINAR_USER_CMP" => "data-clone-hidden=\"seminar_user_phone\"",
+            "SEMINAR_USER_LNAME" => "data-clone=\"seminar_user_lname\"",
+            "SEMINAR_USER_NAME" => "data-clone=\"seminar_user_name\"",
+            "SEMINAR_USER_MNAME" => "data-clone=\"seminar_user_mname\"",
+            "SEMINAR_USER_POST" => "data-clone=\"seminar_user_post\"",
+            "SEMINAR_ID" => "data-clone=\"seminar_id\"",
+            "SEMINAR_EAN_CODE" => "data-clone=\"seminar_ean_code\"",
+        ),
+
+        "CUSTOM_WRAPPER_CSS" => array(
+            "SEMINAR_USER_PHONE" => "field custom_label phone"
+        ),
+
+        "CUSTOM_REQUIRED_MESS" => array(
+            "SEMINAR_USER_LNAME" => "Пожалуйста, введите фамилию"
+        ),
+
+        "CUSTOM_VALS" => $FORM_VALUES,
+        "HIDE_INPUTS" => $HIDE_INPUTS,
+
+
+        "CUSTOM_SUCCESS_URL" => "/learn/result.php",
+        "HIDE_SUBMIT" => "Y",
+
+        "SUCCESS_MESSAGE" => "Спасибо, что обратились в нашу компанию! Ваша заявка на семинар принята. В ближайшее время с вами свяжется специалист для уточнения деталей."
+
+
+    )
+);
+?>

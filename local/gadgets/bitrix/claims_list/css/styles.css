@@ -1,0 +1,55 @@
+.internal.messages-list {width: 100%!important; margin: 0 auto!important;}
+.internal.messages-detail {width: 30%!important; margin: 0 auto!important;}
+.claim-table-row:hover td {background-color:#d1d9e3!important; }
+.button.decline {
+    background-color: #ad4f39 !important;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.25), inset 0 1px 0 #dc822f;
+    box-shadow: 0 1px 1px rgba(0,0,0,.25), inset 0 1px 0 #dc4729;
+    border: solid 1px;
+    border-color: #c05e2e #a5481e #89181c;
+    background-image: -webkit-linear-gradient(bottom, #9e4a23, #ba3f34)!important;
+    background-image: -moz-linear-gradient(bottom, #9e4a23, #ba3f34)!important;
+    background-image: -ms-linear-gradient(bottom, #9e4a23, #ba3f34)!important;
+    background-image: -o-linear-gradient(bottom, #9e4a23, #ba3f34)!important;
+    background-image: linear-gradient(bottom, #9e4a23, #ba3f34)!important;
+    color: #fff;
+    text-shadow: 0 1px rgba(0,0,0,0.1);
+    -webkit-font-smoothing: antialiased;
+    padding: 0px 13px 2px;
+}
+
+.preload-over {
+    width: 29%;
+    height: 93%;
+    position: absolute;
+    margin-left: -14.5%;
+    left: 50%;
+    background: rgba(150,150,150,0.6);
+    top: 4%;
+    z-index: 100;
+}
+.preloader {
+    background: url('../images/preload.GIF');
+    position: absolute;
+    left: 50%;
+    margin: -12.5px;
+    top: 50%;
+    width: 25px;
+    height: 25px;
+}
+#bx-admin-prefix .internal td.error {
+    color: #ae0014!important;
+}
+#claims-filter {
+    width: 500px;
+    /*text-align: left!important;*/
+}
+.adm-btn-save.filter {
+    display: inline-block;
+}
+.loader-filter {
+    background: bottom center url("../images/loader-filter.gif");
+    width: 48px;
+    height: 16px;
+    display: none;
+}

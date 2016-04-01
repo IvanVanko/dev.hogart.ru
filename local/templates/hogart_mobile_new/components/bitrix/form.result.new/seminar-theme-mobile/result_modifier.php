@@ -1,0 +1,2 @@
+<?if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)	die();?>
+<?$arResult['SUCCESS'] = intval($arResult["isFormNote"] == "Y" && $arResult["isFormErrors"] == "N" && $_REQUEST["formresult"] == "addok" && $_REQUEST['WEB_FORM_ID'] == $arParams['WEB_FORM_ID']) ? "Y":"N";?>

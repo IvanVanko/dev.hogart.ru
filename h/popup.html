@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Hogart</title>
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:300,400&subset=latin,cyrillic' rel='stylesheet'
+          type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,300italic,300&subset=latin,cyrillic' rel='stylesheet'
+          type='text/css'>
+    <link rel="stylesheet" href="/h/css/main.css"/>
+    <link rel="stylesheet" href="/h/css/jquery-ui.min.css"/>
+    <script src="/h/js/jquery-1.11.2.min.js"></script>
+</head>
+<body class="news_page no-load">
+<div class="wrapper js-fh">
+    <header class="header-cnt js-fixed-block" data-fixed="top">
+        <div class="inner">
+            <div class="search-cnt">
+                <form action="">
+                    <input type="text" placeholder="Наименование или артикул">
+                    <button class="icon-search icon-full"></button>
+                </form>
+            </div>
+            <a class="profile-url" href="#">
+                <i class="icon-profile icon-full"></i>
+                <span class="hide-text">Личный кабинет</span>
+            </a>
+            <nav class="header-nav">
+                <ul>
+                    <li><a href="#">+7 (495) 788-11-12</a></li>
+                    <li><a href="#">info@hogart.ru</a></li>
+                    <li><a href="#">Обратная связь</a></li>
+                </ul>
+            </nav>
+
+        </div>
+
+    </header>
+    <div class="blur-main">
+        <aside class="main-sidebar js-fp">
+            <div class="wrap js-fp">
+                <div class="trigger-menu-cnt js-fh js-fixed-block" data-fixed="top">
+                    <label for="main-menu-trigger" class="icon-menu icon-full"></label>
+                </div>
+                <div class="present-cnt js-fh js-fp">
+                    <img src="/images/logo.png" class="logo" alt="Hogart"/>
+
+                    <div class="content">
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <div class="hide-block">
+            <input type="checkbox" id="main-menu-trigger">
+            <nav class="hidden-menu">
+                <label class="icon-close icon-full" for="main-menu-trigger"></label>
+                <ul>
+                    <li>
+                        <a href="#">Компания</a>
+                        <ul>
+                            <li><a href="#">Новости</a></li>
+                            <li><a href="#">Вакансии</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#">Каталог</a>
+                    </li>
+
+                    <li>
+                        <a href="#">Бренды</a>
+                    </li>
+
+                    <li>
+                        <a href="#">Комплексные решения</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <div class="container main-container">
+        <div class="inner">
+            <h1>Попапы</h1>
+            <a class="js-popup-open" data-popup="#popup-os" href="#">Обратная связь</a>
+            <a class="js-popup-open" data-popup="#popup-pm" href="#">Позвонить мне</a>
+            <a class="js-popup-open" data-popup="#popup-login" href="#">Авторизация</a>
+        </div>
+        <footer class="inner">
+            <span>© 2014, ООО «Хогарт», 117041,  г. Москва, ул Поляны, 52</span>
+            <a href="#" class="p_logo"></a>
+        </footer>
+
+    </div>
+
+</div>
+
+<script src="/h/js/jquery.bxslider.min.js"></script>
+<script src="/h/js/jquery-ui.min.js"></script>
+<script src="/h/js/main.js"></script>
+<script src="/h/js/retina.min.js"></script>
+
+
+<div class="popup-cnt">
+    <div class="inner-cnt" id="popup-os">
+        <div class="head inner">
+            <h2>Обратная связь</h2>
+            <a href="#" class="close"></a>
+        </div>
+        <form action="#" class="js-validation-form">
+            <div class="inner">
+                <div class="field custom_label custom_select">
+                    <label for="sel1">Тема *</label>
+                    <select id="sel1" class="js-validation-empty">
+                        <option value="">Выбрать тему</option>
+                        <option value="1">hogart</option>
+                        <option value="2">hogart</option>
+                        <option value="3">hogart</option>
+                    </select>
+                </div>
+
+                <div class="field custom_label">
+                    <label for="text1">Сообщение *</label>
+                    <textarea id="text1" class="js-validation-empty"></textarea>
+                </div>
+
+            </div>
+            <div class="hr"><span>КОнтактная информация</span></div>
+            <div class="inner">
+                <div class="field custom_label">
+                    <label for="name">Имя</label>
+                    <input type="text" id="name" class="js-validation-empty">
+                </div>
+                <div class="row">
+                    <div class="col2">
+                        <div class="field custom_label">
+                            <label for="phone">Телефон</label>
+                            <input type="text" id="phone" class="js-validation-phone">
+                        </div>
+                    </div>
+                    <div class="col2">
+                        <div class="field custom_label">
+                            <label for="email">E-mail</label>
+                            <input type="text" class="js-validation-email" id="email">
+                        </div>
+                        <div class="fixheight"></div>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div class="inner">
+                <button class="empty-btn black">Отправить</button>
+                <small>Поля, отмеченные * обязательны для заполнения.</small>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="popup-cnt">
+    <div class="inner-cnt" id="popup-pm">
+        <div class="head inner">
+            <h2>Перезвоните мне</h2>
+            <a href="#" class="close"></a>
+        </div>
+        <form action="#" class="js-validation-form">
+            <div class="inner">
+                <div class="field custom_label">
+                    <label for="in1">Имя</label>
+                    <input type="text" id="in1" class="js-validation-empty">
+                </div>
+                <div class="fixheight"></div>
+                <div class="field custom_label">
+                    <label for="phone2">Телефон</label>
+                    <input type="text" id="phone2" class="js-validation-phone">
+                </div>
+                <div class="fixheight"></div>
+            </div>
+            <hr/>
+            <div class="inner">
+                <button class="empty-btn black">Отправить</button>
+                <small>Поля, отмеченные * обязательны для заполнения.</small>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="popup-cnt">
+    <div class="inner-cnt" id="popup-login">
+        <div class="head inner">
+            <h2>Войти в личный кабинет</h2>
+            <a href="#" class="close"></a>
+        </div>
+        <form action="#" class="js-validation-form">
+            <div class="inner">
+                <div class="field custom_label">
+                    <label for="email1">E-mail *</label>
+                    <input type="text" id="email1" class="js-validation-email">
+                </div>
+                <div class="fixheight"></div>
+                <div class="field custom_label">
+                    <label for="pass1">Пароль *</label>
+                    <input type="text" id="pass1" class="js-validation-empty">
+                </div>
+                <div class="fixheight"></div>
+            </div>
+            <hr/>
+            <div class="inner">
+                <button class="empty-btn black">Войти</button>
+                <a class="remember-pass" href="#">Забыли пароль?</a>
+                <small>Поля, отмеченные * обязательны для заполнения.</small>
+            </div>
+            <div class="inner bg">
+                <small>Если Вы еще не являетесь нашим пользователем:</small>
+                <button class="empty-btn black">Зарегистрироваться</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+</body>
+</html>

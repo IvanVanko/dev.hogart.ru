@@ -1,0 +1,49 @@
+.info-page .control-action {
+  display: inline-block;
+  float: right;
+  width: 66px;
+  margin-top: 25px;
+}
+.info-page .control-action .next {
+  margin-right: 0;
+}
+.info-page .sidebar .small_header {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 12px;
+  line-height: 20px;
+  text-decoration: underline;
+  text-transform: uppercase;
+  margin: 12px 0;
+}
+.info-page .sidebar .date_small {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 12px;
+  line-height: 17px;
+  color: #95c600;
+  opacity: 1;
+}
+.info-page .sidebar .small-news-cnt {
+  padding-bottom: 100px;
+}
+.info-page .info-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.info-page .info-list li {
+  margin-bottom: 35px;
+}
+.info-page .info-list .date {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  text-transform: uppercase;
+  color: #95c600;
+}
+.info-page .info-list h2 {
+  margin-top: 10px;
+}
+.info-page .pagination {
+  margin-top: 35px;
+  padding-left: 0;
+}

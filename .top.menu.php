@@ -1,0 +1,81 @@
+<?
+$aMenuLinks = Array(
+	Array(
+		"Компания",
+		"/company/",
+		Array(),
+		Array(),
+		""
+	),
+	Array(
+		"Продукция",
+		"/catalog/",
+		Array(),
+		Array(),
+		""
+	),
+	Array(
+		"Бренды",
+		"/brands/",
+		Array(),
+		Array(),
+		""
+	),
+	Array(
+		"Акции",
+		"/stock/",
+		Array(),
+		Array(),
+		""
+	),
+	Array(
+		"Комплексные решения",
+		"/integrated-solutions/",
+		Array(),
+		Array(),
+		""
+	),
+	Array(
+		"Сервис",
+		"/services/",
+		Array(),
+		Array(),
+		""
+	),
+	Array(
+		"Обучение",
+		"/learn/",
+		Array(),
+		Array(),
+		""
+	),
+	Array(
+		"Документация",
+		"/documentation/",
+		Array(),
+		Array(),
+		""
+	),
+	Array(
+		"Подбор оборудования",
+		"/selection-equipment/",
+		Array(),
+		Array(),
+		""
+	),
+	Array(
+		"Полезная информация",
+		"/helpful-information/",
+		Array(),
+		Array(),
+		""
+	),
+	Array(
+		"Контакты",
+		"/contacts/tsentralnyy-ofis-khogart-v-moskve-sklad-i-servisnaya-sluzhba/",
+		Array(),
+		Array(),
+		""
+	),
+);
+?>

@@ -1,0 +1,5 @@
+<?
+
+#DebugMessage($arParams);
+
+?>

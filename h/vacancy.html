@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Hogart</title>
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:300,400&subset=latin,cyrillic' rel='stylesheet'
+          type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,300italic,300&subset=latin,cyrillic' rel='stylesheet'
+          type='text/css'>
+    <link rel="stylesheet" href="/h/css/main.css"/>
+    <link rel="stylesheet" href="/h/css/jquery-ui.min.css"/>
+    <script src="/h/js/jquery-1.11.2.min.js"></script>
+</head>
+<body class="vacancy_page no-load">
+<div class="wrapper js-fh">
+<header class="header-cnt js-fixed-block" data-fixed="top">
+    <div class="inner">
+        <div class="search-cnt">
+            <form action="">
+                <input type="text" placeholder="Наименование или артикул">
+                <button class="icon-search icon-full"></button>
+            </form>
+        </div>
+        <a class="profile-url" href="#">
+            <i class="icon-profile icon-full"></i>
+            <span class="hide-text">Личный кабинет</span>
+        </a>
+        <nav class="header-nav">
+            <ul>
+                <li><a href="#">+7 (495) 788-11-12</a></li>
+                <li><a href="#">info@hogart.ru</a></li>
+                <li><a href="#">Обратная связь</a></li>
+            </ul>
+        </nav>
+
+    </div>
+
+</header>
+<div class="blur-main">
+    <aside class="main-sidebar js-fp">
+        <div class="wrap js-fp">
+            <div class="trigger-menu-cnt js-fh js-fixed-block" data-fixed="top">
+                <label for="main-menu-trigger" class="icon-menu icon-full"></label>
+            </div>
+            <div class="present-cnt js-fh js-fp">
+                <img src="/images/logo.png" class="logo" alt="Hogart"/>
+
+                <div class="content">
+                </div>
+            </div>
+        </div>
+    </aside>
+    <div class="hide-block">
+        <input type="checkbox" id="main-menu-trigger">
+        <nav class="hidden-menu">
+            <label class="icon-close icon-full" for="main-menu-trigger"></label>
+            <ul>
+                <li>
+                    <a href="#">Компания</a>
+                    <ul>
+                        <li><a href="#">Новости</a></li>
+                        <li><a href="#">Вакансии</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="#">Каталог</a>
+                </li>
+
+                <li>
+                    <a href="#">Бренды</a>
+                </li>
+
+                <li>
+                    <a href="#">Комплексные решения</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<div class="container main-container">
+    <div class="inner">
+        <ul class="mini-menu">
+            <li><a href="#">Компания</a></li>
+            <li><a href="#">Новости</a></li>
+        </ul>
+        <h1>Вакансии</h1>
+
+        <p>
+            Познание текста рефлектирует ритмический рисунок. Исчисление предикатов, следовательно, латентно.
+            По своим философским взглядам Дезами был материалистом и атеистом, последователем Гельвеция, однако
+            созерцание амбивалентно создает былинный амфибрахий. Аксиома силлогизма, следовательно, диссонирует
+            бабувизм.
+            Наш современник стал особенно чутко относиться к слову, однако суждение иллюстрирует естественный принцип
+            восприятия.
+        </p>
+
+        <ul class="list-vacancy">
+            <li><a href="#">CПециалист склада</a></li>
+            <li><a href="#">Помощник бухгалтера</a></li>
+            <li><a href="#">Торговый представитель</a></li>
+            <li><a href="#">Менеджер продаж</a></li>
+            <li><a href="#">Системный администратор ORACLE</a></li>
+            <li><a href="#">Маркетолог</a></li>
+            <li><a href="#">Сервис-инженер</a></li>
+        </ul>
+    </div>
+
+
+    <aside class="sidebar js-fh js-fixed-block js-paralax-height" data-fixed="top">
+        <div class="inner js-paralax-item">
+            <div class="sidebar-vacancy">
+                <a href="#">Лица компании</a>
+                <h2>Откликнуться на вакансию</h2>
+                <form enctype="multipart/form-data" action="#">
+                    <div class="field custom_label">
+                        <label for="name">Фамилия и имя</label>
+                        <input type="text" id="name">
+                    </div>
+
+                    <div class="field custom_label">
+                        <label for="phone">Телефон</label>
+                        <input type="text" id="phone">
+                    </div>
+
+                    <div class="field custom_label">
+                        <label for="email">e-mail</label>
+                        <input type="text" id="email">
+                    </div>
+
+                    <div class="field">
+                        <a class="trigger-border-bottom" href="#">Написать сопроводительное письмо</a>
+                        <textarea>
+
+                        </textarea>
+                    </div>
+
+                    <p>
+                        Вы можете приложить pdf, doc, docx или txt
+                        размером не более 4Mb
+                    </p>
+
+                    <div class="field custom_upload">
+                        <input type="hidden" name="MAX_FILE_SIZE" value="4000000" />
+                        <input type="file" accept="application/pdf,application/msword,text/plain">
+                        <label class="trigger-border-bottom">Приложить резюме</label>
+                    </div>
+
+                    <button class="empty-btn">Откликнуться</button>
+                </form>
+            </div>
+        </div>
+    </aside>
+
+    <footer class="inner">
+        <span>© 2014, ООО «Хогарт», 117041,  г. Москва, ул Поляны, 52</span>
+        <a href="#" class="p_logo"></a>
+    </footer>
+
+</div>
+
+</div>
+
+<script src="/h/js/jquery.bxslider.min.js"></script>
+<script src="/h/js/jquery-ui.min.js"></script>
+<script src="/h/js/main.js"></script>
+<script src="/h/js/retina.min.js"></script>
+</body>
+</html>
