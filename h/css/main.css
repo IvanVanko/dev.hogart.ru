@@ -692,6 +692,7 @@ textarea {
   overflow: hidden;
   min-width: 1024px;
   height: 100%;
+  z-index: 11
 }
 .breadcrumbs,
 .breadcrumbs-big {
