@@ -17,7 +17,6 @@ if(isset($arResult['arResult'])) {
 	    <ul class="comments-list">
 	        <?foreach ($arResult['ITEMS'] as $arItem):?>
 		        <li>
-		            <div class="inner">
 		                <div class="photo">
 		                    <div class="inner">
 		                        <img src="<?=$arItem['PREVIEW_PICTURE']['SRC']?>" alt=""/>
@@ -48,7 +47,6 @@ if(isset($arResult['arResult'])) {
                                 </li>
                         </ul>
                     <? endif; ?>
-		            </div>
 		        </li>
 		    <?endforeach;?>
 	    </ul>
