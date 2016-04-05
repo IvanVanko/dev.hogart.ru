@@ -3,25 +3,6 @@
     overflow: hidden;
 }
 
-#bx-panel {
-    position: absolute !important;
-    transition: 200ms;
-    transition-timing-function: ease-in;
-    opacity: 0.3;
-    top: -130px;
-    width: 100% !important;
-    z-index: 10000!important;
-}
-#bx-panel:hover{
-    opacity: 1;
-    top: 0px;
-    transition: 200ms;
-    transition-timing-function: ease-in;
-}
-#bx-panel-hider {
-    pointer-events: none;
-}
-
 body {
     overflow-y: scroll;
 }

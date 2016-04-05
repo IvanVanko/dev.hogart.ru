@@ -85,36 +85,20 @@
                         <a href="/stock/">Акции</a>
                     </li>
                     <li class="ya-phone">
-                        <a href="tel:<? $APPLICATION->IncludeComponent("bitrix:main.include", "", Array(
-                                "AREA_FILE_SHOW" => "sect",
-                                "AREA_FILE_SUFFIX" => "inc_phone",
-                                "AREA_FILE_RECURSIVE" => "Y",
-                                "EDIT_TEMPLATE" => "standard.php"
-                            )
-                        ); ?>">
-                            <? $APPLICATION->IncludeComponent("bitrix:main.include", "", Array(
-                                    "AREA_FILE_SHOW" => "sect",
-                                    "AREA_FILE_SUFFIX" => "inc_phone",
-                                    "AREA_FILE_RECURSIVE" => "Y",
-                                    "EDIT_TEMPLATE" => "standard.php"
-                                )
-                            ); ?>
-                        </a><a href="tel:<? $APPLICATION->IncludeComponent("bitrix:main.include", "", Array(
-                                "AREA_FILE_SHOW" => "sect",
-                                "AREA_FILE_SUFFIX" => "inc_piter_phone",
-                                "AREA_FILE_RECURSIVE" => "Y",
-                                "EDIT_TEMPLATE" => "standard.php"
-                            )
-                        ); ?>">
-                            <? $APPLICATION->IncludeComponent("bitrix:main.include", "", Array(
-                                    "AREA_FILE_SHOW" => "sect",
-                                    "AREA_FILE_SUFFIX" => "inc_piter_phone",
-                                    "AREA_FILE_RECURSIVE" => "Y",
-                                    "EDIT_TEMPLATE" => "standard.php"
-                                )
-                            ); ?>
-                        </a>
-
+                        <? $APPLICATION->IncludeComponent("bitrix:main.include", "", Array(
+                                   "AREA_FILE_SHOW" => "sect",
+                                   "AREA_FILE_SUFFIX" => "inc_phone",
+                                   "AREA_FILE_RECURSIVE" => "Y",
+                                   "EDIT_TEMPLATE" => "standard.php"
+                               )
+                        ); ?>
+                        <? $APPLICATION->IncludeComponent("bitrix:main.include", "", Array(
+                                   "AREA_FILE_SHOW" => "sect",
+                                   "AREA_FILE_SUFFIX" => "inc_piter_phone",
+                                   "AREA_FILE_RECURSIVE" => "Y",
+                                   "EDIT_TEMPLATE" => "standard.php"
+                               )
+                        ); ?>
                     </li>
                     <li class="email">
                         <? $APPLICATION->IncludeComponent("pirogov:headerEmail", "", Array(
