@@ -3339,7 +3339,6 @@ blockquote:before {
 }
 .news_page .news-one-cnt {
   position: relative;
-  padding: 0 50px;
 }
 @media only screen and (max-width: 1024px) {
   .news_page .news-one-cnt {
