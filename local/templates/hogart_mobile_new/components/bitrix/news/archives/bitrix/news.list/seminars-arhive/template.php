@@ -2,6 +2,7 @@
 <?$page = $APPLICATION->GetCurDir(true);?>
 <?if (count($arResult['ITEMS']) > 0 && is_array($arResult['ITEMS'])):?>
     <div class="place-event-content event-content">
+    <div class="events">
         <?foreach($arResult['ITEMS'] as $k=>$arItem):?>
             <?
          #   DebugMessage( $arItem);
@@ -12,7 +13,7 @@
                 $now=date($DB->DateFormatToPHP(CSite::GetDateFormat("SHORT")), time());
                 $now=strtotime($now);
             ?>      
-            <div class="events">
+
                 
             
                     <div class="event" data-date="<?=$date_start?>"  data-is_last_day="<?=$last?>">
@@ -34,7 +35,9 @@
             </div>
         <?endforeach;?>
     </div>
+</div>
 <?=$arResult["NAV_STRING"];?>
+
 <?endif;?>
 
 <a href="/learning/" class="btn link-btn arrow-icon">Календарь семинаров</a>
