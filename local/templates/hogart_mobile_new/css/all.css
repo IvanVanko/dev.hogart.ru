@@ -1926,7 +1926,8 @@ h2 {
   background-size: auto;
   background-image: url("/local/templates/hogart_mobile_new/images/arrow9.png");
 }
-.inner-wrap {
+.inner-wrap,
+.inner {
   padding: 8px 20px 0;
 }
 .pages-nav {
