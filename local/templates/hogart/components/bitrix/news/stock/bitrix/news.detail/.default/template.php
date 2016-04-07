@@ -13,7 +13,7 @@ $date_to = FormatDate("d F", MakeTimeStamp($arResult["ACTIVE_TO"])); ?>
     <h1><?=$arResult['NAME']?></h1>
     <ul class="action-list-one">
         <li>
-            <div class="inner">
+
                 <div class="date">
                     <?=$date_from.' – '.$date_to?>
                     <?
@@ -26,14 +26,12 @@ $date_to = FormatDate("d F", MakeTimeStamp($arResult["ACTIVE_TO"])); ?>
                 <p>
                     <?=$arResult['PREVIEW_TEXT']?>
                 </p>
-            </div>
+
             <? $share_img_src = $arResult['DETAIL_PICTURE']['SRC']; ?>
             <img src="<?=$arResult['DETAIL_PICTURE']['SRC']?>" alt=""/>
             <br>
             <br>
-            <div class="inner">
                 <?=$arResult['DETAIL_TEXT']?>
-            </div>
         </li>
     </ul>
     <br>

@@ -29,7 +29,7 @@
                         $file = CFile::ResizeImageGet($arItem['PREVIEW_PICTURE']['ID'], array('width' => 140,
                                                                                               'height' => 140), BX_RESIZE_IMAGE_EXACT, true);
                         ?>
-                        <img style="position: absolute; left: 0; top: 15px" src="<?=$file['src'];?>"
+                        <img style="position: absolute; left: 0; top: 15px; max-width: 140px" src="<?=$file['src'];?>"
                              alt="<?=$arItem["NAME"]?>"/>
                     <? endif; ?>
 

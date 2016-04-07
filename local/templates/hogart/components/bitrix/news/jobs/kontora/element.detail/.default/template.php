@@ -33,7 +33,7 @@
 	<div class="creator-big">
 		<span>По всем вопросам вы можете обратиться к специалисту по кадрам:</span>
 
-		<div class="inner">
+		<div class="creator-cont">
 			<img src="<?=$arResult['LECTORS']['PREVIEW_PICTURE']?>" alt=""/>
 
 			<h3><?=$arResult['LECTORS']['NAME']?></h3>

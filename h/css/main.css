@@ -692,7 +692,6 @@ textarea {
   overflow: hidden;
   min-width: 1024px;
   height: 100%;
-  z-index: 11
 }
 .breadcrumbs,
 .breadcrumbs-big {
@@ -3277,6 +3276,9 @@ blockquote:before {
   padding: 0;
   margin-bottom: 0;
 }
+.news_page .news-list img {
+  max-width: 100px;
+}
 .news_page .news-list .date {
   position: absolute;
   top: -4px;
@@ -3547,7 +3549,7 @@ blockquote:before {
 .vacancy_page .list-vacancy li a:hover {
   color: #95c600;
 }
-.vacancy_page .demands-box ul {
+.vacancy_page .inner.no-full ul {
   margin: 0;
   padding: 0 0 0 15px;
 }
@@ -3630,18 +3632,18 @@ blockquote:before {
   line-height: 20px;
   color: #4c4c4c;
 }
-.vacancy_page .creator-big .inner {
+.vacancy_page .creator-big .creator-cont {
   padding-left: 130px;
   position: relative;
 }
-.vacancy_page .creator-big .inner img {
+.vacancy_page .creator-big .creator-cont img {
   position: absolute;
   top: 0;
   left: 30px;
   width: 80px;
   border-radius: 100%;
 }
-.vacancy_page .creator-big .inner .head {
+.vacancy_page .creator-big .creator-cont .head {
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
   line-height: 20px;
@@ -5961,7 +5963,8 @@ blockquote:before {
 }
 .action_page .action-list-one {
   list-style: none;
-  margin: 0 50px;
+  /*margin: 0 50px;*/
+  margin: 0;
   padding: 0;
 }
 .action_page .action-list-one li > img {
