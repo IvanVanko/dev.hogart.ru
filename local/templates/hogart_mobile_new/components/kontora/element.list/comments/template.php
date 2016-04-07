@@ -1,5 +1,5 @@
 <?if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();?>
-<div class="inner">
+<div class="inner-wrap">
     <?if (count($arResult['ITEMS']) > 0):?>
 	    <ul class="comments-list">
 	        <?foreach ($arResult['ITEMS'] as $arItem):?>
@@ -40,10 +40,11 @@
 		    <?endforeach;?>
 	    </ul>
 	<?endif;?>
+
+</div>
  	<div class="text-center">
  		<?=str_replace("новости", "Отзывы", $arResult["NAV_STRING"]);?>
  	</div>
-</div>
 <?
 #DebugMessage($arResult["NAV_STRING"]);
 ?>

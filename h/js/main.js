@@ -417,7 +417,7 @@ app.initIsSidebar = function () {
     $('.container-inner').each(function () {
         console.log($(this).find('.sidebar:not(.sidebar-popup)'))
         if ($(this).find('.sidebar:not(.sidebar-popup)').length) {
-            $(this).find('.inner:not(.js-paralax-item, footer)').addClass('no-full');
+            $(this).find('>.inner').addClass('no-full');
         }
     });
     return this;
