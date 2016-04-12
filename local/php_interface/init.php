@@ -12,8 +12,9 @@ if(file_exists($_SERVER['DOCUMENT_ROOT'].'/local/php_interface/CCustomInit.php')
 function IsMadeonMobile()
 {
 	# RTFM Описание модуля
-	if(!CModule::IncludeModule('nurgush.mobiledetect'))
+	if(!CModule::IncludeModule('nurgush.mobiledetect')) {
 		return false;
+	}
 	$detect = new Nurgush\MobileDetect\Main();
 	// Мобильные исключая планшеты
 	if( $detect->isMobile() && !$detect->isTablet() ){

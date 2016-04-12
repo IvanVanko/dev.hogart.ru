@@ -34,7 +34,7 @@ if (!isset($arParams['ITEM_TEMPLATE']) && empty($arParams['ITEM_TEMPLATE'])):?>
         <?= $arResult["DETAIL_TEXT"] ?>
     <? endif; ?>
     <? if (!empty($arResult["DETAIL_PICTURE"])): ?>
-        <div class="text-center inner no-padding no-full">
+        <div class="text-center inner no-padding">
             <img src="<?= $arResult['DETAIL_PICTURE']['SRC'] ?>" class="paddingimg" alt="<?= $arResult['NAME'] ?>"/>
         </div>
     <? endif; ?>
