@@ -220,6 +220,34 @@ th {
   list-style: none;
   vertical-align: top;
 }
+.all-project-box li img{
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.all-project-box li {
+  margin-bottom: 30px;
+}
+.inner.inner-wrap .inner {
+  padding: 0
+}
+.gall-news-one {
+  margin-bottom: 20px;
+}
+.paddingimg {
+  margin-bottom: 20px;
+  display: block;
+  margin-top: 20px;
+}
+.inner .side_href {
+  left: 0;
+  right: 57px;
+  width: auto;
+  padding-top: 11px;
+}
+.inner .side_href a {
+  margin-left: 10px
+}
 .center_translate {
   top: 50%;
   left: 50%;
@@ -1930,6 +1958,9 @@ h2 {
 .inner {
   padding: 8px 20px 0;
 }
+.news-one img{
+  max-width: 100%;
+}
 .pages-nav {
   width: 88%;
   margin: 11px auto 20px auto;
@@ -3545,10 +3576,6 @@ img.mfp-img {
     font-size: 1.4rem;
     max-width: 162px;
     line-height: 16px;
-  }
-  .top_block {
-    width: 186px;
-    padding: 13px 0 17px 0;
   }
   .input-wrap textarea {
     height: 45px;
