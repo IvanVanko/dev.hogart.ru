@@ -44,6 +44,7 @@ if ($results) {?>
 //	)
 //);
     ?>
+<!-- td -->
 <?
     $APPLICATION->IncludeComponent(
         "bitrix:news.detail",
