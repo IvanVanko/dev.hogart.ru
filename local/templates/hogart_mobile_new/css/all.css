@@ -111,6 +111,7 @@ textarea {
   font: inherit;
   margin: 0;
 }
+
 button {
   overflow: visible;
 }
@@ -1006,9 +1007,13 @@ h2 {
 .top_block .message-form select {
   background-image: url("/local/templates/hogart_mobile_new/images/arrow4.png");
   border:1px solid #fff;
+  background-color: rgba(0,0,0,0);
   color:#fff;
   font-size: 14px;
   text-transform: none;
+}
+.top_block .message-form select option {
+  color: #000;
 }
 .top_block .input-btn {
   background: transparent;
@@ -1340,6 +1345,9 @@ h2 {
 .learn-page .calendar-wrap,
 .learn-item-page .calendar-wrap {
   padding: 11px 20px;
+}
+.learn-page .field textarea, .learn-page .field input {
+    border: 1px solid #008351;
 }
 .learn-page .calendar-wrap select,
 .learn-item-page .calendar-wrap select {
@@ -1896,6 +1904,7 @@ h2 {
 .one-actions-page .news-items .news-one,
 .usefull-info-one .news-items .news-one {
   padding-bottom: 10px;
+  margin-bottom:  10px;
 }
 .one-news-page .article-meta,
 .one-actions-page .article-meta,
