@@ -1,6 +1,4 @@
 <?if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
-global $newsTitle;
-$newsTitle = $arResult['NAME'];
 $date_from = FormatDate("d F Y", MakeTimeStamp($arResult["ACTIVE_FROM"]));
 $share_img_src = false;?>
 <?//pr($arResult);?>
