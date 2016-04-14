@@ -53,6 +53,8 @@ if ($results) {?>
             "DISPLAY_NAME" => "Y",
             "DISPLAY_PICTURE" => "Y",
             "DISPLAY_PREVIEW_TEXT" => "Y",
+            "ADD_SECTIONS_CHAIN" => "Y",
+            "ADD_ELEMENT_CHAIN" => "Y",
             "IBLOCK_TYPE" => "training",
             "IBLOCK_ID" => "8",
                     "CACHE_TYPE" => "A",
