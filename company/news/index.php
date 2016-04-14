@@ -2,10 +2,6 @@
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetPageProperty("TITLE", "Новости");
 $APPLICATION->SetTitle("Новости");
-global $newsTitle;
-if($newsTitle){
-	$APPLICATION->AddChainItem($newsTitle);
-}
 ?>
 
 <?$APPLICATION->IncludeComponent(
@@ -86,5 +82,10 @@ if($newsTitle){
 		)
 	),
 	false
-);?>
+);
+global $newsTitle;
+if($newsTitle){
+	$APPLICATION->AddChainItem($newsTitle);
+}
+?>
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
