@@ -57,10 +57,10 @@ if ($results) {?>
             "ADD_ELEMENT_CHAIN" => "Y",
             "IBLOCK_TYPE" => "training",
             "IBLOCK_ID" => "8",
-                    "CACHE_TYPE" => "A",
-        "CACHE_TIME" => "0",
-        "CACHE_FILTER" => "N",
-        "CACHE_GROUPS" => "N",
+            "CACHE_TYPE" => "A",
+            "CACHE_TIME" => "0",
+            "CACHE_FILTER" => "N",
+            "CACHE_GROUPS" => "N",
             //result_modifier.php
             'ORDER' => array('PROPERTY_sem_start_date' => 'DESC'),
             "SEF_FOLDER" => $arParams['SEF_FOLDER'],
@@ -71,6 +71,9 @@ if ($results) {?>
         ),
         $component
     );
+global $seminarTitle;
+if($seminarTitle)
+    $APPLICATION->AddChainItem($seminarTitle);
 ?>
 <?/*}*/?>
 <? require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>
