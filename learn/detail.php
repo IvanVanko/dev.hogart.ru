@@ -44,7 +44,6 @@ if ($results) {?>
 //	)
 //);
     ?>
-<!-- td -->
 <?
     $APPLICATION->IncludeComponent(
         "bitrix:news.detail",
@@ -72,5 +71,5 @@ if ($results) {?>
     );
 ?>
 <?/*}*/?>
-
+<!--123--?>
 <? require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>
