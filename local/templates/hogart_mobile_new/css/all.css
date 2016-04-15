@@ -2439,6 +2439,7 @@ input[type="submit"].gray-btn,
 .owl-next.disabled {
   background-image: url("/local/templates/hogart_mobile_new/images/arrow2.png");
   opacity: 0.5;
+  display: none;
 }
 .owl-prev {
   float: left;
