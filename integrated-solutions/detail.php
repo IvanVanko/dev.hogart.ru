@@ -19,6 +19,8 @@ $APPLICATION->SetTitle("Комплексные решения");
             "DISPLAY_NAME" => "Y",
             "DISPLAY_PICTURE" => "Y",
             "DISPLAY_PREVIEW_TEXT" => "Y",
+            "ADD_SECTIONS_CHAIN" => "Y",
+            "ADD_ELEMENT_CHAIN" => "Y",
             "CHECK_DATES" => "N",
             "IBLOCK_TYPE" => "solutions",
             "PROPERTY_CODE" => array(

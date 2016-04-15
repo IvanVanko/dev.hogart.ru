@@ -1,4 +1,7 @@
-<? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die(); ?>
+<? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die(); 
+global $seminarTitle;
+$seminarTitle = $arResult['NAME'];
+?>
 
 <div class="control control-action">
 
@@ -8,16 +11,20 @@
     <?if (isset($arResult['NEXT'])):?>
         <span class="next black"><a href="<?=$arResult['NEXT']?>"></a></span>
     <?endif; */ ?>
-    <span class="prev <?if (!is_null($arResult['PREV'])):?> black <?endif;?>">
+    <?if (!is_null($arResult['PREV'])):?>
+        <span class="prev black">
         <?if(!is_null($arResult['PREV'])){?>
-        <a href="<?=$arResult['PREV']?>"></a>
+            <a href="<?=$arResult['PREV']?>"></a>
         <?}?>
-    </span>
-    <span class="next <?if (!is_null($arResult['NEXT'])):?> black <?endif;?>">
+        </span>
+    <?endif;?>
+    <?if (!is_null($arResult['NEXT'])):?>
+        <span class="next black">
         <?if(!is_null($arResult['NEXT'])){?>
-        <a href="<?=$arResult['NEXT']?>"></a>
+            <a href="<?=$arResult['NEXT']?>"></a>
         <?}?>
-    </span>
+        </span>
+    <?endif;?>
 </div>
 
 <h1 class="sem-name"><?= $arResult["NAME"] ?></h1>

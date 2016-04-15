@@ -9,8 +9,8 @@
             <?if (isset($arResult['NEXT'])):?>
                 <span class="next black"><a href="<?=$arResult['NEXT']?>"></a></span>
             <?endif; */ ?>
-            <span class="prev <?if (isset($arResult['PREV'])):?> black <?endif;?>"><a href="<?=$arResult['PREV']?>"></a></span>
-            <span class="next <?if (isset($arResult['NEXT'])):?> black <?endif;?>"><a href="<?=$arResult['NEXT']?>"></a></span>
+        <?if (isset($arResult['PREV'])):?><span class="prev black"><a href="<?=$arResult['PREV']?>"></a></span><?endif;?>
+        <?if (isset($arResult['NEXT'])):?><span class="next black"><a href="<?=$arResult['NEXT']?>"></a></span><?endif;?>
     </div>
     <h1><?= $arResult['NAME'] ?></h1>
 </div>
