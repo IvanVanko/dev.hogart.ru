@@ -1,7 +1,7 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
     die();
 }
-$date_from = FormatDate("d F Y", MakeTimeStamp($arResult["ACTIVE_FROM"]));
+$date_from = FormatDate("d F Y", MakeTimeStamp($arResult["PROPERTIES"]["DATE"]["VALUE"]));
 $share_img_src = false; ?>
 <? //pr($arResult);?>
 <div class="inner no-full">
@@ -12,18 +12,24 @@ $share_img_src = false; ?>
             <div class="date">
                 <sub><?=$date_from?></sub>
             </div>
+
+            <? if (isset($arResult["PROPERTIES"]["ADDRESS"]["VALUE"])): ?>
+                <div class="address">
+                    <sub><?=$arResult["PROPERTIES"]["ADDRESS"]["VALUE"]?></sub>
+                </div>
+            <? endif; ?>
+
             <? if(!empty($arResult['PREVIEW_TEXT'])): ?><p><?=$arResult['PREVIEW_TEXT']?></p><? endif; ?>
         </div>
 
         <? if(!empty($arResult['PREVIEW_PICTURE']['SRC'])):
-            $share_img_src = $arResult['PREVIEW_PICTURE']['SRC']; ?>
+            $share_img_src = $arResult['PREVIEW_PICTURE']['SRC'];
+            $pic = CFile::ResizeImageGet($arResult['PREVIEW_PICTURE']['ID'],
+                array('width' => 500, 'height' => 500), BX_RESIZE_IMAGE_PROPORTIONAL_ALT, true, array());
+        ?>
             <div class="news-detail-pic">
                 <div class="img-wrap">
-                    <img class="js-popup-open-img" title="<?=$arResult['NAME']?>"
-                         src="<?
-                         $pic = CFile::ResizeImageGet($arResult['PREVIEW_PICTURE']['ID'],
-                             array('width' => 500, 'height' => 500), BX_RESIZE_IMAGE_PROPORTIONAL_ALT, true, array());
-                         echo $pic['src']; ?>" alt=""/>
+                    <img class="js-popup-open-img" title="<?=$arResult['NAME']?>" src="<?=$pic['src']; ?>" alt=""/>
                 </div>
             </div>
         <? endif; ?>
