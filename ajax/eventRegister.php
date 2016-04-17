@@ -62,15 +62,16 @@ if($iblockId && $obEvent){
         $props['PRINT_TICKET'] = "/events/result.php?id={$id}";
 
         $result['success'] = true;
+        $result['message'] = "Благодарим Вас за проявленный интерес к нашему мероприятию. <br />";
         if($arEvent['PROPERTIES']['MODERATION']['VALUE'] == 'Y'){
             CEvent::SendImmediate("EVENT_USER_REGISTER_MODERATE", SITE_ID, $props);
         }
         else {
             CEvent::Send("EVENT_USER_REGISTER", SITE_ID, $props);
             $result['redirect'] = "/events/result.php?id={$id}&event={$props['EVENT']}";
+            $result['message'] .= $arEvent['PROPERTIES']['WELCOME'];
         }
-        $result['message'] = "Благодарим Вас за проявленный интерес к нашему мероприятию. <br />
-                            Ваша заявка принята и находится на рассмотрении.";
+
     }
     else {
         $result['message'] = $el->LAST_ERROR;
