@@ -433,9 +433,22 @@ class BXHelper extends Firestorm\BXHelper\BXHelper {
 		return $result['RESULT'];
 	}
 
+	public static function getEnumPropertyById($ID) {
+		global $DB;
+		$sql = "SELECT * FROM b_iblock_property_enum where ID = {$ID} limit 1";
+		$result = $DB->Query($sql);
+		return $result->getNext();
+	}
+	public static function getEnumPropertyByXMLId($PROPERTY_ID, $ID) {
+		global $DB;
+		$sql = "SELECT * FROM b_iblock_property_enum where PROPERTY_ID = {$PROPERTY_ID} and XML_ID = {$ID} limit 1";
+		$result = $DB->Query($sql);
+		return $result->getNext();
+	}
+
 	public static function getInvalidEnumPropertyValues () {
 		global $DB;
-		$sql = "SELECT biep.*,bipe.ID as ENUM_ID  FROM b_iblock_element_property biep LEFT OUTER JOIN b_iblock_property_enum bipe ON bipe.ID = biep.VALUE_ENUM WHERE VALUE_ENUM IS NOT NULL AND bipe.ID IS NULL";
+		$sql = "SELECT biep.*,bipe.ID as ENUM_ID, bipe.XML_ID  FROM b_iblock_element_property biep LEFT OUTER JOIN b_iblock_property_enum bipe ON bipe.ID = biep.VALUE_ENUM WHERE VALUE_ENUM IS NOT NULL AND bipe.ID IS NULL";
 		return $DB->Query($sql);
 	}
 

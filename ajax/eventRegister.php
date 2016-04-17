@@ -19,6 +19,13 @@ if($iblockId && $obEvent){
     $arEvent['PROPERTIES'] = $obEvent->GetProperties();
     $regCounter = $arEvent['PROPERTIES']['NUMBER']['VALUE'];
     $props['NUMBER'] = ++$regCounter;
+    if ($arEvent['PROPERTIES']['MODERATION']['VALUE'] != 'Y') {
+        $status = BXHelper::getProperties(array(), array("IBLOCK_ID" => $iblockId,
+            "CODE" => "STATUS"), array("ID", "CODE"), "CODE");
+        $status = $status["RESULT"]["STATUS"];
+        $invitation = BXHelper::getEnumPropertyByXMLId($status['ID'], IBlockHandlers::INVITATION);
+        $props["STATUS"] = $invitation["ID"];
+    }
     $fields = array(
         "NAME" => implode(" ", [$props['NAME'], $props['SURNAME'], $props['LAST_NAME']]),
         "ACTIVE" => "Y",

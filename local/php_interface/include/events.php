@@ -112,6 +112,10 @@ AddEventHandler("iblock", "OnAfterIBlockElementAdd", array("IBlockHandlers", "On
 AddEventHandler("iblock", "OnAfterIBlockElementUpdate", array("IBlockHandlers", "OnAfterIBlockElementUpdateHandler"));
 
 class IBlockHandlers {
+
+    const INVITATION = "INVITATION";
+    const DENIED = "DENIED";
+
     public static function OnBeforeIBlockElementAddHandler(&$arParams) {
         if($arParams["IBLOCK_ID"] == SEMINAR_IBLOCK_ID) {
             $ean_number = HogartHelpers::generateSeminarNumber();
@@ -173,16 +177,17 @@ class IBlockHandlers {
             $props['EVENT_NAME'] = $arEvent['NAME'];
             $props['PRINT_TICKET'] = "/events/result.php?id={$arParams['ID']}";
 
-            $property = BXHelper::getProperties(array(), array("IBLOCK_ID" => EVENTS_FORM_RESULT_IBLOCK_ID,
-                                                               "CODE" => "INVITATION"), array("ID", "CODE"), "CODE");
-            $property = $property["RESULT"]["INVITATION"];
-            $currentInvitationStatus = CIBlockElement::GetProperty($arParams['IBLOCK_ID'], $arParams['ID'], [], ['CODE' => "INVITATION"])->Fetch();
-
-            if(!empty($arParams['PROPERTY_VALUES'][$property['ID']])
-               && $arParams['PROPERTY_VALUES'][$property['ID']] !== $currentInvitationStatus['VALUE']
+            $status = BXHelper::getProperties(array(), array("IBLOCK_ID" => EVENTS_FORM_RESULT_IBLOCK_ID,
+                "CODE" => "STATUS"), array("ID", "CODE"), "CODE");
+            $status = $status["RESULT"]["STATUS"];
+            $currentStatus = CIBlockElement::GetProperty($arParams['IBLOCK_ID'], $arParams['ID'], [], ['CODE' => "STATUS"])->Fetch();
+            if(!empty($arParams['PROPERTY_VALUES'][$status['ID']])
+                && $arParams['PROPERTY_VALUES'][$property['ID']] !== $currentStatus['VALUE']
             ) {
-                foreach($arParams['PROPERTY_VALUES'][$property['ID']] as $key => $arPropVal) {
-                    if($arPropVal['VALUE'] == 'Y') {
+                $currentStatus = BXHelper::getEnumPropertyById($arParams['PROPERTY_VALUES'][$status['ID']][0]["VALUE"]);
+                switch ($currentStatus["XML_ID"]) {
+                    // подтверждение регистрации
+                    case self::INVITATION:
                         if(!empty($orgs)){
                             $props['ORG_INFO'] = "Контакты для получения дополнительной информации:<br />";
                             foreach($orgs as $org) {
@@ -201,24 +206,14 @@ class IBlockHandlers {
                             }
                         }
                         CEvent::Send("EVENT_USER_REGISTER", "s1", $props);
-                    }
-                }
-            }
-
-            // отказ в регистрации
-            $property = BXHelper::getProperties(array(), array("IBLOCK_ID" => EVENTS_FORM_RESULT_IBLOCK_ID,
-                                                               "CODE" => "DENIED"), array("ID", "CODE"), "CODE");
-            $property = $property["RESULT"]["DENIED"];
-            $currentDeniedStatus = CIBlockElement::GetProperty($arParams['IBLOCK_ID'], $arParams['ID'], [], ['CODE' => "DENIED"])->Fetch();
-
-            if(!empty($arParams['PROPERTY_VALUES'][$property['ID']])
-               && $arParams['PROPERTY_VALUES'][$property['ID']] !== $currentDeniedStatus['VALUE']
-            ) {
-                foreach($arParams['PROPERTY_VALUES'][$property['ID']] as $key => $arPropVal) {
-                    if($arPropVal['VALUE'] == 'Y') {
+                        break;
+                    // отказ в регистрации
+                    case self::DENIED:
                         $props['TEXT'] = $arEvent['PROPERTIES']['DENIED_TEXT']['VALUE'];
                         CEvent::Send("EVENT_USER_REGISTER_DENIED", "s1", $props);
-                    }
+                        break;
+                    default:
+                        break;
                 }
             }
         }

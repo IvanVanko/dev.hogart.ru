@@ -51,7 +51,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 		"BROWSER_TITLE" => "-",
 		"DETAIL_ACTIVE_DATE_FORMAT" => "d.m.Y",
 		"DETAIL_FIELD_CODE" => array(
-			0 => "",
+			0 => "PREVIEW_PICTURE",
 			1 => "",
 		),
 		"DETAIL_PROPERTY_CODE" => array(

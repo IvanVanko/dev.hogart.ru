@@ -20,7 +20,6 @@ if (!empty($arResult["VARIABLES"]["ELEMENT_CODE"])) {
             "DISPLAY_DATE" => $arParams["DISPLAY_DATE"],
             "DISPLAY_NAME" => $arParams["DISPLAY_NAME"],
             "DISPLAY_PICTURE" => $arParams["DISPLAY_PICTURE"],
-            "PREVIEW_PICTURE" => $arParams["PREVIEW_PICTURE"],
             "DISPLAY_PREVIEW_TEXT" => $arParams["DISPLAY_PREVIEW_TEXT"],
             "IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
             "IBLOCK_ID" => $arParams["IBLOCK_ID"],
