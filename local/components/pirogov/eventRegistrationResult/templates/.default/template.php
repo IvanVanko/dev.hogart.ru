@@ -43,14 +43,19 @@ ob_start();
                 <div class="text">
                     <?=$arResult['ELEMENT']['PROPERTIES']['TICKET_TEXT']['VALUE']?>
                 </div>
-                <? if($arResult['ELEMENT']['PROPERTIES']['TICKET_IMAGE']['VALUE']) { ?>
+
+            <? if($arResult['ELEMENT']['PROPERTIES']['TICKET_IMAGE']['VALUE']) { ?>
+                <div class="image">
                     <img
                         src="http://<?=SITE_SERVER_NAME?><?=CFile::GetPath($arResult['ELEMENT']['PROPERTIES']['TICKET_IMAGE']['VALUE'])?>"
                         alt="">
-                <? } ?>
+                </div>
+            <? } ?>
+                <div class="print">
                 <? if(!isset($_GET['pdf'])) { ?>
                     <a target="_blank" href="<?=$APPLICATION->GetCurUri()?>&pdf">Распечатать</a>
                 <? } ?>
+                </div>
             </div>
         </div>
     </div>
