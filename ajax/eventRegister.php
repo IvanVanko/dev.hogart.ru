@@ -61,14 +61,16 @@ if($iblockId && $obEvent){
         }
 
         $props['PRINT_TICKET'] = "/events/result.php?id={$id}";
+        $pdf = CFile::MakeFileArray(trim($_SERVER['DOCUMENT_ROOT'] . $props['PRINT_TICKET'] . '&pdf'));
 
         $result['success'] = true;
         $result['message'] = "Благодарим Вас за проявленный интерес к нашему мероприятию. <br />";
+        $result['debug'] = json_encode(['pdf' => $pdf]);
         if($arEvent['PROPERTIES']['MODERATION']['VALUE'] == 'Y'){
             CEvent::SendImmediate("EVENT_USER_REGISTER_MODERATE", SITE_ID, $props);
         }
         else {
-            CEvent::Send("EVENT_USER_REGISTER", SITE_ID, $props, "Y", "", [$ticketFile]);
+            CEvent::Send("EVENT_USER_REGISTER", SITE_ID, $props);
             $result['redirect'] = "/events/result.php?id={$id}&event={$props['EVENT']}";
             if (!empty($arEvent['PROPERTIES']['WELCOME']['VALUE']['TEXT'])) {
                 $result['message'] .= $arEvent['PROPERTIES']['WELCOME']['VALUE']['TEXT'];
