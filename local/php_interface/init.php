@@ -72,22 +72,23 @@ $obInit->addFolder('');
 
 $obInit->Init();
 
-$browsers = new DeviceDetector\DeviceDetector($_SERVER['HTTP_USER_AGENT']);
-$browsers->parse();
+if (class_exists('DeviceDetector')) {
+	$browsers = new DeviceDetector\DeviceDetector($_SERVER['HTTP_USER_AGENT']);
+	$browsers->parse();
 
-$browsers->parse();
+	$browsers->parse();
 
-if ($browsers->isBot()) {
-	// handle bots,spiders,crawlers,...
-	$botInfo = $browsers->getBot();
-} else {
-	$GLOBALS['user_agent']['browser'] = $browsers->getClient(); // holds information about browser, feed reader, media player, ...
-	$GLOBALS['user_agent']['os'] = $browsers->getOs();
-	$GLOBALS['user_agent']['device_type'] = $browsers->getDevice();
-	$GLOBALS['user_agent']['device_brand'] = $browsers->getBrand();
-	$GLOBALS['user_agent']['device_model'] = $browsers->getModel();
+	if ($browsers->isBot()) {
+		// handle bots,spiders,crawlers,...
+		$botInfo = $browsers->getBot();
+	} else {
+		$GLOBALS['user_agent']['browser'] = $browsers->getClient(); // holds information about browser, feed reader, media player, ...
+		$GLOBALS['user_agent']['os'] = $browsers->getOs();
+		$GLOBALS['user_agent']['device_type'] = $browsers->getDevice();
+		$GLOBALS['user_agent']['device_brand'] = $browsers->getBrand();
+		$GLOBALS['user_agent']['device_model'] = $browsers->getModel();
+	}
 }
-
 
 global $BX_MENU_CUSTOM;
 $BX_MENU_CUSTOM = new HogartCustomMenu();
