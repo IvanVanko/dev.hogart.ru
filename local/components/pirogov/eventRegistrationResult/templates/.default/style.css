@@ -22,7 +22,6 @@ html {
     font-size: small;
 }
 .date span, .address span {
-    display: block;
     font-weight: bold;
 }
 
@@ -42,7 +41,7 @@ html {
 }
 .barcode {
     text-transform: uppercase;
-    padding: 0 13px;
+    text-align: center;
 }
 .barcode span {
     display: inline-block;

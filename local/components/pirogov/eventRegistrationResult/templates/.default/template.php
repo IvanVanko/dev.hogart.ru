@@ -45,7 +45,7 @@ ob_start();
                 </div>
                 <? if($arResult['ELEMENT']['PROPERTIES']['TICKET_IMAGE']['VALUE']) { ?>
                     <img
-                        src="http://<?=$_SERVER['SERVER_NAME']?><?=CFile::GetPath($arResult['ELEMENT']['PROPERTIES']['TICKET_IMAGE']['VALUE'])?>"
+                        src="http://<?=SITE_SERVER_NAME?><?=CFile::GetPath($arResult['ELEMENT']['PROPERTIES']['TICKET_IMAGE']['VALUE'])?>"
                         alt="">
                 <? } ?>
             </div>
