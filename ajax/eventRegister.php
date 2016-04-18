@@ -56,14 +56,13 @@ if($iblockId && $obEvent){
         if(!empty($orgs)){
             $props['ORG_INFO'] = "По всем вопросам обращаться:<br />";
             foreach($orgs as $org) {
-                $props['ORG_INFO'] .= "{$org['NAME']} {$org['props']['MAIL']['VALUE']} {$org['props']['PHONE']['VALUE']}<br/>";
+                $props['ORG_INFO'] .= "{$org['NAME']} - {$org['props']['mail']['VALUE']} {$org['props']['phone']['VALUE']}<br/>";
             }
         }
 
         $props['PRINT_TICKET'] = "/events/result.php?id={$id}";
 
         $result['success'] = true;
-        $result['debug'] = json_encode(['org' => $orgs]);
         $result['message'] = "Благодарим Вас за проявленный интерес к нашему мероприятию. <br />";
         if($arEvent['PROPERTIES']['MODERATION']['VALUE'] == 'Y'){
             CEvent::SendImmediate("EVENT_USER_REGISTER_MODERATE", SITE_ID, $props);
