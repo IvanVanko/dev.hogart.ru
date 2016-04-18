@@ -61,20 +61,31 @@ if($iblockId && $obEvent){
         }
 
         $props['PRINT_TICKET'] = "/events/result.php?id={$id}";
+
         ob_start();
         $APPLICATION->IncludeComponent("pirogov:eventRegistrationResult", "", array(
             "ID" => $id
         ));
         $pdf = ob_get_clean();
+        define('DOMPDF_ENABLE_AUTOLOAD', false);
+        define('DOMPDF_ENABLE_REMOTE', true);
+        require $_SERVER['DOCUMENT_ROOT'].'/local/php_interface/include/vendor/dompdf/dompdf/dompdf_config.inc.php';
+        $dompdf = new \DOMPDF();
+        $dompdf->load_html($pdf);
+        $dompdf->render();
+        $pdf = $dompdf->output();
+        $file = [
+            'name' => 'ticket-' . $id . '.pdf',
+            'content' => $pdf
+        ];
 
         $result['success'] = true;
         $result['message'] = "Благодарим Вас за проявленный интерес к нашему мероприятию. <br />";
-        $result['debug'] = json_encode(['pdf' => $pdf]);
         if($arEvent['PROPERTIES']['MODERATION']['VALUE'] == 'Y'){
             CEvent::SendImmediate("EVENT_USER_REGISTER_MODERATE", SITE_ID, $props);
         }
         else {
-            CEvent::Send("EVENT_USER_REGISTER", SITE_ID, $props);
+            CEvent::Send("EVENT_USER_REGISTER", SITE_ID, $props, "Y", "", [$file]);
             $result['redirect'] = "/events/result.php?id={$id}&event={$props['EVENT']}";
             if (!empty($arEvent['PROPERTIES']['WELCOME']['VALUE']['TEXT'])) {
                 $result['message'] .= $arEvent['PROPERTIES']['WELCOME']['VALUE']['TEXT'];
