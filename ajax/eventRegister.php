@@ -5,6 +5,8 @@ if(!isAjax()){
     LocalRedirect($_SERVER["HTTP_REFERER"]);
 }
 
+require_once(dirname(__FILE__) . '/smsc_send.php');
+
 CModule::IncludeModule('iblock');
 $result = array('success' => false);
 
@@ -83,6 +85,8 @@ if($iblockId && $obEvent){
             file_put_contents($pdfPath, $dompdf->output());
 
             CEvent::Send("EVENT_USER_REGISTER", SITE_ID, $props, "Y", "", [$pdfPath]);
+            $sms_message = "Регистрация подтверждена! {$props['EVENT_NAME']}, {$props['DATE']}, {$props['ADDRESS']}. Код участника: {$props['BARCODE']} {$props['ORG_INFO']}";
+            send_sms($props["PHONE"], $sms_message);
             $result['redirect'] = "/events/result.php?id={$id}&event={$props['EVENT']}";
             if (!empty($arEvent['PROPERTIES']['WELCOME']['VALUE']['TEXT'])) {
                 $result['message'] .= $arEvent['PROPERTIES']['WELCOME']['VALUE']['TEXT'];
