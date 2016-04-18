@@ -441,7 +441,7 @@ class BXHelper extends Firestorm\BXHelper\BXHelper {
 	}
 	public static function getEnumPropertyByXMLId($PROPERTY_ID, $ID) {
 		global $DB;
-		$sql = "SELECT * FROM b_iblock_property_enum where PROPERTY_ID = {$PROPERTY_ID} and XML_ID = {$ID} limit 1";
+		$sql = "SELECT * FROM b_iblock_property_enum where PROPERTY_ID = {$PROPERTY_ID} and XML_ID = '{$ID}' limit 1";
 		$result = $DB->Query($sql);
 		return $result->getNext();
 	}
