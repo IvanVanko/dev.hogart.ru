@@ -29,10 +29,11 @@ ob_start();
         <div class="reg-kupon _event">
             <div class="title-holder">
                 <div class="title">
-                    &laquo;Электронный билет&raquo; на мероприятиятие <span class="event-name">&laquo;<?=$arResult['ELEMENT']['NAME']?>&raquo;</span>
+                    &laquo;Электронный билет&raquo; на мероприятиятие <br>
+                    <span class="event-name">&laquo;<?=$arResult['ELEMENT']['NAME']?>&raquo;</span>
                 </div>
-                <div class="date">Дата проведения: <?=$arResult['ELEMENT']['PROPERTIES']['DATE']['VALUE']?></div>
-                <div class="address">Адрес проведения: <?=$arResult['ELEMENT']['PROPERTIES']['ADDRESS']['VALUE']?></div>
+                <div class="date">Дата проведения: <span><?=$arResult['ELEMENT']['PROPERTIES']['DATE']['VALUE']?></span></div>
+                <div class="address">Адрес проведения: <span><?=$arResult['ELEMENT']['PROPERTIES']['ADDRESS']['VALUE']?></span></div>
 
                 <hr>
                 <div class="barcode">

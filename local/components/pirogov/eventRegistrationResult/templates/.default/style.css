@@ -10,22 +10,22 @@ html {
     font-size: 12px;
 }
 .title {
-    font-size: 1.2em;
+    font-size: 1.4em;
     text-align: center;
-}
-.date, .address {
-    display: block;
-}
-.date {
-    font-weight: bold;
-    font-size: small;
-}
-.address {
-    font-size: small;
+    margin-bottom: 15px;
 }
 .event-name {
     font-weight: bold;
 }
+.date, .address {
+    display: block;
+    font-size: small;
+}
+.date span, .address span {
+    display: block;
+    font-weight: bold;
+}
+
 .name {
     padding-left: 13px;
 }
