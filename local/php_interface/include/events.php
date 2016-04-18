@@ -184,8 +184,12 @@ class IBlockHandlers {
             if(!empty($arParams['PROPERTY_VALUES'][$status['ID']])
                 && $arParams['PROPERTY_VALUES'][$property['ID']] !== $currentStatus['VALUE']
             ) {
-                $currentStatus = BXHelper::getEnumPropertyById($arParams['PROPERTY_VALUES'][$status['ID']][0]["VALUE"]);
-                switch ($currentStatus["XML_ID"]) {
+                if (!empty($arParams['PROPERTY_VALUES'][$status['ID']][0]["VALUE"])) {
+                    $currentStatus = BXHelper::getEnumPropertyById($arParams['PROPERTY_VALUES'][$status['ID']][0]["VALUE"]);
+                    $currentStatus = $currentStatus["XML_ID"];
+                }
+
+                switch ($currentStatus) {
                     // подтверждение регистрации
                     case self::INVITATION:
                         $orgs = [];
