@@ -229,11 +229,9 @@ class IBlockHandlers {
                         $dompdf->load_html($pdf);
                         $dompdf->render();
                         $pdfPath = sys_get_temp_dir() . '/ticket-' . $arParams['ID'] . '-' . uniqid() . '.pdf';
-                        $htmlPath = sys_get_temp_dir() . '/ticket-' . $arParams['ID'] . '-' . uniqid() . '.html';
                         file_put_contents($pdfPath, $dompdf->output());
-                        file_put_contents($htmlPath, $pdf);
 
-                        CEvent::Send("EVENT_USER_REGISTER", "s1", $props, "Y", "", [$pdfPath, $htmlPath]);
+                        CEvent::Send("EVENT_USER_REGISTER", "s1", $props, "Y", "", [$pdfPath]);
                         $sms_message = "Регистрация подтверждена! {$props['EVENT_NAME']}, {$props['DATE']}, {$props['ADDRESS']}. Код участника: {$props['BARCODE']}. {$props['ORG_INFO']}";
                         send_sms($props["PHONE"], strip_tags($sms_message));
                         break;
