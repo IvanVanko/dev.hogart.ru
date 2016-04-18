@@ -20,7 +20,7 @@ HogartApp.prototype.setHandlers = function () {
             link.target = '_blank';
             link.style = 'display: none;';
             link.href = data.redirect;
-            document.body.appendChild(a);
+            document.body.appendChild(link);
             a.click();
         }
     });
