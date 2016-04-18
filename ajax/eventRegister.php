@@ -86,7 +86,7 @@ if($iblockId && $obEvent){
 
             CEvent::Send("EVENT_USER_REGISTER", SITE_ID, $props, "Y", "", [$pdfPath]);
             $sms_message = "Регистрация подтверждена! {$props['EVENT_NAME']}, {$props['DATE']}, {$props['ADDRESS']}. Код участника: {$props['BARCODE']} {$props['ORG_INFO']}";
-            send_sms($props["PHONE"], $sms_message);
+            send_sms($props["PHONE"], strip_tags($sms_message));
             $result['redirect'] = "/events/result.php?id={$id}&event={$props['EVENT']}";
             if (!empty($arEvent['PROPERTIES']['WELCOME']['VALUE']['TEXT'])) {
                 $result['message'] .= $arEvent['PROPERTIES']['WELCOME']['VALUE']['TEXT'];

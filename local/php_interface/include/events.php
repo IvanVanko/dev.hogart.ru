@@ -174,6 +174,8 @@ class IBlockHandlers {
             $props['SURNAME'] = $arEventApplication['PROPERTIES']['SURNAME']['VALUE'];
             $props['LAST_NAME'] = $arEventApplication['PROPERTIES']['LAST_NAME']['VALUE'];
             $props['EMAIL'] = $arEventApplication['PROPERTIES']['EMAIL']['VALUE'];
+            $props['PHONE'] = $arEventApplication['PROPERTIES']['PHONE']['VALUE'];
+            $props['BARCODE'] = $arEventApplication['PROPERTIES']['BARCODE']['VALUE'];
 
             $props['ADDRESS'] = $arEvent['PROPERTIES']['ADDRESS']['VALUE'];
             $props['DATE'] = $arEvent['PROPERTIES']['DATE']['VALUE'];
@@ -193,27 +195,27 @@ class IBlockHandlers {
                     $currentStatus = $currentStatus["XML_ID"];
                 }
 
+                $orgs = [];
+                if(!empty($arEvent['PROPERTIES']['ORGANIZER']['VALUE'])) {
+                    $arFilter = Array('ID' => $arEvent['PROPERTIES']['ORGANIZER']['VALUE']);
+                    $res = CIBlockElement::GetList(Array(), $arFilter, false, false, array());
+
+                    while($ob = $res->GetNextElement()) {
+                        $arFields = $ob->GetFields();
+                        $arFields['props'] = $ob->GetProperties();
+                        $orgs[] = $arFields;
+                    }
+                }
+                if(!empty($orgs)){
+                    $props['ORG_INFO'] = "По всем вопросам обращаться:<br />";
+                    foreach($orgs as $org) {
+                        $props['ORG_INFO'] .= "{$org['NAME']} - {$org['props']['mail']['VALUE']} {$org['props']['phone']['VALUE']}<br/>";
+                    }
+                }
+
                 switch ($currentStatus) {
                     // подтверждение регистрации
                     case self::INVITATION:
-                        $orgs = [];
-                        if(!empty($arEvent['PROPERTIES']['ORGANIZER']['VALUE'])) {
-                            $arFilter = Array('ID' => $arEvent['PROPERTIES']['ORGANIZER']['VALUE']);
-                            $res = CIBlockElement::GetList(Array(), $arFilter, false, false, array());
-
-                            while($ob = $res->GetNextElement()) {
-                                $arFields = $ob->GetFields();
-                                $arFields['props'] = $ob->GetProperties();
-                                $orgs[] = $arFields;
-                            }
-                        }
-                        if(!empty($orgs)){
-                            $props['ORG_INFO'] = "По всем вопросам обращаться:<br />";
-                            foreach($orgs as $org) {
-                                $props['ORG_INFO'] .= "{$org['NAME']} - {$org['props']['mail']['VALUE']} {$org['props']['phone']['VALUE']}<br/>";
-                            }
-                        }
-
                         ob_start();
                         $APPLICATION->IncludeComponent("pirogov:eventRegistrationResult", "mail-attachment", array(
                             "ID" => $arParams['ID']
@@ -229,11 +231,15 @@ class IBlockHandlers {
                         file_put_contents($pdfPath, $dompdf->output());
 
                         CEvent::Send("EVENT_USER_REGISTER", "s1", $props, "Y", "", [$pdfPath]);
+                        $sms_message = "Регистрация подтверждена! {$props['EVENT_NAME']}, {$props['DATE']}, {$props['ADDRESS']}. Код участника: {$props['BARCODE']}. {$props['ORG_INFO']}";
+                        send_sms($props["PHONE"], strip_tags($sms_message));
                         break;
                     // отказ в регистрации
                     case self::DENIED:
                         $props['TEXT'] = $arEvent['PROPERTIES']['DENIED_TEXT']['VALUE'];
                         CEvent::Send("EVENT_USER_REGISTER_DENIED", "s1", $props);
+                        $sms_message = "{$props['EVENT_NAME']}, {$props['DATE']}, {$props['ADDRESS']}. {$props['TEXT']}. {$props['ORG_INFO']}";
+                        send_sms($props["PHONE"], strip_tags($sms_message));
                         break;
                     default:
                         break;
