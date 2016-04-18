@@ -208,7 +208,7 @@ class IBlockHandlers {
 
                         ob_start();
                         $APPLICATION->IncludeComponent("pirogov:eventRegistrationResult", "mail-attachment", array(
-                            "ID" => $eventCodeId
+                            "ID" => $arParams['ID']
                         ));
                         $pdf = ob_get_clean();
                         define('DOMPDF_ENABLE_AUTOLOAD', false);
