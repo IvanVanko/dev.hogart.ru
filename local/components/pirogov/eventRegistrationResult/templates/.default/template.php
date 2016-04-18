@@ -68,7 +68,7 @@ $html = ob_get_clean();
 if(isset($_GET['pdf'])) {
     define('DOMPDF_ENABLE_AUTOLOAD', false);
     define('DOMPDF_ENABLE_REMOTE', true);
-    require $_SERVER['DOCUMENT_ROOT'].'/local/php_interface/include/vendor/autoload.php';
+    require $_SERVER['DOCUMENT_ROOT'].'/local/php_interface/include/vendor/dompdf/dompdf/dompdf_config.inc.php';
     $dompdf = new \DOMPDF();
     $dompdf->load_html($html);
     $dompdf->render();
