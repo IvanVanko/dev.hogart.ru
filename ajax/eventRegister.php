@@ -61,7 +61,11 @@ if($iblockId && $obEvent){
         }
 
         $props['PRINT_TICKET'] = "/events/result.php?id={$id}";
-        $pdf = CFile::MakeFileArray(trim($_SERVER['DOCUMENT_ROOT'] . $props['PRINT_TICKET'] . '&pdf'));
+        ob_start();
+        $APPLICATION->IncludeComponent("pirogov:eventRegistrationResult", "", array(
+            "ID" => $id
+        ));
+        $pdf = ob_get_clean();
 
         $result['success'] = true;
         $result['message'] = "Благодарим Вас за проявленный интерес к нашему мероприятию. <br />";
