@@ -19,6 +19,7 @@ if($iblockId && $obEvent){
     $arEvent['PROPERTIES'] = $obEvent->GetProperties();
     $regCounter = $arEvent['PROPERTIES']['NUMBER']['VALUE'];
     $props['NUMBER'] = ++$regCounter;
+    $props['BARCODE'] = substr($arEvent['PROPERTIES']['BARCODE']['VALUE'], 0, 12 - strlen($props['NUMBER'])) . $props['NUMBER'];
     if ($arEvent['PROPERTIES']['MODERATION']['VALUE'] != 'Y') {
         $status = BXHelper::getProperties(array(), array("IBLOCK_ID" => $iblockId,
             "CODE" => "STATUS"), array("ID", "CODE"), "CODE");
