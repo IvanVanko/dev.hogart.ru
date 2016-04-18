@@ -192,12 +192,9 @@ class IBlockHandlers {
                 switch ($currentStatus) {
                     // подтверждение регистрации
                     case self::INVITATION:
-                        pr($arEventApplication);
-                        pr($arParams);
-                        exit;
                         $orgs = [];
-                        if(!empty($arEventApplication['PROPERTIES']['ORGANIZER']['VALUE'])) {
-                            $arFilter = Array('ID' => $arEventApplication['PROPERTIES']['ORGANIZER']['VALUE']);
+                        if(!empty($arEvent['PROPERTIES']['ORGANIZER']['VALUE'])) {
+                            $arFilter = Array('ID' => $arEvent['PROPERTIES']['ORGANIZER']['VALUE']);
                             $res = CIBlockElement::GetList(Array(), $arFilter, false, false, array());
 
                             while($ob = $res->GetNextElement()) {
@@ -220,7 +217,7 @@ class IBlockHandlers {
                         $pdf = ob_get_clean();
                         define('DOMPDF_ENABLE_AUTOLOAD', false);
                         define('DOMPDF_ENABLE_REMOTE', true);
-                        require $_SERVER['DOCUMENT_ROOT'].'/local/php_interface/include/vendor/dompdf/dompdf/dompdf_config.inc.php';
+                        require_once $_SERVER['DOCUMENT_ROOT'].'/local/php_interface/include/vendor/dompdf/dompdf/dompdf_config.inc.php';
                         $dompdf = new \DOMPDF();
                         $dompdf->load_html($pdf);
                         $dompdf->render();
