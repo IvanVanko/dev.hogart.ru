@@ -174,7 +174,7 @@ class IBlockHandlers {
             $props['SURNAME'] = $arEventApplication['PROPERTIES']['SURNAME']['VALUE'];
             $props['LAST_NAME'] = $arEventApplication['PROPERTIES']['LAST_NAME']['VALUE'];
             $props['EMAIL'] = $arEventApplication['PROPERTIES']['EMAIL']['VALUE'];
-            
+
             $props['ADDRESS'] = $arEvent['PROPERTIES']['ADDRESS']['VALUE'];
             $props['DATE'] = $arEvent['PROPERTIES']['DATE']['VALUE'];
             $props['EVENT_NAME'] = $arEvent['NAME'];
@@ -184,9 +184,10 @@ class IBlockHandlers {
                 "CODE" => "STATUS"), array("ID", "CODE"), "CODE");
             $status = $status["RESULT"]["STATUS"];
             $currentStatus = CIBlockElement::GetProperty($arParams['IBLOCK_ID'], $arParams['ID'], [], ['CODE' => "STATUS"])->Fetch();
-            if(!empty($arParams['PROPERTY_VALUES'][$status['ID']])
-                && $arParams['PROPERTY_VALUES'][$property['ID']] !== $currentStatus['VALUE']
+            if(!empty($arParams['PROPERTY_VALUES'][$status['ID']][0]["VALUE"])
+                && $arParams['PROPERTY_VALUES'][$status['ID']][0]["VALUE"] !== $currentStatus['VALUE']
             ) {
+                $currentStatus = null;
                 if (!empty($arParams['PROPERTY_VALUES'][$status['ID']][0]["VALUE"])) {
                     $currentStatus = BXHelper::getEnumPropertyById($arParams['PROPERTY_VALUES'][$status['ID']][0]["VALUE"]);
                     $currentStatus = $currentStatus["XML_ID"];
