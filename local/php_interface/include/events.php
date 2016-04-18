@@ -174,6 +174,9 @@ class IBlockHandlers {
             $props['SURNAME'] = $arEventApplication['PROPERTIES']['SURNAME']['VALUE'];
             $props['LAST_NAME'] = $arEventApplication['PROPERTIES']['LAST_NAME']['VALUE'];
             $props['EMAIL'] = $arEventApplication['PROPERTIES']['EMAIL']['VALUE'];
+            
+            $props['ADDRESS'] = $arEvent['PROPERTIES']['ADDRESS']['VALUE'];
+            $props['DATE'] = $arEvent['PROPERTIES']['DATE']['VALUE'];
             $props['EVENT_NAME'] = $arEvent['NAME'];
             $props['PRINT_TICKET'] = "/events/result.php?id={$arParams['ID']}";
 
