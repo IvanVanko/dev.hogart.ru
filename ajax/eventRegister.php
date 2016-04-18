@@ -69,7 +69,9 @@ if($iblockId && $obEvent){
         else {
             CEvent::Send("EVENT_USER_REGISTER", SITE_ID, $props);
             $result['redirect'] = "/events/result.php?id={$id}&event={$props['EVENT']}";
-            $result['message'] .= print_r($arEvent['PROPERTIES']['WELCOME'], true); //$arEvent['PROPERTIES']['WELCOME']['VALUE'];
+            if (!empty($arEvent['PROPERTIES']['WELCOME']['VALUE']['TEXT'])) {
+                $result['message'] .= $arEvent['PROPERTIES']['WELCOME']['VALUE']['TEXT'];
+            }
         }
 
     }
