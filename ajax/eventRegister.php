@@ -52,8 +52,9 @@ if($iblockId && $obEvent){
             }
         }
 
+        $props['ORG_INFO'] = "";
         if(!empty($orgs)){
-            $props['ORG_INFO'] = "Контакты для получения дополнительной информации:<br />";
+            $props['ORG_INFO'] = "По всем вопросам обращаться:<br />";
             foreach($orgs as $org) {
                 $props['ORG_INFO'] .= "{$org['NAME']} {$org['props']['MAIL']['VALUE']} {$org['props']['PHONE']['VALUE']}<br/>";
             }
