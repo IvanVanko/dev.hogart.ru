@@ -63,6 +63,7 @@ if($iblockId && $obEvent){
         $props['PRINT_TICKET'] = "/events/result.php?id={$id}";
 
         $result['success'] = true;
+        $result['debug'] = json_encode(['props' => $props, 'event' => $arEvent]);
         $result['message'] = "Благодарим Вас за проявленный интерес к нашему мероприятию. <br />";
         if($arEvent['PROPERTIES']['MODERATION']['VALUE'] == 'Y'){
             CEvent::SendImmediate("EVENT_USER_REGISTER_MODERATE", SITE_ID, $props);
