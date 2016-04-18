@@ -28,37 +28,26 @@ ob_start();
     <div class="inner">
         <div class="reg-kupon _event">
             <div class="title-holder">
-                <div class="barcode">
-                    Электронный билет
-                    <?="<img src='data:image/png;base64,{$arResult["BARCODE"]}'>";?>
-                    <span class="event-name"><?=$arResult['ELEMENT']['NAME']?></span>
+                <div class="title">
+                    &laquo;Электронный билет&raquo; на мероприятиятие <span class="event-name">&laquo;<?=$arResult['ELEMENT']['NAME']?>&raquo;</span>
                 </div>
-                <table>
-                    <tr>
-                        <td class="name">
-                            <?=implode(" ", [$arResult['FORM_RESULT']['PROPERTIES']['NAME']['VALUE'],
-                                             $arResult['FORM_RESULT']['PROPERTIES']['SURNAME']['VALUE'],
-                                             $arResult['FORM_RESULT']['PROPERTIES']['LAST_NAME']['VALUE']])?>,
-                            "<?=$arResult['FORM_RESULT']['PROPERTIES']['COMPANY']['VALUE']?>"
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="company">
-                                <?=$arResult['ELEMENT']['PROPERTIES']['TICKET_TEXT']['VALUE']?>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
+                <div class="date">Дата проведения: <?=$arResult['ELEMENT']['PROPERTIES']['DATE']['VALUE']?></div>
+                <div class="address">Адрес проведения: <?=$arResult['ELEMENT']['PROPERTIES']['ADDRESS']['VALUE']?></div>
+
+                <hr>
+                <div class="barcode">
+                    <?="<img src='data:image/png;base64,{$arResult["BARCODE"]}'>";?>
+                </div>
+                <hr>
+                <div class="text">
+                    <?=$arResult['ELEMENT']['PROPERTIES']['TICKET_TEXT']['VALUE']?>
+                </div>
+                <? if($arResult['ELEMENT']['PROPERTIES']['TICKET_IMAGE']['VALUE']) { ?>
+                    <img
+                        src="http://<?=$_SERVER['SERVER_NAME']?><?=CFile::GetPath($arResult['ELEMENT']['PROPERTIES']['TICKET_IMAGE']['VALUE'])?>"
+                        alt="">
+                <? } ?>
             </div>
-            <? if($arResult['ELEMENT']['PROPERTIES']['TICKET_IMAGE']['VALUE']) { ?>
-                <img
-                    src="http://<?=$_SERVER['SERVER_NAME']?><?=CFile::GetPath($arResult['ELEMENT']['PROPERTIES']['TICKET_IMAGE']['VALUE'])?>"
-                    alt="">
-            <? } ?>
-            <? if(!isset($_GET['pdf'])) { ?>
-                <a target="_blank" href="<?=$APPLICATION->GetCurUri()?>&pdf">Распечатать</a>
-            <? } ?>
         </div>
     </div>
     </body>
