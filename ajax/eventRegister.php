@@ -73,7 +73,7 @@ if($iblockId && $obEvent){
         $dompdf = new \DOMPDF();
         $dompdf->load_html($pdf);
         $dompdf->render();
-        $pdfPath = sys_get_temp_dir() . 'ticket-' . $id . '-' . uniqid() . '.pdf';
+        $pdfPath = sys_get_temp_dir() . '/ticket-' . $id . '-' . uniqid() . '.pdf';
         file_put_contents($pdfPath, $dompdf->output());
 
         $result['success'] = true;
