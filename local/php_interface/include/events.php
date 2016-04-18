@@ -188,15 +188,9 @@ class IBlockHandlers {
                 switch ($currentStatus["XML_ID"]) {
                     // подтверждение регистрации
                     case self::INVITATION:
-                        if(!empty($orgs)){
-                            $props['ORG_INFO'] = "Контакты для получения дополнительной информации:<br />";
-                            foreach($orgs as $org) {
-                                $props['ORG_INFO'] .= "{$org['NAME']} {$org['props']['MAIL']['VALUE']} {$org['props']['PHONE']['VALUE']}<br/>";
-                            }
-                        }
                         $orgs = [];
-                        if(!empty($arResult['PROPERTIES']['ORGANIZER']['VALUE'])) {
-                            $arFilter = Array('ID' => $arResult['PROPERTIES']['ORGANIZER']['VALUE']);
+                        if(!empty($arEventApplication['PROPERTIES']['ORGANIZER']['VALUE'])) {
+                            $arFilter = Array('ID' => $arEventApplication['PROPERTIES']['ORGANIZER']['VALUE']);
                             $res = CIBlockElement::GetList(Array(), $arFilter, false, false, array());
 
                             while($ob = $res->GetNextElement()) {
@@ -205,7 +199,28 @@ class IBlockHandlers {
                                 $orgs[] = $arFields;
                             }
                         }
-                        CEvent::Send("EVENT_USER_REGISTER", "s1", $props);
+                        if(!empty($orgs)){
+                            $props['ORG_INFO'] = "По всем вопросам обращаться:<br />";
+                            foreach($orgs as $org) {
+                                $props['ORG_INFO'] .= "{$org['NAME']} - {$org['props']['mail']['VALUE']} {$org['props']['phone']['VALUE']}<br/>";
+                            }
+                        }
+
+                        ob_start();
+                        $APPLICATION->IncludeComponent("pirogov:eventRegistrationResult", "mail-attachment", array(
+                            "ID" => $eventCodeId
+                        ));
+                        $pdf = ob_get_clean();
+                        define('DOMPDF_ENABLE_AUTOLOAD', false);
+                        define('DOMPDF_ENABLE_REMOTE', true);
+                        require $_SERVER['DOCUMENT_ROOT'].'/local/php_interface/include/vendor/dompdf/dompdf/dompdf_config.inc.php';
+                        $dompdf = new \DOMPDF();
+                        $dompdf->load_html($pdf);
+                        $dompdf->render();
+                        $pdfPath = sys_get_temp_dir() . '/ticket-' . $eventCodeId . '-' . uniqid() . '.pdf';
+                        file_put_contents($pdfPath, $dompdf->output());
+
+                        CEvent::Send("EVENT_USER_REGISTER", "s1", $props, "Y", "", [$pdfPath]);
                         break;
                     // отказ в регистрации
                     case self::DENIED:

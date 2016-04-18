@@ -61,27 +61,26 @@ if($iblockId && $obEvent){
         }
 
         $props['PRINT_TICKET'] = "/events/result.php?id={$id}";
-
-        ob_start();
-        $APPLICATION->IncludeComponent("pirogov:eventRegistrationResult", "mail-attachment", array(
-            "ID" => $id
-        ));
-        $pdf = ob_get_clean();
-        define('DOMPDF_ENABLE_AUTOLOAD', false);
-        define('DOMPDF_ENABLE_REMOTE', true);
-        require $_SERVER['DOCUMENT_ROOT'].'/local/php_interface/include/vendor/dompdf/dompdf/dompdf_config.inc.php';
-        $dompdf = new \DOMPDF();
-        $dompdf->load_html($pdf);
-        $dompdf->render();
-        $pdfPath = sys_get_temp_dir() . '/ticket-' . $id . '-' . uniqid() . '.pdf';
-        file_put_contents($pdfPath, $dompdf->output());
-
         $result['success'] = true;
         $result['message'] = "Благодарим Вас за проявленный интерес к нашему мероприятию. <br />";
         if($arEvent['PROPERTIES']['MODERATION']['VALUE'] == 'Y'){
             CEvent::SendImmediate("EVENT_USER_REGISTER_MODERATE", SITE_ID, $props);
         }
         else {
+            ob_start();
+            $APPLICATION->IncludeComponent("pirogov:eventRegistrationResult", "mail-attachment", array(
+                "ID" => $id
+            ));
+            $pdf = ob_get_clean();
+            define('DOMPDF_ENABLE_AUTOLOAD', false);
+            define('DOMPDF_ENABLE_REMOTE', true);
+            require $_SERVER['DOCUMENT_ROOT'].'/local/php_interface/include/vendor/dompdf/dompdf/dompdf_config.inc.php';
+            $dompdf = new \DOMPDF();
+            $dompdf->load_html($pdf);
+            $dompdf->render();
+            $pdfPath = sys_get_temp_dir() . '/ticket-' . $id . '-' . uniqid() . '.pdf';
+            file_put_contents($pdfPath, $dompdf->output());
+
             CEvent::Send("EVENT_USER_REGISTER", SITE_ID, $props, "Y", "", [$pdfPath]);
             $result['redirect'] = "/events/result.php?id={$id}&event={$props['EVENT']}";
             if (!empty($arEvent['PROPERTIES']['WELCOME']['VALUE']['TEXT'])) {
