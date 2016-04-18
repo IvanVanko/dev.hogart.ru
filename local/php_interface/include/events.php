@@ -217,7 +217,7 @@ class IBlockHandlers {
                         $dompdf = new \DOMPDF();
                         $dompdf->load_html($pdf);
                         $dompdf->render();
-                        $pdfPath = sys_get_temp_dir() . '/ticket-' . $eventCodeId . '-' . uniqid() . '.pdf';
+                        $pdfPath = sys_get_temp_dir() . '/ticket-' . $arParams['ID'] . '-' . uniqid() . '.pdf';
                         file_put_contents($pdfPath, $dompdf->output());
 
                         CEvent::Send("EVENT_USER_REGISTER", "s1", $props, "Y", "", [$pdfPath]);
