@@ -192,6 +192,9 @@ class IBlockHandlers {
                 switch ($currentStatus) {
                     // подтверждение регистрации
                     case self::INVITATION:
+                        pr($arEventApplication);
+                        pr($arParams);
+                        exit;
                         $orgs = [];
                         if(!empty($arEventApplication['PROPERTIES']['ORGANIZER']['VALUE'])) {
                             $arFilter = Array('ID' => $arEventApplication['PROPERTIES']['ORGANIZER']['VALUE']);
