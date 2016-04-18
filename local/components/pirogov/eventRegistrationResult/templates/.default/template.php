@@ -48,6 +48,9 @@ ob_start();
                         src="http://<?=SITE_SERVER_NAME?><?=CFile::GetPath($arResult['ELEMENT']['PROPERTIES']['TICKET_IMAGE']['VALUE'])?>"
                         alt="">
                 <? } ?>
+                <? if(!isset($_GET['pdf'])) { ?>
+                    <a target="_blank" href="<?=$APPLICATION->GetCurUri()?>&pdf">Распечатать</a>
+                <? } ?>
             </div>
         </div>
     </div>
