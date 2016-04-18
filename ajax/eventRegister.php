@@ -5,7 +5,7 @@ if(!isAjax()){
     LocalRedirect($_SERVER["HTTP_REFERER"]);
 }
 
-require_once(dirname(__FILE__) . '/smsc_send.php');
+require_once(dirname(__FILE__) . '/smsc_api.php');
 
 CModule::IncludeModule('iblock');
 $result = array('success' => false);
