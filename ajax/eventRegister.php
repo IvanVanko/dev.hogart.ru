@@ -63,7 +63,7 @@ if($iblockId && $obEvent){
         $props['PRINT_TICKET'] = "/events/result.php?id={$id}";
 
         ob_start();
-        $APPLICATION->IncludeComponent("pirogov:eventRegistrationResult", "", array(
+        $APPLICATION->IncludeComponent("pirogov:eventRegistrationResult", "mail-attachment", array(
             "ID" => $id
         ));
         $pdf = ob_get_clean();
