@@ -9,12 +9,22 @@ html {
     color: rgb(20, 57, 31);
     font-size: 12px;
 }
-.event-name {
-    float: right;
-    margin-top: 20px;
-    padding-left: 15px;
-    width: 230px;
+.title {
+    font-size: 1.4em;
+    text-align: center;
+    margin-bottom: 15px;
 }
+.event-name {
+    font-weight: bold;
+}
+.date, .address {
+    display: block;
+    font-size: small;
+}
+.date span, .address span {
+    font-weight: bold;
+}
+
 .name {
     padding-left: 13px;
 }
@@ -31,7 +41,7 @@ html {
 }
 .barcode {
     text-transform: uppercase;
-    padding: 0 13px;
+    text-align: center;
 }
 .barcode span {
     display: inline-block;
