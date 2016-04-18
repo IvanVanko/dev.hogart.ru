@@ -41,8 +41,8 @@ if($iblockId && $obEvent){
         $props['DATE'] = $arEvent['PROPERTIES']['DATE']['VALUE'];
         $props['URL'] = "//{$_SERVER['NAME']}{$arEvent['DETAIL_PAGE_URL']}";
         $orgs = [];
-        if(!empty($arResult['PROPERTIES']['ORGANIZER']['VALUE'])) {
-            $arFilter = Array('ID' => $arResult['PROPERTIES']['ORGANIZER']['VALUE']);
+        if(!empty($arEvent['PROPERTIES']['ORGANIZER']['VALUE'])) {
+            $arFilter = Array('ID' => $arEvent['PROPERTIES']['ORGANIZER']['VALUE']);
             $res = CIBlockElement::GetList(Array(), $arFilter, false, false, array());
 
             while($ob = $res->GetNextElement()) {
