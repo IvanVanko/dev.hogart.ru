@@ -68,7 +68,7 @@ if($iblockId && $obEvent){
             CEvent::SendImmediate("EVENT_USER_REGISTER_MODERATE", SITE_ID, $props);
         }
         else {
-            CEvent::Send("EVENT_USER_REGISTER", SITE_ID, $props);
+            CEvent::Send("EVENT_USER_REGISTER", SITE_ID, $props, "Y", "", [$ticketFile]);
             $result['redirect'] = "/events/result.php?id={$id}&event={$props['EVENT']}";
             if (!empty($arEvent['PROPERTIES']['WELCOME']['VALUE']['TEXT'])) {
                 $result['message'] .= $arEvent['PROPERTIES']['WELCOME']['VALUE']['TEXT'];
