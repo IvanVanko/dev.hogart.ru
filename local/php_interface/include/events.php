@@ -1,6 +1,7 @@
 <?php
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/iblock/lib/template/functions/fabric.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/ajax/smsc_api.php');
 AddEventHandler("main", "OnBeforeProlog", array("BasicHandlers", "OnBeforePrologHandler"));
 AddEventHandler("main", "OnEpilog", array("BasicHandlers", "OnEpilogHandler"));
 AddEventHandler("main", "OnBeforeEventAdd", array("BasicHandlers", "OnBeforeEventAddHandler"));
