@@ -72,7 +72,7 @@ $obInit->addFolder('');
 
 $obInit->Init();
 
-if (class_exists('DeviceDetector')) {
+//if (class_exists('DeviceDetector')) {
 	$browsers = new DeviceDetector\DeviceDetector($_SERVER['HTTP_USER_AGENT']);
 	$browsers->parse();
 
@@ -88,12 +88,12 @@ if (class_exists('DeviceDetector')) {
 		$GLOBALS['user_agent']['device_brand'] = $browsers->getBrand();
 		$GLOBALS['user_agent']['device_model'] = $browsers->getModel();
 	}
-}
+//}
 
 global $BX_MENU_CUSTOM;
 $BX_MENU_CUSTOM = new HogartCustomMenu();
 
-if (class_exists('Firestorm\BXHelper\BXHelper')) {
+//if (class_exists('Firestorm\BXHelper\BXHelper')) {
 	class BXHelper extends Firestorm\BXHelper\BXHelper {
 		public static function aggregateElemPropToSectProp ($iblock_id, $element_prop_code, $section_string_uf_prop_code, $section_id = false, $element_id = false ,$delimiter = ",") {
 			if (!empty($element_prop_code) && !empty($section_string_uf_prop_code)) {
@@ -668,7 +668,7 @@ if (class_exists('Firestorm\BXHelper\BXHelper')) {
 	}
 
 	BXHelper::Init();
-}
+//}
 
 function number($n, $titles) {
   $cases = array(2, 0, 1, 1, 1, 2);
