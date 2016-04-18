@@ -73,11 +73,8 @@ if($iblockId && $obEvent){
         $dompdf = new \DOMPDF();
         $dompdf->load_html($pdf);
         $dompdf->render();
-        $pdf = $dompdf->output();
-        $file = [
-            'name' => 'ticket-' . $id . '.pdf',
-            'content' => $pdf
-        ];
+        $pdfPath = sys_get_temp_dir() . 'ticket-' . $id . '-' . uniqid() . '.pdf';
+        file_put_contents($pdfPath, $dompdf->output());
 
         $result['success'] = true;
         $result['message'] = "Благодарим Вас за проявленный интерес к нашему мероприятию. <br />";
@@ -85,7 +82,7 @@ if($iblockId && $obEvent){
             CEvent::SendImmediate("EVENT_USER_REGISTER_MODERATE", SITE_ID, $props);
         }
         else {
-            CEvent::Send("EVENT_USER_REGISTER", SITE_ID, $props, "Y", "", [$file]);
+            CEvent::Send("EVENT_USER_REGISTER", SITE_ID, $props, "Y", "", [$pdfPath]);
             $result['redirect'] = "/events/result.php?id={$id}&event={$props['EVENT']}";
             if (!empty($arEvent['PROPERTIES']['WELCOME']['VALUE']['TEXT'])) {
                 $result['message'] .= $arEvent['PROPERTIES']['WELCOME']['VALUE']['TEXT'];
