@@ -59,8 +59,8 @@ if ($results) {?>
             "IBLOCK_ID" => "8",
             "CACHE_TYPE" => "N",
             "CACHE_TIME" => "0",
-            "CACHE_FILTER" => "Y",
-            "CACHE_GROUPS" => "Y",
+            "CACHE_FILTER" => "N",
+            "CACHE_GROUPS" => "N",
             //result_modifier.php
             'ORDER' => array('PROPERTY_sem_start_date' => 'DESC'),
             "SEF_FOLDER" => $arParams['SEF_FOLDER'],
