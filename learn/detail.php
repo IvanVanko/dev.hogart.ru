@@ -57,7 +57,7 @@ if ($results) {?>
             "ADD_ELEMENT_CHAIN" => "Y",
             "IBLOCK_TYPE" => "training",
             "IBLOCK_ID" => "8",
-            "CACHE_TYPE" => "Y",
+            "CACHE_TYPE" => "N",
             "CACHE_TIME" => "0",
             "CACHE_FILTER" => "Y",
             "CACHE_GROUPS" => "Y",
