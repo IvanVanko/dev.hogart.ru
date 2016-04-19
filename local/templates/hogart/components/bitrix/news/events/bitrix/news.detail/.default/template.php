@@ -9,4 +9,3 @@ if(property_exists($component, 'arResultCacheKeys')) {
    $component->arResultCacheKeys[] = $sVarName;
    $component->arResult[$sVarName] = $$sVarName;
 }
-?>

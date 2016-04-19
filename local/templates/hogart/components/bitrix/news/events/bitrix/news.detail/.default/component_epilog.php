@@ -7,7 +7,7 @@ if(isset($arResult['arResult'])) {
 } else {
    return;
 }
-$date_from = FormatDate("d F Y", MakeTimeStamp($arResult["ACTIVE_FROM"]));
+$date_from = FormatDate("d F Y", MakeTimeStamp($arResult["PROPERTIES"]["DATE"]["VALUE"]));
 $share_img_src = false; ?>
 <? //pr($arResult);?>
 <div class="inner">
@@ -18,18 +18,24 @@ $share_img_src = false; ?>
             <div class="date">
                 <sub><?=$date_from?></sub>
             </div>
+
+            <? if (isset($arResult["PROPERTIES"]["ADDRESS"]["VALUE"])): ?>
+                <div class="address">
+                    <sub><?=$arResult["PROPERTIES"]["ADDRESS"]["VALUE"]?></sub>
+                </div>
+            <? endif; ?>
+
             <? if(!empty($arResult['PREVIEW_TEXT'])): ?><p><?=$arResult['PREVIEW_TEXT']?></p><? endif; ?>
         </div>
 
         <? if(!empty($arResult['PREVIEW_PICTURE']['SRC'])):
-            $share_img_src = $arResult['PREVIEW_PICTURE']['SRC']; ?>
+            $share_img_src = $arResult['PREVIEW_PICTURE']['SRC'];
+            $pic = CFile::ResizeImageGet($arResult['PREVIEW_PICTURE']['ID'],
+                array('width' => 500, 'height' => 500), BX_RESIZE_IMAGE_PROPORTIONAL_ALT, true, array());
+            ?>
             <div class="news-detail-pic">
                 <div class="img-wrap">
-                    <img class="js-popup-open-img" title="<?=$arResult['NAME']?>"
-                         src="<?
-                         $pic = CFile::ResizeImageGet($arResult['PREVIEW_PICTURE']['ID'],
-                             array('width' => 500, 'height' => 500), BX_RESIZE_IMAGE_PROPORTIONAL_ALT, true, array());
-                         echo $pic['src']; ?>" alt=""/>
+                    <img class="js-popup-open-img" title="<?=$arResult['NAME']?>" src="<?=$pic['src']; ?>" alt=""/>
                 </div>
             </div>
         <? endif; ?>
@@ -54,57 +60,57 @@ $share_img_src = false; ?>
 <aside class="sidebar js-fh js-fixed-block js-paralax-height" data-fixed="top">
     <div class="inner js-paralax-item">
         <div class="padding">
-            <?if($arResult['PROPERTIES']['REG_OPEN']['VALUE'] == 'Y'){?>
-            <h2 class="nomargin">Регистрация на мероприятие</h2>
+            <? if($arResult['PROPERTIES']['REG_OPEN']['VALUE'] == 'Y'): ?>
+                <h2 class="nomargin">Регистрация на мероприятие</h2>
 
-            <form method="post" class="eventRegistrationForm" data-slide-enable="true" action="/ajax/eventRegister.php" data-ajax-form data-parsley-validate>
-                <div data-form-message>
-                    <div data-text-holder>
-                        <div class="" data-place-text>
+                <form method="post" class="eventRegistrationForm" data-slide-enable="true" action="/ajax/eventRegister.php" data-ajax-form data-parsley-validate>
+                    <div data-form-message>
+                        <div data-text-holder>
+                            <div class="" data-place-text>
 
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div data-fields>
+                    <div data-fields>
 
-                    <div class="field custom_label">
-                        <label class="">Фамилия*</label>
-                        <input type="text" name="fields[last_name]" value=""
-                               required>
+                        <div class="field custom_label">
+                            <label class="">Фамилия*</label>
+                            <input type="text" name="fields[last_name]" value=""
+                                   required>
+                        </div>
+                        <div class="field custom_label">
+                            <label class="">Имя*</label>
+                            <input type="text" name="fields[name]" value=""
+                                   required>
+                        </div>
+                        <div class="field custom_label">
+                            <label class="">Отчество</label>
+                            <input type="text" name="fields[surname]" value="" />
+                        </div>
+                        <div class="field custom_label">
+                            <label class="">Компания*</label>
+                            <input type="text" name="fields[company]" value=""
+                                   required>
+                        </div>
+                        <div class="field custom_label">
+                            <label class="">Телефон*</label>
+                            <input data-phone-mask type="text" name="fields[phone]" value=""
+                                   required>
+                        </div>
+                        <div class="field custom_label">
+                            <label class="">Адрес электронной почты*</label>
+                            <input type="email" name="fields[email]" value=""
+                                   required>
+                        </div>
+                        <input type="hidden" name="fields[event_name]" value="<?=$arResult['NAME']?>"/>
+                        <input type="hidden" name="fields[event]" value="<?=$arResult['ID']?>"/>
+                        <br>
+                        <small>Поля, отмеченные * обязательны для заполнения.</small>
+                        <br>
+                        <input type="submit" class="empty-btn" value="Отправить">
                     </div>
-                    <div class="field custom_label">
-                        <label class="">Имя*</label>
-                        <input type="text" name="fields[name]" value=""
-                               required>
-                    </div>
-                    <div class="field custom_label">
-                        <label class="">Отчество</label>
-                        <input type="text" name="fields[surname]" value="" />
-                    </div>
-                    <div class="field custom_label">
-                        <label class="">Компания*</label>
-                        <input type="text" name="fields[company]" value=""
-                               required>
-                    </div>
-                    <div class="field custom_label">
-                        <label class="">Телефон*</label>
-                        <input data-phone-mask type="text" name="fields[phone]" value=""
-                               required>
-                    </div>
-                    <div class="field custom_label">
-                        <label class="">Адрес электронной почты*</label>
-                        <input type="email" name="fields[email]" value=""
-                               required>
-                    </div>
-                    <input type="hidden" name="fields[event_name]" value="<?=$arResult['NAME']?>"/>
-                    <input type="hidden" name="fields[event]" value="<?=$arResult['ID']?>"/>
-                    <br>
-                    <small>Поля, отмеченные * обязательны для заполнения.</small>
-                    <br>
-                    <input type="submit" class="empty-btn" value="Отправить">
-                </div>
-            </form>
-            <?}?>
+                </form>
+            <? endif; ?>
             <? if(!empty($arResult['ORGS'])): ?>
                 <h2>Контактные лица</h2>
                 <? foreach($arResult['ORGS'] as $arItem) {?>
