@@ -22,6 +22,9 @@ $APPLICATION->SetTitle("Комплексные решения");
             "ADD_SECTIONS_CHAIN" => "Y",
             "ADD_ELEMENT_CHAIN" => "Y",
             "CHECK_DATES" => "N",
+            "CACHE_TYPE" => "N",
+            "CACHE_TIME" => "3600",
+            "CACHE_NOTES" => "",
             "IBLOCK_TYPE" => "solutions",
             "PROPERTY_CODE" => array(
                 "prop_proj"
