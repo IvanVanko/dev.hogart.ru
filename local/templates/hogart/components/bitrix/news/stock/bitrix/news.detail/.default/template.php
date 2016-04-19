@@ -2,7 +2,9 @@
     die();
 }
 $date_from = FormatDate("d F", MakeTimeStamp($arResult["ACTIVE_FROM"]));
-$date_to = FormatDate("d F", MakeTimeStamp($arResult["DATE_ACTIVE_TO"])); ?>
+$date_to = !empty($arResult["DATE_ACTIVE_TO"]) ? FormatDate("d F", MakeTimeStamp($arResult["DATE_ACTIVE_TO"])) : FormatDate("d F", mktime(0, 0, 0, 1, 0, ((int)FormatDate("Y", MakeTimeStamp($arResult["ACTIVE_FROM"])) + 1)));
+
+?>
 
 <div class="inner">
     <div class="control control-action">
