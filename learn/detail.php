@@ -57,10 +57,10 @@ if ($results) {?>
             "ADD_ELEMENT_CHAIN" => "Y",
             "IBLOCK_TYPE" => "training",
             "IBLOCK_ID" => "8",
-            "CACHE_TYPE" => "A",
+            "CACHE_TYPE" => "Y",
             "CACHE_TIME" => "0",
-            "CACHE_FILTER" => "N",
-            "CACHE_GROUPS" => "N",
+            "CACHE_FILTER" => "Y",
+            "CACHE_GROUPS" => "Y",
             //result_modifier.php
             'ORDER' => array('PROPERTY_sem_start_date' => 'DESC'),
             "SEF_FOLDER" => $arParams['SEF_FOLDER'],
