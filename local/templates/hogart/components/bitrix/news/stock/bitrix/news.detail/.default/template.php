@@ -18,7 +18,7 @@ $date_to = FormatDate("d F", MakeTimeStamp($arResult["DATE_ACTIVE_TO"])); ?>
                     <?
                     $dateFinish = FormatDate("d.m.Y", MakeTimeStamp($arResult["DATE_ACTIVE_TO"]));
                     $now = date($DB->DateFormatToPHP(CSite::GetDateFormat("SHORT")), time());
-                    if($arResult['ACTIVE'] == "Y" && strtotime($now) > strtotime($dateFinish)):?>
+                    if(strtotime($now) > strtotime($dateFinish)):?>
                         <strong>(Акция завершена)</strong>
                     <? endif; ?>
                 </div>
