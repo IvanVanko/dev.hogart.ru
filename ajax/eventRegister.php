@@ -84,7 +84,17 @@ if($iblockId && $obEvent){
             $pdfPath = sys_get_temp_dir() . '/ticket-' . $id . '-' . uniqid() . '.pdf';
             file_put_contents($pdfPath, $dompdf->output());
 
-            CEvent::Send("EVENT_USER_REGISTER", SITE_ID, $props, "Y", "", [$pdfPath]);
+            $mailResultId = CEvent::Send("EVENT_USER_REGISTER", SITE_ID, $props);
+            $arFile = \CFile::MakeFileArray($pdfPath);
+            $arFile["name"] = "Пригласительный билет на {$props['EVENT_NAME']}";
+            $arFile["MODULE_ID"] = "main";
+            $fid = \CFile::SaveFile($arFile, "main");
+            $dataAttachment = array(
+                'EVENT_ID' => $mailResultId,
+                'FILE_ID' => $fid,
+            );
+            \Bitrix\Main\Mail\Internal\EventAttachmentTable::add($dataAttachment);
+
             include_once $_SERVER["DOCUMENT_ROOT"] . "/local/components/pirogov/eventRegistrationResult/ean.php";
             $barcode = str_pad($props['BARCODE'], 12, "0", STR_PAD_LEFT);
             $ean = new EAN13($barcode, 2);
