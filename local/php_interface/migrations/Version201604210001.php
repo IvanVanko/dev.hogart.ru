@@ -11,7 +11,7 @@ namespace Sprint\Migration;
 use Sprint\Migration\Helpers\EventHelper;
 use Sprint\Migration\Helpers\IblockHelper;
 
-class Version210420160001 extends Version
+class Version201604210001 extends Version
 {
     protected $description = "Обновления для задач 46, 26, 28";
 
@@ -63,7 +63,7 @@ HTML
 
 
         if ((new \CIBlock())->Update(11, [
-            "DETAIL_PAGE_URL" => "#SITE_DIR#/helpful-information/#ELEMENT_ID#/"
+            "DETAIL_PAGE_URL" => "#SITE_DIR#/helpful-information/#ELEMENT_CODE#/"
         ])) {
             $this->outSuccess("Обновлено значение \"URL страницы детального просмотра\" в Инфоблок \"Полезная инфомация\"");
         }
@@ -80,7 +80,7 @@ HTML
             "USER_TYPE" => "EAutocomplete"
         ]);
 
-        if (($id = $IblockHelper->addPropertyIfNotExists(26, [
+        if ($IblockHelper->addPropertyIfNotExists(26, [
             "CODE" => "STATUS",
             "NAME" => "Статус",
             "ACTIVE" => "Y",
@@ -96,7 +96,7 @@ HTML
                     "XML_ID" => "DENIED"
                 ]
             ]
-        ])) && $id > 0) {
+        ])) {
             $this->outSuccess("Добавлено свойство \"Статус\" в Инфоблок \"Регистрации на мероприятия\"");
         }
     }
