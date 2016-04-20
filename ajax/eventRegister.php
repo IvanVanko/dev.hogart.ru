@@ -85,7 +85,11 @@ if($iblockId && $obEvent){
             file_put_contents($pdfPath, $dompdf->output());
 
             CEvent::Send("EVENT_USER_REGISTER", SITE_ID, $props, "Y", "", [$pdfPath]);
-            $sms_message = "Регистрация подтверждена! {$props['EVENT_NAME']}, {$props['DATE']}, {$props['ADDRESS']}. Код участника: {$props['BARCODE']} {$props['ORG_INFO']}";
+            include_once $_SERVER["DOCUMENT_ROOT"] . "/local/components/pirogov/eventRegistrationResult/ean.php";
+            $barcode = str_pad($props['BARCODE'], 12, "0", STR_PAD_LEFT);
+            $ean = new EAN13($barcode, 2);
+            $barcode = $ean->number;
+            $sms_message = "Регистрация подтверждена! {$props['EVENT_NAME']}, {$props['DATE']}, {$props['ADDRESS']}. Код участника: {$barcode} {$props['ORG_INFO']}";
             send_sms($props["PHONE"], strip_tags($sms_message));
             $result['redirect'] = "/events/result.php?id={$id}&event={$props['EVENT']}";
             if (!empty($arEvent['PROPERTIES']['WELCOME']['VALUE']['TEXT'])) {
