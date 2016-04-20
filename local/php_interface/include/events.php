@@ -178,7 +178,7 @@ class IBlockHandlers {
             $props['PHONE'] = $arEventApplication['PROPERTIES']['PHONE']['VALUE'];
             $props['BARCODE'] = $arEventApplication['PROPERTIES']['BARCODE']['VALUE'];
 
-            $props['URL'] = "//{$_SERVER['NAME']}{$arEvent['DETAIL_PAGE_URL']}";
+            $props['URL'] = "http://" . ($_SERVER["SERVER_NAME"] ?: $_SERVER['HTTP_HOST']) . "{$arEvent['DETAIL_PAGE_URL']}";
             $props['ADDRESS'] = $arEvent['PROPERTIES']['ADDRESS']['VALUE'];
             $props['DATE'] = $arEvent['PROPERTIES']['DATE']['VALUE'];
             $props['EVENT_NAME'] = $arEvent['NAME'];

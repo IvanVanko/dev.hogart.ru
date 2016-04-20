@@ -46,7 +46,7 @@ if($iblockId && $obEvent){
         CIBlockElement::SetPropertyValuesEx($arEvent['ID'], $arEvent['IBLOCK_ID'], ['NUMBER' => $regCounter]);
         $props['ADDRESS'] = $arEvent['PROPERTIES']['ADDRESS']['VALUE'];
         $props['DATE'] = $arEvent['PROPERTIES']['DATE']['VALUE'];
-        $props['URL'] = "//{$_SERVER['NAME']}{$arEvent['DETAIL_PAGE_URL']}";
+        $props['URL'] = "http://" . ($_SERVER["SERVER_NAME"] ?: $_SERVER['HTTP_HOST']) . "{$arEvent['DETAIL_PAGE_URL']}";
         $orgs = [];
         if(!empty($arEvent['PROPERTIES']['ORGANIZER']['VALUE'])) {
             $arFilter = Array('ID' => $arEvent['PROPERTIES']['ORGANIZER']['VALUE']);
