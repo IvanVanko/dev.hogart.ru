@@ -62,7 +62,7 @@ HTML
         }
 
 
-        if (\CIBlock::Update(11, [
+        if ((new \CIBlock())->Update(11, [
             "DETAIL_PAGE_URL" => "#SITE_DIR#/helpful-information/#ELEMENT_ID#/"
         ])) {
             $this->outSuccess("Обновлено значение \"URL страницы детального просмотра\" в Инфоблок \"Полезная инфомация\"");
