@@ -17,7 +17,7 @@ class Version210420160001 extends Version
     public function up(){
         global $DB;
 
-        $EVENT_USER_REGISTER_SUBJECT = "!!!Регистрация подтверждена! #EVENT_NAME#, #DATE#, #ADDRESS#";
+        $EVENT_USER_REGISTER_SUBJECT = "!!! Регистрация подтверждена! #EVENT_NAME#, #DATE#, #ADDRESS#";
         $EVENT_USER_REGISTER_BODY =<<<HTML
         Уважаемый(ая) #NAME# #SURNAME# #LAST_NAME#!<br /><br />
         Поздравляем, Вы утверждены как участник!<br />
