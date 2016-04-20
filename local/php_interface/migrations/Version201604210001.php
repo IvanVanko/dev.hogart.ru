@@ -85,6 +85,7 @@ HTML
             "NAME" => "Статус",
             "ACTIVE" => "Y",
             "PROPERTY_TYPE" => "L",
+            "LIST_TYPE" => "C",
             "FILTRABLE" => "Y",
             "VALUES" => [
                 "INVITATION" => [
