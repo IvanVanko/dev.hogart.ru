@@ -13,6 +13,18 @@
 /** @var string $componentPath */
 $this->setFrameMode(true);
 $APPLICATION->RestartBuffer();
+
+$orgs = [];
+if(!empty($arResult['ELEMENT']['PROPERTIES']['ORGANIZER']['VALUE'])) {
+    $arFilter = Array('ID' => $arResult['ELEMENT']['PROPERTIES']['ORGANIZER']['VALUE']);
+    $res = CIBlockElement::GetList(Array(), $arFilter, false, false, array());
+
+    while($ob = $res->GetNextElement()) {
+        $arFields = $ob->GetFields();
+        $arFields['props'] = $ob->GetProperties();
+        $orgs[] = $arFields;
+    }
+}
 ob_start();
 ?>
     <html>
@@ -43,6 +55,17 @@ ob_start();
                 <div class="text">
                     <?=$arResult['ELEMENT']['PROPERTIES']['TICKET_TEXT']['VALUE']?>
                 </div>
+            <? if (!empty($orgs)): ?>
+                <div class="organizers">
+                    <span>По всем вопросам обращаться:</span>
+                    <ul>
+                    <? foreach ($orgs as $org): ?>
+                        <li><?=$org['NAME']?> - <?=$org['props']['mail']['VALUE']?> <?=$org['props']['phone']['VALUE']?></li>
+                    <? endforeach; ?>
+                    </ul>
+                </div>
+                <hr>
+            <? endif; ?>
 
             <? if($arResult['ELEMENT']['PROPERTIES']['TICKET_IMAGE']['VALUE']) { ?>
                 <div class="image">
