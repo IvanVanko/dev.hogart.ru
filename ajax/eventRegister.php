@@ -99,7 +99,7 @@ if($iblockId && $obEvent){
             );
             \Bitrix\Main\Mail\Internal\EventAttachmentTable::add($dataAttachment);
 
-            $sms_message = "Регистрация подтверждена! {$props['EVENT_NAME']}, {$props['DATE']}, {$props['ADDRESS']}. Код участника: {$props['BARCODE']} {$props['ORG_INFO']}";
+            $sms_message = "Регистрация подтверждена! {$props['EVENT_NAME']}, {$props['DATE']}, {$props['ADDRESS']}. Код участника: {$props['BARCODE']} {$props['ORG_INFO']}. {$props['URL']}";
             send_sms($props["PHONE"], strip_tags($sms_message));
             $result['redirect'] = "/events/result.php?id={$id}&event={$props['EVENT']}";
             if (!empty($arEvent['PROPERTIES']['WELCOME']['VALUE']['TEXT'])) {
