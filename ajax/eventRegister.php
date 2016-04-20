@@ -90,7 +90,7 @@ if($iblockId && $obEvent){
 
             $mailResultId = CEvent::Send("EVENT_USER_REGISTER", SITE_ID, $props);
             $arFile = \CFile::MakeFileArray($pdfPath);
-            $arFile["name"] = "Пригласительный билет на {$props['EVENT_NAME']}";
+            $arFile["name"] = "Пригласительный билет на {$props['EVENT_NAME']}.pdf";
             $arFile["MODULE_ID"] = "main";
             $fid = \CFile::SaveFile($arFile, "main");
             $dataAttachment = array(
