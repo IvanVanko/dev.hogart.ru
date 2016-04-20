@@ -21,7 +21,11 @@ if($iblockId && $obEvent){
     $arEvent['PROPERTIES'] = $obEvent->GetProperties();
     $regCounter = $arEvent['PROPERTIES']['NUMBER']['VALUE'];
     $props['NUMBER'] = ++$regCounter;
-    $props['BARCODE'] = substr($arEvent['PROPERTIES']['BARCODE']['VALUE'], 0, 12 - strlen($props['NUMBER'])) . $props['NUMBER'];
+
+    include_once $_SERVER["DOCUMENT_ROOT"] . "/local/components/pirogov/eventRegistrationResult/ean.php";
+    $barcode = str_pad(substr($arEvent['PROPERTIES']['BARCODE']['VALUE'], 0, 12 - strlen($props['NUMBER'])) . $props['NUMBER'], 12, "0", STR_PAD_LEFT);
+    $ean = new EAN13($barcode, 2);
+    $props['BARCODE'] = $ean->number;
     if ($arEvent['PROPERTIES']['MODERATION']['VALUE'] != 'Y') {
         $status = BXHelper::getProperties(array(), array("IBLOCK_ID" => $iblockId,
             "CODE" => "STATUS"), array("ID", "CODE"), "CODE");
@@ -95,11 +99,7 @@ if($iblockId && $obEvent){
             );
             \Bitrix\Main\Mail\Internal\EventAttachmentTable::add($dataAttachment);
 
-            include_once $_SERVER["DOCUMENT_ROOT"] . "/local/components/pirogov/eventRegistrationResult/ean.php";
-            $barcode = str_pad($props['BARCODE'], 12, "0", STR_PAD_LEFT);
-            $ean = new EAN13($barcode, 2);
-            $barcode = $ean->number;
-            $sms_message = "Регистрация подтверждена! {$props['EVENT_NAME']}, {$props['DATE']}, {$props['ADDRESS']}. Код участника: {$barcode} {$props['ORG_INFO']}";
+            $sms_message = "Регистрация подтверждена! {$props['EVENT_NAME']}, {$props['DATE']}, {$props['ADDRESS']}. Код участника: {$props['BARCODE']} {$props['ORG_INFO']}";
             send_sms($props["PHONE"], strip_tags($sms_message));
             $result['redirect'] = "/events/result.php?id={$id}&event={$props['EVENT']}";
             if (!empty($arEvent['PROPERTIES']['WELCOME']['VALUE']['TEXT'])) {

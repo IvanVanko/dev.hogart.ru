@@ -76,7 +76,7 @@ class EventRegistationResultComponent extends CBitrixComponent {
             else {
                 $barcode = $this->arResult['ELEMENT']['PROPERTIES']['BARCODE']['VALUE'];
             }
-            $barcode = str_pad($barcode, 12, "0", STR_PAD_LEFT);
+            $barcode = str_pad(substr($barcode, 0, 12), 12, "0", STR_PAD_LEFT);
             include __DIR__."/ean.php";
             $ean = new EAN13($barcode, 2);
             $this->arResult['BARCODE'] = $ean->getBase64();

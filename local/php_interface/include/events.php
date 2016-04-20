@@ -178,6 +178,7 @@ class IBlockHandlers {
             $props['PHONE'] = $arEventApplication['PROPERTIES']['PHONE']['VALUE'];
             $props['BARCODE'] = $arEventApplication['PROPERTIES']['BARCODE']['VALUE'];
 
+            $props['URL'] = "//{$_SERVER['NAME']}{$arEvent['DETAIL_PAGE_URL']}";
             $props['ADDRESS'] = $arEvent['PROPERTIES']['ADDRESS']['VALUE'];
             $props['DATE'] = $arEvent['PROPERTIES']['DATE']['VALUE'];
             $props['EVENT_NAME'] = $arEvent['NAME'];
@@ -242,11 +243,7 @@ class IBlockHandlers {
                         );
                         \Bitrix\Main\Mail\Internal\EventAttachmentTable::add($dataAttachment);
 
-                        include_once $_SERVER["DOCUMENT_ROOT"] . "/local/components/pirogov/eventRegistrationResult/ean.php";
-                        $barcode = str_pad($props['BARCODE'], 12, "0", STR_PAD_LEFT);
-                        $ean = new EAN13($barcode, 2);
-                        $barcode = $ean->number;
-                        $sms_message = "Регистрация подтверждена! {$props['EVENT_NAME']}, {$props['DATE']}, {$props['ADDRESS']}. Код участника: {$barcode}. {$props['ORG_INFO']}";
+                        $sms_message = "Регистрация подтверждена! {$props['EVENT_NAME']}, {$props['DATE']}, {$props['ADDRESS']}. Код участника: {$props['BARCODE']}. {$props['ORG_INFO']}";
                         send_sms($props["PHONE"], strip_tags($sms_message));
                         break;
                     // отказ в регистрации
