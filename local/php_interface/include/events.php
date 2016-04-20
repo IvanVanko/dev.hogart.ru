@@ -243,7 +243,7 @@ class IBlockHandlers {
                         );
                         \Bitrix\Main\Mail\Internal\EventAttachmentTable::add($dataAttachment);
 
-                        $sms_message = "Регистрация подтверждена! {$props['EVENT_NAME']}, {$props['DATE']}, {$props['ADDRESS']}. Код участника: {$props['BARCODE']}. {$props['ORG_INFO']}. {$props['URL']}";
+                        $sms_message = "Регистрация подтверждена! {$props['EVENT_NAME']}, {$props['DATE']}, {$props['ADDRESS']}. Код участника: {$props['BARCODE']}. {$props['ORG_INFO']}.\n{$props['URL']}";
                         send_sms($props["PHONE"], strip_tags($sms_message));
                         break;
                     // отказ в регистрации
