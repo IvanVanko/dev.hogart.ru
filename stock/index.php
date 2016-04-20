@@ -35,7 +35,7 @@ $APPLICATION->SetTitle("Акции");
 		"CACHE_GROUPS" => "Y",
 		"SET_STATUS_404" => "Y",
 		"SET_TITLE" => "Y",
-		"INCLUDE_IBLOCK_INTO_CHAIN" => "Y",
+		"INCLUDE_IBLOCK_INTO_CHAIN" => "N",
 		"ADD_SECTIONS_CHAIN" => "Y",
 		"ADD_ELEMENT_CHAIN" => "Y",
 		"USE_PERMISSIONS" => "N",

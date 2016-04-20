@@ -5,6 +5,8 @@ if(!isAjax()){
     LocalRedirect($_SERVER["HTTP_REFERER"]);
 }
 
+require_once(dirname(__FILE__) . '/smsc_api.php');
+
 CModule::IncludeModule('iblock');
 $result = array('success' => false);
 
@@ -19,6 +21,18 @@ if($iblockId && $obEvent){
     $arEvent['PROPERTIES'] = $obEvent->GetProperties();
     $regCounter = $arEvent['PROPERTIES']['NUMBER']['VALUE'];
     $props['NUMBER'] = ++$regCounter;
+
+    include_once $_SERVER["DOCUMENT_ROOT"] . "/local/components/pirogov/eventRegistrationResult/ean.php";
+    $barcode = str_pad(substr($arEvent['PROPERTIES']['BARCODE']['VALUE'], 0, 12 - strlen($props['NUMBER'])) . $props['NUMBER'], 12, "0", STR_PAD_LEFT);
+    $ean = new EAN13($barcode, 2);
+    $props['BARCODE'] = $ean->number;
+    if ($arEvent['PROPERTIES']['MODERATION']['VALUE'] != 'Y') {
+        $status = BXHelper::getProperties(array(), array("IBLOCK_ID" => $iblockId,
+            "CODE" => "STATUS"), array("ID", "CODE"), "CODE");
+        $status = $status["RESULT"]["STATUS"];
+        $invitation = BXHelper::getEnumPropertyByXMLId($status['ID'], IBlockHandlers::INVITATION);
+        $props["STATUS"] = $invitation["ID"];
+    }
     $fields = array(
         "NAME" => implode(" ", [$props['NAME'], $props['SURNAME'], $props['LAST_NAME']]),
         "ACTIVE" => "Y",
@@ -32,10 +46,10 @@ if($iblockId && $obEvent){
         CIBlockElement::SetPropertyValuesEx($arEvent['ID'], $arEvent['IBLOCK_ID'], ['NUMBER' => $regCounter]);
         $props['ADDRESS'] = $arEvent['PROPERTIES']['ADDRESS']['VALUE'];
         $props['DATE'] = $arEvent['PROPERTIES']['DATE']['VALUE'];
-        $props['URL'] = "//{$_SERVER['NAME']}{$arEvent['DETAIL_PAGE_URL']}";
+        $props['URL'] = "http://" . ($_SERVER["SERVER_NAME"] ?: $_SERVER['HTTP_HOST']) . "{$arEvent['DETAIL_PAGE_URL']}";
         $orgs = [];
-        if(!empty($arResult['PROPERTIES']['ORGANIZER']['VALUE'])) {
-            $arFilter = Array('ID' => $arResult['PROPERTIES']['ORGANIZER']['VALUE']);
+        if(!empty($arEvent['PROPERTIES']['ORGANIZER']['VALUE'])) {
+            $arFilter = Array('ID' => $arEvent['PROPERTIES']['ORGANIZER']['VALUE']);
             $res = CIBlockElement::GetList(Array(), $arFilter, false, false, array());
 
             while($ob = $res->GetNextElement()) {
@@ -45,25 +59,54 @@ if($iblockId && $obEvent){
             }
         }
 
+        $props['ORG_INFO'] = "";
         if(!empty($orgs)){
-            $props['ORG_INFO'] = "Контакты для получения дополнительной информации:<br />";
+            $props['ORG_INFO'] = "По всем вопросам обращаться:<br />";
             foreach($orgs as $org) {
-                $props['ORG_INFO'] .= "{$org['NAME']} {$org['props']['MAIL']['VALUE']} {$org['props']['PHONE']['VALUE']}<br/>";
+                $props['ORG_INFO'] .= "{$org['NAME']} - {$org['props']['mail']['VALUE']} {$org['props']['phone']['VALUE']}<br/>";
             }
         }
 
         $props['PRINT_TICKET'] = "/events/result.php?id={$id}";
-
         $result['success'] = true;
+        $result['message'] = "Благодарим Вас за проявленный интерес к нашему мероприятию. <br />";
         if($arEvent['PROPERTIES']['MODERATION']['VALUE'] == 'Y'){
             CEvent::SendImmediate("EVENT_USER_REGISTER_MODERATE", SITE_ID, $props);
         }
         else {
-            CEvent::Send("EVENT_USER_REGISTER", SITE_ID, $props);
+            ob_start();
+            $APPLICATION->IncludeComponent("pirogov:eventRegistrationResult", "mail-attachment", array(
+                "ID" => $id
+            ));
+            $pdf = ob_get_clean();
+            define('DOMPDF_ENABLE_AUTOLOAD', false);
+            define('DOMPDF_ENABLE_REMOTE', true);
+            require $_SERVER['DOCUMENT_ROOT'].'/local/php_interface/include/vendor/dompdf/dompdf/dompdf_config.inc.php';
+            $dompdf = new \DOMPDF();
+            $dompdf->load_html($pdf);
+            $dompdf->set_paper('A4', 'portrait');
+            $dompdf->render();
+            $pdfPath = sys_get_temp_dir() . '/ticket-' . $id . '-' . uniqid() . '.pdf';
+            file_put_contents($pdfPath, $dompdf->output());
+
+            $mailResultId = CEvent::Send("EVENT_USER_REGISTER", SITE_ID, $props);
+            $arFile = \CFile::MakeFileArray($pdfPath);
+            $arFile["name"] = "Пригласительный билет на {$props['EVENT_NAME']}.pdf";
+            $arFile["MODULE_ID"] = "main";
+            $fid = \CFile::SaveFile($arFile, "main");
+            $dataAttachment = array(
+                'EVENT_ID' => $mailResultId,
+                'FILE_ID' => $fid,
+            );
+            \Bitrix\Main\Mail\Internal\EventAttachmentTable::add($dataAttachment);
+
+            $sms_message = "Регистрация подтверждена! {$props['EVENT_NAME']}, {$props['DATE']}, {$props['ADDRESS']}. Код участника: {$props['BARCODE']} {$props['ORG_INFO']}.\n{$props['URL']}";
+            send_sms($props["PHONE"], strip_tags($sms_message));
             $result['redirect'] = "/events/result.php?id={$id}&event={$props['EVENT']}";
+            if (!empty($arEvent['PROPERTIES']['WELCOME']['VALUE']['TEXT'])) {
+                $result['message'] .= $arEvent['PROPERTIES']['WELCOME']['VALUE']['TEXT'];
+            }
         }
-        $result['message'] = "Благодарим Вас за проявленный интерес к нашему мероприятию. <br />
-                            Ваша заявка принята и находится на рассмотрении.";
     }
     else {
         $result['message'] = $el->LAST_ERROR;

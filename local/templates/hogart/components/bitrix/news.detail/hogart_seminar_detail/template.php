@@ -5,12 +5,6 @@ $seminarTitle = $arResult['NAME'];
 
 <div class="control control-action">
 
-    <? /* if (isset($arResult['PREV'])):?>
-        <span class="prev black"><a href="<?=$arResult['PREV']?>"></a></span>
-    <?endif;?>
-    <?if (isset($arResult['NEXT'])):?>
-        <span class="next black"><a href="<?=$arResult['NEXT']?>"></a></span>
-    <?endif; */ ?>
     <?if (!is_null($arResult['PREV'])):?>
         <span class="prev black">
         <?if(!is_null($arResult['PREV'])){?>

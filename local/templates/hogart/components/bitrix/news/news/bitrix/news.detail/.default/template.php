@@ -36,8 +36,6 @@ $share_img_src = false;?>
                 <div class="date">
                     <sub><?= $date_from ?></sub>
                 </div>
-                <h2><?= $arResult['NAME'] ?></h2>
-
                 <? if (!empty($arResult['PREVIEW_TEXT'])): ?><p><?= $arResult['PREVIEW_TEXT'] ?></p><? endif; ?>
             </div>
 

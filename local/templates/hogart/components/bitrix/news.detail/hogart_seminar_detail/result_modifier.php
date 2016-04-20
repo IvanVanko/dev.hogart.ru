@@ -36,7 +36,15 @@ $sem_start_date = strtotime(FormatDate("d.m.Y", MakeTimeStamp($arResult['PROPERT
 $sem_start_date = (!empty($sem_start_date)) ? $sem_start_date : 0;
 $now = strtotime(date($DB->DateFormatToPHP(CSite::GetDateFormat("SHORT")), time()));
 
-if($sem_start_date < $now) {
+$arOrder = array("PROPERTY_sem_start_date" => "DESC");
+if (empty($arResult["PROPERTIES"]["sem_start_date"]["VALUE"])) {
+    $arOrder = array("ID" => "ASC");
+}
+$arFilter["ACTIVE"] = "Y";
+$arFilter["CHECK_PERMISSIONS"] = "Y";
+
+
+if($sem_start_date < $now && $sem_start_date > 0) {
     $arFilter['<PROPERTY_sem_start_date'] = date("Y-m-d", time());
     $arFilter[] = array(
         'LOGIC' => 'OR',
@@ -44,13 +52,13 @@ if($sem_start_date < $now) {
         array('<PROPERTY_sem_end_date' => date("Y-m-d", time()))
     );
 }
-else {
+elseif($sem_start_date > 0) {
     $arFilter['>=PROPERTY_sem_start_date'] = date("Y-m-d", time());
+} else {
+    $arFilter["PROPERTY_sem_start_date"] = false;
 }
-$arFilter["ACTIVE"] = "Y";
-$arFilter["CHECK_PERMISSIONS"] = "Y";
-$res = CIBlockElement::GetList(array("PROPERTY_sem_start_date" => "DESC"), $arFilter, false, Array("nElementID" => $arResult['ID'],
-                                                                                                   'nPageSize' => 1), $arSelect);
+
+$res = CIBlockElement::GetList($arOrder, $arFilter, false, Array("nElementID" => $arResult['ID'], 'nPageSize' => 1), $arSelect);
 
 while($ob = $res->GetNextElement()) {
     $arFields = $ob->GetFields();

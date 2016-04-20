@@ -1,6 +1,7 @@
 <?php
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/iblock/lib/template/functions/fabric.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/ajax/smsc_api.php');
 AddEventHandler("main", "OnBeforeProlog", array("BasicHandlers", "OnBeforePrologHandler"));
 AddEventHandler("main", "OnEpilog", array("BasicHandlers", "OnEpilogHandler"));
 AddEventHandler("main", "OnBeforeEventAdd", array("BasicHandlers", "OnBeforeEventAddHandler"));
@@ -112,6 +113,10 @@ AddEventHandler("iblock", "OnAfterIBlockElementAdd", array("IBlockHandlers", "On
 AddEventHandler("iblock", "OnAfterIBlockElementUpdate", array("IBlockHandlers", "OnAfterIBlockElementUpdateHandler"));
 
 class IBlockHandlers {
+
+    const INVITATION = "INVITATION";
+    const DENIED = "DENIED";
+
     public static function OnBeforeIBlockElementAddHandler(&$arParams) {
         if($arParams["IBLOCK_ID"] == SEMINAR_IBLOCK_ID) {
             $ean_number = HogartHelpers::generateSeminarNumber();
@@ -170,55 +175,87 @@ class IBlockHandlers {
             $props['SURNAME'] = $arEventApplication['PROPERTIES']['SURNAME']['VALUE'];
             $props['LAST_NAME'] = $arEventApplication['PROPERTIES']['LAST_NAME']['VALUE'];
             $props['EMAIL'] = $arEventApplication['PROPERTIES']['EMAIL']['VALUE'];
+            $props['PHONE'] = $arEventApplication['PROPERTIES']['PHONE']['VALUE'];
+            $props['BARCODE'] = $arEventApplication['PROPERTIES']['BARCODE']['VALUE'];
+
+            $props['URL'] = "http://" . ($_SERVER["SERVER_NAME"] ?: $_SERVER['HTTP_HOST']) . "{$arEvent['DETAIL_PAGE_URL']}";
+            $props['ADDRESS'] = $arEvent['PROPERTIES']['ADDRESS']['VALUE'];
+            $props['DATE'] = $arEvent['PROPERTIES']['DATE']['VALUE'];
             $props['EVENT_NAME'] = $arEvent['NAME'];
             $props['PRINT_TICKET'] = "/events/result.php?id={$arParams['ID']}";
 
-            $property = BXHelper::getProperties(array(), array("IBLOCK_ID" => EVENTS_FORM_RESULT_IBLOCK_ID,
-                                                               "CODE" => "INVITATION"), array("ID", "CODE"), "CODE");
-            $property = $property["RESULT"]["INVITATION"];
-            $currentInvitationStatus = CIBlockElement::GetProperty($arParams['IBLOCK_ID'], $arParams['ID'], [], ['CODE' => "INVITATION"])->Fetch();
-
-            if(!empty($arParams['PROPERTY_VALUES'][$property['ID']])
-               && $arParams['PROPERTY_VALUES'][$property['ID']] !== $currentInvitationStatus['VALUE']
+            $status = BXHelper::getProperties(array(), array("IBLOCK_ID" => EVENTS_FORM_RESULT_IBLOCK_ID,
+                "CODE" => "STATUS"), array("ID", "CODE"), "CODE");
+            $status = $status["RESULT"]["STATUS"];
+            $currentStatus = CIBlockElement::GetProperty($arParams['IBLOCK_ID'], $arParams['ID'], [], ['CODE' => "STATUS"])->Fetch();
+            if(!empty($arParams['PROPERTY_VALUES'][$status['ID']][0]["VALUE"])
+                && $arParams['PROPERTY_VALUES'][$status['ID']][0]["VALUE"] !== $currentStatus['VALUE']
             ) {
-                foreach($arParams['PROPERTY_VALUES'][$property['ID']] as $key => $arPropVal) {
-                    if($arPropVal['VALUE'] == 'Y') {
-                        if(!empty($orgs)){
-                            $props['ORG_INFO'] = "Контакты для получения дополнительной информации:<br />";
-                            foreach($orgs as $org) {
-                                $props['ORG_INFO'] .= "{$org['NAME']} {$org['props']['MAIL']['VALUE']} {$org['props']['PHONE']['VALUE']}<br/>";
-                            }
-                        }
-                        $orgs = [];
-                        if(!empty($arResult['PROPERTIES']['ORGANIZER']['VALUE'])) {
-                            $arFilter = Array('ID' => $arResult['PROPERTIES']['ORGANIZER']['VALUE']);
-                            $res = CIBlockElement::GetList(Array(), $arFilter, false, false, array());
+                $currentStatus = null;
+                if (!empty($arParams['PROPERTY_VALUES'][$status['ID']][0]["VALUE"])) {
+                    $currentStatus = BXHelper::getEnumPropertyById($arParams['PROPERTY_VALUES'][$status['ID']][0]["VALUE"]);
+                    $currentStatus = $currentStatus["XML_ID"];
+                }
 
-                            while($ob = $res->GetNextElement()) {
-                                $arFields = $ob->GetFields();
-                                $arFields['props'] = $ob->GetProperties();
-                                $orgs[] = $arFields;
-                            }
-                        }
-                        CEvent::Send("EVENT_USER_REGISTER", "s1", $props);
+                $orgs = [];
+                if(!empty($arEvent['PROPERTIES']['ORGANIZER']['VALUE'])) {
+                    $arFilter = Array('ID' => $arEvent['PROPERTIES']['ORGANIZER']['VALUE']);
+                    $res = CIBlockElement::GetList(Array(), $arFilter, false, false, array());
+
+                    while($ob = $res->GetNextElement()) {
+                        $arFields = $ob->GetFields();
+                        $arFields['props'] = $ob->GetProperties();
+                        $orgs[] = $arFields;
                     }
                 }
-            }
+                if(!empty($orgs)){
+                    $props['ORG_INFO'] = "По всем вопросам обращаться:<br />";
+                    foreach($orgs as $org) {
+                        $props['ORG_INFO'] .= "{$org['NAME']} - {$org['props']['mail']['VALUE']} {$org['props']['phone']['VALUE']}<br/>";
+                    }
+                }
 
-            // отказ в регистрации
-            $property = BXHelper::getProperties(array(), array("IBLOCK_ID" => EVENTS_FORM_RESULT_IBLOCK_ID,
-                                                               "CODE" => "DENIED"), array("ID", "CODE"), "CODE");
-            $property = $property["RESULT"]["DENIED"];
-            $currentDeniedStatus = CIBlockElement::GetProperty($arParams['IBLOCK_ID'], $arParams['ID'], [], ['CODE' => "DENIED"])->Fetch();
+                switch ($currentStatus) {
+                    // подтверждение регистрации
+                    case self::INVITATION:
+                        ob_start();
+                        $APPLICATION->IncludeComponent("pirogov:eventRegistrationResult", "mail-attachment", array(
+                            "ID" => $arParams['ID']
+                        ));
+                        $pdf = ob_get_clean();
+                        define('DOMPDF_ENABLE_AUTOLOAD', false);
+                        define('DOMPDF_ENABLE_REMOTE', true);
+                        require_once $_SERVER['DOCUMENT_ROOT'].'/local/php_interface/include/vendor/dompdf/dompdf/dompdf_config.inc.php';
+                        $dompdf = new \DOMPDF();
+                        $dompdf->load_html($pdf);
+                        $dompdf->set_paper('A4', 'portrait');
+                        $dompdf->render();
+                        $pdfPath = sys_get_temp_dir() . '/ticket-' . $arParams['ID'] . '-' . uniqid() . '.pdf';
+                        file_put_contents($pdfPath, $dompdf->output());
 
-            if(!empty($arParams['PROPERTY_VALUES'][$property['ID']])
-               && $arParams['PROPERTY_VALUES'][$property['ID']] !== $currentDeniedStatus['VALUE']
-            ) {
-                foreach($arParams['PROPERTY_VALUES'][$property['ID']] as $key => $arPropVal) {
-                    if($arPropVal['VALUE'] == 'Y') {
+                        $mailResultId = CEvent::Send("EVENT_USER_REGISTER", "s1", $props);
+                        $arFile = \CFile::MakeFileArray($pdfPath);
+                        $arFile["name"] = "Пригласительный билет на {$props['EVENT_NAME']}.pdf";
+                        $arFile["MODULE_ID"] = "main";
+                        $fid = \CFile::SaveFile($arFile, "main");
+                        $dataAttachment = array(
+                            'EVENT_ID' => $mailResultId,
+                            'FILE_ID' => $fid,
+                        );
+                        \Bitrix\Main\Mail\Internal\EventAttachmentTable::add($dataAttachment);
+
+                        $sms_message = "Регистрация подтверждена! {$props['EVENT_NAME']}, {$props['DATE']}, {$props['ADDRESS']}. Код участника: {$props['BARCODE']}. {$props['ORG_INFO']}.\n{$props['URL']}";
+                        send_sms($props["PHONE"], strip_tags($sms_message));
+                        break;
+                    // отказ в регистрации
+                    case self::DENIED:
                         $props['TEXT'] = $arEvent['PROPERTIES']['DENIED_TEXT']['VALUE'];
                         CEvent::Send("EVENT_USER_REGISTER_DENIED", "s1", $props);
-                    }
+                        $sms_message = "{$props['EVENT_NAME']}, {$props['DATE']}, {$props['ADDRESS']}. {$props['TEXT']}. {$props['ORG_INFO']}";
+                        send_sms($props["PHONE"], strip_tags($sms_message));
+                        break;
+                    default:
+                        break;
                 }
             }
         }
