@@ -61,10 +61,14 @@ HTML
             }
         }
 
-        $IblockHelper = new IblockHelper();
-        $IblockHelper->mergeIblockFields(11, [
+
+        if (\CIBlock::Update(11, [
             "DETAIL_PAGE_URL" => "#SITE_DIR#/helpful-information/#ELEMENT_ID#/"
-        ]);
+        ])) {
+            $this->outSuccess("Обновлено значение \"URL страницы детального просмотра\" в Инфоблок \"Полезная инфомация\"");
+        }
+
+        $IblockHelper = new IblockHelper();
         if ($IblockHelper->deletePropertyIfExists(26, "INVITATION")) {
             $this->outSuccess("Удалено свойство \"Приглашен\" в Инфоблок \"Регистрации на мероприятия\"");
         }
@@ -76,7 +80,7 @@ HTML
             "USER_TYPE" => "EAutocomplete"
         ]);
 
-        if ($IblockHelper->addPropertyIfNotExists(26, [
+        if (($id = $IblockHelper->addPropertyIfNotExists(26, [
             "CODE" => "STATUS",
             "NAME" => "Статус",
             "ACTIVE" => "Y",
@@ -92,7 +96,7 @@ HTML
                     "XML_ID" => "DENIED"
                 ]
             ]
-        ])) {
+        ])) && $id > 0) {
             $this->outSuccess("Добавлено свойство \"Статус\" в Инфоблок \"Регистрации на мероприятия\"");
         }
     }
