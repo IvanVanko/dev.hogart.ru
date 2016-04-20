@@ -70,6 +70,7 @@ if(!empty($arResult['ELEMENT']['PROPERTIES']['ORGANIZER']['VALUE'])) {
                     alt="">
             <? } ?>
         </div>
+        <a href="http://<?= ($_SERVER["SERVER_NAME"] ?: $_SERVER['HTTP_HOST']) ?><?=$arResult["ELEMENT"]["DETAIL_PAGE_URL"]?>">http://<?= ($_SERVER["SERVER_NAME"] ?: $_SERVER['HTTP_HOST']) ?><?=$arResult["ELEMENT"]["DETAIL_PAGE_URL"]?></a>
     </div>
 </div>
 </body>
