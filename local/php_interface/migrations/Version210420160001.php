@@ -13,7 +13,8 @@ class Version210420160001 extends Version
     protected $description = "Обновления для задач 46, 26, 28";
 
     public function up(){
-        //
+        global $DB;
+        
     }
 
     public function down(){
