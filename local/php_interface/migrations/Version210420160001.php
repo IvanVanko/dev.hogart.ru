@@ -62,6 +62,9 @@ HTML
         }
 
         $IblockHelper = new IblockHelper();
+        $IblockHelper->mergeIblockFields(11, [
+            "DETAIL_PAGE_URL" => "#SITE_DIR#/helpful-information/#ELEMENT_ID#/"
+        ]);
         if ($IblockHelper->deletePropertyIfExists(26, "INVITATION")) {
             $this->outSuccess("Удалено свойство \"Приглашен\" в Инфоблок \"Регистрации на мероприятия\"");
         }
