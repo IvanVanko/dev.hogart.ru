@@ -68,8 +68,8 @@ ob_start();
             <? endif; ?>
 
             <? if($arResult['ELEMENT']['PROPERTIES']['TICKET_IMAGE']['VALUE']) { ?>
-                <div class="image">
-                    <img
+                <div class="image" style="text-align: center">
+                    <img style="max-height: 550px;"
                         src="http://<?=($_SERVER["SERVER_NAME"] ? : $_SERVER['HTTP_HOST'])?><?=CFile::GetPath($arResult['ELEMENT']['PROPERTIES']['TICKET_IMAGE']['VALUE'])?>"
                         alt="">
                 </div>

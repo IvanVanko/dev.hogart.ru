@@ -65,9 +65,11 @@ if(!empty($arResult['ELEMENT']['PROPERTIES']['ORGANIZER']['VALUE'])) {
                 <hr>
             <? endif; ?>
             <? if($arResult['ELEMENT']['PROPERTIES']['TICKET_IMAGE']['VALUE']) { ?>
-                <img
+            <div class="image" style="text-align: center">
+                <img style="max-height: 550px;"
                     src="http://<?=($_SERVER["SERVER_NAME"] ? : $_SERVER['HTTP_HOST'])?><?=CFile::GetPath($arResult['ELEMENT']['PROPERTIES']['TICKET_IMAGE']['VALUE'])?>"
                     alt="">
+            </div>
             <? } ?>
         </div>
         <a href="http://<?= ($_SERVER["SERVER_NAME"] ?: $_SERVER['HTTP_HOST']) ?><?=$arResult["ELEMENT"]["DETAIL_PAGE_URL"]?>">http://<?= ($_SERVER["SERVER_NAME"] ?: $_SERVER['HTTP_HOST']) ?><?=$arResult["ELEMENT"]["DETAIL_PAGE_URL"]?></a>
