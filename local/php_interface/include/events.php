@@ -228,6 +228,7 @@ class IBlockHandlers {
                         require_once $_SERVER['DOCUMENT_ROOT'].'/local/php_interface/include/vendor/dompdf/dompdf/dompdf_config.inc.php';
                         $dompdf = new \DOMPDF();
                         $dompdf->load_html($pdf);
+                        $dompdf->set_paper('A4', 'portrait');
                         $dompdf->render();
                         $pdfPath = sys_get_temp_dir() . '/ticket-' . $arParams['ID'] . '-' . uniqid() . '.pdf';
                         file_put_contents($pdfPath, $dompdf->output());
