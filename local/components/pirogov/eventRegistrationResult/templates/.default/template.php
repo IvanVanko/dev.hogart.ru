@@ -13,6 +13,18 @@
 /** @var string $componentPath */
 $this->setFrameMode(true);
 $APPLICATION->RestartBuffer();
+
+$orgs = [];
+if(!empty($arResult['ELEMENT']['PROPERTIES']['ORGANIZER']['VALUE'])) {
+    $arFilter = Array('ID' => $arResult['ELEMENT']['PROPERTIES']['ORGANIZER']['VALUE']);
+    $res = CIBlockElement::GetList(Array(), $arFilter, false, false, array());
+
+    while($ob = $res->GetNextElement()) {
+        $arFields = $ob->GetFields();
+        $arFields['props'] = $ob->GetProperties();
+        $orgs[] = $arFields;
+    }
+}
 ob_start();
 ?>
     <html>
@@ -28,37 +40,47 @@ ob_start();
     <div class="inner">
         <div class="reg-kupon _event">
             <div class="title-holder">
-                <div class="barcode">
-                    Электронный билет
-                    <?="<img src='data:image/png;base64,{$arResult["BARCODE"]}'>";?>
-                    <span class="event-name"><?=$arResult['ELEMENT']['NAME']?></span>
+                <div class="title">
+                    &laquo;Электронный билет&raquo; на мероприятиятие <br>
+                    <span class="event-name">&laquo;<?=$arResult['ELEMENT']['NAME']?>&raquo;</span>
                 </div>
-                <table>
-                    <tr>
-                        <td class="name">
-                            <?=implode(" ", [$arResult['FORM_RESULT']['PROPERTIES']['NAME']['VALUE'],
-                                             $arResult['FORM_RESULT']['PROPERTIES']['SURNAME']['VALUE'],
-                                             $arResult['FORM_RESULT']['PROPERTIES']['LAST_NAME']['VALUE']])?>,
-                            "<?=$arResult['FORM_RESULT']['PROPERTIES']['COMPANY']['VALUE']?>"
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="company">
-                                <?=$arResult['ELEMENT']['PROPERTIES']['TICKET_TEXT']['VALUE']?>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
+                <div class="date">Дата проведения: <span><?=$arResult['ELEMENT']['PROPERTIES']['DATE']['VALUE']?></span></div>
+                <div class="address">Адрес проведения: <span><?=$arResult['ELEMENT']['PROPERTIES']['ADDRESS']['VALUE']?></span></div>
+
+                <hr>
+                <div class="barcode">
+                    <?="<img src='data:image/png;base64,{$arResult["BARCODE"]}'>";?>
+                </div>
+                <hr>
+                <div class="text">
+                    <?=$arResult['ELEMENT']['PROPERTIES']['TICKET_TEXT']['VALUE']?>
+                </div>
+            <? if (!empty($orgs)): ?>
+                <div class="organizers">
+                    <span>По всем вопросам обращаться:</span>
+                    <ul>
+                    <? foreach ($orgs as $org): ?>
+                        <li><?=$org['NAME']?> - <?=$org['props']['mail']['VALUE']?> <?=$org['props']['phone']['VALUE']?></li>
+                    <? endforeach; ?>
+                    </ul>
+                </div>
+                <hr>
+            <? endif; ?>
+
             <? if($arResult['ELEMENT']['PROPERTIES']['TICKET_IMAGE']['VALUE']) { ?>
-                <img
-                    src="http://<?=$_SERVER['SERVER_NAME']?><?=CFile::GetPath($arResult['ELEMENT']['PROPERTIES']['TICKET_IMAGE']['VALUE'])?>"
-                    alt="">
+                <div class="image" style="text-align: center">
+                    <img style="max-height: 550px;"
+                        src="http://<?=($_SERVER["SERVER_NAME"] ? : $_SERVER['HTTP_HOST'])?><?=CFile::GetPath($arResult['ELEMENT']['PROPERTIES']['TICKET_IMAGE']['VALUE'])?>"
+                        alt="">
+                </div>
             <? } ?>
-            <? if(!isset($_GET['pdf'])) { ?>
-                <a target="_blank" href="<?=$APPLICATION->GetCurUri()?>&pdf">Распечатать</a>
-            <? } ?>
+                <div class="print">
+                <? if(!isset($_GET['pdf'])) { ?>
+                    <a target="_blank" href="<?=$APPLICATION->GetCurUri()?>&pdf">Распечатать</a>
+                <? } ?>
+                </div>
+            </div>
+            <a href="http://<?= ($_SERVER["SERVER_NAME"] ?: $_SERVER['HTTP_HOST']) ?><?=$arResult["ELEMENT"]["DETAIL_PAGE_URL"]?>">http://<?= ($_SERVER["SERVER_NAME"] ?: $_SERVER['HTTP_HOST']) ?><?=$arResult["ELEMENT"]["DETAIL_PAGE_URL"]?></a>
         </div>
     </div>
     </body>

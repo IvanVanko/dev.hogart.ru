@@ -129,7 +129,7 @@ $solutions = BXHelper::pull_array_field($elements_with_solution['RESULT'], 'PROP
 
 $nav = array();
 $arSelect = Array("ID", "NAME", 'CODE', 'DETAIL_PAGE_URL', "PROPERTY_solution_id",);
-$arFilter = Array("IBLOCK_ID" => 18, "PROPERTY_solution_id" => $arResult['PROPERTIES']['solution_id']['VALUE']);
+$arFilter = Array("IBLOCK_ID" => 18, "ACTIVE" => "Y", "PROPERTY_solution_id" => $arResult['PROPERTIES']['solution_id']['VALUE']);
 
 $sections = BXHelper::getSections(array("SORT" => "ASC", "ID" => "ASC"), array("IBLOCK_ID" => 7,
                                                                                "ID" => $solutions), false, array("ID",

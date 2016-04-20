@@ -24,7 +24,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 		"AJAX_OPTION_JUMP" => "N",
 		"AJAX_OPTION_STYLE" => "Y",
 		"AJAX_OPTION_HISTORY" => "N",
-		"CACHE_TYPE" => "A",
+		"CACHE_TYPE" => "N",
 		"CACHE_TIME" => "36000000",
 		"CACHE_FILTER" => "N",
 		"CACHE_GROUPS" => "Y",
@@ -51,7 +51,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 		"BROWSER_TITLE" => "-",
 		"DETAIL_ACTIVE_DATE_FORMAT" => "d.m.Y",
 		"DETAIL_FIELD_CODE" => array(
-			0 => "",
+			0 => "PREVIEW_PICTURE",
 			1 => "",
 		),
 		"DETAIL_PROPERTY_CODE" => array(

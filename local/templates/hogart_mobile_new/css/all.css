@@ -111,6 +111,7 @@ textarea {
   font: inherit;
   margin: 0;
 }
+
 button {
   overflow: visible;
 }
@@ -219,6 +220,34 @@ th {
   display: inline-block;
   list-style: none;
   vertical-align: top;
+}
+.all-project-box li img{
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.all-project-box li {
+  margin-bottom: 30px;
+}
+.inner.inner-wrap .inner {
+  padding: 0
+}
+.gall-news-one {
+  margin-bottom: 20px;
+}
+.paddingimg {
+  margin-bottom: 20px;
+  display: block;
+  margin-top: 20px;
+}
+.inner .side_href {
+  left: 0;
+  right: 57px;
+  width: auto;
+  padding-top: 11px;
+}
+.inner .side_href a {
+  margin-left: 10px
 }
 .center_translate {
   top: 50%;
@@ -978,9 +1007,13 @@ h2 {
 .top_block .message-form select {
   background-image: url("/local/templates/hogart_mobile_new/images/arrow4.png");
   border:1px solid #fff;
+  background-color: rgba(0,0,0,0);
   color:#fff;
   font-size: 14px;
   text-transform: none;
+}
+.top_block .message-form select option {
+  color: #000;
 }
 .top_block .input-btn {
   background: transparent;
@@ -1312,6 +1345,9 @@ h2 {
 .learn-page .calendar-wrap,
 .learn-item-page .calendar-wrap {
   padding: 11px 20px;
+}
+.learn-page .field textarea, .learn-page .field input {
+    border: 1px solid #008351;
 }
 .learn-page .calendar-wrap select,
 .learn-item-page .calendar-wrap select {
@@ -1868,6 +1904,7 @@ h2 {
 .one-actions-page .news-items .news-one,
 .usefull-info-one .news-items .news-one {
   padding-bottom: 10px;
+  margin-bottom:  10px;
 }
 .one-news-page .article-meta,
 .one-actions-page .article-meta,
@@ -1929,6 +1966,9 @@ h2 {
 .inner-wrap,
 .inner {
   padding: 8px 20px 0;
+}
+.news-one img{
+  max-width: 100%;
 }
 .pages-nav {
   width: 88%;
@@ -2399,6 +2439,7 @@ input[type="submit"].gray-btn,
 .owl-next.disabled {
   background-image: url("/local/templates/hogart_mobile_new/images/arrow2.png");
   opacity: 0.5;
+  display: none;
 }
 .owl-prev {
   float: left;
@@ -3545,10 +3586,6 @@ img.mfp-img {
     font-size: 1.4rem;
     max-width: 162px;
     line-height: 16px;
-  }
-  .top_block {
-    width: 186px;
-    padding: 13px 0 17px 0;
   }
   .input-wrap textarea {
     height: 45px;

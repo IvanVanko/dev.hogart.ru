@@ -1,0 +1,27 @@
+{
+    "name": "dm/ajaxcom",
+    "version": "1.4.2",
+    "description": "Controls Ajax from PHP",
+    "type": "library",
+    "keywords": ["ajax"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Miroslav Demovic",
+            "email": "miroslav@demovic.sk"
+        },
+        {
+            "name": "Nick Masters",
+            "email": "nick@npmasters.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.x-dev"
+    },
+    "autoload": {
+        "psr-0": { "DM\\": "src/" }
+    }
+}

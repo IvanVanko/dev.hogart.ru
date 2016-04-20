@@ -71,6 +71,17 @@
         <? endif; ?>
     </div>
 <? endif; ?>
+<div class="inner">
+    <?$APPLICATION->IncludeFile(
+        "/local/include/share.php",
+        array(
+            "TITLE" => $arResult["NAME"],
+            "DESCRIPTION" => !empty($arResult["PREVIEW_TEXT"]) ? $arResult["PREVIEW_TEXT"]:$arResult["DETAIL_TEXT"],
+            "LINK" => $APPLICATION->GetCurPage(),
+            "IMAGE"=> $share_img_src
+        )
+    );?>
+</div>
 <aside class="sidebar js-fh js-fixed-block js-paralax-height" data-fixed="top">
     <div class="inner js-paralax-item">
 

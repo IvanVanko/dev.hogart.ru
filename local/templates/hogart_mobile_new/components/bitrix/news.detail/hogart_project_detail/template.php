@@ -37,12 +37,12 @@ if (!isset($arParams['ITEM_TEMPLATE']) && empty($arParams['ITEM_TEMPLATE'])):?>
         <?= $arResult["DETAIL_TEXT"] ?>
     <? endif; ?>
     <? if (!empty($arResult["DETAIL_PICTURE"])): ?>
-        <div class="text-center inner no-padding no-full">
+        <div class="text-center">
             <img src="<?= $arResult['DETAIL_PICTURE']['SRC'] ?>" class="paddingimg" alt="<?= $arResult['NAME'] ?>"/>
         </div>
     <? endif; ?>
     <? if (!empty($arResult["PROPERTIES"]['problem'])): ?>
-        <div class="inner no-full">
+        <div>
             <h2>особенности проекта</h2>
 
             <!--        <h3>--><? //=$arResult["PROPERTIES"]['problem']['NAME'];?><!--</h3>-->
@@ -258,7 +258,7 @@ if (!isset($arParams['ITEM_TEMPLATE']) && empty($arParams['ITEM_TEMPLATE'])):?>
         </div>
 
     <? endif; ?>
-    <div class="inner print-other-project">
+    <div class="print-other-project">
         <h2>Другие проекты</h2>
         <?
         $APPLICATION->IncludeComponent("kontora:element.list", "else-projects", array(

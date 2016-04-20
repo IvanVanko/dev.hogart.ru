@@ -25,8 +25,8 @@ $share_img_src = false;?>
             <?if (isset($arResult['NEXT'])):?>
                 <span class="next black"><a href="<?=$arResult['NEXT']?>"></a></span>
             <?endif; */ ?>
-            <span class="prev <? if(isset($arResult['PREV'])): ?> black <? endif; ?>"><a href="<?=$arResult['PREV']?>"></a></span>
-            <span class="next <? if(isset($arResult['NEXT'])): ?> black <? endif; ?>"><a href="<?=$arResult['NEXT']?>"></a></span>
+            <? if(isset($arResult['PREV'])): ?><span class="prev black"><a href="<?=$arResult['PREV']?>"></a></span><? endif; ?>
+            <? if(isset($arResult['NEXT'])): ?><span class="next black"><a href="<?=$arResult['NEXT']?>"></a></span><? endif; ?>
 
         </div>
         <h1><?$APPLICATION->ShowTitle()?></h1>
@@ -36,8 +36,6 @@ $share_img_src = false;?>
                 <div class="date">
                     <sub><?= $date_from ?></sub>
                 </div>
-                <h2><?= $arResult['NAME'] ?></h2>
-
                 <? if (!empty($arResult['PREVIEW_TEXT'])): ?><p><?= $arResult['PREVIEW_TEXT'] ?></p><? endif; ?>
             </div>
 

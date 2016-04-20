@@ -2,13 +2,14 @@
     die();
 }
 $date_from = FormatDate("d F", MakeTimeStamp($arResult["ACTIVE_FROM"]));
-$date_to = FormatDate("d F", MakeTimeStamp($arResult["ACTIVE_TO"])); ?>
+$date_to = !empty($arResult["DATE_ACTIVE_TO"]) ? FormatDate("d F", MakeTimeStamp($arResult["DATE_ACTIVE_TO"])) : FormatDate("d F", mktime(0, 0, 0, 1, 0, ((int)FormatDate("Y", MakeTimeStamp($arResult["ACTIVE_FROM"])) + 1)));
+
+?>
 
 <div class="inner">
     <div class="control control-action">
-        <? if(!is_null($arResult['PREV'])): ?> <span class="prev black"><a href="<?=$arResult['PREV']?>"></a></span><? endif; ?>
-        <? if(!is_null($arResult['NEXT'])): ?><span class="next black"><a href="<?=$arResult['NEXT']?>"></a></span><? endif; ?>
-
+        <span class="prev <?if (isset($arResult['PREV'])):?> black <?endif;?>"><?if (!empty($arResult['PREV'])): ?><a href="<?=$arResult['PREV']?>"></a><? endif; ?></span>
+        <span class="next <?if (isset($arResult['NEXT'])):?> black <?endif;?>"><?if (!empty($arResult['NEXT'])): ?><a href="<?=$arResult['NEXT']?>"></a><? endif; ?></span>
     </div>
     <h1><?=$arResult['NAME']?></h1>
     <ul class="action-list-one">
@@ -17,9 +18,9 @@ $date_to = FormatDate("d F", MakeTimeStamp($arResult["ACTIVE_TO"])); ?>
                 <div class="date">
                     <?=$date_from.' – '.$date_to?>
                     <?
-                    $dateFinish = FormatDate("d.m.Y", MakeTimeStamp($arResult["ACTIVE_TO"]));
+                    $dateFinish = FormatDate("d.m.Y", MakeTimeStamp($arResult["DATE_ACTIVE_TO"]));
                     $now = date($DB->DateFormatToPHP(CSite::GetDateFormat("SHORT")), time());
-                    if($arResult['ACTIVE'] == Y && strtotime($now) > strtotime($dateFinish)):?>
+                    if(strtotime($now) > strtotime($dateFinish)):?>
                         <strong>(Акция завершена)</strong>
                     <? endif; ?>
                 </div>

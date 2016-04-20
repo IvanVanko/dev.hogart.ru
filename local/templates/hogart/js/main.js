@@ -16,7 +16,12 @@ HogartApp.prototype.setHandlers = function () {
     var self = this;
     $('.eventRegistrationForm').on('forms.submit.success', function(event, data){
         if(data.redirect) {
-            top.location.href = data.redirect;
+            var link = document.createElement('A');
+            link.target = '_blank';
+            link.style = 'display: none;';
+            link.href = data.redirect;
+            document.body.appendChild(link);
+            link.click();
         }
     });
 };

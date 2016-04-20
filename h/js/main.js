@@ -415,9 +415,9 @@ app.initCalendarTooltip = function () {
 };
 app.initIsSidebar = function () {
     $('.container-inner').each(function () {
-        console.log($(this).find('.sidebar:not(.sidebar-popup)'))
         if ($(this).find('.sidebar:not(.sidebar-popup)').length) {
-            $(this).find('>.inner').addClass('no-full');
+            $('.inner', this).removeClass('no-full');
+            $(this).children('.inner').addClass('no-full');
         }
     });
     return this;
