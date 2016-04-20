@@ -9,6 +9,7 @@
 namespace Sprint\Migration;
 
 use Sprint\Migration\Helpers\EventHelper;
+use Sprint\Migration\Helpers\IblockHelper;
 
 class Version210420160001 extends Version
 {
@@ -17,28 +18,79 @@ class Version210420160001 extends Version
     public function up(){
         global $DB;
 
-        $EVENT_USER_REGISTER_SUBJECT = "!!! Регистрация подтверждена! #EVENT_NAME#, #DATE#, #ADDRESS#";
-        $EVENT_USER_REGISTER_BODY =<<<HTML
-        Уважаемый(ая) #NAME# #SURNAME# #LAST_NAME#!<br /><br />
-        Поздравляем, Вы утверждены как участник!<br />
-        Мы будем рады видеть вас на мероприятии "#EVENT_NAME#" #DATE# по адресу: #ADDRESS#. <br /><br />
-        Ваш входной билет во вложении, его необходимо распечатать (сохранить на телефоне) или показать смс, с подтверждением регистрации. <br /><br />
-        #ORG_INFO#<br />
-        С уважением, компания "Хогарт".<br />
-        #URL#<br />
-HTML;
+        $EventHelper = new EventHelper();
+        $events = [
+            'EVENT_USER_REGISTER' => [
+                'SUBJECT' => "Регистрация подтверждена! #EVENT_NAME#, #DATE#, #ADDRESS#",
+                'MESSAGE' => <<<HTML
+                    Уважаемый(ая) #NAME# #SURNAME# #LAST_NAME#!<br /><br />
+                    Поздравляем, Вы утверждены как участник!<br />
+                    Мы будем рады видеть вас на мероприятии "#EVENT_NAME#" #DATE# по адресу: #ADDRESS#. <br /><br />
+                    Ваш входной билет во вложении, его необходимо распечатать (сохранить на телефоне) или показать смс, с подтверждением регистрации. <br /><br />
+                    #ORG_INFO#<br />
+                    С уважением, компания "Хогарт".<br />
+                    #URL#<br />                
+HTML
+            ],
+            "EVENT_USER_REGISTER_DENIED" => [
+                "SUBJECT" => "Информация о регистрации на мероприятие #EVENT_NAME#",
+                "MESSAGE" => <<<HTML
+                    #TEXT#<br />
+                    #URL#<br />
+HTML
+            ],
+            "EVENT_USER_REGISTER_MODERATE" => [
+                "SUBJECT" => "#EVENT_NAME#",
+                "MESSAGE" => <<<HTML
+                    Благодарим Вас за проявленный интерес к нашему мероприятию. <br />
+                    Ваша заявка принята и находится на рассмотрении.<br />
+                    #ORG_INFO#<br />
+                    #URL#<br />
+HTML
+            ]
+        ];
 
-        $helper = new EventHelper();
-        $result = $helper->updateEventMessageByFilter([
-            "TYPE_ID" => "EVENT_USER_REGISTER",
-            "SITE_ID" => "s1"
-        ], [
-            "SUBJECT" => $EVENT_USER_REGISTER_SUBJECT,
-            "MESSAGE" => $EVENT_USER_REGISTER_BODY,
-            "BODY_TYPE" => "html"
+        foreach ($events as $eventName => $eventFields) {
+            if ($EventHelper->updateEventMessageByFilter([
+                "TYPE_ID" => $eventName,
+                "SITE_ID" => "s1"
+            ], array_merge([
+                "BODY_TYPE" => "html"
+            ], $eventFields))) {
+                $this->outSuccess("Почтовый шаблон {$eventName} изменен");
+            }
+        }
+
+        $IblockHelper = new IblockHelper();
+        if ($IblockHelper->deletePropertyIfExists(26, "INVITATION")) {
+            $this->outSuccess("Удалено свойство \"Приглашен\" в Инфоблок \"Регистрации на мероприятия\"");
+        }
+        if ($IblockHelper->deletePropertyIfExists(26, "DENIED")) {
+            $this->outSuccess("Удалено свойство \"Отказ регистрации\" в Инфоблок \"Регистрации на мероприятия\"");
+        }
+        $IblockHelper->updatePropertyIfExists(26, "EVENT", [
+            "PROPERTY_TYPE" => "E",
+            "USER_TYPE" => "EAutocomplete"
         ]);
-        if ($result) {
-            $this->outSuccess('Почтовый шаблон EVENT_USER_REGISTER изменен');
+
+        if ($IblockHelper->addPropertyIfNotExists(26, [
+            "CODE" => "STATUS",
+            "NAME" => "Статус",
+            "ACTIVE" => "Y",
+            "PROPERTY_TYPE" => "L",
+            "FILTRABLE" => "Y",
+            "VALUES" => [
+                "INVITATION" => [
+                    "VALUE" => "Приглашен",
+                    "XML_ID" => "INVITATION"
+                ],
+                "DENIED" => [
+                    "VALUE" => "Отказано в регистрации",
+                    "XML_ID" => "DENIED"
+                ]
+            ]
+        ])) {
+            $this->outSuccess("Добавлено свойство \"Статус\" в Инфоблок \"Регистрации на мероприятия\"");
         }
     }
 
