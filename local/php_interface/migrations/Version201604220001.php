@@ -24,7 +24,7 @@ class Version201604220001 extends Version
             ]);
             while (($field = $res->GetNext())) {
 
-                $this->outSuccess($field["ID"]);
+                $this->outSuccess(print_r($field, true));
 
                 if (\CFormField::Set([
                     "REQUIRED" => "Y"
