@@ -19,7 +19,7 @@
                 ?>
                 <li id="<?=$this->GetEditAreaId($arItem['ID'])?>">
                     <div class="img-wrap">
-                        <img class="js-vertical-center" title="<?=$arItem['NAME']?>"
+                        <img title="<?=$arItem['NAME']?>"
                              src="<?=$arItem['PREVIEW_PICTURE']['SRC']?>" alt=""/>
                     </div>
 
