@@ -1,18 +1,21 @@
 <?
-if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
+/** @var array $arParams */
+/** @var array $arResult */
+/** @global CMain $APPLICATION */
+/** @global CUser $USER */
+/** @global CDatabase $DB */
+/** @var CBitrixComponentTemplate $this */
+/** @var string $templateName */
+/** @var string $templateFile */
+/** @var string $templateFolder */
+/** @var string $componentPath */
+/** @var CBitrixComponent $component */
+if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 ?>
 
-<? if ($_REQUEST["formresult"] == "addok" && !empty($_REQUEST["WEB_FORM_ID"]) && !empty($_REQUEST["RESULT_ID"])) : ?>
-    <div data-form-message>
-        <div data-text-holder>
-            <div class="" data-place-text>
-                Спасибо! Ваша заявка на участие в акции "<?=$arParams['ACTION_NAME']?>" принята.
-            </div>
-        </div>
-    </div>
-<? else : ?>
+<?=$arResult["FORM_NOTE"]?>
 
-<?
+<? if ($arResult["isFormNote"] != "Y") :
 /***********************************************************************************
 					form header
 ***********************************************************************************/

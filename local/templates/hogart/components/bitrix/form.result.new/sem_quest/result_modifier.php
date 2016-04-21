@@ -6,4 +6,5 @@
  * Time: 20:34
  */
 
-$arResult["FORM_NOTE"] = "Спасибо! Ваша заявка на участие в акции \"".$arParams['ACTION_NAME']."\" принята.";
+global $MESS;
+$MESS["FORM_NOTE_ADDOK"] = "Спасибо! Ваша заявка на участие в акции \"".$arParams['ACTION_NAME']."\" принята.";
