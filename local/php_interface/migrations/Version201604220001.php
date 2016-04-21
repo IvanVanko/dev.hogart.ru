@@ -23,6 +23,9 @@ class Version201604220001 extends Version
                 "TITLE" => "Компания"
             ]);
             while (($field = $res->GetNext())) {
+
+                $this->outSuccess($field["ID"]);
+
                 if (\CFormField::Set([
                     "REQUIRED" => "Y"
                 ], $field["ID"])) {
