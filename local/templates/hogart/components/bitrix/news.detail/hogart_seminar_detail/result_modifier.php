@@ -41,7 +41,7 @@ if (empty($arResult["PROPERTIES"]["sem_start_date"]["VALUE"])) {
     $arOrder = array("ID" => "ASC");
 }
 $arFilter["ACTIVE"] = "Y";
-$arFilter["IBLOCK_ACTIVE"] = "Y";
+$arFilter["ACTIVE_DATE"] = "Y";
 $arFilter["CHECK_PERMISSIONS"] = "Y";
 
 if($sem_start_date < $now && $sem_start_date > 0) {
