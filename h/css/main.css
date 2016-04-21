@@ -6018,9 +6018,12 @@ blockquote:before {
   cursor: default;
   text-align: center;
   border: 1px solid #e1e1e1;
+  vertical-align: middle;
 }
 .action_page .action-list li .img-wrap img {
   max-width: 100%;
+  vertical-align: middle;
+  width: 100%;
 }
 .action_page .action-list li .img-wrap:before {
   display: none;
