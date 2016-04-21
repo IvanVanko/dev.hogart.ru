@@ -23,11 +23,9 @@ class Version201604220001 extends Version
                 "TITLE" => "Компания"
             ]);
             while (($field = $res->GetNext())) {
-
-                $this->outSuccess(print_r($field, true));
-
                 if (\CFormField::Set([
-                    "REQUIRED" => "Y"
+                    "REQUIRED" => "Y",
+                    "FORM_ID" => $field["FORM_ID"]
                 ], $field["ID"])) {
                     $this->outSuccess("Поле \"Компания\" формы \"Регистрация на акцию\" сделана обязательным");
                 }
