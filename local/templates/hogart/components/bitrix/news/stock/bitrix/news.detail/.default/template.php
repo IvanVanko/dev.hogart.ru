@@ -12,9 +12,6 @@ $date_to = !empty($arResult["DATE_ACTIVE_TO"]) ? FormatDate("d F", MakeTimeStamp
         <span class="next <?if (isset($arResult['NEXT'])):?> black <?endif;?>"><?if (!empty($arResult['NEXT'])): ?><a href="<?=$arResult['NEXT']?>"></a><? endif; ?></span>
     </div>
     <h1><?=$arResult['NAME']?></h1>
-    <? if (!$USER->IsAuthorized() && $arResult["PROPERTIES"]["need_reg"]["VALUE"] == "Y") :?>
-        <p>Для прочтения необходима авторизация на сайте</p>
-    <? else :?>
     <ul class="action-list-one">
         <li>
 
@@ -112,7 +109,6 @@ $date_to = !empty($arResult["DATE_ACTIVE_TO"]) ? FormatDate("d F", MakeTimeStamp
                 </div>
             </div>
         </div>
-    <? endif; ?>
     <? endif; ?>
     <a class="back_page icon-news-back" href="<?=$arParams['SEF_FOLDER']?>">Назад к акциям</a>
 </div>

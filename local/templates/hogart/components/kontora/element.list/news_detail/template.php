@@ -22,7 +22,7 @@
                             <p>
                             <?
                             global $USER;
-                            if(!$USER->IsAuthorized() && $arItem['PROPERTIES']['nedd_reg']['VALUE'] == 'Y') {
+                            if(!$USER->IsAuthorized() && $arItem['PROPERTIES']['REGISTERED_ONLY']['VALUE'] == 'Y') {
                             ?>
                             <a class="profile-url js-popup-open" href="javascript:" data-popup="#popup-login">
                                 <?=$arItem['NAME']?>

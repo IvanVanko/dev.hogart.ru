@@ -46,7 +46,7 @@ $APPLICATION->SetTitle("Акции");
 			1 => "",
 		),
 		"LIST_PROPERTY_CODE" => array(
-			0 => "REGISTERED_ONLY",
+			0 => "",
 			1 => "",
 		),
 		"HIDE_LINK_WHEN_NO_DETAIL" => "N",
