@@ -150,6 +150,7 @@ $date_to = !empty($arResult["DATE_ACTIVE_TO"]) ? FormatDate("d F", MakeTimeStamp
             <div class="padding">
                 <div class="preview-project-viewport">
                     <div class="preview-project-viewport-inner">
+                        <? define("BX_DISABLE_INDEX_PAGE", true); ?>
                         <? $APPLICATION->IncludeComponent(
                             "bitrix:form.result.new",
                             "sem_quest",
