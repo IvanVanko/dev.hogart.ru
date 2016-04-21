@@ -6,7 +6,7 @@ $nav = array();
 $arSelect = Array("ID", "NAME", 'DETAIL_PAGE_URL');
 $arFilter = Array("IBLOCK_ID" => $arParams['IBLOCK_ID'], "ACTIVE" => "Y", "CHECK_PERMISSIONS" => "Y");
 if(!$USER->IsAuthorized()){
-    $arFilter['REGISTERED_ONLY'] = false;
+    $arFilter['PROPERTY_need_reg'] = "N";
 }
 $res = CIBlockElement::GetList($arParams['ORDER'], $arFilter, false, Array("nElementID" => $arResult['ID'],
                                                                            'nPageSize' => 1), $arSelect);
