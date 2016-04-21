@@ -13,16 +13,10 @@
 $this->setFrameMode(true);
 
 if (!empty($arResult["VARIABLES"]["ELEMENT_CODE"])) {
-    global $stock_filter;
-    $stock_filter = [];
-    if(!$USER->IsAuthorized()){
-        $stock_filter['PROPERTY_need_reg'] = "N";
-    }
     $ElementID = $APPLICATION->IncludeComponent(
         "bitrix:news.detail",
         "",
         Array(
-            "FILTER_NAME" => "stock_filter",
             "DISPLAY_DATE" => $arParams["DISPLAY_DATE"],
             "DISPLAY_NAME" => $arParams["DISPLAY_NAME"],
             "DISPLAY_PICTURE" => $arParams["DISPLAY_PICTURE"],
