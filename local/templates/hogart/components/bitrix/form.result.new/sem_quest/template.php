@@ -13,7 +13,9 @@
 if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 ?>
 
-<?=$arResult["FORM_NOTE"]?>
+<div style="text-align: center">
+    <?=$arResult["FORM_NOTE"]?>
+</div>
 
 <? if ($arResult["isFormNote"] != "Y") :
 /***********************************************************************************
