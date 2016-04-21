@@ -1326,6 +1326,7 @@ footer.right {
   height: 26px;
   margin-right: 10px;
   margin-bottom: 45px;
+  cursor: pointer;
 }
 .control span a {
   background-image: url(/images/arrow_control_w.png);
@@ -3961,24 +3962,107 @@ blockquote:before {
   vertical-align: top;
   margin-bottom: 40px;
 }
-.catalog_page .category.category_list > li img,
+.brands-wrapper {
+  padding-top: 10px;
+}
+.brands-wrapper a{
+  font-weight: normal !important;
+}
+.show-all-brands-js a {
+  color: #8e8e8e !important;
+}
+.show-all-brands-js a:after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 6px 3px 0 3px;
+    border-color: #D3D3DD transparent transparent transparent;
+    position: absolute;
+    top: 4px;
+    right: -10px;
+    transition: .4s;
+}
+.show-all-brands-js a.show:after {
+  transition: .4s;
+  transform: rotate(180deg);
+}
+.brands-s {
+      padding-bottom: 6px;
+}
+.hidden-brands-s {
+  display: none;
+  padding-top: 10px;
+  padding-bottom: 5px;
+}
+.hidden-brands-s.show {
+  display: block;
+}
+.brands-s a:after,
+.hidden-brands-s a:after {
+    content: '';
+    display: inline-block;
+    width: 1px;
+    height: 12px;
+    background: #8BDC2F;
+    margin: 0 4px;
+    vertical-align: middle;
+}
+.brands-s a:last-child:after,
+.hidden-brands-s a:last-child:after {
+    display:none;
+}
+.hidden-brands-s a {
+  margin-bottom: 5px;
+}
+.hidden-brands-s a:hover:before,
+.brands-s a:hover:before {
+  display: none;
+}
+/*.catalog_page .category.category_list > li img,
 .catalog_page .category .category_list > li img {
   max-width: 101px;
   position: absolute;
   top: 0;
   left: 0;
-}
-.catalog_page .category.category_list > li h2,
+}*/
+/*.catalog_page .category.category_list > li h2,
 .catalog_page .category .category_list > li h2 {
   margin: 0;
   padding-left: 125px;
   font-size: 16px;
   line-height: 22px;
   margin-bottom: 10px;
+}*/
+/*.catalog_page .category.category_list > li ul,
+.catalog_page .category .category_list > li ul {
+  padding-left: 125px;
+  list-style: none;
+}*/
+/*.catalog_page .category.category_list > li ul li a,
+.catalog_page .category .category_list > li ul li a {
+  text-decoration: none;
+  display: block;
+  position: relative;
+  color: #000;
+}*/
+.catalog_page .category.category_list > li img,
+.catalog_page .category .category_list > li img {
+  max-width: 101px;
+  position: absolute;
+  top: 50px;
+  left: 0;
+}
+.catalog_page .category.category_list > li h2,
+.catalog_page .category .category_list > li h2 {
+ position: absolute;
+ top: -26px;
+ left: 0;
+ width: 101px;
 }
 .catalog_page .category.category_list > li ul,
 .catalog_page .category .category_list > li ul {
-  padding-left: 125px;
+  padding-left: 150px;
   list-style: none;
 }
 .catalog_page .category.category_list > li ul li,
@@ -3988,9 +4072,10 @@ blockquote:before {
 .catalog_page .category.category_list > li ul li a,
 .catalog_page .category .category_list > li ul li a {
   text-decoration: none;
-  display: block;
+  display: inline-block;
   position: relative;
   color: #000;
+  font-weight: 600;
 }
 .catalog_page .category.category_list > li ul li a:hover,
 .catalog_page .category .category_list > li ul li a:hover {
@@ -5479,16 +5564,28 @@ blockquote:before {
   width: 100%;
   height: 10px;
 }
+/*.catalog_page .category.category_list > li,
+.catalog_page .category .category_list > li {
+  padding-right: 30px;
+  width: 50%;
+  min-height: 101px;
+}*/
+
 .catalog_page .category.category_list > li,
 .catalog_page .category .category_list > li {
   padding-right: 30px;
   width: 50%;
   min-height: 101px;
+  margin-bottom: 90px;
 }
 @media screen and (max-width: 1280px) {
-  .catalog_page .category.category_list > li,
+/*  .catalog_page .category.category_list > li,
   .catalog_page .category .category_list > li {
     padding-top: 120px;
+  }*/
+    .catalog_page .category.category_list > li,
+  .catalog_page .category .category_list > li {
+    padding-top: 165px;
   }
   .catalog_page .category.category_list > li h2,
   .catalog_page .category .category_list > li h2 {
