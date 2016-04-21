@@ -17,7 +17,7 @@
             <div class="small_news">
 				<?
 				global $USER;
-				if(!$USER->IsAuthorized() && $arItem['PROPERTIES']['REGISTERED_ONLY']['VALUE'] == 'Y') {
+				if(!$USER->IsAuthorized() && $arItem['PROPERTIES']['need_reg']['VALUE'] == 'Y') {
 					?>
 					<p><a class="profile-url js-popup-open" href="javascript:" data-popup="#popup-login"><?=$arItem['NAME']?></a></p>
 					<p>Авторизуйтесь, чтобы узнать акцию</p>

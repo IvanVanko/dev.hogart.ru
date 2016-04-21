@@ -13,7 +13,7 @@ $this->setFrameMode(true);?>
                         $date_from = FormatDate("d F Y", MakeTimeStamp($arItem["ACTIVE_FROM"]));?>
                         <?
                         global $USER;
-                        if(!$USER->IsAuthorized() && $arItem['PROPERTIES']['REGISTERED_ONLY']['VALUE'] == 'Y') {
+                        if(!$USER->IsAuthorized() && $arItem['PROPERTIES']['need_reg']['VALUE'] == 'Y') {
                             ?>
                             <a class="profile-url js-popup-open" href="javascript:" data-popup="#popup-login">
                                 <div class="date">
