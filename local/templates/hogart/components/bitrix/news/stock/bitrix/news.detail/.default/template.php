@@ -150,7 +150,10 @@ $date_to = !empty($arResult["DATE_ACTIVE_TO"]) ? FormatDate("d F", MakeTimeStamp
             <div class="padding">
                 <div class="preview-project-viewport">
                     <div class="preview-project-viewport-inner">
-                        <? define("BX_DISABLE_INDEX_PAGE", true); ?>
+                        <?
+                            global $MESS;
+                            $MESS["FORM_NOTE_ADDOK"] = "Спасибо! Ваша заявка на участие в акции \"". $arResult['NAME'] ."\" принята.";
+                        ?>
                         <? $APPLICATION->IncludeComponent(
                             "bitrix:form.result.new",
                             "sem_quest",

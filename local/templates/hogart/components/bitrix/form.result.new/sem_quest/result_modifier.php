@@ -6,5 +6,3 @@
  * Time: 20:34
  */
 
-global $MESS;
-$MESS["FORM_NOTE_ADDOK"] = "Спасибо! Ваша заявка на участие в акции \"".$arParams['ACTION_NAME']."\" принята.";
