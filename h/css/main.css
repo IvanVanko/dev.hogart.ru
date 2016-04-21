@@ -6015,6 +6015,7 @@ blockquote:before {
   margin-right: 28px;
   width: 100px;
   height: 100px;
+  line-height: 100px;
   cursor: default;
   text-align: center;
   border: 1px solid #e1e1e1;
