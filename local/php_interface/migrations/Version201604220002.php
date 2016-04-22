@@ -57,7 +57,9 @@ class Version201604220002 extends Version
                 );
                 if(($id = \CFormStatus::Set($arFields_status, 0))) {
                     $this->outSuccess("Добавлен статус \"Подверждена\"({$id}) формы \"Регистрация на акцию\"");
-                    if (($arTemplates = \CFormStatus::SetMailTemplate($WEB_FORM_ID, $id, "Y", '', true)) && !empty($arTemplates["FIELDS"]["EVENT_NAME"])) {
+                    $arTemplates = \CFormStatus::SetMailTemplate($WEB_FORM_ID, $id, "Y", '', true);
+                    $arTemplates = reset($arTemplates);
+                    if (!empty($arTemplates["FIELDS"]["EVENT_NAME"])) {
                         $EventHelper->updateEventMessage($arTemplates["FIELDS"]["EVENT_NAME"], [
                             "SUBJECT" => "Регистрация подтверждена! #EVENT_NAME#, #DATES#",
                             "MESSAGE" => "#INVITATOIN_TEXT#<br /><br />#URL#",
@@ -85,8 +87,10 @@ class Version201604220002 extends Version
                     "arPERMISSION_DELETE"	=> array(0),
                 );
                 if(($id = \CFormStatus::Set($arFields_status, 0))) {
-                    $this->outSuccess("Добавлен статус \"Отклонена\" формы \"Регистрация на акцию\"");
-                    if (($arTemplates = \CFormStatus::SetMailTemplate($WEB_FORM_ID, $id, "Y", '', true)) && !empty($arTemplates["FIELDS"]["EVENT_NAME"])) {
+                    $this->outSuccess("Добавлен статус \"Отклонена\"({$id}) формы \"Регистрация на акцию\"");
+                    $arTemplates = \CFormStatus::SetMailTemplate($WEB_FORM_ID, $id, "Y", '', true);
+                    $arTemplates = reset($arTemplates);
+                    if (!empty($arTemplates["FIELDS"]["EVENT_NAME"])) {
                         $EventHelper->updateEventMessage($arTemplates["FIELDS"]["EVENT_NAME"], [
                             "SUBJECT" => "Регистрация не состоялась! #EVENT_NAME#, #DATES#",
                             "MESSAGE" => "#DECLINE_TEXT#<br /><br />#URL#",
