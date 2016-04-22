@@ -758,6 +758,11 @@ class DisplayHandlers {
 
     public static function MyOnAdminTabControlBegin(&$form) {
 
+        if($GLOBALS["APPLICATION"]->GetCurPage() == "/bitrix/admin/iblock_element_edit.php" && $_GET["IBLOCK_ID"] == "6" && $_GET["action"] == "copy") {
+            var_dump(111);
+            exit;
+        }
+
         if($GLOBALS["APPLICATION"]->GetCurPage() == "/bitrix/admin/subscr_edit.php") {
 
             $subscribe_settings = \CUSTOM\Entity\SubscribeSettingsTable::GetList(array(
