@@ -33,7 +33,9 @@ if ($arResult["isFormTitle"]):?>
 	<div id="form-<?=$arResult["arForm"]['ID'];?>" class="js-validation-form-new">
     <?=$arResult["FORM_HEADER"]?>
 	<?foreach ($arResult["QUESTIONS"] as $FIELD_SID => $arQuestion):?>
-		<?if ($arQuestion['STRUCTURE'][0]['FIELD_TYPE'] == 'hidden'):
+        <? if (in_array($FIELD_SID, ["EVENT_NAME", "EVENT_ID"])): ?>
+            <input type="hidden" class="inputtext" name="form_text_<?=$arQuestion['STRUCTURE'][0]['ID']?>" value="<?=$arResult[$FIELD_SID]?>">
+		<?elseif ($arQuestion['STRUCTURE'][0]['FIELD_TYPE'] == 'hidden'):
 			echo $arQuestion["HTML_CODE"];
 		elseif ($arQuestion['STRUCTURE'][0]['FIELD_TYPE'] == 'textarea'):?>
 			<a href="#" class="trigger-border-bottom js-accordion" data-accordion="#appendmessage"><?=$arQuestion["CAPTION"]?></a>
