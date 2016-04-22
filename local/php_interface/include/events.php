@@ -32,6 +32,41 @@ class BasicHandlers {
         }
     }
 
+    public function OnBeforeEventAddHandler(&$event, &$lid, &$arFields, &$message_id)
+    {
+        if ($lid == "s1") {
+            if (preg_match("%FORM_STATUS_CHANGE_(?P<web_form_id>\d+)_(?P<status_id>\d+)%", $event, $m)) {
+                $RESULT_ID = $arFields["RS_RESULT_ID"];
+                $WEB_FORM_ID = $m["web_form_id"];
+                $res = \CFormStatus::GetList($WEB_FORM_ID, $by, $order, [
+                    "ACTIVE" => "Y"
+                ]);
+                $statuses = [];
+                while (($status = $res->GetNext())) {
+                    $statuses[$status["ID"]] = $status;
+                }
+
+                if ($WEB_FORM_ID == "9") {
+                    \CForm::GetResultAnswerArray($WEB_FORM_ID,
+                        $arrColumns,
+                        $arrAnswers,
+                        $arrAnswersVarname, [
+                            "RESULT_ID" => $RESULT_ID
+                        ]
+                    );
+                    pr($arrAnswersVarname);
+                    exit;
+                    switch ($statuses[$m["status_id"]]["TITLE"]) {
+                        case "Подверждена":
+                            break;
+                        case "Отклонена":
+                            break;
+                    }
+                }
+            }
+        }
+    }
+
 }
 
 /* AddEventHandler("iblock", "OnBeforeIBlockElementAdd",    array("IBlockHandlers", "OnBeforeIBlockElementAddHandler"));
