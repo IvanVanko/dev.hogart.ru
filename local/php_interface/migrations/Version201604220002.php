@@ -57,7 +57,13 @@ class Version201604220002 extends Version
                     "IN_EXCEL_TABLE"		=> "Y",
                     "FIELD_TYPE"			=> "integer"
                 );
-                if (\CFormField::Set($arFields, 0)) {
+                if (($fieldId = \CFormField::Set($arFields, 0))) {
+                    \CFormAnswer::Set([
+                        "QUESTION_ID" => $fieldId,
+                        "MESSAGE"       => " ",
+                        "ACTIVE"        => "Y",
+                        "FIELD_TYPE"    => "text"
+                    ], 0);
                     $this->outSuccess("Добавлено поле \"{$arFields['TITLE']}\" формы \"Регистрация на акцию\"");
                 }
             }
@@ -98,8 +104,8 @@ class Version201604220002 extends Version
                     $arTemplates = reset($arTemplates);
                     if (!empty($arTemplates["FIELDS"]["EVENT_NAME"])) {
                         \CFormStatus::Set([
-                            "arMAIL_TEMPLATE" => $id
-                        ], 0);
+                            "arMAIL_TEMPLATE" => $arTemplates["ID"]
+                        ], $id);
                         $EventHelper->updateEventMessage($arTemplates["FIELDS"]["EVENT_NAME"], [
                             "SUBJECT" => "Регистрация подтверждена! #EVENT_NAME#, #DATES#",
                             "MESSAGE" => "#INVITATOIN_TEXT#<br /><br />#URL#",
@@ -133,8 +139,8 @@ class Version201604220002 extends Version
                     $arTemplates = reset($arTemplates);
                     if (!empty($arTemplates["FIELDS"]["EVENT_NAME"])) {
                         \CFormStatus::Set([
-                            "arMAIL_TEMPLATE" => $id
-                        ], 0);
+                            "arMAIL_TEMPLATE" => $arTemplates["ID"]
+                        ], $id);
                         $EventHelper->updateEventMessage($arTemplates["FIELDS"]["EVENT_NAME"], [
                             "SUBJECT" => "Регистрация не состоялась! #EVENT_NAME#, #DATES#",
                             "MESSAGE" => "#DECLINE_TEXT#<br /><br />#URL#",
