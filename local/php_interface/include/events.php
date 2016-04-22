@@ -59,7 +59,8 @@ class BasicHandlers {
                     $arEvent["PROPERTIES"] = $eventElement->GetProperties();
 
                     $arFields["EMAIL"] = $arrAnswersVarname[$RESULT_ID]["EMAIL"][0]["USER_TEXT"];
-                    $arFields["EVENT_NAME"] = $arrAnswersVarname[$RESULT_ID]["EVENT_NAME"][0]["USER_TEXT"];
+                    $arFields["EVENT_NAME"] = $arEvent["NAME"];
+                    $arFields["DATES"] = FormatDate("d.m.Y", MakeTimeStamp($arEvent["DATE_ACTIVE_FROM"])) . " - " . FormatDate("d.m.Y", MakeTimeStamp($arEvent["DATE_ACTIVE_TO"]));
 
                     $arFields["INVITATION_TEXT"] = $arEvent["PROPERTIES"]["INVITATION_TEXT"]["VALUE"];
                     $arFields["DECLINE_TEXT"] = $arEvent["PROPERTIES"]["DECLINE_TEXT"]["VALUE"];
