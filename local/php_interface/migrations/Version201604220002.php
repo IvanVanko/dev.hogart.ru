@@ -104,7 +104,7 @@ class Version201604220002 extends Version
                     $arTemplates = reset($arTemplates);
                     if (!empty($arTemplates["FIELDS"]["EVENT_NAME"])) {
                         \CFormStatus::Set([
-                            "arMAIL_TEMPLATE" => $arTemplates["ID"]
+                            "arMAIL_TEMPLATE" => [$arTemplates["ID"]]
                         ], $id);
                         $EventHelper->updateEventMessage($arTemplates["FIELDS"]["EVENT_NAME"], [
                             "SUBJECT" => "Регистрация подтверждена! #EVENT_NAME#, #DATES#",
@@ -139,7 +139,7 @@ class Version201604220002 extends Version
                     $arTemplates = reset($arTemplates);
                     if (!empty($arTemplates["FIELDS"]["EVENT_NAME"])) {
                         \CFormStatus::Set([
-                            "arMAIL_TEMPLATE" => $arTemplates["ID"]
+                            "arMAIL_TEMPLATE" => [$arTemplates["ID"]]
                         ], $id);
                         $EventHelper->updateEventMessage($arTemplates["FIELDS"]["EVENT_NAME"], [
                             "SUBJECT" => "Регистрация не состоялась! #EVENT_NAME#, #DATES#",
