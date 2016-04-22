@@ -8,12 +8,15 @@
  */
 namespace Sprint\Migration;
 
+use Sprint\Migration\Helpers\EventHelper;
+
 class Version201604220002 extends Version
 {
     protected $description = "Изменения формы для задачи 38";
 
     public function up()
     {
+        $EventHelper = new EventHelper();
         if(!\CModule::IncludeModule("form")) {
             $this->outError("Отсутствует модуль Form");
         } else {
@@ -52,8 +55,15 @@ class Version201604220002 extends Version
                     "arPERMISSION_EDIT"	=> array(0),
                     "arPERMISSION_DELETE"	=> array(0),
                 );
-                if(\CFormStatus::Set($arFields_status, 0)) {
-                    $this->outSuccess("Добавлен статус \"Подверждена\" формы \"Регистрация на акцию\"");
+                if(($id = \CFormStatus::Set($arFields_status, 0))) {
+                    $this->outSuccess("Добавлен статус \"Подверждена\"({$id}) формы \"Регистрация на акцию\"");
+                    if (($arTemplates = \CFormStatus::SetMailTemplate($WEB_FORM_ID, $id, "Y", '', true)) && !empty($arTemplates["FIELDS"]["EVENT_NAME"])) {
+                        $EventHelper->updateEventMessage($arTemplates["FIELDS"]["EVENT_NAME"], [
+                            "SUBJECT" => "Регистрация подтверждена! #EVENT_NAME#, #DATES#",
+                            "MESSAGE" => "#INVITATOIN_TEXT#<br /><br />#URL#",
+                            "BODY_TYPE" => "html"
+                        ]);
+                    }
                 }
             }
             // Добавить статус Отклонена
@@ -74,8 +84,15 @@ class Version201604220002 extends Version
                     "arPERMISSION_EDIT"	=> array(0),
                     "arPERMISSION_DELETE"	=> array(0),
                 );
-                if(\CFormStatus::Set($arFields_status, 0)) {
+                if(($id = \CFormStatus::Set($arFields_status, 0))) {
                     $this->outSuccess("Добавлен статус \"Отклонена\" формы \"Регистрация на акцию\"");
+                    if (($arTemplates = \CFormStatus::SetMailTemplate($WEB_FORM_ID, $id, "Y", '', true)) && !empty($arTemplates["FIELDS"]["EVENT_NAME"])) {
+                        $EventHelper->updateEventMessage($arTemplates["FIELDS"]["EVENT_NAME"], [
+                            "SUBJECT" => "Регистрация не состоялась! #EVENT_NAME#, #DATES#",
+                            "MESSAGE" => "#DECLINE_TEXT#<br /><br />#URL#",
+                            "BODY_TYPE" => "html"
+                        ]);
+                    }
                 }
             }
         }

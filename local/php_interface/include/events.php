@@ -709,6 +709,7 @@ class MyCustomClass {
 
 AddEventHandler("form", "onBeforeResultAdd", Array("FormHandlers", "OnBeforeResultAddHandler"));
 AddEventHandler("form", "onAfterResultAdd", Array("FormHandlers", "OnAfterResultAddHandler"));
+AddEventHandler("form", "onBeforeResultStatusChange", Array("FormHandlers", "onBeforeResultStatusChangeHandler"));
 
 class FormHandlers {
     public static function OnBeforeResultAddHandler($id, $form_fields, &$arrVALUES) {
@@ -748,6 +749,30 @@ class FormHandlers {
 
         fileDump($arrVALUES, true);
         return true;
+    }
+
+    public function onBeforeResultStatusChangeHandler($form_id, $result_id, &$new_status_id, $check_rights = "Y")
+    {
+        // Обработка формы Регистрация на акцию
+        if ($form_id == "9") {
+            $WEB_FORM_ID = "9";
+            $res = \CFormStatus::GetList($WEB_FORM_ID, $by, $order, [
+                "ACTIVE" => "Y"
+            ]);
+            $statuses = [];
+            while (($status = $res->GetNext())) {
+                $statuses[$status["ID"]] = $status;
+            }
+
+            if (intval($result_id) > 0) {
+                switch ($statuses[$new_status_id]["TITLE"]) {
+                    case "Подверждена":
+                        break;
+                    case "Отклонена":
+                        break;
+                }
+            }
+        }
     }
 }
 
