@@ -54,9 +54,9 @@ class BasicHandlers {
                             "RESULT_ID" => $RESULT_ID
                         ]
                     );
-                    $event = \CIBlockElement::GetByID($arrAnswersVarname[$RESULT_ID]["EVENT_ID"][0]["USER_TEXT"])->GetNextElement();
-                    $arEvent = $event->GetFields();
-                    $arEvent["PROPERTIES"] = $event->GetProperties();
+                    $eventElement = \CIBlockElement::GetByID($arrAnswersVarname[$RESULT_ID]["EVENT_ID"][0]["USER_TEXT"])->GetNextElement();
+                    $arEvent = $eventElement->GetFields();
+                    $arEvent["PROPERTIES"] = $eventElement->GetProperties();
 
                     $arFields["EMAIL"] = $arrAnswersVarname[$RESULT_ID]["EMAIL"][0]["USER_TEXT"];
                     $arFields["EVENT_NAME"] = $arrAnswersVarname[$RESULT_ID]["EVENT_NAME"][0]["USER_TEXT"];
