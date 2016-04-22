@@ -51,6 +51,9 @@ class Version201604220002 extends Version
                     case "E-mail":
                         $SID = "EMAIL";
                         break;
+                    case 'Телефон':
+                        $SID = "PHONE";
+                        break;
                     default:
                         continue;
                         break;

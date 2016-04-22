@@ -59,7 +59,7 @@ class BasicHandlers {
                     $arEvent["PROPERTIES"] = $eventElement->GetProperties();
 
                     $arFields["EMAIL"] = $arrAnswersVarname[$RESULT_ID]["EMAIL"][0]["USER_TEXT"];
-                    $arFields["EVENT_NAME"] = $arEvent["NAME"];
+                    $arFields["EVENT_NAME"] = htmlspecialchars_decode($arEvent["NAME"]);
                     $arFields["DATES"] = FormatDate("d.m.Y", MakeTimeStamp($arEvent["DATE_ACTIVE_FROM"])) . " - " . FormatDate("d.m.Y", MakeTimeStamp($arEvent["DATE_ACTIVE_TO"]));
 
                     $arFields["INVITATION_TEXT"] = $arEvent["PROPERTIES"]["INVITATION_TEXT"]["VALUE"];
@@ -810,10 +810,35 @@ class FormHandlers {
             }
 
             if (intval($result_id) > 0) {
+                
+                \CForm::GetResultAnswerArray($WEB_FORM_ID,
+                    $arrColumns,
+                    $arrAnswers,
+                    $arrAnswersVarname, [
+                        "RESULT_ID" => $result_id
+                    ]
+                );
+                $eventElement = \CIBlockElement::GetByID($arrAnswersVarname[$result_id]["EVENT_ID"][0]["USER_TEXT"])->GetNextElement();
+                $arEvent = $eventElement->GetFields();
+                $arEvent["PROPERTIES"] = $eventElement->GetProperties();
+
+                $arFields["EMAIL"] = $arrAnswersVarname[$result_id]["EMAIL"][0]["USER_TEXT"];
+                $arFields["EVENT_NAME"] = htmlspecialchars_decode($arEvent["NAME"]);
+                $arFields["DATES"] = FormatDate("d.m.Y", MakeTimeStamp($arEvent["DATE_ACTIVE_FROM"])) . " - " . FormatDate("d.m.Y", MakeTimeStamp($arEvent["DATE_ACTIVE_TO"]));
+
+                $arFields["INVITATION_TEXT"] = $arEvent["PROPERTIES"]["INVITATION_TEXT"]["VALUE"];
+                $arFields["DECLINE_TEXT"] = $arEvent["PROPERTIES"]["DECLINE_TEXT"]["VALUE"];
+                $arFields['URL'] = "http://" . ($_SERVER["SERVER_NAME"] ?: $_SERVER['HTTP_HOST']) . "{$arEvent['DETAIL_PAGE_URL']}";
+
+                
                 switch ($statuses[$new_status_id]["TITLE"]) {
                     case "Подверждена":
+                        $sms_message = "Регистрация подтверждена! {$arFields['EVENT_NAME']}, {$arFields['DATES']}.\n{$arFields['INVITATION_TEXT']}\n{$arFields['URL']}";
+                        send_sms($arrAnswersVarname[$result_id]["PHONE"][0]["USER_TEXT"], strip_tags($sms_message));
                         break;
                     case "Отклонена":
+                        $sms_message = "Регистрация не состоялась! {$arFields['EVENT_NAME']}, {$arFields['DATES']}.\n{$arFields['DECLINE_TEXT']}\n{$arFields['URL']}";
+                        send_sms($arrAnswersVarname[$result_id]["PHONE"][0]["USER_TEXT"], strip_tags($sms_message));
                         break;
                 }
             }
