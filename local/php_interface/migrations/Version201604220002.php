@@ -20,11 +20,48 @@ class Version201604220002 extends Version
         if(!\CModule::IncludeModule("form")) {
             $this->outError("Отсутствует модуль Form");
         } else {
-
-            $by = "s_id";
-            $order = "asc";
             $WEB_FORM_ID = "9";
+            $fieldsRes = \CFormField::GetList($WEB_FORM_ID, "", $by, $order, []);
+            while (($field = $fieldsRes->GetNext())) {
+                switch ($field["TITLE"]) {
+                    case "Акция":
+                        $SID = "EVENT_NAME";
+                        break;
+                    case "E-mail":
+                        $SID = "EMAIL";
+                        break;
+                    default:
+                        continue;
+                        break;
+                }
+                if (\CFormField::Set([
+                    "FORM_ID" => $field["FORM_ID"],
+                    "SID" => $SID
+                ], $field["ID"])) {
+                    $this->outSuccess("В поле \"{$field['TITLE']}\" формы \"Регистрация на акцию\" обновлен идентификатор {$SID}");
+                }
+            }
 
+            $res = \CFormField::GetList("9", "", $by, $order, [
+                "SID" => "EVENT_ID"
+            ]);
+            if (!($field = $res->GetNext())) {
+                $arFields = array(
+                    "FORM_ID"				=> $WEB_FORM_ID,
+                    "ACTIVE"				=> "Y",
+                    "TITLE"					=> "ID Акции",
+                    "TITLE_TYPE"			=> "text",
+                    "SID"					=> "EVENT_ID",
+                    "REQUIRED"				=> "Y",
+                    "IN_RESULTS_TABLE"		=> "Y",
+                    "IN_EXCEL_TABLE"		=> "Y",
+                    "FIELD_TYPE"			=> "integer"
+                );
+                if (\CFormField::Set($arFields, 0)) {
+                    $this->outSuccess("Добавлено поле \"{$arFields['TITLE']}\" формы \"Регистрация на акцию\"");
+                }
+            }
+            
             $res = \CFormStatus::GetList($WEB_FORM_ID, $by, $order, [
                 "TITLE" => "DEFAULT"
             ]);
@@ -60,10 +97,14 @@ class Version201604220002 extends Version
                     $arTemplates = \CFormStatus::SetMailTemplate($WEB_FORM_ID, $id, "Y", '', true);
                     $arTemplates = reset($arTemplates);
                     if (!empty($arTemplates["FIELDS"]["EVENT_NAME"])) {
+                        \CFormStatus::Set([
+                            "arMAIL_TEMPLATE" => $id
+                        ], 0);
                         $EventHelper->updateEventMessage($arTemplates["FIELDS"]["EVENT_NAME"], [
                             "SUBJECT" => "Регистрация подтверждена! #EVENT_NAME#, #DATES#",
                             "MESSAGE" => "#INVITATOIN_TEXT#<br /><br />#URL#",
-                            "BODY_TYPE" => "html"
+                            "BODY_TYPE" => "html",
+                            "EMAIL_TO" => "#EMAIL#"
                         ]);
                     }
                 }
@@ -91,10 +132,14 @@ class Version201604220002 extends Version
                     $arTemplates = \CFormStatus::SetMailTemplate($WEB_FORM_ID, $id, "Y", '', true);
                     $arTemplates = reset($arTemplates);
                     if (!empty($arTemplates["FIELDS"]["EVENT_NAME"])) {
+                        \CFormStatus::Set([
+                            "arMAIL_TEMPLATE" => $id
+                        ], 0);
                         $EventHelper->updateEventMessage($arTemplates["FIELDS"]["EVENT_NAME"], [
                             "SUBJECT" => "Регистрация не состоялась! #EVENT_NAME#, #DATES#",
                             "MESSAGE" => "#DECLINE_TEXT#<br /><br />#URL#",
-                            "BODY_TYPE" => "html"
+                            "BODY_TYPE" => "html",
+                            "EMAIL_TO" => "#EMAIL#"
                         ]);
                     }
                 }

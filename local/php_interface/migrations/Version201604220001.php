@@ -17,8 +17,6 @@ class Version201604220001 extends Version
         if(!\CModule::IncludeModule("form")) {
             $this->outError("Отсутствует модуль Form");
         } else {
-            $by = "s_id";
-            $order = "asc";
             $res = \CFormField::GetList("9", "", $by, $order, [
                 "TITLE" => "Компания"
             ]);

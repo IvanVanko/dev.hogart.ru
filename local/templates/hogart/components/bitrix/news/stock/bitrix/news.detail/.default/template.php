@@ -170,7 +170,8 @@ $date_to = !empty($arResult["DATE_ACTIVE_TO"]) ? FormatDate("d F", MakeTimeStamp
                                 "SUCCESS_URL" => "",
                                 "CHAIN_ITEM_TEXT" => "",
                                 "CHAIN_ITEM_LINK" => "",
-                                "ACTION_NAME" => $arResult['NAME']
+                                "ACTION_NAME" => $arResult['NAME'],
+                                "ACTION_ID" => $arResult['ID']
                             ), $component
                         ); ?>
                     </div>
