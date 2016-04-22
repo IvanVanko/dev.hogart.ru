@@ -24,7 +24,6 @@ class Version201604220002 extends Version
             "CODE" => "INVITATION_TEXT",
             "NAME" => "Текст подтверждения участия в акции",
             "ACTIVE" => "Y",
-            "IS_REQUIRED" => "Y",
             "ROW_COUNT" => 10
         ])) {
             $this->outSuccess("Добавлено свойство \"Текст подтверждения участия в акции\" в Инфоблок \"Акции\"");
@@ -34,7 +33,6 @@ class Version201604220002 extends Version
             "CODE" => "DECLINE_TEXT",
             "NAME" => "Текст отказа в регистрации на акцию",
             "ACTIVE" => "Y",
-            "IS_REQUIRED" => "Y",
             "ROW_COUNT" => 10
         ])) {
             $this->outSuccess("Добавлено свойство \"Текст отказа в регистрации на акцию\" в Инфоблок \"Акции\"");
@@ -127,7 +125,8 @@ class Version201604220002 extends Version
                     $arTemplates = reset($arTemplates);
                     if (!empty($arTemplates["FIELDS"]["EVENT_NAME"])) {
                         \CFormStatus::Set([
-                            "arMAIL_TEMPLATE" => [[$arTemplates["ID"]]]
+                            "FORM_ID"		=> $WEB_FORM_ID,
+                            "arMAIL_TEMPLATE" => [$arTemplates["ID"]]
                         ], $id);
                         $EventHelper->updateEventMessage($arTemplates["FIELDS"]["EVENT_NAME"], [
                             "SUBJECT" => "Регистрация подтверждена! #EVENT_NAME#, #DATES#",
@@ -162,7 +161,8 @@ class Version201604220002 extends Version
                     $arTemplates = reset($arTemplates);
                     if (!empty($arTemplates["FIELDS"]["EVENT_NAME"])) {
                         \CFormStatus::Set([
-                            "arMAIL_TEMPLATE" => [[$arTemplates["ID"]]]
+                            "FORM_ID"		=> $WEB_FORM_ID,
+                            "arMAIL_TEMPLATE" => [$arTemplates["ID"]]
                         ], $id);
                         $EventHelper->updateEventMessage($arTemplates["FIELDS"]["EVENT_NAME"], [
                             "SUBJECT" => "Регистрация не состоялась! #EVENT_NAME#, #DATES#",
