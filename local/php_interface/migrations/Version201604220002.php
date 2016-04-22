@@ -9,6 +9,7 @@
 namespace Sprint\Migration;
 
 use Sprint\Migration\Helpers\EventHelper;
+use Sprint\Migration\Helpers\IblockHelper;
 
 class Version201604220002 extends Version
 {
@@ -17,6 +18,28 @@ class Version201604220002 extends Version
     public function up()
     {
         $EventHelper = new EventHelper();
+        $IblockHelper = new IblockHelper();
+
+        if ($IblockHelper->addPropertyIfNotExists(6, [
+            "CODE" => "INVITATION_TEXT",
+            "NAME" => "Текст подтверждения участия в акции",
+            "ACTIVE" => "Y",
+            "IS_REQUIRED" => "Y",
+            "ROW_COUNT" => 10
+        ])) {
+            $this->outSuccess("Добавлено свойство \"Текст подтверждения участия в акции\" в Инфоблок \"Акции\"");
+        }
+
+        if ($IblockHelper->addPropertyIfNotExists(6, [
+            "CODE" => "DECLINE_TEXT",
+            "NAME" => "Текст отказа в регистрации на акцию",
+            "ACTIVE" => "Y",
+            "IS_REQUIRED" => "Y",
+            "ROW_COUNT" => 10
+        ])) {
+            $this->outSuccess("Добавлено свойство \"Текст отказа в регистрации на акцию\" в Инфоблок \"Акции\"");
+        }
+
         if(!\CModule::IncludeModule("form")) {
             $this->outError("Отсутствует модуль Form");
         } else {
@@ -108,7 +131,7 @@ class Version201604220002 extends Version
                         ], $id);
                         $EventHelper->updateEventMessage($arTemplates["FIELDS"]["EVENT_NAME"], [
                             "SUBJECT" => "Регистрация подтверждена! #EVENT_NAME#, #DATES#",
-                            "MESSAGE" => "#INVITATOIN_TEXT#<br /><br />#URL#",
+                            "MESSAGE" => "#INVITATION_TEXT#<br /><br />#URL#",
                             "BODY_TYPE" => "html",
                             "EMAIL_TO" => "#EMAIL#"
                         ]);

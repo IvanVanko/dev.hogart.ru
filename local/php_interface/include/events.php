@@ -35,7 +35,7 @@ class BasicHandlers {
     public function OnBeforeEventAddHandler(&$event, &$lid, &$arFields, &$message_id)
     {
         if ($lid == "s1") {
-            if (preg_match("%FORM_STATUS_CHANGE_SIMPE_FORM_(?P<web_form_id>\d+)_(?P<status_id>\d+)%", $event, $m)) {
+            if (preg_match("%FORM_STATUS_CHANGE_SIMPLE_FORM_(?P<web_form_id>\d+)_(?P<status_id>\d+)%", $event, $m)) {
                 $RESULT_ID = $arFields["RS_RESULT_ID"];
                 $WEB_FORM_ID = $m["web_form_id"];
                 $res = \CFormStatus::GetList($WEB_FORM_ID, $by, $order, [
@@ -54,8 +54,17 @@ class BasicHandlers {
                             "RESULT_ID" => $RESULT_ID
                         ]
                     );
-                    pr($arrAnswersVarname);
-                    exit;
+                    $event = \CIBlockElement::GetByID($arrAnswersVarname[$RESULT_ID]["EVENT_ID"][0]["USER_TEXT"])->GetNextElement();
+                    $arEvent = $event->GetFields();
+                    $arEvent["PROPERTIES"] = $event->GetProperties();
+
+                    $arFields["EMAIL"] = $arrAnswersVarname[$RESULT_ID]["EMAIL"][0]["USER_TEXT"];
+                    $arFields["EVENT_NAME"] = $arrAnswersVarname[$RESULT_ID]["EVENT_NAME"][0]["USER_TEXT"];
+
+                    $arFields["INVITATION_TEXT"] = $arEvent["PROPERTIES"]["INVITATION_TEXT"]["VALUE"];
+                    $arFields["DECLINE_TEXT"] = $arEvent["PROPERTIES"]["DECLINE_TEXT"]["VALUE"];
+                    $arFields['URL'] = "http://" . ($_SERVER["SERVER_NAME"] ?: $_SERVER['HTTP_HOST']) . "{$arEvent['DETAIL_PAGE_URL']}";
+
                     switch ($statuses[$m["status_id"]]["TITLE"]) {
                         case "Подверждена":
                             break;
