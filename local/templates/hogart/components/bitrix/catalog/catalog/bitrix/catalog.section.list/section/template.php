@@ -30,7 +30,7 @@ $this->setFrameMode(true);?>
 						<div class="brands-s">
 							<?foreach($brand as $key_2=>$b){?>
 							<?if($i==4) break;?>
-							<a href="<?=$arSection["SECTION_PAGE_URL"]; ?>?arrFilter_4_<?=abs(crc32($key_2))?>"><?=$b?></a>
+							<a href="<?=$arSection["SECTION_PAGE_URL"]; ?>?arrFilter_4_<?=abs(crc32($key_2))?>=Y&set_filter=Показать"><?=$b?></a>
 							<?$i++;}?>
 						</div>
 					<?}
@@ -41,7 +41,7 @@ $this->setFrameMode(true);?>
 				<div class="hidden-brands-s">
 				<?foreach($brand as $key_2=>$b){?>
 					<?if($i<4){ $i++;continue;}?>
-					<a href="<?=$arSection["SECTION_PAGE_URL"]; ?>?arrFilter_4_<?=abs(crc32($key_2))?>"><?=$b?></a>
+					<a href="<?=$arSection["SECTION_PAGE_URL"]; ?>?arrFilter_4_<?=abs(crc32($key_2))?>=Y&set_filter=Показать"><?=$b?></a>
 					<?$i++;}?>
 				</div>
 				<?if(count($arResult['BRANDS'][$key])>4){?>
