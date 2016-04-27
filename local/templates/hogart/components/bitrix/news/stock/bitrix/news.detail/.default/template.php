@@ -195,7 +195,7 @@ $date_to = !empty($arResult["DATE_ACTIVE_TO"]) ? FormatDate("d F", MakeTimeStamp
                             if (!empty($orgs)) {
                                 $MESS["FORM_NOTE_ADDOK"] .= "<br><br>По дополнительным вопросам просим обращаться к ответственным за проведение: ";
                                 foreach ($orgs as $org) {
-                                    $MESS["FORM_NOTE_ADDOK"] .= "<br><br>{$org['NAME']}, {$org['props']['phone']['VALUE']}";
+                                    $MESS["FORM_NOTE_ADDOK"] .= "<br><br>{$org['NAME']}<br>{$org['props']['phone']['VALUE']}";
                                 }
                             }
                         ?>
