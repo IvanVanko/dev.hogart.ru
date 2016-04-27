@@ -716,7 +716,17 @@ class FormHandlers {
                 $arFields["DECLINE_TEXT"] = $arEvent["PROPERTIES"]["DECLINE_TEXT"]["VALUE"];
                 $arFields['URL'] = "http://" . ($_SERVER["SERVER_NAME"] ?: $_SERVER['HTTP_HOST']) . "{$arEvent['DETAIL_PAGE_URL']}";
 
-                
+                if (!empty($arEvent["PROPERTIES"]["ORG"]["VALUE"])) {
+                    $arFields["ORGS"] = "По дополнительным вопросам просим обращаться к ответственным за проведение: <br>";
+
+                    $res = CIBlockElement::GetList(Array(), ["ID" => $arEvent["PROPERTIES"]["ORG"]["VALUE"]], false, false, array());
+                    while ($ob = $res->GetNextElement()) {
+                        $org = $ob->GetFields();
+                        $org['props'] = $ob->GetProperties();
+                        $arFields["ORGS"] .= "{$org['NAME']}, {$org['props']['phone']['VALUE']}, {$org['props']['mail']['VALUE']}<br>";
+                    }
+                }
+
                 switch ($statuses[$new_status_id]["TITLE"]) {
                     case "Подверждена":
                         $sms_message = "Регистрация подтверждена! {$arFields['EVENT_NAME']}, {$arFields['DATES']}.\n{$arFields['INVITATION_TEXT']}\n{$arFields['URL']}";

@@ -150,7 +150,7 @@ class Version201604220002 extends Version
                         ], $id);
                         $EventHelper->updateEventMessage($arTemplates["FIELDS"]["EVENT_NAME"], [
                             "SUBJECT" => "Регистрация подтверждена! #EVENT_NAME#, #DATES#",
-                            "MESSAGE" => "#INVITATION_TEXT#<br /><br />#URL#",
+                            "MESSAGE" => "#INVITATION_TEXT#<br />#ORGS#<br /><br />#URL#",
                             "BODY_TYPE" => "html",
                             "EMAIL_TO" => "#EMAIL#"
                         ]);
@@ -185,8 +185,8 @@ class Version201604220002 extends Version
                             "arMAIL_TEMPLATE" => [$arTemplates["ID"]]
                         ], $id);
                         $EventHelper->updateEventMessage($arTemplates["FIELDS"]["EVENT_NAME"], [
-                            "SUBJECT" => "Регистрация не состоялась! #EVENT_NAME#, #DATES#",
-                            "MESSAGE" => "#DECLINE_TEXT#<br /><br />#URL#",
+                            "SUBJECT" => "Информация об участии в акции #EVENT_NAME#, #DATES#",
+                            "MESSAGE" => "#DECLINE_TEXT#<br />#ORGS#<br /><br />#URL#",
                             "BODY_TYPE" => "html",
                             "EMAIL_TO" => "#EMAIL#"
                         ]);
