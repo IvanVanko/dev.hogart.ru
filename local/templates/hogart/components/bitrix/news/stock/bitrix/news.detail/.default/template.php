@@ -55,9 +55,29 @@ $date_to = !empty($arResult["DATE_ACTIVE_TO"]) ? FormatDate("d F", MakeTimeStamp
             <?
             $org = $ob->GetFields();
             $org['props'] = $ob->GetProperties();
+            if (!empty($org["PREVIEW_PICTURE"])) {
+                $picture = \CFile::ResizeImageGet($org["PREVIEW_PICTURE"], array('width'=>100), BX_RESIZE_IMAGE_EXACT, true);
+            }
             ?>
             <li>
-                <? pr($org); ?>
+                <? if (!empty($picture)): ?>
+                <img src="<?= $picture["src"] ?>" alt="">
+                <? endif; ?>
+                <span class="title">
+                    <?=$org["NAME"]?>
+                </span>
+                <span class="company">
+                    <?=$org["props"]["company"]["VALUE"]?>
+                </span>
+                <span class="status">
+                    <?=$org["props"]["status"]["VALUE"]?>
+                </span>
+                <span class="phone">
+                    <?=$org["props"]["phone"]["VALUE"]?>
+                </span>
+                <span class="email">
+                    <?=$org["props"]["mail"]["VALUE"]?>
+                </span>
             </li>
         <? endwhile; ?>
         </ul>
