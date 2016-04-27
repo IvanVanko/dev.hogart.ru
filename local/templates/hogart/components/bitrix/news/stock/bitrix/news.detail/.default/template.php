@@ -57,18 +57,15 @@ $date_to = !empty($arResult["DATE_ACTIVE_TO"]) ? FormatDate("d F", MakeTimeStamp
             $org['props'] = $ob->GetProperties();
             $picture = "";
             if (!empty($org["PREVIEW_PICTURE"])) {
-                $picture = \CFile::ResizeImageGet($org["PREVIEW_PICTURE"], array('height' => 100), BX_RESIZE_IMAGE_EXACT, true);
+                $picture = \CFile::ResizeImageGet($org["PREVIEW_PICTURE"], array('height' => 80), BX_RESIZE_IMAGE_EXACT, true);
             }
             ?>
             <li class="organizer-item">
                 <? if (!empty($picture)): ?>
-                <img height="100" src="<?= $picture["src"] ?>" alt="">
+                <img height="80" src="<?= $picture["src"] ?>" alt="">
                 <? endif; ?>
                 <span class="title">
                     <?=$org["NAME"]?>
-                </span>
-                <span class="company">
-                    <?=$org["props"]["company"]["VALUE"]?>
                 </span>
                 <span class="status">
                     <?=$org["props"]["status"]["VALUE"]?>

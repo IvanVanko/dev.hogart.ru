@@ -1,5 +1,5 @@
 ul.organizers li.organizer-item {
-    height: 64px;
+    height: 80px;
     vertical-align: middle;
     position: relative;
     list-style-type: none;
@@ -8,6 +8,8 @@ ul.organizers li.organizer-item {
 ul.organizers li.organizer-item img {
     display: block;
     float: left;
+    margin-right: 10px;
+    height: 100%;
 }
 
 ul.organizers li.organizer-item span {
