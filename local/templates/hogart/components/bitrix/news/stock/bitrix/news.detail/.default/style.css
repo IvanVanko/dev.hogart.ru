@@ -16,7 +16,7 @@ ul.organizers li.organizer-item span {
     margin-top: 5px;
 }
 
-ul.organizers li.organizer-item span:last-child:after {
+ul.organizers li.organizer-item:after {
     content: " ";
     display: block;
     position: relative;
