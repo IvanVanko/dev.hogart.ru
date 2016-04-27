@@ -50,19 +50,19 @@ $date_to = !empty($arResult["DATE_ACTIVE_TO"]) ? FormatDate("d F", MakeTimeStamp
         <?
             $res = CIBlockElement::GetList(Array(), ["ID" => $arResult["PROPERTIES"]["ORG"]["VALUE"]], false, false, array());
         ?>
-        <ul>
+        <ul class="organizers">
         <? while($ob = $res->GetNextElement()): ?>
             <?
             $org = $ob->GetFields();
             $org['props'] = $ob->GetProperties();
             $picture = "";
             if (!empty($org["PREVIEW_PICTURE"])) {
-                $picture = \CFile::ResizeImageGet($org["PREVIEW_PICTURE"], array('height' => 64), BX_RESIZE_IMAGE_EXACT, true);
+                $picture = \CFile::ResizeImageGet($org["PREVIEW_PICTURE"], array('height' => 100), BX_RESIZE_IMAGE_EXACT, true);
             }
             ?>
-            <li>
+            <li class="organizer-item">
                 <? if (!empty($picture)): ?>
-                <img src="<?= $picture["src"] ?>" alt="">
+                <img height="100" src="<?= $picture["src"] ?>" alt="">
                 <? endif; ?>
                 <span class="title">
                     <?=$org["NAME"]?>
