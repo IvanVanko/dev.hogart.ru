@@ -46,7 +46,7 @@ $date_to = !empty($arResult["DATE_ACTIVE_TO"]) ? FormatDate("d F", MakeTimeStamp
         )
     ); ?>
     <? if (!empty($arResult["PROPERTIES"]["ORG"]["VALUE"])): ?>
-        <h2>По всем вопросам вы можете обратиться:</h2>
+        <h3>По всем вопросам вы можете обратиться:</h3>
         <?
             $res = CIBlockElement::GetList(Array(), ["ID" => $arResult["PROPERTIES"]["ORG"]["VALUE"]], false, false, array());
         ?>
