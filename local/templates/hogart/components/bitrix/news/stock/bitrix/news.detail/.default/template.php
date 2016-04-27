@@ -45,10 +45,13 @@ $date_to = !empty($arResult["DATE_ACTIVE_TO"]) ? FormatDate("d F", MakeTimeStamp
             "IMAGE" => $share_img_src
         )
     ); ?>
+    <? if (!empty($arResult["PROPERTIES"]["ORG"]["VALUE"])): ?>
+        <h1>По всем вопросам вы можете обратиться:</h1>
+    <? endif; ?>
     <? if(isset($arResult["this_goods"])): ?>
         <div class="catalog_page">
             <div class="products-similar-tabs">
-                <h1>Товары, участвующие в акции <?=$arResult["NAME"]?></h1>
+                <h1>Товары, участвующие в акции "<?=$arResult["NAME"]?>"</h1>
                 <div class="items-similar">
                     <div id="tab-1" class="item-similar active" style="display: block;">
                         <? if(count($arResult["this_goods"]) > 3): ?>

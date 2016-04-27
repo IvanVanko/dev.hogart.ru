@@ -37,11 +37,28 @@ class Version201604220002 extends Version
         ])) {
             $this->outSuccess("Добавлено свойство \"Текст отказа в регистрации на акцию\" в Инфоблок \"Акции\"");
         }
+        if ($IblockHelper->addPropertyIfNotExists(6, [
+            "CODE" => "ORG",
+            "NAME" => "Организатор",
+            "ACTIVE" => "Y",
+            "PROPERTY_TYPE" => "E",
+            "MULTIPLE" => "Y",
+            "MULTIPLE_CNT" => 5,
+            "LINK_IBLOCK_ID" => "9"
+        ])) {
+            $this->outSuccess("Добавлено свойство \"Организатор\" в Инфоблок \"Акции\"");
+        }
 
         if(!\CModule::IncludeModule("form")) {
             $this->outError("Отсутствует модуль Form");
         } else {
             $WEB_FORM_ID = "9";
+            if (\CForm::Set([
+                "SID" => "SIMPLE_FORM_9",
+                "NAME" => "Регистрация для участия в акции"
+            ])) {
+                $this->outSuccess("Имя формы изменено на \"Регистрация для участия в акции\"");
+            }
             $fieldsRes = \CFormField::GetList($WEB_FORM_ID, "", $by, $order, []);
             while (($field = $fieldsRes->GetNext())) {
                 switch ($field["TITLE"]) {
