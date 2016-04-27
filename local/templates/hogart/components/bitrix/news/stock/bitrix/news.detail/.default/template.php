@@ -46,7 +46,21 @@ $date_to = !empty($arResult["DATE_ACTIVE_TO"]) ? FormatDate("d F", MakeTimeStamp
         )
     ); ?>
     <? if (!empty($arResult["PROPERTIES"]["ORG"]["VALUE"])): ?>
-        <h1>По всем вопросам вы можете обратиться:</h1>
+        <h2>По всем вопросам вы можете обратиться:</h2>
+        <?
+            $res = CIBlockElement::GetList(Array(), ["ID" => $arResult["PROPERTIES"]["ORG"]["VALUE"]], false, false, array());
+        ?>
+        <ul>
+        <? while($ob = $res->GetNextElement()): ?>
+            <?
+            $org = $ob->GetFields();
+            $org['props'] = $ob->GetProperties();
+            ?>
+            <li>
+                <? pr($org); ?>
+            </li>
+        <? endwhile; ?>
+        </ul>
     <? endif; ?>
     <? if(isset($arResult["this_goods"])): ?>
         <div class="catalog_page">
