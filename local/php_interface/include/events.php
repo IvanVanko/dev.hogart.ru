@@ -34,124 +34,10 @@ class BasicHandlers {
 
     public function OnBeforeEventAddHandler(&$event, &$lid, &$arFields, &$message_id)
     {
-        if ($lid == "s1") {
-            if (preg_match("%FORM_STATUS_CHANGE_SIMPLE_FORM_(?P<web_form_id>\d+)_(?P<status_id>\d+)%", $event, $m)) {
-                $RESULT_ID = $arFields["RS_RESULT_ID"];
-                $WEB_FORM_ID = $m["web_form_id"];
-                $res = \CFormStatus::GetList($WEB_FORM_ID, $by, $order, [
-                    "ACTIVE" => "Y"
-                ]);
-                $statuses = [];
-                while (($status = $res->GetNext())) {
-                    $statuses[$status["ID"]] = $status;
-                }
-
-                if ($WEB_FORM_ID == "9") {
-                    \CForm::GetResultAnswerArray($WEB_FORM_ID,
-                        $arrColumns,
-                        $arrAnswers,
-                        $arrAnswersVarname, [
-                            "RESULT_ID" => $RESULT_ID
-                        ]
-                    );
-                    $eventElement = \CIBlockElement::GetByID($arrAnswersVarname[$RESULT_ID]["EVENT_ID"][0]["USER_TEXT"])->GetNextElement();
-                    $arEvent = $eventElement->GetFields();
-                    $arEvent["PROPERTIES"] = $eventElement->GetProperties();
-
-                    $arFields["EMAIL"] = $arrAnswersVarname[$RESULT_ID]["EMAIL"][0]["USER_TEXT"];
-                    $arFields["EVENT_NAME"] = htmlspecialchars_decode($arEvent["NAME"]);
-                    $arFields["DATES"] = FormatDate("d.m.Y", MakeTimeStamp($arEvent["DATE_ACTIVE_FROM"])) . " - " . FormatDate("d.m.Y", MakeTimeStamp($arEvent["DATE_ACTIVE_TO"]));
-
-                    $arFields["INVITATION_TEXT"] = $arEvent["PROPERTIES"]["INVITATION_TEXT"]["VALUE"];
-                    $arFields["DECLINE_TEXT"] = $arEvent["PROPERTIES"]["DECLINE_TEXT"]["VALUE"];
-                    $arFields['URL'] = "http://" . ($_SERVER["SERVER_NAME"] ?: $_SERVER['HTTP_HOST']) . "{$arEvent['DETAIL_PAGE_URL']}";
-
-                    switch ($statuses[$m["status_id"]]["TITLE"]) {
-                        case "Подверждена":
-                            break;
-                        case "Отклонена":
-                            break;
-                    }
-                }
-            }
-        }
     }
 
 }
 
-/* AddEventHandler("iblock", "OnBeforeIBlockElementAdd",    array("IBlockHandlers", "OnBeforeIBlockElementAddHandler"));
-  AddEventHandler("iblock", "OnBeforeIBlockElementUpdate", array("IBlockHandlers", "OnBeforeIBlockElementUpdateHandler"));
-  AddEventHandler("iblock", "OnBeforeIBlockElementDelete", array("IBlockHandlers", "OnBeforeIBlockElementDeleteHandler"));
-  class IBlockHandlers {
-  public static function OnBeforeIBlockElementAddHandler (&$arParams) {
-  foreach ($arParams['IBLOCK_SECTION'] as $isid) {
-  BXHelper::updateAggregateSectProp(
-  $arParams['IBLOCK_ID'],
-  'brand',
-  'UF_BRANDS_AGGREGATE',
-  $isid,
-  false,
-  $arParams['PROPERTY_VALUES'],
-  " "
-  );
-  }
-  }
-  public static function OnBeforeIBlockElementUpdateHandler (&$arParams) {
-
-  $obElement = new CIBlockElement();
-  $dbResult = $obElement->GetByID($arParams['ID'])->GetNextElement();
-  $dbSections = $dbResult->GetGroups();
-  $sections = array();
-  while ($sect = $dbSections->GetNext()) {
-  $sections[] = $sect['ID'];
-  }
-  foreach ($arParams['IBLOCK_SECTION'] as $isid) {
-  if (($skey = array_search($isid, $sections)) !== false) {
-  unset($sections[$skey]);
-  }
-  BXHelper::updateAggregateSectProp(
-  $arParams['IBLOCK_ID'],
-  'brand',
-  'UF_BRANDS_AGGREGATE',
-  $isid,
-  $arParams['ID'],
-  $arParams['PROPERTY_VALUES'],
-  " "
-  );
-  }
-  if (!empty($sections)) {
-  foreach ($sections as $isid) {
-  BXHelper::updateAggregateSectProp(
-  $arParams['IBLOCK_ID'],
-  'brand',
-  'UF_BRANDS_AGGREGATE',
-  $isid,
-  $arParams['ID'],
-  false,
-  " "
-  );
-  }
-  }
-  }
-
-  public static function OnBeforeIBlockElementDeleteHandler ($ID) {
-  $obElement = new CIBlockElement();
-  $dbResult = $obElement->GetByID($ID)->GetNextElement();
-  $fields = $dbResult->GetFields();
-  $dbSections = $dbResult->GetGroups();
-  while ($sect = $dbSections->GetNext()) {
-  BXHelper::updateAggregateSectProp(
-  $fields['IBLOCK_ID'],
-  'brand',
-  'UF_BRANDS_AGGREGATE',
-  $sect['ID'],
-  $fields['ID'],
-  false,
-  " "
-  );
-  }
-  }
-  } */
 AddEventHandler("iblock", "OnBeforeIBlockElementAdd", array("IBlockHandlers", "OnBeforeIBlockElementAddHandler"));
 AddEventHandler("iblock", "OnBeforeIBlockElementUpdate", array("IBlockHandlers", "OnBeforeIBlockElementUpdateHandler"));
 AddEventHandler("iblock", "OnAfterIBlockElementAdd", array("IBlockHandlers", "OnAfterIBlockElementAddHandler"));
@@ -840,6 +726,20 @@ class FormHandlers {
                         $sms_message = "Регистрация не состоялась! {$arFields['EVENT_NAME']}, {$arFields['DATES']}.\n{$arFields['DECLINE_TEXT']}\n{$arFields['URL']}";
                         send_sms($arrAnswersVarname[$result_id]["PHONE"][0]["USER_TEXT"], strip_tags($sms_message));
                         break;
+                }
+
+                $dbRes = CFormStatus::GetByID($new_status_id);
+                if (($arStatus = $dbRes->Fetch()) && strlen($arStatus['MAIL_EVENT_TYPE'])) {
+                    $arTemplates = CFormStatus::GetMailTemplateArray($new_status_id);
+                    if (is_array($arTemplates) && count($arTemplates)) {
+                        $dbRes = CEventMessage::GetList($by="id", $order="asc", array(
+                            'ID' => implode('|', $arTemplates),
+                            "ACTIVE"		=> "Y",
+                            "EVENT_NAME"	=> $arStatus["MAIL_EVENT_TYPE"]
+                        ));
+                        while ($arTemplate = $dbRes->Fetch())
+                            CEvent::Send($arTemplate["EVENT_NAME"], $arTemplate["SITE_ID"], $arFields, "Y", $arTemplate["ID"]);
+                    }
                 }
             }
         }
