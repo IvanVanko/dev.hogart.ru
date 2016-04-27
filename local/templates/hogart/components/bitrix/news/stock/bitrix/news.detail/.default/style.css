@@ -4,7 +4,7 @@ ul.organizers li.organizer-item {
     position: relative;
     list-style-type: none;
     margin-bottom: 20px;
-    border-bottom: black 1px solid;
+    border-bottom: #95c600 1px solid;
     box-sizing: content-box;
     padding-bottom: 20px;
 }
