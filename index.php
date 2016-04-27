@@ -3,6 +3,7 @@ $APPLICATION->SetPageProperty("title", "Хогарт - официальный с
 $APPLICATION->SetPageProperty("keywords", "Хогарт - официальный сайт.");
 $APPLICATION->SetPageProperty("description", "Хогарт - официальный сайт.");
 $APPLICATION->SetTitle("Хогарт - официальный сайт.");
+$APPLICATION->SetPageProperty("body_class", "index_page");
 
 $APPLICATION->IncludeComponent("bitrix:menu","main",Array(
         "ROOT_MENU_TYPE" => "main", 
