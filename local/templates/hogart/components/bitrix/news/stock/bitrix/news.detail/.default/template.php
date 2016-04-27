@@ -49,12 +49,14 @@ $date_to = !empty($arResult["DATE_ACTIVE_TO"]) ? FormatDate("d F", MakeTimeStamp
         <h3>По всем вопросам вы можете обратиться:</h3>
         <?
             $res = CIBlockElement::GetList(Array(), ["ID" => $arResult["PROPERTIES"]["ORG"]["VALUE"]], false, false, array());
+            $orgs = [];
         ?>
         <ul class="organizers">
         <? while($ob = $res->GetNextElement()): ?>
             <?
             $org = $ob->GetFields();
             $org['props'] = $ob->GetProperties();
+            $orgs[] = $org;
             $picture = "";
             if (!empty($org["PREVIEW_PICTURE"])) {
                 $picture = \CFile::ResizeImageGet($org["PREVIEW_PICTURE"], array('height' => 80), BX_RESIZE_IMAGE_EXACT, true);
@@ -188,6 +190,14 @@ $date_to = !empty($arResult["DATE_ACTIVE_TO"]) ? FormatDate("d F", MakeTimeStamp
                         <?
                             global $MESS;
                             $MESS["FORM_NOTE_ADDOK"] = "Спасибо! Ваша заявка на участие в акции \"". $arResult['NAME'] ."\" принята.";
+                            $MESS["FORM_NOTE_ADDOK"] .= "<br><br>В случае утверждения вы получите информацию на указанный электронный адрес.
+Без подтверждения от организаторов, участие в мероприятии невозможно.";
+                            if (!empty($orgs)) {
+                                $MESS["FORM_NOTE_ADDOK"] .= "<br><br>По дополнительным вопросам просим обращаться к ответственным за проведение: ";
+                                foreach ($orgs as $org) {
+                                    $MESS["FORM_NOTE_ADDOK"] .= "<br><br>{$org['NAME']}, {$org['props']['phone']['VALUE']}";
+                                }
+                            }
                         ?>
                         <? $APPLICATION->IncludeComponent(
                             "bitrix:form.result.new",
