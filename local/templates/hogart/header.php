@@ -195,6 +195,6 @@
     <? endif ?>
     <div class="container main-container">
         <div class="container-inner">
-            <? if($APPLICATION->GetCurDir() != '/') {
+            <? if($APPLICATION->GetCurDir() != '/' && $APPLICATION->GetCurDir() != '/en/') {
                 $APPLICATION->IncludeFile("/local/include/breadcrumb.php");
             } ?>
