@@ -57,7 +57,7 @@ $date_to = !empty($arResult["DATE_ACTIVE_TO"]) ? FormatDate("d F", MakeTimeStamp
             $org['props'] = $ob->GetProperties();
             $picture = "";
             if (!empty($org["PREVIEW_PICTURE"])) {
-                $picture = \CFile::ResizeImageGet($org["PREVIEW_PICTURE"], array('width'=>64), BX_RESIZE_IMAGE_EXACT, true);
+                $picture = \CFile::ResizeImageGet($org["PREVIEW_PICTURE"], array('height' => 64), BX_RESIZE_IMAGE_EXACT, true);
             }
             ?>
             <li>
