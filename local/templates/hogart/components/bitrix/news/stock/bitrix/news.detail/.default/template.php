@@ -77,7 +77,7 @@ $date_to = !empty($arResult["DATE_ACTIVE_TO"]) ? FormatDate("d F", MakeTimeStamp
                     <?=$org["props"]["phone"]["VALUE"]?>
                 </span>
                 <span class="email">
-                    <?=$org["props"]["mail"]["VALUE"]?>
+                    <a href="mailto:<?=$org["props"]["mail"]["VALUE"]?>"><?=$org["props"]["mail"]["VALUE"]?></a>
                 </span>
             </li>
         <? endwhile; ?>
