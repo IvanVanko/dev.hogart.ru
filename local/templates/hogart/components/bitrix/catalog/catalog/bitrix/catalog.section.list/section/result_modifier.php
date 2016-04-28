@@ -39,6 +39,37 @@ foreach($arResult['SECTIONS'] as $k => $arSection) {
         unset($arResult['SECTIONS'][$k]);
     }
 }
+
+foreach($arResult['SECTIONS'] as $section){
+    $mas=array();
+    if($section['DEPTH_LEVEL']==3) {
+        $arSelect = Array("ID", "IBLOCK_ID", "NAME", "PROPERTY_brand");//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
+        $arFilter = Array("IBLOCK_ID" => 1, "SECTION_ID" => $section['ID']);
+        $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
+        while ($ob = $res->Fetch()) {
+            $mas[$ob['PROPERTY_BRAND_VALUE']]=$ob['PROPERTY_BRAND_VALUE'];
+        }
+    }
+    $mas=array_unique($mas);
+    $arResult['BRANDS'][$section['ID']]=$mas;
+
+}
+
+$arSelect = Array("ID", "NAME");
+$arFilter = Array("IBLOCK_ID"=>2);
+$res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
+while($arFields = $res->Fetch())
+{
+    foreach($arResult['BRANDS'] as $key=>&$brands){
+        foreach($brands as $key2=>&$one){
+            if($key2==$arFields['ID']){
+                $one=$arFields['NAME'];
+            }
+        }
+    }
+}
+
+
 //Продукция
 //$arResult['PRODUCTS'] = array();
 ////Получаем ID разделов, в которых есть элементы с брендами

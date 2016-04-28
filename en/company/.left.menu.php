@@ -1,0 +1,32 @@
+<?
+$aMenuLinks = Array(
+    Array(
+        "News",
+        "/en/company/news/",
+        Array(),
+        Array(),
+        ""
+    ),
+    Array(
+        "Reviews",
+        "/en/company/comments/",
+        Array(),
+        Array(),
+        ""
+    ),
+    Array(
+        "Success stories",
+        "/en/history/",
+        Array(),
+        Array(),
+        ""
+    ),
+    Array(
+        "Contacts",
+        "/en/contacts/tsentralnyy-ofis-khogart-v-moskve-sklad-i-servisnaya-sluzhba/",
+        Array(),
+        Array(),
+        ""
+    )
+);
+?>

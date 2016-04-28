@@ -32,81 +32,12 @@ class BasicHandlers {
         }
     }
 
+    public function OnBeforeEventAddHandler(&$event, &$lid, &$arFields, &$message_id)
+    {
+    }
+
 }
 
-/* AddEventHandler("iblock", "OnBeforeIBlockElementAdd",    array("IBlockHandlers", "OnBeforeIBlockElementAddHandler"));
-  AddEventHandler("iblock", "OnBeforeIBlockElementUpdate", array("IBlockHandlers", "OnBeforeIBlockElementUpdateHandler"));
-  AddEventHandler("iblock", "OnBeforeIBlockElementDelete", array("IBlockHandlers", "OnBeforeIBlockElementDeleteHandler"));
-  class IBlockHandlers {
-  public static function OnBeforeIBlockElementAddHandler (&$arParams) {
-  foreach ($arParams['IBLOCK_SECTION'] as $isid) {
-  BXHelper::updateAggregateSectProp(
-  $arParams['IBLOCK_ID'],
-  'brand',
-  'UF_BRANDS_AGGREGATE',
-  $isid,
-  false,
-  $arParams['PROPERTY_VALUES'],
-  " "
-  );
-  }
-  }
-  public static function OnBeforeIBlockElementUpdateHandler (&$arParams) {
-
-  $obElement = new CIBlockElement();
-  $dbResult = $obElement->GetByID($arParams['ID'])->GetNextElement();
-  $dbSections = $dbResult->GetGroups();
-  $sections = array();
-  while ($sect = $dbSections->GetNext()) {
-  $sections[] = $sect['ID'];
-  }
-  foreach ($arParams['IBLOCK_SECTION'] as $isid) {
-  if (($skey = array_search($isid, $sections)) !== false) {
-  unset($sections[$skey]);
-  }
-  BXHelper::updateAggregateSectProp(
-  $arParams['IBLOCK_ID'],
-  'brand',
-  'UF_BRANDS_AGGREGATE',
-  $isid,
-  $arParams['ID'],
-  $arParams['PROPERTY_VALUES'],
-  " "
-  );
-  }
-  if (!empty($sections)) {
-  foreach ($sections as $isid) {
-  BXHelper::updateAggregateSectProp(
-  $arParams['IBLOCK_ID'],
-  'brand',
-  'UF_BRANDS_AGGREGATE',
-  $isid,
-  $arParams['ID'],
-  false,
-  " "
-  );
-  }
-  }
-  }
-
-  public static function OnBeforeIBlockElementDeleteHandler ($ID) {
-  $obElement = new CIBlockElement();
-  $dbResult = $obElement->GetByID($ID)->GetNextElement();
-  $fields = $dbResult->GetFields();
-  $dbSections = $dbResult->GetGroups();
-  while ($sect = $dbSections->GetNext()) {
-  BXHelper::updateAggregateSectProp(
-  $fields['IBLOCK_ID'],
-  'brand',
-  'UF_BRANDS_AGGREGATE',
-  $sect['ID'],
-  $fields['ID'],
-  false,
-  " "
-  );
-  }
-  }
-  } */
 AddEventHandler("iblock", "OnBeforeIBlockElementAdd", array("IBlockHandlers", "OnBeforeIBlockElementAddHandler"));
 AddEventHandler("iblock", "OnBeforeIBlockElementUpdate", array("IBlockHandlers", "OnBeforeIBlockElementUpdateHandler"));
 AddEventHandler("iblock", "OnAfterIBlockElementAdd", array("IBlockHandlers", "OnAfterIBlockElementAddHandler"));
@@ -709,6 +640,7 @@ class MyCustomClass {
 
 AddEventHandler("form", "onBeforeResultAdd", Array("FormHandlers", "OnBeforeResultAddHandler"));
 AddEventHandler("form", "onAfterResultAdd", Array("FormHandlers", "OnAfterResultAddHandler"));
+AddEventHandler("form", "onBeforeResultStatusChange", Array("FormHandlers", "onBeforeResultStatusChangeHandler"));
 
 class FormHandlers {
     public static function OnBeforeResultAddHandler($id, $form_fields, &$arrVALUES) {
@@ -749,6 +681,79 @@ class FormHandlers {
         fileDump($arrVALUES, true);
         return true;
     }
+
+    public function onBeforeResultStatusChangeHandler($form_id, $result_id, &$new_status_id, $check_rights = "Y")
+    {
+        // Обработка формы Регистрация на акцию
+        if ($form_id == "9") {
+            $WEB_FORM_ID = "9";
+            $res = \CFormStatus::GetList($WEB_FORM_ID, $by, $order, [
+                "ACTIVE" => "Y"
+            ]);
+            $statuses = [];
+            while (($status = $res->GetNext())) {
+                $statuses[$status["ID"]] = $status;
+            }
+
+            if (intval($result_id) > 0) {
+                
+                \CForm::GetResultAnswerArray($WEB_FORM_ID,
+                    $arrColumns,
+                    $arrAnswers,
+                    $arrAnswersVarname, [
+                        "RESULT_ID" => $result_id
+                    ]
+                );
+                $eventElement = \CIBlockElement::GetByID($arrAnswersVarname[$result_id]["EVENT_ID"][0]["USER_TEXT"])->GetNextElement();
+                $arEvent = $eventElement->GetFields();
+                $arEvent["PROPERTIES"] = $eventElement->GetProperties();
+
+                $arFields["EMAIL"] = $arrAnswersVarname[$result_id]["EMAIL"][0]["USER_TEXT"];
+                $arFields["EVENT_NAME"] = htmlspecialchars_decode($arEvent["NAME"]);
+                $arFields["DATES"] = FormatDate("d.m.Y", MakeTimeStamp($arEvent["DATE_ACTIVE_FROM"])) . " - " . FormatDate("d.m.Y", MakeTimeStamp($arEvent["DATE_ACTIVE_TO"]));
+
+                $arFields["INVITATION_TEXT"] = $arEvent["PROPERTIES"]["INVITATION_TEXT"]["VALUE"];
+                $arFields["DECLINE_TEXT"] = $arEvent["PROPERTIES"]["DECLINE_TEXT"]["VALUE"];
+                $arFields['URL'] = "http://" . ($_SERVER["SERVER_NAME"] ?: $_SERVER['HTTP_HOST']) . "{$arEvent['DETAIL_PAGE_URL']}";
+
+                if (!empty($arEvent["PROPERTIES"]["ORG"]["VALUE"])) {
+                    $arFields["ORGS"] = "По дополнительным вопросам просим обращаться к ответственным за проведение: <br>";
+
+                    $res = CIBlockElement::GetList(Array(), ["ID" => $arEvent["PROPERTIES"]["ORG"]["VALUE"]], false, false, array());
+                    while ($ob = $res->GetNextElement()) {
+                        $org = $ob->GetFields();
+                        $org['props'] = $ob->GetProperties();
+                        $arFields["ORGS"] .= "{$org['NAME']}, {$org['props']['phone']['VALUE']}, {$org['props']['mail']['VALUE']}<br>";
+                    }
+                }
+
+                switch ($statuses[$new_status_id]["TITLE"]) {
+                    case "Подверждена":
+                        $sms_message = "Регистрация подтверждена! {$arFields['EVENT_NAME']}, {$arFields['DATES']}.\n{$arFields['INVITATION_TEXT']}\n{$arFields['URL']}";
+                        send_sms($arrAnswersVarname[$result_id]["PHONE"][0]["USER_TEXT"], strip_tags($sms_message));
+                        break;
+                    case "Отклонена":
+                        $sms_message = "Регистрация не состоялась! {$arFields['EVENT_NAME']}, {$arFields['DATES']}.\n{$arFields['DECLINE_TEXT']}\n{$arFields['URL']}";
+                        send_sms($arrAnswersVarname[$result_id]["PHONE"][0]["USER_TEXT"], strip_tags($sms_message));
+                        break;
+                }
+
+                $dbRes = CFormStatus::GetByID($new_status_id);
+                if (($arStatus = $dbRes->Fetch()) && strlen($arStatus['MAIL_EVENT_TYPE'])) {
+                    $arTemplates = CFormStatus::GetMailTemplateArray($new_status_id);
+                    if (is_array($arTemplates) && count($arTemplates)) {
+                        $dbRes = CEventMessage::GetList($by="id", $order="asc", array(
+                            'ID' => implode('|', $arTemplates),
+                            "ACTIVE"		=> "Y",
+                            "EVENT_NAME"	=> $arStatus["MAIL_EVENT_TYPE"]
+                        ));
+                        while ($arTemplate = $dbRes->Fetch())
+                            CEvent::Send($arTemplate["EVENT_NAME"], $arTemplate["SITE_ID"], $arFields, "Y", $arTemplate["ID"]);
+                    }
+                }
+            }
+        }
+    }
 }
 
 AddEventHandler("main", "OnAdminTabControlBegin", array("DisplayHandlers", "MyOnAdminTabControlBegin"));
@@ -756,6 +761,9 @@ AddEventHandler("main", "OnEndBufferContent", array("DisplayHandlers", "MyOnEndB
 
 class DisplayHandlers {
 
+    /**
+     * @param $form CAdminForm
+     */
     public static function MyOnAdminTabControlBegin(&$form) {
 
         if($GLOBALS["APPLICATION"]->GetCurPage() == "/bitrix/admin/subscr_edit.php") {

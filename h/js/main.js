@@ -2677,3 +2677,22 @@ $(window).load(function () {
         });
     }
 });
+
+
+
+$(document).ready(function () {
+
+$.each($('.show-all-brands-js a'), function() {
+  var text = $(this).data('slide-start-text');
+  $(this).html(text);
+});
+
+$(".show-all-brands-js a").on("click", function(e) {
+    e.preventDefault();
+     $(this).parents('.brands-wrapper').find('.hidden-brands-s').slideToggle();
+
+    $(this).toggleClass('show');
+    var text = ($(this).hasClass('show')) ? $(this).data('slide-finish-text') : $(this).data('slide-start-text');
+    $(this).html(text);
+  });
+});

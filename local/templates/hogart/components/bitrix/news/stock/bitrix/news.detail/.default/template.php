@@ -45,10 +45,47 @@ $date_to = !empty($arResult["DATE_ACTIVE_TO"]) ? FormatDate("d F", MakeTimeStamp
             "IMAGE" => $share_img_src
         )
     ); ?>
+    <? if (!empty($arResult["PROPERTIES"]["ORG"]["VALUE"])): ?>
+        <h3>По всем вопросам вы можете обратиться:</h3>
+        <?
+            $res = CIBlockElement::GetList(Array(), ["ID" => $arResult["PROPERTIES"]["ORG"]["VALUE"]], false, false, array());
+            $orgs = [];
+        ?>
+        <ul class="organizers">
+        <? while($ob = $res->GetNextElement()): ?>
+            <?
+            $org = $ob->GetFields();
+            $org['props'] = $ob->GetProperties();
+            $orgs[] = $org;
+            $picture = "";
+            if (!empty($org["PREVIEW_PICTURE"])) {
+                $picture = \CFile::ResizeImageGet($org["PREVIEW_PICTURE"], array('height' => 80), BX_RESIZE_IMAGE_EXACT, true);
+            }
+            ?>
+            <li class="organizer-item">
+                <? if (!empty($picture)): ?>
+                <img height="80" src="<?= $picture["src"] ?>" alt="">
+                <? endif; ?>
+                <span class="title">
+                    <?=$org["NAME"]?>
+                </span>
+                <span class="status">
+                    <?=$org["props"]["status"]["VALUE"]?>
+                </span>
+                <span class="phone">
+                    <?=$org["props"]["phone"]["VALUE"]?>
+                </span>
+                <span class="email">
+                    <a href="mailto:<?=$org["props"]["mail"]["VALUE"]?>"><?=$org["props"]["mail"]["VALUE"]?></a>
+                </span>
+            </li>
+        <? endwhile; ?>
+        </ul>
+    <? endif; ?>
     <? if(isset($arResult["this_goods"])): ?>
         <div class="catalog_page">
             <div class="products-similar-tabs">
-                <h1>Товары, участвующие в акции <?=$arResult["NAME"]?></h1>
+                <h1>Товары, участвующие в акции "<?=$arResult["NAME"]?>"</h1>
                 <div class="items-similar">
                     <div id="tab-1" class="item-similar active" style="display: block;">
                         <? if(count($arResult["this_goods"]) > 3): ?>
@@ -150,6 +187,18 @@ $date_to = !empty($arResult["DATE_ACTIVE_TO"]) ? FormatDate("d F", MakeTimeStamp
             <div class="padding">
                 <div class="preview-project-viewport">
                     <div class="preview-project-viewport-inner">
+                        <?
+                            global $MESS;
+                            $MESS["FORM_NOTE_ADDOK"] = "Спасибо! Ваша заявка на участие в акции \"". $arResult['NAME'] ."\" принята.";
+                            $MESS["FORM_NOTE_ADDOK"] .= "<br><br>В случае утверждения вы получите информацию на указанный электронный адрес.
+Без подтверждения от организаторов, участие в мероприятии невозможно.";
+                            if (!empty($orgs)) {
+                                $MESS["FORM_NOTE_ADDOK"] .= "<br><br>По дополнительным вопросам просим обращаться к ответственным за проведение: ";
+                                foreach ($orgs as $org) {
+                                    $MESS["FORM_NOTE_ADDOK"] .= "<br><br>{$org['NAME']}<br>{$org['props']['phone']['VALUE']}";
+                                }
+                            }
+                        ?>
                         <? $APPLICATION->IncludeComponent(
                             "bitrix:form.result.new",
                             "sem_quest",
@@ -166,7 +215,8 @@ $date_to = !empty($arResult["DATE_ACTIVE_TO"]) ? FormatDate("d F", MakeTimeStamp
                                 "SUCCESS_URL" => "",
                                 "CHAIN_ITEM_TEXT" => "",
                                 "CHAIN_ITEM_LINK" => "",
-                                "ACTION_NAME" => $arResult['NAME']
+                                "ACTION_NAME" => $arResult['NAME'],
+                                "ACTION_ID" => $arResult['ID']
                             ), $component
                         ); ?>
                     </div>

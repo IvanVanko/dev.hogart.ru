@@ -6,4 +6,5 @@
  * Time: 20:34
  */
 
-$arResult["FORM_NOTE"] = "Спасибо! Ваша заявка на участие в акции \"".$arParams['ACTION_NAME']."\" принята.";
+$arResult["EVENT_NAME"] = $arParams["ACTION_NAME"];
+$arResult["EVENT_ID"] = $arParams["ACTION_ID"];

@@ -1,13 +1,23 @@
 <?
-if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
-?>
-<?if ($arResult["isFormErrors"] == "Y"):?><?=$arResult["FORM_ERRORS_TEXT"];?><?endif;?>
-<?=$_GET["formresult"] == "addok" ? $arResult["FORM_NOTE"] : ""?>
-<?if ($arResult["isFormNote"] != "Y")
-{
+/** @var array $arParams */
+/** @var array $arResult */
+/** @global CMain $APPLICATION */
+/** @global CUser $USER */
+/** @global CDatabase $DB */
+/** @var CBitrixComponentTemplate $this */
+/** @var string $templateName */
+/** @var string $templateFile */
+/** @var string $templateFolder */
+/** @var string $componentPath */
+/** @var CBitrixComponent $component */
+if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 ?>
 
-<?
+<div style="text-align: center">
+    <?=$arResult["FORM_NOTE"]?>
+</div>
+
+<? if ($arResult["isFormNote"] != "Y") :
 /***********************************************************************************
 					form header
 ***********************************************************************************/
@@ -23,7 +33,9 @@ if ($arResult["isFormTitle"]):?>
 	<div id="form-<?=$arResult["arForm"]['ID'];?>" class="js-validation-form-new">
     <?=$arResult["FORM_HEADER"]?>
 	<?foreach ($arResult["QUESTIONS"] as $FIELD_SID => $arQuestion):?>
-		<?if ($arQuestion['STRUCTURE'][0]['FIELD_TYPE'] == 'hidden'):
+        <? if (in_array($FIELD_SID, ["EVENT_NAME", "EVENT_ID"])): ?>
+            <input type="hidden" class="inputtext" name="form_text_<?=$arQuestion['STRUCTURE'][0]['ID']?>" value="<?=$arResult[$FIELD_SID]?>">
+		<?elseif ($arQuestion['STRUCTURE'][0]['FIELD_TYPE'] == 'hidden'):
 			echo $arQuestion["HTML_CODE"];
 		elseif ($arQuestion['STRUCTURE'][0]['FIELD_TYPE'] == 'textarea'):?>
 			<a href="#" class="trigger-border-bottom js-accordion" data-accordion="#appendmessage"><?=$arQuestion["CAPTION"]?></a>
@@ -106,6 +118,4 @@ if($arResult["isUseCaptcha"] == "Y")
 
 <?=$arResult["FORM_FOOTER"]?>
 </div>
-<?
-} //endif (isFormNote)
-?>
+<? endif; ?>

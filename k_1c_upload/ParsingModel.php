@@ -374,6 +374,7 @@ class ParsingModel {
             $del = $file->deletion_mark;
             $type_index = $file->type_id;
             $access_level = $file->access_level;
+            $actual = $file->actual;
             $answer['StringTehDoc'][] = $fileXmlID;
             if(empty($access_level)) {
                 $access_level = 1;
@@ -498,7 +499,7 @@ class ParsingModel {
                     $param[] = array('VALUE' => $brand['id_b']);
                 }
                 $this->addDoc($fileXmlID, $file_obj, $name, $param, $del, $this->classTrans[$type_index],
-                    $access_level);
+                    $access_level, $actual ? "Y" : "N");
             }
 
             if(count($array_product) and $_GET['V'] != 'Y' and $_GET['P'] != 'Y') {
@@ -639,7 +640,7 @@ class ParsingModel {
         $this->csv->saveLog(['techDoc import end '.date('d.M.Y H:i:s')]);
     }
 
-    function addDoc($xmlId, $file, $name, $brand, $del, $type, $access_level = 1) {
+    function addDoc($xmlId, $file, $name, $brand, $del, $type, $access_level = 1, $active = "Y") {
 
         $arLoadArray = array(
             "IBLOCK_SECTION_ID" => false,
@@ -652,7 +653,7 @@ class ParsingModel {
                 'access_level' => $access_level
             ),
             "NAME" => $name,
-            "ACTIVE" => "Y",
+            "ACTIVE" => $active,
         );
 
         $el = new CIBlockElement;
