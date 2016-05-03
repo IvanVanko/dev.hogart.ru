@@ -34,6 +34,12 @@ class ParsingModel {
     private $sectionsCache = [];
     private $sectionsCodeCache = [];
 
+    private $techDocCache = [];
+    private $techDocCodeCache = [];
+
+    private $collectionCache = [];
+    private $collectionCodeCache = [];
+
     private $tmp = array();
 
     /**
@@ -897,6 +903,34 @@ class ParsingModel {
         }
     }
 
+    function initTechDocCache($force = false) {
+        if (!empty($this->techDocCache) && !$force) return;
+
+        $arFilter = Array(
+            'IBLOCK_ID' => self::DOCUMENTATION_IBLOCK_ID
+        );
+
+        $rsItems = CIBlockSection::GetList(Array("SORT" => "ASC"), $arFilter, false, ['XML_ID', 'ID', 'CODE']);
+        while($item = $rsItems->Fetch()) {
+            $this->techDocCache[$item['XML_ID']] = $item['ID'];
+            $this->techDocCodeCache[$item['XML_ID']] = $item['CODE'];
+        }
+    }
+
+    function initCollectionCache($force = false) {
+        if (!empty($this->collectionCache) && !$force) return;
+
+        $arFilter = Array(
+            'IBLOCK_ID' => self::COLLECTIONS_IBLOCK_ID
+        );
+
+        $rsItems = CIBlockSection::GetList(Array("SORT" => "ASC"), $arFilter, false, ['XML_ID', 'ID', 'CODE']);
+        while($item = $rsItems->Fetch()) {
+            $this->collectionCache[$item['XML_ID']] = $item['ID'];
+            $this->collectionCodeCache[$item['XML_ID']] = $item['CODE'];
+        }
+    }
+
     /**
      * Загружаем разделы
      */
@@ -997,6 +1031,33 @@ class ParsingModel {
                     echo 'Error: '.$el->LAST_ERROR." ".__LINE__." ".__FUNCTION__;
                 }
             }
+
+            if(!empty($value->set_cat)) {
+
+                $this->initTechDocCache();
+
+                if(is_object($value->set_cat)) {
+                    $value->set_cat = array($value->set_cat);
+
+                    foreach ($value->set_cat as $set_cat) {
+                        $props = [
+                            'id_cat' => $this->sectionsCache[$value->id]
+                        ];
+                        if(isset($this->techDocCache[$set_cat->id_tehdoc])) {
+                            $props['id_tehdoc'] = $this->techDocCache[$set_cat->id_tehdoc];
+                        }
+                        $arFields = Array(
+                            "IBLOCK_SECTION_ID" => false,
+                            "IBLOCK_ID" => self::COLLECTIONS_IBLOCK_ID,
+                            "XML_ID" => $set_cat->set_id,
+                            "PROPERTY_VALUES" => $props,
+                            "NAME" => $set_cat->description,
+                            "ACTIVE" => "Y"
+                        );
+                        $this->addCollection($arFields);
+                    }
+                }
+            }
             $answer['StringCategory'][] = $value->id;
         }
 
@@ -1020,6 +1081,56 @@ class ParsingModel {
         }
         else {
             echo "<div class='error'>Категории не загружены</div>";
+        }
+    }
+
+    public function addCollection($fields, $params = [])
+    {
+        $this->initCollectionCache();
+        $el = new CIBlockElement();
+        
+        //проверяем наличие такого элемента
+        //Если элемент уже существует, обновляем его или удаляем, при условии что флаг установлен
+        if(($existElementId = $this->collectionCache[$fields["XML_ID"]])) {
+            //Удаляем из битрикса элемент
+            if($params["deletion_mark"] == true) {
+                //Проверяем права на удаление
+                //Удаляем и выводим сообщение о выполнении, иначе показываем ошибку
+                if(!CIBlockElement::Delete($existElementId)) {
+                    echo 'Запись удалена - '.$existElementId;
+                }
+                else {
+                    echo '<p class="error">При удалении элемента произошла ошибка ['.$existElementId.']<br>
+                                    '.$el->LAST_ERROR." ".__LINE__." ".__FUNCTION__.'</p>';
+                }
+            }
+            else {
+                //Если удалять не нужно, то обновляем и выводим сообщение
+                if($res = $el->Update($existElementId, $fields)) {
+                    echo "Запись обновлена: " . $fields["NAME"] . "<br />";
+                }
+                else {
+                    echo 'Error: '.$el->LAST_ERROR." ".__LINE__." ".__FUNCTION__;
+                }
+            }
+        }
+        else {
+            $fields['CODE'] = CUtil::translit($fields['NAME'], 'ru',
+                array('change_case' => 'L', 'replace_space' => '-', 'replace_other' => ''));
+
+            if(array_search($fields['CODE'], $this->collectionCodeCache)) {
+                $fields['CODE'] .= md5($fields['XML_ID']);
+            }
+
+            if($newId = $el->Add($fields)) {
+                $this->collectionCache[$fields['XML_ID']] = $newId;
+                $this->collectionCodeCache[$fields['XML_ID']] = $fields['CODE'];
+
+                echo "Добавлена: " . $fields['NAME'] . "<br />";
+            }
+            else {
+                echo 'Error: '.$el->LAST_ERROR." ".__LINE__." ".__FUNCTION__;
+            }
         }
     }
 
@@ -2305,7 +2416,6 @@ class ParsingModel {
 
     }
 
-
     //выполняем все операции по брендам
     function initCollection($ost) {
         $iblockId = self::COLLECTIONS_IBLOCK_ID;
@@ -2317,16 +2427,7 @@ class ParsingModel {
         if(is_object($ost->return->set)) {
             $ost->return->set = array($ost->return->set);
         }
-        $collectionsCache = [];
-        $collectionsCodeCache = [];
-        $rsItems = CIBlockElement::GetList(array(), array(
-            'IBLOCK_ID' => $iblockId,
-        ), false, false, array('ID', 'XML_ID', 'CODE'));
-
-        while($arItem = $rsItems->GetNext()) {
-            $collectionsCache[$arItem['XML_ID']] = $arItem['ID'];
-            $collectionsCodeCache[$arItem['XML_ID']] = $arItem['CODE'];
-        }
+        $this->initCollectionCache();
 
         $brandsCache = [];
         $rsItems = CIBlockElement::GetList(array(), array(
@@ -2341,7 +2442,7 @@ class ParsingModel {
             if(isset($brandsCache[$value->brand_id])) {
                 $props['link_brand'] = $brandsCache[$value->brand_id];
             }
-            $arLoadProductArray = Array(
+            $arFields = Array(
                 "IBLOCK_SECTION_ID" => false,
                 "IBLOCK_ID" => $iblockId,
                 "XML_ID" => $value->id,
@@ -2349,53 +2450,8 @@ class ParsingModel {
                 "NAME" => $value->name,
                 "ACTIVE" => "Y"
             );
-
-            //проверяем наличие такого элемента
-            //Если элемент уже существует, обновляем его или удаляем, при условии что флаг установлен
-            if(isset($collectionsCache[$value->id])) {
-                $existElementId = $collectionsCache[$value->id];
-                //Удаляем из битрикса элемент
-                if($value->deletion_mark == true) {
-                    //Проверяем права на удаление
-                    /*if (CIBlock::GetPermission($BLOCK_ID) >= 'W') {*/
-                    //Удаляем и выводим сообщение о выполнении, иначе показываем ошибку
-                    if(!CIBlockElement::Delete($existElementId)) {
-                        echo 'Запись удалена - '.$existElementId;
-                    }
-                    else {
-                        echo '<p class="error">При удалении элемента произошла ошибка ['.$existElementId.']<br>
-                                    '.$el->LAST_ERROR." ".__LINE__." ".__FUNCTION__.'</p>';
-                    }
-                    /*}*/
-                }
-                else {
-                    //Если удалять не нужно, то обновляем и выводим сообщение
-                    if($res = $el->Update($existElementId, $arLoadProductArray)) {
-                        echo "Запись обновлена: ".$value->name." - ".$value->title."<br />";
-                    }
-                    else {
-                        echo 'Error: '.$el->LAST_ERROR." ".__LINE__." ".__FUNCTION__;
-                    }
-                }
-            }
-            else {
-                $arLoadProductArray['CODE'] = CUtil::translit($arLoadProductArray['NAME'], 'ru',
-                    array('change_case' => 'L', 'replace_space' => '-', 'replace_other' => ''));
-
-                if(array_search($arLoadProductArray['CODE'], $collectionsCodeCache)) {
-                    $arLoadProductArray['CODE'] .= md5($arLoadProductArray['XML_ID']);
-                }
-
-                if($newId = $el->Add($arLoadProductArray)) {
-                    $collectionsCache[$arLoadProductArray['XML_ID']] = $newId;
-                    $collectionsCodeCache[$arLoadProductArray['XML_ID']] = $arLoadProductArray['CODE'];
-
-                    echo "Добавлена: ".$value->name." - ".$value->title."<br />";
-                }
-                else {
-                    echo 'Error: '.$el->LAST_ERROR." ".__LINE__." ".__FUNCTION__;
-                }
-            }
+            
+            $this->addCollection($arFields, ["deletion_mark" => $value->deletion_mark]);
         }
         echo "</div>";
         if(($ost->return == true)) {
