@@ -1035,32 +1035,31 @@ class ParsingModel {
             if(!empty($value->set_cat)) {
                 if(is_object($value->set_cat)) {
                     $value->set_cat = array($value->set_cat);
-
-                    foreach ($value->set_cat as $set_cat) {
-                        $props = [
-                            'id_cat' => $this->sectionsCache[$value->id]
-                        ];
-                        $arFields = Array(
-                            "IBLOCK_SECTION_ID" => false,
-                            "IBLOCK_ID" => self::COLLECTIONS_IBLOCK_ID,
-                            "XML_ID" => $set_cat->set_id,
-                            "PROPERTY_VALUES" => $props,
-                            "NAME" => $set_cat->description,
-                            "ACTIVE" => "Y"
+                }
+                foreach ($value->set_cat as $set_cat) {
+                    $props = [
+                        'id_cat' => $this->sectionsCache[$value->id]
+                    ];
+                    $arFields = Array(
+                        "IBLOCK_SECTION_ID" => false,
+                        "IBLOCK_ID" => self::COLLECTIONS_IBLOCK_ID,
+                        "XML_ID" => $set_cat->set_id,
+                        "PROPERTY_VALUES" => $props,
+                        "NAME" => $set_cat->description,
+                        "ACTIVE" => "Y"
+                    );
+                    $collectionId = $this->addCollection($arFields);
+                    if (!empty($set_cat->id_tehdoc)) {
+                        $file_obj = CFile::MakeFileArray(trim($_SERVER['DOCUMENT_ROOT'].'/1c-upload/' . $set_cat->id_tehdoc . '.jpg'));
+                        $arFile[] = array(
+                            'VALUE' => $file_obj,
+                            "DESCRIPTION" => $set_cat->description,
                         );
-                        $collectionId = $this->addCollection($arFields);
-                        if (!empty($set_cat->id_tehdoc)) {
-                            $file_obj = CFile::MakeFileArray(trim($_SERVER['DOCUMENT_ROOT'].'/1c-upload/' . $set_cat->id_tehdoc . '.jpg'));
-                            $arFile[] = array(
-                                'VALUE' => $file_obj,
-                                "DESCRIPTION" => $set_cat->description,
-                            );
-                            (new CIBlockElement())->Update($collectionId, array(
-                                "DETAIL_PICTURE" => $file_obj
-                            ), false, true, true);
-                            if($this->answer) {
-                                unlink(trim($_SERVER['DOCUMENT_ROOT'].'/1c-upload/' . $set_cat->id_tehdoc));
-                            }
+                        (new CIBlockElement())->Update($collectionId, array(
+                            "DETAIL_PICTURE" => $file_obj
+                        ), false, true, true);
+                        if($this->answer) {
+                            unlink(trim($_SERVER['DOCUMENT_ROOT'].'/1c-upload/' . $set_cat->id_tehdoc));
                         }
                     }
                 }
