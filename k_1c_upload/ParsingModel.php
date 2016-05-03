@@ -910,7 +910,7 @@ class ParsingModel {
             'IBLOCK_ID' => self::DOCUMENTATION_IBLOCK_ID
         );
 
-        $rsItems = CIBlockElement::GetList(Array("SORT" => "ASC"), $arFilter, false, ['XML_ID', 'ID', 'CODE']);
+        $rsItems = CIBlockElement::GetList(Array("SORT" => "ASC"), $arFilter, false, false, ['XML_ID', 'ID', 'CODE']);
         while($item = $rsItems->Fetch()) {
             $this->techDocCache[$item['XML_ID']] = $item['ID'];
             $this->techDocCodeCache[$item['XML_ID']] = $item['CODE'];
@@ -924,7 +924,7 @@ class ParsingModel {
             'IBLOCK_ID' => self::COLLECTIONS_IBLOCK_ID
         );
 
-        $rsItems = CIBlockElement::GetList(Array("SORT" => "ASC"), $arFilter, false, ['XML_ID', 'ID', 'CODE']);
+        $rsItems = CIBlockElement::GetList(Array("SORT" => "ASC"), $arFilter, false, false, ['XML_ID', 'ID', 'CODE']);
         while($item = $rsItems->Fetch()) {
             $this->collectionCache[$item['XML_ID']] = $item['ID'];
             $this->collectionCodeCache[$item['XML_ID']] = $item['CODE'];
