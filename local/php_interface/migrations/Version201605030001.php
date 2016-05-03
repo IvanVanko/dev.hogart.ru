@@ -23,8 +23,7 @@ class Version201605030001 extends Version
         if ($IblockHelper->addPropertyIfNotExists(\ParsingModel::COLLECTIONS_IBLOCK_ID, [
             "CODE" => "id_cat",
             "NAME" => "Категория коллекции",
-            "PROPERTY_TYPE" => "E",
-            "USER_TYPE" => "EAutocomplete",
+            "PROPERTY_TYPE" => "G",
             "LINK_IBLOCK_ID" => \ParsingModel::CATALOG_IBLOCK_ID
         ])) {
             $this->outSuccess("Добавлено свойство \"Категория коллекции\" в Инфоблок \"Коллекции\"");
