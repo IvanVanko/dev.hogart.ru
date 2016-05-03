@@ -1055,7 +1055,7 @@ class ParsingModel {
                                 'VALUE' => $file_obj,
                                 "DESCRIPTION" => $set_cat->description,
                             );
-                            $el->Update($collectionId, array(
+                            (new CIBlockElement())->Update($collectionId, array(
                                 "DETAIL_PICTURE" => $file_obj
                             ), false, true, true);
                             if($this->answer) {
