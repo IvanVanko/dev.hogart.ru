@@ -1059,7 +1059,7 @@ class ParsingModel {
                             "DETAIL_PICTURE" => $file_obj
                         ), false, true, true);
                         if($this->answer) {
-                            unlink(trim($_SERVER['DOCUMENT_ROOT'].'/1c-upload/' . $set_cat->id_tehdoc));
+                            unlink(trim($_SERVER['DOCUMENT_ROOT'].'/1c-upload/' . $set_cat->id_tehdoc . '.jpg'));
                         }
                     }
                 }
