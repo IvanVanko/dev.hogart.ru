@@ -29,16 +29,6 @@ class Version201605030001 extends Version
         ])) {
             $this->outSuccess("Добавлено свойство \"Категория коллекции\" в Инфоблок \"Коллекции\"");
         }
-
-        if ($IblockHelper->addPropertyIfNotExists(\ParsingModel::COLLECTIONS_IBLOCK_ID, [
-            "CODE" => "id_tehdoc",
-            "NAME" => "Документация",
-            "PROPERTY_TYPE" => "E",
-            "USER_TYPE" => "EAutocomplete",
-            "LINK_IBLOCK_ID" => \ParsingModel::DOCUMENTATION_IBLOCK_ID
-        ])) {
-            $this->outSuccess("Добавлено свойство \"Документация\" в Инфоблок \"Коллекции\"");
-        }
     }
 
     public function down(){

@@ -1033,9 +1033,6 @@ class ParsingModel {
             }
 
             if(!empty($value->set_cat)) {
-
-                $this->initTechDocCache();
-
                 if(is_object($value->set_cat)) {
                     $value->set_cat = array($value->set_cat);
 
@@ -1043,9 +1040,6 @@ class ParsingModel {
                         $props = [
                             'id_cat' => $this->sectionsCache[$value->id]
                         ];
-                        if(isset($this->techDocCache[$set_cat->id_tehdoc])) {
-                            $props['id_tehdoc'] = $this->techDocCache[$set_cat->id_tehdoc];
-                        }
                         $arFields = Array(
                             "IBLOCK_SECTION_ID" => false,
                             "IBLOCK_ID" => self::COLLECTIONS_IBLOCK_ID,
@@ -1054,7 +1048,20 @@ class ParsingModel {
                             "NAME" => $set_cat->description,
                             "ACTIVE" => "Y"
                         );
-                        $this->addCollection($arFields);
+                        $collectionId = $this->addCollection($arFields);
+                        if (!empty($set_cat->id_tehdoc)) {
+                            $file_obj = CFile::MakeFileArray(trim($_SERVER['DOCUMENT_ROOT'].'/1c-upload/' . $set_cat->id_tehdoc . '.jpg'));
+                            $arFile[] = array(
+                                'VALUE' => $file_obj,
+                                "DESCRIPTION" => $set_cat->description,
+                            );
+                            $el->Update($collectionId, array(
+                                "DETAIL_PICTURE" => $file_obj
+                            ), false, true, true);
+                            if($this->answer) {
+                                unlink(trim($_SERVER['DOCUMENT_ROOT'].'/1c-upload/' . $set_cat->id_tehdoc));
+                            }
+                        }
                     }
                 }
             }
@@ -1122,8 +1129,8 @@ class ParsingModel {
                 $fields['CODE'] .= md5($fields['XML_ID']);
             }
 
-            if($newId = $el->Add($fields)) {
-                $this->collectionCache[$fields['XML_ID']] = $newId;
+            if(($existElementId = $el->Add($fields))) {
+                $this->collectionCache[$fields['XML_ID']] = $existElementId;
                 $this->collectionCodeCache[$fields['XML_ID']] = $fields['CODE'];
 
                 echo "Добавлена: " . $fields['NAME'] . "<br />";
@@ -1132,6 +1139,8 @@ class ParsingModel {
                 echo 'Error: '.$el->LAST_ERROR." ".__LINE__." ".__FUNCTION__;
             }
         }
+
+        return $existElementId;
     }
 
     function initPropname($ost) {
