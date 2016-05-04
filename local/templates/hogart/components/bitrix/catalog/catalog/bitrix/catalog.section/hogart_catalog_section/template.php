@@ -58,12 +58,35 @@ $this->setFrameMode(true);
 </div>
 <? endif; ?>
 <ul class="perechen-produts js-target-perechen <?=$arParams['VIEW_TYPE']?>">
+    <?  $collection = ""; ?>
     <? foreach ($arResult["ITEMS"] as $arItem):?>
         <?
         $rsFile = CFile::GetByID($arItem['PROPERTIES']['photos']['VALUE'][0]);
         $arFile = $rsFile->Fetch();
         ?>
-        <li>
+        <? if ($collection != $arItem["PROPERTIES"]["collection"]["VALUE"] && $arParams["IS_TABLE_VIEW"]): ?>
+            <? $collection = $arItem["PROPERTIES"]["collection"]["VALUE"]; ?>
+            <li class="collection-header">
+                <div class="title"></div>
+                <div class="description">
+                    <div class="collection-image"></div>
+                    <div class="description-text"></div>
+                </div>
+                <div class="collection-table-header">
+                    <span><?= $arItem["PROPERTIES"]["sku"]["NAME"] ?></span>
+                    <span>Наименование</span>
+                    <span><?= $arItem['PROPERTIES']["brand"]["NAME"] ?></span>
+                <? foreach ($arItem["PROPERTIES"] as $propertyName => $arProperty): ?>
+                    <? if ($arProperty["DISPLAY_EXPANDED"] == "Y"): ?>
+                        <span><?= $arProperty["NAME"]; ?></span>
+                    <? endif; ?>
+                <? endforeach; ?>
+                </div>
+            </li>
+        <? endif; ?>
+        <li
+            <? if (!empty($collection)):?> data-collection-id="<?= $collection ?>"<? endif; ?>
+        >
             <div>
                 <span class="perechen-img">
                     <a href="<?= $arItem["DETAIL_PAGE_URL"] ?>">
