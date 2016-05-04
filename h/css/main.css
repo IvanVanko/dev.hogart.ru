@@ -4742,7 +4742,8 @@ blockquote:before {
   display: table-row;
 }
 
-.catalog_page .perechen .perechen-produts.list > li.collection-table ul[data-collection] li.collection-header span {
+.catalog_page .perechen .perechen-produts.list > li.collection-table ul[data-collection] li.collection-header span,
+.catalog_page .perechen .perechen-produts.list > li.collection-table ul[data-collection] li[data-collection-item-id] span {
   display: table-cell;
 }
 
