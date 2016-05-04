@@ -207,6 +207,13 @@ if (false === $viewType) {
     $viewType = array_keys($viewTypes)[abs(($section['UF_SECTION_VIEW'] % 2) - 1)];
 }
 
+if ($isTableViewExt) {
+    $sort = "PROPERTY_collection.NAME";
+    $order = "asc";
+    $arParams["ELEMENT_SORT_FIELD2"] = "id";
+    $arParams["ELEMENT_SORT_ORDER2"] = "desc";
+}
+
 $intSectionID = $APPLICATION->IncludeComponent(
     "bitrix:catalog.section",
     "hogart_catalog_section",
