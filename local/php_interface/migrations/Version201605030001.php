@@ -9,6 +9,7 @@
 namespace Sprint\Migration;
 
 use Sprint\Migration\Helpers\IblockHelper;
+use Sprint\Migration\Helpers\UserTypeEntityHelper;
 
 require_once $_SERVER["DOCUMENT_ROOT"] . "/k_1c_upload/ParsingModel.php";
 
@@ -28,6 +29,21 @@ class Version201605030001 extends Version
         ])) {
             $this->outSuccess("Добавлено свойство \"Категория коллекции\" в Инфоблок \"Коллекции\"");
         }
+
+        $userTypeEntityHelper = new UserTypeEntityHelper();
+        $userTypeEntityHelper->addUserTypeEntityIfNotExists(
+            "IBLOCK_" . \ParsingModel::CATALOG_IBLOCK_ID . "_SECTION",
+            "UF_SECTION_VIEW",
+            [
+                "USER_TYPE_ID" => "integer",
+                "EDIT_FORM_LABEL" => array('ru' => 'Вид группы', 'en' => 'Section view'),
+                "LIST_COLUMN_LABEL" => array('ru' => 'Вид группы', 'en' => 'Section view'),
+                "LIST_FILTER_LABEL" => array('ru' => 'Вид группы', 'en' => 'Section view'),
+                "SETTINGS" => [
+                    "DEFAULT_VALUE" => 0
+                ]
+            ]
+        );
     }
 
     public function down(){
