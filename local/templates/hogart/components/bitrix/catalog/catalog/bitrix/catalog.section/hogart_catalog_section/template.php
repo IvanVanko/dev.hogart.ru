@@ -19,7 +19,7 @@ $viewTypes = array('list' => 'Списком', 'grid' => 'Сеткой');
 $isTableViewExt = $arParams['VIEW_TYPE'] == 3;
 
 if (false === $arParams['VIEW_TYPE']) {
-    $arParams['VIEW_TYPE'] = $viewTypes[max(0, ($arResult["UF_SECTION_VIEW"] % 2) - 1)];
+    $arParams['VIEW_TYPE'] = array_keys($viewTypes)[max(0, ($arResult["UF_SECTION_VIEW"] % 2) - 1)];
 }
 
 ?>
