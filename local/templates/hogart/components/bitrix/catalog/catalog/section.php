@@ -17,7 +17,7 @@ global $elementFilter;
 
 //метод устанавливает параметр в REQUEST для принудительной фильтрации по брендам если перешли на подраздел из карточки бренда
 HogartHelpers::setBrandRequestFilter(CStorage::getVar('CATALOG_BRAND_CODE'), BRAND_IBLOCK_ID, CATALOG_IBLOCK_ID, CATALOG_BRAND_PROPERTY_CODE);
-$section = BXHelper::getSections(array(), array('ID' => $arResult["VARIABLES"]["SECTION_ID"], 'IBLOCK_ID' => $arParams['IBLOCK_ID']), false, array('ID','DEPTH_LEVEL'));
+$section = BXHelper::getSections(array(), array('ID' => $arResult["VARIABLES"]["SECTION_ID"], 'IBLOCK_ID' => $arParams['IBLOCK_ID']), false, array('ID','DEPTH_LEVEL', 'UF_*'));
 $section = $section['RESULT'][0];
 
 //Определим уровень вложенности теекущего раздела
@@ -199,6 +199,14 @@ if (empty($arResult['VARIABLES']['SECTION_ID']) && empty($arResult['VARIABLES'][
     $arResult['VARIABLES']['SECTION_CODE'] = 'NULL';
 }
 
+$viewType = CStorage::getCookieParam('catalog-view-type');
+$viewTypes = array('list' => 'Списком', 'grid' => 'Сеткой');
+$isTableViewExt = $section['UF_SECTION_VIEW'] == 3;
+
+if (false === $viewType) {
+    $viewType = array_keys($viewTypes)[abs(($section['UF_SECTION_VIEW'] % 2) - 1)];
+}
+
 $intSectionID = $APPLICATION->IncludeComponent(
     "bitrix:catalog.section",
     "hogart_catalog_section",
@@ -290,7 +298,9 @@ $intSectionID = $APPLICATION->IncludeComponent(
         //template.php, result_modifier.php
         'HREF_BRAND_CODE' => CStorage::getVar('CATALOG_BRAND_CODE'),
         'STORES_FILTERED' => $stores_filtered,
-        'VIEW_TYPE' => CStorage::getCookieParam('catalog-view-type')
+        'VIEW_TYPES' => $viewTypes,
+        'VIEW_TYPE' => $viewType,
+        'IS_TABLE_VIEW' => $isTableViewExt
     ),
     $component
 );

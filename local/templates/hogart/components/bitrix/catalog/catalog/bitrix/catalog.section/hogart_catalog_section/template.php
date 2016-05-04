@@ -15,13 +15,6 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
 
-$viewTypes = array('list' => 'Списком', 'grid' => 'Сеткой');
-$isTableViewExt = $arParams['VIEW_TYPE'] == 3;
-
-if (false === $arParams['VIEW_TYPE']) {
-    $arParams['VIEW_TYPE'] = array_keys($viewTypes)[abs(($arResult["UF_SECTION_VIEW"] % 2) - 1)];
-}
-
 ?>
 <h1><?= $arResult["NAME"] ?></h1>
 <!--Если пользователь не авторизован-->
@@ -30,10 +23,11 @@ if (false === $arParams['VIEW_TYPE']) {
     В каталоге представлены рекомендуемые розничные цены
 </small>
 <!---->
+<? if (!$arParams["IS_TABLE_VIEW"]): ?>
 <div class="view-filter">
     <div class="left">
         <span>Выводить:</span>
-        <?foreach ($viewTypes as $type => $name) {
+        <?foreach ($arParams['VIEW_TYPES'] as $type => $name) {
             $active = $type == $arParams['VIEW_TYPE'] ? "active":"";
             echo "<a class=\"icon-".$type." ".$active." js-trigger-perechen\" href=\"#".$type."\">".$name."</a>";
         }?>
@@ -62,6 +56,7 @@ if (false === $arParams['VIEW_TYPE']) {
         </a>
     </div>
 </div>
+<? endif; ?>
 <ul class="perechen-produts js-target-perechen <?=$arParams['VIEW_TYPE']?>">
     <? foreach ($arResult["ITEMS"] as $arItem):?>
         <?
