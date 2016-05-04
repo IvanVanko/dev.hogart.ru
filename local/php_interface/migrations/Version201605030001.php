@@ -40,7 +40,7 @@ class Version201605030001 extends Version
                 "LIST_COLUMN_LABEL" => array('ru' => 'Вид группы', 'en' => 'Section view'),
                 "LIST_FILTER_LABEL" => array('ru' => 'Вид группы', 'en' => 'Section view'),
                 "SETTINGS" => [
-                    "DEFAULT_VALUE" => 0
+                    "DEFAULT_VALUE" => 1
                 ]
             ]
         );
