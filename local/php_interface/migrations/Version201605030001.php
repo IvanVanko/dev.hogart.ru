@@ -39,8 +39,13 @@ class Version201605030001 extends Version
                 "EDIT_FORM_LABEL" => array('ru' => 'Вид группы', 'en' => 'Section view'),
                 "LIST_COLUMN_LABEL" => array('ru' => 'Вид группы', 'en' => 'Section view'),
                 "LIST_FILTER_LABEL" => array('ru' => 'Вид группы', 'en' => 'Section view'),
+                "HELP_MESSAGE" => array(
+                    "ru" => "отображение по умолчанию (1 - список, 2 - плитка, 3 - таблица)"
+                ),
                 "SETTINGS" => [
-                    "DEFAULT_VALUE" => 1
+                    "DEFAULT_VALUE" => 1,
+                    "MIN_VALUE" => 1,
+                    "MAX_VALUE" => 3
                 ]
             ]
         );

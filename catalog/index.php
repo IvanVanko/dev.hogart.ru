@@ -89,6 +89,7 @@ else {
             "TOP_ELEMENT_SORT_FIELD2" => "id",
             "TOP_ELEMENT_SORT_ORDER2" => "desc",
             "TOP_PROPERTY_CODE" => array("", "undefined", ""),
+            "SECTION_USER_FIELDS" => array("UF_SECTION_VIEW"),
             "SECTION_COUNT_ELEMENTS" => "Y",
             "SECTION_TOP_DEPTH" => "2",
             "SECTIONS_VIEW_MODE" => "LIST",
