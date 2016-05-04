@@ -290,7 +290,7 @@ $intSectionID = $APPLICATION->IncludeComponent(
         //template.php, result_modifier.php
         'HREF_BRAND_CODE' => CStorage::getVar('CATALOG_BRAND_CODE'),
         'STORES_FILTERED' => $stores_filtered,
-        'VIEW_TYPE' => CStorage::getCookieParam('catalog-view-type', 'list')
+        'VIEW_TYPE' => CStorage::getCookieParam('catalog-view-type')
     ),
     $component
 );

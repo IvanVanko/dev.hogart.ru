@@ -14,25 +14,18 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
+
+$viewTypes = array('list' => 'Списком', 'grid' => 'Сеткой');
+$isTableViewExt = $arParams['VIEW_TYPE'] == 3;
+
+if (false === $arParams['VIEW_TYPE']) {
+    $arParams['VIEW_TYPE'] = $viewTypes[max(0, ($arResult["UF_SECTION_VIEW"] % 2) - 1)];
+}
+
 ?>
 <h1><?= $arResult["NAME"] ?></h1>
 <!--Если пользователь не авторизован-->
 
-<? /* elseif ($arResult['DEPTH_LEVEL'] == '3'): ?>
-  <div class="head-links-box">
-  <div class="head-links-wrapper">
-  <ul class="head-links">
-  <? foreach ($arResult['NEIB'] as $item): ?>
-  <li <?= ($page == $item['SECTION_PAGE_URL']) ? 'class="selected"' : '' ?>>
-  <a href="<?= $item['SECTION_PAGE_URL'] ?>"><?= $item['NAME'] ?></a>
-  </li>
-  <? endforeach; ?>
-  </ul>
-  </div>
-  <div class="head-links-button">развернуть</div>
-  </div>
-  <?endif; */
-?>
 <small class="green-bg">
     В каталоге представлены рекомендуемые розничные цены
 </small>
@@ -40,7 +33,7 @@ $this->setFrameMode(true);
 <div class="view-filter">
     <div class="left">
         <span>Выводить:</span>
-        <?foreach (array('list' => 'Списком', 'grid' => 'Сеткой') as $type => $name) {
+        <?foreach ($viewTypes as $type => $name) {
             $active = $type == $arParams['VIEW_TYPE'] ? "active":"";
             echo "<a class=\"icon-".$type." ".$active." js-trigger-perechen\" href=\"#".$type."\">".$name."</a>";
         }?>
