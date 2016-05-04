@@ -4721,6 +4721,31 @@ blockquote:before {
   text-align: center;
   width: 100%;
 }
+
+.catalog_page .perechen .perechen-produts.list > li.collection-table {
+
+}
+
+.catalog_page .perechen .perechen-produts.list > li.collection-table ul[data-collection]  {
+  display: table;
+  width: 100%;
+  padding: 0;
+  list-style-type: none;
+}
+
+.catalog_page .perechen .perechen-produts.list > li.collection-table ul[data-collection] li.caption {
+  display: table-caption;
+}
+
+.catalog_page .perechen .perechen-produts.list > li.collection-table ul[data-collection] li.collection-header,
+.catalog_page .perechen .perechen-produts.list > li.collection-table ul[data-collection] li[data-collection-item-id] {
+  display: table-row;
+}
+
+.catalog_page .perechen .perechen-produts.list > li.collection-table ul[data-collection] li.collection-header span {
+  display: table-cell;
+}
+
 .catalog_page .perechen .perechen-produts.list .prod-box {
   float: left;
   width: 70%;
