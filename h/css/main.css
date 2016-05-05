@@ -4540,7 +4540,7 @@ blockquote:before {
   flex-wrap: wrap;
 }
 .catalog_page .perechen .perechen-produts.list > li {
-  border-bottom: 1px solid #b0b0b0;
+  border-bottom: 1px solid #95c600;
   padding-bottom: 15px;
   float: left;
   width: 100%;
@@ -4731,10 +4731,31 @@ blockquote:before {
   width: 100%;
   padding: 0;
   list-style-type: none;
+  border-collapse: collapse;
 }
 
 .catalog_page .perechen .perechen-produts.list > li.collection-table ul[data-collection] li.caption {
   display: table-caption;
+  margin-bottom: 10px;
+}
+
+.catalog_page .perechen .perechen-produts.list > li.collection-table ul[data-collection] li.caption .collection-image {
+  width: 30%;
+}
+.catalog_page .perechen .perechen-produts.list > li.collection-table ul[data-collection] li.caption .collection-description {
+  margin-left: 35%;
+  transform: translateY(30%);
+}
+.catalog_page .perechen .perechen-produts.list > li.collection-table ul[data-collection] li.caption .collection-description .collection-title {
+  font-weight: bold;
+  font-size: 16px;
+  padding-bottom: 5px;
+  border-bottom: 1px #95c600 solid;
+}
+
+.catalog_page .perechen .perechen-produts.list > li.collection-table ul[data-collection] li.caption .collection-description .collection-text {
+  margin-top: 5px;
+  font-size: 12px;
 }
 
 .catalog_page .perechen .perechen-produts.list > li.collection-table ul[data-collection] li.collection-header,
@@ -4742,9 +4763,42 @@ blockquote:before {
   display: table-row;
 }
 
-.catalog_page .perechen .perechen-produts.list > li.collection-table ul[data-collection] li.collection-header span,
-.catalog_page .perechen .perechen-produts.list > li.collection-table ul[data-collection] li[data-collection-item-id] span {
+.catalog_page .perechen .perechen-produts.list > li.collection-table ul[data-collection] li[data-collection-item-id] {
+  border-bottom: 1px solid #95c600;
+}
+
+.catalog_page .perechen .perechen-produts.list > li.collection-table ul[data-collection] li[data-collection-item-id]:last-child {
+  border-bottom: none;
+}
+
+.catalog_page .perechen .perechen-produts.list > li.collection-table ul[data-collection] li.collection-header span.cell,
+.catalog_page .perechen .perechen-produts.list > li.collection-table ul[data-collection] li[data-collection-item-id] span.cell {
   display: table-cell;
+  padding: 10px 5px;
+  vertical-align: middle;
+  font-size: 12px;
+}
+
+.catalog_page .perechen .perechen-produts.list > li.collection-table ul[data-collection] li[data-collection-item-id] span.cell.price {
+  white-space: nowrap;
+}
+.catalog_page .perechen .perechen-produts.list > li.collection-table ul[data-collection] li[data-collection-item-id] span.cell div.discount {
+  top: auto;
+  left: auto;
+}
+
+.catalog_page .perechen .perechen-produts.list > li.collection-table ul[data-collection] li.collection-header {
+  background-color: #ccc;
+  text-align: center;
+}
+
+.catalog_page .perechen .perechen-produts.list > li.collection-table ul[data-collection] li.collection-header span.cell {
+  font-weight: bold;
+  border-right: white 1px solid;
+}
+
+.catalog_page .perechen .perechen-produts.list > li.collection-table ul[data-collection] li.collection-header span.cell:last-child {
+  border-right: none;
 }
 
 .catalog_page .perechen .perechen-produts.list .prod-box {
