@@ -136,6 +136,7 @@ if ($arParams['USE_FILTER'] == 'Y') {
         array('HIDE_ICONS' => 'Y')
     );
     $FILTER_HTML = ob_get_clean();
+    CStorage::setVar($FILTER_HTML, "SECTION_FILTER_HTML");
 
     $arCustomFilter = CStorage::getVar('CUSTOM_SECTION_FILTER');
     if (!empty($arCustomFilter)) {
@@ -291,8 +292,7 @@ $intSectionID = $APPLICATION->IncludeComponent(
         'STORES_FILTERED' => $stores_filtered,
         'VIEW_TYPES' => $viewTypes,
         'VIEW_TYPE' => $viewType,
-        'IS_TABLE_VIEW' => $isTableViewExt,
-        'FILTER_HTML' => $FILTER_HTML
+        'IS_TABLE_VIEW' => $isTableViewExt
     ),
     $component
 );
