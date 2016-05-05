@@ -208,9 +208,9 @@ if (false === $viewType) {
 }
 
 if ($isTableViewExt) {
-    $sort = "PROPERTY_collection.NAME";
+    $sort = "PROPERTY_brand.NAME";
     $order = "asc";
-    $arParams["ELEMENT_SORT_FIELD2"] = "PROPERTY_brand.NAME";
+    $arParams["ELEMENT_SORT_FIELD2"] = "PROPERTY_collection.NAME";
     $arParams["ELEMENT_SORT_ORDER2"] = "ASC";
 }
 

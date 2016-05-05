@@ -65,14 +65,14 @@ $this->setFrameMode(true);
         $arFile = $rsFile->Fetch();
         ?>
 
-        <? if (!empty($collectionId) && $collectionId != $arItem["PROPERTIES"]["collection"]["VALUE"] && $arParams["IS_TABLE_VIEW"]): ?>
+        <? if (!empty($collectionId) && ($collectionId != ($arItem["PROPERTIES"]["collection"]["VALUE"] ? : $arItem["PROPERTIES"]["brand"]["VALUE"])) && $arParams["IS_TABLE_VIEW"]): ?>
             </ul></li>
             <!-- закрываем блок коллекции <?= $collectionId ?> -->
             <?  $collectionId = ""; ?>
         <? endif; ?>
-        <? if (!empty($arItem["PROPERTIES"]["collection"]["VALUE"]) && $collectionId != $arItem["PROPERTIES"]["collection"]["VALUE"] && $arParams["IS_TABLE_VIEW"]): ?>
+        <? if (($_collectionId = ($arItem["PROPERTIES"]["collection"]["VALUE"] ? : $arItem["PROPERTIES"]["brand"]["VALUE"])) && !empty($_collectionId) && $collectionId != $_collectionId && $arParams["IS_TABLE_VIEW"]): ?>
             <?
-                $collectionId = $arItem["PROPERTIES"]["collection"]["VALUE"];
+                $collectionId = ($arItem["PROPERTIES"]["collection"]["VALUE"] ? : $arItem["PROPERTIES"]["brand"]["VALUE"]);
                 $collectionElement = CIBlockElement::GetByID($collectionId)->GetNextElement();
                 $collection = $collectionElement->GetFields();
             ?>

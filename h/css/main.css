@@ -4744,7 +4744,6 @@ blockquote:before {
 }
 .catalog_page .perechen .perechen-produts.list > li.collection-table ul[data-collection] li.caption .collection-description {
   margin-left: 35%;
-  transform: translateY(30%);
 }
 .catalog_page .perechen .perechen-produts.list > li.collection-table ul[data-collection] li.caption .collection-description .collection-title {
   font-weight: bold;
@@ -4755,6 +4754,10 @@ blockquote:before {
 
 .catalog_page .perechen .perechen-produts.list > li.collection-table ul[data-collection] li.caption .collection-description .collection-text {
   margin-top: 5px;
+  font-size: 12px;
+}
+
+.catalog_page .perechen .perechen-produts.list > li.collection-table ul[data-collection] li.caption .collection-description .collection-text * {
   font-size: 12px;
 }
 
