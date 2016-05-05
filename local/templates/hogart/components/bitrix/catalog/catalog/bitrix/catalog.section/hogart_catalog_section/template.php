@@ -22,6 +22,11 @@ $this->setFrameMode(true);
 <small class="green-bg">
     В каталоге представлены рекомендуемые розничные цены
 </small>
+<? if ($arResult['DEPTH_LEVEL'] > '1') : ?>
+<div class="smart-filter-wrapper">
+    <?= $arParams["FILTER_HTML"]?>
+</div>
+<? endif; ?>
 <!---->
 <? if (!$arParams["IS_TABLE_VIEW"]): ?>
 <div class="view-filter">
@@ -100,7 +105,11 @@ $this->setFrameMode(true);
             <!-- бренд <?= $brandId ?> -->
             <li class="brand-table">
             <ul data-brand="<?= $brandId?>">
-            <? if (empty($arItem["PROPERTIES"]["collection"]["VALUE"]) || $collectionId == $arItem["PROPERTIES"]["collection"]["VALUE"]): ?>
+            <li class="caption">
+                <div class="brand-name"><?= $arResult["ALL_BRANDS"][$brandId]["NAME"] ?></div>
+                <hr class="brand-hr">
+            </li>
+            <? if (empty($arItem["PROPERTIES"]["collection"]["VALUE"])): ?>
                 <?= $brand_collection_header ?>
             <? endif; ?>
         <? endif; ?>
@@ -112,6 +121,11 @@ $this->setFrameMode(true);
                 $collection = $collectionElement->GetFields();
             ?>
             <!-- коллекция <?= $collectionId ?> -->
+            <script language="JavaScript" type="text/javascript">
+                if ($('[data-brand-item-id]', '[data-brand="<?= $brandId ?>"]').length) {
+                    $('[data-brand="<?= $brandId ?>"]').css('display', 'block');
+                }
+            </script>
             <li class="collection-table">
             <ul data-collection="<?= $collectionId ?>">
             <li class="caption">
@@ -333,78 +347,23 @@ $this->setFrameMode(true);
 </div>
 
 <? $this->SetViewTarget('top_section_wrapper') ?>
-<?fileDump($arResult, true);?>
-<? if ($arResult['DEPTH_LEVEL'] <= 1) { ?>
+
+<? if ($arResult['DEPTH_LEVEL'] <= 1): ?>
     <aside class="sidebar category js-fh js-fixed-block js-paralax-height" data-fixed="top">
-        <div class="inner js-paralax-item">
-            <div class="side_href">
+    <div class="inner js-paralax-item">
+    <div class="side_href">
 
-                <a href="/documentation/" <?/*href="/documentation/?direction[]=<?= $arResult['ID'] ?>&direction_<?= $arResult['ID'] ?>_left=<?= $arResult['LEFT_MARGIN'] ?>&direction_<?= $arResult['ID'] ?>_right=<?= $arResult['RIGHT_MARGIN'] ?>"*/?>
-                   class="icon_doc">Перейти<br>к документации</a>
+        <a href="/documentation/" <? /*href="/documentation/?direction[]=<?= $arResult['ID'] ?>&direction_<?= $arResult['ID'] ?>_left=<?= $arResult['LEFT_MARGIN'] ?>&direction_<?= $arResult['ID'] ?>_right=<?= $arResult['RIGHT_MARGIN'] ?>"*/ ?>
+           class="icon_doc">Перейти<br>к документации</a>
 
-                <? if ($arResult["eqSelectID"]) { ?>
-                                <a href="/selection-equipment/#tab<?= $arResult["eqSelectID"] ?>" class="icon_ok">Заявка<br>на подбор<br>оборудования</a>
-                            <? } ?>
-                                <?if ((int)$arResult["UF_PRICE"]>0) {?>
-                            <a href="<?=CFile::GetPath($arResult["UF_PRICE"]); ?>" class="doc_view icon_doc" download>Скачать каталог</a>
-                                <?}?>
+        <? if ($arResult["eqSelectID"]) { ?>
+            <a href="/selection-equipment/#tab<?= $arResult["eqSelectID"] ?>" class="icon_ok">Заявка<br>на подбор<br>оборудования</a>
+        <? } ?>
+        <? if ((int)$arResult["UF_PRICE"] > 0) { ?>
+            <a href="<?= CFile::GetPath($arResult["UF_PRICE"]); ?>" class="doc_view icon_doc" download>Скачать
+                каталог</a>
+        <? } ?>
 
-            </div>
-<? } else { ?>
-            <aside class="sidebar js-fh js-fixed-block js-paralax-height perechen" data-fixed="top">
-                <div class="inner js-paralax-item">
-                    <div class="side_href">
-
-    <? if ($arResult['DEPTH_LEVEL'] == 2) {
-
-        ?>
-                            <a href="/documentation/" <?/* href="/documentation/?direction[]=<?= $arResult['IBLOCK_SECTION_ID'] ?>&section_<?= $arResult['IBLOCK_SECTION_ID'] ?>=<?= $arResult['ID'] ?>&section_<?= $arResult['ID'] ?>_left=<?= $arResult['LEFT_MARGIN'] ?>&section_<?= $arResult['ID'] ?>_right=<?= $arResult['RIGHT_MARGIN'] ?>"*/?>
-                               class="icon_doc">Перейти<br>к документации</a>
-
-                            <? if ($arResult["eqSelectID"]) { ?>
-                                <a href="/selection-equipment/#tab<?= $arResult["eqSelectID"] ?>" class="icon_ok">Заявка<br>на подбор<br>оборудования</a>
-                            <? } ?>
-                                   <?if ((int)$arResult["UF_PRICE"]>0) {?>
-                            <a href="<?=CFile::GetPath($arResult["UF_PRICE"]); ?>" class="doc_view icon_doc" download>Скачать каталог</a>
-                                <?}?>
-                        <? } else { ?>
-        <? $directionId = $arResult['PARENT_PARENT_SECTION_ID']; ?>
-                            <a href="/documentation/" <?/*href="/documentation/?direction[]=<?= $directionId ?>&section_<?= $directionId ?>=<?= $arResult['ID'] ?>&section_<?= $arResult['ID'] ?>_left=<?= $arResult['LEFT_MARGIN'] ?>&section_<?= $arResult['ID'] ?>_right=<?= $arResult['RIGHT_MARGIN'] ?>"*/?>
-                               class="icon_doc">Перейти<br>к документации</a>
-
-                            <? if ($arResult["eqSelectID"]) { ?>
-                                <a href="/selection-equipment/#tab<?= $arResult["eqSelectID"] ?>" class="icon_ok">Заявка<br>на подбор<br>оборудования</a>
-                            <? } ?>
-                                   <?if ((int)$arResult["UF_PRICE"]>0) {?>
-                            <a href="<?=CFile::GetPath($arResult["UF_PRICE"]); ?>" class="doc_view icon_doc" download>Скачать каталог</a>
-                                <?}?>
-                    <? } ?>
-                    </div>
-                        <? if ($arResult['DEPTH_LEVEL'] == '2') : ?>
-                        <div class="sidebar_padding_cnt">
-        <? $page = $APPLICATION->GetCurDir(true); ?>
-
-                            <!--            <div class="preview-project-viewport">-->
-                            <!--                <div class="preview-project-viewport-inner">-->
-                            <!--                    <br/><br/>-->
-                            <!--                    <div class="head-links-box">-->
-                            <!--                        <div class="head-links-wrapper">-->
-                            <!--                            <ul class="head-links">-->
-                            <div class="subs-links">
-        <? foreach ($arResult['SUBS'] as $item): ?>
-                                    <a <?= ($page == $item['SECTION_PAGE_URL']) ? 'class="active"' : '' ?>
-                                        href="<?= $item['SECTION_PAGE_URL'] ?>"><?= $item['NAME'] ?></a>
-        <? endforeach; ?>
-                            </div>
-
-                            <!--                            </ul>-->
-                            <!--                        </div>-->
-                            <!--                    </div>-->
-                            <!--                </div>-->
-                            <!--            </div>-->
-
-
-                        </div>
-                    <? endif; ?>
-                <? } ?>
+    </div>
+<? endif; ?>
 <? $this->EndViewTarget() ?>
