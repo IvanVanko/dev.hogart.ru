@@ -1045,7 +1045,7 @@ class ParsingModel {
                         "IBLOCK_ID" => self::COLLECTIONS_IBLOCK_ID,
                         "XML_ID" => $set_cat->set_id,
                         "PROPERTY_VALUES" => $props,
-                        "NAME" => $set_cat->description,
+                        "PREVIEW_TEXT" => $set_cat->description,
                         "ACTIVE" => "Y"
                     );
                     $collectionId = $this->addCollection($arFields);
@@ -1056,7 +1056,7 @@ class ParsingModel {
                             "DESCRIPTION" => $set_cat->description,
                         );
                         (new CIBlockElement())->Update($collectionId, array(
-                            "DETAIL_PICTURE" => $file_obj
+                            "PREVIEW_PICTURE" => $file_obj
                         ), false, true, true);
                         if($this->answer) {
                             unlink(trim($_SERVER['DOCUMENT_ROOT'].'/1c-upload/' . $set_cat->id_tehdoc . '.jpg'));
@@ -1111,6 +1111,10 @@ class ParsingModel {
                 }
             }
             else {
+                $collectionElement = $el->GetByID($existElementId)->GetNextElement();
+                $collection = $collectionElement->GetFields();
+                $collection["PROPERTY_VALUES"] = $collectionElement->GetProperties();
+                $fields = array_merge_recursive($collection, $fields);
                 //Если удалять не нужно, то обновляем и выводим сообщение
                 if($res = $el->Update($existElementId, $fields)) {
                     echo "Запись обновлена: " . $fields["NAME"] . "<br />";
