@@ -1112,9 +1112,11 @@ class ParsingModel {
             }
             else {
                 $collectionElement = $el->GetByID($existElementId)->GetNextElement();
-                $collection = $collectionElement->GetFields();
-                $collection["PROPERTY_VALUES"] = $collectionElement->GetProperties();
-                $fields = array_merge_recursive($collection, $fields);
+                $values = [];
+                foreach ($collectionElement->GetProperties() as $key => $property) {
+                    $values[$key] = $property["VALUE"];
+                }
+                $fields["PROPERTY_VALUES"] = array_merge($values, $fields["PROPERTY_VALUES"]);
                 //Если удалять не нужно, то обновляем и выводим сообщение
                 if($res = $el->Update($existElementId, $fields)) {
                     echo "Запись обновлена: " . $fields["NAME"] . "<br />";
