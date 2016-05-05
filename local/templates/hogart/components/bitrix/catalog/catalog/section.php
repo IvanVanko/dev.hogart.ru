@@ -210,8 +210,8 @@ if (false === $viewType) {
 if ($isTableViewExt) {
     $sort = "PROPERTY_collection.NAME";
     $order = "asc";
-    $arParams["ELEMENT_SORT_FIELD2"] = "id";
-    $arParams["ELEMENT_SORT_ORDER2"] = "desc";
+    $arParams["ELEMENT_SORT_FIELD2"] = "PROPERTY_brand.NAME";
+    $arParams["ELEMENT_SORT_ORDER2"] = "ASC";
 }
 
 $intSectionID = $APPLICATION->IncludeComponent(
