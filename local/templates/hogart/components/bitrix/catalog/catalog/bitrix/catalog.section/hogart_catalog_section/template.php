@@ -183,17 +183,19 @@ $this->setFrameMode(true);
                             <?= $arItem["NAME"]?>, <?= $arResult["ALL_BRANDS"][$arItem["PROPERTIES"]["brand"]["VALUE"]]['NAME'] ?> <?= $arItem["PROPERTIES"]["sku"]["VALUE"] ?>
                         </div>
                         <div class="stock-items">
-                            <?$store_keys = preg_grep("/^CATALOG_STORE_AMOUNT_/", array_keys($arItem));?>
-                        <? foreach ($store_keys as $store_key): ?>
-                            <?
-                            if (!$arItem[$store_key]) continue;
-                            $storeId = intval(str_replace("CATALOG_STORE_AMOUNT_", "", $store_key));
-                            ?>
-                            <div class="stock-item">
-                                <span class="stock-name"><?= $arResult["STORES"][$storeId]["TITLE"]?></span>
-                                <span><?= $arItem[$store_key] ?></span>
+                            <div class="stock-items-table">
+                            <? $store_keys = preg_grep("/^CATALOG_STORE_AMOUNT_/", array_keys($arItem)); ?>
+                            <? foreach ($store_keys as $store_key): ?>
+                                <?
+                                if (!$arItem[$store_key]) continue;
+                                $storeId = intval(str_replace("CATALOG_STORE_AMOUNT_", "", $store_key));
+                                ?>
+                                <div class="stock-item">
+                                    <span class="stock-name text-left"><?= $arResult["STORES"][$storeId]["ADDRESS"]?></span>
+                                    <span><?= $arItem[$store_key] ?> <?=$arItem['CATALOG_MEASURE_NAME']?>.</span>
+                                </div>
+                            <? endforeach; ?>
                             </div>
-                        <? endforeach; ?>
                         </div>
                         <i class="fa fa-caret-up" aria-hidden="true"></i>
                     </div>

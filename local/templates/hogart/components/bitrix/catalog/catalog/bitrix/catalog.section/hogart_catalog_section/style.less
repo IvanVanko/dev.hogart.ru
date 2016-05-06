@@ -92,9 +92,16 @@
                         .stock-items {
                           padding: 0 10px 10px;
                           width: 310px;
-                          .stock-item {
-                            padding-top: 6px;
-                            width: 310px;
+                          .stock-items-table {
+                            display: table;
+                            width: 100%;
+                            .stock-item {
+                              display: table-row;
+                              span {
+                                display: table-cell;
+                                padding-top: 6px;
+                              }
+                            }
                           }
                         }
                         .fa-caret-up {
