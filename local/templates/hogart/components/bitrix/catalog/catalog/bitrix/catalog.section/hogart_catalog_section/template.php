@@ -165,18 +165,20 @@ $this->setFrameMode(true);
                 <? endif; ?>
             <? endforeach; ?>
             <span class="cell price currency-<?= strtolower($arItem["PRICES"]["BASE"]["CURRENCY"]) ?>">
-                    <? if ($USER->IsAuthorized() && !empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
-                        <?= HogartHelpers::woPrice($arItem["PRICES"]["BASE"]["PRINT_DISCOUNT_VALUE"]) ?>
-                    <? else: ?>
-                        <?= HogartHelpers::woPrice($arItem["PRICES"]["BASE"]["PRINT_VALUE"]) ?>
-                    <? endif; ?>
-                </span>
-            <? if ($USER->IsAuthorized() && !empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
-                <span class="cell">
-                        <div class="grid-hide discount">
-                            <?= $arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"] ?>%
-                        </div>
-                    </span>
+                <? if ($USER->IsAuthorized() && !empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
+                    <?= HogartHelpers::woPrice($arItem["PRICES"]["BASE"]["PRINT_DISCOUNT_VALUE"]) ?>
+                <? else: ?>
+                    <?= HogartHelpers::woPrice($arItem["PRICES"]["BASE"]["PRINT_VALUE"]) ?>
+                <? endif; ?>
+            </span>
+            <? if ($USER->IsAuthorized()): ?>
+            <span class="cell">
+                <? if (!empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
+                <div class="grid-hide discount">
+                    <?= $arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"] ?>%
+                </div>
+                <? endif; ?>
+            </span>
             <? endif; ?>
 
             <span class="cell">
