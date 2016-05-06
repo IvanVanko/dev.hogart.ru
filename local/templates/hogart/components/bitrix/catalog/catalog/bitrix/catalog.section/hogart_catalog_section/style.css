@@ -1,14 +1,14 @@
 .catalog-table .brand-collection-header,
-.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li,
-.catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li {
+.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li.brand-collection-header,
+.catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li.brand-collection-header {
   display: table-row;
   background-color: #ccc;
   text-align: center;
 }
 .catalog-table .brand-collection-header span.cell,
 .catalog-table .catalog-table-item span.cell,
-.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li span.cell,
-.catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li span.cell,
+.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li.brand-collection-header span.cell,
+.catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li.brand-collection-header span.cell,
 .catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li[data-collection-item-id] span.cell,
 .catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li[data-brand-item-id] span.cell {
   display: table-cell;
@@ -20,32 +20,32 @@
 }
 .catalog-table .brand-collection-header span.cell:last-child,
 .catalog-table .catalog-table-item span.cell:last-child,
-.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li span.cell:last-child,
-.catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li span.cell:last-child,
+.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li.brand-collection-header span.cell:last-child,
+.catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li.brand-collection-header span.cell:last-child,
 .catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li[data-collection-item-id] span.cell:last-child,
 .catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li[data-brand-item-id] span.cell:last-child {
   border-right: none;
 }
 .catalog-table .brand-collection-header span.cell.price,
 .catalog-table .catalog-table-item span.cell.price,
-.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li span.cell.price,
-.catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li span.cell.price,
+.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li.brand-collection-header span.cell.price,
+.catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li.brand-collection-header span.cell.price,
 .catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li[data-collection-item-id] span.cell.price,
 .catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li[data-brand-item-id] span.cell.price {
   white-space: nowrap;
 }
 .catalog-table .brand-collection-header span.cell.quantity--available,
 .catalog-table .catalog-table-item span.cell.quantity--available,
-.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li span.cell.quantity--available,
-.catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li span.cell.quantity--available,
+.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li.brand-collection-header span.cell.quantity--available,
+.catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li.brand-collection-header span.cell.quantity--available,
 .catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li[data-collection-item-id] span.cell.quantity--available,
 .catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li[data-brand-item-id] span.cell.quantity--available {
   text-decoration: dotted;
 }
 .catalog-table .brand-collection-header span.cell div.discount,
 .catalog-table .catalog-table-item span.cell div.discount,
-.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li span.cell div.discount,
-.catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li span.cell div.discount,
+.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li.brand-collection-header span.cell div.discount,
+.catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li.brand-collection-header span.cell div.discount,
 .catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li[data-collection-item-id] span.cell div.discount,
 .catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li[data-brand-item-id] span.cell div.discount {
   top: auto;
@@ -67,7 +67,6 @@
 .catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li[data-brand-item-id] span.cell {
   font-weight: normal;
   border-right: none;
-  background-color: transparent;
   text-align: left;
 }
 .catalog_page .perechen .perechen-produts.list div.collection-table {

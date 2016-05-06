@@ -39,7 +39,6 @@
       &:extend(.catalog-table .brand-collection-header span.cell all);
       font-weight: normal;
       border-right: none;
-      background-color: transparent;
       text-align: left;
     }
   }
@@ -59,7 +58,9 @@
           list-style-type: none;
           border-collapse: collapse;
           li {
-            &:extend(.catalog-table .brand-collection-header all);
+            &.brand-collection-header {
+              &:extend(.catalog-table .brand-collection-header all);
+            }
 
             &[data-collection-item-id] {
               &:extend(.catalog-table .catalog-table-item all);
@@ -100,8 +101,9 @@
           list-style-type: none;
           border-collapse: collapse;
           li {
-            &:extend(.catalog-table .brand-collection-header all);
-
+            &.brand-collection-header {
+              &:extend(.catalog-table .brand-collection-header all);
+            }
             &[data-brand-item-id] {
               &:extend(.catalog-table .catalog-table-item all);
             }
