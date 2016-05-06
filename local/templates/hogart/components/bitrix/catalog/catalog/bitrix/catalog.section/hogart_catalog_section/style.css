@@ -67,6 +67,8 @@
 .catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li[data-brand-item-id] span.cell {
   font-weight: normal;
   border-right: none;
+  background-color: transparent;
+  text-align: left;
 }
 .catalog_page .perechen .perechen-produts.list div.collection-table {
   display: block;
