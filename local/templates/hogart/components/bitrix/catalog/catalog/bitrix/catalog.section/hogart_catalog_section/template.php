@@ -178,7 +178,7 @@ $this->setFrameMode(true);
                 <? endif; ?>
                 </div>
             </span>
-            <span class="cell price currency-<?= strtolower($arItem["PRICES"]["BASE"]["CURRENCY"]) ?>">
+            <span class="cell text-center price currency-<?= strtolower($arItem["PRICES"]["BASE"]["CURRENCY"]) ?>">
                 <? if ($USER->IsAuthorized() && !empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
                     <?= HogartHelpers::woPrice($arItem["PRICES"]["BASE"]["PRINT_DISCOUNT_VALUE"]) ?>
                 <? else: ?>
@@ -186,7 +186,7 @@ $this->setFrameMode(true);
                 <? endif; ?>
             </span>
             <? if ($USER->IsAuthorized()): ?>
-            <span class="cell">
+            <span class="cell text-center">
                 <? if (!empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
                 <div class="grid-hide discount">
                     <?= $arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"] ?>%
@@ -195,7 +195,7 @@ $this->setFrameMode(true);
             </span>
             <? endif; ?>
 
-            <span class="cell">
+            <span class="cell text-center">
                     <?
                     $class_pop = '';
                     $attr_pop = '';
