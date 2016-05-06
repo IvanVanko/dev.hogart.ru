@@ -2584,7 +2584,7 @@ blockquote:before {
   left: 0;
 }
 .text-center {
-  text-align: center;
+  text-align: center !important;
 }
 .row {
   overflow: hidden;
@@ -8987,10 +8987,10 @@ hr {
   transform: rotate(180deg);
 }
 .text-left {
-  text-align: left;
+  text-align: left !important;
 }
 .text-right {
-  text-align: right;
+  text-align: right !important;
 }
 .text-right.for-comm-button {
   position: relative;
