@@ -82,7 +82,11 @@ if (!empty($arResult["VARIABLES"]["ELEMENT_CODE"])) {
         Array(
             "IBLOCK_ID"     => 10,
             "PROPS"         => "Y",
-            "FILTER"        => array('PROPERTY_BRAND' => $ElementID, 'PROPERTY_type_VALUE' => "Прайс-лист"),
+            "FILTER"        => array(
+                'PROPERTY_BRAND' => $ElementID, 
+                'PROPERTY_type_VALUE' => "Прайс-лист", 
+                'PROPERTY_access_level' => ($access_level = ($USER->IsAuthorized()) ? array(1, 2) : 1)
+            ),
         ),
         $component
     );
