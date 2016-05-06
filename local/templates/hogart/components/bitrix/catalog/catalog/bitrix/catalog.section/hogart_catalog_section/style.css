@@ -34,13 +34,40 @@
 .catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li[data-brand-item-id] span.cell.price {
   white-space: nowrap;
 }
+.catalog-table .brand-collection-header span.cell.quantity .fa,
+.catalog-table .catalog-table-item span.cell.quantity .fa,
+.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li.brand-collection-header span.cell.quantity .fa,
+.catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li.brand-collection-header span.cell.quantity .fa,
+.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li[data-collection-item-id] span.cell.quantity .fa,
+.catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li[data-brand-item-id] span.cell.quantity .fa {
+  color: red;
+}
 .catalog-table .brand-collection-header span.cell.quantity--available,
 .catalog-table .catalog-table-item span.cell.quantity--available,
 .catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li.brand-collection-header span.cell.quantity--available,
 .catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li.brand-collection-header span.cell.quantity--available,
 .catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li[data-collection-item-id] span.cell.quantity--available,
 .catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li[data-brand-item-id] span.cell.quantity--available {
-  text-decoration: dotted;
+  cursor: pointer;
+}
+.catalog-table .brand-collection-header span.cell.quantity--available .fa,
+.catalog-table .catalog-table-item span.cell.quantity--available .fa,
+.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li.brand-collection-header span.cell.quantity--available .fa,
+.catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li.brand-collection-header span.cell.quantity--available .fa,
+.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li[data-collection-item-id] span.cell.quantity--available .fa,
+.catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li[data-brand-item-id] span.cell.quantity--available .fa {
+  color: #95c600;
+}
+.catalog-table .brand-collection-header span.cell.quantity--available:after,
+.catalog-table .catalog-table-item span.cell.quantity--available:after,
+.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li.brand-collection-header span.cell.quantity--available:after,
+.catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li.brand-collection-header span.cell.quantity--available:after,
+.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li[data-collection-item-id] span.cell.quantity--available:after,
+.catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li[data-brand-item-id] span.cell.quantity--available:after {
+  border-bottom: dotted 1px #95c600;
+  display: block;
+  content: " ";
+  margin-top: 2px;
 }
 .catalog-table .brand-collection-header span.cell div.discount,
 .catalog-table .catalog-table-item span.cell div.discount,

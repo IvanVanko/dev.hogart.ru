@@ -19,8 +19,20 @@
         white-space: nowrap;
       }
       &.quantity {
+        .fa {
+          color: red;
+        }
         &--available {
-          text-decoration: dotted;
+          cursor: pointer;
+          .fa {
+            color: @brand-green;
+          }
+          &:after {
+            border-bottom: dotted 1px @brand-green;
+            display: block;
+            content: " ";
+            margin-top: 2px;
+          }
         }
       }
       div.discount {
