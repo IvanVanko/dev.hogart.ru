@@ -139,18 +139,18 @@ $this->setFrameMode(true);
             <div class="collection-table">
             <ul data-collection="<?= $collectionId ?>">
             <li class="caption">
-                <? if (!empty($collection["PREVIEW_PICTURE"])): ?>
+                <? if (!empty($collection["DETAIL_PICTURE"])): ?>
                     <div class="collection-image">
                         <?
                         $file = CFile::ResizeImageGet(
-                            $collection["PREVIEW_PICTURE"], array("width" => 400, "height" => 160), BX_RESIZE_IMAGE_PROPORTIONAL, true);
+                            $collection["DETAIL_PICTURE"], array("width" => 400, "height" => 160), BX_RESIZE_IMAGE_PROPORTIONAL, true);
                         ?>
                         <img src="<?= $file['src'] ?>" alt="<?= $collection["NAME"] ?>">
                     </div>
                 <? endif; ?>
                 <div class="collection-description">
                     <div class="collection-title"><?= $collection["NAME"] ?></div>
-                    <div class="collection-text"><?= $collection["PREVIEW_TEXT"] ?></div>
+                    <div class="collection-text"><?= $collection["DETAIL_TEXT"] ?></div>
                 </div>
             </li>
             <?= $brand_collection_header ?>

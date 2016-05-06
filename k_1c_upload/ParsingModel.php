@@ -420,6 +420,9 @@ class ParsingModel {
                 elseif($type == 'nomenclature') {
                     $iblock_id = self::CATALOG_IBLOCK_ID;
                 }
+                elseif($type == 'collection') {
+                    $iblock_id = self::COLLECTIONS_IBLOCK_ID;
+                }
                 else {
                     $this->csv->saveLog(array('Передан неизвестный тип документации', $type, __LINE__));
                     continue;
@@ -486,6 +489,24 @@ class ParsingModel {
                             $error_count++;
                             $this->csv->saveLog(array('Не найден товар', $elementXmlID, __LINE__));
                             echo $error_count.')Не найден товар: '.$elementXmlID.'<br>';
+                        }
+                    }
+                    else {
+                        $array_product[] = array('id' => $elementXmlID, 'id_b' => $elementID);
+                    }
+
+                }
+                if($type == 'collection') {
+                    if(!$elementID) {
+                        echo 'Нет коллекции '.$fileXmlID."<br>";
+                        if($_GET['P'] == 'Y') {
+                            $this->csv->saveLog(array('Не найдена коллекция', $elementXmlID, __LINE__));
+                            $error[] = $fileXmlID;
+                        }
+                        if($_GET['V'] == 'Y') {
+                            $error_count++;
+                            $this->csv->saveLog(array('Не найдена коллекция', $elementXmlID, __LINE__));
+                            echo $error_count.')Не найден коллекция: '.$elementXmlID.'<br>';
                         }
                     }
                     else {
@@ -1046,23 +1067,10 @@ class ParsingModel {
                         "IBLOCK_ID" => self::COLLECTIONS_IBLOCK_ID,
                         "XML_ID" => $set_cat->set_id,
                         "PROPERTY_VALUES" => $props,
-                        "PREVIEW_TEXT" => $set_cat->description,
+                        "DETAIL_TEXT" => $set_cat->description,
                         "ACTIVE" => "Y"
                     );
-                    $collectionId = $this->addCollection($arFields);
-                    if (!empty($set_cat->id_tehdoc)) {
-                        $file_obj = CFile::MakeFileArray(trim($_SERVER['DOCUMENT_ROOT'].'/1c-upload/' . $set_cat->id_tehdoc . '.jpg'));
-                        $arFile[] = array(
-                            'VALUE' => $file_obj,
-                            "DESCRIPTION" => $set_cat->description,
-                        );
-                        (new CIBlockElement())->Update($collectionId, array(
-                            "PREVIEW_PICTURE" => $file_obj
-                        ), false, true, true);
-                        if($this->answer) {
-                            unlink(trim($_SERVER['DOCUMENT_ROOT'].'/1c-upload/' . $set_cat->id_tehdoc . '.jpg'));
-                        }
-                    }
+                    $this->addCollection($arFields);
                 }
             }
             $answer['StringCategory'][] = $value->id;
@@ -2463,9 +2471,10 @@ class ParsingModel {
                 "XML_ID" => $value->id,
                 "PROPERTY_VALUES" => $props,
                 "NAME" => $value->name,
-                "ACTIVE" => "Y"
+                "DETAIL_TEXT" => $value->description,
+                "ACTIVE" => "Y",
             );
-            
+
             $this->addCollection($arFields, ["deletion_mark" => $value->deletion_mark]);
         }
         echo "</div>";
