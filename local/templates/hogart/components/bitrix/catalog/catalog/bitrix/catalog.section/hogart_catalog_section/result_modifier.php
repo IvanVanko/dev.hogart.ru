@@ -204,12 +204,12 @@ while ($res = $arBrands ->GetNext())
 $arFilterColls = array(
     'IBLOCK_ID' => 22
 );
-$arSelectColls = Array("ID", "NAME", 'DETAIL_PAGE_URL');
+$arSelectColls = Array("ID", "NAME", 'DETAIL_PAGE_URL', 'DETAIL_TEXT', 'DETAIL_PICTURE');
 $arColls = CIBlockElement::GetList(array(), $arFilterColls, false, false, false, $arSelectColls);
 
 while ($res = $arColls ->GetNext())
 {
-    $arResult["ALL_COLLS"][$res['ID']] = array('NAME' => $res['NAME']);
+    $arResult["ALL_COLLS"][$res['ID']] = array('NAME' => $res['NAME'], 'DETAIL_TEXT' => $res['DETAIL_TEXT'], 'DETAIL_PICTURE' => $res['DETAIL_PICTURE']);
 }
 //echo '<pre>';
 //var_dump($arResult["ALL_COLLS"]);
