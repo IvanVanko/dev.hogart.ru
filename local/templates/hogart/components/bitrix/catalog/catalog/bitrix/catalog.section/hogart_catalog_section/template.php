@@ -182,7 +182,7 @@ $this->setFrameMode(true);
                         <?$store_keys = preg_grep("/^CATALOG_STORE_AMOUNT_/", array_keys($arItem));?>
                         <? foreach ($store_keys as $store_key): ?>
                             <? $storeId = intval(str_replace("CATALOG_STORE_AMOUNT_", "", $store_key)); ?>
-                            <?= $arResult["STORES"][$storeId]["NAME"]?>: <?= $arItem[$store_key] ?>
+                            <?= $arResult["STORES"][$storeId]["TITLE"]?>: <?= $arItem[$store_key] ?>
                         <? endforeach; ?>
                     </div>
                 <? endif; ?>

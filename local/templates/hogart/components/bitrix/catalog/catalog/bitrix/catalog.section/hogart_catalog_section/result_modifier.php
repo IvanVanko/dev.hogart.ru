@@ -216,7 +216,7 @@ while ($res = $arColls ->GetNext())
 //echo '</pre>';
 $section_ids = array_unique($section_ids);
 
-$stores = BXHelper::getStores(array(), array('UF_TRANSIT' => '0'), false, false, array('ID', 'NAME', 'ADDRESS'), 'ID');
+$stores = BXHelper::getStores(array(), array('UF_TRANSIT' => '0'), false, false, array('ID', 'TITLE', 'ADDRESS'), 'ID');
 $arResult["STORES"] = $stores;
 
 if ($arParams['STORES_FILTERED'] != 'Y') {
