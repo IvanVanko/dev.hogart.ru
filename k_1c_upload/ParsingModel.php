@@ -982,6 +982,7 @@ class ParsingModel {
                 "ACTIVE" => "Y",
                 "IBLOCK_CODE" => $value->name,
                 "IBLOCK_ID" => self::CATALOG_IBLOCK_ID,
+                "UF_SECTION_VIEW" => ($value->default_view ? : 1) 
             );
 
             //Если элемент уже существует, обновляем его или удаляем, при условии что флаг установлен
