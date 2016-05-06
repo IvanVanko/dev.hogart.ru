@@ -24,7 +24,7 @@ $this->setFrameMode(true);
 </small>
 <? if ($arResult['DEPTH_LEVEL'] > '1') : ?>
 <div class="smart-filter-wrapper">
-    <?= CStorage::getVar("SECTION_FILTER_HTML"); ?>
+    <? CStorage::getVar("SECTION_FILTER_HTML"); ?>
 </div>
 <? endif; ?>
 <!---->
@@ -72,12 +72,19 @@ $this->setFrameMode(true);
 
     <? if ($arParams["IS_TABLE_VIEW"]): ?>
         <? if (!empty($collectionId) && $collectionId != $arItem["PROPERTIES"]["collection"]["VALUE"]): ?>
-            </ul></li>
+            </ul></div>
             <!-- закрываем блок коллекции <?= $collectionId ?> -->
             <?  $collectionId = ""; ?>
         <? endif; ?>
         <? if (!empty($brandId) && $brandId != $arItem["PROPERTIES"]["brand"]["VALUE"]): ?>
-            </ul></li>
+
+            <? if ($brand_block): ?>
+                </ul>
+                <!-- конец блока товаров без коллекции -->
+                <? $brand_block = false; ?>
+            <? endif; ?>
+
+            </div></li>
             <!-- закрываем блок бренда <?= $brandId ?> -->
         <? endif; ?>
 
@@ -104,29 +111,32 @@ $this->setFrameMode(true);
             ?>
             <!-- бренд <?= $brandId ?> -->
             <li class="brand-table">
-            <ul data-brand="<?= $brandId?>">
-            <li class="caption">
-                <div class="brand-name"><?= $arResult["ALL_BRANDS"][$brandId]["NAME"] ?></div>
-                <hr class="brand-hr">
-            </li>
-            <? if (empty($arItem["PROPERTIES"]["collection"]["VALUE"])): ?>
-                <?= $brand_collection_header ?>
-            <? endif; ?>
+                <div data-brand-wrapper="<?= $brandId?>">
+                    <div class="caption">
+                        <div class="brand-name"><?= $arResult["ALL_BRANDS"][$brandId]["NAME"] ?></div>
+                        <hr class="brand-hr">
+                    </div>
+                <? if (empty($arItem["PROPERTIES"]["collection"]["VALUE"])): ?>
+                    <!-- блок товаров без коллекции -->
+                    <ul data-brand="<?= $brandId?>"><?= $brand_collection_header ?>
+                    <? $brand_block = true; ?>
+                <? endif; ?>
         <? endif; ?>
 
         <? if (!empty($arItem["PROPERTIES"]["collection"]["VALUE"]) && $collectionId != $arItem["PROPERTIES"]["collection"]["VALUE"]): ?>
             <?
-                $collectionId = ($arItem["PROPERTIES"]["collection"]["VALUE"] ? : $arItem["PROPERTIES"]["brand"]["VALUE"]);
-                $collectionElement = CIBlockElement::GetByID($collectionId)->GetNextElement();
-                $collection = $collectionElement->GetFields();
+                $collectionId = $arItem["PROPERTIES"]["collection"]["VALUE"];
+                $collection = $arResult["ALL_COLLS"][$arItem["PROPERTIES"]["collection"]["VALUE"]];
             ?>
+
+            <? if ($brand_block): ?>
+            </ul>
+            <!-- конец блока товаров без коллекции -->
+            <? $brand_block = false; ?>
+            <? endif; ?>
+
             <!-- коллекция <?= $collectionId ?> -->
-            <script language="JavaScript" type="text/javascript">
-                if ($('[data-brand-item-id]', '[data-brand="<?= $brandId ?>"]').length) {
-                    $('[data-brand="<?= $brandId ?>"]').css('display', 'block');
-                }
-            </script>
-            <li class="collection-table">
+            <div class="collection-table">
             <ul data-collection="<?= $collectionId ?>">
             <li class="caption">
                 <? if (!empty($collection["PREVIEW_PICTURE"])): ?>
@@ -327,17 +337,22 @@ $this->setFrameMode(true);
 
 <? if (!empty($collectionId) && $arParams["IS_TABLE_VIEW"]): ?>
     <!-- закрываем блок коллекции -->
-    </ul></li>
+    </ul></div>
     <?  $collectionId = null; ?>
 <? endif; ?>
 
 <? if (!empty($brandId) && $arParams["IS_TABLE_VIEW"]): ?>
+    <? if ($brand_block): ?>
+        </ul>
+        <!-- конец блока товаров без коллекции -->
+        <? $brand_block = false; ?>
+    <? endif; ?>
     <!-- закрываем блок бренда -->
     </ul></li>
     <?  $brandId = null; ?>
 <? endif; ?>
 
-</ul>
+</div>
 <div class="text-center">
 <? echo $arResult["NAV_STRING"]; ?>
 </div>
