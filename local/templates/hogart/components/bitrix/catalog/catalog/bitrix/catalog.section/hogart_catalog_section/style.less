@@ -23,20 +23,31 @@
           color: red;
         }
         &--available {
-          cursor: pointer;
           .fa {
             color: @brand-green;
           }
           div.quantity-wrapper {
             display: inline-block;
+            cursor: pointer;
             &:after {
               border-bottom: dotted 1px @brand-green;
               display: block;
               content: " ";
               margin-top: 2px;
             }
+
+            .stocks-wrapper {
+              display: none;
+            }
+
+            &:hover {
+              .stocks-wrapper {
+                display: block !important;
+              }
+            }
           }
         }
+
       }
       div.discount {
         top: auto;

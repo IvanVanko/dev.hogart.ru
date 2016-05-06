@@ -49,6 +49,10 @@ class Version201605030001 extends Version
                 ]
             ]
         );
+
+        \CCurrencyLang::Update("RUB", "ru", [
+            "DECIMALS" => 2
+        ]);
     }
 
     public function down(){

@@ -168,13 +168,19 @@ $this->setFrameMode(true);
             <span class="cell quantity text-center <? if ($arItem["CATALOG_QUANTITY"] > 0): ?>quantity--available<? endif; ?>">
                 <div class="<? if ($USER->IsAuthorized()):?>quantity-wrapper<? endif; ?>">
                 <? if ($arItem["CATALOG_QUANTITY"] > 0): ?>
-                    <i class="fa fa-check" aria-hidden="true"></i>
+                    <? if (!$USER->IsAuthorized()): ?>
+                        <i class="fa fa-check" aria-hidden="true"></i>
+                    <? endif; ?>
                 <? else: ?>
                     <i class="fa fa-close" aria-hidden="true"></i>
                     <span style="white-space: nowrap">Под заказ</span>
                 <? endif; ?>
+
                 <? if ($USER->IsAuthorized() && $arItem["CATALOG_QUANTITY"] > 0): ?>
                     <span style="white-space: nowrap"><?= $arItem["CATALOG_QUANTITY"]; ?> <?=$arItem['CATALOG_MEASURE_NAME']?>.</span>
+                    <div class="stocks-wrapper">
+
+                    </div>
                 <? endif; ?>
                 </div>
             </span>
