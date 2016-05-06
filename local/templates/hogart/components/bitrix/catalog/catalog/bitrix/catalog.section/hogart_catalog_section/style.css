@@ -66,6 +66,7 @@
 }
 .catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li[data-collection-item-id] span.cell.quantity--available .quantity-wrapper,
 .catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li[data-brand-item-id] span.cell.quantity--available .quantity-wrapper {
+  position: relative;
   display: inline-block;
   cursor: pointer;
 }
@@ -82,7 +83,7 @@
   border: 0 none;
   border-radius: 5px;
   right: -20px;
-  bottom: -55px;
+  top: 30px;
   position: absolute;
   background-color: white;
   box-shadow: 1px 1px 10px 2px #666;

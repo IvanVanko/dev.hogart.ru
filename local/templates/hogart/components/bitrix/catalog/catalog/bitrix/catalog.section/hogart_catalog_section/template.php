@@ -195,6 +195,7 @@ $this->setFrameMode(true);
                             </div>
                         <? endforeach; ?>
                         </div>
+                        <i class="fa fa-caret-up" aria-hidden="true"></i>
                     </div>
                 <? endif; ?>
                 </div>
