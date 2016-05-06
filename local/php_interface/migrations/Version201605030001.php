@@ -49,10 +49,13 @@ class Version201605030001 extends Version
                 ]
             ]
         );
-
-        \CCurrencyLang::Update("RUB", "ru", [
-            "DECIMALS" => 2
-        ]);
+        if(!\CModule::IncludeModule("currency")) {
+            $this->outError("Отсутствует модуль Currency");
+        } else {
+            \CCurrencyLang::Update("RUB", "ru", [
+                "DECIMALS" => 2
+            ]);
+        }
     }
 
     public function down(){
