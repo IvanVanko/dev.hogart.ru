@@ -165,13 +165,13 @@ $this->setFrameMode(true);
                     <span class="cell"><?= $arProperty["VALUE"]; ?></span>
                 <? endif; ?>
             <? endforeach; ?>
-            <span class="cell">
+            <span class="cell quantity text-center <? if ($arItem["CATALOG_QUANTITY"] > 0): ?>quantity--available<? endif; ?>">
                 <? if ($arItem["CATALOG_QUANTITY"] > 0): ?>
                     <i class="fa fa-check" aria-hidden="true"></i>
                 <? else: ?>
                     <i class="fa fa-close" aria-hidden="true"></i>
                 <? endif; ?>
-                <? if ($USER->IsAuthorized()): ?>
+                <? if ($USER->IsAuthorized() && $arItem["CATALOG_QUANTITY"] > 0): ?>
                     <span style="white-space: nowrap"><?= $arItem["CATALOG_QUANTITY"]; ?> <?=$arItem['CATALOG_MEASURE_NAME']?>.</span>
                 <? endif; ?>
             </span>

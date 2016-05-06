@@ -1,0 +1,93 @@
+@import (reference) "mixins";
+
+.catalog_page {
+  .perechen {
+    .perechen-produts.list {
+      div.collection-table {
+        display: block;
+        margin-top: 30px;
+        border: none;
+        ul[data-collection] {
+          display: table;
+          width: 100%;
+          padding: 0;
+          list-style-type: none;
+          border-collapse: collapse;
+          li {
+            &:extend(.catalog-table .catalog-table-header all);
+
+            &[data-collection-item-id] {
+              &:extend(.catalog-table .catalog-table-item all);
+            }
+            &.caption {
+              display: table-caption;
+              margin-bottom: 10px;
+              .collection-image {
+                width: 30%;
+                float: right;
+              }
+              .collection-description {
+                margin-right: 31%;
+                .collection-title {
+                  font-weight: bold;
+                  font-size: 16px;
+                  padding-bottom: 5px;
+                }
+                .collection-text {
+                  margin-top: 5px;
+                  font-size: 12px;
+                  * {
+                    font-size: 12px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      li.brand-table {
+        border: none;
+        ul[data-brand] {
+          display: table;
+          width: 100%;
+          padding: 0;
+          list-style-type: none;
+          border-collapse: collapse;
+          li {
+            &:extend(.catalog-table .catalog-table-header all);
+            &[data-brand-item-id] {
+              &:extend(.catalog-table .catalog-table-item all);
+            }
+          }
+        }
+        div.caption {
+          text-align: right;
+          margin-bottom: 20px;
+          &:after {
+            content: " ";
+            display: table;
+            clear: both;
+          }
+          .brand-name {
+            width: 15%;
+            float: left;
+            font-size: 18px;
+            line-height: 22px;
+            padding-right: 15px;
+            color: @brand-green;
+            font-weight: bold;
+          }
+          hr.brand-hr {
+            display: inline-block;
+            margin: 0;
+            width: 85%;
+            line-height: 22px;
+            background-color: @brand-green;
+            text-align: right;
+          }
+        }
+      }
+    }
+  }
+}
