@@ -179,7 +179,11 @@ $this->setFrameMode(true);
                 <? if ($USER->IsAuthorized() && $arItem["CATALOG_QUANTITY"] > 0): ?>
                     <span style="white-space: nowrap"><?= $arItem["CATALOG_QUANTITY"]; ?> <?=$arItem['CATALOG_MEASURE_NAME']?>.</span>
                     <div class="stocks-wrapper">
-
+                        <?$store_keys = preg_grep("/^CATALOG_STORE_AMOUNT_/", array_keys($arItem));?>
+                        <? foreach ($store_keys as $store_key): ?>
+                            <? $storeId = intval(str_replace("CATALOG_STORE_AMOUNT_", "", $store_key)); ?>
+                            <?= $arResult["STORES"][$storeId]["NAME"]?>: <?= $arItem[$store_key] ?>
+                        <? endforeach; ?>
                     </div>
                 <? endif; ?>
                 </div>

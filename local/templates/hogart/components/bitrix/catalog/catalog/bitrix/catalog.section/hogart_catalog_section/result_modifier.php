@@ -216,8 +216,10 @@ while ($res = $arColls ->GetNext())
 //echo '</pre>';
 $section_ids = array_unique($section_ids);
 
+$stores = BXHelper::getStores(array(), array('UF_TRANSIT' => '0'), false, false, array('ID', 'NAME', 'ADDRESS'), 'ID');
+$arResult["STORES"] = $stores;
+
 if ($arParams['STORES_FILTERED'] != 'Y') {
-    $stores = BXHelper::getStores(array(), array('UF_TRANSIT' => '0'), false, false, array('ID'));
     $catalog_store_filter = array('LOGIC' => 'OR');
     foreach ($stores as $store_id) {
         $store_keys[] = 'CATALOG_STORE_AMOUNT_'.$store_id['ID'];
