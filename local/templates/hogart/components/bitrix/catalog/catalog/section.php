@@ -198,6 +198,7 @@ if ($isTableViewExt) {
     $arParams["ELEMENT_SORT_FIELD2"] = "PROPERTY_collection.NAME";
     $arParams["ELEMENT_SORT_ORDER2"] = "ASC";
     $arParams["PAGE_ELEMENT_COUNT"] = "0";
+    $arParams["SHOW_ALL_WO_SECTION"] = "Y";
     $arParams["DISPLAY_BOTTOM_PAGER"] = "N";
     $arParams["DISPLAY_TOP_PAGER"] = "N";
 }
@@ -251,6 +252,7 @@ $intSectionID = $APPLICATION->IncludeComponent(
         "PAGER_DESC_NUMBERING" => $arParams["PAGER_DESC_NUMBERING"],
         "PAGER_DESC_NUMBERING_CACHE_TIME" => $arParams["PAGER_DESC_NUMBERING_CACHE_TIME"],
         "PAGER_SHOW_ALL" => $arParams["PAGER_SHOW_ALL"],
+        "SHOW_ALL_WO_SECTION" => $arParams["SHOW_ALL_WO_SECTION"],
 
         "OFFERS_CART_PROPERTIES" => $arParams["OFFERS_CART_PROPERTIES"],
         "OFFERS_FIELD_CODE" => $arParams["LIST_OFFERS_FIELD_CODE"],
