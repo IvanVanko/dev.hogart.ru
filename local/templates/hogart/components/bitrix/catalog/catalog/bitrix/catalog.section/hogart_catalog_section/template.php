@@ -195,7 +195,7 @@ $this->setFrameMode(true);
                                         <?= $arResult["STORES"][$storeId]["NAME"]?>
                                         <div style="font-size: small"><?= $arResult["STORES"][$storeId]["ADDRESS"]?></div>
                                     </span>
-                                    <span><?= $arItem[$store_key] ?> <?=$arItem['CATALOG_MEASURE_NAME']?>.</span>
+                                    <span class="quantity"><?= $arItem[$store_key] ?> <?=$arItem['CATALOG_MEASURE_NAME']?>.</span>
                                 </div>
                             <? endforeach; ?>
                             </div>
