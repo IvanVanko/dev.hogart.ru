@@ -1,4 +1,3 @@
-extend ' .catalog-table .catalog-table-header .brand-collection-header span.cell' has no matches
 .catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li.brand-collection-header,
 .catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li.brand-collection-header {
   display: table-row;
