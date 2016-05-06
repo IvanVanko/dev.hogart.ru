@@ -77,6 +77,7 @@
 .catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li[data-brand-item-id] span.cell div.discount {
   top: auto;
   left: auto;
+  background-color: #95c600;
 }
 .catalog-table .catalog-table-item,
 .catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li[data-collection-item-id],
