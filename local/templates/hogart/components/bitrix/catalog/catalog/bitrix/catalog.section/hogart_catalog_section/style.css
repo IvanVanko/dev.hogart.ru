@@ -115,7 +115,12 @@
 .catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li[data-collection-item-id] span.cell.quantity--available .quantity-wrapper .stocks-wrapper .stock-items .stock-items-table .stock-item span,
 .catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li[data-brand-item-id] span.cell.quantity--available .quantity-wrapper .stocks-wrapper .stock-items .stock-items-table .stock-item span {
   display: table-cell;
-  padding-top: 6px;
+  padding-top: 10px;
+  vertical-align: middle;
+}
+.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li[data-collection-item-id] span.cell.quantity--available .quantity-wrapper .stocks-wrapper .stock-items .stock-items-table .stock-item span.quantity,
+.catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li[data-brand-item-id] span.cell.quantity--available .quantity-wrapper .stocks-wrapper .stock-items .stock-items-table .stock-item span.quantity {
+  white-space: nowrap;
 }
 .catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li[data-collection-item-id] span.cell.quantity--available .quantity-wrapper .stocks-wrapper .fa-caret-up,
 .catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li[data-brand-item-id] span.cell.quantity--available .quantity-wrapper .stocks-wrapper .fa-caret-up {

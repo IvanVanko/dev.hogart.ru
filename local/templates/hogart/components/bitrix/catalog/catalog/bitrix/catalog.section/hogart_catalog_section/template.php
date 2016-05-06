@@ -191,7 +191,10 @@ $this->setFrameMode(true);
                                 $storeId = intval(str_replace("CATALOG_STORE_AMOUNT_", "", $store_key));
                                 ?>
                                 <div class="stock-item">
-                                    <span class="stock-name text-left"><?= $arResult["STORES"][$storeId]["ADDRESS"]?></span>
+                                    <span class="stock-name text-left">
+                                        <?= $arResult["STORES"][$storeId]["NAME"]?>
+                                        <div style="font-size: small"><?= $arResult["STORES"][$storeId]["ADDRESS"]?></div>
+                                    </span>
                                     <span><?= $arItem[$store_key] ?> <?=$arItem['CATALOG_MEASURE_NAME']?>.</span>
                                 </div>
                             <? endforeach; ?>
