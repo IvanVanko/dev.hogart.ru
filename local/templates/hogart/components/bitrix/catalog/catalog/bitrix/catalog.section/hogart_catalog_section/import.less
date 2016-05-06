@@ -1,0 +1,99 @@
+@brand-green: #95c600;
+
+.brand-collection-header {
+  display: table-row;
+  background-color: #ccc;
+  text-align: center;
+  span.cell {
+    display: table-cell;
+    padding: 10px 5px;
+    vertical-align: middle;
+    font-size: 12px;
+    font-weight: bold;
+    border-right: white 1px solid;
+    &:last-child {
+      border-right: none;
+    }
+    &.price {
+      white-space: nowrap;
+    }
+    div.discount {
+      top: auto;
+      left: auto;
+      background-color: @brand-green;
+    }
+  }
+}
+.catalog-table-item {
+  display: table-row;
+  border-bottom: 1px solid @brand-green;
+  &:last-child {
+    border-bottom: none;
+  }
+  span.cell {
+    &:extend(.brand-collection-header span.cell all);
+    font-weight: normal;
+    border-right: none;
+    text-align: left;
+    &.quantity {
+      .fa {
+        color: red;
+      }
+      &--available {
+        .fa {
+          color: @brand-green;
+        }
+        div.quantity-wrapper {
+          display: inline-block;
+          cursor: pointer;
+          &:after {
+            border-bottom: dotted 1px @brand-green;
+            display: block;
+            content: " ";
+            margin-top: 2px;
+          }
+
+          .stocks-wrapper {
+            display: none;
+            border: 0 none;
+            border-radius: 5px;
+            right: -20px;
+            bottom: -55px;
+            position: absolute;
+            background-color: white;
+            box-shadow: 1px 1px 10px 2px #666;
+            width: 330px;
+            z-index: 100;
+            .stock-header {
+              background: @brand-green;
+              border-radius: 5px 5px 0 0;
+              color: white;
+              font-size: 1.2em;
+              padding: 6px 10px;
+            }
+            .stock-items {
+              padding: 0 10px 10px;
+              width: 310px;
+              .stock-item {
+                padding-top: 6px;
+                width: 310px;
+              }
+            }
+            .fa-caret-up {
+              position: absolute;
+              top: -25px;
+              right: 20px;
+              font-size: 35px;
+            }
+          }
+
+          &:hover {
+            .stocks-wrapper {
+              display: block !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}
