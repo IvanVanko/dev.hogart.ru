@@ -166,6 +166,7 @@ $this->setFrameMode(true);
                 <? endif; ?>
             <? endforeach; ?>
             <span class="cell quantity text-center <? if ($arItem["CATALOG_QUANTITY"] > 0): ?>quantity--available<? endif; ?>">
+                <div class="quantity-wrapper">
                 <? if ($arItem["CATALOG_QUANTITY"] > 0): ?>
                     <i class="fa fa-check" aria-hidden="true"></i>
                 <? else: ?>
@@ -174,6 +175,7 @@ $this->setFrameMode(true);
                 <? if ($USER->IsAuthorized() && $arItem["CATALOG_QUANTITY"] > 0): ?>
                     <span style="white-space: nowrap"><?= $arItem["CATALOG_QUANTITY"]; ?> <?=$arItem['CATALOG_MEASURE_NAME']?>.</span>
                 <? endif; ?>
+                </div>
             </span>
             <span class="cell price currency-<?= strtolower($arItem["PRICES"]["BASE"]["CURRENCY"]) ?>">
                 <? if ($USER->IsAuthorized() && !empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
