@@ -1,4 +1,47 @@
-@import (reference) "mixins";
+@brand-green: #95c600;
+
+.catalog-table {
+  .brand-collection-header {
+    display: table-row;
+    background-color: #ccc;
+    text-align: center;
+    span.cell {
+      display: table-cell;
+      padding: 10px 5px;
+      vertical-align: middle;
+      font-size: 12px;
+      font-weight: bold;
+      border-right: white 1px solid;
+      &:last-child {
+        border-right: none;
+      }
+      &.price {
+        white-space: nowrap;
+      }
+      &.quantity {
+        &--available {
+          text-decoration: dotted;
+        }
+      }
+      div.discount {
+        top: auto;
+        left: auto;
+      }
+    }
+  }
+  .catalog-table-item {
+    display: table-row;
+    border-bottom: 1px solid @brand-green;
+    &:last-child {
+      border-bottom: none;
+    }
+    span.cell {
+      &:extend(.catalog-table .brand-collection-header span.cell all);
+      font-weight: normal;
+      border-right: none;
+    }
+  }
+}
 
 .catalog_page {
   .perechen {
@@ -14,7 +57,7 @@
           list-style-type: none;
           border-collapse: collapse;
           li {
-            &:extend(.catalog-table .catalog-table-header all);
+            &:extend(.catalog-table .brand-collection-header all);
 
             &[data-collection-item-id] {
               &:extend(.catalog-table .catalog-table-item all);
@@ -55,7 +98,8 @@
           list-style-type: none;
           border-collapse: collapse;
           li {
-            &:extend(.catalog-table .catalog-table-header all);
+            &:extend(.catalog-table .brand-collection-header all);
+
             &[data-brand-item-id] {
               &:extend(.catalog-table .catalog-table-item all);
             }
