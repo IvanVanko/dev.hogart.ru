@@ -97,8 +97,9 @@ $this->setFrameMode(true);
                     <span class="cell"><?= $arProperty["NAME"]; ?></span>
                 <? endif; ?>
             <? endforeach; ?>
-            <span class="cell price currency-<?= strtolower($arItem["PRICES"]["BASE"]["CURRENCY"]) ?>">Цена <span>a</span></span>
-            <? if ($USER->IsAuthorized() && !empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
+            <span class="cell">Наличие</span>
+            <span class="cell">Цена <i class="fa fa-<?= strtolower($arItem["PRICES"]["BASE"]["CURRENCY"]) ?>" aria-hidden="true"></i></span>
+            <? if ($USER->IsAuthorized()): ?>
                 <span class="cell">%</span>
             <? endif; ?>
             <span class="cell"><i class="icon-cart"></i></span>
@@ -157,13 +158,23 @@ $this->setFrameMode(true);
         <? endif; ?>
 
         <li <? if (!empty($collectionId)):?> data-collection-item-id="<?= $arItem["ID"] ?>"<? endif; ?> <? if (!empty($brandId) && empty($collectionId)):?> data-brand-item-id="<?= $arItem["ID"] ?>"<? endif; ?> >
-            <span class="cell"><?= $arItem["PROPERTIES"]["sku"]["VALUE"] ?></span>
+            <span class="cell"><a href="<?= $arItem["DETAIL_PAGE_URL"] ?>"><?= $arItem["PROPERTIES"]["sku"]["VALUE"] ?></a></span>
             <span class="cell"><?= $arItem["NAME"] ?></span>
             <? foreach ($arItem["PROPERTIES"] as $propertyName => $arProperty): ?>
                 <? if ($arProperty["DISPLAY_EXPANDED"] == "Y"): ?>
                     <span class="cell"><?= $arProperty["VALUE"]; ?></span>
                 <? endif; ?>
             <? endforeach; ?>
+            <span class="cell">
+                <? if ($arItem["CATALOG_QUANTITY"] > 0): ?>
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                <? else: ?>
+                    <i class="fa fa-close" aria-hidden="true"></i>
+                <? endif; ?>
+                <? if ($USER->IsAuthorized()): ?>
+                    <span style="white-space: nowrap"><?= $arItem["CATALOG_QUANTITY"]; ?> <?=$arItem['CATALOG_MEASURE_NAME']?>.</span>
+                <? endif; ?>
+            </span>
             <span class="cell price currency-<?= strtolower($arItem["PRICES"]["BASE"]["CURRENCY"]) ?>">
                 <? if ($USER->IsAuthorized() && !empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
                     <?= HogartHelpers::woPrice($arItem["PRICES"]["BASE"]["PRINT_DISCOUNT_VALUE"]) ?>
