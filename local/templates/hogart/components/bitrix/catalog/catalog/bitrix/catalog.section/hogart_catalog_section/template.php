@@ -192,8 +192,8 @@ $this->setFrameMode(true);
                                 ?>
                                 <div class="stock-item">
                                     <span class="stock-name text-left">
-                                        <?= $arResult["STORES"][$storeId]["NAME"]?>
-                                        <div style="font-size: small"><?= $arResult["STORES"][$storeId]["ADDRESS"]?></div>
+                                        <?= $arResult["STORES"][$storeId]["TITLE"]?>
+                                        <div style="font-size: smaller"><?= $arResult["STORES"][$storeId]["ADDRESS"]?></div>
                                     </span>
                                     <span class="quantity"><?= $arItem[$store_key] ?> <?=$arItem['CATALOG_MEASURE_NAME']?>.</span>
                                 </div>
