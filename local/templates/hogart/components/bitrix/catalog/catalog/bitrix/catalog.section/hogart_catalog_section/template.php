@@ -159,7 +159,7 @@ $this->setFrameMode(true);
 
         <li <? if (!empty($collectionId)):?> data-collection-item-id="<?= $arItem["ID"] ?>"<? endif; ?> <? if (!empty($brandId) && empty($collectionId)):?> data-brand-item-id="<?= $arItem["ID"] ?>"<? endif; ?> >
             <span class="cell"><a href="<?= $arItem["DETAIL_PAGE_URL"] ?>"><?= $arItem["PROPERTIES"]["sku"]["VALUE"] ?></a></span>
-            <span class="cell"><?= $arItem["NAME"] ?></span>
+            <span class="cell"><a href="<?= $arItem["DETAIL_PAGE_URL"] ?>"><?= $arItem["NAME"] ?></a></span>
             <? foreach ($arItem["PROPERTIES"] as $propertyName => $arProperty): ?>
                 <? if ($arProperty["DISPLAY_EXPANDED"] == "Y"): ?>
                     <span class="cell"><?= $arProperty["VALUE"]; ?></span>
