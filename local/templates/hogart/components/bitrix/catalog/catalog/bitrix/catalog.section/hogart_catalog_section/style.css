@@ -57,6 +57,7 @@
 .catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li[data-collection-item-id] span.cell.buy a,
 .catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li.brand-collection-header span.cell.buy a,
 .catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li[data-brand-item-id] span.cell.buy a {
+  background-color: white;
   box-shadow: 1px 1px 1px 1px #666;
   margin-top: 0;
   display: inline-block;
