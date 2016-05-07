@@ -1,8 +1,8 @@
 .catalog_page .perechen .perechen-produts.list.table-view {
-  overflow: auto;
+  overflow: initial;
 }
 .catalog_page .perechen .perechen-produts.list.table-view li.brand-table {
-  overflow: auto;
+  overflow: initial;
 }
 .catalog_page .perechen .perechen-produts.list div.collection-table {
   display: block;
