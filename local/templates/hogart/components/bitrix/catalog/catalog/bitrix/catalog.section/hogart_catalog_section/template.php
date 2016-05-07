@@ -62,7 +62,7 @@ $this->setFrameMode(true);
     </div>
 </div>
 <? endif; ?>
-<ul class="perechen-produts js-target-perechen <?=$arParams['VIEW_TYPE']?>">
+<ul class="perechen-produts js-target-perechen <?=$arParams['VIEW_TYPE']?> <? if ($arParams["IS_TABLE_VIEW"]): ?>table-view<? endif; ?>">
 <? $collectionId = null; $brandId = null; ?>
 <? foreach ($arResult["ITEMS"] as $arItem):?>
         <?
