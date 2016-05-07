@@ -222,7 +222,7 @@ $this->setFrameMode(true);
             </span>
             <? endif; ?>
 
-            <span class="cell text-center">
+            <span class="cell text-center buy">
                     <?
                     $class_pop = '';
                     $attr_pop = '';
@@ -232,9 +232,9 @@ $this->setFrameMode(true);
                     }
                     ?>
                 <a id="<?= $arItem['BUY_URL'] ?>"
-                   class="empty-btn black grid-hide <?= $class_pop ?>" <?= $attr_pop ?>
+                   class="black grid-hide <?= $class_pop ?>" <?= $attr_pop ?>
                    href="javascript:void(0)" rel="nofollow">
-                    <i class="icon-cart"></i>
+                    <i class="fa fa-cart-plus" aria-hidden="true"></i>
                 </a>
             </span>
         </li>
