@@ -16,9 +16,6 @@ if ($_POST["sending_phone"]!='') {
         'Пропуск на семинар можно просмотреть на странице ' . $page_href . "\n\n".
         'www.hogart.ru'."\n" ;
 
-
-
-    fileDump(array($phone, $message), true);
     $r = send_sms($phone, $message);
 //        $_POST["translit"], $_POST["time"], 0,
 //        $_POST["flash"], $_POST["sender"]);
