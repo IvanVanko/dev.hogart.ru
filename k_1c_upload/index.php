@@ -86,6 +86,7 @@ else {
                 <th>Техдокументация</th>
                 <td>
                     <a href="?q=Vtehdoc">Посмотреть</a>
+                    <a href="?q=VTypeTehDocGet">Посмотреть Типы</a>
                 </td>
                 <!--                <td>-->
                 <!--<!--                    <a href="?q=tehdoc">Загрузить</a><br>-->-->
@@ -181,6 +182,11 @@ else {
             if ($val == "Vbreands") {
                 echo '<div class="info"><h2>[' . $key . '] ' . $val . '</h2></div><pre>';
                 var_dump($parce->GetResultFunction('BrandGet'));
+                echo '</pre>';
+            }
+            if ($val == "VTypeTehDocGet") {
+                echo '<div class="info"><h2>[' . $key . '] ' . $val . '</h2></div><pre>';
+                var_dump($parce->GetResultFunction('TypeTehDocGet'));
                 echo '</pre>';
             }
             if ($val == "Vtehdoc") {
