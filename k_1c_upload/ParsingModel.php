@@ -350,6 +350,12 @@ class ParsingModel {
         $iBlockPropery = (new CIBlockProperty);
         $techDocTypeProperty = $iBlockPropery->GetList([], ["IBLOCK_ID" => self::DOCUMENTATION_IBLOCK_ID, "CODE" => "type"])->GetNext();
 
+        $res = (new CIBlockPropertyEnum())->GetList([], ["IBLOCK_ID" => self::DOCUMENTATION_IBLOCK_ID, "PROPERTY_ID" => $techDocTypeProperty["ID"]]);
+        while(($enum = $res->GetNext())) {
+            if ($enum["XML_ID"] == self::DETAIL_PICTURE_1C_TYPE_ID) continue;
+            $this->classTrans[$enum["XML_ID"]] = $enum["ID"];
+        }
+
         $TypeTehDocGetResult = $this->GetResultFunction('TypeTehDocGet');
 
         if (!empty($TypeTehDocGetResult->return->TypeTehDoc)) {
@@ -360,30 +366,35 @@ class ParsingModel {
                 "ID_Portal" => "HG",
                 "StringTypeTehDoc" => []
             ];
+            $newValues = [];
             foreach ($TypeTehDocGetResult->return->TypeTehDoc as $TypeTehDoc) {
                 $answer["StringTypeTehDoc"][] = $TypeTehDoc->id;
-                if ($TypeTehDoc->id == self::DETAIL_PICTURE_1C_TYPE_ID) continue;
-                $iBlockPropery->UpdateEnum($techDocTypeProperty["ID"], [
+                if ($TypeTehDoc->id == self::DETAIL_PICTURE_1C_TYPE_ID || $this->classTrans[$TypeTehDoc->id]) continue;
+                $newValues[] = [
                     "XML_ID" => $TypeTehDoc->id,
                     "VALUE" => $TypeTehDoc->name
-                ]);
+                ];
             }
+
+            if (!empty($newValues)) {
+                $iBlockPropery->UpdateEnum($techDocTypeProperty["ID"], $newValues);
+                $res = (new CIBlockPropertyEnum())->GetList([], ["IBLOCK_ID" => self::DOCUMENTATION_IBLOCK_ID, "PROPERTY_ID" => $techDocTypeProperty["ID"]]);
+                while(($enum = $res->GetNext())) {
+                    if ($enum["XML_ID"] == self::DETAIL_PICTURE_1C_TYPE_ID) continue;
+                    $this->classTrans[$enum["XML_ID"]] = $enum["ID"];
+                }
+            }
+
             $answer["StringTypeTehDoc"] = implode(";", $answer["StringTypeTehDoc"]);
             if ($this->answer) {
                 $this->client->__soapCall("TypeTehDocAnswer", array('parameters' => $answer));
             }
         }
-
-        $res = (new CIBlockPropertyEnum())->GetList([], ["IBLOCK_ID" => self::DOCUMENTATION_IBLOCK_ID, "PROPERTY_ID" => $techDocTypeProperty["ID"]]);
-        while(($enum = $res->GetNext())) {
-            if ($enum["XML_ID"] == self::DETAIL_PICTURE_1C_TYPE_ID) continue;
-            $this->classTrans[$enum["XML_ID"]] = $enum["ID"];
-        }
     }
 
     function initTehDoc() {
         $this->csv->saveLog(['techDoc import start '.date('d.M.Y H:i:s')]);
-        
+
         $this->initTypeTechDoc();
 
         $ost = $this->GetResultFunction("TehDocGet");
