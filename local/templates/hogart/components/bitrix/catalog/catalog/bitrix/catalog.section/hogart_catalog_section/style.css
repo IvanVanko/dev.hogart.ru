@@ -80,8 +80,8 @@
   border-radius: 3px;
   background: white !important;
   outline: none;
-  height: 24px;
-  font-size: 14px;
+  height: 22px;
+  font-size: 12px;
   color: #888;
 }
 .catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li.brand-collection-header span.cell input:focus,
@@ -89,7 +89,7 @@
 .catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li.brand-collection-header span.cell input:focus,
 .catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li[data-brand-item-id] span.cell input:focus {
   color: #95c600;
-  border: 1px solid black;
+  border: 1px solid #95c600;
 }
 .catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li[data-collection-item-id],
 .catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li[data-brand-item-id] {
