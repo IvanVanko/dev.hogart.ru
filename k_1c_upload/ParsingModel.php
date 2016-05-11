@@ -346,10 +346,10 @@ class ParsingModel {
         'default' => 10
     );
 
-    function initTehDoc() {
-        $this->csv->saveLog(['techDoc import start '.date('d.M.Y H:i:s')]);
+    function initTypeTechDoc() {
         $iBlockPropery = (new CIBlockProperty);
         $techDocTypeProperty = $iBlockPropery->GetList([], ["IBLOCK_ID" => self::DOCUMENTATION_IBLOCK_ID, "CODE" => "type"])->GetNext();
+
         $TypeTehDocGetResult = $this->GetResultFunction('TypeTehDocGet');
 
         if (!empty($TypeTehDocGetResult->return->TypeTehDoc)) {
@@ -369,7 +369,9 @@ class ParsingModel {
                 ]);
             }
             $answer["StringTypeTehDoc"] = implode(";", $answer["StringTypeTehDoc"]);
-            $this->client->__soapCall("TypeTehDocAnswer", array('parameters' => $answer));
+            if ($this->answer) {
+                $this->client->__soapCall("TypeTehDocAnswer", array('parameters' => $answer));
+            }
         }
 
         $res = (new CIBlockPropertyEnum())->GetList([], ["IBLOCK_ID" => self::DOCUMENTATION_IBLOCK_ID, "PROPERTY_ID" => $techDocTypeProperty["ID"]]);
@@ -377,6 +379,13 @@ class ParsingModel {
             if ($enum["XML_ID"] == self::DETAIL_PICTURE_1C_TYPE_ID) continue;
             $this->classTrans[$enum["XML_ID"]] = $enum["ID"];
         }
+    }
+
+    function initTehDoc() {
+        $this->csv->saveLog(['techDoc import start '.date('d.M.Y H:i:s')]);
+        
+        $this->initTypeTechDoc();
+
         $ost = $this->GetResultFunction("TehDocGet");
 
         $answer = array();
