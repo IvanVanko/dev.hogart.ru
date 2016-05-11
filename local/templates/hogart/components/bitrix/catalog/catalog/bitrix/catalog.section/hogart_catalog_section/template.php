@@ -166,7 +166,7 @@ $this->setFrameMode(true);
                     <span class="cell"><?= $arProperty["VALUE"]; ?></span>
                 <? endif; ?>
             <? endforeach; ?>
-            <span class="cell quantity text-center <? if ($arItem["CATALOG_QUANTITY"] > 0): ?>quantity--available<? endif; ?>">
+            <span class="cell quantity text-center <? if ($arItem["CATALOG_QUANTITY"] > 0): ?>quantity--available<? endif; ?>" style="white-space: nowrap">
                 <div class="<? if ($USER->IsAuthorized()):?>quantity-wrapper<? endif; ?>">
                 <? if ($arItem["CATALOG_QUANTITY"] > 0): ?>
                     <? if (!$USER->IsAuthorized()): ?>
@@ -221,7 +221,7 @@ $this->setFrameMode(true);
                 </div>
                 <? endif; ?>
             </span>
-            <span class="cell text-center buy-quantity noselect">
+            <span class="cell text-center buy-quantity noselect" style="white-space: nowrap">
                 <i class="fa fa-minus" onclick="Math.max(0, this.nextElementSibling.value--)"></i>
                 <input type="text" name="quantity" value="0" />
                 <i class="fa fa-plus" onclick="Math.min(99, this.previousElementSibling.value++)"></i>
