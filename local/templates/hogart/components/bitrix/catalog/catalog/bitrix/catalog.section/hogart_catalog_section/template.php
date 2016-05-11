@@ -222,7 +222,7 @@ $this->setFrameMode(true);
                 <? endif; ?>
             </span>
             <span class="cell">
-                <input type="number" name="quantity" value="0" min="0" max="<?= $arItem["CATALOG_QUANTITY"] ?>"/>
+                <input type="number" name="quantity" value="0" min="0" />
             </span>
             <? endif; ?>
 
