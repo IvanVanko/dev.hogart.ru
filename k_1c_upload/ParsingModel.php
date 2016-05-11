@@ -372,14 +372,16 @@ class ParsingModel {
                 if ($TypeTehDoc->id == self::DETAIL_PICTURE_1C_TYPE_ID || $this->classTrans[$TypeTehDoc->id]) continue;
                 $newValues[] = [
                     "XML_ID" => $TypeTehDoc->id,
-                    "VALUE" => $TypeTehDoc->name
+                    "VALUE" => $TypeTehDoc->name,
+                    "PROPERTY_ID" => $techDocTypeProperty["ID"],
+                    "SORT" => 500
                 ];
             }
 
             if (!empty($newValues)) {
-                $iBlockProperty->Update($techDocTypeProperty["ID"], [
-                    "VALUES" => $newValues
-                ]);
+                foreach ($newValues as $newValue) {
+                    \CIBlockPropertyEnum::Add($newValue);
+                }
                 $res = (new CIBlockPropertyEnum())->GetList([], ["IBLOCK_ID" => self::DOCUMENTATION_IBLOCK_ID, "PROPERTY_ID" => $techDocTypeProperty["ID"]]);
                 while(($enum = $res->GetNext())) {
                     if ($enum["XML_ID"] == self::DETAIL_PICTURE_1C_TYPE_ID) continue;
