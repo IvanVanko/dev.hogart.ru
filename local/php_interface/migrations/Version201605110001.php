@@ -17,6 +17,8 @@ class Version201605110001 extends Version
     {
         $iBlockHelper = new IblockHelper();
         if ($iBlockHelper->updatePropertyIfExists(10, 'type', [
+            "IBLOCK_ID" => 10,
+            "CODE" => "type",
             "VALUES" => [
                 7 => [
                     "XML_ID" => "4e1de85f-fdf0-11e4-9045-003048b99ee9",
