@@ -355,6 +355,8 @@ class ParsingModel {
 
     function initTehDoc() {
         $this->csv->saveLog(['techDoc import start '.date('d.M.Y H:i:s')]);
+        $TypeTehDocGetResult = $this->GetResultFunction('TypeTehDocGet');
+        
         $ost = $this->GetResultFunction("TehDocGet");
 
         $answer = array();
@@ -381,7 +383,7 @@ class ParsingModel {
             $type_index = $file->type_id;
             $access_level = $file->access_level;
             $actual = $file->actual;
-            $answer['StringTehDoc'][] = $fileXmlID;
+
             if(empty($access_level)) {
                 $access_level = 1;
             }
@@ -602,6 +604,7 @@ class ParsingModel {
                             }
                         }
                     }
+                    $answer['StringTehDoc'][] = $fileXmlID;
                 }
             }
 
@@ -2119,10 +2122,6 @@ class ParsingModel {
                         }
                     }
                     if($vp->propname_id == 'edb71222-f482-11e4-9045-003048b99ee9') {
-                        fileDump(array($value->article,
-                                       $prop_values[$vp->prop_id],
-                                       $vp->prop_id,
-                                       $property_enums), true);
                     }
                     //                    $enum_found = false;
 

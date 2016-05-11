@@ -101,6 +101,7 @@ $this->setFrameMode(true);
             <span class="cell">Цена <i class="fa fa-<?= strtolower($arItem["PRICES"]["BASE"]["CURRENCY"]) ?>" aria-hidden="true"></i></span>
             <? if ($USER->IsAuthorized()): ?>
                 <span class="cell">%</span>
+                <span class="cell">К заказу</span>
             <? endif; ?>
             <span class="cell"><i class="icon-cart"></i></span>
         </li>
@@ -219,6 +220,9 @@ $this->setFrameMode(true);
                     <?= $arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"] ?>%
                 </div>
                 <? endif; ?>
+            </span>
+            <span class="cell">
+                <input type="number" name="quantity" value="0" min="0" max="<?= $arItem["CATALOG_QUANTITY"] ?>"/>
             </span>
             <? endif; ?>
 
