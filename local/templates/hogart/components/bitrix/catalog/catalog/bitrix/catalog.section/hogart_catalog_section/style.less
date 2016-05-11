@@ -57,18 +57,31 @@
                     }
                   }
                 }
-                input {
-                  border: 1px solid #888;
-                  border-radius: 3px;
-                  background: white !important;
-                  outline: none;
-                  height: 22px;
-                  font-size: 12px;
-                  color: #888;
+                &.buy-quantity {
+                  .fa {
+                    vertical-align: middle;
+                    line-height: 22px;
+                    cursor: pointer;
+                    &.fa-minus {
+                      padding-right: 1px;
+                    }
+                    &.fa-plus {
+                      padding-left: 1px;
+                    }
+                  }
+                  input {
+                    border: 1px solid #888;
+                    border-radius: 3px;
+                    background: white !important;
+                    outline: none;
+                    height: 22px;
+                    font-size: 12px;
+                    color: #888;
 
-                  &:focus {
-                    color: @brand-green;
-                    border: 1px solid @brand-green;
+                    &:focus {
+                      color: @brand-green;
+                      border: 1px solid @brand-green;
+                    }
                   }
                 }
               }
