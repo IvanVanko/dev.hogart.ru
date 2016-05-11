@@ -343,20 +343,40 @@ class ParsingModel {
     const DETAIL_PICTURE_1C_TYPE_ID = 'c6764e87-3703-496f-9bf7-a48e052967fd';
 
     private $classTrans = array(
-        '3ac566b4-e78f-11e4-9045-003048b99ee9' => 18,//Прайс-лист
-        '4e1de85e-fdf0-11e4-9045-003048b99ee9' => 10,//Каталог
-        '4e1de85f-fdf0-11e4-9045-003048b99ee9' => 7,//Буклеты
-        '4e1de860-fdf0-11e4-9045-003048b99ee9' => 11,//Сертификаты
-        '4e1de863-fdf0-11e4-9045-003048b99ee9' => 8,//Инструкция по монтажу
-        '4e1de865-fdf0-11e4-9045-003048b99ee9' => 9,//Гарантийный талон/Тех. паспорт
-        '4e1de864-fdf0-11e4-9045-003048b99ee9' => 97719,//Инструкция по эксплуатации
         'default' => 10
     );
 
     function initTehDoc() {
         $this->csv->saveLog(['techDoc import start '.date('d.M.Y H:i:s')]);
+        $iBlockPropery = (new CIBlockProperty);
+        $techDocTypeProperty = $iBlockPropery->GetList([], ["IBLOCK_ID" => self::DOCUMENTATION_IBLOCK_ID, "CODE" => "type"])->GetNext();
         $TypeTehDocGetResult = $this->GetResultFunction('TypeTehDocGet');
-        
+
+        if (!empty($TypeTehDocGetResult->return->TypeTehDoc)) {
+            if (is_object($TypeTehDocGetResult->return->TypeTehDoc)) {
+                $TypeTehDocGetResult->return->TypeTehDoc = [$TypeTehDocGetResult->return->TypeTehDoc];
+            }
+            $answer = [
+                "ID_Portal" => "HG",
+                "StringTypeTehDoc" => []
+            ];
+            foreach ($TypeTehDocGetResult->return->TypeTehDoc as $TypeTehDoc) {
+                $answer["StringTypeTehDoc"][] = $TypeTehDoc->id;
+                if ($TypeTehDoc->id == self::DETAIL_PICTURE_1C_TYPE_ID) continue;
+                $iBlockPropery->UpdateEnum($techDocTypeProperty["ID"], [
+                    "XML_ID" => $TypeTehDoc->id,
+                    "VALUE" => $TypeTehDoc->name
+                ]);
+            }
+            $answer["StringTypeTehDoc"] = implode(";", $answer["StringTypeTehDoc"]);
+            $this->client->__soapCall("TypeTehDocAnswer", array('parameters' => $answer));
+        }
+
+        $res = (new CIBlockPropertyEnum())->GetList([], ["IBLOCK_ID" => self::DOCUMENTATION_IBLOCK_ID, "PROPERTY_ID" => $techDocTypeProperty["ID"]]);
+        while(($enum = $res->GetNext())) {
+            if ($enum["XML_ID"] == self::DETAIL_PICTURE_1C_TYPE_ID) continue;
+            $this->classTrans[$enum["XML_ID"]] = $enum["ID"];
+        }
         $ost = $this->GetResultFunction("TehDocGet");
 
         $answer = array();
