@@ -347,8 +347,8 @@ class ParsingModel {
     );
 
     function initTypeTechDoc() {
-        $iBlockPropery = (new CIBlockProperty);
-        $techDocTypeProperty = $iBlockPropery->GetList([], ["IBLOCK_ID" => self::DOCUMENTATION_IBLOCK_ID, "CODE" => "type"])->GetNext();
+        $iBlockProperty = (new CIBlockProperty);
+        $techDocTypeProperty = $iBlockProperty->GetList([], ["IBLOCK_ID" => self::DOCUMENTATION_IBLOCK_ID, "CODE" => "type"])->GetNext();
 
         $res = (new CIBlockPropertyEnum())->GetList([], ["IBLOCK_ID" => self::DOCUMENTATION_IBLOCK_ID, "PROPERTY_ID" => $techDocTypeProperty["ID"]]);
         while(($enum = $res->GetNext())) {
@@ -377,7 +377,9 @@ class ParsingModel {
             }
 
             if (!empty($newValues)) {
-                $iBlockPropery->UpdateEnum($techDocTypeProperty["ID"], $newValues);
+                $iBlockProperty->Update($techDocTypeProperty["ID"], [
+                    "VALUES" => $newValues
+                ]);
                 $res = (new CIBlockPropertyEnum())->GetList([], ["IBLOCK_ID" => self::DOCUMENTATION_IBLOCK_ID, "PROPERTY_ID" => $techDocTypeProperty["ID"]]);
                 while(($enum = $res->GetNext())) {
                     if ($enum["XML_ID"] == self::DETAIL_PICTURE_1C_TYPE_ID) continue;
