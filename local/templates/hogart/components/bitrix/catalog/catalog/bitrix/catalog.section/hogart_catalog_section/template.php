@@ -221,8 +221,8 @@ $this->setFrameMode(true);
                 </div>
                 <? endif; ?>
             </span>
-            <span class="cell">
-                <input type="number" name="quantity" value="0" min="0" />
+            <span class="cell text-center">
+                <input type="number" name="quantity" value="0" min="0" max="99" />
             </span>
             <? endif; ?>
 
