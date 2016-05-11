@@ -69,6 +69,14 @@ HTML
         }
 
         $IblockHelper = new IblockHelper();
+
+        $events = GetModuleEvents("iblock", "OnBeforeIBlockPropertyUpdate", true);
+        foreach ($events as $iKey => $event) {
+            if ($event["TO_MODULE_ID"] == "defa.tools") {
+                RemoveEventHandler("iblock", "OnBeforeIBlockPropertyUpdate", $iKey);
+            }
+        }
+
         if ($IblockHelper->deletePropertyIfExists(26, "INVITATION")) {
             $this->outSuccess("Удалено свойство \"Приглашен\" в Инфоблок \"Регистрации на мероприятия\"");
         }
