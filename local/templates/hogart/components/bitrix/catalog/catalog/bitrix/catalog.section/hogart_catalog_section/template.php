@@ -221,9 +221,9 @@ $this->setFrameMode(true);
                 </div>
                 <? endif; ?>
             </span>
-            <span class="cell text-center buy-quantity">
+            <span class="cell text-center buy-quantity noselect">
                 <i class="fa fa-minus" onclick="Math.max(0, this.nextElementSibling.value--)"></i>
-                <input class="noselect" type="text" name="quantity" value="0" />
+                <input type="text" name="quantity" value="0" />
                 <i class="fa fa-plus" onclick="Math.min(99, this.previousElementSibling.value++)"></i>
             </span>
             <? endif; ?>
