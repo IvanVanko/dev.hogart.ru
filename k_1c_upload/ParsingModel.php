@@ -720,7 +720,10 @@ class ParsingModel {
         $elements[$objId] = $el->GetByID($objId)->GetNextElement()->GetFields();
         $iBlockId = $elements[$objId]["IBLOCK_ID"];
         $el->GetPropertyValuesArray($elements, $iBlockId, ["ID" => $objId], ["CODE" => $property_code]);
-        $values = ["VALUE" => $elements[$objId][$property_code]["VALUE"]];
+        $values = [];
+        foreach ($elements[$objId][$property_code]["VALUE"] as $value) {
+            $values[] = ["VALUE" => $value];
+        }
         foreach ($property_values as $val) {
             $values[] = $val;
         }
