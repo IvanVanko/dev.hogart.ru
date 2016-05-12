@@ -352,7 +352,6 @@ class ParsingModel {
 
         $res = (new CIBlockPropertyEnum())->GetList([], ["IBLOCK_ID" => self::DOCUMENTATION_IBLOCK_ID, "PROPERTY_ID" => $techDocTypeProperty["ID"]]);
         while(($enum = $res->GetNext())) {
-            if ($enum["XML_ID"] == self::DETAIL_PICTURE_1C_TYPE_ID) continue;
             $this->classTrans[$enum["XML_ID"]] = $enum["ID"];
         }
 
@@ -369,7 +368,7 @@ class ParsingModel {
             $newValues = [];
             foreach ($TypeTehDocGetResult->return->TypeTehDoc as $TypeTehDoc) {
                 $answer["StringTypeTehDoc"][] = $TypeTehDoc->id;
-                if ($TypeTehDoc->id == self::DETAIL_PICTURE_1C_TYPE_ID || $this->classTrans[$TypeTehDoc->id]) continue;
+                if ($this->classTrans[$TypeTehDoc->id]) continue;
                 $newValues[] = [
                     "XML_ID" => $TypeTehDoc->id,
                     "VALUE" => $TypeTehDoc->name,
@@ -384,7 +383,6 @@ class ParsingModel {
                 }
                 $res = (new CIBlockPropertyEnum())->GetList([], ["IBLOCK_ID" => self::DOCUMENTATION_IBLOCK_ID, "PROPERTY_ID" => $techDocTypeProperty["ID"]]);
                 while(($enum = $res->GetNext())) {
-                    if ($enum["XML_ID"] == self::DETAIL_PICTURE_1C_TYPE_ID) continue;
                     $this->classTrans[$enum["XML_ID"]] = $enum["ID"];
                 }
             }
@@ -504,7 +502,7 @@ class ParsingModel {
                         }
                     }
                     else {
-                        $array_brands[] = array('id' => $elementXmlID, 'id_b' => $elementID);
+                        $array_brands[] = array('id' => $elementXmlID, 'id_b' => $elementID, 'type' => $line->view_type);
                     }
                 }
                 if($type == 'categorys') {
@@ -521,7 +519,7 @@ class ParsingModel {
                         }
                     }
                     else {
-                        $array_product_doc[] = array('id' => $elementXmlID, 'id_b' => $elementID);
+                        $array_product_doc[] = array('id' => $elementXmlID, 'id_b' => $elementID, 'type' => $line->view_type);
                     }
                 }
                 if($type == 'nomenclature') {
@@ -538,7 +536,7 @@ class ParsingModel {
                         }
                     }
                     else {
-                        $array_product[] = array('id' => $elementXmlID, 'id_b' => $elementID);
+                        $array_product[] = array('id' => $elementXmlID, 'id_b' => $elementID, 'type' => $line->view_type);
                     }
 
                 }
@@ -556,7 +554,7 @@ class ParsingModel {
                         }
                     }
                     else {
-                        $array_product[] = array('id' => $elementXmlID, 'id_b' => $elementID);
+                        $array_product[] = array('id' => $elementXmlID, 'id_b' => $elementID, 'type' => $line->view_type);
                     }
 
                 }
@@ -578,7 +576,7 @@ class ParsingModel {
             if(count($array_product) and $_GET['V'] != 'Y' and $_GET['P'] != 'Y') {
                 foreach($array_product as $product) {
                     if($product['id_b']) {
-                        if($this->classTrans[$type_index]) {
+                        if($this->classTrans[$type_index] && $product["type"] == "techdoc") {
                             $res = CIBlockElement::GetProperty(self::CATALOG_IBLOCK_ID,
                                 $product['id_b'], array(), array("CODE" => "BRAND"));
                             $arFile = array();
@@ -611,40 +609,42 @@ class ParsingModel {
                                 "DESCRIPTION" => $name,
                             );
 
-                            if($type_index == self::DETAIL_PICTURE_1C_TYPE_ID) {
-                                if($del){
-                                    $file_obj['del'] = 'del';
-                                }
-                                $el->Update($product['id_b'], array(
-                                    "DETAIL_PICTURE" => $file_obj
-                                ), false, true, true);
-                                if($this->answer) {
-                                    unlink(trim($_SERVER['DOCUMENT_ROOT'].'/1c-upload/'.$file->adress));
-                                }
-                            }
-                            else {
-                                if(isset($elementsPhotos[$product['id_b']])){
-                                    foreach($elementsPhotos[$product['id_b']] as $photo){
-                                        $fileArray = CFile::GetByID($photo);
-                                        if($fileArray['ORIGINAL_NAME'] == $file->adress && $del){
-                                            $arFile['del'] = 'Y';
-                                            echo "Фото добавлено: ".$name."<br />";
-                                        }
+                            switch ($product["type"]) {
+                                case 'detail_picture':
+                                    if($del){
+                                        $file_obj['del'] = 'del';
                                     }
-                                }
-
-                                if($el->SetPropertyValueCode($product['id_b'], "photos", $arFile)) {
+                                    $el->Update($product['id_b'], array(
+                                        "DETAIL_PICTURE" => $file_obj
+                                    ), false, true, true);
                                     if($this->answer) {
                                         unlink(trim($_SERVER['DOCUMENT_ROOT'].'/1c-upload/'.$file->adress));
                                     }
-                                    echo "Фото добавлено: ".$name."<br />";
-                                }
-                                else {
-                                    $this->csv->saveLog(array('фото не добавилось',
-                                                              $fileXmlID,
-                                                              $el->LAST_ERROR." ".__LINE__." ".__FUNCTION__));
-                                    echo 'Error product img: ['.$fileXmlID.'] '.$el->LAST_ERROR." ".__LINE__." ".__FUNCTION__.'<br>';
-                                }
+                                    break;
+                                case 'additional_picture':
+                                    if(isset($elementsPhotos[$product['id_b']])){
+                                        foreach($elementsPhotos[$product['id_b']] as $photo){
+                                            $fileArray = CFile::GetByID($photo);
+                                            if($fileArray['ORIGINAL_NAME'] == $file->adress && $del){
+                                                $arFile['del'] = 'Y';
+                                                echo "Фото добавлено: ".$name."<br />";
+                                            }
+                                        }
+                                    }
+
+                                    if($el->SetPropertyValueCode($product['id_b'], "photos", $arFile)) {
+                                        if($this->answer) {
+                                            unlink(trim($_SERVER['DOCUMENT_ROOT'].'/1c-upload/'.$file->adress));
+                                        }
+                                        echo "Фото добавлено: ".$name."<br />";
+                                    }
+                                    else {
+                                        $this->csv->saveLog(array('фото не добавилось',
+                                            $fileXmlID,
+                                            $el->LAST_ERROR." ".__LINE__." ".__FUNCTION__));
+                                        echo 'Error product img: ['.$fileXmlID.'] '.$el->LAST_ERROR." ".__LINE__." ".__FUNCTION__.'<br>';
+                                    }
+                                    break;
                             }
                         }
                     }
