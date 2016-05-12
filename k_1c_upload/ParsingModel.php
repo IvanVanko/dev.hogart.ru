@@ -589,7 +589,7 @@ class ParsingModel {
                                 $this->classTrans[$type_index], $access_level);
 
                             $id_doc_dynamic = array(array('VALUE' => $id_doc_dynamic));
-                            if($this->setPropertyValue($product['id_b'], "DOCS", $id_doc_dynamic)) {
+                            if($this->setPropertyValue($product['id_b'], "docs", $id_doc_dynamic)) {
                                 echo 'Документация добавлена и связана с товаром: '.$product['id_b'];
                                 unlink(trim($_SERVER['DOCUMENT_ROOT'].'/1c-upload/'.$file->adress));
                             }
@@ -720,7 +720,10 @@ class ParsingModel {
         $elements[$objId] = $el->GetByID($objId)->GetNextElement()->GetFields();
         $iBlockId = $elements[$objId]["IBLOCK_ID"];
         $el->GetPropertyValuesArray($elements, $iBlockId, ["ID" => $objId], ["CODE" => $property_code]);
-        $values = array_merge(["VALUE" => $elements[$objId][$property_code]["VALUE"]], $property_values);
+        $values = ["VALUE" => $elements[$objId][$property_code]["VALUE"]];
+        foreach ($property_values as $val) {
+            $values[] = $val;
+        }
         return $el->SetPropertyValueCode($objId, $property_code, $values);
     }
 
