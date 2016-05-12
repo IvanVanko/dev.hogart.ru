@@ -658,7 +658,7 @@ class ParsingModel {
                     $arFile = array();
                     $arFile[] = array('VALUE' => $item['ID']);
                     foreach($array_product_doc as $product) {
-                        if($el->SetPropertyValueCode($product['id_b'], "DOCS", $arFile)) {
+                        if($this->setPropertyValue($product['id_b'], "docs", $arFile)) {
                             echo "Фото добавлено: ".$name."<br />";
                         }
                         else {
