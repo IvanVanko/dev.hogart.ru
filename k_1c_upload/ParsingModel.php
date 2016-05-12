@@ -589,7 +589,7 @@ class ParsingModel {
                                 $this->classTrans[$type_index], $access_level);
 
                             $id_doc_dynamic = array(array('VALUE' => $id_doc_dynamic));
-                            if($el->SetPropertyValueCode($product['id_b'], "DOCS", $id_doc_dynamic)) {
+                            if($this->setPropertyValue($product['id_b'], "DOCS", $id_doc_dynamic)) {
                                 echo 'Документация добавлена и связана с товаром: '.$product['id_b'];
                                 unlink(trim($_SERVER['DOCUMENT_ROOT'].'/1c-upload/'.$file->adress));
                             }
@@ -632,7 +632,7 @@ class ParsingModel {
                                         }
                                     }
 
-                                    if($el->SetPropertyValueCode($product['id_b'], "photos", $arFile)) {
+                                    if($this->setPropertyValue($product['id_b'], "photos", $arFile)) {
                                         if($this->answer) {
                                             unlink(trim($_SERVER['DOCUMENT_ROOT'].'/1c-upload/'.$file->adress));
                                         }
@@ -712,6 +712,16 @@ class ParsingModel {
 
         echo '</div>';
         $this->csv->saveLog(['techDoc import end '.date('d.M.Y H:i:s')]);
+    }
+
+    public function setPropertyValue($objId, $property_code, $property_values)
+    {
+        $el = new CIBlockElement;
+        $elements[$objId] = $el->GetByID($objId)->GetNextElement()->GetFields();
+        $iBlockId = $elements[$objId]["IBLOCK_ID"];
+        $el->GetPropertyValuesArray($elements, $iBlockId, ["ID" => $objId], ["CODE" => $property_code]);
+        $values = array_merge(["VALUE" => $elements[$objId][$property_code]["VALUE"]], $property_values);
+        return $el->SetPropertyValueCode($objId, $property_code, $values);
     }
 
     function addDoc($xmlId, $file, $name, $brand, $del, $type, $access_level = 1, $active = "Y") {
