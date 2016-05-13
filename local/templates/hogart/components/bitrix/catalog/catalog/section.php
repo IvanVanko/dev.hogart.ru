@@ -102,41 +102,43 @@ if ($arParams['USE_FILTER'] == 'Y') {
     ?>
     <?/*проверяем на depth_level потому что (1): нам не нужен никогда фильтр  категориях 1 уровня (2): слишком много свойств получается и огроменные запросы*/
     ?>
-    <? if ($section['DEPTH_LEVEL'] != 1) $APPLICATION->IncludeComponent(
-        "bitrix:catalog.smart.filter",
-        "",
-        array(
-            "IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
-            "IBLOCK_ID" => $arParams["IBLOCK_ID"],
-            "SECTION_ID" => $arResult["VARIABLES"]["SECTION_ID"],
-            "FILTER_NAME" => $arParams["FILTER_NAME"],
-            "PRICE_CODE" => $arParams["PRICE_CODE"],
-            "CACHE_TYPE" => $arParams["CACHE_TYPE"],
-            "CACHE_TIME" => $arParams["CACHE_TIME"],
-            "CACHE_GROUPS" => $arParams["CACHE_GROUPS"],
-            "SAVE_IN_SESSION" => "N",
-            "FILTER_VIEW_MODE" => $arParams["FILTER_VIEW_MODE"],
-            "XML_EXPORT" => "Y",
-            "SECTION_TITLE" => "NAME",
-            "SECTION_DESCRIPTION" => "DESCRIPTION",
-            'HIDE_NOT_AVAILABLE' => $arParams["HIDE_NOT_AVAILABLE"],
-            "TEMPLATE_THEME" => $arParams["TEMPLATE_THEME"],
-            'CONVERT_CURRENCY' => $arParams['CONVERT_CURRENCY'],
-            'CURRENCY_ID' => $arParams['CURRENCY_ID'],
-            "SEF_MODE" => $arParams["SEF_MODE"],
-            "SEF_RULE" => $arResult["FOLDER"] . $arResult["URL_TEMPLATES"]["smart_filter"],
-            "SMART_FILTER_PATH" => $arResult["VARIABLES"]["SMART_FILTER_PATH"],
-            "PAGER_PARAMS_NAME" => $arParams["PAGER_PARAMS_NAME"],
-            "RANGE_GROUPS" => $range_groups,
-            "STORES" => $stores,
-            "SELECTED_WAREHOUSE" => $_REQUEST['arrFilter_warehouse']
+    <? if ($section['DEPTH_LEVEL'] != 1) {
+        $this->SetViewTarget("CATALOG_FILTER");
+        $APPLICATION->IncludeComponent(
+            "bitrix:catalog.smart.filter",
+            "",
+            array(
+                "IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
+                "IBLOCK_ID" => $arParams["IBLOCK_ID"],
+                "SECTION_ID" => $arResult["VARIABLES"]["SECTION_ID"],
+                "FILTER_NAME" => $arParams["FILTER_NAME"],
+                "PRICE_CODE" => $arParams["PRICE_CODE"],
+                "CACHE_TYPE" => $arParams["CACHE_TYPE"],
+                "CACHE_TIME" => $arParams["CACHE_TIME"],
+                "CACHE_GROUPS" => $arParams["CACHE_GROUPS"],
+                "SAVE_IN_SESSION" => "N",
+                "FILTER_VIEW_MODE" => $arParams["FILTER_VIEW_MODE"],
+                "XML_EXPORT" => "Y",
+                "SECTION_TITLE" => "NAME",
+                "SECTION_DESCRIPTION" => "DESCRIPTION",
+                'HIDE_NOT_AVAILABLE' => $arParams["HIDE_NOT_AVAILABLE"],
+                "TEMPLATE_THEME" => $arParams["TEMPLATE_THEME"],
+                'CONVERT_CURRENCY' => $arParams['CONVERT_CURRENCY'],
+                'CURRENCY_ID' => $arParams['CURRENCY_ID'],
+                "SEF_MODE" => $arParams["SEF_MODE"],
+                "SEF_RULE" => $arResult["FOLDER"] . $arResult["URL_TEMPLATES"]["smart_filter"],
+                "SMART_FILTER_PATH" => $arResult["VARIABLES"]["SMART_FILTER_PATH"],
+                "PAGER_PARAMS_NAME" => $arParams["PAGER_PARAMS_NAME"],
+                "RANGE_GROUPS" => $range_groups,
+                "STORES" => $stores,
+                "SELECTED_WAREHOUSE" => $_REQUEST['arrFilter_warehouse']
 
-        ),
-        $component,
-        array('HIDE_ICONS' => 'Y')
-    );
-    $FILTER_HTML = ob_get_clean();
-    CStorage::setVar($FILTER_HTML, "SECTION_FILTER_HTML");
+            ),
+            $component,
+            array('HIDE_ICONS' => 'Y')
+        );
+        $this->EndViewTarget();
+    }
 
     $arCustomFilter = CStorage::getVar('CUSTOM_SECTION_FILTER');
     if (!empty($arCustomFilter)) {

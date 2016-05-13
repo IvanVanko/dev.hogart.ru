@@ -24,7 +24,7 @@ $this->setFrameMode(true);
 </small>
 <? if ($arResult['DEPTH_LEVEL'] > '1') : ?>
 <div class="smart-filter-wrapper">
-    <? CStorage::getVar("SECTION_FILTER_HTML"); ?>
+    <?= $APPLICATION->GetViewContent("CATALOG_FILTER"); ?>
 </div>
 <? endif; ?>
 <!---->
