@@ -913,6 +913,7 @@
   float: left;
   width: 25%;
   position: relative;
+  padding: 0 15px;
 }
 .smart-filter-wrapper .fieldset .group-field .field {
   margin-top: 10px;
