@@ -1195,6 +1195,9 @@ textarea {
   margin-right: 330px;
   padding: 0px 50px 0px 50px;
 }
+.container > .container-inner .breadcrumbs {
+  margin-right: 330px;
+}
 .container .container-inner .inner h1 {
   margin-bottom: 40px;
 }

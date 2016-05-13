@@ -417,7 +417,7 @@ app.initIsSidebar = function () {
     $('.container-inner').each(function () {
         if ($(this).find('.sidebar:not(.sidebar-popup)').length) {
             $('.inner', this).removeClass('no-full');
-            $(this).children('.inner').addClass('no-full');
+            $(this).children('.inner,.breadcrumbs').addClass('no-full');
         }
     });
     return this;
