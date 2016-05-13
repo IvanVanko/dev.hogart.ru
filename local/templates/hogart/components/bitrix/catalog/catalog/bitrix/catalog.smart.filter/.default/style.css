@@ -906,6 +906,9 @@
     background-size: 16px;
   }
 }
+.smart-filter-wrapper .noUi-handle:before {
+  color: black;
+}
 .smart-filter-wrapper .fieldset {
   position: relative;
 }
