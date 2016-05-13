@@ -23,9 +23,9 @@ $this->setFrameMode(true);
     В каталоге представлены рекомендуемые розничные цены
 </small>
 <? if ($arResult['DEPTH_LEVEL'] > '1') : ?>
-<div class="smart-filter-wrapper">
-    <?= $APPLICATION->GetViewContent("CATALOG_FILTER"); ?>
-</div>
+
+<?= $APPLICATION->GetViewContent("CATALOG_FILTER"); ?>
+
 <? endif; ?>
 <!---->
 <? if (!$arParams["IS_TABLE_VIEW"]): ?>
