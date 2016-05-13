@@ -906,6 +906,9 @@
     background-size: 16px;
   }
 }
+.smart-filter-wrapper .noUi-handle:before {
+  color: black;
+}
 .smart-filter-wrapper .fieldset {
   position: relative;
 }
@@ -913,6 +916,7 @@
   float: left;
   width: 25%;
   position: relative;
+  padding: 0 15px;
 }
 .smart-filter-wrapper .fieldset .group-field .field {
   margin-top: 10px;

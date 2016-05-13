@@ -453,7 +453,7 @@ $this->setFrameMode(true);
                         </div>
                         <a data-collapse="#hidden-values<?= $arItem['ID'] ?>" href="#" data-active-label="Скрыть"
                            data-hidden-label="Показать еще">
-                            <span>Показать еще</span>
+                            <span>Еще</span>
                         </a>
                     <?
                     } ?>
@@ -473,24 +473,27 @@ $this->setFrameMode(true);
         <div class="fieldset collapse" id="hidden-props">
             <? print($collapsed_fields_html) ?>
         </div>
-        <a data-collapse="#hidden-props" href="#" data-active-label="Скрыть характеристики"
+        <a style="display: block; text-align: center;" data-collapse="#hidden-props" href="#" data-active-label="Скрыть характеристики"
            data-hidden-label="Дополнительные характеристики">
-            <span>Дополнительные характеристики</span>
+            <span>Дополнительные фильтры</span>
         </a>
     <? } ?>
+    <div class="fieldset">
     <? foreach ($arResult["STOCK"] as $id => $name): ?>
-        <div class="field custom_checkbox">
-            <input
-                type="checkbox"
-                name="stock[]"
-                id="ak_<?= $id ?>"
-                value="<?= $id ?>"
-                <? if (in_array($id, $_REQUEST['stock'])): ?> checked<? endif; ?>
-            />
-            <label for="ak_<?= $id ?>">Участвует в акции «<?= $name ?>»</label>
+        <div class="group-field">
+            <div class="field custom_checkbox">
+                <input
+                    type="checkbox"
+                    name="stock[]"
+                    id="ak_<?= $id ?>"
+                    value="<?= $id ?>"
+                    <? if (in_array($id, $_REQUEST['stock'])): ?> checked<? endif; ?>
+                />
+                <label for="ak_<?= $id ?>">Участвует в акции «<?= $name ?>»</label>
+            </div>
         </div>
     <? endforeach; ?>
-
+    </div>
     <input class="empty-btn" type="submit" id="set_filter" name="set_filter" value="Показать"/>
     <br/>
     <br/>
