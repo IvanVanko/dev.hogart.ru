@@ -37,10 +37,10 @@
     <? endif; ?>
 
     <? if (!empty($arResult["PROPERTIES"]["partners"]["VALUE"])): ?>
-        <h2>Наши партнеры</h2>
+        <h2><?=GetMessage("Наши партнеры")?></h2>
         <p><?= $arResult["PROPERTIES"]["partners"]["~VALUE"]["TEXT"] ?></p>
     <? endif; ?>
-    <h2>Хогарт сегодня</h2>
+    <h2><?=GetMessage("Хогарт сегодня")?></h2>
 </div>
 
 <? $APPLICATION->IncludeComponent("kontora:element.list", "hogart_today", array(
@@ -51,7 +51,7 @@
 
 <? if (!empty($arResult["PROPERTIES"]["honors"]["VALUE"])): ?>
     <div class="inner">
-        <h2>Достижения и награды</h2>
+        <h2><?=GetMessage("Достижения и награды")?></h2>
         <ul class="sert-slider-cnt js-company-slider">
             <? foreach ($arResult["PROPERTIES"]["honors"]["VALUE"] as $value):
                 $file = CFile::ResizeImageGet($value, array('width' => 126, 'height' => 179), BX_RESIZE_IMAGE_EXACT, true);
@@ -86,7 +86,7 @@
     <div class="inner js-paralax-item">
 
         <div class="company-side-cnt padding">
-            <h2>Основные направления деятельности</h2>
+            <h2><?=GetMessage("Основные направления деятельности")?></h2>
             <?
             $GetCurDir = explode("/", $APPLICATION->GetCurDir());
 
