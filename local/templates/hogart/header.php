@@ -77,13 +77,13 @@
                 <? if($USER->IsAuthorized()): ?>
                     <span class="hide-text"><?=$USER->GetFullName()?></span>
                 <? else: ?>
-                    <span class="hide-text">Личный кабинет</span>
+                    <span class="hide-text"><?=GetMessage("Личный кабинет")?></span>
                 <? endif; ?>
             </a>
             <nav class="header-nav">
                 <ul>
                     <li class="first">
-                        <a href="/stock/">Акции</a>
+                        <a href="/stock/"><?=GetMessage("Акции")?></a>
                     </li>
                     <li class="ya-phone">
                             <? $APPLICATION->IncludeComponent("bitrix:main.include", "", Array(
