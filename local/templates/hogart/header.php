@@ -110,7 +110,7 @@ Loc::loadLanguageFile(__FILE__);
                             )
                         ); ?>
                     </li>
-                    <li class="feedback"><a class="js-popup-open" data-popup="#popup-os" href="#">Обратная связь</a></li>
+                    <li class="feedback"><a class="js-popup-open" data-popup="#popup-os" href="#"><?=Loc::getMessage('Обратная связь')?></a></li>
                 </ul>
             </nav>
 
