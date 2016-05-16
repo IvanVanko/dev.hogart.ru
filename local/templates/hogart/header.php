@@ -123,11 +123,13 @@
                     <label for="main-menu-trigger" class="menu-trigger-line"></label>
                 </div>
                 <div class="present-cnt js-fh js-fp">
-                    <? if($APPLICATION->GetCurDir() != '/'): ?>
-                        <a href="/"><img src="/images/logo.png" class="logo" alt="Hogart"/></a>
+                    <a href="/<?= ($APPLICATION->GetLang() == 'en' ? 'en/' : '')?>">
+                    <? if ($APPLICATION->GetLang() == 'en'): ?>
+                        <img src="/images/en-logo.png" class="logo" alt="Hogart"/>
                     <? else: ?>
                         <img src="/images/logo.png" class="logo" alt="Hogart"/>
                     <? endif; ?>
+                    </a>
 
                     <div class="js-fh js-fhi">
                         <div class="content">
