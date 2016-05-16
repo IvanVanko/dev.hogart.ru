@@ -123,8 +123,11 @@
                     <label for="main-menu-trigger" class="menu-trigger-line"></label>
                 </div>
                 <div class="present-cnt js-fh js-fp">
-                    <a href="/<?= ($APPLICATION->GetLang() == 'en' ? 'en/' : '')?>">
-                    <? if ($APPLICATION->GetLang() == 'en'): ?>
+                    <?
+                        $lang = $APPLICATION->GetLang();
+                    ?>
+                    <a href="<?=$lang['DIR']?>">
+                    <? if ($lang['LANGUAGE_ID'] == 'en'): ?>
                         <img src="/images/en-logo.png" class="logo" alt="Hogart"/>
                     <? else: ?>
                         <img src="/images/logo.png" class="logo" alt="Hogart"/>
