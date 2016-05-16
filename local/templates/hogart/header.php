@@ -1,7 +1,8 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
     die();
 }
-
+use \Bitrix\Main\Localization\Loc;
+Loc::loadLanguageFile(__FILE__);
 ?>
 <!DOCTYPE html>
 <html>
@@ -78,13 +79,13 @@
                 <? if($USER->IsAuthorized()): ?>
                     <span class="hide-text"><?=$USER->GetFullName()?></span>
                 <? else: ?>
-                    <span class="hide-text"><?=GetMessage("Личный кабинет")?></span>
+                    <span class="hide-text"><?=Loc::getMessage("Личный кабинет")?></span>
                 <? endif; ?>
             </a>
             <nav class="header-nav">
                 <ul>
                     <li class="first">
-                        <a href="/stock/"><?=GetMessage("Акции")?></a>
+                        <a href="/stock/"><?=Loc::getMessage("Акции")?></a>
                     </li>
                     <li class="ya-phone">
                             <? $APPLICATION->IncludeComponent("bitrix:main.include", "", Array(
