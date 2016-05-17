@@ -83,6 +83,7 @@
                     </div>
                 <? endforeach; ?>
             </form>
+            <? if (LANGUAGE_ID != "en"): ?>
             <form action="#" class="no-padding">
                 <div class="accordion-cnt">
                     <h2 class="trigger-accordion js-accordion-new"
@@ -145,7 +146,7 @@
                 <!--.clearfix-->
 
             </form>
-
+            <? endif; ?>
             <div class="accordion-cnt">
                 <!--                    <span class="trigger-accordion js-accordion"  data-accordion="#feednews">Подписаться на новости</span>-->
                 <a href="#" class="js-popup-open" data-popup="#popup-subscribe-mod"><?= GetMessage("Подписаться на новости")?></a>
