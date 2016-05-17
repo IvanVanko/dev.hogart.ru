@@ -8,12 +8,6 @@ if(!isset($arParams["CACHE_TIME"]))
 $arSelect = (isset($arParams['SELECT']) && !empty($arParams['SELECT'])) ? $arParams['SELECT'] : array();
 $arOrder = (isset($arParams['ORDER']) && !empty($arParams['ORDER'])) ? $arParams['ORDER'] : array('sort' => 'asc');
 
-if (intval($arParams["IBLOCK_ID"])) {
-	$arFilter = array(
-		'IBLOCK_ID' => intval($arParams["IBLOCK_ID"]),
-	);
-}
-
 if (intval($arParams["ID"])) {
     $arFilter = array(
         'ID' => intval($arParams["ID"]),
@@ -22,6 +16,10 @@ if (intval($arParams["ID"])) {
     $arFilter = array(
         'CODE' => $arParams["CODE"],
     );
+}
+
+if (isset($arParams["IBLOCK_ID"])) {
+	$arFilter['IBLOCK_ID'] = $arParams["IBLOCK_ID"];
 }
 
 $arFilter["ACTIVE"] = "Y";
