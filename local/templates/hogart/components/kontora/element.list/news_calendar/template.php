@@ -4,7 +4,7 @@ if (count($arResult['ITEMS']) > 0):?>
 	<div class="side-datepicker-cnt">
         <ul class="js-dateArray" id="side_news_array">
 			<?foreach ($arResult["ITEMS"] as $arItem):
-				$date = ConvertDateTime($arItem['ACTIVE_FROM'], "MM/DD/YYYY", "ru");?>
+				$date = ConvertDateTime($arItem['ACTIVE_FROM'], "MM/DD/YYYY", LANGUAGE_ID);?>
 				<li data-date="<?=$date?>">
 					<a href="<?= $arItem['DETAIL_PAGE_URL'] ?>"><?= $arItem['NAME'] ?></a>
 				</li>
