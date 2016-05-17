@@ -14,6 +14,7 @@ $this->setFrameMode(true);
 
 if (strlen($arResult["VARIABLES"]["ELEMENT_CODE"])) {
     $ElementID = $APPLICATION->IncludeComponent("kontora:element.detail", "", array(
+            "IBLOCK_ID"  => $arParams["IBLOCK_ID"],
             "CODE"    => $arResult["VARIABLES"]["ELEMENT_CODE"],
             'PROPS' => 'Y',
             'SET_STATUS_404' => $arParams['SET_STATUS_404']
