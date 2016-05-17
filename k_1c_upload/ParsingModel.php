@@ -610,6 +610,17 @@ class ParsingModel {
                             );
 
                             switch ($product["type"]) {
+                                case 'preview_picture':
+                                    if($del){
+                                        $file_obj['del'] = 'del';
+                                    }
+                                    $el->Update($product['id_b'], array(
+                                        "PREVIEW_PICTURE" => $file_obj
+                                    ), false, true, true);
+                                    if($this->answer) {
+                                        unlink(trim($_SERVER['DOCUMENT_ROOT'].'/1c-upload/'.$file->adress));
+                                    }
+                                    break;
                                 case 'detail_picture':
                                     if($del){
                                         $file_obj['del'] = 'del';
