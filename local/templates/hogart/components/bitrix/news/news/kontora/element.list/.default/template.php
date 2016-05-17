@@ -67,7 +67,7 @@
 <aside class="sidebar js-fh js-fixed-block js-paralax-height" data-fixed="top">
     <div class="inner js-paralax-item">
         <div class="company-side-cnt padding news__aside__filter">
-            <h2>Тип новости</h2>
+            <h2><?= GetMessage("Тип новости")?></h2>
 
             <form action="#" class="no-padding">
                 <? foreach($arResult["FILTER"]["TAG"] as $key => $tag): ?>
@@ -86,13 +86,13 @@
             <form action="#" class="no-padding">
                 <div class="accordion-cnt">
                     <h2 class="trigger-accordion js-accordion-new"
-                        data-accordion="#newsFilter">Фильтр по продукции</h2>
+                        data-accordion="#newsFilter"><?= GetMessage("Фильтр по продукции")?></h2>
 
                     <div
                         id="newsFilter"<? if(isset($_REQUEST['brand']) || isset($_REQUEST['direction']) || isset($_REQUEST['catalog_section'])): ?> style="display:block;"<? else: ?>style="display:none;"<? endif; ?>>
                         <div class="field custom_select">
                             <select name="direction">
-                                <option value="">Выбрать направление</option>
+                                <option value=""><?= GetMessage("Выбрать направление")?></option>
                                 <? foreach($arResult["FILTER"]["DIRECTIONS"] as $direction): ?>
                                     <option
                                         value="<?=$direction["ID"]?>"<? if($_REQUEST["direction"] == $direction["ID"]): ?> selected<? endif ?>><?=$direction["NAME"]?></option>
@@ -108,7 +108,7 @@
 
                         <div class="field custom_select">
                             <select name="catalog_section">
-                                <option value="">Выбрать тип товара</option>
+                                <option value=""><?= GetMessage("Выбрать тип товара")?></option>
                                 <? foreach($arResult["FILTER"]["TYPES"] as $type): ?>
                                     <option
                                         value="<?=$type["ID"]?>"<? if($_REQUEST["catalog_section"] == $type["ID"]): ?> selected<? endif ?>><?=$type["VALUE"]?></option>
@@ -117,15 +117,15 @@
                         </div>
                         <div class="field custom_select">
                             <select name="brand">
-                                <option value="">Выбрать бренд</option>
+                                <option value=""><?= GetMessage("Выбрать бренд")?></option>
                                 <? foreach($arResult["FILTER"]["BRANDS"] as $brand): ?>
                                     <option
                                         value="<?=$brand["ID"]?>"<? if($_REQUEST["brand"] == $brand["ID"]): ?> selected<? endif ?>><?=$brand["VALUE"]?></option>
                                 <? endforeach; ?>
                             </select>
                         </div>
-                        <button class="empty-btn flr">Показать</button>
-                        <a href="<?=$page?>" class="empty-btn link">сбросить</a>
+                        <button class="empty-btn flr"><?= GetMessage("Показать")?></button>
+                        <a href="<?=$page?>" class="empty-btn link"><?= GetMessage("Сбросить")?></a>
                     </div>
                 </div>
                 <div class="fixheight"></div>

@@ -1,6 +1,6 @@
 <?if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 if (count($arResult['ITEMS']) > 0):?>
-	<h2>Календарь событий</h2>
+	<h2><?= GetMessage("Календарь событий")?></h2>
 	<div class="side-datepicker-cnt">
         <ul class="js-dateArray" id="side_news_array">
 			<?foreach ($arResult["ITEMS"] as $arItem):
