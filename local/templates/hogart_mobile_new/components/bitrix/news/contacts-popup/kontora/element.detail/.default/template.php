@@ -78,7 +78,7 @@
 <div class="inner no-padding js-tab-item" data-id="#oneTab">
     <?if (!empty($arResult['PROPERTIES']['by_car_scheme']['VALUE'])):?>
         <a href="#" class="video-way background-green">
-            Схема проезда на автомобиле
+            <?= GetMessage("Схема проезда на автомобиле") ?>
             <i class="icon-bottom icon-full"></i>
         </a>
         <div class="way-scheme" style="display: none;">
