@@ -67,6 +67,14 @@ class ParsingModel {
             echo $e->getMessage();
             echo '</div>';
         }
+
+        $events = GetModuleEvents("iblock", "OnBeforeIBlockPropertyUpdate", true);
+        foreach ($events as $iKey => $event) {
+            if ($event["TO_MODULE_ID"] == "defa.tools") {
+                RemoveEventHandler("iblock", "OnBeforeIBlockPropertyUpdate", $iKey);
+            }
+        }
+        
         $this->csv = new csv($create_dir);
         $this->mongo_db_name = "hogart";
 
