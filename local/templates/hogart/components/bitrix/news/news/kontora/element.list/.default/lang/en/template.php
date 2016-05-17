@@ -7,4 +7,5 @@ $MESS["Выбрать тип товара"] = "Select a product type";
 $MESS["Выбрать бренд"] = "Select a brand";
 $MESS["Показать"] = "Show";
 $MESS["Сбросить"] = "Reset";
+$MESS["Подписаться на новости"] = "Subscribe to news";
 ?>

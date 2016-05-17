@@ -148,41 +148,7 @@
 
             <div class="accordion-cnt">
                 <!--                    <span class="trigger-accordion js-accordion"  data-accordion="#feednews">Подписаться на новости</span>-->
-                <a href="#" class="js-popup-open" data-popup="#popup-subscribe-mod">Подписаться на новости</a>
-
-                <? /*
-                <div id="feednews">
-                    <?$APPLICATION->IncludeComponent(
-                        "bitrix:subscribe.edit",
-                        "left_form",
-                        Array(
-                            "COMPONENT_TEMPLATE" => ".default",
-                            "SHOW_HIDDEN" => "N",
-                            "AJAX_MODE" => "N",
-                            "AJAX_OPTION_JUMP" => "N",
-                            "AJAX_OPTION_STYLE" => "Y",
-                            "AJAX_OPTION_HISTORY" => "N",
-                            "CACHE_TYPE" => "A",
-                            "CACHE_TIME" => "3600",
-                            "ALLOW_ANONYMOUS" => "Y",
-                            "SHOW_AUTH_LINKS" => "Y",
-                            "SET_TITLE" => "N"
-                        )
-                    );?>
-                    <?$APPLICATION->IncludeComponent(
-                        "bitrix:subscribe.form",
-                        "news",
-                        Array(
-                            "USE_PERSONALIZATION" => "Y",
-                            "SHOW_HIDDEN" => "N",
-                            "PAGE" => "#SITE_DIR#subscription/",
-                            "CACHE_TYPE" => "A",
-                            "CACHE_TIME" => "3600"
-                        )
-                    );
-                    ?>
-                </div>
-                */ ?>
+                <a href="#" class="js-popup-open" data-popup="#popup-subscribe-mod"><?= GetMessage("Подписаться на новости")?></a>
             </div>
 
         </div>
