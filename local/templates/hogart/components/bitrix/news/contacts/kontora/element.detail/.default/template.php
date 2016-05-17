@@ -25,12 +25,12 @@
     <ul class="js-tabs-list contact-tab">
         <? if(!empty($arResult['PROPERTIES']['by_car']['VALUE'])): ?>
             <li>
-                <a class="js-tab-trigger icon-car hover" href="#oneTab"><span>Проезд на автомобиле</span></a>
+                <a class="js-tab-trigger icon-car hover" href="#oneTab"><span><?= GetMessage("Проезд на автомобиле") ?></span></a>
             </li>
         <?endif;
         if(!empty($arResult['PROPERTIES']['by_public']['VALUE'])):?>
             <li>
-                <a class="js-tab-trigger icon-bus hover" href="#twoTab"><span>Проезд общественным транспортом</span></a>
+                <a class="js-tab-trigger icon-bus hover" href="#twoTab"><span><?= GetMessage("Проезд общественным транспортом") ?></span></a>
             </li>
         <? endif; ?>
     </ul>

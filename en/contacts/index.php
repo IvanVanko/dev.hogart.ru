@@ -7,7 +7,7 @@ $APPLICATION->SetTitle("Contacts");
 	"bitrix:news",
 	"contacts",
 	array(
-		"IBLOCK_ID" => CONTACTS_IBLOCK_ID,
+		"IBLOCK_ID" => 30,
 		"SEF_MODE" => "Y",
 		"SEF_FOLDER" => "/en/contacts/",
 		"IBLOCK_TYPE" => "list",
