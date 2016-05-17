@@ -8,6 +8,7 @@ Loc::loadLanguageFile(__FILE__);
 <html>
 <head lang="en">
     <meta charset="UTF-8">
+    <meta name="mailru-verification" content="7d762af6578aa853" />
     <title><? $APPLICATION->ShowTitle("title") ?></title>
     <?
 
