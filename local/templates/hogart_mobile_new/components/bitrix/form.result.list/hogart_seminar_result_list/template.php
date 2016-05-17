@@ -22,7 +22,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
 
         <div class="right">
             <a href="#" class="icon-phone black nohover js-popup-open" data-popup="#seminar-result-phone<?=$arFormResult['ID']?>"><span>Отправить по смс</span></a>
-            <a href="#" class="icon-email black nohover js-popup-open" data-popup="#seminar-result-email<?=$arFormResult['ID']?>"><span>Отправить на e-mail</span></a>
+            <a href="#" class="icon-email black nohover js-popup-open" data-popup="#seminar-result-email<?=$arFormResult['ID']?>"><span><?= GetMessage("Отправить на e-mail") ?></span></a>
         </div>
     </div>
     <div class="reg-kupon">

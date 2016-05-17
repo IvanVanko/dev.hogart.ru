@@ -15,7 +15,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
             <div class="right">
                 <a href="#" class="icon-phone black nohover"><span>Отправить по смс</span></a>
-                <a href="#" class="icon-email black nohover"><span>Отправить на e-mail</span></a>
+                <a href="#" class="icon-email black nohover"><span><?= GetMessage("Отправить на e-mail") ?></span></a>
             </div>
         </div>
         <?foreach ($arResult["arrAnswers"] as $answer) {?>
