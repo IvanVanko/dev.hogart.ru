@@ -17,7 +17,7 @@ $this->setFrameMode(false); ?>
 <aside class="sidebar js-fh js-fixed-block js-paralax-height" data-fixed="top">
     <div class="inner js-paralax-item">
         <div class="padding">
-            <h2>Оставьте отзыв</h2>
+            <h2><?=GetMessage("Оставьте отзыв")?></h2>
             <? //Изменяем порядок вывода полей
             $arResult["PROPERTY_LIST"] = array("NAME", 2037, 2038, 85, 88, 'PREVIEW_TEXT');
 
@@ -180,11 +180,11 @@ $this->setFrameMode(false); ?>
 									<textarea cols="<?=$arResult["PROPERTY_LIST_FULL"][$propertyID]["COL_COUNT"]?>" rows="<?=$arResult["PROPERTY_LIST_FULL"][$propertyID]["ROW_COUNT"]?>" name="PROPERTY[<?=$propertyID?>][<?=$i?>]"><?=$value?></textarea>
 								</div>
 								<br>
-                                    <span class="head">фото или логотип</span>
+                                    <span class="head"><?=GetMessage("фото или логотип")?></span>
                                 <div class="field custom_upload white-btn otz-b">
                                     <input type="hidden" name="PROPERTY[PREVIEW_PICTURE][0]" value="">
                                     <input type="file" name="PROPERTY_FILE_PREVIEW_PICTURE_0" accept="application/png,application/jpg,application/jpeg">
-                                    <label>Выбрать файл</label>
+                                    <label><?=GetMessage("Выбрать файл")?></label>
 
                                 </div>
                                     <br/>
@@ -381,10 +381,10 @@ $this->setFrameMode(false); ?>
 			<?endif?>
 		<?endif ?>
 
-                        <input type="submit" name="iblock_submit" class="empty-btn" value="Отправить"/>
+                        <input type="submit" name="iblock_submit" class="empty-btn" value="<?= GetMessage("Отправить")?>"/>
                         <br>
                         <br>
-                        <small>Поля, отмеченные * обязательны для заполнения.</small>
+                        <small><?=GetMessage("Поля, отмеченные * обязательны для заполнения.")?></small>
                         <br>
                         <? if(strlen($arParams["LIST_URL"]) > 0): ?>
                             <input type="submit" name="iblock_apply" value="<?=GetMessage("IBLOCK_FORM_APPLY")?>"/>
