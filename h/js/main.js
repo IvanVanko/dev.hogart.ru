@@ -327,6 +327,10 @@ app.initDatepicker = function () {
             }
         });
 
+        if ($(this).data("lang")) {
+            $(this).datepicker("option", $.datepicker.regional[ $(this).data("lang") ] );
+        }
+
         $(this).click(function () {
             app.initCalendarTooltip();
         });
