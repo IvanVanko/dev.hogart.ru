@@ -37,13 +37,13 @@ $mainItem = array();?>
 </div>
 
 <div class="inner">
-    <p class="head icon-car">Проезд на автомобиле:</p>
+    <p class="head icon-car"><?= GetMessage("Проезд на автомобиле") ?>:</p>
 
     <p>
         <?=$mainItem['PROPERTIES']['by_car']['~VALUE']['TEXT']?>
     </p>
 
-    <p class="head icon-bus">Проезд общественным транспортом:</p>
+    <p class="head icon-bus"><?= GetMessage("Проезд общественным транспортом") ?>:</p>
     <p>
         <?=$mainItem['PROPERTIES']['by_public']['~VALUE']['TEXT']?>
     </p>
