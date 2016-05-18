@@ -43,7 +43,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
                 <input style="display:none" type="password" name="fakepasswordremembered"/>
                 <? foreach($arResult["QUESTIONS"] as $FIELD_SID => $arQuestion): ?>
                         <?if($i == 1) { ?>
-                            <div class="hr"><span>Контактная информация</span></div>
+                            <div class="hr"><span><?= GetMessage("Контактная информация") ?></span></div>
                         <? } ?>
                         <? if($arQuestion['STRUCTURE'][0]['FIELD_TYPE'] == 'hidden'):
                             echo $arQuestion["HTML_CODE"];
@@ -58,9 +58,6 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
                             <div class="field custom_label <?=$customClass?>">
                                 <label
                                     for="text1"><?=$arQuestion["CAPTION"]?><?=$arQuestion['REQUIRED'] == 'Y' ? ' *' : ''?></label>
-
-                                <!--            <div class="js-validation-empty">--><? //= $arQuestion["HTML_CODE"]
-                                ?><!--</div>-->
                                 <?=$arQuestion["HTML_CODE"]?>
                             </div>
                             <?
@@ -70,7 +67,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
                             </div>
                             <div class="field custom_select js-validation-empty">
                                 <select id="form_dropdown_<?=$FIELD_SID?>" name="form_dropdown_<?=$FIELD_SID?>">
-                                    <? if($arResult['arForm']['ID'] == 8): ?>
+                                    <? if($arResult['arForm']['SID'] == 'REQUEST_FOR_SERVICE_EN' || $arResult['arForm']['SID'] == 'REQUEST_FOR_SERVICE_RU'): ?>
                                         <? foreach($arQuestion['STRUCTURE'] as $value): ?>
                                             <option value="<?=$value['ID']?>"><?=$value['MESSAGE']?></option>
                                         <? endforeach; ?>
@@ -86,7 +83,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
                             <?
                         else:
                             ?>
-                            <? if($arQuestion["CAPTION"] == 'Телефон'):
+                            <? if($arQuestion["CAPTION"] == 'Телефон' || $arQuestion["CAPTION"] == 'Tel. number'):
                                 $customClass = 'phone js-validation-phone';
                             elseif($arQuestion["CAPTION"] == 'E-mail'):
                                 $customClass = 'js-validation-email';
@@ -106,8 +103,8 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
                 <br>
                 <hr/>
                 <div class="inner">
-                    <input type="submit" name="web_form_submit" class="empty-btn" value="Отправить"/> <br/><br/>
-                    <small>Поля, отмеченные * обязательны для заполнения.</small>
+                    <input type="submit" name="web_form_submit" class="empty-btn" value="<?= GetMessage("Отправить") ?>"/> <br/><br/>
+                    <small><?= GetMessage("Поля, отмеченные * обязательны для заполнения.") ?></small>
                 </div>
 
                 <?=$arResult["FORM_FOOTER"]?>
