@@ -9,10 +9,10 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
  ***********************************************************************************/
 ?>
 <?if($arResult["isFormTitle"]): ?>
-    <? if($arResult['arForm']['ID'] == 8): ?>
+    <? if($arResult['arForm']['SID'] == 'REQUEST_FOR_SERVICE_EN' || $arResult['arForm']['SID'] == 'REQUEST_FOR_SERVICE_RU'): ?>
         <h2 class="nomargin"><?=$arResult["FORM_TITLE"]?></h2>
         <div class="form-desc-txt">
-            <span class="show-js-validation-form-new empty-btn">Заполнить заявку</span>
+            <span class="show-js-validation-form-new empty-btn"><?= GetMessage("Заполнить заявку")?></span>
         </div>
         <br>
     <? else: ?>

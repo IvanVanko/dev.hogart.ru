@@ -10,4 +10,5 @@ $MESS ['FORM_NOT_FOUND'] = "Web-form is not found.";
 $MESS ['Контактная информация'] = "Contacts";
 $MESS ['Поля, отмеченные * обязательны для заполнения.'] = "Fields marked * are mandatory";
 $MESS ['Отправить'] = "Send";
+$MESS ['Заполнить заявку'] = "Fill request form";
 ?>
