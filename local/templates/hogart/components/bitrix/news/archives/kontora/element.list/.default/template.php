@@ -79,11 +79,11 @@
                                 <input type="hidden" name="section_<?=$arSection['ID']?>_right" value=<?=$arSection['RIGHT_MARGIN']?> />
                             <?endforeach;?>
                         </div>
-                    <?endforeach;?> 
+                    <?endforeach;?>
+                    <br/>
                 <?endif;?>
 
                 <?if (!empty($arResult['FILTER']['BRANDS'])):?>
-									<br/>
                     <h2 class="normal-margin"><?= GetMessage("Бренд") ?></h2>
                     <div class="breands hide-big-cnt" data-hide="Еще бренды">
                         <?foreach ($arResult['FILTER']['BRANDS'] as $key => $arBrand):?>
