@@ -62,7 +62,7 @@ $APPLICATION->SetTitle("Solutions");
                         "bitrix:form.result.new",
                         "integrated-solutions-form",
                         Array(
-                            "WEB_FORM_ID" => "7",
+                            "WEB_FORM_ID" => "MAKE_REQUEST_EN",
                             "IGNORE_CUSTOM_TEMPLATE" => "N",
                             "USE_EXTENDED_ERRORS" => "N",
                             "SEF_MODE" => "N",

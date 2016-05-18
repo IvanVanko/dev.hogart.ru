@@ -52,7 +52,7 @@ $APPLICATION->SetTitle("Комплексные решения");
                         "bitrix:form.result.new",
                         "integrated-solutions-form",
                         Array(
-                            "WEB_FORM_ID" => "MAKE_REQUEST_" . strtoupper(LANGUAGE_ID),
+                            "WEB_FORM_ID" => "MAKE_REQUEST_RU",
                             "IGNORE_CUSTOM_TEMPLATE" => "N",
                             "USE_EXTENDED_ERRORS" => "N",
                             "SEF_MODE" => "N",
