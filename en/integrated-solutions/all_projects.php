@@ -12,6 +12,7 @@ $APPLICATION->SetTitle("All projects");
             "SEF_MODE" => "Y",
             "ORDER" => array('sort' => 'asc'),
             "FILTER" => array('PROPERTY_solution_id' => $choosen_section),
+            "SEF_FOLDER" => "/en/integrated-solutions/",
         )); ?>
     </div>
     <aside class="sidebar js-fh js-fixed-block js-paralax-height" data-fixed="top">
