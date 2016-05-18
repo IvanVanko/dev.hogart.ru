@@ -186,6 +186,8 @@
             .collection-image {
               width: 30%;
               float: right;
+              position: relative;
+              cursor: pointer;
               &:before {
                 opacity: 0;
                 position: absolute;
@@ -199,6 +201,9 @@
                 background-repeat: no-repeat;
                 transition: all 0.3s;
                 z-index: 1000000;
+              }
+              &:hover:before {
+                opacity: 1;
               }
             }
             .collection-description {

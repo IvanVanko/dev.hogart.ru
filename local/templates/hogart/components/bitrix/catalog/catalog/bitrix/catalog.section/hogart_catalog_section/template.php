@@ -149,7 +149,7 @@ $this->setFrameMode(true);
                             $collection["DETAIL_PICTURE"], array("width" => 400, "height" => 300), BX_RESIZE_IMAGE_PROPORTIONAL, true);
                         ?>
                         <img 
-                            data-big-img="<?= $big["src"] ?>"
+                            data-big-img="<?= $big["SRC"] ?>"
                             class="js-popup-open-img"
                             src="<?= $file['src'] ?>"
                             alt="<?= $collection["NAME"] ?>">

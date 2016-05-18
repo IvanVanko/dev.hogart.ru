@@ -216,6 +216,8 @@
 .catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li.caption .collection-image {
   width: 30%;
   float: right;
+  position: relative;
+  cursor: pointer;
 }
 .catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li.caption .collection-image:before {
   opacity: 0;
@@ -230,6 +232,9 @@
   background-repeat: no-repeat;
   transition: all 0.3s;
   z-index: 1000000;
+}
+.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li.caption .collection-image:hover:before {
+  opacity: 1;
 }
 .catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li.caption .collection-description {
   margin-right: 31%;
