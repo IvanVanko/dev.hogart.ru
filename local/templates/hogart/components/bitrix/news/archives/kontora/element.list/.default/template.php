@@ -53,10 +53,10 @@
         <div class="padding">
             <a href="<?= SITE_DIR ?>learn/" class="side-back"><?= GetMessage("Календарь семинаров") ?> <i class="icon-white-back"></i></a>
         </div>
-        <? if (LANGUAGE_ID != "en" && (!empty($arResult['FILTER']['BRANDS']) || !empty($arResult["FILTER"]["DIRECTIONS"]))): ?>
+        <? if (!empty($arResult['FILTER']['BRANDS']) || (!empty($arResult["FILTER"]["DIRECTIONS"]) && LANGUAGE_ID != "en")): ?>
         <div class="company-side-cnt padding null-padding-top">
             <form action="#" class="archive_filter">
-                <?if (!empty($arResult["FILTER"]["DIRECTIONS"])):?>
+                <?if (!empty($arResult["FILTER"]["DIRECTIONS"]) && LANGUAGE_ID != "en"):?>
                     <h2>Направление</h2>
                     <?foreach ($arResult["FILTER"]["DIRECTIONS"] as $key => $arDirection):?>
                         <div class="field custom_checkbox">
@@ -84,7 +84,7 @@
 
                 <?if (!empty($arResult['FILTER']['BRANDS'])):?>
 									<br/>
-                    <h2 class="normal-margin">Бренд</h2>
+                    <h2 class="normal-margin"><?= GetMessage("Бренд") ?></h2>
                     <div class="breands hide-big-cnt" data-hide="Еще бренды">
                         <?foreach ($arResult['FILTER']['BRANDS'] as $key => $arBrand):?>
                             <?if ($key == 3):?>
@@ -101,11 +101,11 @@
                     </div>
                 <?endif;?>
                 <br/>
-                <button class="empty-btn">Найти семинары</button>
+                <button class="empty-btn"><?= GetMessage("Найти семинары") ?></button>
                 <br/>
                 <br/>
                 <br/>
-                <a href="<?= $page ?>" class="empty-btn link">сбросить запрос</a>
+                <a href="<?= $page ?>" class="empty-btn link"><?= GetMessage("Сбросить запрос") ?></a>
                 <br/><br/>
             </form>
         </div>

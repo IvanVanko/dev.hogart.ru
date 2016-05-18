@@ -47,11 +47,11 @@ $page = $APPLICATION->GetCurDir(true);
         <div class="padding">
             <a href="<?= SITE_DIR ?>learn/" class="side-back"><?= GetMessage("Календарь Семинаров") ?> <i class="icon-white-back"></i></a>
         </div>
-        <? if (LANGUAGE_ID != "en" && (!empty($arResult['FILTER']['BRANDS']) || !empty($arResult["FILTER"]["DIRECTIONS"]))): ?>
+        <? if (!empty($arResult['FILTER']['BRANDS']) || (!empty($arResult["FILTER"]["DIRECTIONS"]) && LANGUAGE_ID != "en")): ?>
         <div class="company-side-cnt padding null-padding-top">
 
             <form action="#">
-                <?if (!empty($arResult["FILTER"]["DIRECTIONS"])):?>
+                <?if (!empty($arResult["FILTER"]["DIRECTIONS"]) && LANGUAGE_ID != "en"):?>
                     <h2>Направление</h2>
                     <?foreach ($arResult["FILTER"]["DIRECTIONS"] as $key => $arDirection):?>
                     <?//if (count($arDirection['SECTIONS'])>0):?>
@@ -81,7 +81,7 @@ $page = $APPLICATION->GetCurDir(true);
                 <?endif;?>
 
                 <?if (!empty($arResult['FILTER']['BRANDS'])):?>
-                    <h2 class="normal-margin">Бренд</h2>
+                    <h2 class="normal-margin"><?= GetMessage("Бренд") ?></h2>
                     <div class="breands hide-big-cnt" data-hide="Еще бренды">
                         <?foreach ($arResult['FILTER']['BRANDS'] as $key => $arBrand):?>
                             <?if ($key == 3):?>
@@ -99,11 +99,11 @@ $page = $APPLICATION->GetCurDir(true);
                 <?endif;?>
 
                 <br/>
-                <button class="empty-btn">Найти семинары</button>
+                <button class="empty-btn"><?= GetMessage("Найти семинары") ?></button>
                 <br/>
                 <br/>
                 <br/>
-                <a href="<?= $page ?>" class="empty-btn link">сбросить запрос</a>
+                <a href="<?= $page ?>" class="empty-btn link"><?= GetMessage("Сбросить запрос") ?></a>
             </form>
 
         </div>
