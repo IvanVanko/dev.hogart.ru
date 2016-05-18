@@ -144,12 +144,13 @@ $this->setFrameMode(true);
                 <? if (!empty($collection["DETAIL_PICTURE"])): ?>
                     <div class="collection-image">
                         <?
+                        $big = CFile::GetFileArray($collection["DETAIL_PICTURE"]);
                         $file = CFile::ResizeImageGet(
                             $collection["DETAIL_PICTURE"], array("width" => 400, "height" => 300), BX_RESIZE_IMAGE_PROPORTIONAL, true);
                         ?>
                         <img 
-                            data-big-img="<?= $collection["DETAIL_PICTURE"] ?>"
-                            data-group="producPop" class="js-popup-open-img"
+                            data-big-img="<?= $big["src"] ?>"
+                            class="js-popup-open-img"
                             src="<?= $file['src'] ?>"
                             alt="<?= $collection["NAME"] ?>">
                     </div>
