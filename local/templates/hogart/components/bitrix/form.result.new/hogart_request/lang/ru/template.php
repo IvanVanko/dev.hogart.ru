@@ -1,5 +1,5 @@
 <?
-$MESS ['FORM_REQUIRED_FIELDS'] = "Поля, обязательные для заполнения";
+$MESS ['FORM_REQUIRED_FIELDS'] = "Поля, отмеченные * обязательны для заполнения.";
 $MESS ['FORM_APPLY'] = "Применить";
 $MESS ['FORM_ADD'] = "Добавить";
 $MESS ['FORM_ACCESS_DENIED'] = "Не хватает прав доступа к веб-форме.";

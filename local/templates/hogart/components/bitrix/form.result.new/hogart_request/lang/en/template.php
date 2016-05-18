@@ -1,5 +1,5 @@
 <?
-$MESS ['FORM_REQUIRED_FIELDS'] = "Required fields";
+$MESS ['FORM_REQUIRED_FIELDS'] = "Fields marked * are mandatory";
 $MESS ['FORM_APPLY'] = "Apply";
 $MESS ['FORM_ADD'] = "Add";
 $MESS ['FORM_ACCESS_DENIED'] = "Web-form access denied.";
