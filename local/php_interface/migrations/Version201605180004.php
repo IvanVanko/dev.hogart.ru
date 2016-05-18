@@ -17,6 +17,13 @@ class Version201605180004 extends Version
 
     public function up()
     {
+        $events = GetModuleEvents("iblock", "OnBeforeIBlockPropertyUpdate", true);
+        foreach ($events as $iKey => $event) {
+            if ($event["TO_MODULE_ID"] == "defa.tools") {
+                RemoveEventHandler("iblock", "OnBeforeIBlockPropertyUpdate", $iKey);
+            }
+        }
+        
         $iBlockHelper = new IblockHelper();
         $iBlockHelper->updatePropertyIfExists(39, "materials", [
             "NAME" => "Seminar presentations"
