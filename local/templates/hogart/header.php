@@ -86,7 +86,7 @@ Loc::loadLanguageFile(__FILE__);
             <nav class="header-nav">
                 <ul>
                     <li class="first">
-                        <a href="/stock/"><?=Loc::getMessage("Акции")?></a>
+                        <a href="<?=SITE_DIR?>stock/"><?=Loc::getMessage("Акции")?></a>
                     </li>
                     <li class="ya-phone">
                             <? $APPLICATION->IncludeComponent("bitrix:main.include", "", Array(

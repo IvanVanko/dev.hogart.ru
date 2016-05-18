@@ -75,12 +75,7 @@
             "bitrix:form.result.new",
             "feedback",
             Array(
-                //                    "AJAX_MODE" => "Y",  // режим AJAX
-                //                    "AJAX_OPTION_SHADOW" => "N", // затемнять область
-                //                    "AJAX_OPTION_JUMP" => "Y", // скроллить страницу до компонента
-                //                    "AJAX_OPTION_STYLE" => "Y", // подключать стили
-                //                    "AJAX_OPTION_HISTORY" => "N",
-                "WEB_FORM_ID" => "1",
+                "WEB_FORM_ID" => "FEEDBACK_" . strtoupper(LANGUAGE_ID),
                 "IGNORE_CUSTOM_TEMPLATE" => "N",
                 "USE_EXTENDED_ERRORS" => "N",
                 "SEF_MODE" => "N",
@@ -103,11 +98,6 @@
             "bitrix:form.result.new",
             "feedback",
             Array(
-                //                    "AJAX_MODE" => "Y",  // режим AJAX
-                //                    "AJAX_OPTION_SHADOW" => "N", // затемнять область
-                //                    "AJAX_OPTION_JUMP" => "Y", // скроллить страницу до компонента
-                //                    "AJAX_OPTION_STYLE" => "Y", // подключать стили
-                //                    "AJAX_OPTION_HISTORY" => "N",
                 "WEB_FORM_ID" => "2",
                 "IGNORE_CUSTOM_TEMPLATE" => "N",
                 "USE_EXTENDED_ERRORS" => "Y",
