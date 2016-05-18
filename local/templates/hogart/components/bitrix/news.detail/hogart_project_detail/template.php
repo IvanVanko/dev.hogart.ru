@@ -30,7 +30,7 @@ if (!isset($arParams['ITEM_TEMPLATE']) && empty($arParams['ITEM_TEMPLATE'])):?>
         </div>
     <? endif; ?>
     <? if (!empty($arResult["DETAIL_TEXT"])): ?>
-        <h2>о проекте</h2>
+        <h2><?= GetMessage("о проекте") ?></h2>
         <?= $arResult["DETAIL_TEXT"] ?>
     <? endif; ?>
     <? if (!empty($arResult["DETAIL_PICTURE"])): ?>
