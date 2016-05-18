@@ -129,7 +129,9 @@ class Version201605180001 extends Version
                     ], $answer["ID"]);
                 }
             }
-
+            (new \CForm)->Set([
+                "SID" => "FEEDBACK_RU"
+            ], 1);
         }
     }
 }
