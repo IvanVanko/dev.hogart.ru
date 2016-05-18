@@ -2,7 +2,7 @@
 <aside class="sidebar js-fh js-fixed-block js-paralax-height" data-fixed="top">
     <div class="inner js-paralax-item">
         <div class="padding normal-padding">
-            <a href="<?=$arParams['SEF_FOLDER']?>" class="side-back">Ко всем статьям <i class="icon-white-back"></i></a>
+            <a href="<?=$arParams['SEF_FOLDER']?>" class="side-back"><?= GetMessage("Ко всем статьям") ?> <i class="icon-white-back"></i></a>
         </div>
         <div class="sidebar_padding_cnt small-news-cnt">
 			<?foreach ($arResult["ITEMS"] as $arItem): 
