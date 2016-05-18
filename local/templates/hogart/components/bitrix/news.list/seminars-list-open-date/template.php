@@ -45,7 +45,7 @@ $page = $APPLICATION->GetCurDir(true);
 <aside class="sidebar js-fh js-fixed-block js-paralax-height" data-fixed="top">
     <div class="inner js-paralax-item">
         <div class="padding">
-            <a href="/learn/" class="side-back"><?= GetMessage("Календарь семинаров") ?> <i class="icon-white-back"></i></a>
+            <a href="<?= SITE_DIR ?>learn/" class="side-back"><?= GetMessage("Календарь Семинаров") ?> <i class="icon-white-back"></i></a>
         </div>
         <? if (!empty($arResult['FILTER']['BRANDS']) || !empty($arResult["FILTER"]["DIRECTIONS"])): ?>
         <div class="company-side-cnt padding null-padding-top">
