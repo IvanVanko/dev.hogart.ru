@@ -53,7 +53,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
     <?} ?>
     <br>
     <br>
-    <small><?= GetMessage("FORM_REQUIRED_FIELDS")?></small>
+    <small><?= GetMessage("Поля, отмеченные * обязательны для заполнения.")?></small>
     <?
     if($arResult["isUseCaptcha"] == "Y") {
         ?>
