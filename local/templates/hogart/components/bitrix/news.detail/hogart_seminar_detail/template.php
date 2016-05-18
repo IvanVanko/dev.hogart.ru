@@ -254,7 +254,7 @@ $now = strtotime($now);
     <hr/>
     <ul class="lear-base-bottom-href">
         <li><a href="<?= SITE_DIR ?>learn/" class="cal"><?= GetMessage("Календарь Семинаров") ?></a></li>
-        <li><a href="<?= SITE_DIR ?>learn/archive-seminarov/" class="base"><?= GetMessage("Архив Семинаров") ?>/a></li>
+        <li><a href="<?= SITE_DIR ?>learn/archive-seminarov/" class="base"><?= GetMessage("Архив Семинаров") ?></a></li>
     </ul>
     </div>
 
