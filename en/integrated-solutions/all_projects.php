@@ -1,6 +1,5 @@
 <? require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("All projects");
-$APPLICATION->AddChainItem("All projects");
 ?>
     <div class="inner no-full">
         <h1><? $APPLICATION->ShowTitle(false) ?></h1>

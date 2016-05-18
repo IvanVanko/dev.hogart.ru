@@ -2,4 +2,4 @@
 
 global $APPLICATION;
 
-$APPLICATION->AddChainItem("Все проекты");
+$APPLICATION->AddChainItem(GetMessage("Все проекты"));
