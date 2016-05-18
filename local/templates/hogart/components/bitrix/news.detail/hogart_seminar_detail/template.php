@@ -259,6 +259,7 @@ $now = strtotime($now);
     </div>
 
 <? $APPLICATION->IncludeComponent("kontora:element.detail", "seminar-sidebar", array(
+    "IBLOCK_ID" => $arParams["IBLOCK_ID"],
     "CODE" => $_REQUEST["ELEMENT_CODE"],
     "PROPS" => "Y",
     "PROPERTY_CODE" => array("adress"),
