@@ -6,14 +6,6 @@ $aMenuLinks = Array(
 		Array(),
 		Array(),
 		""
-	),
-	Array(
-		"Helpful information",
-		"/en/helpful-information/",
-		Array(),
-		Array(),
-		""
-	),
-
+	)
 );
 ?>
