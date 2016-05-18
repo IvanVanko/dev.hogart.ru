@@ -139,11 +139,11 @@ Loc::loadLanguageFile(__FILE__);
 
                     <div class="js-fh js-fhi">
                         <div class="content">
-                            <? if($APPLICATION->GetCurDir() == '/') {
+                            <? if($APPLICATION->GetCurDir() == SITE_DIR) {
                                 $date = new DateTime();
                                 date_sub($date, date_interval_create_from_date_string('2 month'));
                                 $APPLICATION->IncludeComponent("kontora:element.list", "main_news", array(
-                                    'IBLOCK_ID' => '3',
+                                    'IBLOCK_ID' => (LANGUAGE_ID == 'en' ? '28' : '3'),
                                     'FILTER' => array(
                                         "PROPERTY_tag" => array(2, 4),
                                         ">=DATE_ACTIVE_FROM" => date_format($date, 'd-m-Y')." 00:00:00"
@@ -159,9 +159,9 @@ Loc::loadLanguageFile(__FILE__);
                         </div>
                         <div class="scroll-to-top">Наверх</div>
                     </div>
-                    <? if($APPLICATION->GetCurDir() == '/') {
+                    <? if($APPLICATION->GetCurDir() == SITE_DIR) {
                         $APPLICATION->IncludeComponent("kontora:element.list", "main_calendar", array(
-                            'IBLOCK_ID' => 3,
+                            'IBLOCK_ID' => (LANGUAGE_ID == 'en' ? '28' : '3'),
                             'FILTER' => array('PROPERTY_tag' => array(3, 5)),
                         ));
                     } ?>
