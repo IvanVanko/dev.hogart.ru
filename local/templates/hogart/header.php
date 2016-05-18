@@ -68,6 +68,15 @@ Loc::loadLanguageFile(__FILE__);
 <div class="wrapper">
     <header class="header-cnt js-fixed-block" data-fixed="top">
         <div class="inner">
+            <div style="display: block; float: left; width: 5%;">
+                <? $switcher = $APPLICATION->GetLangSwitcherArray(); ?>
+                <? foreach ($switcher as $lang): ?>
+                    <? if ($lang["LANGUAGE_ID"] == LANGUAGE_ID): ?>
+                        <? continue; ?>
+                    <? endif; ?>
+                    <a class="switcher-<?= $lang["LANGUAGE_ID"] ?>" style="display: inline-block" href="<?= $lang["DIR"] ?>"><?= $lang["LANGUAGE_ID"] ?></a>
+                <? endforeach; ?>
+            </div>
             <? $APPLICATION->IncludeComponent("bitrix:search.form", "header", Array(
                     "USE_SUGGEST" => "N",
                     "PAGE" => "#SITE_DIR#search/index.php"
@@ -126,15 +135,12 @@ Loc::loadLanguageFile(__FILE__);
                     <label for="main-menu-trigger" class="menu-trigger-line"></label>
                 </div>
                 <div class="present-cnt js-fh js-fp">
-                    <?
-                        $lang = $APPLICATION->GetLang();
-                    ?>
-                    <a href="<?=$lang['DIR']?>">
-                    <? if ($lang['LANGUAGE_ID'] == 'en'): ?>
-                        <img src="/images/en-logo.png" class="logo" alt="Hogart"/>
-                    <? else: ?>
-                        <img src="/images/logo.png" class="logo" alt="Hogart"/>
-                    <? endif; ?>
+                    <a style="display: inline-block" href="<?= SITE_DIR ?>">
+                        <? if (LANGUAGE_ID == 'en'): ?>
+                            <img src="/images/en-logo.png" class="logo" alt="Hogart"/>
+                        <? else: ?>
+                            <img src="/images/logo.png" class="logo" alt="Hogart"/>
+                        <? endif; ?>
                     </a>
 
                     <div class="js-fh js-fhi">
