@@ -55,13 +55,13 @@ if ($arResult["isFormTitle"]):?>
                 <label class="trigger-border-bottom"><?=$arQuestion["HTML_CODE"]?></label>
             </div*/?>
         <?else:?>
-			<?if ($arQuestion["CAPTION"] == 'Телефон'):
+			<?if ($arQuestion["CAPTION"] == 'Телефон' || $arQuestion["CAPTION"] == 'Tel. number'):
 				$customClass = 'phone js-validation-phone';
                 $customStyle = '';
 			elseif ($arQuestion["CAPTION"] == 'E-mail'):
 				$customClass = 'js-validation-email';
                 $customStyle = '';
-            elseif (strtolower($arQuestion["CAPTION"]) == 'отчество'):
+            elseif (strtolower($arQuestion["CAPTION"]) == 'отчество' || strtolower($arQuestion["CAPTION"]) == 'last name'):
 				$customClass = 'not';
                 $customStyle = '';
             elseif ($arQuestion['STRUCTURE'][0]['ID'] == 25):
@@ -114,7 +114,7 @@ if($arResult["isUseCaptcha"] == "Y")
 } // isUseCaptcha
 ?>
     <br/>
-	<input type="submit" name="web_form_submit" class="empty-btn" value="Отправить" />
+	<input type="submit" name="web_form_submit" class="empty-btn" value="<?= GetMessage("Отправить") ?>" />
 
 <?=$arResult["FORM_FOOTER"]?>
 </div>
