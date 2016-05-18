@@ -4,7 +4,7 @@ $strSectionDelete = CIBlock::GetArrayByID($arParams["IBLOCK_ID"], "SECTION_DELET
 $arSectionDeleteParams = array("CONFIRM" => GetMessage('CT_BCSL_ELEMENT_DELETE_CONFIRM'));?>
 <div class="field custom_label" id="<?=$this->GetEditAreaId($arItem['ID'])?>">
     <span class="trigger-border-bottom">
-        <a href="/integrated-solutions/all_projects.php"<?if (!isset($_REQUEST['section']) || empty($_REQUEST['section'])):?> class="selected"<?endif;?>>Все</a>
+        <a href="<?=SITE_DIR?>integrated-solutions/all_projects.php"<?if (!isset($_REQUEST['section']) || empty($_REQUEST['section'])):?> class="selected"<?endif;?>><?= GetMessage("Все")?></a>
     </span>
 </div>
 <br />
