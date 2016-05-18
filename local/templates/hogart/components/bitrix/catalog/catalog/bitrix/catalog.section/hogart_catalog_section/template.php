@@ -145,7 +145,7 @@ $this->setFrameMode(true);
                     <div class="collection-image">
                         <?
                         $file = CFile::ResizeImageGet(
-                            $collection["DETAIL_PICTURE"], array("width" => 400, "height" => 160), BX_RESIZE_IMAGE_PROPORTIONAL, true);
+                            $collection["DETAIL_PICTURE"], array("width" => 400, "height" => 300), BX_RESIZE_IMAGE_PROPORTIONAL, true);
                         ?>
                         <img src="<?= $file['src'] ?>" alt="<?= $collection["NAME"] ?>">
                     </div>
