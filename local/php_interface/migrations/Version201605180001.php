@@ -37,10 +37,11 @@ class Version201605180001 extends Version
                     case "Отчество":
                         $TITLE = "Second name";
                         break;
-                    case 'Телефон':
+                    case "Телефон":
                         $TITLE = "Tel. number";
                         break;
                     default:
+                        $TITLE = $field["TITLE"];
                         continue;
                         break;
                 }
