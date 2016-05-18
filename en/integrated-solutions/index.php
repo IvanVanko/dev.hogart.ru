@@ -75,7 +75,7 @@ $APPLICATION->SetTitle("Solutions");
                     "kontora:element.list",
                     "real-projects",
                     Array(
-                        "IBLOCK_ID" => REFERENCES_IBLOCK_ID,
+                        "IBLOCK_ID" => 37,
                         "PROPS" => "Y",
                         "FILTER" => array("PROPERTY_SOLUTION_ID" => $section_ids),
                         "SEF_MODE" => "Y",
