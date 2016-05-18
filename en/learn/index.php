@@ -74,7 +74,7 @@ $APPLICATION->SetTitle("Learn");
 	false
 );
     ?>
-    <div class="calendar-cnt learn-list" id="learn-calendar" data-datepicker="#calendar-array"></div>
+    <div class="calendar-cnt learn-list" id="learn-calendar" data-datepicker="#calendar-array" data-lang="<?= LANGUAGE_ID ?>"></div>
 </div>
 	<div class="inner no-full">
     <div id="calendar-list" class="inner learn-list" style="display: none;">
