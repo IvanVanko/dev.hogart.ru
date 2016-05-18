@@ -147,7 +147,11 @@ $this->setFrameMode(true);
                         $file = CFile::ResizeImageGet(
                             $collection["DETAIL_PICTURE"], array("width" => 400, "height" => 300), BX_RESIZE_IMAGE_PROPORTIONAL, true);
                         ?>
-                        <img src="<?= $file['src'] ?>" alt="<?= $collection["NAME"] ?>">
+                        <img 
+                            data-big-img="<?= $collection["DETAIL_PICTURE"] ?>"
+                            data-group="producPop" class="js-popup-open-img"
+                            src="<?= $file['src'] ?>"
+                            alt="<?= $collection["NAME"] ?>">
                     </div>
                 <? endif; ?>
                 <div class="collection-description">
