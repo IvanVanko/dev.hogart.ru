@@ -18,7 +18,7 @@ class Version201605180003 extends Version
         if(!\CModule::IncludeModule("form")) {
             $this->outError("Отсутствует модуль Form");
         } else {
-            if (!(new \CForm)->GetByID("REQUEST_FOR_SERVICE_EN", "Y")->GetNext()) {
+            if (!(new \CForm)->GetByID("OFFER_YOUR_SEMINAR_TOPIC_EN", "Y")->GetNext()) {
                 $newFormId = (new \CForm)->Copy(4);
                 (new \CForm)->Set([
                     "NAME" => "Offer your seminar topic",
