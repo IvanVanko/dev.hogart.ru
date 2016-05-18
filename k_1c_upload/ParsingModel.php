@@ -2213,7 +2213,7 @@ class ParsingModel {
                 CIBlockElement::GetPropertyValuesArray($__props, $BLOCK_ID, ["ID" => $arItem['ID']]);
                 $propA = [];
                 foreach ($__props[$arItem['ID']] as $prop) {
-                    $propA[$prop['CODE']] = ['VALUE' => $prop['VALUE']];
+                    $propA[$prop['CODE']] = ['VALUE' => $prop['VALUE_ENUM_ID'] ? : $prop['VALUE']];
                 }
                 $arLoadProductArray['PROPERTY_VALUES'] = array_merge($propA, $arLoadProductArray['PROPERTY_VALUES']);
 
