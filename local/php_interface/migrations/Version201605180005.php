@@ -11,7 +11,7 @@ namespace Sprint\Migration;
 
 class Version201605180005 extends Version
 {
-    protected $description = "Правка блока Seminars";
+    protected $description = "Правка блока Helpful information";
 
     public function up()
     {
@@ -21,7 +21,7 @@ class Version201605180005 extends Version
                 RemoveEventHandler("iblock", "OnBeforeIBlockPropertyUpdate", $iKey);
             }
         }
-        \CIBlock::Update(41, [
+        (new \CIBlock)->Update(41, [
             "DETAIL_PAGE_URL" => "#SITE_DIR#/helpful-information/#ELEMENT_CODE#/"
         ]);
     }
