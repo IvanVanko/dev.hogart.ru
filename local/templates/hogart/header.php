@@ -182,7 +182,7 @@ Loc::loadLanguageFile(__FILE__);
             )
         ); ?>
     </div>
-    <? if($APPLICATION->GetCurDir() == '/'): ?>
+    <? if($APPLICATION->GetCurDir() == SITE_DIR): ?>
         <div class="credits">
             <p class="address">
                 <? $APPLICATION->IncludeComponent("bitrix:main.include", "", Array(
