@@ -16,9 +16,13 @@ class Version201605180001 extends Version
         if(!\CModule::IncludeModule("form")) {
             $this->outError("Отсутствует модуль Form");
         } else {
+            (new \CForm)->Set([
+                "SID" => "MAKE_REQUEST_RU"
+            ], 7);
             $newFormId = (new \CForm)->Copy(7);
             (new \CForm)->Set([
                 "NAME" => "Make a request",
+                "SID" => "MAKE_REQUEST_EN",
                 "arSITE" => ["en"],
                 "arMENU" => array("en" => "Make a request"),
             ], $newFormId);

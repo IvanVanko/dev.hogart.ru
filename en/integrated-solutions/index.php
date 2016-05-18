@@ -106,7 +106,7 @@ $APPLICATION->SetTitle("Solutions");
                     //	),
                     //$component
                     //);
-                    $form_id = 7;
+                    $form_id = "MAKE_REQUEST_" . strtoupper(LANGUAGE_ID);
                     if(BXHelper::can_show_form($form_id)) {
                         BXHelper::start_ajax_block();
                         $APPLICATION->IncludeComponent(
