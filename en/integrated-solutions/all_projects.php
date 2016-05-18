@@ -1,5 +1,7 @@
 <? require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
-$APPLICATION->SetTitle("All projects"); ?>
+$APPLICATION->SetTitle("All projects");
+$APPLICATION->AddChainItem("All projects");
+?>
     <div class="inner no-full">
         <h1><? $APPLICATION->ShowTitle(false) ?></h1>
         <? $section_ids = BXHelper::getSections(array('ID' => 'ASC'), array('IBLOCK_ID' => '7'), false, array('ID'), true, 'ID'); ?>
