@@ -26,6 +26,6 @@
             <?endforeach;?>
 		</ul>
 		<h1>События</h1>
-		<div data-datepicker="#side_news_array" class="js-datepicker"></div>
+		<div data-datepicker="#side_news_array" class="js-datepicker" data-lang="<?= LANGUAGE_ID ?>"></div>
 	</div>
 <?endif; ?>
