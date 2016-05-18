@@ -7,7 +7,7 @@ $APPLICATION->SetTitle("All projects");
         <? $section_ids = array_keys($section_ids['RESULT']); ?>
         <? $choosen_section = !empty($_REQUEST['section']) && in_array($_REQUEST['section'], $section_ids) ? $_REQUEST['section'] : $section_ids ?>
         <? $APPLICATION->IncludeComponent("kontora:element.list", "all-projects", array(
-            'IBLOCK_ID' => REFERENCES_IBLOCK_ID,
+            'IBLOCK_ID' => 37,
             'PROPS' => 'Y',
             "SEF_MODE" => "Y",
             "ORDER" => array('sort' => 'asc'),
@@ -19,7 +19,7 @@ $APPLICATION->SetTitle("All projects");
             <div class="padding">
                 <?
                 $APPLICATION->IncludeComponent("kontora:section.list", "sections-list", array(
-                    'IBLOCK_ID' => PROJECT_TYPE_IBLOCK_ID,
+                    'IBLOCK_ID' => 35,
                     'INCLUDE_INACTIVE' => 'Y',
                     'PROPS' => 'Y',
                     "SEF_MODE" => "Y",

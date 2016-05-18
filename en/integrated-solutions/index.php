@@ -37,7 +37,6 @@ $APPLICATION->SetTitle("Solutions");
                     "PROPS" => "Y",
                     "SEF_MODE" => "Y",
                     "SEF_FOLDER" => "/en/integrated-solutions/",
-                    "VARIABLE_ALIASES" => Array(),
                     "VARIABLE_ALIASES" => Array()
                 )
             ); ?>
@@ -53,8 +52,7 @@ $APPLICATION->SetTitle("Solutions");
                     "SEF_FOLDER" => "/en/integrated-solutions/",
                     "VARIABLE_ALIASES" => Array(),
                     "CNT" => "Y",
-                    "CNT_ACTIVE" => "Y",
-                    "VARIABLE_ALIASES" => Array()
+                    "CNT_ACTIVE" => "Y"
                 )
             ); ?>
         </div>
