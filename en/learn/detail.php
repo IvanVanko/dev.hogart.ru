@@ -54,7 +54,7 @@ if ($results) {?>
             "DISPLAY_PICTURE" => "Y",
             "DISPLAY_PREVIEW_TEXT" => "Y",
             "IBLOCK_TYPE" => "training",
-            "IBLOCK_ID" => "8",
+            "IBLOCK_ID" => "39",
             //result_modifier.php
             'ORDER' => array('PROPERTY_sem_start_date' => 'DESC'),
             "SEF_FOLDER" => $arParams['SEF_FOLDER'],
