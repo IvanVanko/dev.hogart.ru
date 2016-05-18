@@ -1,7 +1,7 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
-$APPLICATION->SetPageProperty("title", "Запись на семинары с открытой датой");
-$APPLICATION->SetTitle("Запись на семинары с открытой датой");
+$APPLICATION->SetPageProperty("title", "Seminars with an open date");
+$APPLICATION->SetTitle("Seminars with an open date");
 
 $arFilter['PROPERTY_sem_start_date'] = false;
 
