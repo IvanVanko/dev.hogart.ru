@@ -51,8 +51,9 @@
 <aside class="sidebar js-fh js-fixed-block js-paralax-height" data-fixed="top">
     <div class="inner js-paralax-item">
         <div class="padding">
-            <a href="/learn/" class="side-back">Календарь семинаров <i class="icon-white-back"></i></a>
-            </div>
+            <a href="<?= SITE_DIR ?>learn/" class="side-back"><?= GetMessage("Календарь семинаров") ?> <i class="icon-white-back"></i></a>
+        </div>
+        <? if (LANGUAGE_ID != "en" && (!empty($arResult['FILTER']['BRANDS']) || !empty($arResult["FILTER"]["DIRECTIONS"]))): ?>
         <div class="company-side-cnt padding null-padding-top">
             <form action="#" class="archive_filter">
                 <?if (!empty($arResult["FILTER"]["DIRECTIONS"])):?>
@@ -108,5 +109,6 @@
                 <br/><br/>
             </form>
         </div>
+        <? endif; ?>
     </div>
 </aside>

@@ -47,7 +47,7 @@ $page = $APPLICATION->GetCurDir(true);
         <div class="padding">
             <a href="<?= SITE_DIR ?>learn/" class="side-back"><?= GetMessage("Календарь Семинаров") ?> <i class="icon-white-back"></i></a>
         </div>
-        <? if (!empty($arResult['FILTER']['BRANDS']) || !empty($arResult["FILTER"]["DIRECTIONS"])): ?>
+        <? if (LANGUAGE_ID != "en" && (!empty($arResult['FILTER']['BRANDS']) || !empty($arResult["FILTER"]["DIRECTIONS"]))): ?>
         <div class="company-side-cnt padding null-padding-top">
 
             <form action="#">
