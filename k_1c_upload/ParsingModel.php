@@ -672,33 +672,21 @@ class ParsingModel {
             }
 
             if(count($array_product_doc) and $_GET['V'] != 'Y' and $_GET['P'] != 'Y') {
-                $item = $this->findEl(array('IBLOCK_ID' => self::DOCUMENTATION_IBLOCK_ID, "=XML_ID" => $elementXmlID));
-                if(!empty($item['ID'])) {
-                    $arFile = array();
-                    $arFile[] = array('VALUE' => $item['ID']);
-                    foreach($array_product_doc as $product) {
-                        if($this->setPropertyValue($product['id_b'], "docs", $arFile)) {
-                            echo "Фото добавлено: ".$name."<br />";
-                        }
-                        else {
-                            $this->csv->saveLog(array(
-                                'Документация не связалась с продуктом',
-                                $fileXmlID,
-                                $el->LAST_ERROR." ".__LINE__." ".__FUNCTION__
-                            ));
-                            echo 'Документация не связалась с продуктом: ['.$fileXmlID.'] '.$el->LAST_ERROR." ".__LINE__." ".__FUNCTION__.'<br>';
-                        }
+                foreach($array_product_doc as $product) {
+                    if ((new CIBlockSection())->Update($product['id_b'], [
+                        "PICTURE" => $file_obj
+                    ])) {
+                        echo "Фото добавлено в раздел {$product['id_b']}: " . $name . "<br />";
+                    } else {
+                        $this->csv->saveLog(array(
+                            'Фото не добавлено в раздел',
+                            $product['id'],
+                            $el->LAST_ERROR." ".__LINE__." ".__FUNCTION__
+                        ));
+                        echo 'Фото не добавлено в раздел: ['.$product['id'].'] '.$el->LAST_ERROR." ".__LINE__." ".__FUNCTION__.'<br>';
                     }
                 }
-                else {
-                    $this->csv->saveLog(array('Документация для связки не найдена',
-                                              $fileXmlID,
-                                              $el->LAST_ERROR." ".__LINE__." ".__FUNCTION__));
-                    echo 'Документация для связки не найдена: ['.$fileXmlID.'] '.$el->LAST_ERROR." ".__LINE__." ".__FUNCTION__.'<br>';
-                }
-
             }
-
         }
 
         if($_GET['P'] == 'Y') {
