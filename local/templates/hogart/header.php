@@ -145,7 +145,7 @@ Loc::loadLanguageFile(__FILE__);
                                 $APPLICATION->IncludeComponent("kontora:element.list", "main_news", array(
                                     'IBLOCK_ID' => (LANGUAGE_ID == 'en' ? '28' : '3'),
                                     'FILTER' => array(
-                                        "PROPERTY_tag" => array(2, 4),
+                                        "PROPERTY_tag" => array(2, 4, '0e6085ec84e14cae3d60582f6107641b'),
                                         ">=DATE_ACTIVE_FROM" => date_format($date, 'd-m-Y')." 00:00:00"
                                     ),
                                     "CHECK_PERMISSIONS" => "Y",
