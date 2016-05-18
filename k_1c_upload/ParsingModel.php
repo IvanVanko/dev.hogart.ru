@@ -2013,7 +2013,12 @@ class ParsingModel {
             $measures = $temp_meas;
         }
 
-        $dbCatalogMeasureResult = CCatalogMeasure::GetList(array(), array('CODE' => array_keys($measure_units)));
+        $arFilter = [];
+        if (!empty($measure_units)) {
+            $arFilter = array('CODE' => array_keys($measure_units));
+        }
+
+        $dbCatalogMeasureResult = CCatalogMeasure::GetList(array(), $arFilter);
         while($next = $dbCatalogMeasureResult->GetNext()) {
             $arCatalogMeasures[$next['CODE']] = $next;
         }
@@ -2062,7 +2067,9 @@ class ParsingModel {
             $prop = array_map('json_decode', $prop);
             $propA = array();
 
-            //echo "<PRE>";
+            $arPropertyCollection = BXHelper::getProperties(array(), array('IBLOCK_ID' => self::CATALOG_IBLOCK_ID,
+                'CODE' => 'collection'), array(), 'CODE');
+            $arPropertyCollection = $arPropertyCollection['RESULT'];
 
             foreach($prop as $vp) {
                 $updated_property_values_xml_ids[] = $vp->propname_id;
@@ -2082,27 +2089,9 @@ class ParsingModel {
 
                 $prop_values = $temp;
 
-                //                $arPropertyIntervalEnums = array();
                 if(!empty($propIntervals)) {
                     $propIntervalsId = BXHelper::pull_array_field($propIntervals, 'id');
                     $obModel = &$this;
-
-                    //                $prop_intervals_min = array_map(
-                    //                    function ($code) use (&$obModel) {
-                    //                        $code = $this->code1C2codeBitrix($code)."_min";
-                    //                        return $code;
-                    //                    },
-                    //                    $propIntervalsId
-                    //                );
-                    //
-                    //                $prop_intervals_max = array_map(
-                    //                    function ($code) use (&$obModel) {
-                    //                        $code = $this->code1C2codeBitrix($code)."_max";
-                    //                        return $code;
-                    //                    },
-                    //                    $propIntervalsId
-                    //                );
-
                     $prop_intervals_id_bitrix = array_map(
                         function ($code) use (&$obModel) {
                             $code = $this->code1C2codeBitrix($code);
@@ -2110,28 +2099,10 @@ class ParsingModel {
                         },
                         $propIntervalsId
                     );
-
-                    //                    $arPropertyIntervalEnums = BXHelper::getPropertyEnum(
-                    //                        array(),
-                    //                        array('IBLOCK_ID' => 1,
-                    //                              'CODE' => $prop_intervals_id_bitrix
-                    //                        ), 'XML_ID', false);
-                    //
-                    //
-                    //                    $arPropertyIntervalEnums = BXHelper::group_array($arPropertyIntervalEnums, 'PROPERTY_CODE');
                 }
 
 
                 $updated_property_values_xml_ids = array_unique($updated_property_values_xml_ids);
-                /*foreach ($prop as $vp) {
-                    if (in_array($vp->propname_id, $propIntervalsId)) {
-                        $index = array_search($vp->propname_id, $updated_property_values_xml_ids);
-                        unset($updated_property_values_xml_ids[$index]);
-                        $updated_property_values_xml_ids[] = $vp->propname_id."_min";
-                        $updated_property_values_xml_ids[] = $vp->propname_id."_max";
-                    }
-                }*/
-
                 $updated_property_values_xml_ids = array_values($updated_property_values_xml_ids);
 
                 $arPropertyEnums = BXHelper::getPropertyEnum(
@@ -2152,10 +2123,6 @@ class ParsingModel {
                           )), array(), 'CODE', false
                 );
 
-                $arPropertyCollection = BXHelper::getProperties(array(), array('IBLOCK_ID' => self::CATALOG_IBLOCK_ID,
-                                                                               'CODE' => 'collection'), array(), 'CODE');
-                $arPropertyCollection = $arPropertyCollection['RESULT'];
-
                 $arProperties = $arProperties['RESULT'];
 
                 $arCurrentPropertyEnums = BXHelper::group_array($arPropertyEnums, 'PROPERTY_CODE');
@@ -2165,10 +2132,7 @@ class ParsingModel {
                     $property_enums = $arCurrentPropertyEnums[$this->code1C2codeBitrix($vp->propname_id)];
 
                     $value_enum = false;
-                    //$min_property_enums = $arPropertyIntervalEnums[$this->code1C2codeBitrix($vp->propname_id)."_min"];
-                    //$max_property_enums = $arPropertyIntervalEnums[$this->code1C2codeBitrix($vp->propname_id)."_max"];
-
-                    if(in_array($this->code1C2codeBitrix($vp->propname_id), $prop_intervals_id_bitrix)) {
+                    if(!empty($prop_intervals_id_bitrix) && in_array($this->code1C2codeBitrix($vp->propname_id), $prop_intervals_id_bitrix)) {
                         foreach($property_enums as $enum) {
                             if($enum['XML_ID'] == $this->code1C2codeBitrix($vp->prop_id)) {
                                 $min_max_array = explode(';', $enum["VALUE"]);
@@ -2181,16 +2145,12 @@ class ParsingModel {
                                     "VALUE" => $min_max_array[1]
                                 );
 
-                                //echo 'CODE IN BITRIX: ' . $value->id . '<br>';
-
-                                //$this->csv->saveLog(array('CODE IN BITRIX: ' . $value->id . '<br>'));
                                 break;
                             }
                         }
                     }
                     if($vp->propname_id == 'edb71222-f482-11e4-9045-003048b99ee9') {
                     }
-                    //                    $enum_found = false;
 
                     if(!empty($property_enums)) {
                         foreach($property_enums as $enum) {
@@ -2209,20 +2169,6 @@ class ParsingModel {
                                 );
                                 break;
                             }
-                            //                            if (!$enum_found && $prop_values[$vp->prop_id]) {
-                            //                                $value_enum = $prop_values[$this->code1C2codeBitrix($vp->prop_id)];
-                            //                                /*if ($arProperties[$this->code1C2codeBitrix($vp->propname_id)]['PROPERTY_TYPE'] == 'L') {
-                            //                                    $value_enum = $import_property_enums[$this->code1C2codeBitrix($vp->prop_id)]['ID'];
-                            //                                } else if ($arProperties[$this->code1C2codeBitrix($vp->propname_id)]['PROPERTY_TYPE'] == 'N') {
-                            //                                    $value_enum = $import_property_enums[$this->code1C2codeBitrix($vp->prop_id)]['VALUE'];
-                            //                                }*/
-                            ////                            $propA[$this->code1C2codeBitrix($vp->propname_id)] = array(
-                            ////                                "VALUE" => $import_property_enums[$this->code1C2codeBitrix($vp->prop_id)]['ID']
-                            ////                            );
-                            //                            }
-                            //                            $propA[$this->code1C2codeBitrix($vp->propname_id)] = array(
-                            //                                "VALUE" => $value_enum
-                            //                            );
                         }
                     }
                     else {
@@ -2230,92 +2176,14 @@ class ParsingModel {
                             $value_enum = $prop_values[$vp->prop_id]['name'];
                         }
                     }
-                    //                    foreach ($property_enums as $enum) {
-                    //                        $value_enum = null;
-                    //                        if ($enum['XML_ID'] ==  $this->code1C2codeBitrix($vp->prop_id)) {
-                    //                            if ($arProperties[$this->code1C2codeBitrix($vp->propname_id)]['PROPERTY_TYPE'] == 'L') {
-                    //                                $value_enum = $enum['ID'];
-                    //                            } else if ($arProperties[$this->code1C2codeBitrix($vp->propname_id)]['PROPERTY_TYPE'] == 'N') {
-                    //                                $value_enum = $enum['VALUE'];
-                    //                            }
-                    //                            $propA[$this->code1C2codeBitrix($vp->propname_id)] = array(
-                    //                                "VALUE" => $value_enum
-                    //                            );
-                    //                            $enum_found  = true;
-                    //                            break;
-                    //                        }
-                    //                        if (!$enum_found && $prop_values[$vp->prop_id]) {
-                    //                            $value_enum = $prop_values[$this->code1C2codeBitrix($vp->prop_id)];
-                    //                            /*if ($arProperties[$this->code1C2codeBitrix($vp->propname_id)]['PROPERTY_TYPE'] == 'L') {
-                    //                                $value_enum = $import_property_enums[$this->code1C2codeBitrix($vp->prop_id)]['ID'];
-                    //                            } else if ($arProperties[$this->code1C2codeBitrix($vp->propname_id)]['PROPERTY_TYPE'] == 'N') {
-                    //                                $value_enum = $import_property_enums[$this->code1C2codeBitrix($vp->prop_id)]['VALUE'];
-                    //                            }*/
-                    ////                            $propA[$this->code1C2codeBitrix($vp->propname_id)] = array(
-                    ////                                "VALUE" => $import_property_enums[$this->code1C2codeBitrix($vp->prop_id)]['ID']
-                    ////                            );
-                    //                        }
-                    //                        $propA[$this->code1C2codeBitrix($vp->propname_id)] = array(
-                    //                            "VALUE" => $value_enum
-                    //                        );
-                    //                    }
                     $propA[$this->code1C2codeBitrix($vp->propname_id)] = array(
                         "VALUE" => $value_enum
                     );
-
-
-                    //                $this->csv->dynamicSave('cache/01.07.2015', array($this->code1C2codeBitrix($vp->propname_id)));
-                    //
-                    //
-                    //                $properties = CIBlockProperty::GetList(Array(),
-                    //                    Array("CODE" => $this->code1C2codeBitrix($vp->propname_id) . '_min', "IBLOCK_ID" => 1));
-                    //                if ($f_min = $properties->GetNext()) {
-                    //                    $properties2 = CIBlockProperty::GetList(Array(),
-                    //                        Array("CODE" => $this->code1C2codeBitrix($vp->propname_id) . '_max', "IBLOCK_ID" => 1));
-                    //                    $f_max = $properties2->GetNext();
-                    //                    $this->csv->dynamicSave('cache/01.07.2015', array($this->code1C2codeBitrix($vp->propname_id)));
-                    //
-                    //                    $property_enums = CIBlockPropertyEnum::GetList(array("DEF" => "DESC", "SORT" => "ASC"), array(
-                    //                        "IBLOCK_ID" => 1,
-                    //                        "CODE"      => $this->code1C2codeBitrix($vp->propname_id)
-                    //                    ));
-                    //
-                    //                    while ($enum_fields = $property_enums->GetNext()) {
-                    //                        if ($enum_fields["XML_ID"] == $this->code1C2codeBitrix($vp->prop_id)) {
-                    //                            $min_max_array = explode(';', $enum_fields["VALUE"]);
-                    //                            $propA[$this->code1C2codeBitrix($vp->propname_id) . '_min'] = array(
-                    //                                "VALUE" => $min_max_array[0]
-                    //                            );
-                    //                            $propA[$this->code1C2codeBitrix($vp->propname_id) . '_max'] = array(
-                    //                                "VALUE" => $min_max_array[1]
-                    //                            );
-                    //                            echo 'CODE IN BITRIX: ' . $value->id . '<br>';
-                    //                            $this->csv->saveLog(array('CODE IN BITRIX: ' . $value->id . '<br>'));
-                    //                            break;
-                    //                        }
-                    //                    }
-                    //
-                    //                } else {
-                    //                    $property_enums = CIBlockPropertyEnum::GetList(array("DEF" => "DESC", "SORT" => "ASC"), array(
-                    //                        "IBLOCK_ID" => 1,
-                    //                        "CODE"      => $this->code1C2codeBitrix($vp->propname_id)
-                    //                    ));
-                    //
-                    //                    while ($enum_fields = $property_enums->GetNext()) {
-                    //                        if ($enum_fields["XML_ID"] == $this->code1C2codeBitrix($vp->prop_id)) {
-                    //                            $propA[$this->code1C2codeBitrix($vp->propname_id)] = array(
-                    //                                "VALUE" => $enum_fields["ID"]
-                    //                            );
-                    //
-                    //                            break;
-                    //                        }
-                    //                    }
-                    //                }
                 }
             }
 
             $propA['sku'] = $value->article;
-            $propA[$arPropertyCollection['collection']['ID']] = $id_col;
+            $propA['collection'] = $id_col;
             $propA['brand'] = $id_brand;
             $propA['is_new'] = $value->novelty ? 19 : '';
             $arLoadProductArray = Array(
@@ -2328,47 +2196,47 @@ class ParsingModel {
                 "DETAIL_TEXT" => $value->description,
             );
 
-            $measure_id = $arCatalogMeasures[intval($measures[$value->unit_messure_id]['unit_messure_catalog_id'])]['ID'];
-
-
             //проверяем наличие такого элемента
             $rsItems = CIBlockElement::GetList(array(), array(
                 'IBLOCK_ID' => $BLOCK_ID,
                 "=XML_ID" => $value->id,
             ), false, false, array('ID'));
 
+
+            $measure_id = !empty($measures) && !empty($arCatalogMeasures) ? $arCatalogMeasures[intval($measures[$value->unit_messure_id]['unit_messure_catalog_id'])]['ID'] : null;
+
             //Если элемент уже существует, обновляем его или удаляем, при условии что флаг установлен
             if($arItem = $rsItems->GetNext()) {
+
+                $__props[$arItem['ID']] = [];
+
+                CIBlockElement::GetPropertyValuesArray($__props, $BLOCK_ID, ["ID" => $arItem['ID']]);
+                $propA = [];
+                foreach ($__props[$arItem['ID']] as $prop) {
+                    $propA[$prop['CODE']] = ['VALUE' => $prop['VALUE']];
+                }
+                $arLoadProductArray['PROPERTY_VALUES'] = array_merge($propA, $arLoadProductArray['PROPERTY_VALUES']);
+
                 //Удаляем из битрикса элемент
                 if($value->deletion_mark == true) {
                     //Проверяем права на удаление
-                    /* if (CIBlock::GetPermission($BLOCK_ID) >= 'W') {*/
                     //деактивируем и выводим сообщение о выполнении, иначе показываем ошибку
                     $arItem['ACTIVE'] = 'N';
                     if($res = $el->Update($arItem['ID'], $arItem)) {
                         //echo 'Запись деактивирована - ' . $arItem['ID'];
                     }
-                    else {
-                        /*echo '<p class="error">При деактивации элемента произошла ошибка [' . $arItem['ID'] . ']<br>
-                                ' . $el->LAST_ERROR." ".__LINE__." ".__FUNCTION__ . '</p>';*/
-                    }
-                    /*  }*/
                 }
                 else {
                     //Если удалять не нужно, то обновляем и выводим сообщение
                     $arLoadProductArray["CODE"] = CUtil::translit($value->name.'_'.$arItem['ID'], 'ru',
                         array('change_case' => 'L', 'replace_space' => '-', 'replace_other' => ''));
                     if($res = $el->Update($arItem['ID'], $arLoadProductArray, false, true, true)) {
-                        $arFields = array(
-                            "MEASURE" => $measure_id
-                        );
-                        if(CCatalogProduct::Update($arItem['ID'], $arFields)) {
-                            //echo "Обновили параметры товара к элементу каталога " . $arItem['ID'] . '<br>';
+                        if (!empty($measure_id)) {
+                            $arFields = array(
+                                "MEASURE" => $measure_id
+                            );
+                            CCatalogProduct::Update($arItem['ID'], $arFields);
                         }
-                        //echo "Запись обновлена: " . $value->name . "<br />";
-                    }
-                    else {
-                        //echo 'Error: ' . $el->LAST_ERROR." ".__LINE__." ".__FUNCTION__;
                     }
                 }
             }
@@ -2376,8 +2244,6 @@ class ParsingModel {
                 $arLoadProductArray["CODE"] = CUtil::translit($value->name.'_'.$arItem['ID'], 'ru',
                     array('change_case' => 'L', 'replace_space' => '-', 'replace_other' => ''));
                 if($BRAND_ID = $el->Add($arLoadProductArray, false, true, true)) {
-                    //echo "Добавлена: " . $value->name . "<br />";
-
                     $arFields = array(
                         "ID" => $BRAND_ID,
                         "VAT_ID" => 1,
@@ -2388,16 +2254,10 @@ class ParsingModel {
                         //echo "Добавили параметры товара к элементу каталога " . $arItem['ID'] . '<br>';
                     }
                 }
-                else {
-                    //echo 'Error: ' . $el->LAST_ERROR." ".__LINE__." ".__FUNCTION__ . "<br>";
-                }
             }
             $answer['StringItems'][] = $value->id;
         }
 
-        //$this->refactorPropertiesByValues($updated_property_values_xml_ids);
-
-        //echo "</div>";
         $isGo = false;
 
         if(count($answer['StringItems']) > 0) {
