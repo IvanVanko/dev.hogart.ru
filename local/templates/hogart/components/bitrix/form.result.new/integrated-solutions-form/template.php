@@ -73,9 +73,9 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
                     </div>
                 <? endif; ?>
             <? endforeach; ?>
-            <input type="submit" name="web_form_submit" class="empty-btn" value="Отправить"/>
+            <input type="submit" name="web_form_submit" class="empty-btn" value="<?= GetMessage("Отправить") ?>"/>
             <br/>
-            <small>Поля, отмеченные * обязательны для заполнения.</small>
+            <small><?= GetMessage("Поля, отмеченные * обязательны для заполнения.") ?></small>
         </div>
         <?=$arResult["FORM_FOOTER"]?>
     </div>
