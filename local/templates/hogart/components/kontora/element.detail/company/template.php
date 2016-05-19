@@ -103,7 +103,7 @@
                 Array(
                     "COMPONENT_TEMPLATE" => ".default",
                     "IBLOCK_TYPE" => "advantages",
-                    "IBLOCK_ID" => 19,
+                    "IBLOCK_ID" => (LANGUAGE_ID == 'en' ? 31 : 19),
                     "NEWS_COUNT" => "3",
                     "SORT_BY1" => "SORT",
                     "SORT_ORDER1" => "ASC",
