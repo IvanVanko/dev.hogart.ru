@@ -31,7 +31,7 @@
                             $now = date($DB->DateFormatToPHP(CSite::GetDateFormat("SHORT")), time());
                             if($arItem['ACTIVE'] == Y && strtotime($now) > strtotime($dateFinish)):
                                 ?>
-                                <strong>(Акция завершена)</strong>
+                                <strong>(<?= GetMessage("Акция завершена") ?>)</strong>
                             <? endif; ?>
                         </div>
                         <?
@@ -39,7 +39,7 @@
                         if(!$USER->IsAuthorized() && $arItem['PROPERTIES']['REGISTERED_ONLY']['VALUE'] == 'Y') {
                             ?>
                             <a class="profile-url js-popup-open" href="javascript:" data-popup="#popup-login">
-                                Авторизуйтесь, чтобы увидеть акцию
+                                <?= GetMessage("Авторизуйтесь, чтобы увидеть акцию") ?>
                             </a>
                             <?
                         }
