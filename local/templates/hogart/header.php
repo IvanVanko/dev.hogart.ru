@@ -215,9 +215,7 @@ Loc::loadLanguageFile(__FILE__);
             </p>
             <a href="#" class="p_logo"></a>
             <ul class="main-foot-menu">
-                <!--                <li><a href="/helpful-information/">Статьи</a></li>-->
-                <!--                <li><a href="/selection-equipment/">Подбор оборудования</a></li>-->
-                <li><a href="/contacts/tsentralnyy-ofis-khogart-v-moskve-sklad-i-servisnaya-sluzhba/">Склады и офисы</a>
+                <li><a href="<?= SITE_DIR ?>contacts/tsentralnyy-ofis-khogart-v-moskve-sklad-i-servisnaya-sluzhba/"><?= GetMessage("Склады и офисы") ?></a>
                 </li>
             </ul>
         </div>

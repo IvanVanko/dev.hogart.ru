@@ -2,7 +2,7 @@
 $this->setFrameMode(true);?>
 <?if (!empty($arResult['GROUPS'])):?>
 	<section class="side-news-cnt">
-	    <h1><a href="/company/news/"><?= GetMessage("Новости") ?></a></h1>
+	    <h1><a href="<?= SITE_DIR ?>company/news/"><?= GetMessage("Новости") ?></a></h1>
 	    <ul class="side-news-list">
             <?foreach ($arResult['GROUPS'] as $arItems) {?>
                 <li>
