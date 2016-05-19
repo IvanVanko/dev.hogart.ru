@@ -174,7 +174,7 @@ Loc::loadLanguageFile(__FILE__);
                     <? if($APPLICATION->GetCurDir() == SITE_DIR) {
                         $APPLICATION->IncludeComponent("kontora:element.list", "main_calendar", array(
                             'IBLOCK_ID' => (LANGUAGE_ID == 'en' ? '28' : '3'),
-                            'FILTER' => array('PROPERTY_tag.XML_ID' => array('160c3efcdbbba1bc7128cb336546694e', '0e6085ec84e14cae3d60582f6107641b')),
+                            'FILTER' => array('PROPERTY_tag' => array('160c3efcdbbba1bc7128cb336546694e', '0e6085ec84e14cae3d60582f6107641b')),
                         ));
                     } ?>
                 </div>
