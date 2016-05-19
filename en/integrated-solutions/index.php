@@ -62,9 +62,9 @@ $APPLICATION->SetTitle("Solutions");
 
         <div class="carusel">
             <div class="inner">
-                <h2><a href="/integrated-solutions/all_projects.php">References</a></h2>
+                <h2><a href="<?= SITE_DIR ?>integrated-solutions/all_projects.php">References</a></h2>
                 <? $section_ids = BXHelper::getSections(array('ID' => 'ASC'), array('ACTIVE' => 'Y',
-                                                                                    'IBLOCK_ID' => PROJECT_TYPE_IBLOCK_ID), false, array('ID'), true, 'ID'); ?>
+                                                                                    'IBLOCK_ID' => 35), false, array('ID'), true, 'ID'); ?>
                 <? $section_ids = array_keys($section_ids['RESULT']);?>
                 <? $APPLICATION->IncludeComponent(
                     "kontora:element.list",
@@ -74,6 +74,7 @@ $APPLICATION->SetTitle("Solutions");
                         "PROPS" => "Y",
                         "FILTER" => array("PROPERTY_SOLUTION_ID" => $section_ids),
                         "SEF_MODE" => "Y",
+                        "SEF_FOLDER" => "/en/integrated-solutions/",
                         "VARIABLE_ALIASES" => Array(),
                     )
                 ); ?>
