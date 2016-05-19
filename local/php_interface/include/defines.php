@@ -18,7 +18,7 @@ if ($GLOBALS['APPLICATION']->GetCurPage() == "/search/") {
 }
 
 define("CATALOG_IBLOCK_ID", 1);
-define("BRAND_IBLOCK_ID", 2);
+define("BRAND_IBLOCK_ID", (LANGUAGE_ID == 'en' ? 32 : 2));
 define("CATALOG_BRAND_PROPERTY_CODE", "brand");
 define("SEMINAR_IBLOCK_ID", 8);
 define("EQUIPMENT_SELECTION_IBLOCK_ID", 12);
