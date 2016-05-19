@@ -8,7 +8,7 @@ $APPLICATION->SetTitle("News");
 	"bitrix:news",
 	"news",
 	array(
-		"IBLOCK_ID" => NEWS_IBLOCK_ID,
+		"IBLOCK_ID" => 28,
 		"SEF_MODE" => "Y",
 		"SEF_FOLDER" => "/en/company/news/",
 		"IBLOCK_TYPE" => "news",
