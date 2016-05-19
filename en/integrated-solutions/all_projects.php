@@ -3,7 +3,7 @@ $APPLICATION->SetTitle("All projects");
 ?>
     <div class="inner no-full">
         <h1><? $APPLICATION->ShowTitle(false) ?></h1>
-        <? $section_ids = BXHelper::getSections(array('ID' => 'ASC'), array('IBLOCK_ID' => '7'), false, array('ID'), true, 'ID'); ?>
+        <? $section_ids = BXHelper::getSections(array('ID' => 'ASC'), array('IBLOCK_ID' => (LANGUAGE_ID == 'en' ? '35' : '7')), false, array('ID'), true, 'ID'); ?>
         <? $section_ids = array_keys($section_ids['RESULT']); ?>
         <? $choosen_section = !empty($_REQUEST['section']) && in_array($_REQUEST['section'], $section_ids) ? $_REQUEST['section'] : $section_ids ?>
         <? $APPLICATION->IncludeComponent("kontora:element.list", "all-projects", array(
