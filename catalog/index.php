@@ -149,14 +149,6 @@ else {
                                         "section" => Array(),
                                         "element" => Array(),
                                         "compare" => Array("ACTION_CODE" => "action"),),
-            "VARIABLE_ALIASES" => Array(
-                "sections" => Array(),
-                "section" => Array(),
-                "element" => Array(),
-                "compare" => Array(
-                    "ACTION_CODE" => "action"
-                ),
-            )
         )
     ); ?>
 <? }
