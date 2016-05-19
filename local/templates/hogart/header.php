@@ -162,12 +162,6 @@ Loc::loadLanguageFile(__FILE__);
                                     'ELEMENT_COUNT' => 100,
                                 ));
                             } ?>
-                            <?$APPLICATION->IncludeComponent("bitrix:main.include","",Array(
-                                "AREA_FILE_SHOW" => "sect",
-                                "AREA_FILE_SUFFIX" => "inc_main_sidebar",
-                                "AREA_FILE_RECURSIVE" => "Y",
-                                "EDIT_TEMPLATE" => "standard.php"
-                            ));?>
                         </div>
                         <div class="scroll-to-top">Наверх</div>
                     </div>
