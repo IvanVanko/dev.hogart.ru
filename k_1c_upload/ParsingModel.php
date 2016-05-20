@@ -462,11 +462,10 @@ class ParsingModel {
                 $elementXmlID = $line->obj_id;
                 $type = $line->obj_type;
 
-                $iblock_id = false;
                 if($type == 'brands') {
                     $iblock_id = self::BRAND_IBLOCK_ID;
                 }
-                elseif($type == 'сategorys') {
+                elseif($type == 'categorys') {
                     $iblock_id = self::CATALOG_IBLOCK_ID;
                 }
                 elseif($type == 'nomenclature') {
@@ -483,20 +482,27 @@ class ParsingModel {
                 $elementsPhotos = [];
                 $elementID = false;
 
-                $bQ = CIBlockElement::GetList(array(), array(
-                    'IBLOCK_ID' => $iblock_id,
-                    "=XML_ID" => $elementXmlID,
-                ), false, false, array('ID'));
+                if ($type == 'categorys') {
+                    $elementID = CIBlockSection::GetList(array(), array(
+                        'IBLOCK_ID' => $iblock_id,
+                        "=XML_ID" => $elementXmlID,
+                    ), false, array('ID'))->GetNext()['ID'];
+                } else {
+                    $bQ = CIBlockElement::GetList(array(), array(
+                        'IBLOCK_ID' => $iblock_id,
+                        "=XML_ID" => $elementXmlID,
+                    ), false, false, array('ID'));
 
-                if($arItem = $bQ->GetNext()) {
-                    $elementID = $arItem['ID'];
-                    $photosRes = CIBlockElement::GetProperty($iblock_id, $elementID, [], ['CODE' => 'photos']);
-                    while($obPhotosRes = $photosRes->GetNext()){
-                        $elementsPhotos[$elementID] = $obPhotosRes['VALUE'];
+                    if($arItem = $bQ->GetNext()) {
+                        $elementID = $arItem['ID'];
+                        $photosRes = CIBlockElement::GetProperty($iblock_id, $elementID, [], ['CODE' => 'photos']);
+                        while($obPhotosRes = $photosRes->GetNext()){
+                            $elementsPhotos[$elementID] = $obPhotosRes['VALUE'];
+                        }
                     }
-                }
 
-                $elementsPhotos = array_filter($elementsPhotos);
+                    $elementsPhotos = array_filter($elementsPhotos);
+                }
 
                 if($type == 'brands') {
                     if(!$elementID) {
@@ -515,12 +521,6 @@ class ParsingModel {
                     }
                 }
                 if($type == 'categorys') {
-
-                    $elementID = CIBlockSection::GetList(array(), array(
-                        'IBLOCK_ID' => $iblock_id,
-                        "=XML_ID" => $elementXmlID,
-                    ), false, false, array('ID'))->GetNext()['ID'];
-
                     if(!$elementID) {
                         echo 'Не найден товар для связки с документацией '.$fileXmlID."<br>";
                         if($_GET['P'] == 'Y') {
