@@ -482,6 +482,7 @@ class ParsingModel {
 
                 $elementsPhotos = [];
                 $elementID = false;
+
                 $bQ = CIBlockElement::GetList(array(), array(
                     'IBLOCK_ID' => $iblock_id,
                     "=XML_ID" => $elementXmlID,
@@ -513,7 +514,12 @@ class ParsingModel {
                         $array_brands[] = array('id' => $elementXmlID, 'id_b' => $elementID, 'type' => $line->view_type);
                     }
                 }
-                if($type == 'сategorys') {
+                if($type == 'categorys') {
+
+                    $elementID = CIBlockSection::GetList(array(), array(
+                        'IBLOCK_ID' => $iblock_id,
+                        "=XML_ID" => $elementXmlID,
+                    ), false, false, array('ID'))->GetNext()['ID'];
 
                     if(!$elementID) {
                         echo 'Не найден товар для связки с документацией '.$fileXmlID."<br>";
