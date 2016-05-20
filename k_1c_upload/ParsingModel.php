@@ -683,7 +683,10 @@ class ParsingModel {
                         "PICTURE" => $file_obj
                     ])) {
                         echo "Фото добавлено в раздел {$product['id_b']}: " . $name . "<br />";
-                        $answer['StringTehDoc'][] = $fileXmlID;
+                        if($this->answer) {
+                            unlink(trim($_SERVER['DOCUMENT_ROOT'].'/1c-upload/'.$file->adress));
+                            $answer['StringTehDoc'][] = $fileXmlID;
+                        }
                     } else {
                         $this->csv->saveLog(array(
                             'Фото не добавлено в раздел',
