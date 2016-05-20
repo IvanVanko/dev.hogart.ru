@@ -513,7 +513,7 @@ class ParsingModel {
                         $array_brands[] = array('id' => $elementXmlID, 'id_b' => $elementID, 'type' => $line->view_type);
                     }
                 }
-                if($type == 'categorys') {
+                if($type == 'сategorys') {
 
                     if(!$elementID) {
                         echo 'Не найден товар для связки с документацией '.$fileXmlID."<br>";
