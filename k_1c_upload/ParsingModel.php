@@ -466,7 +466,7 @@ class ParsingModel {
                 if($type == 'brands') {
                     $iblock_id = self::BRAND_IBLOCK_ID;
                 }
-                elseif($type == 'categorys') {
+                elseif($type == 'сategorys') {
                     $iblock_id = self::CATALOG_IBLOCK_ID;
                 }
                 elseif($type == 'nomenclature') {
