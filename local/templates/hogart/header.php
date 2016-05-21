@@ -69,7 +69,7 @@ Loc::loadLanguageFile(__FILE__);
     <header class="header-cnt js-fixed-block" data-fixed="top">
         <div class="inner">
             <? $switcher = $APPLICATION->GetLangSwitcherArray(); ?>
-            <? if (!empty($switcher): ?>
+            <? if (!empty($switcher)): ?>
             <div style="border-right: 1px solid #d0d0d0;text-align: center;height: 55px;display: block;float: left;width: 5%;font-size: 14px;text-transform: uppercase;background-color: #95c600;">
                 <? foreach ($switcher as $lang): ?>
                     <? if ($lang["LANGUAGE_ID"] == LANGUAGE_ID): ?>
