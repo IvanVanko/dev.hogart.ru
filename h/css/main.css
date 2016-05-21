@@ -1191,18 +1191,14 @@ textarea {
 .container > .container-inner > .inner.no-padding {
   padding: 0;
 }
-.container > .container-inner .inner.no-full {
-  margin-right: 330px;
-  padding: 0px 50px 0px 50px;
-}
-.container .breadcrumbs.no-full {
+.container > .container-inner > .inner.no-full {
   margin-right: 330px;
 }
-.container .container-inner .inner h1 {
+.container > .container-inner > .inner h1 {
   margin-bottom: 40px;
 }
-.container-inner .inner h1,
-.container-inner .inner h1 * {
+.container > .container-inner > .inner h1,
+.container > .container-inner > .inner h1 * {
   color: #000;
   font-family: 'Roboto Condensed', sans-serif;
   font-size: 20px;
