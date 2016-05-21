@@ -11,7 +11,7 @@ namespace Sprint\Migration;
 
 use Sprint\Migration\Helpers\IblockHelper;
 
-class Version201605200001 extends Version
+class Version201605210002 extends Version
 {
     protected $description = "Расширение свойств инфоблока для хранение доп. параметров";
 
