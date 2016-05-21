@@ -68,8 +68,9 @@ Loc::loadLanguageFile(__FILE__);
 <div class="wrapper">
     <header class="header-cnt js-fixed-block" data-fixed="top">
         <div class="inner">
+            <? $switcher = $APPLICATION->GetLangSwitcherArray(); ?>
+            <? if (!empty($switcher): ?>
             <div style="border-right: 1px solid #d0d0d0;text-align: center;height: 55px;display: block;float: left;width: 5%;font-size: 14px;text-transform: uppercase;background-color: #95c600;">
-                <? $switcher = $APPLICATION->GetLangSwitcherArray(); ?>
                 <? foreach ($switcher as $lang): ?>
                     <? if ($lang["LANGUAGE_ID"] == LANGUAGE_ID): ?>
                         <? continue; ?>
@@ -77,6 +78,7 @@ Loc::loadLanguageFile(__FILE__);
                     <a class="switcher-<?= $lang["LANGUAGE_ID"] ?>" style="display: inline-block;line-height: 55px;color: white;text-decoration: none;" href="<?= $lang["DIR"] ?>"><?= $lang["LANGUAGE_ID"] ?></a>
                 <? endforeach; ?>
             </div>
+            <? endif; ?>
             <? $APPLICATION->IncludeComponent("bitrix:search.form", "header", Array(
                     "USE_SUGGEST" => "N",
                     "PAGE" => "#SITE_DIR#search/index.php"
