@@ -93,7 +93,7 @@ $now = date($DB->DateFormatToPHP(CSite::GetDateFormat("SHORT")), time()); ?>
                         });
                     });
                 </script>
-            <? $form_id = "SEMINAR_REG_EN";
+            <? $form_id = "SEMINAR_REG_" . strtoupper(LANGUAGE_ID);
             if (BXHelper::can_show_form($form_id)) {
                 BXHelper::start_ajax_block();
                 $APPLICATION->IncludeFile(
@@ -112,9 +112,9 @@ $now = date($DB->DateFormatToPHP(CSite::GetDateFormat("SHORT")), time()); ?>
                 );
                 BXHelper::end_ajax_block(false, false, false, false);
             } ?>
-                <a class="append-form trigger-border-bottom" href="#" data-clone-form>Add a member</a>
+                <a class="append-form trigger-border-bottom" href="#" data-clone-form>Добавить участника</a>
                 <button type="submit" class="empty-btn"
-                        data-submit-form="<?= CStorage::getVar("seminar_form_name"); ?>">Send
+                        data-submit-form="<?= CStorage::getVar("seminar_form_name"); ?>">Отправить
                 </button>
             <? else: ?>
                 <script type="text/javascript">
@@ -164,7 +164,7 @@ $now = date($DB->DateFormatToPHP(CSite::GetDateFormat("SHORT")), time()); ?>
                         });
                     });
                 </script>
-            <? $form_id = "SEMINAR_REG_EN";
+            <? $form_id = "SEMINAR_REG_" . strtoupper(LANGUAGE_ID);
             if (BXHelper::can_show_form($form_id)) {
                 BXHelper::start_ajax_block();
                 $APPLICATION->IncludeFile(
@@ -183,9 +183,9 @@ $now = date($DB->DateFormatToPHP(CSite::GetDateFormat("SHORT")), time()); ?>
                 );
                 BXHelper::end_ajax_block(false, false, false, false);
             } ?>
-                <a class="append-form trigger-border-bottom" href="#" data-clone-form>Add a member</a>
+                <a class="append-form trigger-border-bottom" href="#" data-clone-form>Добавить участника</a><br>
                 <button type="submit" class="empty-btn"
-                        data-submit-form="<?= CStorage::getVar("seminar_form_name"); ?>">Send
+                        data-submit-form="<?= CStorage::getVar("seminar_form_name"); ?>">Отправить
                 </button>
             <? endif; ?>
         </div>
