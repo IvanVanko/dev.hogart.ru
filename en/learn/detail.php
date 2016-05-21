@@ -1,6 +1,6 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
-$APPLICATION->SetTitle("Обучение");
+$APPLICATION->SetTitle("Learn");
 ?>
 <?
 $APPLICATION->SetPageProperty("body_class","reg_page");
