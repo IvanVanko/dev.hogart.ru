@@ -3209,14 +3209,17 @@ blockquote:before {
   border-top: 23px solid #fff;
   border-left: 23px solid transparent;
 }
+.action-page .sidebar .company-side-cnt,
 .company-page .sidebar .company-side-cnt {
   padding-top: 110px;
 }
+.action-page .sidebar .company-side-cnt .direction-list,
 .company-page .sidebar .company-side-cnt .direction-list {
   list-style: none;
   padding: 0;
   margin: 42px 0 0 0;
 }
+.action-page .sidebar .company-side-cnt .direction-list li,
 .company-page .sidebar .company-side-cnt .direction-list li {
   font-family: 'Roboto Condensed', sans-serif;
   font-size: 12px;
@@ -3226,13 +3229,16 @@ blockquote:before {
   margin-bottom: 60px;
   padding: 0 60px 0 0;
 }
+.action-page .sidebar .company-side-cnt .direction-list li a:hover,
 .company-page .sidebar .company-side-cnt .direction-list li a:hover {
   text-decoration: none;
   color: #95c600;
 }
+.action-page .sidebar .company-side-cnt .direction-list li i,
 .company-page .sidebar .company-side-cnt .direction-list li i {
   margin-bottom: 20px;
 }
+.action-page .sidebar .company-side-cnt .direction-list li i.icon-full,
 .company-page .sidebar .company-side-cnt .direction-list li i.icon-full {
   display: block;
   padding-left: 0;
