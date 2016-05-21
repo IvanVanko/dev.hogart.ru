@@ -6,3 +6,5 @@
  * Time: 12:27
  */
 $MESS["Наши проекты"] = "Projects";
+$MESS["Все проекты"] = "All projects";
+$MESS["Реализованные проекты"] = "References";

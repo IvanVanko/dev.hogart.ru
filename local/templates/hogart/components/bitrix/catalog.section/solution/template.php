@@ -174,7 +174,7 @@
                     </div>
                 </div>
                 <?if (count($arResult['PROJECTS'])>0):?>
-                <a class="complex-link" href="<?= SITE_DIR ?>integrated-solutions/all_projects.php">Все проекты</a>
+                <a class="complex-link" href="<?= SITE_DIR ?>integrated-solutions/all_projects.php"><?= GetMessage("Все проекты") ?></a>
                 <?endif;?>
             </div>
             <?$APPLICATION->IncludeComponent("bitrix:main.include","",Array(

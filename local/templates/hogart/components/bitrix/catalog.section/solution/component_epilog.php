@@ -2,5 +2,5 @@
 
 global $APPLICATION;
 
-$APPLICATION->AddChainItem("Реализованные проекты", "/integrated-solutions/");
+$APPLICATION->AddChainItem(GetMessage("Реализованные проекты"), SITE_DIR . "integrated-solutions/");
 $APPLICATION->AddChainItem($arResult['NAME']);
