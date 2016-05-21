@@ -49,11 +49,11 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
     } ?>
     <input type="hidden" name="web_form_apply" value="Y"/>
 <? if($arParams['HIDE_SUBMIT'] != 'Y') { ?>
-        <input type="submit" class="empty-btn" value="Отправить">
+        <input type="submit" class="empty-btn" value="<?= GetMessage("Отправить") ?>">
     <?} ?>
     <br>
     <br>
-    <small>Поля, отмеченные * обязательны для заполнения.</small>
+    <small><?= GetMessage("Поля, отмеченные * обязательны для заполнения.")?></small>
     <?
     if($arResult["isUseCaptcha"] == "Y") {
         ?>

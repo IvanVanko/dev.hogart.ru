@@ -41,13 +41,13 @@
 
     <!-- ul class="contact-tab no-tab">
         <li>
-            <a class="icon-email black" href="#">Отправить на e-mail</a>
+            <a class="icon-email black" href="#"><?= GetMessage("Отправить на e-mail") ?></a>
         </li>
         <li>
-            <a class="icon-print black" href="#">Распечатать</a>
+            <a class="icon-print black" href="#"><?= GetMessage("Распечатать") ?></a>
         </li>
         <li>
-            <a class="icon-phone black" href="#">Отправить SMS</a>
+            <a class="icon-phone black" href="#"><?= GetMessage("Отправить SMS") ?></a>
         </li>
     </ul -->
     <?$APPLICATION->IncludeFile(
@@ -78,7 +78,7 @@
 <div class="inner no-padding js-tab-item" data-id="#oneTab">
     <?if (!empty($arResult['PROPERTIES']['by_car_scheme']['VALUE'])):?>
         <a href="#" class="video-way background-green">
-            Схема проезда на автомобиле
+            <?= GetMessage("Схема проезда на автомобиле") ?>
             <i class="icon-bottom icon-full"></i>
         </a>
         <div class="way-scheme" style="display: none;">

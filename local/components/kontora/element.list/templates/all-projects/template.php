@@ -6,7 +6,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();?>
                 <li>
                     <?$file = CFile::ResizeImageGet($arItem['PREVIEW_PICTURE']['ID'], array('width' => 175,
                         'height' => 115), BX_RESIZE_IMAGE_EXACT, true);?>
-                    <a href="/integrated-solutions/<?=$arItem['SECTION_CODE']?>/<?=$arItem['CODE']?>/">
+                    <a href="<?=$arItem['SECTION_CODE']?>/<?=$arItem['CODE']?>/">
                         <? if (!empty($arItem["PREVIEW_PICTURE"])): ?>
                             <img src="<?=$file['src'];?>" alt="<?=$arItem['NAME']?>"/>
                         <? endif; ?>

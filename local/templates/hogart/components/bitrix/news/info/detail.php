@@ -14,7 +14,7 @@ $this->setFrameMode(true);?>
 <div class="inner">
     <?if (!empty($arResult["VARIABLES"]["ELEMENT_CODE"])) {?>
         <?
-        $APPLICATION->IncludeComponent(
+        $ElementID = $APPLICATION->IncludeComponent(
             "bitrix:news.detail",
             "",
             Array(

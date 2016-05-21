@@ -7,7 +7,7 @@ $APPLICATION->SetTitle("Special offers");
 	"bitrix:news",
 	"stock",
 	array(
-		"IBLOCK_ID" => ACTIONS_IBLOCK_ID,
+		"IBLOCK_ID" => 34,
 		"SEF_MODE" => "Y",
 		"SEF_FOLDER" => "/en/stock/",
 		"ORDER" => array(

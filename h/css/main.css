@@ -752,7 +752,7 @@ textarea {
   height: 55px;
   border-right: 1px solid #d0d0d0;
   display: inline-block;
-  width: 30%;
+  width: 25%;
   min-width: 225px;
   position: relative;
 }
@@ -1191,15 +1191,14 @@ textarea {
 .container > .container-inner > .inner.no-padding {
   padding: 0;
 }
-.container > .container-inner .inner.no-full {
+.container > .container-inner > .inner.no-full {
   margin-right: 330px;
-  padding: 0px 50px 0px 50px;
 }
-.container .container-inner .inner h1 {
+.container > .container-inner > .inner h1 {
   margin-bottom: 40px;
 }
-.container-inner .inner h1,
-.container-inner .inner h1 * {
+.container > .container-inner > .inner h1,
+.container > .container-inner > .inner h1 * {
   color: #000;
   font-family: 'Roboto Condensed', sans-serif;
   font-size: 20px;
@@ -1883,7 +1882,7 @@ footer.right {
   margin-top: 15px;
 }
 .field * {
-  color: #fff;
+  color: black;
   font-family: 'Roboto', sans-serif;
   font-weight: 300;
   font-size: 12px;
@@ -2584,7 +2583,7 @@ blockquote:before {
   left: 0;
 }
 .text-center {
-  text-align: center;
+  text-align: center !important;
 }
 .row {
   overflow: hidden;
@@ -3206,14 +3205,17 @@ blockquote:before {
   border-top: 23px solid #fff;
   border-left: 23px solid transparent;
 }
+.action_page .sidebar .company-side-cnt,
 .company-page .sidebar .company-side-cnt {
   padding-top: 110px;
 }
+.action_page .sidebar .company-side-cnt .direction-list,
 .company-page .sidebar .company-side-cnt .direction-list {
   list-style: none;
   padding: 0;
   margin: 42px 0 0 0;
 }
+.action_page .sidebar .company-side-cnt .direction-list li,
 .company-page .sidebar .company-side-cnt .direction-list li {
   font-family: 'Roboto Condensed', sans-serif;
   font-size: 12px;
@@ -3223,13 +3225,16 @@ blockquote:before {
   margin-bottom: 60px;
   padding: 0 60px 0 0;
 }
+.action_page .sidebar .company-side-cnt .direction-list li a:hover,
 .company-page .sidebar .company-side-cnt .direction-list li a:hover {
   text-decoration: none;
   color: #95c600;
 }
+.action_page .sidebar .company-side-cnt .direction-list li i,
 .company-page .sidebar .company-side-cnt .direction-list li i {
   margin-bottom: 20px;
 }
+.action_page .sidebar .company-side-cnt .direction-list li i.icon-full,
 .company-page .sidebar .company-side-cnt .direction-list li i.icon-full {
   display: block;
   padding-left: 0;
@@ -4540,7 +4545,7 @@ blockquote:before {
   flex-wrap: wrap;
 }
 .catalog_page .perechen .perechen-produts.list > li {
-  border-bottom: 1px solid #b0b0b0;
+  border-bottom: 1px solid #95c600;
   padding-bottom: 15px;
   float: left;
   width: 100%;
@@ -4721,6 +4726,7 @@ blockquote:before {
   text-align: center;
   width: 100%;
 }
+
 .catalog_page .perechen .perechen-produts.list .prod-box {
   float: left;
   width: 70%;
@@ -8985,8 +8991,20 @@ hr {
   -o-transform: rotate(180deg);
   transform: rotate(180deg);
 }
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;           /* Non-prefixed version, currently
+                                  not supported by any browser */
+}
+.text-left {
+  text-align: left !important;
+}
 .text-right {
-  text-align: right;
+  text-align: right !important;
 }
 .text-right.for-comm-button {
   position: relative;

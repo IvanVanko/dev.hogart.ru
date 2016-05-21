@@ -60,5 +60,5 @@
 </div>
 <a href="/contacts/" class="btn arrow_btn">ПОКАЗАТЬ все адреса</a>
 
-<a href="#" class="btn link-btn arrow-icon">Отправить на e-mail</a>
+<a href="#" class="btn link-btn arrow-icon"><?= GetMessage("Отправить на e-mail") ?></a>
 <a href="#" class="btn link-btn arrow-icon">Отправить по SMS</a>

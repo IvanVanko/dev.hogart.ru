@@ -171,6 +171,10 @@ class HogartHelpers {
         return preg_replace("/(^[\d \.,]+)(.+)/","$1 <span>$2</span>", $display_price);
     }
 
+    public static function woPrice ($display_price) {
+        return preg_replace("/(^[\d \.,]+)(.+)/","$1", $display_price);
+    }
+
 
     public static function generateSeminarNumber () {
         $valid_number = false;

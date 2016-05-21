@@ -237,7 +237,10 @@ $this->setFrameMode(true);
                 <div>
                     <? foreach($arShownProperties as $propertyName => $arProperty): ?>
                         <dl>
-                            <dt><?=$arProperty["NAME"]?> <?=($USER->IsAdmin()) ? $arProperty['CUSTOM_SECTION_SORT']." ".$arProperty['DISPLAY_EXPANDED'] : ""?></dt>
+                            <dt>
+                                <!-- <?=($USER->IsAdmin()) ? $arProperty['CUSTOM_SECTION_SORT']." ".$arProperty['DISPLAY_EXPANDED'] : ""?> -->
+                                <?=$arProperty["NAME"]?>
+                            </dt>
                             <dd><?=$arProperty["VALUE"]?></dd>
                         </dl>
                     <? endforeach; ?>
@@ -247,7 +250,10 @@ $this->setFrameMode(true);
                 <div class="collapse" id="show-element-props">
                     <? foreach($arHiddenProperties as $propertyName => $arProperty): ?>
                         <dl>
-                            <dt><?=$arProperty["NAME"]?> <?=($USER->IsAdmin()) ? $arProperty['CUSTOM_SECTION_SORT']." ".$arProperty['DISPLAY_EXPANDED'] : ""?></dt>
+                            <dt>
+                                <!-- <?=($USER->IsAdmin()) ? $arProperty['CUSTOM_SECTION_SORT']." ".$arProperty['DISPLAY_EXPANDED'] : ""?> -->
+                                <?=$arProperty["NAME"]?>
+                            </dt>
                             <dd><?=$arProperty["VALUE"]?></dd>
                         </dl>
                     <? endforeach; ?>

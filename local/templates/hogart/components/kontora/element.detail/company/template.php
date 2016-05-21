@@ -37,10 +37,10 @@
     <? endif; ?>
 
     <? if (!empty($arResult["PROPERTIES"]["partners"]["VALUE"])): ?>
-        <h2>Наши партнеры</h2>
+        <h2><?=GetMessage("Наши партнеры")?></h2>
         <p><?= $arResult["PROPERTIES"]["partners"]["~VALUE"]["TEXT"] ?></p>
     <? endif; ?>
-    <h2>Хогарт сегодня</h2>
+    <h2><?=GetMessage("Хогарт сегодня")?></h2>
 </div>
 
 <? $APPLICATION->IncludeComponent("kontora:element.list", "hogart_today", array(
@@ -51,7 +51,7 @@
 
 <? if (!empty($arResult["PROPERTIES"]["honors"]["VALUE"])): ?>
     <div class="inner">
-        <h2>Достижения и награды</h2>
+        <h2><?=GetMessage("Достижения и награды")?></h2>
         <ul class="sert-slider-cnt js-company-slider">
             <? foreach ($arResult["PROPERTIES"]["honors"]["VALUE"] as $value):
                 $file = CFile::ResizeImageGet($value, array('width' => 126, 'height' => 179), BX_RESIZE_IMAGE_EXACT, true);
@@ -85,8 +85,8 @@
 <aside class="sidebar js-fh js-fixed-block js-paralax-height" data-fixed="top">
     <div class="inner js-paralax-item">
 
-        <div class="company-side-cnt padding">
-            <h2>Основные направления деятельности</h2>
+        <div class="company-side-cnt padding text-center">
+            <h2><?=GetMessage("Основные направления деятельности")?></h2>
             <?
             $GetCurDir = explode("/", $APPLICATION->GetCurDir());
 
@@ -103,7 +103,7 @@
                 Array(
                     "COMPONENT_TEMPLATE" => ".default",
                     "IBLOCK_TYPE" => "advantages",
-                    "IBLOCK_ID" => 19,
+                    "IBLOCK_ID" => (LANGUAGE_ID == 'en' ? 31 : 19),
                     "NEWS_COUNT" => "3",
                     "SORT_BY1" => "SORT",
                     "SORT_ORDER1" => "ASC",

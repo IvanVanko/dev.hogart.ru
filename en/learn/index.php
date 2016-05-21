@@ -74,7 +74,7 @@ $APPLICATION->SetTitle("Learn");
 	false
 );
     ?>
-    <div class="calendar-cnt learn-list" id="learn-calendar" data-datepicker="#calendar-array"></div>
+    <div class="calendar-cnt learn-list" id="learn-calendar" data-datepicker="#calendar-array" data-lang="<?= LANGUAGE_ID ?>"></div>
 </div>
 	<div class="inner no-full">
     <div id="calendar-list" class="inner learn-list" style="display: none;">
@@ -156,7 +156,7 @@ $APPLICATION->SetTitle("Learn");
                     "bitrix:form.result.new",
                     "sem_quest",
                     Array(
-                        "WEB_FORM_ID" => "4",
+                        "WEB_FORM_ID" => "OFFER_YOUR_SEMINAR_TOPIC_EN",
                         "IGNORE_CUSTOM_TEMPLATE" => "N",
                         "USE_EXTENDED_ERRORS" => "N",
                         "SEF_MODE" => "N",

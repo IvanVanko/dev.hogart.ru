@@ -189,6 +189,9 @@ $rsParentSection = CIBlockSection::GetList(array('NAME' => 'ASC'), $arFilter, fa
         $arResult["SUBS"][] = $arSect;
     }
 
+if (count($arResult["SUBS"]) == 1) {
+    LocalRedirect($arResult["SUBS"][0]["SECTION_PAGE_URL"]);
+}
 
 $arFilterBrands = array(
     'IBLOCK_ID' => 2
@@ -204,20 +207,22 @@ while ($res = $arBrands ->GetNext())
 $arFilterColls = array(
     'IBLOCK_ID' => 22
 );
-$arSelectColls = Array("ID", "NAME", 'DETAIL_PAGE_URL');
+$arSelectColls = Array("ID", "NAME", 'DETAIL_PAGE_URL', 'DETAIL_TEXT', 'DETAIL_PICTURE');
 $arColls = CIBlockElement::GetList(array(), $arFilterColls, false, false, false, $arSelectColls);
 
 while ($res = $arColls ->GetNext())
 {
-    $arResult["ALL_COLLS"][$res['ID']] = array('NAME' => $res['NAME']);
+    $arResult["ALL_COLLS"][$res['ID']] = array('NAME' => $res['NAME'], 'DETAIL_TEXT' => $res['DETAIL_TEXT'], 'DETAIL_PICTURE' => $res['DETAIL_PICTURE']);
 }
 //echo '<pre>';
 //var_dump($arResult["ALL_COLLS"]);
 //echo '</pre>';
 $section_ids = array_unique($section_ids);
 
+$stores = BXHelper::getStores(array(), array('UF_TRANSIT' => '0'), false, false, array('ID', 'TITLE', 'ADDRESS'), 'ID');
+$arResult["STORES"] = $stores;
+
 if ($arParams['STORES_FILTERED'] != 'Y') {
-    $stores = BXHelper::getStores(array(), array('UF_TRANSIT' => '0'), false, false, array('ID'));
     $catalog_store_filter = array('LOGIC' => 'OR');
     foreach ($stores as $store_id) {
         $store_keys[] = 'CATALOG_STORE_AMOUNT_'.$store_id['ID'];

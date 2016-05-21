@@ -30,10 +30,11 @@ if(isset($arResult['arResult'])) {
 </div>
 <aside class="sidebar js-fh js-fixed-block js-paralax-height" data-fixed="top">
     <div class="inner js-paralax-item">
+		<? if (!empty($arResult['FILTER']['BRANDS']) || (!empty($arResult["FILTER"]["DIRECTIONS"]) && LANGUAGE_ID != "en")): ?>
         <div class="sidebar_padding_cnt padding">
         <!-- div class="sidebar_padding_cnt small-news-cnt" -->
             <form action="#">
-                <?if (!empty($arResult["FILTER"]["DIRECTIONS"])):?>
+                <?if (!empty($arResult["FILTER"]["DIRECTIONS"]) && LANGUAGE_ID != "en"):?>
 	                <h2>Направление</h2>
 	                <?foreach ($arResult["FILTER"]["DIRECTIONS"] as $key => $arDirection):?>
 	                	<div class="field custom_checkbox">
@@ -60,7 +61,7 @@ if(isset($arResult['arResult'])) {
 	            <?endif;?>
 
                 <?if (!empty($arResult['FILTER']['BRANDS'])):?>
-	                <h2 class="normal-margin">Бренд</h2>
+	                <h2 class="normal-margin"><?= GetMessage("Бренд") ?></h2>
 	                <div class="breands hide-big-cnt" data-hide="Еще бренды">
 	                    <?foreach ($arResult['FILTER']['BRANDS'] as $key => $arBrand):?>
 		                    <?if ($key == 3):?>
@@ -76,18 +77,18 @@ if(isset($arResult['arResult'])) {
 	                    <?endif;?> 
 	                </div>
                 <?endif;?>
-                <h2>Ключевое слово</h2>
+                <h2><?= GetMessage("Ключевое слово") ?></h2>
                 <div class="field">
                     <input type="text" placeholder="" id="name" name="keyword" value="<?=$_REQUEST['keyword']?>">
                 </div>
-                <button class="empty-btn">Найти Статьи</button>
+                <button class="empty-btn"><?= GetMessage("Найти Статьи") ?></button>
                 <br/>
                 <br/>
                 <br/>
-                <a href="<?= $page ?>" class="empty-btn link">сбросить запрос</a>
+                <a href="<?= $page ?>" class="empty-btn link"><?=GetMessage("Сбросить запрос") ?></a>
                 <br/><br/>
             </form>
         </div>
-
+		<? endif; ?>
     </div>
 </aside>

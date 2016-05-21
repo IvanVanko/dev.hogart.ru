@@ -1,4 +1,4 @@
-<?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
+<? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 /** @var array $arParams */
 /** @var array $arResult */
 /** @global CMain $APPLICATION */
@@ -12,12 +12,13 @@
 /** @var CBitrixComponent $component */
 use Bitrix\Main\Loader;
 use Bitrix\Main\ModuleManager;
+
 $this->setFrameMode(true);
 global $elementFilter;
 
 //метод устанавливает параметр в REQUEST для принудительной фильтрации по брендам если перешли на подраздел из карточки бренда
 HogartHelpers::setBrandRequestFilter(CStorage::getVar('CATALOG_BRAND_CODE'), BRAND_IBLOCK_ID, CATALOG_IBLOCK_ID, CATALOG_BRAND_PROPERTY_CODE);
-$section = BXHelper::getSections(array(), array('ID' => $arResult["VARIABLES"]["SECTION_ID"], 'IBLOCK_ID' => $arParams['IBLOCK_ID']), false, array('ID','DEPTH_LEVEL'));
+$section = BXHelper::getSections(array(), array('ID' => $arResult["VARIABLES"]["SECTION_ID"], 'IBLOCK_ID' => $arParams['IBLOCK_ID']), false, array('ID', 'DEPTH_LEVEL', 'UF_*'));
 $section = $section['RESULT'][0];
 
 //Определим уровень вложенности теекущего раздела
@@ -29,70 +30,57 @@ if ($arSect = $rsSect->GetNext()) {
 	$curSection = $arSect;
 }*/
 
-if ($arParams['USE_FILTER'] == 'Y')
-{
+if ($arParams['USE_FILTER'] == 'Y') {
     ob_start();
     $arFilter = array(
         "IBLOCK_ID" => $arParams["IBLOCK_ID"],
         "ACTIVE" => "Y",
         "GLOBAL_ACTIVE" => "Y",
     );
-    if (0 < intval($arResult["VARIABLES"]["SECTION_ID"]))
-    {
+    if (0 < intval($arResult["VARIABLES"]["SECTION_ID"])) {
         $arFilter["ID"] = $arResult["VARIABLES"]["SECTION_ID"];
-    }
-    elseif ('' != $arResult["VARIABLES"]["SECTION_CODE"])
-    {
+    } elseif ('' != $arResult["VARIABLES"]["SECTION_CODE"]) {
         $arFilter["=CODE"] = $arResult["VARIABLES"]["SECTION_CODE"];
     }
 
     $obCache = new CPHPCache();
-    if ($obCache->InitCache(36000, serialize($arFilter), "/iblock/catalog"))
-    {
+    if ($obCache->InitCache(36000, serialize($arFilter), "/iblock/catalog")) {
         $arCurSection = $obCache->GetVars();
-    }
-    elseif ($obCache->StartDataCache())
-    {
+    } elseif ($obCache->StartDataCache()) {
         $arCurSection = array();
-        if (Loader::includeModule("iblock"))
-        {
+        if (Loader::includeModule("iblock")) {
             $dbRes = CIBlockSection::GetList(array(), $arFilter, false, array("ID"));
 
-            if(defined("BX_COMP_MANAGED_CACHE"))
-            {
+            if (defined("BX_COMP_MANAGED_CACHE")) {
                 global $CACHE_MANAGER;
                 $CACHE_MANAGER->StartTagCache("/iblock/catalog");
 
-                if ($arCurSection = $dbRes->Fetch())
-                {
-                    $CACHE_MANAGER->RegisterTag("iblock_id_".$arParams["IBLOCK_ID"]);
+                if ($arCurSection = $dbRes->Fetch()) {
+                    $CACHE_MANAGER->RegisterTag("iblock_id_" . $arParams["IBLOCK_ID"]);
                 }
                 $CACHE_MANAGER->EndTagCache();
-            }
-            else
-            {
-                if(!$arCurSection = $dbRes->Fetch())
+            } else {
+                if (!$arCurSection = $dbRes->Fetch())
                     $arCurSection = array();
             }
         }
         $obCache->EndDataCache($arCurSection);
     }
-    if (!isset($arCurSection))
-    {
+    if (!isset($arCurSection)) {
         $arCurSection = array();
     }
     ?>
     <?
     //доработка фильтра для фильтрации складов
     //здесь получаем склады на сайте. Флаг UF_TRANSIT говорит о том, что склад относится к пункту Складская программа. Остальные - Есть в наличии
-    $stores = BXHelper::getStores(array(), array(), false,false, array('ID','UF_TRANSIT','TITLE'), 'ID');
+    $stores = BXHelper::getStores(array(), array(), false, false, array('ID', 'UF_TRANSIT', 'TITLE'), 'ID');
 
 
     //получаем request филтьра складов и дополняем $stores флагами SELECTED тех складов которые выбрали для фильтрации
     $arFilterStores = $_REQUEST['arrFilter_stores'];
     $selected_stores = array();
     foreach ($arFilterStores as $arFilterStoreGroup) {
-        $selected_stores = array_merge(explode(",",$arFilterStoreGroup),$stores);
+        $selected_stores = array_merge(explode(",", $arFilterStoreGroup), $stores);
     }
 
 
@@ -105,7 +93,6 @@ if ($arParams['USE_FILTER'] == 'Y')
     }
 
 
-
     //сфомированный массив $stores передаем в компонент. Далее СМ. result_modifier в шаблоне
 
 
@@ -113,41 +100,45 @@ if ($arParams['USE_FILTER'] == 'Y')
     $range_groups = HogartHelpers::getRangePropertyGroupsForFilter();
 
     ?>
-    <?/*проверяем на depth_level потому что (1): нам не нужен никогда фильтр  категориях 1 уровня (2): слишком много свойств получается и огроменные запросы*/?>
-    <?if ($section['DEPTH_LEVEL'] != 1) $APPLICATION->IncludeComponent(
-    "bitrix:catalog.smart.filter",
-    "",
-    array(
-        "IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
-        "IBLOCK_ID" => $arParams["IBLOCK_ID"],
-        "SECTION_ID" => $arResult["VARIABLES"]["SECTION_ID"],
-        "FILTER_NAME" => $arParams["FILTER_NAME"],
-        "PRICE_CODE" => $arParams["PRICE_CODE"],
-        "CACHE_TYPE" => $arParams["CACHE_TYPE"],
-        "CACHE_TIME" => $arParams["CACHE_TIME"],
-        "CACHE_GROUPS" => $arParams["CACHE_GROUPS"],
-        "SAVE_IN_SESSION" => "N",
-        "FILTER_VIEW_MODE" => $arParams["FILTER_VIEW_MODE"],
-        "XML_EXPORT" => "Y",
-        "SECTION_TITLE" => "NAME",
-        "SECTION_DESCRIPTION" => "DESCRIPTION",
-        'HIDE_NOT_AVAILABLE' => $arParams["HIDE_NOT_AVAILABLE"],
-        "TEMPLATE_THEME" => $arParams["TEMPLATE_THEME"],
-        'CONVERT_CURRENCY' => $arParams['CONVERT_CURRENCY'],
-        'CURRENCY_ID' => $arParams['CURRENCY_ID'],
-        "SEF_MODE" => $arParams["SEF_MODE"],
-        "SEF_RULE" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["smart_filter"],
-        "SMART_FILTER_PATH" => $arResult["VARIABLES"]["SMART_FILTER_PATH"],
-        "PAGER_PARAMS_NAME" => $arParams["PAGER_PARAMS_NAME"],
-        "RANGE_GROUPS" => $range_groups,
-        "STORES" => $stores,
-        "SELECTED_WAREHOUSE" =>  $_REQUEST['arrFilter_warehouse']
+    <?/*проверяем на depth_level потому что (1): нам не нужен никогда фильтр  категориях 1 уровня (2): слишком много свойств получается и огроменные запросы*/
+    ?>
+    <? if ($section['DEPTH_LEVEL'] != 1) {
+        $this->SetViewTarget("CATALOG_FILTER");
+        $APPLICATION->IncludeComponent(
+            "bitrix:catalog.smart.filter",
+            "",
+            array(
+                "IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
+                "IBLOCK_ID" => $arParams["IBLOCK_ID"],
+                "SECTION_ID" => $arResult["VARIABLES"]["SECTION_ID"],
+                "FILTER_NAME" => $arParams["FILTER_NAME"],
+                "PRICE_CODE" => $arParams["PRICE_CODE"],
+                "CACHE_TYPE" => $arParams["CACHE_TYPE"],
+                "CACHE_TIME" => $arParams["CACHE_TIME"],
+                "CACHE_GROUPS" => $arParams["CACHE_GROUPS"],
+                "SAVE_IN_SESSION" => "N",
+                "FILTER_VIEW_MODE" => $arParams["FILTER_VIEW_MODE"],
+                "XML_EXPORT" => "Y",
+                "SECTION_TITLE" => "NAME",
+                "SECTION_DESCRIPTION" => "DESCRIPTION",
+                'HIDE_NOT_AVAILABLE' => $arParams["HIDE_NOT_AVAILABLE"],
+                "TEMPLATE_THEME" => $arParams["TEMPLATE_THEME"],
+                'CONVERT_CURRENCY' => $arParams['CONVERT_CURRENCY'],
+                'CURRENCY_ID' => $arParams['CURRENCY_ID'],
+                "SEF_MODE" => $arParams["SEF_MODE"],
+                "SEF_RULE" => $arResult["FOLDER"] . $arResult["URL_TEMPLATES"]["smart_filter"],
+                "SMART_FILTER_PATH" => $arResult["VARIABLES"]["SMART_FILTER_PATH"],
+                "PAGER_PARAMS_NAME" => $arParams["PAGER_PARAMS_NAME"],
+                "RANGE_GROUPS" => $range_groups,
+                "STORES" => $stores,
+                "SELECTED_WAREHOUSE" => $_REQUEST['arrFilter_warehouse']
 
-    ),
-    $component,
-    array('HIDE_ICONS' => 'Y')
-    );
-    $FILTER_HTML = ob_get_clean();
+            ),
+            $component,
+            array('HIDE_ICONS' => 'Y')
+        );
+        $this->EndViewTarget();
+    }
 
     $arCustomFilter = CStorage::getVar('CUSTOM_SECTION_FILTER');
     if (!empty($arCustomFilter)) {
@@ -162,17 +153,14 @@ $stores_filtered = CStorage::getVar('ACTIVE_STORES_FILTERED');
 
 ob_start();
 
-if (isset($arParams['USE_COMMON_SETTINGS_BASKET_POPUP']) && $arParams['USE_COMMON_SETTINGS_BASKET_POPUP'] == 'Y')
-{
+if (isset($arParams['USE_COMMON_SETTINGS_BASKET_POPUP']) && $arParams['USE_COMMON_SETTINGS_BASKET_POPUP'] == 'Y') {
     $basketAction = (isset($arParams['COMMON_ADD_TO_BASKET_ACTION']) ? $arParams['COMMON_ADD_TO_BASKET_ACTION'] : '');
-}
-else
-{
+} else {
     $basketAction = (isset($arParams['SECTION_ADD_TO_BASKET_ACTION']) ? $arParams['SECTION_ADD_TO_BASKET_ACTION'] : '');
 }
 $intSectionID = 0;
 ?>
-<?if (!empty($_REQUEST['stock'])) {
+<? if (!empty($_REQUEST['stock'])) {
     $ids = array();
     foreach ($_REQUEST['stock'] as $id) {
         $arFilter = array("ID" => $id);
@@ -183,13 +171,12 @@ $intSectionID = 0;
         }
     }
     $GLOBALS[$arParams["FILTER_NAME"]]["ID"] = $ids;
-}?>
-<?//Sort
+} ?>
+<? //Sort
 if (!empty($_REQUEST['sort']) && isset($_REQUEST['sort'])) {
     $sort = $_REQUEST['sort'];
     $order = $_REQUEST['order'];
-}
-else {
+} else {
     $sort = 'shows';
     $order = 'desc';
 }
@@ -197,6 +184,21 @@ else {
 //бюро пирогова
 if (empty($arResult['VARIABLES']['SECTION_ID']) && empty($arResult['VARIABLES']['SECTION_CODE'])) {
     $arResult['VARIABLES']['SECTION_CODE'] = 'NULL';
+}
+
+$viewType = CStorage::getCookieParam('catalog-view-type');
+$viewTypes = array('list' => 'Списком', 'grid' => 'Сеткой');
+$isTableViewExt = $section['UF_SECTION_VIEW'] == 3;
+
+if (false === $viewType) {
+    $viewType = array_keys($viewTypes)[abs(($section['UF_SECTION_VIEW'] % 2) - 1)];
+}
+
+if ($isTableViewExt) {
+    $sort = "PROPERTY_brand.NAME";
+    $order = "asc";
+    $arParams["ELEMENT_SORT_FIELD2"] = "PROPERTY_collection.NAME";
+    $arParams["ELEMENT_SORT_ORDER2"] = "ASC";
 }
 
 $intSectionID = $APPLICATION->IncludeComponent(
@@ -213,7 +215,7 @@ $intSectionID = $APPLICATION->IncludeComponent(
         "META_KEYWORDS" => $arParams["LIST_META_KEYWORDS"],
         "META_DESCRIPTION" => $arParams["LIST_META_DESCRIPTION"],
         "BROWSER_TITLE" => $arParams["LIST_BROWSER_TITLE"],
-        "INCLUDE_SUBSECTIONS" => $section['DEPTH_LEVEL'] > 1 ? $arParams["INCLUDE_SUBSECTIONS"]:"N",
+        "INCLUDE_SUBSECTIONS" => $section['DEPTH_LEVEL'] > 1 ? $arParams["INCLUDE_SUBSECTIONS"] : "N",
         "BASKET_URL" => $arParams["BASKET_URL"],
         "ACTION_VARIABLE" => $arParams["ACTION_VARIABLE"],
         "PRODUCT_ID_VARIABLE" => $arParams["PRODUCT_ID_VARIABLE"],
@@ -248,6 +250,7 @@ $intSectionID = $APPLICATION->IncludeComponent(
         "PAGER_DESC_NUMBERING" => $arParams["PAGER_DESC_NUMBERING"],
         "PAGER_DESC_NUMBERING_CACHE_TIME" => $arParams["PAGER_DESC_NUMBERING_CACHE_TIME"],
         "PAGER_SHOW_ALL" => $arParams["PAGER_SHOW_ALL"],
+        "SHOW_ALL_WO_SECTION" => $arParams["SHOW_ALL_WO_SECTION"],
 
         "OFFERS_CART_PROPERTIES" => $arParams["OFFERS_CART_PROPERTIES"],
         "OFFERS_FIELD_CODE" => $arParams["LIST_OFFERS_FIELD_CODE"],
@@ -260,8 +263,8 @@ $intSectionID = $APPLICATION->IncludeComponent(
 
         "SECTION_ID" => $arResult["VARIABLES"]["SECTION_ID"],
         "SECTION_CODE" => $arResult["VARIABLES"]["SECTION_CODE"],
-        "SECTION_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["section"],
-        "DETAIL_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["element"],
+        "SECTION_URL" => $arResult["FOLDER"] . $arResult["URL_TEMPLATES"]["section"],
+        "DETAIL_URL" => $arResult["FOLDER"] . $arResult["URL_TEMPLATES"]["element"],
         'CONVERT_CURRENCY' => $arParams['CONVERT_CURRENCY'],
         'CURRENCY_ID' => $arParams['CURRENCY_ID'],
         'HIDE_NOT_AVAILABLE' => $arParams["HIDE_NOT_AVAILABLE"],
@@ -285,12 +288,14 @@ $intSectionID = $APPLICATION->IncludeComponent(
         "ADD_SECTIONS_CHAIN" => "Y",
         'ADD_TO_BASKET_ACTION' => $basketAction,
         'SHOW_CLOSE_POPUP' => isset($arParams['COMMON_SHOW_CLOSE_POPUP']) ? $arParams['COMMON_SHOW_CLOSE_POPUP'] : '',
-        'COMPARE_PATH' => $arResult['FOLDER'].$arResult['URL_TEMPLATES']['compare'],
+        'COMPARE_PATH' => $arResult['FOLDER'] . $arResult['URL_TEMPLATES']['compare'],
 
         //template.php, result_modifier.php
         'HREF_BRAND_CODE' => CStorage::getVar('CATALOG_BRAND_CODE'),
         'STORES_FILTERED' => $stores_filtered,
-        'VIEW_TYPE' => CStorage::getCookieParam('catalog-view-type', 'list')
+        'VIEW_TYPES' => $viewTypes,
+        'VIEW_TYPE' => $viewType,
+        'IS_TABLE_VIEW' => $isTableViewExt
     ),
     $component
 );
@@ -333,8 +338,8 @@ $APPLICATION->IncludeComponent(
         "SORT_BY2" => "SORT",
         "SORT_ORDER2" => "ASC",
         "FILTER_NAME" => "elementFilter",
-        "FIELD_CODE" => array("",""),
-        "PROPERTY_CODE" => array("",""),
+        "FIELD_CODE" => array("", ""),
+        "PROPERTY_CODE" => array("", ""),
         "CHECK_DATES" => "Y",
         "DETAIL_URL" => "",
         "AJAX_MODE" => "N",
@@ -380,116 +385,102 @@ $APPLICATION->IncludeComponent(
 
 $promos_html = ob_get_clean();
 
-if($DEPTH_LEVEL == 1) {?>
-<div class="inner category padding20">
-    <?/*$APPLICATION->IncludeComponent("bitrix:breadcrumb","",Array(
-	        "START_FROM" => "1",
-	        "PATH" => "",
-	        "SITE_ID" => SITE_ID
-	    )
-	);*/?>
-	<?$APPLICATION->IncludeComponent(
-		"bitrix:catalog.section.list",
-		"section",
-		array(
-			"IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
-			"IBLOCK_ID" => $arParams["IBLOCK_ID"],
-			"SECTION_ID" => $arResult["VARIABLES"]["SECTION_ID"],
-			"SECTION_CODE" => $arResult["VARIABLES"]["SECTION_CODE"],
-            "SELECTED_SORT_FIELD" => "NAME",
-            "SELECTED_SORT_ORDER" => "ASC",
-			"CACHE_TYPE" => $arParams["CACHE_TYPE"],
-			"CACHE_TIME" => $arParams["CACHE_TIME"],
-			"CACHE_GROUPS" => $arParams["CACHE_GROUPS"],
-			"COUNT_ELEMENTS" => $arParams["SECTION_COUNT_ELEMENTS"],
-			"TOP_DEPTH" => $arParams["SECTION_TOP_DEPTH"],
-			"SECTION_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["section"],
-			"VIEW_MODE" => $arParams["SECTIONS_VIEW_MODE"],
-			"SHOW_PARENT_NAME" => $arParams["SECTIONS_SHOW_PARENT_NAME"],
-			"HIDE_SECTION_NAME" => (isset($arParams["SECTIONS_HIDE_SECTION_NAME"]) ? $arParams["SECTIONS_HIDE_SECTION_NAME"] : "N"),
-			"ADD_SECTIONS_CHAIN" => "N"
-		),
-		$component,
-		array("HIDE_ICONS" => "Y")
-	);?>
-</div>
-<?}?>
-<?$APPLICATION->ShowViewContent('top_section_wrapper')?>
-    <?
-    if ($DEPTH_LEVEL == 1) {
-        $elementFilter = array('PROPERTY_catalog_section' => $intSectionID);
-        $APPLICATION->IncludeComponent(
-            "bitrix:news.list",
-            "news_list",
-            Array(
-                "COMPONENT_TEMPLATE" => "news_list",
-                "IBLOCK_TYPE" => "news",
-                "IBLOCK_ID" => 3,
-                "NEWS_COUNT" => "2",
-                "SORT_BY1" => "ACTIVE_FROM",
-                "SORT_ORDER1" => "DESC",
-                "SORT_BY2" => "SORT",
-                "SORT_ORDER2" => "ASC",
-                "FILTER_NAME" => "elementFilter",
-                "FIELD_CODE" => array("",""),
-                "PROPERTY_CODE" => array("",""),
-                "CHECK_DATES" => "Y",
-                "DETAIL_URL" => "",
-                "AJAX_MODE" => "N",
-                "AJAX_OPTION_JUMP" => "N",
-                "AJAX_OPTION_STYLE" => "Y",
-                "AJAX_OPTION_HISTORY" => "N",
-                "CACHE_TYPE" => "A",
-                "CACHE_TIME" => "36000000",
-                "CACHE_FILTER" => "N",
-                "CACHE_GROUPS" => "Y",
-                "PREVIEW_TRUNCATE_LEN" => "",
-                "ACTIVE_DATE_FORMAT" => "d.m.Y",
-                "SET_TITLE" => "N",
-                "SET_BROWSER_TITLE" => "N",
-                "SET_META_KEYWORDS" => "N",
-                "SET_META_DESCRIPTION" => "N",
-                "SET_STATUS_404" => "N",
-                "INCLUDE_IBLOCK_INTO_CHAIN" => "N",
-                "ADD_SECTIONS_CHAIN" => "N",
-                "HIDE_LINK_WHEN_NO_DETAIL" => "N",
-                "PARENT_SECTION" => "",
-                "PARENT_SECTION_CODE" => "",
-                "INCLUDE_SUBSECTIONS" => "Y",
-                "DISPLAY_DATE" => "Y",
-                "DISPLAY_NAME" => "Y",
-                "DISPLAY_PICTURE" => "Y",
-                "DISPLAY_PREVIEW_TEXT" => "Y",
-                "PAGER_TEMPLATE" => ".default",
-                "DISPLAY_TOP_PAGER" => "N",
-                "DISPLAY_BOTTOM_PAGER" => "Y",
-                "PAGER_TITLE" => "Новости",
-                "PAGER_SHOW_ALWAYS" => "N",
-                "PAGER_DESC_NUMBERING" => "N",
-                "PAGER_DESC_NUMBERING_CACHE_TIME" => "36000",
-                "PAGER_SHOW_ALL" => "N",
-
-                //custom
-                "DISPLAY_LINK_HTML" => "<a class=\"more-detail\" href=\"/company/news/\">Все новости</a>"
-            )
-        );
-    } elseif ($DEPTH_LEVEL >= 2)
-    {?>
-            <div class="sidebar_padding_cnt">
-                <div class="filter_cnt">
-                    <?=$FILTER_HTML?>
-                </div>
-            </div>
-        <?}print($promos_html) //АКЦИИ?>
+if ($DEPTH_LEVEL == 1) { ?>
+    <div class="inner category padding20">
+        <? $APPLICATION->IncludeComponent(
+            "bitrix:catalog.section.list",
+            "section",
+            array(
+                "IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
+                "IBLOCK_ID" => $arParams["IBLOCK_ID"],
+                "SECTION_ID" => $arResult["VARIABLES"]["SECTION_ID"],
+                "SECTION_CODE" => $arResult["VARIABLES"]["SECTION_CODE"],
+                "SELECTED_SORT_FIELD" => "NAME",
+                "SELECTED_SORT_ORDER" => "ASC",
+                "CACHE_TYPE" => $arParams["CACHE_TYPE"],
+                "CACHE_TIME" => $arParams["CACHE_TIME"],
+                "CACHE_GROUPS" => $arParams["CACHE_GROUPS"],
+                "COUNT_ELEMENTS" => $arParams["SECTION_COUNT_ELEMENTS"],
+                "TOP_DEPTH" => $arParams["SECTION_TOP_DEPTH"],
+                "SECTION_URL" => $arResult["FOLDER"] . $arResult["URL_TEMPLATES"]["section"],
+                "VIEW_MODE" => $arParams["SECTIONS_VIEW_MODE"],
+                "SHOW_PARENT_NAME" => $arParams["SECTIONS_SHOW_PARENT_NAME"],
+                "HIDE_SECTION_NAME" => (isset($arParams["SECTIONS_HIDE_SECTION_NAME"]) ? $arParams["SECTIONS_HIDE_SECTION_NAME"] : "N"),
+                "ADD_SECTIONS_CHAIN" => "N"
+            ),
+            $component,
+            array("HIDE_ICONS" => "Y")
+        ); ?>
+    </div>
+<? } ?>
+<? $APPLICATION->ShowViewContent('top_section_wrapper') ?>
+<? if ($DEPTH_LEVEL == 1) :
+    $elementFilter = array('PROPERTY_catalog_section' => $intSectionID);
+    $APPLICATION->IncludeComponent(
+        "bitrix:news.list",
+        "news_list",
+        Array(
+            "COMPONENT_TEMPLATE" => "news_list",
+            "IBLOCK_TYPE" => "news",
+            "IBLOCK_ID" => 3,
+            "NEWS_COUNT" => "2",
+            "SORT_BY1" => "ACTIVE_FROM",
+            "SORT_ORDER1" => "DESC",
+            "SORT_BY2" => "SORT",
+            "SORT_ORDER2" => "ASC",
+            "FILTER_NAME" => "elementFilter",
+            "FIELD_CODE" => array("", ""),
+            "PROPERTY_CODE" => array("", ""),
+            "CHECK_DATES" => "Y",
+            "DETAIL_URL" => "",
+            "AJAX_MODE" => "N",
+            "AJAX_OPTION_JUMP" => "N",
+            "AJAX_OPTION_STYLE" => "Y",
+            "AJAX_OPTION_HISTORY" => "N",
+            "CACHE_TYPE" => "A",
+            "CACHE_TIME" => "36000000",
+            "CACHE_FILTER" => "N",
+            "CACHE_GROUPS" => "Y",
+            "PREVIEW_TRUNCATE_LEN" => "",
+            "ACTIVE_DATE_FORMAT" => "d.m.Y",
+            "SET_TITLE" => "N",
+            "SET_BROWSER_TITLE" => "N",
+            "SET_META_KEYWORDS" => "N",
+            "SET_META_DESCRIPTION" => "N",
+            "SET_STATUS_404" => "N",
+            "INCLUDE_IBLOCK_INTO_CHAIN" => "N",
+            "ADD_SECTIONS_CHAIN" => "N",
+            "HIDE_LINK_WHEN_NO_DETAIL" => "N",
+            "PARENT_SECTION" => "",
+            "PARENT_SECTION_CODE" => "",
+            "INCLUDE_SUBSECTIONS" => "Y",
+            "DISPLAY_DATE" => "Y",
+            "DISPLAY_NAME" => "Y",
+            "DISPLAY_PICTURE" => "Y",
+            "DISPLAY_PREVIEW_TEXT" => "Y",
+            "PAGER_TEMPLATE" => ".default",
+            "DISPLAY_TOP_PAGER" => "N",
+            "DISPLAY_BOTTOM_PAGER" => "Y",
+            "PAGER_TITLE" => "Новости",
+            "PAGER_SHOW_ALWAYS" => "N",
+            "PAGER_DESC_NUMBERING" => "N",
+            "PAGER_DESC_NUMBERING_CACHE_TIME" => "36000",
+            "PAGER_SHOW_ALL" => "N",
+            //custom
+            "DISPLAY_LINK_HTML" => "<a class=\"more-detail\" href=\"/company/news/\">Все новости</a>"
+        )
+    );
+    print($promos_html) //АКЦИИ
+?>
     </div>
 </aside>
-<?if ($DEPTH_LEVEL > 1) {?>
+<? endif; ?>
+
+<? if ($DEPTH_LEVEL == 2): ?>
+    </div>
+</aside>
+<? endif; ?>
+<? if ($DEPTH_LEVEL > 1): ?>
     <div class="inner perechen">
-    <?/*$APPLICATION->IncludeComponent("bitrix:breadcrumb","",Array(
-            "START_FROM" => "1",
-            "PATH" => "",
-            "SITE_ID" => SITE_ID
-        )
-    );*/?>
-    <?print_r($SECTION_HTML);?>
-<?}?>
+    <? print_r($SECTION_HTML); ?>
+<? endif; ?>

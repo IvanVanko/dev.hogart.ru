@@ -8,10 +8,10 @@
     <address>
         <?=$arResult['PROPRTIES']['adress']['VALUE']?><br>
         <? if(!empty($arResult['PROPERTIES']['address']['VALUE'])): ?>
-            Адрес: <?=$arResult['PROPERTIES']['address']['VALUE']?><br>
+            <?= GetMessage("Адрес") ?>: <?=$arResult['PROPERTIES']['address']['VALUE']?><br>
         <?endif;
         if(!empty($arResult['PROPERTIES']['phone']['VALUE'])):?>
-            тел.: <?=implode(', ', $arResult['PROPERTIES']['phone']['VALUE'])?><br>
+            <?= GetMessage("тел.") ?>: <?=implode(', ', $arResult['PROPERTIES']['phone']['VALUE'])?><br>
         <?endif;
         if(!empty($arResult['PROPERTIES']['mail']['VALUE'])):
             $email_html = array();
@@ -25,12 +25,12 @@
     <ul class="js-tabs-list contact-tab">
         <? if(!empty($arResult['PROPERTIES']['by_car']['VALUE'])): ?>
             <li>
-                <a class="js-tab-trigger icon-car hover" href="#oneTab"><span>Проезд на автомобиле</span></a>
+                <a class="js-tab-trigger icon-car hover" href="#oneTab"><span><?= GetMessage("Проезд на автомобиле") ?></span></a>
             </li>
         <?endif;
         if(!empty($arResult['PROPERTIES']['by_public']['VALUE'])):?>
             <li>
-                <a class="js-tab-trigger icon-bus hover" href="#twoTab"><span>Проезд общественным транспортом</span></a>
+                <a class="js-tab-trigger icon-bus hover" href="#twoTab"><span><?= GetMessage("Проезд общественным транспортом") ?></span></a>
             </li>
         <? endif; ?>
     </ul>
@@ -70,7 +70,7 @@
 <div class="inner no-padding js-tab-item" data-id="#oneTab">
     <? if(!empty($arResult['PROPERTIES']['by_car_scheme']['VALUE'])): ?>
         <a href="#" class="video-way background-green">
-            Схема проезда на автомобиле
+            <?= GetMessage("Схема проезда на автомобиле") ?>
             <i class="icon-bottom icon-full"></i>
         </a>
         <div class="way-scheme" style="display: none;">
@@ -96,7 +96,7 @@
 <div class="inner no-padding js-tab-item" data-id="#twoTab">
     <? if(!empty($arResult['PROPERTIES']['by_public_scheme']['VALUE'])): ?>
         <a href="#" class="video-way background-green">
-            Схема проезда на общественном транспорте
+            <?= GetMessage("Схема проезда на общественном транспорте")?>
             <i class="icon-bottom icon-full"></i>
         </a>
         <div class="way-scheme " style="display: none;">

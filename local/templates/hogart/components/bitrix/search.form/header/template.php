@@ -15,7 +15,7 @@ $this->setFrameMode(true);?>
 				$component, array("HIDE_ICONS" => "Y")
 			);
 		else:?>
-			<input type="text" name="q" value="<?=$_REQUEST['q']?>" placeholder="Наименование или артикул"/>
+			<input type="text" name="q" value="<?=$_REQUEST['q']?>" placeholder="<?=GetMessage('BSF_T_PLACEHOLDER')?>"/>
 		<?endif;?>
 		
 		<button class="icon-search icon-full"></button>

@@ -2,7 +2,7 @@
 <aside class="sidebar js-fh js-fixed-block js-paralax-height" data-fixed="top">
     <div class="inner js-paralax-item">
         <div class="padding normal-padding">
-            <a href="<?=$arParams['SEF_FOLDER']?>" class="side-back">Ко всем статьям <i class="icon-white-back"></i></a>
+            <a href="<?=$arParams['SEF_FOLDER']?>" class="side-back"><?= GetMessage("Ко всем статьям") ?> <i class="icon-white-back"></i></a>
         </div>
         <div class="sidebar_padding_cnt small-news-cnt">
 			<?foreach ($arResult["ITEMS"] as $arItem): 
@@ -20,9 +20,9 @@
 		</div>
         <div class="action_page">
             <div class="side_href">
-                <a href="#" class="icon-email js-popup-open" data-popup="#popup-subscribe">Отправить на e-mail</a>
-                <a href="#" onclick="window.print(); return false;" class="icon-print">Распечатать</a>
-                <a href="#" class="icon-phone js-popup-open" data-popup="#popup-subscribe-phone">Отправить SMS</a>
+                <a href="#" class="icon-email js-popup-open" data-popup="#popup-subscribe"><?= GetMessage("Отправить на e-mail") ?></a>
+                <a href="#" onclick="window.print(); return false;" class="icon-print"><?= GetMessage("Распечатать") ?></a>
+                <a href="#" class="icon-phone js-popup-open" data-popup="#popup-subscribe-phone"><?= GetMessage("Отправить SMS") ?></a>
             </div>
         </div>
 	</div>

@@ -17,9 +17,9 @@ $this->setFrameMode(false); ?>
 <aside class="sidebar js-fh js-fixed-block js-paralax-height" data-fixed="top">
     <div class="inner js-paralax-item">
         <div class="padding">
-            <h2>Оставьте отзыв</h2>
+            <h2><?=GetMessage("Оставьте отзыв")?></h2>
             <? //Изменяем порядок вывода полей
-            $arResult["PROPERTY_LIST"] = array("NAME", 2037, 2038, 85, 88, 'PREVIEW_TEXT');
+            $arResult["PROPERTY_LIST"] = $arParams["PROPERTY_CODES"];
 
             if(!empty($arResult["ERRORS"])):?>
                 <? ShowError(implode("<br />", $arResult["ERRORS"])) ?>
@@ -27,9 +27,9 @@ $this->setFrameMode(false); ?>
             if(strlen($arResult["MESSAGE"]) > 0):?>
                 <!--	Ваш отзыв принят!-->
                 <div class="ok-box">
-                    Благодарим Вас за оставленный отзыв. На указанный e-mail <a
-                        href="mailto:<?=$arResult['COMMS'][0]['mail']['VALUE']?>"><?=$arResult['COMMS'][0]['mail']['VALUE']?></a>
-                    будет отправлено подтверждение о публикации.
+                    <?= GetMessage("Благодарим Вас за оставленный отзыв. На указанный e-mail #MAIL# будет отправлено подтверждение о публикации.", [
+						"#MAIL#" => '<a href="mailto:' . $arResult['COMMS'][0]['mail']['VALUE'] . '">' . $arResult['COMMS'][0]['mail']['VALUE'] . '</a>'
+					])?> 
                 </div>
             <? else: ?>
                 <div class="js-validation-form-new">
@@ -180,11 +180,11 @@ $this->setFrameMode(false); ?>
 									<textarea cols="<?=$arResult["PROPERTY_LIST_FULL"][$propertyID]["COL_COUNT"]?>" rows="<?=$arResult["PROPERTY_LIST_FULL"][$propertyID]["ROW_COUNT"]?>" name="PROPERTY[<?=$propertyID?>][<?=$i?>]"><?=$value?></textarea>
 								</div>
 								<br>
-                                    <span class="head">фото или логотип</span>
+                                    <span class="head"><?=GetMessage("фото или логотип")?></span>
                                 <div class="field custom_upload white-btn otz-b">
                                     <input type="hidden" name="PROPERTY[PREVIEW_PICTURE][0]" value="">
                                     <input type="file" name="PROPERTY_FILE_PREVIEW_PICTURE_0" accept="application/png,application/jpg,application/jpeg">
-                                    <label>Выбрать файл</label>
+                                    <label><?=GetMessage("Выбрать файл")?></label>
 
                                 </div>
                                     <br/>
@@ -225,7 +225,7 @@ $this->setFrameMode(false); ?>
 								<div class="field custom_label <?=$class?>">
 									<label for="PROPERTY[<?=$propertyID?>][<?=$i?>]">
 										<?if (intval($propertyID) > 0):?>
-										<?=$arResult["PROPERTY_LIST_FULL"][$propertyID]["NAME"]?>
+										<?= GetMessage($arResult["PROPERTY_LIST_FULL"][$propertyID]["NAME"]) ?>
 										<?else:?>
 										<?=!empty($arParams["CUSTOM_TITLE_".$propertyID])
 										    ? $arParams["CUSTOM_TITLE_".$propertyID]
@@ -381,10 +381,10 @@ $this->setFrameMode(false); ?>
 			<?endif?>
 		<?endif ?>
 
-                        <input type="submit" name="iblock_submit" class="empty-btn" value="Отправить"/>
+                        <input type="submit" name="iblock_submit" class="empty-btn" value="<?= GetMessage("Отправить")?>"/>
                         <br>
                         <br>
-                        <small>Поля, отмеченные * обязательны для заполнения.</small>
+                        <small><?=GetMessage("Поля, отмеченные * обязательны для заполнения.")?></small>
                         <br>
                         <? if(strlen($arParams["LIST_URL"]) > 0): ?>
                             <input type="submit" name="iblock_apply" value="<?=GetMessage("IBLOCK_FORM_APPLY")?>"/>

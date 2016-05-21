@@ -86,12 +86,14 @@ else {
                 <th>Техдокументация</th>
                 <td>
                     <a href="?q=Vtehdoc">Посмотреть</a>
+                    <a href="?q=VTypeTehDocGet">Посмотреть Типы</a>
                 </td>
                 <!--                <td>-->
                 <!--<!--                    <a href="?q=tehdoc">Загрузить</a><br>-->-->
                 <!--                </td>-->
                 <td>
                     <a href="?q=tehdoc&answer=Y">Загрузить и ответить</a><br>
+                    <a href="?q=TypeTehDocGet&answer=Y">Загрузить Типы и ответить</a>
                 </td>
                 <td><?= $parce->getCountEl(10); ?> документаций</td>
                 <td><?= $state['tehdoc']; ?></td>
@@ -154,6 +156,11 @@ else {
                 $parce->csv->saveState('tehdoc');
                 $parce->initTehDoc();
             }
+            if ($val == "TypeTehDocGet" or $val == "*") {
+                echo '<div class="info"><h2>[' . $key . '] ' . $val . '</h2></div>';
+                $parce->csv->saveState('TypeTehDocGet');
+                $parce->initTypeTechDoc();
+            }
             if ($val == "warehouse" or $val == "*") {
                 echo '<div class="info"><h2>[' . $key . '] ' . $val . '</h2></div>';
                 $parce->csv->saveState('warehouse');
@@ -181,6 +188,11 @@ else {
             if ($val == "Vbreands") {
                 echo '<div class="info"><h2>[' . $key . '] ' . $val . '</h2></div><pre>';
                 var_dump($parce->GetResultFunction('BrandGet'));
+                echo '</pre>';
+            }
+            if ($val == "VTypeTehDocGet") {
+                echo '<div class="info"><h2>[' . $key . '] ' . $val . '</h2></div><pre>';
+                var_dump($parce->GetResultFunction('TypeTehDocGet'));
                 echo '</pre>';
             }
             if ($val == "Vtehdoc") {

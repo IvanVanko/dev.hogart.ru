@@ -66,4 +66,5 @@ $MESS ['subscr_pass_button'] = "Send";
 $MESS ['subscr_CAPTCHA_REGF_TITLE'] = "Please type the word you see in the image";
 $MESS ['subscr_CAPTCHA_REGF_PROMT'] = "Type text from image";
 $MESS ['adm_reg_butt'] = "Register";
+$MESS ['Телефон'] = "Phone";
 ?>

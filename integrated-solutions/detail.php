@@ -2,13 +2,6 @@
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetTitle("Комплексные решения");
 ?>
-<?
-//$section_codes = BXHelper::getSections(array('ID' => 'ASC'), array('ACTIVE' => 'Y', 'IBLOCK_ID' => '7'), false, array('CODE'), true, 'CODE');
-//$section_codes = array_keys($section_codes['RESULT']);
-//if (!in_array($_REQUEST['section'], $section_codes)) {
-//    BXHelper::NotFound();
-//}
-?>
 <div class="inner no-full">
 <?
     $APPLICATION->IncludeComponent(
@@ -59,7 +52,7 @@ $APPLICATION->SetTitle("Комплексные решения");
                         "bitrix:form.result.new",
                         "integrated-solutions-form",
                         Array(
-                            "WEB_FORM_ID" => "7",
+                            "WEB_FORM_ID" => "MAKE_REQUEST_RU",
                             "IGNORE_CUSTOM_TEMPLATE" => "N",
                             "USE_EXTENDED_ERRORS" => "N",
                             "SEF_MODE" => "N",

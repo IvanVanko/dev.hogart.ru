@@ -67,7 +67,7 @@
 <aside class="sidebar js-fh js-fixed-block js-paralax-height" data-fixed="top">
     <div class="inner js-paralax-item">
         <div class="company-side-cnt padding news__aside__filter">
-            <h2>Тип новости</h2>
+            <h2><?= GetMessage("Тип новости")?></h2>
 
             <form action="#" class="no-padding">
                 <? foreach($arResult["FILTER"]["TAG"] as $key => $tag): ?>
@@ -83,16 +83,17 @@
                     </div>
                 <? endforeach; ?>
             </form>
+            <? if (LANGUAGE_ID != "en"): ?>
             <form action="#" class="no-padding">
                 <div class="accordion-cnt">
                     <h2 class="trigger-accordion js-accordion-new"
-                        data-accordion="#newsFilter">Фильтр по продукции</h2>
+                        data-accordion="#newsFilter"><?= GetMessage("Фильтр по продукции")?></h2>
 
                     <div
                         id="newsFilter"<? if(isset($_REQUEST['brand']) || isset($_REQUEST['direction']) || isset($_REQUEST['catalog_section'])): ?> style="display:block;"<? else: ?>style="display:none;"<? endif; ?>>
                         <div class="field custom_select">
                             <select name="direction">
-                                <option value="">Выбрать направление</option>
+                                <option value=""><?= GetMessage("Выбрать направление")?></option>
                                 <? foreach($arResult["FILTER"]["DIRECTIONS"] as $direction): ?>
                                     <option
                                         value="<?=$direction["ID"]?>"<? if($_REQUEST["direction"] == $direction["ID"]): ?> selected<? endif ?>><?=$direction["NAME"]?></option>
@@ -108,7 +109,7 @@
 
                         <div class="field custom_select">
                             <select name="catalog_section">
-                                <option value="">Выбрать тип товара</option>
+                                <option value=""><?= GetMessage("Выбрать тип товара")?></option>
                                 <? foreach($arResult["FILTER"]["TYPES"] as $type): ?>
                                     <option
                                         value="<?=$type["ID"]?>"<? if($_REQUEST["catalog_section"] == $type["ID"]): ?> selected<? endif ?>><?=$type["VALUE"]?></option>
@@ -117,15 +118,15 @@
                         </div>
                         <div class="field custom_select">
                             <select name="brand">
-                                <option value="">Выбрать бренд</option>
+                                <option value=""><?= GetMessage("Выбрать бренд")?></option>
                                 <? foreach($arResult["FILTER"]["BRANDS"] as $brand): ?>
                                     <option
                                         value="<?=$brand["ID"]?>"<? if($_REQUEST["brand"] == $brand["ID"]): ?> selected<? endif ?>><?=$brand["VALUE"]?></option>
                                 <? endforeach; ?>
                             </select>
                         </div>
-                        <button class="empty-btn flr">Показать</button>
-                        <a href="<?=$page?>" class="empty-btn link">сбросить</a>
+                        <button class="empty-btn flr"><?= GetMessage("Показать")?></button>
+                        <a href="<?=$page?>" class="empty-btn link"><?= GetMessage("Сбросить")?></a>
                     </div>
                 </div>
                 <div class="fixheight"></div>
@@ -145,44 +146,10 @@
                 <!--.clearfix-->
 
             </form>
-
+            <? endif; ?>
             <div class="accordion-cnt">
                 <!--                    <span class="trigger-accordion js-accordion"  data-accordion="#feednews">Подписаться на новости</span>-->
-                <a href="#" class="js-popup-open" data-popup="#popup-subscribe-mod">Подписаться на новости</a>
-
-                <? /*
-                <div id="feednews">
-                    <?$APPLICATION->IncludeComponent(
-                        "bitrix:subscribe.edit",
-                        "left_form",
-                        Array(
-                            "COMPONENT_TEMPLATE" => ".default",
-                            "SHOW_HIDDEN" => "N",
-                            "AJAX_MODE" => "N",
-                            "AJAX_OPTION_JUMP" => "N",
-                            "AJAX_OPTION_STYLE" => "Y",
-                            "AJAX_OPTION_HISTORY" => "N",
-                            "CACHE_TYPE" => "A",
-                            "CACHE_TIME" => "3600",
-                            "ALLOW_ANONYMOUS" => "Y",
-                            "SHOW_AUTH_LINKS" => "Y",
-                            "SET_TITLE" => "N"
-                        )
-                    );?>
-                    <?$APPLICATION->IncludeComponent(
-                        "bitrix:subscribe.form",
-                        "news",
-                        Array(
-                            "USE_PERSONALIZATION" => "Y",
-                            "SHOW_HIDDEN" => "N",
-                            "PAGE" => "#SITE_DIR#subscription/",
-                            "CACHE_TYPE" => "A",
-                            "CACHE_TIME" => "3600"
-                        )
-                    );
-                    ?>
-                </div>
-                */ ?>
+                <a href="#" class="js-popup-open" data-popup="#popup-subscribe-mod"><?= GetMessage("Подписаться на новости")?></a>
             </div>
 
         </div>

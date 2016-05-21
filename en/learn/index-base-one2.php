@@ -239,9 +239,9 @@ $APPLICATION->SetTitle("Обучение");
 
             </div>
             <div class="side_href">
-                <a href="#" class="icon-email">Отправить на e-mail</a>
-                <a href="#" class="icon-print">Распечатать</a>
-                <a href="#" class="icon-phone">Отправить SMS</a>
+                <a href="#" class="icon-email"><?= GetMessage("Отправить на e-mail") ?></a>
+                <a href="#" class="icon-print"><?= GetMessage("Распечатать") ?></a>
+                <a href="#" class="icon-phone"><?= GetMessage("Отправить SMS") ?></a>
             </div>
         </div>
     </aside>

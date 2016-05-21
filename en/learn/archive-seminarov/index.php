@@ -7,7 +7,6 @@ $APPLICATION->SetTitle("Archive of seminars");
     <?$APPLICATION->IncludeComponent("bitrix:news", "archives", array(
         'IBLOCK_ID' => 39,
         "FILTER_NAME"   => "filter",
-//        "FILTER"   => "filter",
         'SEF_MODE' => 'Y',
         "SEF_FOLDER" => "/en/learn/archive-seminarov/",
         "SEF_URL_TEMPLATES" => Array(

@@ -2,8 +2,8 @@
 <aside class="sidebar js-fh js-fixed-block js-paralax-height" data-fixed="top">
     <div class="inner js-paralax-item">
         <div class="padding">
-            <a class="side-back" href="/company/news/">
-                Ко всем новостям
+            <a class="side-back" href="<?= SITE_DIR ?>company/news/">
+                <?= GetMessage("Ко всем новостям") ?>
                 <i class="icon-white-back"></i>
             </a>
         </div>

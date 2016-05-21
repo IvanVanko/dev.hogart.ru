@@ -22,4 +22,4 @@
         "IMAGE"=> $share_img_src
     )
 );?>
-<a class="back_page icon-news-back" href="<?=$arParams['SEF_FOLDER']?>">Назад к полезной информации</a>
+<a class="back_page icon-news-back" href="<?=$arParams['SEF_FOLDER']?>"><?= GetMessage("Назад к полезной информации") ?></a>

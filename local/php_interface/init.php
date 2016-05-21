@@ -3,6 +3,8 @@ if(file_exists($_SERVER['DOCUMENT_ROOT'].'/local/php_interface/CCustomInit.php')
 	require_once($_SERVER['DOCUMENT_ROOT'].'/local/php_interface/CCustomInit.php');
 }
 
+require_once dirname(__FILE__) . "/HogartBlockPropertyMeasureList.php";
+
 #
 # 22.09.2015 For mobile version
 #

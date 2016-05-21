@@ -55,7 +55,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
     <div class="inner">
     <? elseif ($i == 3): ?>
     </div>
-        <div class="hr"><span>Контактная информация</span></div>
+        <div class="hr"><span><?= GetMessage("Контактная информация")?></span></div>
         <div class="inner">
             <? endif; ?>
 
@@ -80,7 +80,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     <? //=$FIELD_SID?><!--" class="js-validation-empty" name="form_dropdown_-->
                     <? //=$FIELD_SID?><!--">-->
                     <select id="form_dropdown_<?= $FIELD_SID ?>" name="form_dropdown_<?= $FIELD_SID ?>">
-                        <option value="">Выбрать тему</option>
+                        <option value=""><?= GetMessage("Выбрать тему") ?></option>
                         <? foreach ($arQuestion['STRUCTURE'] as $value): ?>
                             <option value="<?= $value['ID'] ?>"><?= $value['MESSAGE'] ?></option>
                         <? endforeach; ?>
@@ -88,11 +88,11 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 </div>
             <?
             else: ?>
-                <?if ($arQuestion["CAPTION"] == 'Телефон'):
+                <?if (strtolower($arQuestion["CAPTION"]) == 'телефон' || strtolower($arQuestion["CAPTION"]) == 'tel. number'):
                     $customClass = 'phone js-validation-phone';
                 elseif ($arQuestion["CAPTION"] == 'E-mail'):
                     $customClass = 'js-validation-email';
-                elseif (strtolower($arQuestion["CAPTION"]) == 'отчество'):
+                elseif (strtolower($arQuestion["CAPTION"]) == 'отчество' || strtolower($arQuestion["CAPTION"]) == 'second name'):
                     $customClass = 'not';
                 elseif ($arQuestion["REQUIRED"] == "Y"):
                     $customClass = 'js-validation-empty';
@@ -131,8 +131,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 
         <hr/>
         <div class="inner">
-            <input type="submit" name="web_form_submit" class="empty-btn black" value="Отправить"/>
-            <small>Поля, отмеченные * обязательны для заполнения.</small>
+            <input type="submit" name="web_form_submit" class="empty-btn black" value="<?= GetMessage("Отправить") ?>"/>
+            <small><?= GetMessage("Поля, отмеченные * обязательны для заполнения.") ?></small>
         </div>
 
         <?= $arResult["FORM_FOOTER"] ?>

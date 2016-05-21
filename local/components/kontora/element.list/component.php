@@ -17,7 +17,7 @@ $arOrder = (isset($arParams['ORDER']) && !empty($arParams['ORDER'])) ? $arParams
 $arNavParams = (isset($arParams['ELEMENT_COUNT']) && !empty($arParams['ELEMENT_COUNT'])) ? array("nPageSize" => $arParams["ELEMENT_COUNT"]) : false;
 $arParams["IBLOCK_ID"] = trim($arParams["IBLOCK_ID"]);
 
-$arFilter = array('IBLOCK_ID' => $arParams["IBLOCK_ID"], 'ACTIVE' => 'Y');
+$arFilter = array('SITE_ID' => SITE_ID, 'IBLOCK_ID' => $arParams["IBLOCK_ID"], 'ACTIVE' => 'Y');
 if(!empty($arParams['FILTER'])) {
     $arFilter = array_merge($arFilter, $arParams['FILTER']);
 }

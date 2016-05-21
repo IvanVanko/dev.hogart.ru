@@ -1,7 +1,7 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
     die();
 } ?>
-<? if($APPLICATION->GetCurDir() != '/'): ?>
+<? if($APPLICATION->GetCurDir() != SITE_DIR): ?>
     <footer class="inner">
         <span>© 2014, ООО «Хогарт», 117041,  г. Москва, ул Поляны, 52</span>
         <a href="#" class="p_logo"></a>
@@ -75,12 +75,7 @@
             "bitrix:form.result.new",
             "feedback",
             Array(
-                //                    "AJAX_MODE" => "Y",  // режим AJAX
-                //                    "AJAX_OPTION_SHADOW" => "N", // затемнять область
-                //                    "AJAX_OPTION_JUMP" => "Y", // скроллить страницу до компонента
-                //                    "AJAX_OPTION_STYLE" => "Y", // подключать стили
-                //                    "AJAX_OPTION_HISTORY" => "N",
-                "WEB_FORM_ID" => "1",
+                "WEB_FORM_ID" => "FEEDBACK_" . strtoupper(LANGUAGE_ID),
                 "IGNORE_CUSTOM_TEMPLATE" => "N",
                 "USE_EXTENDED_ERRORS" => "N",
                 "SEF_MODE" => "N",
@@ -103,11 +98,6 @@
             "bitrix:form.result.new",
             "feedback",
             Array(
-                //                    "AJAX_MODE" => "Y",  // режим AJAX
-                //                    "AJAX_OPTION_SHADOW" => "N", // затемнять область
-                //                    "AJAX_OPTION_JUMP" => "Y", // скроллить страницу до компонента
-                //                    "AJAX_OPTION_STYLE" => "Y", // подключать стили
-                //                    "AJAX_OPTION_HISTORY" => "N",
                 "WEB_FORM_ID" => "2",
                 "IGNORE_CUSTOM_TEMPLATE" => "N",
                 "USE_EXTENDED_ERRORS" => "Y",
@@ -213,7 +203,7 @@
 <div class="popup-cnt">
     <div class="inner-cnt" id="popup-subscribe-mod">
         <div class="head inner">
-            <h2>Подписаться на новости</h2>
+            <h2><?= GetMessage("Подписаться на новости") ?></h2>
             <a href="#" class="close"></a>
         </div>
         <div class="inner">
@@ -245,25 +235,25 @@
     <div class="inner-cnt" id="popup-subscribe-phone">
 
         <div class="head inner">
-            <h2>Отправить по SMS</h2>
+            <h2><?= GetMessage("Отправить по SMS") ?></h2>
             <a href="#" class="close"></a>
         </div>
 
         <form action="/ajax/smsc_send.php" method="post">
             <div class="inner form-cont-box">
 
-                <p>Название страницы: <?=$APPLICATION->GetTitle()?>
+                <p><?= GetMessage("Название страницы") ?>: <?=$APPLICATION->GetTitle()?>
                     <input name="title_name" value="<?=$APPLICATION->GetTitle()?>" type="hidden"/>
                 </p>
 
-                <p>Ссылка: http://hogart.ru<?=$APPLICATION->GetCurDir()?></p>
-                <input name="page_href" value="http://hogart.ru<?=$APPLICATION->GetCurDir()?>" type="hidden"/>
+                <p><?= GetMessage("Ссылка") ?>: <?= ("http://" . ($_SERVER["SERVER_NAME"] ?: $_SERVER['HTTP_HOST'])) ?><?=$APPLICATION->GetCurDir()?></p>
+                <input name="page_href" value="<?= ("http://" . ($_SERVER["SERVER_NAME"] ?: $_SERVER['HTTP_HOST'])) ?><?=$APPLICATION->GetCurDir()?>" type="hidden"/>
 
             </div>
             <hr>
             <div class="inner form-cont-box">
                 <div class="field custom_label phone">
-                    <label for="sending_phone">телефон:<span class="form-required starrequired">*</span></label>
+                    <label for="sending_phone"><?= GetMessage("Телефон") ?>:<span class="form-required starrequired">*</span></label>
                     <input type="text" class="inputtext" name="sending_phone"
                            value="<?=($GLOBALS['USER']->IsAuthorized()) ? $user_mail : ''?>" size="0">
                 </div>
@@ -271,18 +261,19 @@
             <hr>
             <div class="inner form-cont-box">
                 <input type="submit" name="sending_phone_form" class="empty-btn black" value="Отправить">
-                <small>Поля, отмеченные * обязательны для заполнения.</small>
+                <small><?= GetMessage("Поля, отмеченные * обязательны для заполнения.")?></small>
             </div>
             <div class="inner success" style="display: none;">
-                Вы поделились ссылкой успешно!
+                <?= GetMessage("Вы поделились ссылкой успешно!") ?>
             </div>
         </form>
     </div>
 </div>
+<? if (LANGUAGE_ID != 'en'): ?>
 <div class="popup-cnt">
     <div class="inner-cnt" id="popup-login">
         <div class="head inner">
-            <h2>Войти в личный кабинет</h2>
+            <h2><?= GetMessage("Войти в личный кабинет") ?></h2>
             <a href="#" class="close"></a>
         </div>
         <? $APPLICATION->IncludeComponent("bitrix:system.auth.form", "auth", Array(
@@ -295,6 +286,7 @@
 
     </div>
 </div>
+<? endif; ?>
 <? $description = substr($APPLICATION->GetProperty('description'), "0", "400"); ?>
 <? $APPLICATION->SetPageProperty('description', $description); ?>
 <? ?>

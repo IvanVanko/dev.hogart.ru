@@ -101,7 +101,7 @@ $share_img_src = false;?>
                 "IMAGE"=> $share_img_src
             )
         );?>
-        <a class="back_page icon-news-back" href="/company/news/">Назад к новостям</a>
+        <a class="back_page icon-news-back" href="/company/news/"><?= GetMessage("Назад к новостям") ?></a>
     </div>
 <?$APPLICATION->IncludeComponent(
     "kontora:element.list",

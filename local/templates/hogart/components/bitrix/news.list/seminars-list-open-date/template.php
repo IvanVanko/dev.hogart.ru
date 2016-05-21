@@ -38,19 +38,20 @@ $page = $APPLICATION->GetCurDir(true);
         </ul>
     <?endif;?>
     <ul class="lear-base-bottom-href">
-        <li><a href="/learn/" class="cal">календарь Семинаров</a></li>
-        <li><a href="/learn/archive-seminarov/" class="base">Архив Семинаров</a></li>
+        <li><a href="<?= SITE_DIR ?>learn/" class="cal"><?= GetMessage("Календарь Семинаров") ?></a></li>
+        <li><a href="<?= SITE_DIR ?>learn/archive-seminarov/" class="base"><?= GetMessage("Архив Семинаров") ?></a></li>
     </ul>
 </div>
 <aside class="sidebar js-fh js-fixed-block js-paralax-height" data-fixed="top">
     <div class="inner js-paralax-item">
         <div class="padding">
-            <a href="/learn/" class="side-back">Календарь семинаров <i class="icon-white-back"></i></a>
+            <a href="<?= SITE_DIR ?>learn/" class="side-back"><?= GetMessage("Календарь Семинаров") ?> <i class="icon-white-back"></i></a>
         </div>
+        <? if (!empty($arResult['FILTER']['BRANDS']) || (!empty($arResult["FILTER"]["DIRECTIONS"]) && LANGUAGE_ID != "en")): ?>
         <div class="company-side-cnt padding null-padding-top">
 
             <form action="#">
-                <?if (!empty($arResult["FILTER"]["DIRECTIONS"])):?>
+                <?if (!empty($arResult["FILTER"]["DIRECTIONS"]) && LANGUAGE_ID != "en"):?>
                     <h2>Направление</h2>
                     <?foreach ($arResult["FILTER"]["DIRECTIONS"] as $key => $arDirection):?>
                     <?//if (count($arDirection['SECTIONS'])>0):?>
@@ -80,7 +81,7 @@ $page = $APPLICATION->GetCurDir(true);
                 <?endif;?>
 
                 <?if (!empty($arResult['FILTER']['BRANDS'])):?>
-                    <h2 class="normal-margin">Бренд</h2>
+                    <h2 class="normal-margin"><?= GetMessage("Бренд") ?></h2>
                     <div class="breands hide-big-cnt" data-hide="Еще бренды">
                         <?foreach ($arResult['FILTER']['BRANDS'] as $key => $arBrand):?>
                             <?if ($key == 3):?>
@@ -96,14 +97,16 @@ $page = $APPLICATION->GetCurDir(true);
                         <?endif;?>
                     </div>
                 <?endif;?>
+
                 <br/>
-                <button class="empty-btn">Найти семинары</button>
+                <button class="empty-btn"><?= GetMessage("Найти семинары") ?></button>
                 <br/>
                 <br/>
                 <br/>
-                <a href="<?= $page ?>" class="empty-btn link">сбросить запрос</a>
+                <a href="<?= $page ?>" class="empty-btn link"><?= GetMessage("Сбросить запрос") ?></a>
             </form>
 
         </div>
+        <? endif; ?>
     </div>
 </aside>

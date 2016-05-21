@@ -35,7 +35,7 @@ foreach ($arResult['QUESTIONS'] as $code => &$arQuestion) {
         $value = $arParams["CUSTOM_VALS"][$code];
         $obHtmlNode->setAttribute('value',$value);
     }
-    if (strtolower($arQuestion['CAPTION']) == "телефон") {
+    if (strtolower($arQuestion['CAPTION']) == "телефон" || strtolower($arQuestion['CAPTION']) == 'tel. number') {
         $obHtmlNode->setAttribute('data-phone-mask','true');
     } else {
         $obHtmlNode->setAttribute('class','');

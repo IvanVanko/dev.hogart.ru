@@ -2,7 +2,7 @@
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetTitle("References");
 ?><?
-$section_codes = BXHelper::getSections(array('ID' => 'ASC'), array('ACTIVE' => 'Y', 'IBLOCK_ID' => '7'), false, array('CODE'), true, 'CODE');
+$section_codes = BXHelper::getSections(array('ID' => 'ASC'), array('ACTIVE' => 'Y', 'IBLOCK_ID' => '35'), false, array('CODE'), true, 'CODE');
 $section_codes = array_keys($section_codes['RESULT']);
 if (in_array($_REQUEST["SECTION_CODE"], $section_codes)) {
     $APPLICATION->IncludeComponent(
@@ -11,7 +11,7 @@ if (in_array($_REQUEST["SECTION_CODE"], $section_codes)) {
         Array(
             "COMPONENT_TEMPLATE" => ".default",
             "IBLOCK_TYPE" => "solutions",
-            "IBLOCK_ID" => "7",
+            "IBLOCK_ID" => "35",
             "SECTION_ID" => "",
             "SECTION_CODE" => $_REQUEST["SECTION_CODE"],
             "SECTION_USER_FIELDS" => array("",""),

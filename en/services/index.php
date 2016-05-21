@@ -78,7 +78,7 @@ $APPLICATION->SetTitle("Service in Hogart");
                 <?$APPLICATION->IncludeComponent(
                     "bitrix:form.result.new", "server_service",
                     array(
-                        "WEB_FORM_ID" => "8",
+                        "WEB_FORM_ID" => "REQUEST_FOR_SERVICE_EN",
                         "IGNORE_CUSTOM_TEMPLATE" => "N",
                         "USE_EXTENDED_ERRORS" => "N",
                         "SEF_MODE" => "N",

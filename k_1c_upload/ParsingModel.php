@@ -21,9 +21,9 @@ class ParsingModel {
     );
 
     private static $topSections = [
-        'otoplenie' => 9,
-        'ventilyatsiya' => 2,
-        'santekhnika' => 1,
+        'otoplenie',
+        'ventilyatsiya',
+        'santekhnika',
     ];
 
     const CATALOG_IBLOCK_ID = 1;
@@ -33,6 +33,12 @@ class ParsingModel {
 
     private $sectionsCache = [];
     private $sectionsCodeCache = [];
+
+    private $techDocCache = [];
+    private $techDocCodeCache = [];
+
+    private $collectionCache = [];
+    private $collectionCodeCache = [];
 
     private $tmp = array();
 
@@ -61,6 +67,20 @@ class ParsingModel {
             echo $e->getMessage();
             echo '</div>';
         }
+
+        $events = GetModuleEvents("iblock", "OnBeforeIBlockPropertyUpdate", true);
+        foreach ($events as $iKey => $event) {
+            if ($event["TO_MODULE_ID"] == "defa.tools") {
+                RemoveEventHandler("iblock", "OnBeforeIBlockPropertyUpdate", $iKey);
+            }
+        }
+
+        $topSectionsRes = CIBlockSection::GetList([], ["CODE" => self::$topSections], false, ["ID", "CODE"]);
+        self::$topSections = [];
+        while (($section = $topSectionsRes->Fetch())) {
+            self::$topSections[$section["CODE"]] = $section["ID"];
+        }
+        
         $this->csv = new csv($create_dir);
         $this->mongo_db_name = "hogart";
 
@@ -337,18 +357,62 @@ class ParsingModel {
     const DETAIL_PICTURE_1C_TYPE_ID = 'c6764e87-3703-496f-9bf7-a48e052967fd';
 
     private $classTrans = array(
-        '3ac566b4-e78f-11e4-9045-003048b99ee9' => 18,//Прайс-лист
-        '4e1de85e-fdf0-11e4-9045-003048b99ee9' => 10,//Каталог
-        '4e1de85f-fdf0-11e4-9045-003048b99ee9' => 7,//Буклеты
-        '4e1de860-fdf0-11e4-9045-003048b99ee9' => 11,//Сертификаты
-        '4e1de863-fdf0-11e4-9045-003048b99ee9' => 8,//Инструкция по монтажу
-        '4e1de865-fdf0-11e4-9045-003048b99ee9' => 9,//Гарантийный талон/Тех. паспорт
-        '4e1de864-fdf0-11e4-9045-003048b99ee9' => 97719,//Инструкция по эксплуатации
         'default' => 10
     );
 
+    function initTypeTechDoc() {
+        $iBlockProperty = (new CIBlockProperty);
+        $techDocTypeProperty = $iBlockProperty->GetList([], ["IBLOCK_ID" => self::DOCUMENTATION_IBLOCK_ID, "CODE" => "type"])->GetNext();
+
+        $res = (new CIBlockPropertyEnum())->GetList([], ["IBLOCK_ID" => self::DOCUMENTATION_IBLOCK_ID, "PROPERTY_ID" => $techDocTypeProperty["ID"]]);
+        while(($enum = $res->GetNext())) {
+            $this->classTrans[$enum["XML_ID"]] = $enum["ID"];
+        }
+
+        $TypeTehDocGetResult = $this->GetResultFunction('TypeTehDocGet');
+
+        if (!empty($TypeTehDocGetResult->return->TypeTehDoc)) {
+            if (is_object($TypeTehDocGetResult->return->TypeTehDoc)) {
+                $TypeTehDocGetResult->return->TypeTehDoc = [$TypeTehDocGetResult->return->TypeTehDoc];
+            }
+            $answer = [
+                "ID_Portal" => "HG",
+                "StringTypeTehDoc" => []
+            ];
+            $newValues = [];
+            foreach ($TypeTehDocGetResult->return->TypeTehDoc as $TypeTehDoc) {
+                $answer["StringTypeTehDoc"][] = $TypeTehDoc->id;
+                if ($this->classTrans[$TypeTehDoc->id]) continue;
+                $newValues[] = [
+                    "XML_ID" => $TypeTehDoc->id,
+                    "VALUE" => $TypeTehDoc->name,
+                    "PROPERTY_ID" => $techDocTypeProperty["ID"],
+                    "SORT" => 500
+                ];
+            }
+
+            if (!empty($newValues)) {
+                foreach ($newValues as $newValue) {
+                    \CIBlockPropertyEnum::Add($newValue);
+                }
+                $res = (new CIBlockPropertyEnum())->GetList([], ["IBLOCK_ID" => self::DOCUMENTATION_IBLOCK_ID, "PROPERTY_ID" => $techDocTypeProperty["ID"]]);
+                while(($enum = $res->GetNext())) {
+                    $this->classTrans[$enum["XML_ID"]] = $enum["ID"];
+                }
+            }
+
+            $answer["StringTypeTehDoc"] = implode(";", $answer["StringTypeTehDoc"]);
+            if ($this->answer) {
+                $this->client->__soapCall("TypeTehDocAnswer", array('parameters' => $answer));
+            }
+        }
+    }
+
     function initTehDoc() {
         $this->csv->saveLog(['techDoc import start '.date('d.M.Y H:i:s')]);
+
+        $this->initTypeTechDoc();
+
         $ost = $this->GetResultFunction("TehDocGet");
 
         $answer = array();
@@ -375,7 +439,7 @@ class ParsingModel {
             $type_index = $file->type_id;
             $access_level = $file->access_level;
             $actual = $file->actual;
-            $answer['StringTehDoc'][] = $fileXmlID;
+
             if(empty($access_level)) {
                 $access_level = 1;
             }
@@ -404,7 +468,6 @@ class ParsingModel {
                 $elementXmlID = $line->obj_id;
                 $type = $line->obj_type;
 
-                $iblock_id = false;
                 if($type == 'brands') {
                     $iblock_id = self::BRAND_IBLOCK_ID;
                 }
@@ -414,6 +477,9 @@ class ParsingModel {
                 elseif($type == 'nomenclature') {
                     $iblock_id = self::CATALOG_IBLOCK_ID;
                 }
+                elseif($type == 'collection') {
+                    $iblock_id = self::COLLECTIONS_IBLOCK_ID;
+                }
                 else {
                     $this->csv->saveLog(array('Передан неизвестный тип документации', $type, __LINE__));
                     continue;
@@ -421,20 +487,28 @@ class ParsingModel {
 
                 $elementsPhotos = [];
                 $elementID = false;
-                $bQ = CIBlockElement::GetList(array(), array(
-                    'IBLOCK_ID' => $iblock_id,
-                    "=XML_ID" => $elementXmlID,
-                ), false, false, array('ID'));
 
-                if($arItem = $bQ->GetNext()) {
-                    $elementID = $arItem['ID'];
-                    $photosRes = CIBlockElement::GetProperty($iblock_id, $elementID, [], ['CODE' => 'photos']);
-                    while($obPhotosRes = $photosRes->GetNext()){
-                        $elementsPhotos[$elementID] = $obPhotosRes['VALUE'];
+                if ($type == 'categorys') {
+                    $elementID = CIBlockSection::GetList(array(), array(
+                        'IBLOCK_ID' => $iblock_id,
+                        "=XML_ID" => $elementXmlID,
+                    ), false, array('ID'))->GetNext()['ID'];
+                } else {
+                    $bQ = CIBlockElement::GetList(array(), array(
+                        'IBLOCK_ID' => $iblock_id,
+                        "=XML_ID" => $elementXmlID,
+                    ), false, false, array('ID'));
+
+                    if($arItem = $bQ->GetNext()) {
+                        $elementID = $arItem['ID'];
+                        $photosRes = CIBlockElement::GetProperty($iblock_id, $elementID, [], ['CODE' => 'photos']);
+                        while($obPhotosRes = $photosRes->GetNext()){
+                            $elementsPhotos[$elementID] = $obPhotosRes['VALUE'];
+                        }
                     }
-                }
 
-                $elementsPhotos = array_filter($elementsPhotos);
+                    $elementsPhotos = array_filter($elementsPhotos);
+                }
 
                 if($type == 'brands') {
                     if(!$elementID) {
@@ -449,11 +523,10 @@ class ParsingModel {
                         }
                     }
                     else {
-                        $array_brands[] = array('id' => $elementXmlID, 'id_b' => $elementID);
+                        $array_brands[] = array('id' => $elementXmlID, 'id_b' => $elementID, 'type' => $line->view_type);
                     }
                 }
                 if($type == 'categorys') {
-
                     if(!$elementID) {
                         echo 'Не найден товар для связки с документацией '.$fileXmlID."<br>";
                         if($_GET['P'] == 'Y') {
@@ -466,7 +539,7 @@ class ParsingModel {
                         }
                     }
                     else {
-                        $array_product_doc[] = array('id' => $elementXmlID, 'id_b' => $elementID);
+                        $array_product_doc[] = array('id' => $elementXmlID, 'id_b' => $elementID, 'type' => $line->view_type);
                     }
                 }
                 if($type == 'nomenclature') {
@@ -483,7 +556,25 @@ class ParsingModel {
                         }
                     }
                     else {
-                        $array_product[] = array('id' => $elementXmlID, 'id_b' => $elementID);
+                        $array_product[] = array('id' => $elementXmlID, 'id_b' => $elementID, 'type' => $line->view_type);
+                    }
+
+                }
+                if($type == 'collection') {
+                    if(!$elementID) {
+                        echo 'Нет коллекции '.$fileXmlID."<br>";
+                        if($_GET['P'] == 'Y') {
+                            $this->csv->saveLog(array('Не найдена коллекция', $elementXmlID, __LINE__));
+                            $error[] = $fileXmlID;
+                        }
+                        if($_GET['V'] == 'Y') {
+                            $error_count++;
+                            $this->csv->saveLog(array('Не найдена коллекция', $elementXmlID, __LINE__));
+                            echo $error_count.')Не найден коллекция: '.$elementXmlID.'<br>';
+                        }
+                    }
+                    else {
+                        $array_product[] = array('id' => $elementXmlID, 'id_b' => $elementID, 'type' => $line->view_type);
                     }
 
                 }
@@ -505,7 +596,7 @@ class ParsingModel {
             if(count($array_product) and $_GET['V'] != 'Y' and $_GET['P'] != 'Y') {
                 foreach($array_product as $product) {
                     if($product['id_b']) {
-                        if($this->classTrans[$type_index]) {
+                        if($this->classTrans[$type_index] && $product["type"] == "techdoc") {
                             $res = CIBlockElement::GetProperty(self::CATALOG_IBLOCK_ID,
                                 $product['id_b'], array(), array("CODE" => "BRAND"));
                             $arFile = array();
@@ -518,7 +609,7 @@ class ParsingModel {
                                 $this->classTrans[$type_index], $access_level);
 
                             $id_doc_dynamic = array(array('VALUE' => $id_doc_dynamic));
-                            if($el->SetPropertyValueCode($product['id_b'], "DOCS", $id_doc_dynamic)) {
+                            if($this->setPropertyValue($product['id_b'], "docs", $id_doc_dynamic)) {
                                 echo 'Документация добавлена и связана с товаром: '.$product['id_b'];
                                 unlink(trim($_SERVER['DOCUMENT_ROOT'].'/1c-upload/'.$file->adress));
                             }
@@ -538,74 +629,80 @@ class ParsingModel {
                                 "DESCRIPTION" => $name,
                             );
 
-                            if($type_index == self::DETAIL_PICTURE_1C_TYPE_ID) {
-                                if($del){
-                                    $file_obj['del'] = 'del';
-                                }
-                                $el->Update($product['id_b'], array(
-                                    "DETAIL_PICTURE" => $file_obj
-                                ), false, true, true);
-                                if($this->answer) {
-                                    unlink(trim($_SERVER['DOCUMENT_ROOT'].'/1c-upload/'.$file->adress));
-                                }
-                            }
-                            else {
-                                if(isset($elementsPhotos[$product['id_b']])){
-                                    foreach($elementsPhotos[$product['id_b']] as $photo){
-                                        $fileArray = CFile::GetByID($photo);
-                                        if($fileArray['ORIGINAL_NAME'] == $file->adress && $del){
-                                            $arFile['del'] = 'Y';
-                                            echo "Фото добавлено: ".$name."<br />";
-                                        }
+                            switch ($product["type"]) {
+                                case 'preview_picture':
+                                    if($del){
+                                        $file_obj['del'] = 'del';
                                     }
-                                }
-
-                                if($el->SetPropertyValueCode($product['id_b'], "photos", $arFile)) {
+                                    $el->Update($product['id_b'], array(
+                                        "PREVIEW_PICTURE" => $file_obj
+                                    ), false, true, true);
                                     if($this->answer) {
                                         unlink(trim($_SERVER['DOCUMENT_ROOT'].'/1c-upload/'.$file->adress));
                                     }
-                                    echo "Фото добавлено: ".$name."<br />";
-                                }
-                                else {
-                                    $this->csv->saveLog(array('фото не добавилось',
-                                                              $fileXmlID,
-                                                              $el->LAST_ERROR." ".__LINE__." ".__FUNCTION__));
-                                    echo 'Error product img: ['.$fileXmlID.'] '.$el->LAST_ERROR." ".__LINE__." ".__FUNCTION__.'<br>';
-                                }
+                                    break;
+                                case 'detail_picture':
+                                    if($del){
+                                        $file_obj['del'] = 'del';
+                                    }
+                                    $el->Update($product['id_b'], array(
+                                        "DETAIL_PICTURE" => $file_obj
+                                    ), false, true, true);
+                                    if($this->answer) {
+                                        unlink(trim($_SERVER['DOCUMENT_ROOT'].'/1c-upload/'.$file->adress));
+                                    }
+                                    break;
+                                case 'additional_picture':
+                                    if(isset($elementsPhotos[$product['id_b']])){
+                                        foreach($elementsPhotos[$product['id_b']] as $photo){
+                                            $fileArray = CFile::GetByID($photo);
+                                            if($fileArray['ORIGINAL_NAME'] == $file->adress && $del){
+                                                $arFile['del'] = 'Y';
+                                                echo "Фото добавлено: ".$name."<br />";
+                                            }
+                                        }
+                                    }
+
+                                    if($this->setPropertyValue($product['id_b'], "photos", $arFile)) {
+                                        if($this->answer) {
+                                            unlink(trim($_SERVER['DOCUMENT_ROOT'].'/1c-upload/'.$file->adress));
+                                        }
+                                        echo "Фото добавлено: ".$name."<br />";
+                                    }
+                                    else {
+                                        $this->csv->saveLog(array('фото не добавилось',
+                                            $fileXmlID,
+                                            $el->LAST_ERROR." ".__LINE__." ".__FUNCTION__));
+                                        echo 'Error product img: ['.$fileXmlID.'] '.$el->LAST_ERROR." ".__LINE__." ".__FUNCTION__.'<br>';
+                                    }
+                                    break;
                             }
                         }
                     }
+                    $answer['StringTehDoc'][] = $fileXmlID;
                 }
             }
 
             if(count($array_product_doc) and $_GET['V'] != 'Y' and $_GET['P'] != 'Y') {
-                $item = $this->findEl(array('IBLOCK_ID' => self::DOCUMENTATION_IBLOCK_ID, "=XML_ID" => $elementXmlID));
-                if(!empty($item['ID'])) {
-                    $arFile = array();
-                    $arFile[] = array('VALUE' => $item['ID']);
-                    foreach($array_product_doc as $product) {
-                        if($el->SetPropertyValueCode($product['id_b'], "DOCS", $arFile)) {
-                            echo "Фото добавлено: ".$name."<br />";
+                foreach($array_product_doc as $product) {
+                    if ((new CIBlockSection())->Update($product['id_b'], [
+                        "PICTURE" => $file_obj
+                    ])) {
+                        echo "Фото добавлено в раздел {$product['id_b']}: " . $name . "<br />";
+                        if($this->answer) {
+                            unlink(trim($_SERVER['DOCUMENT_ROOT'].'/1c-upload/'.$file->adress));
+                            $answer['StringTehDoc'][] = $fileXmlID;
                         }
-                        else {
-                            $this->csv->saveLog(array(
-                                'Документация не связалась с продуктом',
-                                $fileXmlID,
-                                $el->LAST_ERROR." ".__LINE__." ".__FUNCTION__
-                            ));
-                            echo 'Документация не связалась с продуктом: ['.$fileXmlID.'] '.$el->LAST_ERROR." ".__LINE__." ".__FUNCTION__.'<br>';
-                        }
+                    } else {
+                        $this->csv->saveLog(array(
+                            'Фото не добавлено в раздел',
+                            $product['id'],
+                            $el->LAST_ERROR." ".__LINE__." ".__FUNCTION__
+                        ));
+                        echo 'Фото не добавлено в раздел: ['.$product['id'].'] '.$el->LAST_ERROR." ".__LINE__." ".__FUNCTION__.'<br>';
                     }
                 }
-                else {
-                    $this->csv->saveLog(array('Документация для связки не найдена',
-                                              $fileXmlID,
-                                              $el->LAST_ERROR." ".__LINE__." ".__FUNCTION__));
-                    echo 'Документация для связки не найдена: ['.$fileXmlID.'] '.$el->LAST_ERROR." ".__LINE__." ".__FUNCTION__.'<br>';
-                }
-
             }
-
         }
 
         if($_GET['P'] == 'Y') {
@@ -638,6 +735,22 @@ class ParsingModel {
 
         echo '</div>';
         $this->csv->saveLog(['techDoc import end '.date('d.M.Y H:i:s')]);
+    }
+
+    public function setPropertyValue($objId, $property_code, $property_values)
+    {
+        $el = new CIBlockElement;
+        $elements[$objId] = $el->GetByID($objId)->GetNextElement()->GetFields();
+        $iBlockId = $elements[$objId]["IBLOCK_ID"];
+        $el->GetPropertyValuesArray($elements, $iBlockId, ["ID" => $objId], ["CODE" => $property_code]);
+        $values = [];
+        foreach ($elements[$objId][$property_code]["VALUE"] as $value) {
+            $values[] = ["VALUE" => $value];
+        }
+        foreach ($property_values as $val) {
+            $values[] = $val;
+        }
+        return $el->SetPropertyValueCode($objId, $property_code, $values);
     }
 
     function addDoc($xmlId, $file, $name, $brand, $del, $type, $access_level = 1, $active = "Y") {
@@ -897,6 +1010,34 @@ class ParsingModel {
         }
     }
 
+    function initTechDocCache($force = false) {
+        if (!empty($this->techDocCache) && !$force) return;
+
+        $arFilter = Array(
+            'IBLOCK_ID' => self::DOCUMENTATION_IBLOCK_ID
+        );
+
+        $rsItems = CIBlockElement::GetList(Array("SORT" => "ASC"), $arFilter, false, false, ['XML_ID', 'ID', 'CODE']);
+        while($item = $rsItems->Fetch()) {
+            $this->techDocCache[$item['XML_ID']] = $item['ID'];
+            $this->techDocCodeCache[$item['XML_ID']] = $item['CODE'];
+        }
+    }
+
+    function initCollectionCache($force = false) {
+        if (!empty($this->collectionCache) && !$force) return;
+
+        $arFilter = Array(
+            'IBLOCK_ID' => self::COLLECTIONS_IBLOCK_ID
+        );
+
+        $rsItems = CIBlockElement::GetList(Array("SORT" => "ASC"), $arFilter, false, false, ['XML_ID', 'ID', 'CODE']);
+        while($item = $rsItems->Fetch()) {
+            $this->collectionCache[$item['XML_ID']] = $item['ID'];
+            $this->collectionCodeCache[$item['XML_ID']] = $item['CODE'];
+        }
+    }
+
     /**
      * Загружаем разделы
      */
@@ -948,6 +1089,7 @@ class ParsingModel {
                 "ACTIVE" => "Y",
                 "IBLOCK_CODE" => $value->name,
                 "IBLOCK_ID" => self::CATALOG_IBLOCK_ID,
+                "UF_SECTION_VIEW" => ($value->default_view ? : 1) 
             );
 
             //Если элемент уже существует, обновляем его или удаляем, при условии что флаг установлен
@@ -997,6 +1139,26 @@ class ParsingModel {
                     echo 'Error: '.$el->LAST_ERROR." ".__LINE__." ".__FUNCTION__;
                 }
             }
+
+            if(!empty($value->set_cat)) {
+                if(is_object($value->set_cat)) {
+                    $value->set_cat = array($value->set_cat);
+                }
+                foreach ($value->set_cat as $set_cat) {
+                    $props = [
+                        'id_cat' => $this->sectionsCache[$value->id]
+                    ];
+                    $arFields = Array(
+                        "IBLOCK_SECTION_ID" => false,
+                        "IBLOCK_ID" => self::COLLECTIONS_IBLOCK_ID,
+                        "XML_ID" => $set_cat->set_id,
+                        "PROPERTY_VALUES" => $props,
+                        "DETAIL_TEXT" => $set_cat->description,
+                        "ACTIVE" => "Y"
+                    );
+                    $this->addCollection($arFields);
+                }
+            }
             $answer['StringCategory'][] = $value->id;
         }
 
@@ -1021,6 +1183,64 @@ class ParsingModel {
         else {
             echo "<div class='error'>Категории не загружены</div>";
         }
+    }
+
+    public function addCollection($fields, $params = [])
+    {
+        $this->initCollectionCache();
+        $el = new CIBlockElement();
+        
+        //проверяем наличие такого элемента
+        //Если элемент уже существует, обновляем его или удаляем, при условии что флаг установлен
+        if(($existElementId = $this->collectionCache[$fields["XML_ID"]])) {
+            //Удаляем из битрикса элемент
+            if($params["deletion_mark"] == true) {
+                //Проверяем права на удаление
+                //Удаляем и выводим сообщение о выполнении, иначе показываем ошибку
+                if(!CIBlockElement::Delete($existElementId)) {
+                    echo 'Запись удалена - '.$existElementId;
+                }
+                else {
+                    echo '<p class="error">При удалении элемента произошла ошибка ['.$existElementId.']<br>
+                                    '.$el->LAST_ERROR." ".__LINE__." ".__FUNCTION__.'</p>';
+                }
+            }
+            else {
+                $collectionElement = $el->GetByID($existElementId)->GetNextElement();
+                $values = [];
+                foreach ($collectionElement->GetProperties() as $key => $property) {
+                    $values[$key] = $property["VALUE"];
+                }
+                $fields["PROPERTY_VALUES"] = array_merge($values, $fields["PROPERTY_VALUES"]);
+                //Если удалять не нужно, то обновляем и выводим сообщение
+                if($res = $el->Update($existElementId, $fields)) {
+                    echo "Запись обновлена: " . $fields["NAME"] . "<br />";
+                }
+                else {
+                    echo 'Error: '.$el->LAST_ERROR." ".__LINE__." ".__FUNCTION__;
+                }
+            }
+        }
+        else {
+            $fields['CODE'] = CUtil::translit($fields['NAME'], 'ru',
+                array('change_case' => 'L', 'replace_space' => '-', 'replace_other' => ''));
+
+            if(array_search($fields['CODE'], $this->collectionCodeCache)) {
+                $fields['CODE'] .= md5($fields['XML_ID']);
+            }
+
+            if(($existElementId = $el->Add($fields))) {
+                $this->collectionCache[$fields['XML_ID']] = $existElementId;
+                $this->collectionCodeCache[$fields['XML_ID']] = $fields['CODE'];
+
+                echo "Добавлена: " . $fields['NAME'] . "<br />";
+            }
+            else {
+                echo 'Error: '.$el->LAST_ERROR." ".__LINE__." ".__FUNCTION__;
+            }
+        }
+
+        return $existElementId;
     }
 
     function initPropname($ost) {
@@ -1809,7 +2029,12 @@ class ParsingModel {
             $measures = $temp_meas;
         }
 
-        $dbCatalogMeasureResult = CCatalogMeasure::GetList(array(), array('CODE' => array_keys($measure_units)));
+        $arFilter = [];
+        if (!empty($measure_units)) {
+            $arFilter = array('CODE' => array_keys($measure_units));
+        }
+
+        $dbCatalogMeasureResult = CCatalogMeasure::GetList(array(), $arFilter);
         while($next = $dbCatalogMeasureResult->GetNext()) {
             $arCatalogMeasures[$next['CODE']] = $next;
         }
@@ -1858,7 +2083,9 @@ class ParsingModel {
             $prop = array_map('json_decode', $prop);
             $propA = array();
 
-            //echo "<PRE>";
+            $arPropertyCollection = BXHelper::getProperties(array(), array('IBLOCK_ID' => self::CATALOG_IBLOCK_ID,
+                'CODE' => 'collection'), array(), 'CODE');
+            $arPropertyCollection = $arPropertyCollection['RESULT'];
 
             foreach($prop as $vp) {
                 $updated_property_values_xml_ids[] = $vp->propname_id;
@@ -1878,27 +2105,9 @@ class ParsingModel {
 
                 $prop_values = $temp;
 
-                //                $arPropertyIntervalEnums = array();
                 if(!empty($propIntervals)) {
                     $propIntervalsId = BXHelper::pull_array_field($propIntervals, 'id');
                     $obModel = &$this;
-
-                    //                $prop_intervals_min = array_map(
-                    //                    function ($code) use (&$obModel) {
-                    //                        $code = $this->code1C2codeBitrix($code)."_min";
-                    //                        return $code;
-                    //                    },
-                    //                    $propIntervalsId
-                    //                );
-                    //
-                    //                $prop_intervals_max = array_map(
-                    //                    function ($code) use (&$obModel) {
-                    //                        $code = $this->code1C2codeBitrix($code)."_max";
-                    //                        return $code;
-                    //                    },
-                    //                    $propIntervalsId
-                    //                );
-
                     $prop_intervals_id_bitrix = array_map(
                         function ($code) use (&$obModel) {
                             $code = $this->code1C2codeBitrix($code);
@@ -1906,28 +2115,10 @@ class ParsingModel {
                         },
                         $propIntervalsId
                     );
-
-                    //                    $arPropertyIntervalEnums = BXHelper::getPropertyEnum(
-                    //                        array(),
-                    //                        array('IBLOCK_ID' => 1,
-                    //                              'CODE' => $prop_intervals_id_bitrix
-                    //                        ), 'XML_ID', false);
-                    //
-                    //
-                    //                    $arPropertyIntervalEnums = BXHelper::group_array($arPropertyIntervalEnums, 'PROPERTY_CODE');
                 }
 
 
                 $updated_property_values_xml_ids = array_unique($updated_property_values_xml_ids);
-                /*foreach ($prop as $vp) {
-                    if (in_array($vp->propname_id, $propIntervalsId)) {
-                        $index = array_search($vp->propname_id, $updated_property_values_xml_ids);
-                        unset($updated_property_values_xml_ids[$index]);
-                        $updated_property_values_xml_ids[] = $vp->propname_id."_min";
-                        $updated_property_values_xml_ids[] = $vp->propname_id."_max";
-                    }
-                }*/
-
                 $updated_property_values_xml_ids = array_values($updated_property_values_xml_ids);
 
                 $arPropertyEnums = BXHelper::getPropertyEnum(
@@ -1948,10 +2139,6 @@ class ParsingModel {
                           )), array(), 'CODE', false
                 );
 
-                $arPropertyCollection = BXHelper::getProperties(array(), array('IBLOCK_ID' => self::CATALOG_IBLOCK_ID,
-                                                                               'CODE' => 'collection'), array(), 'CODE');
-                $arPropertyCollection = $arPropertyCollection['RESULT'];
-
                 $arProperties = $arProperties['RESULT'];
 
                 $arCurrentPropertyEnums = BXHelper::group_array($arPropertyEnums, 'PROPERTY_CODE');
@@ -1961,10 +2148,7 @@ class ParsingModel {
                     $property_enums = $arCurrentPropertyEnums[$this->code1C2codeBitrix($vp->propname_id)];
 
                     $value_enum = false;
-                    //$min_property_enums = $arPropertyIntervalEnums[$this->code1C2codeBitrix($vp->propname_id)."_min"];
-                    //$max_property_enums = $arPropertyIntervalEnums[$this->code1C2codeBitrix($vp->propname_id)."_max"];
-
-                    if(in_array($this->code1C2codeBitrix($vp->propname_id), $prop_intervals_id_bitrix)) {
+                    if(!empty($prop_intervals_id_bitrix) && in_array($this->code1C2codeBitrix($vp->propname_id), $prop_intervals_id_bitrix)) {
                         foreach($property_enums as $enum) {
                             if($enum['XML_ID'] == $this->code1C2codeBitrix($vp->prop_id)) {
                                 $min_max_array = explode(';', $enum["VALUE"]);
@@ -1977,20 +2161,12 @@ class ParsingModel {
                                     "VALUE" => $min_max_array[1]
                                 );
 
-                                //echo 'CODE IN BITRIX: ' . $value->id . '<br>';
-
-                                //$this->csv->saveLog(array('CODE IN BITRIX: ' . $value->id . '<br>'));
                                 break;
                             }
                         }
                     }
                     if($vp->propname_id == 'edb71222-f482-11e4-9045-003048b99ee9') {
-                        fileDump(array($value->article,
-                                       $prop_values[$vp->prop_id],
-                                       $vp->prop_id,
-                                       $property_enums), true);
                     }
-                    //                    $enum_found = false;
 
                     if(!empty($property_enums)) {
                         foreach($property_enums as $enum) {
@@ -2009,20 +2185,6 @@ class ParsingModel {
                                 );
                                 break;
                             }
-                            //                            if (!$enum_found && $prop_values[$vp->prop_id]) {
-                            //                                $value_enum = $prop_values[$this->code1C2codeBitrix($vp->prop_id)];
-                            //                                /*if ($arProperties[$this->code1C2codeBitrix($vp->propname_id)]['PROPERTY_TYPE'] == 'L') {
-                            //                                    $value_enum = $import_property_enums[$this->code1C2codeBitrix($vp->prop_id)]['ID'];
-                            //                                } else if ($arProperties[$this->code1C2codeBitrix($vp->propname_id)]['PROPERTY_TYPE'] == 'N') {
-                            //                                    $value_enum = $import_property_enums[$this->code1C2codeBitrix($vp->prop_id)]['VALUE'];
-                            //                                }*/
-                            ////                            $propA[$this->code1C2codeBitrix($vp->propname_id)] = array(
-                            ////                                "VALUE" => $import_property_enums[$this->code1C2codeBitrix($vp->prop_id)]['ID']
-                            ////                            );
-                            //                            }
-                            //                            $propA[$this->code1C2codeBitrix($vp->propname_id)] = array(
-                            //                                "VALUE" => $value_enum
-                            //                            );
                         }
                     }
                     else {
@@ -2030,92 +2192,14 @@ class ParsingModel {
                             $value_enum = $prop_values[$vp->prop_id]['name'];
                         }
                     }
-                    //                    foreach ($property_enums as $enum) {
-                    //                        $value_enum = null;
-                    //                        if ($enum['XML_ID'] ==  $this->code1C2codeBitrix($vp->prop_id)) {
-                    //                            if ($arProperties[$this->code1C2codeBitrix($vp->propname_id)]['PROPERTY_TYPE'] == 'L') {
-                    //                                $value_enum = $enum['ID'];
-                    //                            } else if ($arProperties[$this->code1C2codeBitrix($vp->propname_id)]['PROPERTY_TYPE'] == 'N') {
-                    //                                $value_enum = $enum['VALUE'];
-                    //                            }
-                    //                            $propA[$this->code1C2codeBitrix($vp->propname_id)] = array(
-                    //                                "VALUE" => $value_enum
-                    //                            );
-                    //                            $enum_found  = true;
-                    //                            break;
-                    //                        }
-                    //                        if (!$enum_found && $prop_values[$vp->prop_id]) {
-                    //                            $value_enum = $prop_values[$this->code1C2codeBitrix($vp->prop_id)];
-                    //                            /*if ($arProperties[$this->code1C2codeBitrix($vp->propname_id)]['PROPERTY_TYPE'] == 'L') {
-                    //                                $value_enum = $import_property_enums[$this->code1C2codeBitrix($vp->prop_id)]['ID'];
-                    //                            } else if ($arProperties[$this->code1C2codeBitrix($vp->propname_id)]['PROPERTY_TYPE'] == 'N') {
-                    //                                $value_enum = $import_property_enums[$this->code1C2codeBitrix($vp->prop_id)]['VALUE'];
-                    //                            }*/
-                    ////                            $propA[$this->code1C2codeBitrix($vp->propname_id)] = array(
-                    ////                                "VALUE" => $import_property_enums[$this->code1C2codeBitrix($vp->prop_id)]['ID']
-                    ////                            );
-                    //                        }
-                    //                        $propA[$this->code1C2codeBitrix($vp->propname_id)] = array(
-                    //                            "VALUE" => $value_enum
-                    //                        );
-                    //                    }
                     $propA[$this->code1C2codeBitrix($vp->propname_id)] = array(
                         "VALUE" => $value_enum
                     );
-
-
-                    //                $this->csv->dynamicSave('cache/01.07.2015', array($this->code1C2codeBitrix($vp->propname_id)));
-                    //
-                    //
-                    //                $properties = CIBlockProperty::GetList(Array(),
-                    //                    Array("CODE" => $this->code1C2codeBitrix($vp->propname_id) . '_min', "IBLOCK_ID" => 1));
-                    //                if ($f_min = $properties->GetNext()) {
-                    //                    $properties2 = CIBlockProperty::GetList(Array(),
-                    //                        Array("CODE" => $this->code1C2codeBitrix($vp->propname_id) . '_max', "IBLOCK_ID" => 1));
-                    //                    $f_max = $properties2->GetNext();
-                    //                    $this->csv->dynamicSave('cache/01.07.2015', array($this->code1C2codeBitrix($vp->propname_id)));
-                    //
-                    //                    $property_enums = CIBlockPropertyEnum::GetList(array("DEF" => "DESC", "SORT" => "ASC"), array(
-                    //                        "IBLOCK_ID" => 1,
-                    //                        "CODE"      => $this->code1C2codeBitrix($vp->propname_id)
-                    //                    ));
-                    //
-                    //                    while ($enum_fields = $property_enums->GetNext()) {
-                    //                        if ($enum_fields["XML_ID"] == $this->code1C2codeBitrix($vp->prop_id)) {
-                    //                            $min_max_array = explode(';', $enum_fields["VALUE"]);
-                    //                            $propA[$this->code1C2codeBitrix($vp->propname_id) . '_min'] = array(
-                    //                                "VALUE" => $min_max_array[0]
-                    //                            );
-                    //                            $propA[$this->code1C2codeBitrix($vp->propname_id) . '_max'] = array(
-                    //                                "VALUE" => $min_max_array[1]
-                    //                            );
-                    //                            echo 'CODE IN BITRIX: ' . $value->id . '<br>';
-                    //                            $this->csv->saveLog(array('CODE IN BITRIX: ' . $value->id . '<br>'));
-                    //                            break;
-                    //                        }
-                    //                    }
-                    //
-                    //                } else {
-                    //                    $property_enums = CIBlockPropertyEnum::GetList(array("DEF" => "DESC", "SORT" => "ASC"), array(
-                    //                        "IBLOCK_ID" => 1,
-                    //                        "CODE"      => $this->code1C2codeBitrix($vp->propname_id)
-                    //                    ));
-                    //
-                    //                    while ($enum_fields = $property_enums->GetNext()) {
-                    //                        if ($enum_fields["XML_ID"] == $this->code1C2codeBitrix($vp->prop_id)) {
-                    //                            $propA[$this->code1C2codeBitrix($vp->propname_id)] = array(
-                    //                                "VALUE" => $enum_fields["ID"]
-                    //                            );
-                    //
-                    //                            break;
-                    //                        }
-                    //                    }
-                    //                }
                 }
             }
 
             $propA['sku'] = $value->article;
-            $propA[$arPropertyCollection['collection']['ID']] = $id_col;
+            $propA['collection'] = $id_col;
             $propA['brand'] = $id_brand;
             $propA['is_new'] = $value->novelty ? 19 : '';
             $arLoadProductArray = Array(
@@ -2128,47 +2212,47 @@ class ParsingModel {
                 "DETAIL_TEXT" => $value->description,
             );
 
-            $measure_id = $arCatalogMeasures[intval($measures[$value->unit_messure_id]['unit_messure_catalog_id'])]['ID'];
-
-
             //проверяем наличие такого элемента
             $rsItems = CIBlockElement::GetList(array(), array(
                 'IBLOCK_ID' => $BLOCK_ID,
                 "=XML_ID" => $value->id,
             ), false, false, array('ID'));
 
+
+            $measure_id = !empty($measures) && !empty($arCatalogMeasures) ? $arCatalogMeasures[intval($measures[$value->unit_messure_id]['unit_messure_catalog_id'])]['ID'] : null;
+
             //Если элемент уже существует, обновляем его или удаляем, при условии что флаг установлен
             if($arItem = $rsItems->GetNext()) {
+
+                $__props[$arItem['ID']] = [];
+
+                CIBlockElement::GetPropertyValuesArray($__props, $BLOCK_ID, ["ID" => $arItem['ID']]);
+                $propA = [];
+                foreach ($__props[$arItem['ID']] as $prop) {
+                    $propA[$prop['CODE']] = ['VALUE' => $prop['VALUE_ENUM_ID'] ? : $prop['VALUE']];
+                }
+                $arLoadProductArray['PROPERTY_VALUES'] = array_merge($propA, $arLoadProductArray['PROPERTY_VALUES']);
+
                 //Удаляем из битрикса элемент
                 if($value->deletion_mark == true) {
                     //Проверяем права на удаление
-                    /* if (CIBlock::GetPermission($BLOCK_ID) >= 'W') {*/
                     //деактивируем и выводим сообщение о выполнении, иначе показываем ошибку
                     $arItem['ACTIVE'] = 'N';
                     if($res = $el->Update($arItem['ID'], $arItem)) {
                         //echo 'Запись деактивирована - ' . $arItem['ID'];
                     }
-                    else {
-                        /*echo '<p class="error">При деактивации элемента произошла ошибка [' . $arItem['ID'] . ']<br>
-                                ' . $el->LAST_ERROR." ".__LINE__." ".__FUNCTION__ . '</p>';*/
-                    }
-                    /*  }*/
                 }
                 else {
                     //Если удалять не нужно, то обновляем и выводим сообщение
                     $arLoadProductArray["CODE"] = CUtil::translit($value->name.'_'.$arItem['ID'], 'ru',
                         array('change_case' => 'L', 'replace_space' => '-', 'replace_other' => ''));
                     if($res = $el->Update($arItem['ID'], $arLoadProductArray, false, true, true)) {
-                        $arFields = array(
-                            "MEASURE" => $measure_id
-                        );
-                        if(CCatalogProduct::Update($arItem['ID'], $arFields)) {
-                            //echo "Обновили параметры товара к элементу каталога " . $arItem['ID'] . '<br>';
+                        if (!empty($measure_id)) {
+                            $arFields = array(
+                                "MEASURE" => $measure_id
+                            );
+                            CCatalogProduct::Update($arItem['ID'], $arFields);
                         }
-                        //echo "Запись обновлена: " . $value->name . "<br />";
-                    }
-                    else {
-                        //echo 'Error: ' . $el->LAST_ERROR." ".__LINE__." ".__FUNCTION__;
                     }
                 }
             }
@@ -2176,8 +2260,6 @@ class ParsingModel {
                 $arLoadProductArray["CODE"] = CUtil::translit($value->name.'_'.$arItem['ID'], 'ru',
                     array('change_case' => 'L', 'replace_space' => '-', 'replace_other' => ''));
                 if($BRAND_ID = $el->Add($arLoadProductArray, false, true, true)) {
-                    //echo "Добавлена: " . $value->name . "<br />";
-
                     $arFields = array(
                         "ID" => $BRAND_ID,
                         "VAT_ID" => 1,
@@ -2188,16 +2270,10 @@ class ParsingModel {
                         //echo "Добавили параметры товара к элементу каталога " . $arItem['ID'] . '<br>';
                     }
                 }
-                else {
-                    //echo 'Error: ' . $el->LAST_ERROR." ".__LINE__." ".__FUNCTION__ . "<br>";
-                }
             }
             $answer['StringItems'][] = $value->id;
         }
 
-        //$this->refactorPropertiesByValues($updated_property_values_xml_ids);
-
-        //echo "</div>";
         $isGo = false;
 
         if(count($answer['StringItems']) > 0) {
@@ -2305,7 +2381,6 @@ class ParsingModel {
 
     }
 
-
     //выполняем все операции по брендам
     function initCollection($ost) {
         $iblockId = self::COLLECTIONS_IBLOCK_ID;
@@ -2317,16 +2392,7 @@ class ParsingModel {
         if(is_object($ost->return->set)) {
             $ost->return->set = array($ost->return->set);
         }
-        $collectionsCache = [];
-        $collectionsCodeCache = [];
-        $rsItems = CIBlockElement::GetList(array(), array(
-            'IBLOCK_ID' => $iblockId,
-        ), false, false, array('ID', 'XML_ID', 'CODE'));
-
-        while($arItem = $rsItems->GetNext()) {
-            $collectionsCache[$arItem['XML_ID']] = $arItem['ID'];
-            $collectionsCodeCache[$arItem['XML_ID']] = $arItem['CODE'];
-        }
+        $this->initCollectionCache();
 
         $brandsCache = [];
         $rsItems = CIBlockElement::GetList(array(), array(
@@ -2341,61 +2407,17 @@ class ParsingModel {
             if(isset($brandsCache[$value->brand_id])) {
                 $props['link_brand'] = $brandsCache[$value->brand_id];
             }
-            $arLoadProductArray = Array(
+            $arFields = Array(
                 "IBLOCK_SECTION_ID" => false,
                 "IBLOCK_ID" => $iblockId,
                 "XML_ID" => $value->id,
                 "PROPERTY_VALUES" => $props,
                 "NAME" => $value->name,
-                "ACTIVE" => "Y"
+                "DETAIL_TEXT" => $value->description,
+                "ACTIVE" => "Y",
             );
 
-            //проверяем наличие такого элемента
-            //Если элемент уже существует, обновляем его или удаляем, при условии что флаг установлен
-            if(isset($collectionsCache[$value->id])) {
-                $existElementId = $collectionsCache[$value->id];
-                //Удаляем из битрикса элемент
-                if($value->deletion_mark == true) {
-                    //Проверяем права на удаление
-                    /*if (CIBlock::GetPermission($BLOCK_ID) >= 'W') {*/
-                    //Удаляем и выводим сообщение о выполнении, иначе показываем ошибку
-                    if(!CIBlockElement::Delete($existElementId)) {
-                        echo 'Запись удалена - '.$existElementId;
-                    }
-                    else {
-                        echo '<p class="error">При удалении элемента произошла ошибка ['.$existElementId.']<br>
-                                    '.$el->LAST_ERROR." ".__LINE__." ".__FUNCTION__.'</p>';
-                    }
-                    /*}*/
-                }
-                else {
-                    //Если удалять не нужно, то обновляем и выводим сообщение
-                    if($res = $el->Update($existElementId, $arLoadProductArray)) {
-                        echo "Запись обновлена: ".$value->name." - ".$value->title."<br />";
-                    }
-                    else {
-                        echo 'Error: '.$el->LAST_ERROR." ".__LINE__." ".__FUNCTION__;
-                    }
-                }
-            }
-            else {
-                $arLoadProductArray['CODE'] = CUtil::translit($arLoadProductArray['NAME'], 'ru',
-                    array('change_case' => 'L', 'replace_space' => '-', 'replace_other' => ''));
-
-                if(array_search($arLoadProductArray['CODE'], $collectionsCodeCache)) {
-                    $arLoadProductArray['CODE'] .= md5($arLoadProductArray['XML_ID']);
-                }
-
-                if($newId = $el->Add($arLoadProductArray)) {
-                    $collectionsCache[$arLoadProductArray['XML_ID']] = $newId;
-                    $collectionsCodeCache[$arLoadProductArray['XML_ID']] = $arLoadProductArray['CODE'];
-
-                    echo "Добавлена: ".$value->name." - ".$value->title."<br />";
-                }
-                else {
-                    echo 'Error: '.$el->LAST_ERROR." ".__LINE__." ".__FUNCTION__;
-                }
-            }
+            $this->addCollection($arFields, ["deletion_mark" => $value->deletion_mark]);
         }
         echo "</div>";
         if(($ost->return == true)) {

@@ -43,7 +43,7 @@ class CStorage {
     }
 
     public static function setCookieParam ($keycode, $value) {
-        fileDump(intval(setcookie($keycode,$value,86400+time())) ,true);
+        return setcookie($keycode,$value,86400+time());
     }
 
     public static function getCookieParam ($keycode, $default_value = false) {

@@ -2,23 +2,8 @@
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetTitle("Solutions");
 ?>
-<?
-//$section_codes = BXHelper::getSections(array('ID' => 'ASC'), array('ACTIVE' => 'Y', 'IBLOCK_ID' => '7'), false, array('CODE'), true, 'CODE');
-//$section_codes = array_keys($section_codes['RESULT']);
-//if (!in_array($_REQUEST['section'], $section_codes)) {
-//    BXHelper::NotFound();
-//}
-?>
 <div class="inner no-full">
 <?
-//    $APPLICATION->IncludeComponent(
-//            "kontora:element.detail", "project-detail", array(
-//            'CODE' => $_REQUEST['ELEMENT_CODE'],
-//            'PROPS' => 'Y',
-//            'SEF_FOLDER' => 'integrated-solutions'
-//        )
-//    );
-
     $APPLICATION->IncludeComponent(
         "bitrix:news.detail",
         "hogart_project_detail",
@@ -33,7 +18,7 @@ $APPLICATION->SetTitle("Solutions");
                 "prop_proj"
             ),
             "SEF_FOLDER" => "/en/integrated-solutions/",
-            "IBLOCK_ID" => REFERENCES_IBLOCK_ID,
+            "IBLOCK_ID" => 37,
             //result_modifier.php
             "ORDER" => array('sort' => 'asc'),
             "ELEMENT_CODE" => $_REQUEST['ELEMENT_CODE']
@@ -62,7 +47,7 @@ $APPLICATION->SetTitle("Solutions");
                         "bitrix:form.result.new",
                         "integrated-solutions-form",
                         Array(
-                            "WEB_FORM_ID" => "7",
+                            "WEB_FORM_ID" => "MAKE_REQUEST_EN",
                             "IGNORE_CUSTOM_TEMPLATE" => "N",
                             "USE_EXTENDED_ERRORS" => "N",
                             "SEF_MODE" => "N",

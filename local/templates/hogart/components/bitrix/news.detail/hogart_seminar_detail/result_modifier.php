@@ -3,10 +3,9 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
     die();
 }
 
-$arFilter = Array("IBLOCK_ID" => 9,
+$arFilter = Array("IBLOCK_ID" => (LANGUAGE_ID == 'en' ? 40 : 9),
                   "ACTIVE" => "Y",
                   'ID' => array_merge($arResult['PROPERTIES']['org']['VALUE'], $arResult['PROPERTIES']['lecturer']['VALUE']));
-//$res = CIBlockElement::GetList(Array('PROPERTY_lecturer.NAME' => 'ASC'), $arFilter, array('PROPERTY_lecturer'), false, array());
 $res = CIBlockElement::GetList(Array('PROPERTY_lecturer.NAME' => 'ASC',
                                      'PROPERTY_lecturer.status' => 'ASC'), $arFilter, false, false, array());
 
@@ -23,7 +22,6 @@ while($ob = $res->GetNextElement()) {
         $arResult['LECTORS'][] = $arFields;
     }
 
-
 } ?>
 <?
 
@@ -36,7 +34,7 @@ $sem_start_date = strtotime(FormatDate("d.m.Y", MakeTimeStamp($arResult['PROPERT
 $sem_start_date = (!empty($sem_start_date)) ? $sem_start_date : 0;
 $now = strtotime(date($DB->DateFormatToPHP(CSite::GetDateFormat("SHORT")), time()));
 
-$arOrder = array("PROPERTY_sem_start_date" => "DESC");
+$arOrder = array("PROPERTY_sem_start_date" => "ASC");
 if (empty($arResult["PROPERTIES"]["sem_start_date"]["VALUE"])) {
     $arOrder = array("ID" => "ASC");
 }
@@ -73,7 +71,7 @@ if(count($nav) == 2) {
         $arResult['PREV'] = $nav[0]['DETAIL_PAGE_URL'];
     }
 }
-else {
+elseif(count($nav) == 3) {
     if($nav[0]['ID'] != $arParams['ID']) {
         $arResult['PREV'] = $nav[0]['DETAIL_PAGE_URL'];
     }

@@ -18,6 +18,10 @@ if (intval($arParams["ID"])) {
     );
 }
 
+if (isset($arParams["IBLOCK_ID"])) {
+	$arFilter['IBLOCK_ID'] = $arParams["IBLOCK_ID"];
+}
+
 $arFilter["ACTIVE"] = "Y";
 
 if (!empty($arParams['FILTER']))

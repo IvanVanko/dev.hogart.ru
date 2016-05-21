@@ -30,7 +30,7 @@ if (!isset($arParams['ITEM_TEMPLATE']) && empty($arParams['ITEM_TEMPLATE'])):?>
         </div>
     <? endif; ?>
     <? if (!empty($arResult["DETAIL_TEXT"])): ?>
-        <h2>о проекте</h2>
+        <h2><?= GetMessage("о проекте") ?></h2>
         <?= $arResult["DETAIL_TEXT"] ?>
     <? endif; ?>
     <? if (!empty($arResult["DETAIL_PICTURE"])): ?>
@@ -40,7 +40,7 @@ if (!isset($arParams['ITEM_TEMPLATE']) && empty($arParams['ITEM_TEMPLATE'])):?>
     <? endif; ?>
     <? if (!empty($arResult["PROPERTIES"]['problem'])): ?>
         <div class="inner no-full">
-            <h2>особенности проекта</h2>
+            <h2><?= GetMessage("особенности проекта") ?></h2>
 
             <!--        <h3>--><? //=$arResult["PROPERTIES"]['problem']['NAME'];?><!--</h3>-->
             <?= $arResult["PROPERTIES"]['problem']['~VALUE']['TEXT']; ?>
@@ -294,7 +294,7 @@ if (!isset($arParams['ITEM_TEMPLATE']) && empty($arParams['ITEM_TEMPLATE'])):?>
 
     <? endif; ?>
     <div class="inner print-other-project">
-        <h2>Другие проекты</h2>
+        <h2><?= GetMessage("Другие проекты") ?></h2>
         <?
         $APPLICATION->IncludeComponent("kontora:element.list", "else-projects", array(
             'IBLOCK_ID'  => '18',

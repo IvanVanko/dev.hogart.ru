@@ -327,6 +327,10 @@ app.initDatepicker = function () {
             }
         });
 
+        if ($(this).data("lang")) {
+            $(this).datepicker("option", $.datepicker.regional[ $(this).data("lang") ] );
+        }
+
         $(this).click(function () {
             app.initCalendarTooltip();
         });
@@ -417,7 +421,7 @@ app.initIsSidebar = function () {
     $('.container-inner').each(function () {
         if ($(this).find('.sidebar:not(.sidebar-popup)').length) {
             $('.inner', this).removeClass('no-full');
-            $(this).children('.inner').addClass('no-full');
+            $(this).children('.inner,.breadcrumbs').addClass('no-full');
         }
     });
     return this;
@@ -1252,41 +1256,39 @@ function resizeFeedbackForm() {
     }
 }
 app.validationForm = function () {
+    var self = this;
+    this.messages = {
+        en: {
+            'Заполните, пожалуйста, это поле': 'Please fill in this field',
+            'Заполните это поле правильно': 'Fill in this field correctly',
+            'Введите настоящий E-mail': 'Enter valid E-mail'
+        },
+        ru: {
+            'Заполните, пожалуйста, это поле': 'Заполните, пожалуйста, это поле',
+            'Заполните это поле правильно': 'Заполните это поле правильно',
+            'Введите настоящий E-mail': 'Введите настоящий E-mail'
+        }
+    };
+    self.messages = this.messages[document.getElementsByTagName("head")[0].getAttribute("lang")];
+    
     var isEmail = function (email) {
-            //var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-            //var re = /^([a-z0-9_\.-])+@[a-z0-9-]+\.([a-z]{2,4}\.)?[a-z]{2,4}$/i;
-            re = /\S+@\S+\.\S+/;
-
+            var re = /\S+@\S+\.\S+/;
             return re.test(email);
         },
         isEmpty = function (string) {
             return string.length > 0;
         },
         isPhone = function (phone) {
-            //var re = /^\d[\d\(\)\ -]{4,14}\d$/;
-            //return re.test(phone);
             return phone.length >= 17;
         };
 
     $('.js-validation-form').submit(function (e) {
-        /*$(this).find('.js-validation-empty').each(function () {
-         $(this).val(jQuery.trim($(this).val()));
-         console.log($(this), $(this).val());
-         if (!isEmpty($(this).val())) {
-         e.preventDefault();
-         $(this).parent().addClass('error').attr({'data-error': 'Заполните, пожалуйста, это поле'});
-         }
-         else {
-         $(this).parent().removeClass('error')
-         }
-         });*/
         $(this).find('.js-validation-empty select').each(function () {
             $(this).val(jQuery.trim($(this).val()));
-            //console.log($(this), $(this).val());
             if (!isEmpty($(this).val())) {
                 e.preventDefault();
                 $(this).parent().addClass('error').attr({
-                    'data-error': 'Заполните, пожалуйста, это поле'
+                    'data-error': self.messages['Заполните, пожалуйста, это поле']
                 });
             }
             else {
@@ -1295,11 +1297,10 @@ app.validationForm = function () {
         });
         $(this).find('.js-validation-empty .inputtext').each(function () {
             $(this).val(jQuery.trim($(this).val()));
-            //console.log($(this), $(this).val());
             if (!isEmpty($(this).val())) {
                 e.preventDefault();
                 $(this).parent().addClass('error').attr({
-                    'data-error': 'Заполните, пожалуйста, это поле'
+                    'data-error': self.messages['Заполните, пожалуйста, это поле']
                 });
             }
             else {
@@ -1309,11 +1310,10 @@ app.validationForm = function () {
 
         $(this).find('.js-validation-empty .inputfile').each(function () {
             $(this).val(jQuery.trim($(this).val()));
-            console.log($(this), $(this).val());
             if (!isEmpty($(this).val())) {
                 e.preventDefault();
                 $(this).parent().addClass('error').attr({
-                    'data-error': 'Заполните, пожалуйста, это поле'
+                    'data-error': self.messages['Заполните, пожалуйста, это поле']
                 });
             }
             else {
@@ -1323,11 +1323,10 @@ app.validationForm = function () {
 
         $(this).find('.js-validation-empty .inputtextarea').each(function () {
             $(this).val(jQuery.trim($(this).val()));
-            //console.log($(this), $(this).val());
             if (!isEmpty($(this).val())) {
                 e.preventDefault();
                 $(this).parent().addClass('error').attr({
-                    'data-error': 'Заполните, пожалуйста, это поле'
+                    'data-error': self.messages['Заполните, пожалуйста, это поле']
                 });
             }
             else {
@@ -1337,18 +1336,17 @@ app.validationForm = function () {
 
         $(this).find('.js-validation-phone .inputtext').each(function () {
             $(this).val(jQuery.trim($(this).val()));
-            //console.log($(this), $(this).val());
             if (!isEmpty($(this).val())) {
                 e.preventDefault();
                 $(this).parent().addClass('error').attr({
-                    'data-error': 'Заполните, пожалуйста, это поле'
+                    'data-error': self.messages['Заполните, пожалуйста, это поле']
                 });
             }
             else {
                 if (!isPhone($(this).val())) {
                     e.preventDefault();
                     $(this).parent().addClass('error').attr({
-                        'data-error': 'Заполните это поле правильно'
+                        'data-error': self.messages['Заполните это поле правильно']
                     });
                 }
                 else {
@@ -1359,18 +1357,17 @@ app.validationForm = function () {
 
         $(this).find('.js-validation-email .inputtext').each(function () {
             $(this).val(jQuery.trim($(this).val()));
-            //console.log($(this), $(this).val());
             if (!isEmpty($(this).val())) {
                 e.preventDefault();
                 $(this).parent().addClass('error').attr({
-                    'data-error': 'Заполните, пожалуйста, это поле'
+                    'data-error': self.messages['Заполните, пожалуйста, это поле']
                 });
             }
             else {
                 if (!isEmail($(this).val())) {
                     e.preventDefault();
                     $(this).parent().addClass('error').attr({
-                        'data-error': 'Введите настоящий E-mail'
+                        'data-error': self.messages['Введите настоящий E-mail']
                     });
                 }
                 else {
@@ -1412,6 +1409,9 @@ app.learnCalendar = function () {
                 return false;
             }
         });
+        if ($(this).data("lang")) {
+            $(this).datepicker("option", $.datepicker.regional[ $(this).data("lang") ] );
+        }
 
         $(this).click(function () {
             app.initCalendarLearnTooltip();

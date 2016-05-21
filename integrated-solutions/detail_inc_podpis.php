@@ -27,7 +27,7 @@
     }
 </style>
 <div class="side_href">
-    <a href="#" class="icon-email js-popup-open" data-popup="#popup-subscribe">Отправить на e-mail</a>
-    <a href="#" onclick="window.print(); return false;" class="icon-print">Распечатать</a>
-    <a href="#" class="icon-phone js-popup-open" data-popup="#popup-subscribe-phone">Отправить SMS</a>
+    <a href="#" class="icon-email js-popup-open" data-popup="#popup-subscribe"><?= GetMessage("Отправить на e-mail") ?></a>
+    <a href="#" onclick="window.print(); return false;" class="icon-print"><?= GetMessage("Распечатать") ?></a>
+    <a href="#" class="icon-phone js-popup-open" data-popup="#popup-subscribe-phone"><?= GetMessage("Отправить SMS") ?></a>
 </div>

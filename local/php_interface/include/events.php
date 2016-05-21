@@ -619,8 +619,6 @@ class MyCustomClass {
 
         $sms_text = (string)getNodeContentByID($arFields["BODY"], "sms_send_block");
         $arFields["BODY"] = removeNodeByID($arFields["BODY"], "sms_send_block");
-        fileDump($arFields["EMAIL_EX"]["SUBSCRIPTION_ID"], true);
-
         $list = \CUSTOM\Entity\SubscribeSettingsTable::GetList(array("filter" => array("UF_SUBSCRIBER_ID" => $arFields["EMAIL_EX"]["SUBSCRIPTION_ID"])));
         if($el = $list->fetch()) {
             $phone = trim(stripslashes($el["UF_SUBSCRIBER_PHONE"]));
@@ -677,8 +675,6 @@ class FormHandlers {
                 $obElement->SetPropertyValuesEx($seminar['RESULT'][0]['ID'], SEMINAR_IBLOCK_ID, array('sem_visitors_count' => $visitors_count));
             }
         }
-
-        fileDump($arrVALUES, true);
         return true;
     }
 
