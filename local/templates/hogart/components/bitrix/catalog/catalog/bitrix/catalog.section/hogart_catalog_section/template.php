@@ -24,7 +24,7 @@ $this->setFrameMode(true);
 </small>
 <? if ($arResult['DEPTH_LEVEL'] > '1') : ?>
 
-<?= $APPLICATION->GetViewContent("CATALOG_FILTER"); ?>
+<? $APPLICATION->GetViewContent("CATALOG_FILTER"); ?>
 
 <? endif; ?>
 <!---->
@@ -433,5 +433,16 @@ $this->setFrameMode(true);
         <? } ?>
 
     </div>
+<? endif; ?>
+<? if ($arResult['DEPTH_LEVEL'] == '2') : ?>
+<div class="sidebar_padding_cnt">
+<? $page = $APPLICATION->GetCurDir(true); ?>
+    <div class="subs-links">
+    <? foreach ($arResult['SUBS'] as $item): ?>
+        <a <?= ($page == $item['SECTION_PAGE_URL']) ? 'class="active"' : '' ?>
+            href="<?= $item['SECTION_PAGE_URL'] ?>"><?= $item['NAME'] ?></a>
+    <? endforeach; ?>
+    </div>
+</div>
 <? endif; ?>
 <? $this->EndViewTarget() ?>
