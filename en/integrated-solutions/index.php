@@ -84,7 +84,8 @@ $APPLICATION->SetTitle("Solutions");
             <div class="inner js-paralax-item">
                 <div class="padding">
                     <?
-                    $form_id = "MAKE_REQUEST_" . strtoupper(LANGUAGE_ID);
+                    $form_sid = "MAKE_REQUEST_" . strtoupper(LANGUAGE_ID);
+                    $form_id = CForm::GetById($form_sid, "Y")->Fetch()["ID"];
                     if(BXHelper::can_show_form($form_id)) {
                         BXHelper::start_ajax_block();
                         $APPLICATION->IncludeComponent(
@@ -110,14 +111,14 @@ $APPLICATION->SetTitle("Solutions");
                                 "CUSTOM_INPUT_PARAMS" => array(
                                     "SOLUTION_EMAIL" => array(
                                         "data-rule-email" => "true",
-                                        "data-msg-email" => "Введите правильный email адрес"
+                                        "data-msg-email" => "Wrong email address"
                                     ),
                                 ),
                                 "CUSTOM_WRAPPER_PARAMS" => array(
                                 ),
                                 "TITLE" => "Обратная связь",
                                 "SUCCESS_RELOAD" => "N",
-                                "SUCCESS_MESSAGE" => "Спасибо что обратились в нашу компанию! В ближайшее время с вами свяжется наш специалист для уточнения дополнительной информации."
+                                "SUCCESS_MESSAGE" => "Thank you for contacting our company . In the near future, our specialist will contact you for details."
 
                             )
                         );
