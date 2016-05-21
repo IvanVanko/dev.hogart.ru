@@ -85,6 +85,7 @@ $APPLICATION->SetTitle("Solutions");
                 <div class="padding">
                     <?
                     $form_sid = "MAKE_REQUEST_" . strtoupper(LANGUAGE_ID);
+                    CModule::IncludeModule("form");
                     $form_id = CForm::GetById($form_sid, "Y")->Fetch()["ID"];
                     if(BXHelper::can_show_form($form_id)) {
                         BXHelper::start_ajax_block();
