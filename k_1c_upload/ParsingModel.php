@@ -21,9 +21,9 @@ class ParsingModel {
     );
 
     private static $topSections = [
-        'otoplenie' => 9,
-        'ventilyatsiya' => 2,
-        'santekhnika' => 1,
+        'otoplenie',
+        'ventilyatsiya',
+        'santekhnika',
     ];
 
     const CATALOG_IBLOCK_ID = 1;
@@ -73,6 +73,12 @@ class ParsingModel {
             if ($event["TO_MODULE_ID"] == "defa.tools") {
                 RemoveEventHandler("iblock", "OnBeforeIBlockPropertyUpdate", $iKey);
             }
+        }
+
+        $topSectionsRes = CIBlockSection::GetList([], ["CODE" => self::$topSections], false, ["ID", "CODE"]);
+        self::$topSections = [];
+        while (($section = $topSectionsRes->Fetch())) {
+            self::$topSections[$section["CODE"]] = $section["ID"];
         }
         
         $this->csv = new csv($create_dir);
