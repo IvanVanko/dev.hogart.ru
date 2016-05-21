@@ -12,11 +12,6 @@ if($arResult["ID"] == 0 && empty($_REQUEST["action"]) || CSubscription::IsAuthor
 	//setting section
 	include("setting.php");
 	//status and unsubscription/activation section
-	/*if($arResult["ID"]>0)
-	{
-		include("status.php");
-	}*/
-	
 }
 else
 {
