@@ -189,6 +189,9 @@ $rsParentSection = CIBlockSection::GetList(array('NAME' => 'ASC'), $arFilter, fa
         $arResult["SUBS"][] = $arSect;
     }
 
+if (count($arResult["SUBS"]) == 1) {
+    LocalRedirect($arResult["SUBS"][0]["SECTION_PAGE_URL"]);
+}
 
 $arFilterBrands = array(
     'IBLOCK_ID' => 2
