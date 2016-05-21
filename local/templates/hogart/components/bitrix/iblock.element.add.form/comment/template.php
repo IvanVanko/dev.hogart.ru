@@ -27,7 +27,9 @@ $this->setFrameMode(false); ?>
             if(strlen($arResult["MESSAGE"]) > 0):?>
                 <!--	Ваш отзыв принят!-->
                 <div class="ok-box">
-                    <?= GetMessage("Благодарим Вас за оставленный отзыв. На указанный e-mail #MAIL# будет отправлено подтверждение о публикации.", '<a href="mailto:' . $arResult['COMMS'][0]['mail']['VALUE'] . '">' . $arResult['COMMS'][0]['mail']['VALUE'] . '</a>')?> 
+                    <?= GetMessage("Благодарим Вас за оставленный отзыв. На указанный e-mail #MAIL# будет отправлено подтверждение о публикации.", [
+						"#MAIL#" => '<a href="mailto:' . $arResult['COMMS'][0]['mail']['VALUE'] . '">' . $arResult['COMMS'][0]['mail']['VALUE'] . '</a>'
+					])?> 
                 </div>
             <? else: ?>
                 <div class="js-validation-form-new">
