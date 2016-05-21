@@ -3,10 +3,9 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
     die();
 }
 
-$arFilter = Array("IBLOCK_ID" => 9,
+$arFilter = Array("IBLOCK_ID" => (LANGUAGE_ID == 'en' ? 40 : 9),
                   "ACTIVE" => "Y",
                   'ID' => array_merge($arResult['PROPERTIES']['org']['VALUE'], $arResult['PROPERTIES']['lecturer']['VALUE']));
-//$res = CIBlockElement::GetList(Array('PROPERTY_lecturer.NAME' => 'ASC'), $arFilter, array('PROPERTY_lecturer'), false, array());
 $res = CIBlockElement::GetList(Array('PROPERTY_lecturer.NAME' => 'ASC',
                                      'PROPERTY_lecturer.status' => 'ASC'), $arFilter, false, false, array());
 
@@ -22,7 +21,6 @@ while($ob = $res->GetNextElement()) {
     if(in_array($arFields['ID'], $arResult['PROPERTIES']['lecturer']['VALUE'])) {
         $arResult['LECTORS'][] = $arFields;
     }
-
 
 } ?>
 <?
