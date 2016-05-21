@@ -120,7 +120,7 @@ $sections = BXHelper::getSections(array("SORT" => "ASC", "ID" => "ASC"), array("
 $sections = $sections['RESULT'];
 $arResult['ACTIVE_SECTION_ID'] = $sections_id = BXHelper::pull_array_field($sections, 'ID');
 
-$elements_with_solution = BXHelper::getElements(array(), array('IBLOCK_ID' => 18,
+$elements_with_solution = BXHelper::getElements(array(), array('IBLOCK_ID' => (LANGUAGE_ID == 'en' ? 37 : 18),
                                                                "SECTION_ID" => $sections_id), false, false, array('ID',
                                                                                                                   'PROPERTY_solution_id'), true, 'ID');
 
@@ -129,7 +129,7 @@ $solutions = BXHelper::pull_array_field($elements_with_solution['RESULT'], 'PROP
 
 $nav = array();
 $arSelect = Array("ID", "NAME", 'CODE', 'DETAIL_PAGE_URL', "PROPERTY_solution_id",);
-$arFilter = Array("IBLOCK_ID" => 18, "ACTIVE" => "Y", "PROPERTY_solution_id" => $arResult['PROPERTIES']['solution_id']['VALUE']);
+$arFilter = Array("IBLOCK_ID" => (LANGUAGE_ID == 'en' ? 37 : 18), "ACTIVE" => "Y", "PROPERTY_solution_id" => $arResult['PROPERTIES']['solution_id']['VALUE']);
 
 $sections = BXHelper::getSections(array("SORT" => "ASC", "ID" => "ASC"), array("IBLOCK_ID" => (LANGUAGE_ID == 'en' ? 35 : 7),
                                                                                "ID" => $solutions), false, array("ID",
@@ -198,7 +198,7 @@ if(count($valid_nav_ids) > 1) {
 if(empty($valid_nav_ids[0]) && !empty($prev_section_id)) {
     $prev_element = BXHelper::getElements(array("SORT" => "DESC",
                                                 "NAME" => "DESC",
-                                                "ID" => "DESC"), array("IBLOCK_ID" => 18,
+                                                "ID" => "DESC"), array("IBLOCK_ID" => (LANGUAGE_ID == 'en' ? 37 : 18),
                                                                        "PROPERTY_solution_id" => $prev_section_id), false, array('nTopCount' => 1), array("ID",
                                                                                                                                                           "CODE",
                                                                                                                                                           "PROPERTY_solution_id"));
@@ -212,7 +212,7 @@ if(empty($valid_nav_ids[0]) && !empty($prev_section_id)) {
 if(empty($valid_nav_ids[1]) && !empty($next_section_id)) {
     $next_element = BXHelper::getElements(array("SORT" => "ASC",
                                                 "NAME" => "ASC",
-                                                "ID" => "ASC"), array("IBLOCK_ID" => 18,
+                                                "ID" => "ASC"), array("IBLOCK_ID" => (LANGUAGE_ID == 'en' ? 37 : 18),
                                                                       "ACTIVE" => "Y", "CHECK_PERMISSIONS" => "Y",
                                                                       "PROPERTY_solution_id" => $next_section_id), false, array('nTopCount' => 1), array("ID",
                                                                                                                                                          "CODE",
