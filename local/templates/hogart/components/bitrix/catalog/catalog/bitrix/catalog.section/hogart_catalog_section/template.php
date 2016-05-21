@@ -416,7 +416,7 @@ $this->setFrameMode(true);
 
 <? $this->SetViewTarget('top_section_wrapper') ?>
 
-<? if ($arResult['DEPTH_LEVEL'] <= 1): ?>
+<? if ($arResult['DEPTH_LEVEL'] <= 2): ?>
 <aside class="sidebar category js-fh js-fixed-block js-paralax-height" data-fixed="top">
     <div class="inner js-paralax-item">
         <div class="side_href">
@@ -432,11 +432,7 @@ $this->setFrameMode(true);
                     каталог</a>
             <? } ?>
         </div>
-<? endif; ?>
-<? if ($arResult['DEPTH_LEVEL'] == '2') : ?>
-<aside class="sidebar category js-fh js-fixed-block js-paralax-height" data-fixed="top">
-    <div class="inner js-paralax-item">
-        <div class="side_href">
+        <? if ($arResult['DEPTH_LEVEL'] == '2') : ?>
             <div class="sidebar_padding_cnt">
             <? $page = $APPLICATION->GetCurDir(true); ?>
                 <div class="subs-links">
@@ -446,6 +442,7 @@ $this->setFrameMode(true);
                 <? endforeach; ?>
                 </div>
             </div>
+        <? endif; ?>
 <? endif; ?>
 
 <? $this->EndViewTarget() ?>
