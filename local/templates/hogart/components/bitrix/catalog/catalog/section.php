@@ -476,6 +476,10 @@ if ($DEPTH_LEVEL == 1) { ?>
 </aside>
 <? endif; ?>
 
+<? if ($DEPTH_LEVEL == 2): ?>
+    </div>
+</aside>
+<? endif; ?>
 <? if ($DEPTH_LEVEL > 1): ?>
     <div class="inner perechen">
     <? print_r($SECTION_HTML); ?>
