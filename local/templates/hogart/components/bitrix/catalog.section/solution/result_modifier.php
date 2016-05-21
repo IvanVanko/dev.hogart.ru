@@ -20,7 +20,7 @@ while ($ob = $res->GetNextElement()) {
 //Проекты
 $arResult['PROJECTS'] = array();
 $arFilterProjects = array(
-	"IBLOCK_ID"            => 18,
+	"IBLOCK_ID"            => (LANGUAGE_ID == 'en' ? 37 : 18),
 	"PROPERTY_solution_id" => $arResult['ID'],
 	"ACTIVE"               => "Y",
 );
@@ -33,7 +33,7 @@ while ($obPr = $resPr->GetNextElement()) {
 //Зоны
 $arResult['ZONES'] = array();
 $arFilter = array(
-	"IBLOCK_ID"   => 17,
+	"IBLOCK_ID"   => (LANGUAGE_ID == 'en' ? 36 : 17),
 	"ACTIVE"      => "Y",
 	'UF_PROJECTS' => $arResult['ID'],
 );

@@ -150,14 +150,14 @@
     <aside class="sidebar js-fh js-fixed-block js-paralax-height" data-fixed="top">
         <div class="inner js-paralax-item">
             <div class="padding">
-                <h2>Наши проекты</h2>
+                <h2><?= GetMessage("Наши проекты") ?></h2>
 
                 <div class="preview-project-viewport">
                     <div class="preview-project-viewport-inner">
                         <ul class="preview-project">
                             <? foreach ($arResult['PROJECTS'] as $arProject): ?>
                                 <li class="text-center">
-                                    <a href="/integrated-solutions/<?= $arParams['SECTION_CODE'] ?>/<?= $arProject['CODE'] ?>/">
+                                    <a href="<?= SITE_DIR ?>integrated-solutions/<?= $arParams['SECTION_CODE'] ?>/<?= $arProject['CODE'] ?>/">
                                         <?if (!empty($arProject['PREVIEW_PICTURE'])):?>
                                             <?$file = CFile::ResizeImageGet($arProject['PREVIEW_PICTURE'], array('width'=>215, 'height'=>111), BX_RESIZE_IMAGE_EXACT, true);  ?>
                                             <img src="<?=$file['src']?>" alt="">
@@ -174,26 +174,8 @@
                     </div>
                 </div>
                 <?if (count($arResult['PROJECTS'])>0):?>
-                <a class="complex-link" href="/integrated-solutions/all_projects.php">Все проекты</a>
+                <a class="complex-link" href="<?= SITE_DIR ?>integrated-solutions/all_projects.php">Все проекты</a>
                 <?endif;?>
-                <?/*
-                <ul class="preview-project">
-                    <? foreach ($arResult['PROJECTS'] as $arProject): ?>
-                        <li class="text-center">
-                            <a href="/integrated-solutions/<?= $arParams['SECTION_CODE'] ?>/<?= $arProject['ID'] ?>/">
-                                <?if (!empty($arProject['DETAIL_PICTURE'])):?>
-                                <img src="<?= CFile::GetPath($arProject['DETAIL_PICTURE']) ?>" alt="">
-                            <?else:?>
-                                <img class="grayscale" src="/upload/iblock/b4f/b4f9ecae76524eb9634180f7a318693c.jpg" alt="">
-                            <?endif;?>
-                    <span class="proj-txt">
-                        <span class="head"><?= $arProject['NAME'] ?></span>
-                    </span>
-                            </a>
-                        </li>
-                    <? endforeach; ?>
-                </ul>
-                */?>
             </div>
             <?$APPLICATION->IncludeComponent("bitrix:main.include","",Array(
                     "AREA_FILE_SHOW" => "page",
@@ -202,36 +184,5 @@
                     "EDIT_TEMPLATE" => "standard.php"
                 )
             );?>
-            <!--<style>
-                .side_href {
-                    bottom: -46px;
-                    /*right: 0;*/
-                    /*position: fixed;*/
-                    width: 330px;
-                }
-                .side_href {
-                    box-sizing: border-box;
-                    background: rgba(255, 255, 255, 0.1);
-                    overflow: hidden;
-                    padding-top: 36px;
-                    padding-bottom: 60px;
-                }
-                .side_href a {
-                    display: block;
-                    margin-left: 20px;
-                    float: left;
-                    color: #fff;
-                    text-decoration: none;
-                    font-size: 12px;
-                    line-height: 16px;
-                    padding-bottom: 20px;
-                    background-position: left 2px;
-                }
-            </style>
-            <div class="side_href">
-                <a href="#" class="icon-email"><?= GetMessage("Отправить на e-mail") ?></a>
-                <a href="#" onclick="window.print(); return false;" class="icon-print"><?= GetMessage("Распечатать") ?></a>
-                <a href="#" class="icon-phone"><?= GetMessage("Отправить SMS") ?></a>
-            </div>-->
         </div>
     </aside>
