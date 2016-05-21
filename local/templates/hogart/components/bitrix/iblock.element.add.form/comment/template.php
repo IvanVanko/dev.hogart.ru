@@ -19,7 +19,7 @@ $this->setFrameMode(false); ?>
         <div class="padding">
             <h2><?=GetMessage("Оставьте отзыв")?></h2>
             <? //Изменяем порядок вывода полей
-            $arResult["PROPERTY_LIST"] = array("NAME", 2037, 2038, 85, 88, 'PREVIEW_TEXT');
+            $arResult["PROPERTY_LIST"] = $arParams["PROPERTY_CODES"];
 
             if(!empty($arResult["ERRORS"])):?>
                 <? ShowError(implode("<br />", $arResult["ERRORS"])) ?>
@@ -27,9 +27,7 @@ $this->setFrameMode(false); ?>
             if(strlen($arResult["MESSAGE"]) > 0):?>
                 <!--	Ваш отзыв принят!-->
                 <div class="ok-box">
-                    Благодарим Вас за оставленный отзыв. На указанный e-mail <a
-                        href="mailto:<?=$arResult['COMMS'][0]['mail']['VALUE']?>"><?=$arResult['COMMS'][0]['mail']['VALUE']?></a>
-                    будет отправлено подтверждение о публикации.
+                    <?= GetMessage("Благодарим Вас за оставленный отзыв. На указанный e-mail #MAIL# будет отправлено подтверждение о публикации.", '<a href="mailto:' . $arResult['COMMS'][0]['mail']['VALUE'] . '">' . $arResult['COMMS'][0]['mail']['VALUE'] . '</a>')?> 
                 </div>
             <? else: ?>
                 <div class="js-validation-form-new">
