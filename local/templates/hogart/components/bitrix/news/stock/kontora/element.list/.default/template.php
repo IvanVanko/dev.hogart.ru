@@ -161,7 +161,7 @@
     <? else: ?>
     <div class="inner js-paralax-item">
 
-        <div class="company-side-cnt padding">
+        <div class="company-side-cnt padding text-center">
             <h2><?=GetMessage("Основные направления деятельности")?></h2>
             <?
             $GetCurDir = explode("/", $APPLICATION->GetCurDir());
@@ -179,7 +179,7 @@
                 Array(
                     "COMPONENT_TEMPLATE" => ".default",
                     "IBLOCK_TYPE" => "advantages",
-                    "IBLOCK_ID" => 19,
+                    "IBLOCK_ID" => (LANGUAGE_ID == 'en' ? 31 : 19),
                     "NEWS_COUNT" => "3",
                     "SORT_BY1" => "SORT",
                     "SORT_ORDER1" => "ASC",

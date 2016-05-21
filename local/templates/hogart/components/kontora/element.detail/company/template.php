@@ -85,7 +85,7 @@
 <aside class="sidebar js-fh js-fixed-block js-paralax-height" data-fixed="top">
     <div class="inner js-paralax-item">
 
-        <div class="company-side-cnt padding">
+        <div class="company-side-cnt padding text-center">
             <h2><?=GetMessage("Основные направления деятельности")?></h2>
             <?
             $GetCurDir = explode("/", $APPLICATION->GetCurDir());

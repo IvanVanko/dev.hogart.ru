@@ -177,7 +177,7 @@ Loc::loadLanguageFile(__FILE__);
                                 "EDIT_TEMPLATE" => "standard.php"
                             ));?>
                         </div>
-                        <div class="scroll-to-top">Наверх</div>
+                        <div class="scroll-to-top"><?= GetMessage("Наверх") ?></div>
                     </div>
                     <? if($APPLICATION->GetCurDir() == SITE_DIR) {
                         $APPLICATION->IncludeComponent("kontora:element.list", "main_calendar", array(

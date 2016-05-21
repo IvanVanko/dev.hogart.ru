@@ -1,8 +1,8 @@
 <?if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();?>
 <aside class="sidebar js-fh js-fixed-block js-paralax-height" data-fixed="top">
 	<div class="inner js-paralax-item">
-		<div class="company-side-cnt padding">
-				<h2>Основные направления деятельности</h2>
+		<div class="company-side-cnt padding text-center">
+				<h2><?= GetMessage("Основные направления деятельности") ?></h2>
 				<?$GetCurDir = explode("/", $APPLICATION->GetCurDir());
 
 				$GetCurDir = array_filter(
@@ -17,7 +17,7 @@
 					Array(
 						"COMPONENT_TEMPLATE" => ".default",
 						"IBLOCK_TYPE" => "advantages",
-						"IBLOCK_ID" => 19,
+						"IBLOCK_ID" => (LANGUAGE_ID == 'en' ? 31 : 19),
 						"NEWS_COUNT" => "3",
 						"SORT_BY1" => "SORT",
 						"SORT_ORDER1" => "ASC",
