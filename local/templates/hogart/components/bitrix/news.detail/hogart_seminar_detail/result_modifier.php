@@ -71,7 +71,7 @@ if(count($nav) == 2) {
         $arResult['PREV'] = $nav[0]['DETAIL_PAGE_URL'];
     }
 }
-else {
+elseif(count($nav) == 3) {
     if($nav[0]['ID'] != $arParams['ID']) {
         $arResult['PREV'] = $nav[0]['DETAIL_PAGE_URL'];
     }
