@@ -269,6 +269,7 @@
         </form>
     </div>
 </div>
+<? if (LANGUAGE_ID != 'en'): ?>
 <div class="popup-cnt">
     <div class="inner-cnt" id="popup-login">
         <div class="head inner">
@@ -285,6 +286,7 @@
 
     </div>
 </div>
+<? endif; ?>
 <? $description = substr($APPLICATION->GetProperty('description'), "0", "400"); ?>
 <? $APPLICATION->SetPageProperty('description', $description); ?>
 <? ?>

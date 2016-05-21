@@ -82,6 +82,7 @@ Loc::loadLanguageFile(__FILE__);
                     "PAGE" => "#SITE_DIR#search/index.php"
                 )
             ); ?>
+            <? if (LANGUAGE_ID != 'en'): ?>
             <a class="profile-url<? if($USER->IsAuthorized()): ?> authorized<? else: ?> js-popup-open<? endif; ?>"
                href="<? if($USER->IsAuthorized()): ?>/profile/<? else: ?>#<? endif; ?>"
                <? if(!$USER->IsAuthorized()): ?>data-popup="#popup-login"<? endif; ?>>
@@ -92,6 +93,7 @@ Loc::loadLanguageFile(__FILE__);
                     <span class="hide-text"><?=Loc::getMessage("Личный кабинет")?></span>
                 <? endif; ?>
             </a>
+            <? endif; ?>
             <nav class="header-nav">
                 <ul>
                     <li class="first">
