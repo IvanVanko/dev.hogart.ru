@@ -22,5 +22,6 @@ $MESS["Фамилия"] = "Last name";
 $MESS["Имя"] = "Name";
 $MESS["Отчество"] = "Surname";
 $MESS["Компания"] = "Company";
+$MESS["E-mail"] = "E-mail";
 
 ?>
