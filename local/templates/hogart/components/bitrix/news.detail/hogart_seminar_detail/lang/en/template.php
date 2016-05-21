@@ -10,3 +10,4 @@ $MESS['Архив Семинаров'] = "Archive of Seminars";
 $MESS['Наши координаты'] = "Coordinates";
 $MESS['широта'] = "latitude";
 $MESS['долгота'] = "longitude";
+$MESS['Лекторы'] = "Lecturers";

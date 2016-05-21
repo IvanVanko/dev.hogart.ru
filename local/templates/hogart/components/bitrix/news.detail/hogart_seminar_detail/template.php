@@ -101,16 +101,8 @@ $seminarTitle = $arResult['NAME'];
     <!--    program_txt-->
 <? if (!empty($arResult['LECTORS'])): ?>
     <div class="clearfix">
-        <h2 class="display-inline-block"><?= $arResult["PROPERTIES"]["lecturer"]["NAME"]; ?></h2>
+        <h2 class="display-inline-block"><?= GetMessage($arResult["PROPERTIES"]["lecturer"]["NAME"]); ?></h2>
         <? if (count($arResult['LECTORS']) > 2): ?>
-            <!--<div class="control control-action null-margin">
-                <span class="prev black"><a href="#" id="prev"></a></span>
-                <span class="next black"><a href="#" id="next"></a></span>
-            </div>-->
-            <!--<div id="js-control-company" class="control">
-                <span class="prev black"></span>
-                <span class="next black"></span>
-            </div>-->
             <div class="control control-action null-margin">
                 <span class="prev black"><a href="#" id="prev"></a></span>
                 <span class="next black"><a href="#" id="next"></a></span>
@@ -118,12 +110,8 @@ $seminarTitle = $arResult['NAME'];
 
         <? endif; ?>
     </div>
-    <? //var_dump($arResult['PROPERTIES'])?>
     <? if (count($arResult['LECTORS']) > 2): ?>
-        <!--<ul class="learn-people-list js-normal-slider" data-next="#next" data-prev="#prev">-->
-        <!--<ul class="learn-people-list js-company-slider">-->
         <ul class="learn-people-list js-normal-slider3" data-next="#next" data-prev="#prev">
-        <!--    sert-slider-cnt js-company-slider-->
     <? else: ?>
         <ul class="learn-people-list">
     <? endif; ?>
@@ -148,7 +136,6 @@ $seminarTitle = $arResult['NAME'];
             <?
             $needCoords = $arResult['PROPERTIES']['map']['VALUE'];
             $needCoords = explode(',', $needCoords);
-//                var_dump($needCoords);
             ?>
             <?= GetMessage("Наши координаты") ?>: <?= GetMessage("широта") ?>: <?= $needCoords[0] ?>’, <?= GetMessage("долгота") ?>: <?= $needCoords[1] ?>’<br>
         <? endif; ?>
