@@ -28,7 +28,7 @@ $APPLICATION->SetPageProperty("body_class","reg_page");
             "DISPLAY_NAME" => "Y",
             "DISPLAY_PICTURE" => "Y",
             "DISPLAY_PREVIEW_TEXT" => "Y",
-            "ADD_SECTIONS_CHAIN" => "Y",
+            "ADD_SECTIONS_CHAIN" => "N",
             "ADD_ELEMENT_CHAIN" => "Y",
             "IBLOCK_TYPE" => "training",
             "IBLOCK_ID" => "8",
