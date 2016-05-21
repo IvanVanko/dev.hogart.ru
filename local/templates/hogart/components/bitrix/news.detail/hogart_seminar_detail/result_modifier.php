@@ -34,7 +34,7 @@ $sem_start_date = strtotime(FormatDate("d.m.Y", MakeTimeStamp($arResult['PROPERT
 $sem_start_date = (!empty($sem_start_date)) ? $sem_start_date : 0;
 $now = strtotime(date($DB->DateFormatToPHP(CSite::GetDateFormat("SHORT")), time()));
 
-$arOrder = array("PROPERTY_sem_start_date" => "DESC");
+$arOrder = array("PROPERTY_sem_start_date" => "ASC");
 if (empty($arResult["PROPERTIES"]["sem_start_date"]["VALUE"])) {
     $arOrder = array("ID" => "ASC");
 }
