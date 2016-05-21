@@ -57,11 +57,11 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
                     </div>
                 <? else:?>
                     <?
-                    if(strtolower($arQuestion["CAPTION"]) == 'телефон'):
+                    if(strtolower($arQuestion["CAPTION"]) == 'телефон' || strtolower($arQuestion["CAPTION"]) == 'tel. number'):
                         $customClass = 'phone js-validation-phone';
                     elseif($arQuestion["CAPTION"] == 'E-mail'):
                         $customClass = 'js-validation-email';
-                    elseif(strtolower($arQuestion["CAPTION"]) == 'отчество'):
+                    elseif(strtolower($arQuestion["CAPTION"]) == 'отчество' || strtolower($arQuestion["CAPTION"]) == 'second name'):
                         $customClass = 'not';
                     else:
                         $customClass = 'js-validation-empty';
