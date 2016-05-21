@@ -112,9 +112,9 @@ $now = date($DB->DateFormatToPHP(CSite::GetDateFormat("SHORT")), time()); ?>
                 );
                 BXHelper::end_ajax_block(false, false, false, false);
             } ?>
-                <a class="append-form trigger-border-bottom" href="#" data-clone-form>Добавить участника</a>
+                <a class="append-form trigger-border-bottom" href="#" data-clone-form><?= GetMessage("Добавить участника") ?></a>
                 <button type="submit" class="empty-btn"
-                        data-submit-form="<?= CStorage::getVar("seminar_form_name"); ?>">Отправить
+                        data-submit-form="<?= CStorage::getVar("seminar_form_name"); ?>"><?= GetMessage("Отправить") ?>
                 </button>
             <? else: ?>
                 <script type="text/javascript">
@@ -183,9 +183,9 @@ $now = date($DB->DateFormatToPHP(CSite::GetDateFormat("SHORT")), time()); ?>
                 );
                 BXHelper::end_ajax_block(false, false, false, false);
             } ?>
-                <a class="append-form trigger-border-bottom" href="#" data-clone-form>Добавить участника</a><br>
+                <a class="append-form trigger-border-bottom" href="#" data-clone-form><?= GetMessage("Добавить участника") ?></a><br>
                 <button type="submit" class="empty-btn"
-                        data-submit-form="<?= CStorage::getVar("seminar_form_name"); ?>">Отправить
+                        data-submit-form="<?= CStorage::getVar("seminar_form_name"); ?>"><?= GetMessage("Отправить")?>
                 </button>
             <? endif; ?>
         </div>
