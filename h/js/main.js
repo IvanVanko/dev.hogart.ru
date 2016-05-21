@@ -1269,6 +1269,8 @@ app.validationForm = function () {
             'Введите настоящий E-mail': 'Введите настоящий E-mail'
         }
     };
+    self.messages = this.messages[document.getElementsByTagName("head")[0].getAttribute("lang")];
+    
     var isEmail = function (email) {
             var re = /\S+@\S+\.\S+/;
             return re.test(email);
@@ -1286,7 +1288,7 @@ app.validationForm = function () {
             if (!isEmpty($(this).val())) {
                 e.preventDefault();
                 $(this).parent().addClass('error').attr({
-                    'data-error': self.messages[$('head').lang]['Заполните, пожалуйста, это поле']
+                    'data-error': self.messages['Заполните, пожалуйста, это поле']
                 });
             }
             else {
@@ -1298,7 +1300,7 @@ app.validationForm = function () {
             if (!isEmpty($(this).val())) {
                 e.preventDefault();
                 $(this).parent().addClass('error').attr({
-                    'data-error': self.messages[$('head').lang]['Заполните, пожалуйста, это поле']
+                    'data-error': self.messages['Заполните, пожалуйста, это поле']
                 });
             }
             else {
@@ -1311,7 +1313,7 @@ app.validationForm = function () {
             if (!isEmpty($(this).val())) {
                 e.preventDefault();
                 $(this).parent().addClass('error').attr({
-                    'data-error': self.messages[$('head').lang]['Заполните, пожалуйста, это поле']
+                    'data-error': self.messages['Заполните, пожалуйста, это поле']
                 });
             }
             else {
@@ -1324,7 +1326,7 @@ app.validationForm = function () {
             if (!isEmpty($(this).val())) {
                 e.preventDefault();
                 $(this).parent().addClass('error').attr({
-                    'data-error': self.messages[$('head').lang]['Заполните, пожалуйста, это поле']
+                    'data-error': self.messages['Заполните, пожалуйста, это поле']
                 });
             }
             else {
@@ -1337,14 +1339,14 @@ app.validationForm = function () {
             if (!isEmpty($(this).val())) {
                 e.preventDefault();
                 $(this).parent().addClass('error').attr({
-                    'data-error': self.messages[$('head').lang]['Заполните, пожалуйста, это поле']
+                    'data-error': self.messages['Заполните, пожалуйста, это поле']
                 });
             }
             else {
                 if (!isPhone($(this).val())) {
                     e.preventDefault();
                     $(this).parent().addClass('error').attr({
-                        'data-error': self.messages[$('head').lang]['Заполните это поле правильно']
+                        'data-error': self.messages['Заполните это поле правильно']
                     });
                 }
                 else {
@@ -1358,14 +1360,14 @@ app.validationForm = function () {
             if (!isEmpty($(this).val())) {
                 e.preventDefault();
                 $(this).parent().addClass('error').attr({
-                    'data-error': self.messages[$('head').lang]['Заполните, пожалуйста, это поле']
+                    'data-error': self.messages['Заполните, пожалуйста, это поле']
                 });
             }
             else {
                 if (!isEmail($(this).val())) {
                     e.preventDefault();
                     $(this).parent().addClass('error').attr({
-                        'data-error': self.messages[$('head').lang]['Введите настоящий E-mail']
+                        'data-error': self.messages['Введите настоящий E-mail']
                     });
                 }
                 else {
