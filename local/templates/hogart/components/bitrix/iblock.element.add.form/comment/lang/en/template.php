@@ -18,4 +18,9 @@ $MESS["Отправить"] = "Send";
 $MESS["Поля, отмеченные * обязательны для заполнения."] = "* - Required fields";
 $MESS["фото или логотип"] = "Logo";
 $MESS["Благодарим Вас за оставленный отзыв. На указанный e-mail #MAIL# будет отправлено подтверждение о публикации."] = "Thanks for your feedback. By mail #MAIL# will be sent a confirmation of the publication.";
+$MESS["Фамилия"] = "Last name";
+$MESS["Имя"] = "Name";
+$MESS["Отчество"] = "Surname";
+$MESS["Компания"] = "Company";
+
 ?>

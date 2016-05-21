@@ -223,7 +223,7 @@ $this->setFrameMode(false); ?>
 								<div class="field custom_label <?=$class?>">
 									<label for="PROPERTY[<?=$propertyID?>][<?=$i?>]">
 										<?if (intval($propertyID) > 0):?>
-										<?=$arResult["PROPERTY_LIST_FULL"][$propertyID]["NAME"]?>
+										<?= GetMessage($arResult["PROPERTY_LIST_FULL"][$propertyID]["NAME"]) ?>
 										<?else:?>
 										<?=!empty($arParams["CUSTOM_TITLE_".$propertyID])
 										    ? $arParams["CUSTOM_TITLE_".$propertyID]
