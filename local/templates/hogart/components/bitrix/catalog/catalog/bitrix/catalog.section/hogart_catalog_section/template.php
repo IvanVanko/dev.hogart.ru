@@ -418,31 +418,33 @@ $this->setFrameMode(true);
 
 <? if ($arResult['DEPTH_LEVEL'] <= 1): ?>
     <aside class="sidebar category js-fh js-fixed-block js-paralax-height" data-fixed="top">
-    <div class="inner js-paralax-item">
-    <div class="side_href">
+        <div class="inner js-paralax-item">
+            <div class="side_href">
 
-        <a href="/documentation/" <? /*href="/documentation/?direction[]=<?= $arResult['ID'] ?>&direction_<?= $arResult['ID'] ?>_left=<?= $arResult['LEFT_MARGIN'] ?>&direction_<?= $arResult['ID'] ?>_right=<?= $arResult['RIGHT_MARGIN'] ?>"*/ ?>
-           class="icon_doc">Перейти<br>к документации</a>
+                <a href="/documentation/" <? /*href="/documentation/?direction[]=<?= $arResult['ID'] ?>&direction_<?= $arResult['ID'] ?>_left=<?= $arResult['LEFT_MARGIN'] ?>&direction_<?= $arResult['ID'] ?>_right=<?= $arResult['RIGHT_MARGIN'] ?>"*/ ?>
+                   class="icon_doc">Перейти<br>к документации</a>
 
-        <? if ($arResult["eqSelectID"]) { ?>
-            <a href="/selection-equipment/#tab<?= $arResult["eqSelectID"] ?>" class="icon_ok">Заявка<br>на подбор<br>оборудования</a>
-        <? } ?>
-        <? if ((int)$arResult["UF_PRICE"] > 0) { ?>
-            <a href="<?= CFile::GetPath($arResult["UF_PRICE"]); ?>" class="doc_view icon_doc" download>Скачать
-                каталог</a>
-        <? } ?>
-
-    </div>
+                <? if ($arResult["eqSelectID"]) { ?>
+                    <a href="/selection-equipment/#tab<?= $arResult["eqSelectID"] ?>" class="icon_ok">Заявка<br>на подбор<br>оборудования</a>
+                <? } ?>
+                <? if ((int)$arResult["UF_PRICE"] > 0) { ?>
+                    <a href="<?= CFile::GetPath($arResult["UF_PRICE"]); ?>" class="doc_view icon_doc" download>Скачать
+                        каталог</a>
+                <? } ?>
+            </div>
 <? endif; ?>
 <? if ($arResult['DEPTH_LEVEL'] == '2') : ?>
-<div class="sidebar_padding_cnt">
-<? $page = $APPLICATION->GetCurDir(true); ?>
-    <div class="subs-links">
-    <? foreach ($arResult['SUBS'] as $item): ?>
-        <a <?= ($page == $item['SECTION_PAGE_URL']) ? 'class="active"' : '' ?>
-            href="<?= $item['SECTION_PAGE_URL'] ?>"><?= $item['NAME'] ?></a>
-    <? endforeach; ?>
-    </div>
-</div>
+<aside class="sidebar category js-fh js-fixed-block js-paralax-height" data-fixed="top">
+    <div class="inner js-paralax-item">
+        <div class="side_href">
+            <div class="sidebar_padding_cnt">
+            <? $page = $APPLICATION->GetCurDir(true); ?>
+                <div class="subs-links">
+                <? foreach ($arResult['SUBS'] as $item): ?>
+                    <a <?= ($page == $item['SECTION_PAGE_URL']) ? 'class="active"' : '' ?>
+                        href="<?= $item['SECTION_PAGE_URL'] ?>"><?= $item['NAME'] ?></a>
+                <? endforeach; ?>
+                </div>
+            </div>
 <? endif; ?>
 <? $this->EndViewTarget() ?>
