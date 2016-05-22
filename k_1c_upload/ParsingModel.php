@@ -632,6 +632,9 @@ class ParsingModel {
                                 'VALUE' => $file_obj,
                                 "DESCRIPTION" => $name,
                             );
+                            if (empty($file_obj)) {
+                                continue;
+                            }
 
                             switch ($product["type"]) {
                                 case 'preview_picture':
