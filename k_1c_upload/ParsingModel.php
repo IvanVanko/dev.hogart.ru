@@ -452,13 +452,16 @@ class ParsingModel {
             }
 
             if($del){
-                $this->deleteFile($file);
+                if ($this->deleteFile($file)) {
+                    $answer['StringTehDoc'][] = $fileXmlID;
+                }
                 continue;
             }
 
             // проверка на случай, если с какого-то хера детальную картинку переносят в другой тип документов
             // тогда мы должны её удалить у товара и добавить в ИБ с документами
-            $this->checkifFileDetailImageExist($file);
+            // $this->checkifFileDetailImageExist($file);
+
 
             $array_brands = array();
             $array_product = array();
@@ -503,7 +506,7 @@ class ParsingModel {
                         $elementID = $arItem['ID'];
                         $photosRes = CIBlockElement::GetProperty($iblock_id, $elementID, [], ['CODE' => 'photos']);
                         while($obPhotosRes = $photosRes->GetNext()){
-                            $elementsPhotos[$elementID] = $obPhotosRes['VALUE'];
+                            $elementsPhotos[$elementID][] = $obPhotosRes['VALUE'];
                         }
                     }
 
@@ -589,8 +592,10 @@ class ParsingModel {
                 foreach($array_brands as $brand) {
                     $param[] = array('VALUE' => $brand['id_b']);
                 }
-                $this->addDoc($fileXmlID, $file_obj, $name, $param, $del, $this->classTrans[$type_index],
-                    $access_level, $actual ? "Y" : "N");
+                if ($this->addDoc($fileXmlID, $file_obj, $name, $param, $del, $this->classTrans[$type_index],
+                    $access_level, $actual ? "Y" : "N")) {
+                    $answer['StringTehDoc'][] = $fileXmlID;
+                }
             }
 
             if(count($array_product) and $_GET['V'] != 'Y' and $_GET['P'] != 'Y') {
@@ -628,6 +633,9 @@ class ParsingModel {
                                 'VALUE' => $file_obj,
                                 "DESCRIPTION" => $name,
                             );
+                            if (empty($file_obj)) {
+                                continue;
+                            }
 
                             switch ($product["type"]) {
                                 case 'preview_picture':
@@ -645,6 +653,7 @@ class ParsingModel {
                                     if($del){
                                         $file_obj['del'] = 'del';
                                     }
+
                                     $el->Update($product['id_b'], array(
                                         "DETAIL_PICTURE" => $file_obj
                                     ), false, true, true);
@@ -655,10 +664,13 @@ class ParsingModel {
                                 case 'additional_picture':
                                     if(isset($elementsPhotos[$product['id_b']])){
                                         foreach($elementsPhotos[$product['id_b']] as $photo){
-                                            $fileArray = CFile::GetByID($photo);
-                                            if($fileArray['ORIGINAL_NAME'] == $file->adress && $del){
+                                            $fileArray = CFile::GetByID($photo)->Fetch();
+                                            if(trim($fileArray['ORIGINAL_NAME']) == trim($file->adress) && $del){
                                                 $arFile['del'] = 'Y';
                                                 echo "Фото добавлено: ".$name."<br />";
+                                            } elseif (trim($fileArray['ORIGINAL_NAME']) == trim($file->adress)) {
+                                                echo "Фото НЕ добавлено (дубликат): ". $file->id ." для элемента " . $product['id_b'] . "<br />";
+                                                break 2;
                                             }
                                         }
                                     }
@@ -707,7 +719,7 @@ class ParsingModel {
 
         if($_GET['P'] == 'Y') {
             $answer['StringTehDoc'] = implode(";", $error);
-            $ost = $this->client->__soapCall("TehDocAnswer", array('parameters' => $answer));
+            $this->client->__soapCall("TehDocAnswer", array('parameters' => $answer));
         }
 
         if($_GET['V'] != 'Y' and $_GET['P'] != 'Y') {
@@ -716,10 +728,6 @@ class ParsingModel {
             if($this->answer) {
                 echo $answer['StringTehDoc'];
                 $ost = $this->client->__soapCall("TehDocAnswer", array('parameters' => $answer));
-                if($count_list) {
-//                    echo "<meta http-equiv=\"refresh\" content=\"2; url=".$_SERVER["REQUEST_URI"]."\">";
-                    //$this->_initTehDoc();
-                }
                 if(($ost->return == true)) {
                     echo "<div class='suc'>Документации загружены</div>";
                     echo "<div class='info'>В количестве: ".$count_list."</div>";
@@ -744,12 +752,13 @@ class ParsingModel {
         $iBlockId = $elements[$objId]["IBLOCK_ID"];
         $el->GetPropertyValuesArray($elements, $iBlockId, ["ID" => $objId], ["CODE" => $property_code]);
         $values = [];
-        foreach ($elements[$objId][$property_code]["VALUE"] as $value) {
-            $values[] = ["VALUE" => $value];
-        }
+
         foreach ($property_values as $val) {
-            $values[] = $val;
+            if (!in_array($val, $values)) {
+                $values[] = $val;
+            }
         }
+        pr($values);
         return $el->SetPropertyValueCode($objId, $property_code, $values);
     }
 
@@ -2470,6 +2479,7 @@ class ParsingModel {
         else {
             $this->csv->saveLog(array("Файл с ID {$file->id} для удаления не найден"));
         }
+        return true;
     }
 
     private function checkifFileDetailImageExist($file){
