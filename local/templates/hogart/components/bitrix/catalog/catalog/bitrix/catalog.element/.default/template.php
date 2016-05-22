@@ -70,6 +70,23 @@ $this->setFrameMode(true);
                         </div>
                     </li>
                 <? } ?>
+
+                <? foreach ($arResult["DISPLAY_PROPERTIES"]["photos"] as $photo): ?>
+                    <li>
+                        <div class="img-wrap">
+                            <img data-big-img="<?= CFile::GetPath($photo) ?>"
+                                 src="<?
+                                 $pic = CFile::ResizeImageGet(
+                                     $photo,
+                                     array("width" => 500, "height" => 228),
+                                     BX_RESIZE_IMAGE_PROPORTIONAL,
+                                     true);
+
+                                 echo $pic['src']; ?>" data-group="producPop"
+                                 class="js-popup-open-img" alt=""/>
+                        </div>
+                    </li>
+                <? endforeach; ?>
             </ul>
         </div>
         <!--            --><? //else: ?>
