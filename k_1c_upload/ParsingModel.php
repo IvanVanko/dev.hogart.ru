@@ -755,7 +755,8 @@ class ParsingModel {
             $v = ["VALUE" => $value];
             if (!in_array($v, $values)) {
                 if ($elements[$objId][$property_code]["PROPERTY_TYPE"] == "F") {
-                    if (!CFile::GetById($value)) continue;
+                    $file = CFile::GetById($value)->GetNext();
+                    if (!file_exists($file["FILE_NAME"])) continue;
                 }
                 $values[] = $v;
             }
