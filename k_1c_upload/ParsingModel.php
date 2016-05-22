@@ -2475,11 +2475,12 @@ class ParsingModel {
         if($element){
             $this->csv->saveLog(array("Файл с ID {$file->id} удален"));
             echo "<div class='error'>Файл с ID {$file->id} удален</div>";
-            return CIBlockElement::Delete($element['ID']);
+            CIBlockElement::Delete($element['ID']);
         }
         else {
             $this->csv->saveLog(array("Файл с ID {$file->id} для удаления не найден"));
         }
+        return true;
     }
 
     private function checkifFileDetailImageExist($file){
