@@ -458,10 +458,6 @@ class ParsingModel {
                 continue;
             }
 
-            // проверка на случай, если с какого-то хера детальную картинку переносят в другой тип документов
-            // тогда мы должны её удалить у товара и добавить в ИБ с документами
-            $this->checkifFileDetailImageExist($file);
-
             $array_brands = array();
             $array_product = array();
             $array_product_doc = array();
@@ -652,6 +648,11 @@ class ParsingModel {
                                     if($del){
                                         $file_obj['del'] = 'del';
                                     }
+
+                                    // проверка на случай, если с какого-то хера детальную картинку переносят в другой тип документов
+                                    // тогда мы должны её удалить у товара и добавить в ИБ с документами
+                                    $this->checkifFileDetailImageExist($file);
+
                                     $el->Update($product['id_b'], array(
                                         "DETAIL_PICTURE" => $file_obj
                                     ), false, true, true);
@@ -723,10 +724,6 @@ class ParsingModel {
             if($this->answer) {
                 echo $answer['StringTehDoc'];
                 $ost = $this->client->__soapCall("TehDocAnswer", array('parameters' => $answer));
-                if($count_list) {
-//                    echo "<meta http-equiv=\"refresh\" content=\"2; url=".$_SERVER["REQUEST_URI"]."\">";
-                    //$this->_initTehDoc();
-                }
                 if(($ost->return == true)) {
                     echo "<div class='suc'>Документации загружены</div>";
                     echo "<div class='info'>В количестве: ".$count_list."</div>";
@@ -751,12 +748,10 @@ class ParsingModel {
         $iBlockId = $elements[$objId]["IBLOCK_ID"];
         $el->GetPropertyValuesArray($elements, $iBlockId, ["ID" => $objId], ["CODE" => $property_code]);
         $values = [];
-        if ($elements[$objId][$property_code]["PROPERTY_TYPE"] != "F") {
-            foreach ($elements[$objId][$property_code]["VALUE"] as $value) {
-                $v = ["VALUE" => $value];
-                if (!in_array($v, $values)) {
-                    $values[] = $v;
-                }
+        foreach ($elements[$objId][$property_code]["VALUE"] as $value) {
+            $v = ["VALUE" => $value];
+            if (!in_array($v, $values)) {
+                $values[] = $v;
             }
         }
 
