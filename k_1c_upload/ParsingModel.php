@@ -754,7 +754,10 @@ class ParsingModel {
         foreach ($elements[$objId][$property_code]["VALUE"] as $value) {
             $v = ["VALUE" => $value];
             if (!in_array($v, $values)) {
-                $values[] = ["VALUE" => $value];
+                if ($elements[$objId][$property_code]["PROPERTY_TYPE"] == "F") {
+                    if (!CFile::GetById($value)) continue;
+                }
+                $values[] = $v;
             }
         }
         foreach ($property_values as $val) {
