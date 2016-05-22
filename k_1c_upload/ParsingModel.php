@@ -665,6 +665,7 @@ class ParsingModel {
                                     if(isset($elementsPhotos[$product['id_b']])){
                                         foreach($elementsPhotos[$product['id_b']] as $photo){
                                             $fileArray = CFile::GetByID($photo)->Fetch();
+                                            var_dump($fileArray['ORIGINAL_NAME'], $file->adress);
                                             if($fileArray['ORIGINAL_NAME'] == $file->adress && $del){
                                                 $arFile['del'] = 'Y';
                                                 echo "Фото добавлено: ".$name."<br />";
