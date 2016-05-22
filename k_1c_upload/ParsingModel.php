@@ -663,7 +663,7 @@ class ParsingModel {
                                         }
                                     }
 
-                                    if($this->setPropertyValue($product['id_b'], "photos", array($arFile))) {
+                                    if($this->setPropertyValue($product['id_b'], "photos", $arFile)) {
                                         if($this->answer) {
                                             unlink(trim($_SERVER['DOCUMENT_ROOT'].'/1c-upload/'.$file->adress));
                                         }
