@@ -458,6 +458,11 @@ class ParsingModel {
                 continue;
             }
 
+            // проверка на случай, если с какого-то хера детальную картинку переносят в другой тип документов
+            // тогда мы должны её удалить у товара и добавить в ИБ с документами
+            // $this->checkifFileDetailImageExist($file);
+
+
             $array_brands = array();
             $array_product = array();
             $array_product_doc = array();
@@ -501,7 +506,7 @@ class ParsingModel {
                         $elementID = $arItem['ID'];
                         $photosRes = CIBlockElement::GetProperty($iblock_id, $elementID, [], ['CODE' => 'photos']);
                         while($obPhotosRes = $photosRes->GetNext()){
-                            $elementsPhotos[$elementID] = $obPhotosRes['VALUE'];
+                            $elementsPhotos[$elementID][] = $obPhotosRes['VALUE'];
                         }
                     }
 
@@ -649,10 +654,6 @@ class ParsingModel {
                                         $file_obj['del'] = 'del';
                                     }
 
-                                    // проверка на случай, если с какого-то хера детальную картинку переносят в другой тип документов
-                                    // тогда мы должны её удалить у товара и добавить в ИБ с документами
-                                    $this->checkifFileDetailImageExist($file);
-
                                     $el->Update($product['id_b'], array(
                                         "DETAIL_PICTURE" => $file_obj
                                     ), false, true, true);
@@ -715,7 +716,7 @@ class ParsingModel {
 
         if($_GET['P'] == 'Y') {
             $answer['StringTehDoc'] = implode(";", $error);
-            $ost = $this->client->__soapCall("TehDocAnswer", array('parameters' => $answer));
+            $this->client->__soapCall("TehDocAnswer", array('parameters' => $answer));
         }
 
         if($_GET['V'] != 'Y' and $_GET['P'] != 'Y') {
@@ -748,12 +749,6 @@ class ParsingModel {
         $iBlockId = $elements[$objId]["IBLOCK_ID"];
         $el->GetPropertyValuesArray($elements, $iBlockId, ["ID" => $objId], ["CODE" => $property_code]);
         $values = [];
-        foreach ($elements[$objId][$property_code]["VALUE"] as $value) {
-            $v = ["VALUE" => $value];
-            if (!in_array($v, $values)) {
-                $values[] = $v;
-            }
-        }
 
         foreach ($property_values as $val) {
             if (!in_array($val, $values)) {
