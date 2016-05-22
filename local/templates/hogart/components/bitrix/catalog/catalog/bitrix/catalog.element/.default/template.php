@@ -238,7 +238,7 @@ $this->setFrameMode(true);
                     <? foreach($arShownProperties as $propertyName => $arProperty): ?>
                         <dl>
                             <dt>
-                                <!-- <?=($USER->IsAdmin()) ? $arProperty['CUSTOM_SECTION_SORT']." ".$arProperty['DISPLAY_EXPANDED'] : ""?> -->
+                                <!-- <?=($USER->IsAdmin() ? $arProperty['CUSTOM_SECTION_SORT']." ".$arProperty['DISPLAY_EXPANDED'] : "")?> -->
                                 <?=$arProperty["NAME"]?>
                             </dt>
                             <dd><?=$arProperty["VALUE"]?></dd>
