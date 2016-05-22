@@ -70,28 +70,29 @@ $this->setFrameMode(true);
                         </div>
                     </li>
                 <? } ?>
-
-                <? foreach ($arResult["DISPLAY_PROPERTIES"]["photos"]["VALUE"] as $photo): ?>
-                    <li>
-                        <div class="img-wrap">
-                            <img data-big-img="<?= CFile::GetPath($photo) ?>"
-                                 src="<?
-                                 $pic = CFile::ResizeImageGet(
-                                     $photo,
-                                     array("width" => 500, "height" => 228),
-                                     BX_RESIZE_IMAGE_PROPORTIONAL,
-                                     true);
-
-                                 echo $pic['src']; ?>" data-group="producPop"
-                                 class="js-popup-open-img" alt=""/>
-                        </div>
-                    </li>
-                <? endforeach; ?>
             </ul>
+            <? if (count($arResult["DISPLAY_PROPERTIES"]["photos"]["VALUE"])): ?>
+                <div class="tumb-img">
+                    <? foreach ($arResult["DISPLAY_PROPERTIES"]["photos"]["VALUE"] as $key => $photo): ?>
+                        <?
+                        $photo_small = CFile::ResizeImageGet(
+                            $photo,
+                            array("width" => 110, "height" => 52),
+                            BX_RESIZE_IMAGE_EXACT,
+                            true
+                        );
+                        ?>
+                        <a data-slide-index="<?= $key ?>" href="<?=$arResult["DISPLAY_PROPERTIES"]["photos"]["FILE_VALUE"][$key]['SRC']?>"><img src="<?= $photo_small['src'] ?>" alt=""/></a>
+                    <? endforeach; ?>
+                </div>
+                <?if (count($arResult["DISPLAY_PROPERTIES"]["photos"]["VALUE"]) > 1) {?>
+                    <div class="controls">
+                        <div class="prev"></div>
+                        <div class="next"></div>
+                    </div>
+                <?}?>
+            <? endif; ?>
         </div>
-        <!--            --><? //else: ?>
-        <!--                <img src="--><? //=$arResult['PREVIEW_PICTURE']['SRC'] ?><!--" alt=""/>-->
-        <!--            --><? //endif; ?>
     </div>
     <div class="info-wrap">
         <form action="#">
