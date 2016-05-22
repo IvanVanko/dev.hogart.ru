@@ -751,16 +751,15 @@ class ParsingModel {
         $iBlockId = $elements[$objId]["IBLOCK_ID"];
         $el->GetPropertyValuesArray($elements, $iBlockId, ["ID" => $objId], ["CODE" => $property_code]);
         $values = [];
-        foreach ($elements[$objId][$property_code]["VALUE"] as $value) {
-            $v = ["VALUE" => $value];
-            if (!in_array($v, $values)) {
-                if ($elements[$objId][$property_code]["PROPERTY_TYPE"] == "F") {
-                    $file = CFile::GetById($value)->GetNext();
-                    if (!file_exists($file["FILE_NAME"])) continue;
+        if ($elements[$objId][$property_code]["PROPERTY_TYPE"] != "F") {
+            foreach ($elements[$objId][$property_code]["VALUE"] as $value) {
+                $v = ["VALUE" => $value];
+                if (!in_array($v, $values)) {
+                    $values[] = $v;
                 }
-                $values[] = $v;
             }
         }
+
         foreach ($property_values as $val) {
             if (!in_array($val, $values)) {
                 $values[] = $val;
