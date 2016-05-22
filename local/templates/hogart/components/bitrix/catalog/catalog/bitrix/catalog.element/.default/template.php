@@ -71,7 +71,7 @@ $this->setFrameMode(true);
                     </li>
                 <? } ?>
 
-                <? foreach ($arResult["DISPLAY_PROPERTIES"]["photos"] as $photo): ?>
+                <? foreach ($arResult["DISPLAY_PROPERTIES"]["photos"]["VALUE"] as $photo): ?>
                     <li>
                         <div class="img-wrap">
                             <img data-big-img="<?= CFile::GetPath($photo) ?>"
