@@ -668,6 +668,8 @@ class ParsingModel {
                                             if($fileArray['ORIGINAL_NAME'] == $file->adress && $del){
                                                 $arFile['del'] = 'Y';
                                                 echo "Фото добавлено: ".$name."<br />";
+                                            } elseif ($fileArray['ORIGINAL_NAME'] == $file->adress) {
+                                                break 2;
                                             }
                                         }
                                     }
