@@ -589,8 +589,10 @@ class ParsingModel {
                 foreach($array_brands as $brand) {
                     $param[] = array('VALUE' => $brand['id_b']);
                 }
-                $this->addDoc($fileXmlID, $file_obj, $name, $param, $del, $this->classTrans[$type_index],
-                    $access_level, $actual ? "Y" : "N");
+                if ($this->addDoc($fileXmlID, $file_obj, $name, $param, $del, $this->classTrans[$type_index],
+                    $access_level, $actual ? "Y" : "N")) {
+                    $answer['StringTehDoc'][] = $fileXmlID;
+                }
             }
 
             if(count($array_product) and $_GET['V'] != 'Y' and $_GET['P'] != 'Y') {
