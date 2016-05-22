@@ -108,7 +108,7 @@ $this->setFrameMode(true);
                             true
                         );
                         ?>
-                        <a data-slide-index="<?= $key ?>" href="<?=$arResult["DISPLAY_PROPERTIES"]["photos"]["FILE_VALUE"][$key]['SRC']?>"><img src="<?= $photo_small['src'] ?>" alt=""/></a>
+                        <a data-slide-index="<?= ($key + 1) ?>" href="<?=$arResult["DISPLAY_PROPERTIES"]["photos"]["FILE_VALUE"][$key]['SRC']?>"><img src="<?= $photo_small['src'] ?>" alt=""/></a>
                     <? endforeach; ?>
                 </div>
                 <?if (count($arResult["DISPLAY_PROPERTIES"]["photos"]["VALUE"]) > 1): ?>
