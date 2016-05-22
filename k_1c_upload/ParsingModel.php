@@ -452,7 +452,9 @@ class ParsingModel {
             }
 
             if($del){
-                $this->deleteFile($file);
+                if ($this->deleteFile($file)) {
+                    $answer['StringTehDoc'][] = $fileXmlID;
+                }
                 continue;
             }
 
@@ -2473,7 +2475,7 @@ class ParsingModel {
         if($element){
             $this->csv->saveLog(array("Файл с ID {$file->id} удален"));
             echo "<div class='error'>Файл с ID {$file->id} удален</div>";
-            CIBlockElement::Delete($element['ID']);
+            return CIBlockElement::Delete($element['ID']);
         }
         else {
             $this->csv->saveLog(array("Файл с ID {$file->id} для удаления не найден"));
