@@ -5,7 +5,6 @@
 if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED!==true) die();
 
 $photos = $arResult['DISPLAY_PROPERTIES']['photos']['VALUE'];
-//arsort($photos);
 rsort($photos);
 $arResult['DISPLAY_PROPERTIES']['photos']['VALUE'] = $photos;
 
@@ -27,35 +26,7 @@ while ($ob = $ar_res->GetNextElement()) {
 $sections_for_links = array($arResult['IBLOCK_SECTION_ID']);
 
 $brands = BXHelper::getElementLinkEnum($arResult['DISPLAY_PROPERTIES']['brand']['ID'], false, array(), 'CODE');
-/*$section_properties = CIBlockSectionPropertyLink::GetArray(1, $arResult['IBLOCK_SECTION_ID']);
-
-$result_properties = array();
-
-foreach ($section_properties as $key => $value) {
-	if ($value['INHERITED_FROM'] == $arResult['IBLOCK_SECTION_ID']) {
-		$result_properties[$key] = $value['SMART_FILTER'];
-	}
-}
-arsort($result_properties);
-
-
-foreach ($arResult["PROPERTIES"] as $key => $value) {
-	$smart = $result_properties[$value['ID']];
-	if (array_key_exists($value['ID'], $result_properties)) {
-		$result_properties[$value['ID']] = array(
-			'NAME'         => $value['NAME'],
-			'VALUE'        => $value['VALUE'],
-			'SMART_FILTER' => $smart
-		);
-	}
-}*/
-
 $arResult['PRODUCT_PROPERTIES'] = $result_properties;
-//echo "<PRE>";
-//var_dump($arResult['PRODUCT_PROPERTIES']);
-//echo "</PRE>";
-//echo "<PRE>";
-//var_dump($result_properties);
 
 //buy_with_this
 if (!empty($arResult["PROPERTIES"]["buy_with_this"]["VALUE"])) {
@@ -68,55 +39,8 @@ if (!empty($arResult["PROPERTIES"]["buy_with_this"]["VALUE"])) {
     }
 }
 foreach ($arResult['buy_with_this'] as $i => $arCollItem) {
-//    echo $arCollItem['IBLOCK_SECTION_ID']. '<br>';
     $sections_for_links[] = $arCollItem['IBLOCK_SECTION_ID'];
-    //$section_properties = CIBlockSectionPropertyLink::GetArray(1, $arCollItem['IBLOCK_SECTION_ID']);
-
-    /*$result_properties = array();
-
-    foreach ($section_properties as $key => $value) {
-        if ($value['INHERITED_FROM'] == $arCollItem['IBLOCK_SECTION_ID']) {
-            $result_properties[$key] = $value['SMART_FILTER'];
-        }
-    }
-    arsort($result_properties);
-
-
-    foreach ($arResult["PROPERTIES"] as $key => $value) {
-        $smart = $result_properties[$value['ID']];
-        if (array_key_exists($value['ID'], $result_properties)) {
-            $result_properties[$value['ID']] = array(
-                'NAME'         => $value['NAME'],
-                'VALUE'        => $value['VALUE'],
-                'SMART_FILTER' => $smart
-            );
-        }
-    }
-    $arResult["buy_with_this"][$i]['PROP'] = $result_properties;*/
 }
-/*foreach($arResult["buy_with_this"] as $key => $arProd){
-    $res = CPrice::GetList (
-        array (),
-        array (
-            "PRODUCT_ID" => $arProd['ID'],
-            "CATALOG_GROUP_ID" => 1
-        )
-    );
-    if ($arr = $res->Fetch ()) {
-        $arResult["buy_with_this"][$key]['PRICE'][] = $arr;
-    }
-}*/
-//collections
-/*$ar_res = CIBlockElement::GetList(array("sort" => "asc"), array("ID" => $arResult["PROPERTIES"]["collection"]["VALUE"]), false, false, array());
-while ($ob = $ar_res->GetNextElement()) {
-    $arFields = $ob->GetFields();
-    $arFields["PROPERTIES"] = $ob->GetProperties();
-    $arResult["collection"][] = $arFields;
-}*/
-//echo '<pre>';
-//var_dump($arResult["collection"]);
-//echo '</pre>';
-//related
 if (!empty($arResult["PROPERTIES"]["related"]["VALUE"])) {
     $ar_res = CIBlockElement::GetList(array("sort" => "asc"), array("ID" => $arResult["PROPERTIES"]["related"]["VALUE"], "ACTIVE" => "Y"), false, false, array("*","CATALOG_GROUP_ID" => 1, "PROPERTY_SKU", "PROPERTY_PHOTOS", "PREVIEW_PICTURE"));
     while ($ob = $ar_res->GetNextElement()) {
@@ -128,45 +52,9 @@ if (!empty($arResult["PROPERTIES"]["related"]["VALUE"])) {
     }
 }
 foreach ($arResult['related'] as $i => $arCollItem) {
-//    echo $arCollItem['IBLOCK_SECTION_ID']. '<br>';
     $sections_for_links[] = $arCollItem['IBLOCK_SECTION_ID'];
-
-    //$section_properties = CIBlockSectionPropertyLink::GetArray(1, $arCollItem['IBLOCK_SECTION_ID']);
-
-    /*$result_properties = array();
-
-    foreach ($section_properties as $key => $value) {
-        if ($value['INHERITED_FROM'] == $arCollItem['IBLOCK_SECTION_ID']) {
-            $result_properties[$key] = $value['SMART_FILTER'];
-        }
-    }
-    arsort($result_properties);
-
-
-    foreach ($arResult["PROPERTIES"] as $key => $value) {
-        $smart = $result_properties[$value['ID']];
-        if (array_key_exists($value['ID'], $result_properties)) {
-            $result_properties[$value['ID']] = array(
-                'NAME'         => $value['NAME'],
-                'VALUE'        => $value['VALUE'],
-                'SMART_FILTER' => $smart
-            );
-        }
-    }
-    $arResult["related"][$i]['PROP'] = $result_properties;*/
 }
-/*foreach($arResult["related"] as $key => $arProd){
-    $res = CPrice::GetList (
-        array (),
-        array (
-            "PRODUCT_ID" => $arProd['ID'],
-            "CATALOG_GROUP_ID" => 1
-        )
-    );
-    if ($arr = $res->Fetch ()) {
-        $arResult["related"][$key]['PRICE'][] = $arr;
-    }
-}*/
+
 //alternative
 if (!empty($arResult["PROPERTIES"]["alternative"]["VALUE"])) {
     $ar_res = CIBlockElement::GetList(array("sort" => "asc"), array("ID" => $arResult["PROPERTIES"]["alternative"]["VALUE"], "ACTIVE" => "Y"), false, false, array("*","CATALOG_GROUP_ID" => 1, "PROPERTY_SKU", "PROPERTY_PHOTOS", "PREVIEW_PICTURE"));
@@ -178,64 +66,9 @@ if (!empty($arResult["PROPERTIES"]["alternative"]["VALUE"])) {
     }
 }
 foreach ($arResult['alternative'] as $i => $arCollItem) {
-//    echo $arCollItem['IBLOCK_SECTION_ID']. '<br>';
     $sections_for_links[] = $arCollItem['IBLOCK_SECTION_ID'];
-
-    //$section_properties = CIBlockSectionPropertyLink::GetArray(1, $arCollItem['IBLOCK_SECTION_ID']);
-
-    /*$result_properties = array();
-
-    foreach ($section_properties as $key => $value) {
-        if ($value['INHERITED_FROM'] == $arCollItem['IBLOCK_SECTION_ID']) {
-            $result_properties[$key] = $value['SMART_FILTER'];
-        }
-    }
-    arsort($result_properties);
-
-
-    foreach ($arResult["PROPERTIES"] as $key => $value) {
-        $smart = $result_properties[$value['ID']];
-        if (array_key_exists($value['ID'], $result_properties)) {
-            $result_properties[$value['ID']] = array(
-                'NAME'         => $value['NAME'],
-                'VALUE'        => $value['VALUE'],
-                'SMART_FILTER' => $smart
-            );
-        }
-    }
-    $arResult["alternative"][$i]['PROP'] = $result_properties;*/
 }
-/*foreach($arResult["alternative"] as $key => $arProd){
-    $res = CPrice::GetList (
-        array (),
-        array (
-            "PRODUCT_ID" => $arProd['ID'],
-            "CATALOG_GROUP_ID" => 1
-        )
-    );
-    if ($arr = $res->Fetch ()) {
-        $arResult["alternative"][$key]['PRICE'][] = $arr;
-    }
-}*/
-//this_collection
-/*<<<<<<< HEAD
-if (!empty($arResult["PROPERTIES"]["alternative"]["VALUE"])) {
-    $ar_res = CIBlockElement::GetList(array("sort" => "asc"), array("ID" => $arResult["PROPERTIES"]["this_collection"]["VALUE"]), false, false, array());
-    while ($ob = $ar_res->GetNextElement()) {
-        $arFields = $ob->GetFields();
-        $arFields["PROPERTIES"] = $ob->GetProperties();
-        $arResult["this_collection"][] = $arFields;
-    }
 
-}
-=======*/
-/*$ar_res = CIBlockElement::GetList(array("sort" => "asc"), array("ID" => $arResult["PROPERTIES"]["collection"]["VALUE"]), false, false, array());
-while ($ob = $ar_res->GetNextElement()) {
-	$arFields = $ob->GetFields();
-	$arFields["PROPERTIES"] = $ob->GetProperties();
-	$arResult["this_collection"][] = $arFields;
-}*/
-//$arSelect = array("ID", "NAME", 'DETAIL_PAGE_URL');
 if (!empty($arResult["PROPERTIES"]["collection"]["VALUE"])) {
     $arSelect = array('ID', 'NAME', 'DETAIL_PAGE_URL', "CATALOG_GROUP_1", "PROPERTY_SKU", "PROPERTY_PHOTOS", "PREVIEW_PICTURE");
     $arFilter = array(
@@ -245,13 +78,10 @@ if (!empty($arResult["PROPERTIES"]["collection"]["VALUE"])) {
     );
 
     $res = CIBlockElement::GetList(
-//    $arParams['ORDER'],
-//    Array(),
         false,
         $arFilter,
         false,
         false,
-//    Array("nPageSize"=>8),
         $arSelect);
 
     while($ob = $res->GetNextElement()) {
@@ -279,12 +109,12 @@ foreach ($arSectionLinksProperties as $arSectionProp) {
     $prop_ids[] = $arSectionProp['PROPERTY_ID'];
 }
 
-$prop_section_sort_result = \CUSTOM\Entity\SectionPropertySortTable::getList(array("select" => array("UF_SECTION_ID", "UF_PROPERTY_ID","UF_SORT"), "filter" => array("UF_PROPERTY_ID" => $prop_ids, 'UF_SECTION_ID' => $sections_for_links)));
-
-while ($next = $prop_section_sort_result->fetch()) {
-    $section_prop_sort[] = $next;
+if (!empty($prop_ids)) {
+    $prop_section_sort_result = \CUSTOM\Entity\SectionPropertySortTable::getList(array("select" => array("UF_SECTION_ID", "UF_PROPERTY_ID","UF_SORT"), "filter" => array("UF_PROPERTY_ID" => $prop_ids, 'UF_SECTION_ID' => $sections_for_links)));
+    while ($next = $prop_section_sort_result->fetch()) {
+        $section_prop_sort[] = $next;
+    }
 }
-
 
 $arAdjacentCollsBrandsIds = array();
 foreach (array('this_collection','alternative','related','buy_with_this') as $i => $result_key) {
@@ -302,7 +132,6 @@ foreach (array('this_collection','alternative','related','buy_with_this') as $i 
                     $arItemProp['CUSTOM_SECTION_SORT'] = $arSort['UF_SORT'];
                 }
             }
-            //$arItemProp["EXPANDED_SORT"]
             $arResultProperty['DISPLAY_EXPANDED_SORT'] = intval($arResultProperty['DISPLAY_EXPANDED'] == "Y")*100;
         }
         $arResultItem['PROPERTIES'] = BXHelper::complex_sort($arResultItem['PROPERTIES'], array('DISPLAY_EXPANDED_SORT' => 'DESC', 'CUSTOM_SECTION_SORT' => 'ASC'), false);
