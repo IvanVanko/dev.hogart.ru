@@ -529,13 +529,11 @@ $this->setFrameMode(true);
                         <li>
 		        	<span class="preview-img">
                         <? if(!empty($arProduct["PREVIEW_PICTURE"])) {
-                            //$file = CFile::GetPath($arProduct["PREVIEW_PICTURE"]);
                             $file = CFile::ResizeImageGet($arProduct["PREVIEW_PICTURE"],
                                 array('width' => 406, 'height' => 142), BX_RESIZE_IMAGE_PROPORTIONAL_ALT, true);
                             $file = $file['src'];
                         }
                         elseif(!empty($arProduct["PROPERTY_PHOTOS_VALUE"])) {
-                            //$file = CFile::GetPath($arProduct["PROPERTY_PHOTOS_VALUE"]);
                             $file = CFile::ResizeImageGet($arProduct["PROPERTY_PHOTOS_VALUE"],
                                 array('width' => 406, 'height' => 142), BX_RESIZE_IMAGE_PROPORTIONAL_ALT, true);
                             $file = $file['src'];
