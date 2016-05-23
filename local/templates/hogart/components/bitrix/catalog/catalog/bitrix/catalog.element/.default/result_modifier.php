@@ -78,7 +78,7 @@ if (!empty($arResult["PROPERTIES"]["collection"]["VALUE"])) {
     );
 
     $res = CIBlockElement::GetList(
-        false,
+        ['RAND' => 'DESC'],
         $arFilter,
         false,
         ["nPageSize" => 9],
