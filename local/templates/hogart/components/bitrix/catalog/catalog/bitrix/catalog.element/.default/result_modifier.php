@@ -83,6 +83,7 @@ if (!empty($arResult["PROPERTIES"]["collection"]["VALUE"])) {
         false,
         false,
         $arSelect);
+    
 
     while($ob = $res->GetNextElement()) {
 
