@@ -52,7 +52,9 @@ if($this->StartResultCache(false)) {
     }
 
     $arResult["NAV_STRING"] = $res->GetPageNavStringEx($navComponentObject, '', '', 'N');
-    $arResult["NAV_CACHED_DATA"] = $navComponentObject->GetTemplateCachedData();
+    if (is_object($navComponentObject) && method_exists($navComponentObject, "GetTemplateCachedData")) {
+        $arResult["NAV_CACHED_DATA"] = $navComponentObject->GetTemplateCachedData();
+    }
     $arResult["NAV_RESULT"] = $res;
     $this->SetResultCacheKeys(array(
         "ID",
