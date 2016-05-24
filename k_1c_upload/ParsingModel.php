@@ -88,10 +88,23 @@ class ParsingModel {
         $DB->Query('SET collation_connection = "utf8_unicode_ci"');
     }
 
-    public static function updateElementPropertyValuesToList($arPropertyValues) {
-        global $DB;
-        $db_name = "b_iblock_element_property";
-        $db_sname = "biep";
+    protected function convert($size)
+    {
+        $unit=array('b','kb','mb','gb','tb','pb');
+        return @round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
+    }
+
+    protected function debug_memory() {
+        $d = debug_backtrace();
+        $line = $d[0]['line'];
+        $memory = $this->convert(memory_get_usage(true));
+        if ($_GET['debug']) {
+            echo "Строка {$line}, использовано памяти {$memory}<br />";
+        }
+    }
+
+    public static function updateElementPropertyValuesToList($arPropertyValues)
+    {
     }
 
     /**
@@ -1516,7 +1529,6 @@ class ParsingModel {
             $values = json_decode(json_encode($values), true);
         }
 
-        //pr(array($collection_name, $values));
         if(is_array($values) && count($values)) {
             $mongo = new MongoClient();
             $mongo_database = $mongo->selectDB($this->mongo_db_name);
@@ -1532,24 +1544,6 @@ class ParsingModel {
         }
         return false;
     }
-
-    /*function addSectionPropertySort($iblock_id, $section_id, $property_id, $sort) {
-        if (intval($iblock_id) && intval($section_id) && intval($property_id) && intval($sort)) {
-            $obSort = new \CUSTOM\Entity\SectionPropertySortTable();
-            $sort_field = $obSort->getList(
-                array(
-                    'filter' => array(
-                        'UF_IBLOCK_ID' => $iblock_id,
-                        'UF_SECTION_ID' => $section_id,
-                        'UF_PROPERTY_ID' => $property_id
-                    )
-                )
-            )->getNext();
-            if (empty($sort_field['ID'])) {
-                $obSort->Add(array('UF_IBLOCK_ID' => $iblock_id, 'UF_SECTION_ID' => $section_id, 'UF_PROPERTY_ID' => $property_id, 'UF_SORT' => $sort));
-            }
-        }
-    }*/
 
     /**
      * Преобразуем хем id из 1с в вид пригодный для битрикса
@@ -1705,7 +1699,6 @@ class ParsingModel {
     function initProp() {
 
         $ost = $this->GetResultFunction('CategoryGet');
-        //define("CACHED_b_iblock_bucket_size", 3600);
         $answer = array();
         $answer['ID_Portal'] = 'HG';
         //Объект элемента в модели битрикса
@@ -1747,11 +1740,6 @@ class ParsingModel {
         $obPropertyEnum = new CIBlockPropertyEnum();
 
         foreach($get as $key => $value) {
-
-            //            $arFields = array(
-            //                "VALUES" => $value,
-            //            );
-
             $code = $this->code1C2codeBitrix($key);
 
             if(!empty($arProperties[$code])) {
@@ -1766,23 +1754,8 @@ class ParsingModel {
                                                        'PROPERTY_ID' => $arProperties[$code]['ID']));
                         }
                     }
-                    //$DB->Query("DELETE FROM b_iblock_property_enum WHERE PROPERTY_ID = ".$arProperties[$code]['ID']." AND XML_ID = '".$val['XML_ID']."'");
                 }
             }
-
-            //проверяем наличие такого элемента
-            //            $arFilter = Array('IBLOCK_ID' => 1, 'CODE' => $this->code1C2codeBitrix($key));
-            //            $rsItems = CIBlockProperty::GetList(Array("SORT" => "ASC"), $arFilter);
-            //            //Если элемент уже существует, обновляем его
-            //            if ($arItem = $rsItems->GetNext()) {
-            //                //Если удалять не нужно, то обновляем и выводим сообщение
-            //                if ($res = $el->Update($arItem['ID'], $arFields)) {
-            //                    echo "Значение свойства добавлено: " . $value['name'] . "<br />";
-            //                } else {
-            //                    echo 'Error: ' . $el->LAST_ERROR." ".__LINE__." ".__FUNCTION__;
-            //                }
-            //
-            //            }
         }
 
         echo "</div>";
@@ -1821,7 +1794,6 @@ class ParsingModel {
         print_r($property_xml_ids);
         $property_xml_ids_bitrix = array_map(array($this, 'code1C2codeBitrix'), $property_xml_ids);
 
-        //$reserved_property_values = $this->getMongoValues(array('propname_id' => array('$in' => $property_xml_ids)));
         $reserved_properties = $this->getMongoValues(array('id' => array('$in' => $property_xml_ids)), 'properties');
 
         $temp = array();
@@ -1830,13 +1802,6 @@ class ParsingModel {
         }
 
         $reserved_properties = $temp;
-
-        //        $temp = array();
-        //        foreach ($reserved_property_values as $res_prop) {
-        //            $temp[$res_prop['id']] = $res_prop;
-        //        }
-        //        $reserved_property_values = $temp;
-
 
         $arProperties = BXHelper::getProperties(array(), array('IBLOCK_ID' => 1,
                                                                'CODE' => $property_xml_ids_bitrix), array('ID',
@@ -1873,15 +1838,6 @@ class ParsingModel {
                 }
             }
         }
-
-        //        if (!empty($arPropertyListToInt)) {
-        //            $this->convertListPropertiesToInt(array_unique($arPropertyListToInt), $arProperties);
-        //        }
-        //
-        //        if (!empty($arPropertyIntToList)) {
-        //            $this->convertIntPropertiesToList(array_unique($arPropertyIntToList), $arProperties);
-        //        }
-
     }
 
     function getMongoValues($query_filter, $collection_name) {
@@ -1904,7 +1860,6 @@ class ParsingModel {
         $arPropertyEnum = BXHelper::getPropertyEnum(array(), array('PROPERTY_ID' => $arPropCodes), 'ID', false);
         foreach($arPropCodes as $p_code) {
             $DB->Query("UPDATE b_iblock_property SET PROPERTY_TYPE = 'N' WHERE ID = ".$arProperties[$p_code]['ID']);
-            //$obProperty->Update($arProperties[$p_code]['ID'], array('PROPERTY_TYPE' => 'N'));
         }
         $this->updateElementPropertyValuesToInt($arPropertyEnum);
 
@@ -1914,60 +1869,21 @@ class ParsingModel {
         global $DB;
         $db_name = "b_iblock_element_property";
         $db_sname = "biep";
-        $property_value_ids = array();
         foreach($arPropertyValues as $id => $arPropVal) {
             $DB->Query("UPDATE $db_name biep SET $db_sname.VALUE = ".$arPropVal['VALUE'].", $db_sname.VALUE_ENUM = NULL, $db_sname.VALUE_NUM = ".$arPropVal['VALUE']." WHERE $db_sname.VALUE_ENUM = $id");
         }
     }
 
     function convertIntPropertiesToList($arPropCodes, $arProperties) {
-        //        global $DB;
-        //        $arPropBitrixCodes = array_map(array($this, 'code1C2codeBitrix'), $arPropCodes);
-        //        $obPropertyEnum = new CIBlockPropertyEnum();
-        //        $arPropertyEnum = BXHelper::getPropertyEnum(array(), array('PROPERTY_ID' => $arPropBitrixCodes), 'ID', false);
-        //        foreach ($arPropCodes as $i => $p_code) {
-        //            $p_bitrix_code = $arPropBitrixCodes[$i];
-        //            $DB->Query("UPDATE b_iblock_property SET PROPERTY_TYPE = 'L' WHERE ID = ".$arProperties[$p_bitrix_code]['ID']);
-        //                //$obProperty->Update($arProperties[$p_code]['ID'], array('PROPERTY_TYPE' => 'N'));
-        //            $dbElementResult = $DB->Query("SELECT biep.* FROM b_iblock_element_property biep WHERE biep.IBLOCK_PROPERTY_ID = ".$arProperties[$p_bitrix_code]['ID']);
-        //            while ($next = $dbElementResult->GetNext()) {
-        //                $existed_enum_found = false;
-        //                foreach ($arPropertyEnum as $arEnum) {
-        //                    if ($arEnum['VALUE'] == $next['VALUE'] && $arEnum['PROPERTY_ID'] == $arProperties[$p_bitrix_code]['ID']) {
-        //                        $DB->Query("UPDATE b_iblock_element_property SET VALUE = '".$arEnum['ID']."', VALUE_ENUM = '".$arEnum['ID']."' WHERE ID = ".$next['ID']);
-        //                        $existed_enum_found = true;
-        //                        break;
-        //                    }
-        //                }
-        //                if (!$existed_enum_found) {
-        //                    $value = $this->getMongoValues(array('propname_id' => $p_code, 'name' => $next['VALUE']), 'property_values');
-        //                    if ($value) {
-        //                        $added_id = $obPropertyEnum->Add(array("PROPERTY_ID" => $arProperties[$p_bitrix_code]['ID'], 'VALUE' => $value['name'], 'XML_ID' => $this->code1C2codeBitrix($value['id'])));
-        //                        $DB->Query("UPDATE b_iblock_element_property SET VALUE = '".$added_id."', VALUE_ENUM = '".$added_id."' WHERE ID = ".$next['ID']);
-        //                        $existed_enum_found = true;
-        //                    }
-        //                }
-        //                if (!$existed_enum_found) {
-        //                    $md5_enum = substr(md5($next['VALUE']), 0, 7);
-        //                    print_r(array("PROPERTY_ID" => $arProperties[$p_bitrix_code]['ID'], 'VALUE' => $next['VALUE'], 'XML_ID' => $p_bitrix_code."_".$md5_enum));
-        //                    $added_id = $obPropertyEnum->Add(array("PROPERTY_ID" => $arProperties[$p_bitrix_code]['ID'], 'VALUE' => $next['VALUE'], 'XML_ID' => $p_bitrix_code."_".$md5_enum));
-        //                    $this->writeMongoValues(array('name' => $next['VALUE'], 'id' => $p_code."_".$md5_enum, 'propname_id' => $p_code), 'property_values');
-        //                    $DB->Query("UPDATE b_iblock_element_property SET VALUE = '".$added_id."', VALUE_ENUM = '".$added_id."' WHERE ID = ".$next['ID']);
-        //                }
-        //            }
-        //        }
     }
 
     /**
      * Обрабатываем товар
      */
     function initProduct() {
-        //fileDump(array("azazaaz"), true);
-        //$this->csv->saveLog(array('************'));
-        // $this->csv->dynamicSave('cache/01.07.2015', array('*******'));
-
         $BLOCK_ID = self::CATALOG_IBLOCK_ID;
         $ost = $this->GetResultFunction('ItemsGet');
+        $this->debug_memory();
         //Бренды
 
         if(empty($this->tmp['B'])) {
@@ -1979,9 +1895,11 @@ class ParsingModel {
                 $arrayB[$arItem['XML_ID']] = $arItem['ID'];
             }
             $this->tmp['B'] = $arrayB;
+            $this->debug_memory();
         }
 
         $this->initSectionsCache();
+        $this->debug_memory();
 
         if(empty($this->tmp['С'])) {
             $arrayB = array();
@@ -1992,6 +1910,7 @@ class ParsingModel {
                 $arrayB[$arItem['XML_ID']] = $arItem['ID'];
             }
             $this->tmp['C'] = $arrayB;
+            $this->debug_memory();
         }
 
         $answer = array();
@@ -2022,6 +1941,7 @@ class ParsingModel {
                 $temp_meas[$m_unit['id']] = $m_unit;
             }
             $measure_units = $temp_meas;
+            $this->debug_memory();
         }
 
         if(!empty($ost->return->unit_messure)) {
@@ -2036,6 +1956,7 @@ class ParsingModel {
                 $temp_meas[$m_unit_product['id']] = $m_unit_product;
             }
             $measures = $temp_meas;
+            $this->debug_memory();
         }
 
         $arFilter = [];
@@ -2047,6 +1968,7 @@ class ParsingModel {
         while($next = $dbCatalogMeasureResult->GetNext()) {
             $arCatalogMeasures[$next['CODE']] = $next;
         }
+        $this->debug_memory();
 
         foreach($measure_units as $id => $m_unit) {
             if(!is_array($arCatalogMeasures[$id])) {
@@ -2064,6 +1986,7 @@ class ParsingModel {
                 }
             }
         }
+        $this->debug_memory();
 
         $updated_property_values_xml_ids = array();
 
@@ -2095,6 +2018,7 @@ class ParsingModel {
             $arPropertyCollection = BXHelper::getProperties(array(), array('IBLOCK_ID' => self::CATALOG_IBLOCK_ID,
                 'CODE' => 'collection'), array(), 'CODE');
             $arPropertyCollection = $arPropertyCollection['RESULT'];
+            $this->debug_memory();
 
             foreach($prop as $vp) {
                 $updated_property_values_xml_ids[] = $vp->propname_id;
@@ -2103,8 +2027,10 @@ class ParsingModel {
             if(!empty($updated_property_values_xml_ids)) {
                 $propIntervals = $this->getMongoValues(array('id' => array('$in' => $updated_property_values_xml_ids),
                                                              'interval' => true), 'properties');
+                $this->debug_memory();
 
                 $import_property_enums = $this->getMongoValues(array('propname_id' => array('$in' => $updated_property_values_xml_ids)), 'property_values');
+                $this->debug_memory();
 
                 $temp = array();
 
@@ -2124,11 +2050,13 @@ class ParsingModel {
                         },
                         $propIntervalsId
                     );
+                    $this->debug_memory();
                 }
 
 
                 $updated_property_values_xml_ids = array_unique($updated_property_values_xml_ids);
                 $updated_property_values_xml_ids = array_values($updated_property_values_xml_ids);
+                $this->debug_memory();
 
                 $arPropertyEnums = BXHelper::getPropertyEnum(
                     array(),
@@ -2138,6 +2066,7 @@ class ParsingModel {
                               $updated_property_values_xml_ids
                           )
                     ), 'XML_ID', false);
+                $this->debug_memory();
 
                 $arProperties = BXHelper::getProperties(
                     array(),
@@ -2147,10 +2076,14 @@ class ParsingModel {
                               $updated_property_values_xml_ids
                           )), array(), 'CODE', false
                 );
+                $this->debug_memory();
 
                 $arProperties = $arProperties['RESULT'];
 
                 $arCurrentPropertyEnums = BXHelper::group_array($arPropertyEnums, 'PROPERTY_CODE');
+                unset($arPropertyEnums);
+                unset($updated_property_values_xml_ids);
+                $this->debug_memory();
 
                 foreach($prop as $vp) {
 
@@ -2173,6 +2106,7 @@ class ParsingModel {
                                 break;
                             }
                         }
+                        $this->debug_memory();
                     }
                     if($vp->propname_id == 'edb71222-f482-11e4-9045-003048b99ee9') {
                     }
@@ -2195,6 +2129,7 @@ class ParsingModel {
                                 break;
                             }
                         }
+                        $this->debug_memory();
                     }
                     else {
                         if(!empty($prop_values[$vp->prop_id])) {
@@ -2205,6 +2140,10 @@ class ParsingModel {
                         "VALUE" => $value_enum
                     );
                 }
+
+                unset($arCurrentPropertyEnums);
+                unset($property_enums);
+                unset($arProperties);
             }
 
             $propA['sku'] = $value->article;
@@ -2225,8 +2164,8 @@ class ParsingModel {
             $rsItems = CIBlockElement::GetList(array(), array(
                 'IBLOCK_ID' => $BLOCK_ID,
                 "=XML_ID" => $value->id,
-            ), false, false, array('ID'));
-
+            ), false, false, array('ID', 'CODE', 'IBLOCK_SECTION_ID', 'NAME'));
+            $this->debug_memory();
 
             $measure_id = !empty($measures) && !empty($arCatalogMeasures) ? $arCatalogMeasures[intval($measures[$value->unit_messure_id]['unit_messure_catalog_id'])]['ID'] : null;
 
@@ -2241,6 +2180,7 @@ class ParsingModel {
                     $propA[$prop['CODE']] = ['VALUE' => $prop['VALUE_ENUM_ID'] ? : $prop['VALUE']];
                 }
                 $arLoadProductArray['PROPERTY_VALUES'] = array_merge($propA, $arLoadProductArray['PROPERTY_VALUES']);
+                unset($propA);
 
                 //Удаляем из битрикса элемент
                 if($value->deletion_mark == true) {
@@ -2252,9 +2192,6 @@ class ParsingModel {
                     }
                 }
                 else {
-                    //Если удалять не нужно, то обновляем и выводим сообщение
-                    $arLoadProductArray["CODE"] = CUtil::translit($value->name.'_'.$arItem['ID'], 'ru',
-                        array('change_case' => 'L', 'replace_space' => '-', 'replace_other' => ''));
                     if($res = $el->Update($arItem['ID'], $arLoadProductArray, false, true, true)) {
                         if (!empty($measure_id)) {
                             $arFields = array(
@@ -2266,11 +2203,9 @@ class ParsingModel {
                 }
             }
             else {
-                $arLoadProductArray["CODE"] = CUtil::translit($value->name.'_'.$arItem['ID'], 'ru',
-                    array('change_case' => 'L', 'replace_space' => '-', 'replace_other' => ''));
-                if($BRAND_ID = $el->Add($arLoadProductArray, false, true, true)) {
+                if($ELEMENT_ID = $el->Add($arLoadProductArray, false, true, true)) {
                     $arFields = array(
-                        "ID" => $BRAND_ID,
+                        "ID" => $ELEMENT_ID,
                         "VAT_ID" => 1,
                         "VAT_INCLUDED" => "Y",
                         "MEASURE" => $measure_id
@@ -2280,6 +2215,8 @@ class ParsingModel {
                     }
                 }
             }
+            $this->debug_memory();
+
             $answer['StringItems'][] = $value->id;
         }
 
@@ -2289,45 +2226,12 @@ class ParsingModel {
             $isGo = true;
         }
 
-        $dbResult = CIBlockElement::GetList(Array("SORT" => "ASC"), Array('IBLOCK_ID' => self::CATALOG_IBLOCK_ID), false,
-            Array('ID', 'NAME'), false);
-        $tempelement = array();
-        while($new = $dbResult->GetNext()) {
-            $tempelement[] = $new;
-        }
-        $has_codes = array();
-        foreach($tempelement as $element) {
-            $elementup = new CIBlockElement;
-            $code = CUtil::translit($element['NAME'], 'ru',
-                array('change_case' => 'L', 'replace_space' => '-', 'replace_other' => ''));
-            if(array_key_exists($code, $has_codes)) {
-                $code = $code.(++$has_codes[$code]);
-            }
-            else {
-                ++$has_codes[$code];
-            }
-            if($elementup->Update($element['ID'], array('CODE' => $code))) {
-                //echo 'OK';
-            }
-        }
-
-
         $answer['StringItems'] = implode(";", $answer['StringItems']);
         if($this->answer) {
             $ost = $this->client->__soapCall("ItemsAnswer", array('parameters' => $answer));
             if($isGo) {
                 echo "<meta http-equiv=\"refresh\" content=\"2; url=".$_SERVER["REQUEST_URI"]."\">";
-                //header('Location: '.$_SERVER['REQUEST_URI']);
-                //$this->initProduct();
             }
-        }
-
-        if(($ost->return == true)) {
-            //echo "<div class='suc'>Товары загружены</div>";
-            //echo "<div class='info'>В количестве: " . count($ost->return->item) . "</div>";
-        }
-        else {
-            //echo "<div class='error'>Товары не загружены</div>";
         }
     }
 
