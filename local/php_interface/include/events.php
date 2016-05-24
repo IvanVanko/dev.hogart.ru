@@ -208,11 +208,13 @@ class IBlockHandlers {
                 "!ID" => $arParams['ID']
             ), false, false, array('ID'));
             if ($rsItems->AffectedRowsCount()) {
-                $obElement->Update(
-                    $arParams['ID'],
-                    [ 'CODE' => $code . uniqid("_") ]
-                );
+                $code = $code . uniqid("_");
             }
+
+            $obElement->Update(
+                $arParams['ID'],
+                [ 'CODE' => $code ]
+            );
         }
         if($arParams['IBLOCK_ID'] == EVENTS_IBLOCK_ID) {
             self::insertEventLink($arParams);
