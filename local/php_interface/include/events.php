@@ -56,6 +56,22 @@ class IBlockHandlers {
             $property = $property["RESULT"]["sem_ean_id"];
             $arParams['PROPERTY_VALUES'][$property['ID']]['n0']['VALUE'] = $ean_number;
         }
+
+        if($arParams["IBLOCK_ID"] == CATALOG_IBLOCK_ID) {
+            $code = CUtil::translit($arParams['NAME'], 'ru',
+                array('change_case' => 'L', 'replace_space' => '-', 'replace_other' => '-'));
+
+            //проверяем наличие элемента с таким же кодом
+            $rsItems = CIBlockElement::GetList(array(), array(
+                'IBLOCK_ID' => $arParams['IBLOCK_ID'],
+                "IBLOCK_SECTION_ID" => $arParams['IBLOCK_SECTION_ID'],
+                "CODE" => $code
+            ), false, false, array('ID'));
+            if ($rsItems->AffectedRowsCount()) {
+                $code = $code . uniqid("_");
+            }
+            $arParams['CODE'] = $code;
+        }
     }
 
     public static function OnBeforeIBlockElementUpdateHandler(&$arParams) {
@@ -65,9 +81,20 @@ class IBlockHandlers {
         $property = $property["RESULT"]["sem_ean_id"];
 
         if($arParams["IBLOCK_ID"] == CATALOG_IBLOCK_ID) {
-            $arParams['CODE'] = CUtil::translit($arParams['NAME'].$arParams['ID'], 'ru', array('max_len' => 100,
-                                                                                               'replace_space' => '-',
-                                                                                               'replace_other' => '-'));
+            $code = CUtil::translit($arParams['NAME'], 'ru',
+                array('change_case' => 'L', 'replace_space' => '-', 'replace_other' => '-'));
+
+            //проверяем наличие элемента с таким же кодом
+            $rsItems = CIBlockElement::GetList(array(), array(
+                'IBLOCK_ID' => $arParams['IBLOCK_ID'],
+                "IBLOCK_SECTION_ID" => $arParams['IBLOCK_SECTION_ID'],
+                "CODE" => $code,
+                "!ID" => $arParams["ID"]
+            ), false, false, array('ID'));
+            if ($rsItems->AffectedRowsCount()) {
+                $code = $code . uniqid("_");
+            }
+            $arParams['CODE'] = $code;
         }
 
         if(!empty($arParams['PROPERTY_VALUES'][$property['ID']])) {
@@ -76,14 +103,6 @@ class IBlockHandlers {
                 if(!is_string($updated_num)) {
                     $updated_num = &$arPropVal;
                 }
-                //                if (!empty($updated_num)) {
-                //                    $element = BXHelper::getElements(array(), array('IBLOCK_ID' => $arParams['IBLOCK_ID'], 'ID' => $arParams['ID']), false,false,array('ID','PROPERTY_sem_ean_id'), false, 'ID');
-                //                    $element = $element['RESULT'][$arParams['ID']];
-                //                    if ($element['PROPERTY_SEM_EAN_ID_VALUE'] != $updated_num && !empty($element['PROPERTY_SEM_EAN_ID_VALUE'])) {
-                //                        $APPLICATION->ThrowException("Нельзя изменять идентификатор для штрихкода. Он генерируется один раз. Текущее значение - ".$element['PROPERTY_SEM_EAN_ID_VALUE']);
-                //                        return false;
-                //                    }
-                //                }
             }
         }
 
@@ -193,29 +212,6 @@ class IBlockHandlers {
     }
 
     public static function OnAfterIBlockElementAddHandler(&$arParams) {
-        if($arParams["IBLOCK_ID"] == CATALOG_IBLOCK_ID) {
-            CModule::IncludeModule('iblock');
-            $obElement = new CIBlockElement();
-
-            $code = CUtil::translit($arParams['NAME'], 'ru',
-                array('change_case' => 'L', 'replace_space' => '-', 'replace_other' => ''));
-
-            //проверяем наличие элемента с таким же кодом
-            $rsItems = CIBlockElement::GetList(array(), array(
-                'IBLOCK_ID' => $arParams['IBLOCK_ID'],
-                "IBLOCK_SECTION_ID" => $arParams['IBLOCK_SECTION_ID'],
-                "CODE" => $code,
-                "!ID" => $arParams['ID']
-            ), false, false, array('ID'));
-            if ($rsItems->AffectedRowsCount()) {
-                $code = $code . uniqid("_");
-            }
-
-            $obElement->Update(
-                $arParams['ID'],
-                [ 'CODE' => $code ]
-            );
-        }
         if($arParams['IBLOCK_ID'] == EVENTS_IBLOCK_ID) {
             self::insertEventLink($arParams);
         }
