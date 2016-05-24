@@ -66,8 +66,10 @@ class IBlockHandlers {
                 'IBLOCK_ID' => $arParams['IBLOCK_ID'],
                 "IBLOCK_SECTION_ID" => $arParams['IBLOCK_SECTION_ID'],
                 "CODE" => $code
-            ), false, false, array('ID'));
+            ), false, false, array('ID', 'IBLOCK_SECTION_ID'));
             if ($rsItems->AffectedRowsCount()) {
+                pr($rsItems->GetNext()['ID']);
+                pr($rsItems->GetNext()['IBLOCK_SECTION_ID']);
                 $code = $code . uniqid("_");
             }
             $arParams['CODE'] = $code;

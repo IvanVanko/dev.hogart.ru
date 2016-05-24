@@ -2225,7 +2225,7 @@ class ParsingModel {
             $rsItems = CIBlockElement::GetList(array(), array(
                 'IBLOCK_ID' => $BLOCK_ID,
                 "=XML_ID" => $value->id,
-            ), false, false, array('ID', 'CODE'));
+            ), false, false, array('ID', 'CODE', 'IBLOCK_SECTION_ID', 'NAME'));
 
 
             $measure_id = !empty($measures) && !empty($arCatalogMeasures) ? $arCatalogMeasures[intval($measures[$value->unit_messure_id]['unit_messure_catalog_id'])]['ID'] : null;
