@@ -95,11 +95,10 @@ class ParsingModel {
     }
 
     protected function debug_memory() {
-        $d = debug_backtrace()[0];
-        $line = $d['line'];
-        $function = $d['function'];
+        $d = debug_backtrace();
+        $line = $d[0]['line'];
         $memory = $this->convert(memory_get_usage(true));
-        echo "Строка {$line}, функция {$function}: использовано памяти {$memory}<br />";
+        echo "Строка {$line}, использовано памяти {$memory}<br />";
     }
 
     public static function updateElementPropertyValuesToList($arPropertyValues) {
@@ -2155,6 +2154,7 @@ class ParsingModel {
 
                 $updated_property_values_xml_ids = array_unique($updated_property_values_xml_ids);
                 $updated_property_values_xml_ids = array_values($updated_property_values_xml_ids);
+                $this->debug_memory();
 
                 $arPropertyEnums = BXHelper::getPropertyEnum(
                     array(),
