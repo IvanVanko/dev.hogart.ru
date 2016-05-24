@@ -2225,7 +2225,7 @@ class ParsingModel {
             $rsItems = CIBlockElement::GetList(array(), array(
                 'IBLOCK_ID' => $BLOCK_ID,
                 "=XML_ID" => $value->id,
-            ), false, false, array('ID'));
+            ), false, false, array('ID', 'CODE'));
 
 
             $measure_id = !empty($measures) && !empty($arCatalogMeasures) ? $arCatalogMeasures[intval($measures[$value->unit_messure_id]['unit_messure_catalog_id'])]['ID'] : null;
@@ -2253,8 +2253,20 @@ class ParsingModel {
                 }
                 else {
                     //Если удалять не нужно, то обновляем и выводим сообщение
-                    $arLoadProductArray["CODE"] = CUtil::translit($value->name.'_'.$arItem['ID'], 'ru',
+                    $arLoadProductArray["CODE"] = $code = CUtil::translit($value->name, 'ru',
                         array('change_case' => 'L', 'replace_space' => '-', 'replace_other' => ''));
+
+                    //проверяем наличие элемента с таким же кодом
+                    $rsItems = CIBlockElement::GetList(array(), array(
+                        'IBLOCK_ID' => $BLOCK_ID,
+                        "IBLOCK_SECTION_ID" => $section_id,
+                        "CODE" => $code,
+                        "!ID" => $arItem['ID']
+                    ), false, false, array('ID'));
+                    if ($rsItems->AffectedRowsCount()) {
+                        $arLoadProductArray["CODE"] = $code . uniqid("_");
+                    }
+
                     if($res = $el->Update($arItem['ID'], $arLoadProductArray, false, true, true)) {
                         if (!empty($measure_id)) {
                             $arFields = array(
@@ -2266,11 +2278,22 @@ class ParsingModel {
                 }
             }
             else {
-                $arLoadProductArray["CODE"] = CUtil::translit($value->name.'_'.$arItem['ID'], 'ru',
+                $arLoadProductArray["CODE"] = $code = CUtil::translit($value->name, 'ru',
                     array('change_case' => 'L', 'replace_space' => '-', 'replace_other' => ''));
-                if($BRAND_ID = $el->Add($arLoadProductArray, false, true, true)) {
+
+                //проверяем наличие элемента с таким же кодом
+                $rsItems = CIBlockElement::GetList(array(), array(
+                    'IBLOCK_ID' => $BLOCK_ID,
+                    "IBLOCK_SECTION_ID" => $section_id,
+                    "CODE" => $code,
+                ), false, false, array('ID'));
+                if ($rsItems->AffectedRowsCount()) {
+                    $arLoadProductArray["CODE"] = $code . uniqid("_");
+                }
+
+                if($ELEMENT_ID = $el->Add($arLoadProductArray, false, true, true)) {
                     $arFields = array(
-                        "ID" => $BRAND_ID,
+                        "ID" => $ELEMENT_ID,
                         "VAT_ID" => 1,
                         "VAT_INCLUDED" => "Y",
                         "MEASURE" => $measure_id
@@ -2280,6 +2303,7 @@ class ParsingModel {
                     }
                 }
             }
+
             $answer['StringItems'][] = $value->id;
         }
 
@@ -2289,45 +2313,12 @@ class ParsingModel {
             $isGo = true;
         }
 
-        $dbResult = CIBlockElement::GetList(Array("SORT" => "ASC"), Array('IBLOCK_ID' => self::CATALOG_IBLOCK_ID), false,
-            Array('ID', 'NAME'), false);
-        $tempelement = array();
-        while($new = $dbResult->GetNext()) {
-            $tempelement[] = $new;
-        }
-        $has_codes = array();
-        foreach($tempelement as $element) {
-            $elementup = new CIBlockElement;
-            $code = CUtil::translit($element['NAME'], 'ru',
-                array('change_case' => 'L', 'replace_space' => '-', 'replace_other' => ''));
-            if(array_key_exists($code, $has_codes)) {
-                $code = $code.(++$has_codes[$code]);
-            }
-            else {
-                ++$has_codes[$code];
-            }
-            if($elementup->Update($element['ID'], array('CODE' => $code))) {
-                //echo 'OK';
-            }
-        }
-
-
         $answer['StringItems'] = implode(";", $answer['StringItems']);
         if($this->answer) {
             $ost = $this->client->__soapCall("ItemsAnswer", array('parameters' => $answer));
             if($isGo) {
                 echo "<meta http-equiv=\"refresh\" content=\"2; url=".$_SERVER["REQUEST_URI"]."\">";
-                //header('Location: '.$_SERVER['REQUEST_URI']);
-                //$this->initProduct();
             }
-        }
-
-        if(($ost->return == true)) {
-            //echo "<div class='suc'>Товары загружены</div>";
-            //echo "<div class='info'>В количестве: " . count($ost->return->item) . "</div>";
-        }
-        else {
-            //echo "<div class='error'>Товары не загружены</div>";
         }
     }
 
