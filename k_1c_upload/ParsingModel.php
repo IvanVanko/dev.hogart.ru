@@ -88,6 +88,20 @@ class ParsingModel {
         $DB->Query('SET collation_connection = "utf8_unicode_ci"');
     }
 
+    protected function convert($size)
+    {
+        $unit=array('b','kb','mb','gb','tb','pb');
+        return @round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
+    }
+
+    protected function debug_memory() {
+        $d = debug_backtrace()[0];
+        $line = $d['line'];
+        $function = $d['function'];
+        $memory = $this->convert(memory_get_usage(true));
+        echo "Строка {$line}, функция {$function}: использовано памяти {$memory}<br />";
+    }
+
     public static function updateElementPropertyValuesToList($arPropertyValues) {
         global $DB;
         $db_name = "b_iblock_element_property";
@@ -1968,6 +1982,7 @@ class ParsingModel {
 
         $BLOCK_ID = self::CATALOG_IBLOCK_ID;
         $ost = $this->GetResultFunction('ItemsGet');
+        $this->debug_memory();
         //Бренды
 
         if(empty($this->tmp['B'])) {
@@ -1979,9 +1994,11 @@ class ParsingModel {
                 $arrayB[$arItem['XML_ID']] = $arItem['ID'];
             }
             $this->tmp['B'] = $arrayB;
+            $this->debug_memory();
         }
 
         $this->initSectionsCache();
+        $this->debug_memory();
 
         if(empty($this->tmp['С'])) {
             $arrayB = array();
@@ -1992,6 +2009,7 @@ class ParsingModel {
                 $arrayB[$arItem['XML_ID']] = $arItem['ID'];
             }
             $this->tmp['C'] = $arrayB;
+            $this->debug_memory();
         }
 
         $answer = array();
@@ -2022,6 +2040,7 @@ class ParsingModel {
                 $temp_meas[$m_unit['id']] = $m_unit;
             }
             $measure_units = $temp_meas;
+            $this->debug_memory();
         }
 
         if(!empty($ost->return->unit_messure)) {
@@ -2036,6 +2055,7 @@ class ParsingModel {
                 $temp_meas[$m_unit_product['id']] = $m_unit_product;
             }
             $measures = $temp_meas;
+            $this->debug_memory();
         }
 
         $arFilter = [];
@@ -2047,6 +2067,7 @@ class ParsingModel {
         while($next = $dbCatalogMeasureResult->GetNext()) {
             $arCatalogMeasures[$next['CODE']] = $next;
         }
+        $this->debug_memory();
 
         foreach($measure_units as $id => $m_unit) {
             if(!is_array($arCatalogMeasures[$id])) {
@@ -2064,6 +2085,7 @@ class ParsingModel {
                 }
             }
         }
+        $this->debug_memory();
 
         $updated_property_values_xml_ids = array();
 
@@ -2095,6 +2117,7 @@ class ParsingModel {
             $arPropertyCollection = BXHelper::getProperties(array(), array('IBLOCK_ID' => self::CATALOG_IBLOCK_ID,
                 'CODE' => 'collection'), array(), 'CODE');
             $arPropertyCollection = $arPropertyCollection['RESULT'];
+            $this->debug_memory();
 
             foreach($prop as $vp) {
                 $updated_property_values_xml_ids[] = $vp->propname_id;
@@ -2103,8 +2126,10 @@ class ParsingModel {
             if(!empty($updated_property_values_xml_ids)) {
                 $propIntervals = $this->getMongoValues(array('id' => array('$in' => $updated_property_values_xml_ids),
                                                              'interval' => true), 'properties');
+                $this->debug_memory();
 
                 $import_property_enums = $this->getMongoValues(array('propname_id' => array('$in' => $updated_property_values_xml_ids)), 'property_values');
+                $this->debug_memory();
 
                 $temp = array();
 
@@ -2124,6 +2149,7 @@ class ParsingModel {
                         },
                         $propIntervalsId
                     );
+                    $this->debug_memory();
                 }
 
 
@@ -2138,6 +2164,7 @@ class ParsingModel {
                               $updated_property_values_xml_ids
                           )
                     ), 'XML_ID', false);
+                $this->debug_memory();
 
                 $arProperties = BXHelper::getProperties(
                     array(),
@@ -2147,10 +2174,12 @@ class ParsingModel {
                               $updated_property_values_xml_ids
                           )), array(), 'CODE', false
                 );
+                $this->debug_memory();
 
                 $arProperties = $arProperties['RESULT'];
 
                 $arCurrentPropertyEnums = BXHelper::group_array($arPropertyEnums, 'PROPERTY_CODE');
+                $this->debug_memory();
 
                 foreach($prop as $vp) {
 
@@ -2173,6 +2202,7 @@ class ParsingModel {
                                 break;
                             }
                         }
+                        $this->debug_memory();
                     }
                     if($vp->propname_id == 'edb71222-f482-11e4-9045-003048b99ee9') {
                     }
@@ -2195,6 +2225,7 @@ class ParsingModel {
                                 break;
                             }
                         }
+                        $this->debug_memory();
                     }
                     else {
                         if(!empty($prop_values[$vp->prop_id])) {
@@ -2226,7 +2257,7 @@ class ParsingModel {
                 'IBLOCK_ID' => $BLOCK_ID,
                 "=XML_ID" => $value->id,
             ), false, false, array('ID', 'CODE', 'IBLOCK_SECTION_ID', 'NAME'));
-
+            $this->debug_memory();
 
             $measure_id = !empty($measures) && !empty($arCatalogMeasures) ? $arCatalogMeasures[intval($measures[$value->unit_messure_id]['unit_messure_catalog_id'])]['ID'] : null;
 
@@ -2275,6 +2306,7 @@ class ParsingModel {
                     }
                 }
             }
+            $this->debug_memory();
 
             $answer['StringItems'][] = $value->id;
         }
