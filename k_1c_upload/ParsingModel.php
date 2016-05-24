@@ -2179,6 +2179,8 @@ class ParsingModel {
                 $arProperties = $arProperties['RESULT'];
 
                 $arCurrentPropertyEnums = BXHelper::group_array($arPropertyEnums, 'PROPERTY_CODE');
+                unset($arPropertyEnums);
+                unset($updated_property_values_xml_ids);
                 $this->debug_memory();
 
                 foreach($prop as $vp) {
@@ -2236,6 +2238,10 @@ class ParsingModel {
                         "VALUE" => $value_enum
                     );
                 }
+
+                unset($arCurrentPropertyEnums);
+                unset($property_enums);
+                unset($arProperties);
             }
 
             $propA['sku'] = $value->article;
@@ -2272,6 +2278,7 @@ class ParsingModel {
                     $propA[$prop['CODE']] = ['VALUE' => $prop['VALUE_ENUM_ID'] ? : $prop['VALUE']];
                 }
                 $arLoadProductArray['PROPERTY_VALUES'] = array_merge($propA, $arLoadProductArray['PROPERTY_VALUES']);
+                unset($propA);
 
                 //Удаляем из битрикса элемент
                 if($value->deletion_mark == true) {
