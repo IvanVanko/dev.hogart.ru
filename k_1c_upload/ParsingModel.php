@@ -2252,21 +2252,6 @@ class ParsingModel {
                     }
                 }
                 else {
-                    //Если удалять не нужно, то обновляем и выводим сообщение
-                    $arLoadProductArray["CODE"] = $code = CUtil::translit($value->name, 'ru',
-                        array('change_case' => 'L', 'replace_space' => '-', 'replace_other' => ''));
-
-                    //проверяем наличие элемента с таким же кодом
-                    $rsItems = CIBlockElement::GetList(array(), array(
-                        'IBLOCK_ID' => $BLOCK_ID,
-                        "IBLOCK_SECTION_ID" => $section_id,
-                        "CODE" => $code,
-                        "!ID" => $arItem['ID']
-                    ), false, false, array('ID'));
-                    if ($rsItems->AffectedRowsCount()) {
-                        $arLoadProductArray["CODE"] = $code . uniqid("_");
-                    }
-
                     if($res = $el->Update($arItem['ID'], $arLoadProductArray, false, true, true)) {
                         if (!empty($measure_id)) {
                             $arFields = array(
@@ -2278,19 +2263,6 @@ class ParsingModel {
                 }
             }
             else {
-                $arLoadProductArray["CODE"] = $code = CUtil::translit($value->name, 'ru',
-                    array('change_case' => 'L', 'replace_space' => '-', 'replace_other' => ''));
-
-                //проверяем наличие элемента с таким же кодом
-                $rsItems = CIBlockElement::GetList(array(), array(
-                    'IBLOCK_ID' => $BLOCK_ID,
-                    "IBLOCK_SECTION_ID" => $section_id,
-                    "CODE" => $code,
-                ), false, false, array('ID'));
-                if ($rsItems->AffectedRowsCount()) {
-                    $arLoadProductArray["CODE"] = $code . uniqid("_");
-                }
-
                 if($ELEMENT_ID = $el->Add($arLoadProductArray, false, true, true)) {
                     $arFields = array(
                         "ID" => $ELEMENT_ID,

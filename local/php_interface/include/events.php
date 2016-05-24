@@ -196,16 +196,23 @@ class IBlockHandlers {
         if($arParams["IBLOCK_ID"] == CATALOG_IBLOCK_ID) {
             CModule::IncludeModule('iblock');
             $obElement = new CIBlockElement();
-            //$element = BXHelper::getElements(array(), array("ID" => $arParams["ID"], "IBLOCK_ID" => $arParams["IBLOCK_ID"]), false, false, array("ID", "NAME"));
-            //$element = $element['RESULT'];
-            $obElement->Update(
-                $arParams['ID'],
-                array(
-                    'CODE' => CUtil::translit($arParams['NAME'].$arParams['ID'], 'ru', array('max_len' => 100,
-                                                                                             'replace_space' => '-',
-                                                                                             'replace_other' => '-'))
-                )
-            );
+
+            $code = CUtil::translit($arParams['NAME'], 'ru',
+                array('change_case' => 'L', 'replace_space' => '-', 'replace_other' => ''));
+
+            //проверяем наличие элемента с таким же кодом
+            $rsItems = CIBlockElement::GetList(array(), array(
+                'IBLOCK_ID' => $arParams['IBLOCK_ID'],
+                "IBLOCK_SECTION_ID" => $arParams['IBLOCK_SECTION_ID'],
+                "CODE" => $code,
+                "!ID" => $arParams['ID']
+            ), false, false, array('ID'));
+            if ($rsItems->AffectedRowsCount()) {
+                $obElement->Update(
+                    $arParams['ID'],
+                    [ 'CODE' => $code . uniqid("_") ]
+                );
+            }
         }
         if($arParams['IBLOCK_ID'] == EVENTS_IBLOCK_ID) {
             self::insertEventLink($arParams);
