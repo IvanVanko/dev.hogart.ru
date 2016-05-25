@@ -252,6 +252,10 @@ $this->setFrameMode(true);
             <h2 class="feat">Характеристики</h2>
         </div>
         <div class="features-cnt">
+            <dl>
+                <dt>Ед. изм.</dt>
+                <dd><?= $arResult["CATALOG_MEASURE_NAME"]?></dd>
+            </dl>
             <? if($arResult["CUSTOM"]["BRAND_NAME"]) { ?>
                 <dl>
                     <dt><?=$arResult["DISPLAY_PROPERTIES"]["brand"]["NAME"]?></dt>
