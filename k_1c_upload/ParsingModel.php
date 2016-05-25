@@ -4,6 +4,7 @@ require_once('csv.php');
 require_once('config.php');
 
 ini_set('max_execution_time', 0);
+ini_set('memory_limit', '512Mb');
 
 class ParsingModel {
     //Приватные переменные для хранения ссылки на подключение
