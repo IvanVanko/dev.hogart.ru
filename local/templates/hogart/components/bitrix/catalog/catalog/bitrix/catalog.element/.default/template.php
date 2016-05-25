@@ -254,7 +254,7 @@ $this->setFrameMode(true);
         <div class="features-cnt">
             <dl>
                 <dt>Ед. изм.</dt>
-                <dd><?= $arResult["CATALOG_MEASURE_NAME"]?></dd>
+                <dd><?= $arResult["CATALOG_MEASURE_NAME"]?>.</dd>
             </dl>
             <? if($arResult["CUSTOM"]["BRAND_NAME"]) { ?>
                 <dl>
