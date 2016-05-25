@@ -243,7 +243,7 @@ if ($arParams['STORES_FILTERED'] != 'Y') {
 
 
 $property_ids = array_unique($property_ids);
-$prop_section_sort_result = \CUSTOM\Entity\SectionPropertySortTable::getList(array("select" => array("UF_SECTION_ID", "UF_PROPERTY_ID","UF_SORT"), "filter" => array("UF_PROPERTY_ID" => $property_ids, 'UF_SECTION_ID' => $section_ids)));
+$prop_section_sort_result = \CUSTOM\Entity\SectionPropertySortTable::getList(array("select" => array("UF_SECTION_ID", "UF_PROPERTY_ID","UF_SORT", "UF_SORT_TABLE", "UF_MAIN_TABLE"), "filter" => array("UF_PROPERTY_ID" => $property_ids, 'UF_SECTION_ID' => $section_ids)));
 
 while ($next = $prop_section_sort_result->fetch()) {
     $section_prop_sort[] = $next;
