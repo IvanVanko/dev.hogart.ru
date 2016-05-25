@@ -890,14 +890,15 @@ if($this->StartResultCache(false, array($arrFilter, ($arParams["CACHE_GROUPS"]==
 	$arResult["NAV_RESULT"] = $rsElements;
 	if (isset($arItem))
 		unset($arItem);
-	
+
 	if (!empty($arResult["ELEMENTS"]) && ($bGetProperties || ($bCatalog && $boolNeedCatalogCache)))
 	{
 		$arPropFilter = array(
 			'ID' => $arResult["ELEMENTS"],
-			'IBLOCK_ID' => $arParams['IBLOCK_ID'],
+			'IBLOCK_ID' => $arParams['IBLOCK_ID']
 		);
-		CIBlockElement::GetPropertyValuesArray($arElementLink, $arParams["IBLOCK_ID"], $arPropFilter);
+		$propertyIDs = array_keys(CIBlockSectionPropertyLink::GetArray($arParams['IBLOCK_ID'], $arFilter['SECTION_ID']));
+		CIBlockElement::GetPropertyValuesArray($arElementLink, $arParams["IBLOCK_ID"], $arPropFilter, ['ID' => $propertyIDs]);
 
 		foreach ($arResult["ITEMS"] as &$arItem)
 		{
