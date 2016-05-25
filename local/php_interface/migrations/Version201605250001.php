@@ -9,18 +9,19 @@
 namespace Sprint\Migration;
 
 use Bitrix\Main\Entity;
+use Sprint\Migration\Helpers\UserTypeEntityHelper;
 
 class Version201605250001 extends Version
 {
     protected $description = "Добавление полей в HL-блок SectionPropertySort";
     public function up()
     {
-        $entity = \CHLEntity::GetEntityByName('SectionPropertySort');
-        if (!$entity->hasField("UF_MAIN_TABLE")) {
-            $entity->addField(new Entity\BooleanField("UF_MAIN_TABLE"), ["default_value" => false]);
-        }
-        if (!$entity->hasField("UF_SORT_TABLE")) {
-            $entity->addField(new Entity\BooleanField("UF_SORT_TABLE"), ["default_value" => false]);
-        }
+        $UserTypeEntityHelper = new UserTypeEntityHelper();
+        $UserTypeEntityHelper->addUserTypeEntityIfNotExists("SectionPropertySort", "UF_MAIN_TABLE", [
+            "USER_TYPE_ID" => "boolean"
+        ]);
+        $UserTypeEntityHelper->addUserTypeEntityIfNotExists("SectionPropertySort", "UF_SORT_TABLE", [
+            "USER_TYPE_ID" => "boolean"
+        ]);
     }
 }
