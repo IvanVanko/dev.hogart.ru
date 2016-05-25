@@ -1449,8 +1449,8 @@ class ParsingModel {
                                     )
                                 );
                                 $this->setSectionPropertySort(self::CATALOG_IBLOCK_ID, $arItem_s['ID'], $arItem['ID'], intval($v[2]));
-                                $this->setSectionPropertySort(self::CATALOG_IBLOCK_ID, $arItem_s['ID'], $arItem['ID'], boolval($v[3]), "UF_MAIN_TABLE");
-                                $this->setSectionPropertySort(self::CATALOG_IBLOCK_ID, $arItem_s['ID'], $arItem['ID'], boolval($v[4]), "UF_SORT_TABLE");
+                                $this->setSectionPropertySort(self::CATALOG_IBLOCK_ID, $arItem_s['ID'], $arItem['ID'], (bool)$v[3], "UF_MAIN_TABLE");
+                                $this->setSectionPropertySort(self::CATALOG_IBLOCK_ID, $arItem_s['ID'], $arItem['ID'], (bool)$v[4], "UF_SORT_TABLE");
                             }
                             else {
                                 echo 'Error: не удалось связать блоки. '.$tmp->LAST_ERROR." ".__LINE__." ".__FUNCTION__.'<br>';
@@ -1501,8 +1501,8 @@ class ParsingModel {
                             );
 
                             $this->setSectionPropertySort(self::CATALOG_IBLOCK_ID, $arItem_s['ID'], $arItem['ID'], intval($v[2]));
-                            $this->setSectionPropertySort(self::CATALOG_IBLOCK_ID, $arItem_s['ID'], $arItem['ID'], boolval($v[3]), "UF_MAIN_TABLE");
-                            $this->setSectionPropertySort(self::CATALOG_IBLOCK_ID, $arItem_s['ID'], $arItem['ID'], boolval($v[4]), "UF_SORT_TABLE");
+                            $this->setSectionPropertySort(self::CATALOG_IBLOCK_ID, $arItem_s['ID'], $arItem['ID'], (bool)$v[3], "UF_MAIN_TABLE");
+                            $this->setSectionPropertySort(self::CATALOG_IBLOCK_ID, $arItem_s['ID'], $arItem['ID'], (bool)$v[4], "UF_SORT_TABLE");
 
                         }
                         else {
