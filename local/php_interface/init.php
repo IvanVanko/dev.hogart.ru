@@ -63,7 +63,7 @@ function convert($size) {
 function DebugMemory() {
 	$d = debug_backtrace();
 	$line = $d[0]['line'];
-	$file = $d[1]['file'];
+	$file = $d[0]['file'];
 	$memory = convert(memory_get_usage(true));
 	DebugMessage("Файл {$file}:{$line}, использовано памяти {$memory}");
 }
