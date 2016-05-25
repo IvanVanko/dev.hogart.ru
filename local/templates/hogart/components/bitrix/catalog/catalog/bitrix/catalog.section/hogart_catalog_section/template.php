@@ -211,7 +211,7 @@ $this->setFrameMode(true);
                 <? endif; ?>
                 </div>
             </span>
-            <span class="cell"><?=$arItem['CATALOG_MEASURE_NAME']?>.</span>
+            <span class="cell text-center"><?=$arItem['CATALOG_MEASURE_NAME']?>.</span>
             <span class="cell text-center price currency-<?= strtolower($arItem["PRICES"]["BASE"]["CURRENCY"]) ?>">
                 <? if ($USER->IsAuthorized() && !empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
                     <?= HogartHelpers::woPrice($arItem["PRICES"]["BASE"]["PRINT_DISCOUNT_VALUE"]) ?>
