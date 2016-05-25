@@ -24,7 +24,7 @@ class Version201605250001 extends Version
             "USER_TYPE_ID" => "boolean"
         ]);
 
-        \CUserTypeEntity::Update($UserTypeEntityHelper->getUserTypeEntity($entityId, "UF_SECTION_ID")["ID"], [
+        (new \CUserTypeEntity())->Update($UserTypeEntityHelper->getUserTypeEntity($entityId, "UF_SECTION_ID")["ID"], [
             "SHOW_FILTER" => 'I'
         ]);
     }
