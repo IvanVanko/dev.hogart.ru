@@ -98,6 +98,7 @@ $this->setFrameMode(true);
                 <? endif; ?>
             <? endforeach; ?>
             <span class="cell">Наличие</span>
+            <span class="cell">Ед. изм.</span>
             <span class="cell">Цена <i class="fa fa-<?= strtolower($arItem["PRICES"]["BASE"]["CURRENCY"]) ?>" aria-hidden="true"></i></span>
             <? if ($USER->IsAuthorized()): ?>
                 <span class="cell">%</span>
@@ -182,7 +183,7 @@ $this->setFrameMode(true);
                 <? endif; ?>
 
                 <? if ($USER->IsAuthorized() && $arItem["CATALOG_QUANTITY"] > 0): ?>
-                    <span style="white-space: nowrap"><?= $arItem["CATALOG_QUANTITY"]; ?> <?=$arItem['CATALOG_MEASURE_NAME']?>.</span>
+                    <span style="white-space: nowrap"><?= $arItem["CATALOG_QUANTITY"]; ?></span>
                     <div class="stocks-wrapper">
                         <div class="stock-header">
                             <?= $arItem["NAME"]?>, <?= $arResult["ALL_BRANDS"][$arItem["PROPERTIES"]["brand"]["VALUE"]]['NAME'] ?> <?= $arItem["PROPERTIES"]["sku"]["VALUE"] ?>
@@ -210,6 +211,7 @@ $this->setFrameMode(true);
                 <? endif; ?>
                 </div>
             </span>
+            <span class="cell"><?=$arItem['CATALOG_MEASURE_NAME']?>.</span>
             <span class="cell text-center price currency-<?= strtolower($arItem["PRICES"]["BASE"]["CURRENCY"]) ?>">
                 <? if ($USER->IsAuthorized() && !empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
                     <?= HogartHelpers::woPrice($arItem["PRICES"]["BASE"]["PRINT_DISCOUNT_VALUE"]) ?>
