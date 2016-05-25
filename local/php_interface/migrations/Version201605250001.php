@@ -16,7 +16,7 @@ class Version201605250001 extends Version
     public function up()
     {
         $UserTypeEntityHelper = new UserTypeEntityHelper();
-        $entityId = \CHLEntity::GetEntityIdByName('SectionPropertySort');
+        $entityId = "HLBLOCK_" . \CHLEntity::GetEntityIdByName('SectionPropertySort');
         $UserTypeEntityHelper->addUserTypeEntityIfNotExists($entityId, "UF_MAIN_TABLE", [
             "USER_TYPE_ID" => "boolean"
         ]);
