@@ -8,7 +8,6 @@
 
 namespace Sprint\Migration;
 
-use Bitrix\Main\Entity;
 use Sprint\Migration\Helpers\UserTypeEntityHelper;
 
 class Version201605250001 extends Version
@@ -17,10 +16,11 @@ class Version201605250001 extends Version
     public function up()
     {
         $UserTypeEntityHelper = new UserTypeEntityHelper();
-        $UserTypeEntityHelper->addUserTypeEntityIfNotExists("SectionPropertySort", "UF_MAIN_TABLE", [
+        $entityId = \CHLEntity::GetEntityIdByName('SectionPropertySort');
+        $UserTypeEntityHelper->addUserTypeEntityIfNotExists($entityId, "UF_MAIN_TABLE", [
             "USER_TYPE_ID" => "boolean"
         ]);
-        $UserTypeEntityHelper->addUserTypeEntityIfNotExists("SectionPropertySort", "UF_SORT_TABLE", [
+        $UserTypeEntityHelper->addUserTypeEntityIfNotExists($entityId, "UF_SORT_TABLE", [
             "USER_TYPE_ID" => "boolean"
         ]);
     }
