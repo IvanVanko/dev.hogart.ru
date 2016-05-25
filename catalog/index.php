@@ -94,7 +94,7 @@ else {
             "SECTION_TOP_DEPTH" => "2",
             "SECTIONS_VIEW_MODE" => "LIST",
             "SECTIONS_SHOW_PARENT_NAME" => "Y",
-            "PAGE_ELEMENT_COUNT" => "300",
+            "PAGE_ELEMENT_COUNT" => "99",
             "LINE_ELEMENT_COUNT" => "3",
             "ELEMENT_SORT_FIELD" => "sort",
             "ELEMENT_SORT_ORDER" => "asc",
