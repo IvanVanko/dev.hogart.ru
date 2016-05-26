@@ -423,9 +423,6 @@ $this->setFrameMode(true);
 <div class="ceo-text">
 <?= $arResult["DESCRIPTION"] ?>
 </div>
-
-<? DebugMemory() ?>
-
 </div>
 
 <? $this->SetViewTarget('top_section_wrapper') ?>
