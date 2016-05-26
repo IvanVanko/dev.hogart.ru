@@ -213,8 +213,6 @@ app.initMenu = function () {
         $('#main-menu-trigger').prop('checked', false);
     }
     if ($.trim($('.blur-main .main-sidebar .present-cnt .content').text()) == '')
-    //$('.blur-main
-    // .main-sidebar').addClass('empty').find('.present-cnt').addClass('js-fixed-block').attr('data-fixed', 'top');
     {
         $('.blur-main .main-sidebar').addClass('empty').closest('.blur-main').addClass('js-fixed-block').attr('data-fixed', 'top').
         find('.js-fixed-block').removeClass('js-fixed-block');

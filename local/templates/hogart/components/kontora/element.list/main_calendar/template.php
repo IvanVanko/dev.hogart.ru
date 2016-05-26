@@ -1,7 +1,7 @@
 <?if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 ?>
 <?if (count($arResult['ITEMS']) > 0):?>
-    <div class="side-datepicker-cnt">
+    <div class="content side-datepicker-cnt">
         <ul class="js-dateArray" id="side_news_array">
 			<?foreach ($arResult["ITEMS"] as $arItem):
 				$date = ConvertDateTime($arItem['ACTIVE_FROM'], "MM/DD/YYYY", "ru");?>
