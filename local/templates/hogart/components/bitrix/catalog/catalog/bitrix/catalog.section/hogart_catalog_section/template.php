@@ -178,7 +178,7 @@ $this->setFrameMode(true);
             <span class="cell"><a href="<?= $arItem["DETAIL_PAGE_URL"] ?>"><?= $arItem["NAME"] ?></a></span>
             <? foreach ($arItem["PROPERTIES"] as $propertyName => $arProperty): ?>
                 <? if ($arProperty["DISPLAY_EXPANDED"] == "Y"): ?>
-                    <span class="cell"><?= $arProperty["VALUE"]; ?></span>
+                    <span class="cell<?= ($arProperty["PROPERTY_TYPE"] == "N" ? " text-center " : "")?>"><?= $arProperty["VALUE"]; ?></span>
                 <? endif; ?>
             <? endforeach; ?>
             <span class="cell quantity text-center <? if ($arItem["CATALOG_QUANTITY"] > 0): ?>quantity--available<? endif; ?>">
