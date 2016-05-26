@@ -1158,7 +1158,7 @@ app.popup = function () {
             'transfrom': "translateY(-50%)"
         });
         if ($cnt.outerHeight() > $(document).height()) {
-            $cnt.css({"transform": "translateY(-50%) scale(" + (Math.round(($(document).height() + 50) / $cnt.outerHeight() * 100) / 100) + ")"});
+            $cnt.css({"transform": "translateY(-50%) scale(" + (Math.round(($(document).height() - 50) / $cnt.outerHeight() * 100) / 100) + ")"});
         }
 
         $(this).css('opacity', 0).hide();
@@ -1216,7 +1216,7 @@ app.popup = function () {
             'transfrom': "translateY(-50%)"
         });
         if ($cnt.outerHeight() > $(document).height()) {
-            $cnt.css({"transform": "translateY(-50%) scale(" + (Math.round(($(document).height() + 50) / $cnt.outerHeight() * 100) / 100) + ")"});
+            $cnt.css({"transform": "translateY(-50%) scale(" + (Math.round(($(document).height() - 50) / $cnt.outerHeight() * 100) / 100) + ")"});
         }
 
         resizeFeedbackForm();
