@@ -776,7 +776,7 @@ if($this->StartResultCache(false, array($arrFilter, ($arParams["CACHE_GROUPS"]==
 
 	while ($propSort = $prop_section_sort_result->fetch()) {
 		$arSort[] = [
-			"PROPERTY_" . $propSort["UF_PROPERTY_ID"] => "ASC"
+			"PROPERTY_" . $propSort["UF_PROPERTY_ID"] . ".VALUE" => "ASC"
 		];
 	}
 
