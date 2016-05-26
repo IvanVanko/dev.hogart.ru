@@ -20,6 +20,8 @@ global $CACHE_MANAGER;
 /** @global CIntranetToolbar $INTRANET_TOOLBAR */
 global $INTRANET_TOOLBAR;
 
+ini_set("memory_limit", "512M");
+
 CJSCore::Init(array('popup'));
 
 CPageOption::SetOptionString("main", "nav_page_in_session", "N");
