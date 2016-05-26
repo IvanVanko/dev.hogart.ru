@@ -91,7 +91,7 @@ $this->setFrameMode(true);
         <? ob_start(); ?>
         <li class="brand-collection-header">
             <span class="cell"><?= $arItem["PROPERTIES"]["sku"]["NAME"] ?></span>
-            <span class="cell">Наименование</span>
+            <span class="cell" style="width: 100%">Наименование</span>
             <? foreach ($arItem["PROPERTIES"] as $propertyName => $arProperty): ?>
                 <? if ($arProperty["DISPLAY_EXPANDED"] == "Y"): ?>
                     <span class="cell"><?= $arProperty["NAME"]; ?></span>
