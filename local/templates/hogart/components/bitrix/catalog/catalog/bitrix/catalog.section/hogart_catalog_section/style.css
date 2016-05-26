@@ -31,7 +31,7 @@
   padding: 2px 5px;
   font-size: 10px;
   white-space: nowrap;
-  position: relative;
+  position: absolute;
   box-shadow: -1px -1px 1px 1px #666;
 }
 .catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li.brand-collection-subtable-header span:before {
