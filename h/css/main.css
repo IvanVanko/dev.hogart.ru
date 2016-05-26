@@ -1633,7 +1633,6 @@ footer.right {
 .main-sidebar .side-datepicker-cnt {
   position: absolute;
   bottom: 0;
-  left: 30px;
 }
 @media all and (max-width: 1000px) {
   .service-item-box a {
