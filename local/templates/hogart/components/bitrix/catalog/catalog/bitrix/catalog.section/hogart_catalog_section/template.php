@@ -167,7 +167,7 @@ $this->setFrameMode(true);
         <? if (!empty($arParams["TABLE_SORT"]) && $table_sort != $arItem["PROPERTIES"][$arParams["TABLE_SORT"]["CODE"]]["VALUE"]): ?>
         <? $table_sort = $arItem["PROPERTIES"][$arParams["TABLE_SORT"]["CODE"]]["VALUE"]; ?>
         <li class="brand-collection-subtable-header">
-            <span><?= $table_sort ?></span>
+            <span><?= $arItem["PROPERTIES"][$arParams["TABLE_SORT"]["CODE"]]["NAME"] ?><br><?= $table_sort ?></span>
         </li>
         <? endif; ?>
 

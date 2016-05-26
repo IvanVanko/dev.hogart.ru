@@ -16,6 +16,24 @@
   list-style-type: none;
   border-collapse: collapse;
 }
+.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li.brand-collection-subtable-header {
+  display: inline-block;
+  transform: rotate(90deg);
+  height: 0;
+  transform-origin: left top 0;
+}
+.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li.brand-collection-subtable-header span {
+  display: block;
+  transform: rotate(180deg);
+  text-align: center;
+  background-color: #95c600;
+  color: white;
+  padding: 2px 5px;
+  font-size: 10px;
+  white-space: nowrap;
+  position: relative;
+  box-shadow: -1px -1px 1px 1px #666;
+}
 .catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li.brand-collection-header,
 .catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li.brand-collection-header {
   display: table-row;
