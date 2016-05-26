@@ -126,9 +126,6 @@ if ($arParams["BACKGROUND_IMAGE"] == '-')
 $arParams["DISPLAY_COMPARE"] = (isset($arParams['DISPLAY_COMPARE']) && $arParams["DISPLAY_COMPARE"] == "Y");
 $arParams['COMPARE_PATH'] = (isset($arParams['COMPARE_PATH']) ? trim($arParams['COMPARE_PATH']) : '');
 
-$arParams["PAGE_ELEMENT_COUNT"] = intval($arParams["PAGE_ELEMENT_COUNT"]);
-if($arParams["PAGE_ELEMENT_COUNT"]<=0)
-	$arParams["PAGE_ELEMENT_COUNT"]=20;
 $arParams["LINE_ELEMENT_COUNT"] = intval($arParams["LINE_ELEMENT_COUNT"]);
 if($arParams["LINE_ELEMENT_COUNT"]<=0)
 	$arParams["LINE_ELEMENT_COUNT"]=3;
