@@ -2667,7 +2667,7 @@ blockquote:before {
   -moz-transform: scale(1);
   -ms-transform: scale(1);
   -o-transform: scale(1);
-  transform: scale(1);
+  transform: translate(-50%, -50%) scale(1);
 }
 .popup-cnt .inner-cnt .inner {
   padding: 10px 25px 15px;
