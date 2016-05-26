@@ -58,7 +58,7 @@ function convert($size) {
 }
 
 function DebugMemory() {
-	if (DEBUG_MEMORY) {
+	if (defined('DEBUG_MEMORY') && DEBUG_MEMORY === true) {
 		$d = debug_backtrace();
 		$line = $d[0]['line'];
 		$file = $d[0]['file'];
