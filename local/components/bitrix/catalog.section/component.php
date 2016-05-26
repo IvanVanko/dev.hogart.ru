@@ -208,7 +208,7 @@ elseif (intval($arParams["PAGE_ELEMENT_COUNT"]) > 0)
 	);
 	$arNavigation = false;
 } else {
-	$arNavParams = array();
+	$arNavParams = false;
 	$arNavigation = false;
 }
 
