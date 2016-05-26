@@ -162,6 +162,7 @@ $this->setFrameMode(true);
                 </div>
             </li>
             <?= $brand_collection_header ?>
+            <? $brand_collection_header = "";?>
         <? endif; ?>
 
         <? if (!empty($arParams["TABLE_SORT"]) && $table_sort != $arItem["PROPERTIES"][$arParams["TABLE_SORT"]["CODE"]]["VALUE"]): ?>
