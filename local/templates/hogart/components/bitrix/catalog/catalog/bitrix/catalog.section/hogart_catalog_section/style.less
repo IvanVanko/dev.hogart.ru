@@ -19,6 +19,30 @@
         list-style-type: none;
         border-collapse: collapse;
         li {
+          &.brand-collection-subtable-header {
+            display: block;
+            transform: rotate(90deg);
+            height: 0;
+            transform-origin: left top 0;
+            span {
+              display: block;
+              transform: rotate(180deg);
+              text-align: center;
+              background-color: @brand-green;
+              color: white;
+              padding: 2px 5px;
+              font-size: 12px;
+              white-space: nowrap;
+              position: absolute;
+              box-shadow: -1px -1px 1px 1px #666;
+              &:before {
+                content: " ";
+                position: relative;
+                display: block;
+                padding: 0 50%;
+              }
+            }
+          }
           &.brand-collection-header {
             display: table-row;
             background-color: #ccc;

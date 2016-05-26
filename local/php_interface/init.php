@@ -55,6 +55,18 @@ function DebugMessage($message, $title = false, $color = "#008B8B")
 	}
 }
 
+function convert($size) {
+	$unit=array('b','kb','mb','gb','tb','pb');
+	return @round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
+}
+
+function DebugMemory() {
+	$d = debug_backtrace();
+	$line = $d[0]['line'];
+	$file = $d[0]['file'];
+	$memory = convert(memory_get_usage(true));
+	DebugMessage("Файл {$file}:{$line}, использовано памяти {$memory}");
+}
 
 if (CModule::IncludeModule("subscribe"))
 {

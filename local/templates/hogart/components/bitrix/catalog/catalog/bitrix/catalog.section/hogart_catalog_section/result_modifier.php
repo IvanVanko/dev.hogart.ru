@@ -243,7 +243,7 @@ if ($arParams['STORES_FILTERED'] != 'Y') {
 
 
 $property_ids = array_unique($property_ids);
-$prop_section_sort_result = \CUSTOM\Entity\SectionPropertySortTable::getList(array("select" => array("UF_SECTION_ID", "UF_PROPERTY_ID","UF_SORT"), "filter" => array("UF_PROPERTY_ID" => $property_ids, 'UF_SECTION_ID' => $section_ids)));
+$prop_section_sort_result = \CUSTOM\Entity\SectionPropertySortTable::getList(array("select" => array("UF_SECTION_ID", "UF_PROPERTY_ID", "UF_SORT"), "filter" => array("UF_PROPERTY_ID" => $property_ids, 'UF_SECTION_ID' => $section_ids)));
 
 while ($next = $prop_section_sort_result->fetch()) {
     $section_prop_sort[] = $next;
@@ -269,7 +269,7 @@ foreach ($arResult['ITEMS'] as $i => &$arCollItem) {
                 $arCollItem['PROPERTIES'][$value['CODE']] = array_merge($arCollItem['PROPERTIES'][$value['CODE']], $value);
                 foreach ($section_prop_sort as $arSort) {
                     if ($arSort['UF_PROPERTY_ID'] == $arCollItem['PROPERTIES'][$value['CODE']]['PROPERTY_ID']) {
-                        $arCollItem['PROPERTIES'][$value['CODE']]['CUSTOM_SECTION_SORT'] = $arSort['UF_SORT'];
+                        $arCollItem['PROPERTIES'][$value['CODE']]['CUSTOM_SECTION_SORT'] = $arSort['UF_SORT']*100;
                     }
                 }
                 $arCollItem['PROPERTIES'][$value['CODE']]['DISPLAY_EXPANDED_SORT'] = intval($arCollItem['PROPERTIES'][$value['CODE']]["DISPLAY_EXPANDED"] == "Y")*100;
@@ -278,7 +278,7 @@ foreach ($arResult['ITEMS'] as $i => &$arCollItem) {
             }
         }
     }
-    $arCollItem['PROPERTIES'] = BXHelper::complex_sort($arCollItem['PROPERTIES'], array('DISPLAY_EXPANDED_SORT' => 'DESC', 'CUSTOM_SECTION_SORT' => 'ASC'), false);
+    $arCollItem['PROPERTIES'] = BXHelper::complex_sort($arCollItem['PROPERTIES'], array('CUSTOM_SECTION_MAIN_TABLE_SORT' => 'ASC', 'CUSTOM_SECTION_TABLE_SORT' => 'ASC', 'DISPLAY_EXPANDED_SORT' => 'DESC', 'CUSTOM_SECTION_SORT' => 'ASC'), false);
     HogartHelpers::mergeRangePropertiesForItem($arCollItem['PROPERTIES']);
 }
 

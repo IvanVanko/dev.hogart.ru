@@ -1633,7 +1633,6 @@ footer.right {
 .main-sidebar .side-datepicker-cnt {
   position: absolute;
   bottom: 0;
-  left: 30px;
 }
 @media all and (max-width: 1000px) {
   .service-item-box a {
@@ -2667,7 +2666,7 @@ blockquote:before {
   -moz-transform: scale(1);
   -ms-transform: scale(1);
   -o-transform: scale(1);
-  transform: scale(1);
+  transform: translate(-50%, -50%) scale(1);
 }
 .popup-cnt .inner-cnt .inner {
   padding: 10px 25px 15px;
@@ -5501,7 +5500,7 @@ blockquote:before {
   margin-bottom: 0;
 }
 .catalog_page .ceo-text {
-  padding: 15px 0;
+  padding: 15px 50px;
 }
 .catalog_page .head-links-box {
   margin: -15px 0px 15px;

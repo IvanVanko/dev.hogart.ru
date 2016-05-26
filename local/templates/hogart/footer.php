@@ -1,6 +1,9 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
     die();
-} ?>
+}
+use \Bitrix\Main\Localization\Loc;
+Loc::loadLanguageFile(__FILE__);
+?>
 <? if($APPLICATION->GetCurDir() != SITE_DIR): ?>
     <footer class="inner">
         <span>© 2014, ООО «Хогарт», 117041,  г. Москва, ул Поляны, 52</span>
@@ -120,12 +123,15 @@
         <?
         global $USER;
         $user_mail = $USER->GetEmail();
+        $form_sid = "SHARE_EMAIL_" . strtoupper(LANGUAGE_ID);
+        CModule::IncludeModule("form");
+        $form_id = CForm::GetById($form_sid, "Y")->Fetch()["ID"];
         ?>
         <? $APPLICATION->IncludeComponent(
             "bitrix:form.result.new",
             "share_email",
             Array(
-                "WEB_FORM_ID" => "10",
+                "WEB_FORM_ID" => $form_id,
                 "IGNORE_CUSTOM_TEMPLATE" => "N",
                 "USE_EXTENDED_ERRORS" => "Y",
                 "SEF_MODE" => "N",
@@ -175,11 +181,11 @@
     <div class="inner-cnt" id="popup-subscribe-email">
         <form action="/ajax/send_to_email.php" method="post">
             <div class="inner form-cont-box">
-                <p>Название старницы: <?= $APPLICATION->GetTitle() ?>
+                <p><?= GetMessage("Название страницы") ?>: <?= $APPLICATION->GetTitle() ?>
                     <input name="title_name" value="<?= $APPLICATION->GetTitle() ?>" type="hidden"/>
                 </p>
 
-                <p>Ссылка: http://hogart.ru<?= $APPLICATION->GetCurDir() ?></p>
+                <p><?= GetMessage("Ссылка") ?>: http://hogart.ru<?= $APPLICATION->GetCurDir() ?></p>
                 <input name="page_href" value="http://hogart.ru<?=$APPLICATION->GetCurDir() ?>" type="hidden"/>
                 </div>
             <hr>
@@ -191,11 +197,11 @@
             </div>
             <hr>
             <div class="inner form-cont-box">
-                <input type="submit" name="sending_email_form" class="empty-btn black" value="Отправить">
-                <small>Поля, отмеченные * обязательны для заполнения.</small>
+                <input type="submit" name="sending_email_form" class="empty-btn black" value="<?= GetMessage("Отправить") ?>">
+                <small><?= GetMessage("Поля, отмеченные * обязательны для заполнения.") ?></small>
             </div>
             <div class="inner success" style="display: none;">
-                Вы поделились ссылкой успешно!
+                <?= GetMessage("Вы поделились ссылкой успешно!")?>
             </div>
         </form>
     </div>
@@ -260,7 +266,7 @@
             </div>
             <hr>
             <div class="inner form-cont-box">
-                <input type="submit" name="sending_phone_form" class="empty-btn black" value="Отправить">
+                <input type="submit" name="sending_phone_form" class="empty-btn black" value="<?= GetMessage("Отправить") ?>">
                 <small><?= GetMessage("Поля, отмеченные * обязательны для заполнения.")?></small>
             </div>
             <div class="inner success" style="display: none;">

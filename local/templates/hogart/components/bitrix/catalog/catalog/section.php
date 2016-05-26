@@ -199,6 +199,10 @@ if ($isTableViewExt) {
     $order = "asc";
     $arParams["ELEMENT_SORT_FIELD2"] = "PROPERTY_collection.NAME";
     $arParams["ELEMENT_SORT_ORDER2"] = "ASC";
+    $arParams["PAGE_ELEMENT_COUNT"] = 0;
+    $arParams['DISPLAY_BOTTOM_PAGER'] = "N";
+    $arParams["DISPLAY_TOP_PAGER"] = "N";
+    $viewType = "list";
 }
 
 $intSectionID = $APPLICATION->IncludeComponent(

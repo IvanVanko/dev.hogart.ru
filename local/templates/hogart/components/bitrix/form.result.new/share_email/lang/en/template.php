@@ -7,4 +7,9 @@ $MESS ['FORM_DATA_SAVED1'] = "Thank you. Your application form #";
 $MESS ['FORM_DATA_SAVED2'] = " was received.";
 $MESS ['FORM_MODULE_NOT_INSTALLED'] = "Web-form module is not installed.";
 $MESS ['FORM_NOT_FOUND'] = "Web-form is not found.";
+$MESS ['Имя страницы'] = "Page title";
+$MESS ['Ссылка на страницу'] = "Page link";
+$MESS ['Контактная информация'] = "Contacts";
+$MESS ['Отправить'] = "Send";
+$MESS ['Поля, отмеченные * обязательны для заполнения.'] = "Fields marked * are mandatory";
 ?>

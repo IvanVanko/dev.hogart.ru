@@ -55,13 +55,8 @@ class SectionPropertySortTable extends Entity\DataManager
             $arMap = array();
             $obBaseEntityContractors = static::GetBaseEntity();
             if($obBaseEntityContractors) {
-                $sEntityClassContractors = $obBaseEntityContractors->GetDataClass();
-
-                $arMap = $sEntityClassContractors::GetMap();
-
-                // опишем дополнительные связи
-                //$arAddRefMap = self::GetAddRefMap();
-                //$arMap = array_merge($arMap, $arAddRefMap);
+                $sEntityClassContractors = $obBaseEntityContractors->getDataClass();
+                $arMap = $sEntityClassContractors::getMap();
             }
         }
 

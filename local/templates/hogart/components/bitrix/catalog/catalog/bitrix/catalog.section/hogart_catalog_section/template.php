@@ -63,7 +63,7 @@ $this->setFrameMode(true);
 </div>
 <? endif; ?>
 <ul class="perechen-produts js-target-perechen <?=$arParams['VIEW_TYPE']?> <? if ($arParams["IS_TABLE_VIEW"]): ?>table-view<? endif; ?>">
-<? $collectionId = null; $brandId = null; ?>
+<? $collectionId = null; $brandId = null; $table_sort = null; ?>
 <? foreach ($arResult["ITEMS"] as $arItem):?>
         <?
         $rsFile = CFile::GetByID($arItem['PROPERTIES']['photos']['VALUE'][0]);
@@ -74,14 +74,14 @@ $this->setFrameMode(true);
         <? if (!empty($collectionId) && $collectionId != $arItem["PROPERTIES"]["collection"]["VALUE"]): ?>
             </ul></div>
             <!-- закрываем блок коллекции <?= $collectionId ?> -->
-            <?  $collectionId = ""; ?>
+            <?  $collectionId = null; $table_sort = null; ?>
         <? endif; ?>
         <? if (!empty($brandId) && $brandId != $arItem["PROPERTIES"]["brand"]["VALUE"]): ?>
 
             <? if ($brand_block): ?>
                 </ul>
                 <!-- конец блока товаров без коллекции -->
-                <? $brand_block = false; ?>
+                <? $brand_block = null; ?>
             <? endif; ?>
 
             </div></li>
@@ -91,13 +91,14 @@ $this->setFrameMode(true);
         <? ob_start(); ?>
         <li class="brand-collection-header">
             <span class="cell"><?= $arItem["PROPERTIES"]["sku"]["NAME"] ?></span>
-            <span class="cell">Наименование</span>
+            <span class="cell" style="width: 100%">Наименование</span>
             <? foreach ($arItem["PROPERTIES"] as $propertyName => $arProperty): ?>
                 <? if ($arProperty["DISPLAY_EXPANDED"] == "Y"): ?>
                     <span class="cell"><?= $arProperty["NAME"]; ?></span>
                 <? endif; ?>
             <? endforeach; ?>
             <span class="cell">Наличие</span>
+            <span class="cell">Ед. изм.</span>
             <span class="cell">Цена <i class="fa fa-<?= strtolower($arItem["PRICES"]["BASE"]["CURRENCY"]) ?>" aria-hidden="true"></i></span>
             <? if ($USER->IsAuthorized()): ?>
                 <span class="cell">%</span>
@@ -106,7 +107,7 @@ $this->setFrameMode(true);
             <span class="cell"><i class="icon-cart"></i></span>
         </li>
         <? $brand_collection_header = ob_get_clean(); ?>
-
+        
         <? if (!empty($arItem["PROPERTIES"]["brand"]["VALUE"]) && $brandId != $arItem["PROPERTIES"]["brand"]["VALUE"]): ?>
             <?
                 $brandId = $arItem["PROPERTIES"]["brand"]["VALUE"];
@@ -161,6 +162,15 @@ $this->setFrameMode(true);
                 </div>
             </li>
             <?= $brand_collection_header ?>
+            <? $brand_collection_header = "";?>
+        <? endif; ?>
+
+        <? if (!empty($arParams["TABLE_SORT"]) && $table_sort != $arItem["PROPERTIES"][$arParams["TABLE_SORT"]["CODE"]]["VALUE"]): ?>
+        <? $table_sort = $arItem["PROPERTIES"][$arParams["TABLE_SORT"]["CODE"]]["VALUE"]; ?>
+        <?= $brand_collection_header ?>
+        <li class="brand-collection-subtable-header">
+            <span><?= $table_sort ?> <?= trim(substr($arItem["PROPERTIES"][$arParams["TABLE_SORT"]["CODE"]]["NAME"], strpos($arItem["PROPERTIES"][$arParams["TABLE_SORT"]["CODE"]]["NAME"], ",") + 1)) ?></span>
+        </li>
         <? endif; ?>
 
         <li <? if (!empty($collectionId)):?> data-collection-item-id="<?= $arItem["ID"] ?>"<? endif; ?> <? if (!empty($brandId) && empty($collectionId)):?> data-brand-item-id="<?= $arItem["ID"] ?>"<? endif; ?> >
@@ -168,7 +178,7 @@ $this->setFrameMode(true);
             <span class="cell"><a href="<?= $arItem["DETAIL_PAGE_URL"] ?>"><?= $arItem["NAME"] ?></a></span>
             <? foreach ($arItem["PROPERTIES"] as $propertyName => $arProperty): ?>
                 <? if ($arProperty["DISPLAY_EXPANDED"] == "Y"): ?>
-                    <span class="cell"><?= $arProperty["VALUE"]; ?></span>
+                    <span class="cell<?= ($arProperty["PROPERTY_TYPE"] == "N" ? " text-center " : "")?>"><?= $arProperty["VALUE"]; ?></span>
                 <? endif; ?>
             <? endforeach; ?>
             <span class="cell quantity text-center <? if ($arItem["CATALOG_QUANTITY"] > 0): ?>quantity--available<? endif; ?>">
@@ -182,7 +192,7 @@ $this->setFrameMode(true);
                 <? endif; ?>
 
                 <? if ($USER->IsAuthorized() && $arItem["CATALOG_QUANTITY"] > 0): ?>
-                    <span style="white-space: nowrap"><?= $arItem["CATALOG_QUANTITY"]; ?> <?=$arItem['CATALOG_MEASURE_NAME']?>.</span>
+                    <span style="white-space: nowrap"><?= $arItem["CATALOG_QUANTITY"]; ?></span>
                     <div class="stocks-wrapper">
                         <div class="stock-header">
                             <?= $arItem["NAME"]?>, <?= $arResult["ALL_BRANDS"][$arItem["PROPERTIES"]["brand"]["VALUE"]]['NAME'] ?> <?= $arItem["PROPERTIES"]["sku"]["VALUE"] ?>
@@ -210,6 +220,7 @@ $this->setFrameMode(true);
                 <? endif; ?>
                 </div>
             </span>
+            <span class="cell text-center"><?=$arItem['CATALOG_MEASURE_NAME']?>.</span>
             <span class="cell text-center price currency-<?= strtolower($arItem["PRICES"]["BASE"]["CURRENCY"]) ?>">
                 <? if ($USER->IsAuthorized() && !empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
                     <?= HogartHelpers::woPrice($arItem["PRICES"]["BASE"]["PRINT_DISCOUNT_VALUE"]) ?>
@@ -391,7 +402,7 @@ $this->setFrameMode(true);
 <? if (!empty($collectionId) && $arParams["IS_TABLE_VIEW"]): ?>
     <!-- закрываем блок коллекции -->
     </ul></div>
-    <?  $collectionId = null; ?>
+    <? $collectionId = null; $table_sort = null; ?>
 <? endif; ?>
 
 <? if (!empty($brandId) && $arParams["IS_TABLE_VIEW"]): ?>
