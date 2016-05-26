@@ -169,7 +169,7 @@ $this->setFrameMode(true);
         <? $table_sort = $arItem["PROPERTIES"][$arParams["TABLE_SORT"]["CODE"]]["VALUE"]; ?>
         <?= $brand_collection_header ?>
         <li class="brand-collection-subtable-header">
-            <span><?= $table_sort ?> <?= trim(substr($arItem["PROPERTIES"][$arParams["TABLE_SORT"]["CODE"]]["NAME"], strpos($arItem["PROPERTIES"][$arParams["TABLE_SORT"]["CODE"]]["NAME"], ","))) ?></span>
+            <span><?= $table_sort ?> <?= trim(substr($arItem["PROPERTIES"][$arParams["TABLE_SORT"]["CODE"]]["NAME"], strpos($arItem["PROPERTIES"][$arParams["TABLE_SORT"]["CODE"]]["NAME"], ",") + 1)) ?></span>
         </li>
         <? endif; ?>
 
