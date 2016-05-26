@@ -55,7 +55,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
     <? if ($i == 1): ?>
     <div class="inner">
     <p><?= GetMessage("Имя страницы") ?>: <? $APPLICATION->ShowTitle() ?></p>
-    <p><a href="http://<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']?>"><?= GetMessage("Ссылка на страницу") ?></a></p>
+    <p><a href="http://<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']?>"><?= GetMessage("Ссылка на страницу") ?></a>: http://<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']?></p>
     <? elseif ($i == 3): ?>
     </div>
         <div class="hr"><span><?= GetMessage("Контактная информация") ?></span></div>
@@ -67,7 +67,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             elseif ($arQuestion['STRUCTURE'][0]['FIELD_TYPE'] == 'textarea'):?>
 
                 <div
-                    class="field custom_label <?=($arQuestion['STRUCTURE'][0]['ID']==70)?'js-validation-empty materials':''?>">
+                    class="field custom_label <?=(in_array(strtolower(trim($arQuestion['CAPTION'])), ['materials', 'материалы страницы']))?'js-validation-empty materials':''?>">
                     <label
                         for="text1"><?= $arQuestion["CAPTION"] ?> <? if ($arQuestion["REQUIRED"] == "Y"): ?><?= $arResult["REQUIRED_SIGN"]; ?><? endif; ?></label>
                     <?= $arQuestion["HTML_CODE"] ?>
@@ -89,7 +89,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             else: ?>
                 <?if ($arQuestion["CAPTION"] == 'Телефон'):
                     $customClass = 'phone js-validation-phone';
-                elseif (strtolower($arQuestion['CAPTION']) == 'materials'):
+                elseif (in_array(strtolower(trim($arQuestion['CAPTION'])), ['materials', 'материалы страницы'])):
                     $customClass = 'js-validation-empty materials';
                 elseif ($arQuestion["CAPTION"] == 'E-mail'):
                     $customClass = 'js-validation-email';
