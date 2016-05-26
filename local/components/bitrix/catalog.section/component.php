@@ -189,7 +189,7 @@ $arParams["PAGER_DESC_NUMBERING"] = $arParams["PAGER_DESC_NUMBERING"]=="Y";
 $arParams["PAGER_DESC_NUMBERING_CACHE_TIME"] = intval($arParams["PAGER_DESC_NUMBERING_CACHE_TIME"]);
 $arParams["PAGER_SHOW_ALL"] = $arParams["PAGER_SHOW_ALL"]=="Y";
 
-if ($arParams['DISPLAY_TOP_PAGER'] || $arParams['DISPLAY_BOTTOM_PAGER'])
+if ($arParams['DISPLAY_TOP_PAGER'] == "Y" || $arParams['DISPLAY_BOTTOM_PAGER'] == "Y")
 {
 	$arNavParams = array(
 		"nPageSize" => $arParams["PAGE_ELEMENT_COUNT"],
