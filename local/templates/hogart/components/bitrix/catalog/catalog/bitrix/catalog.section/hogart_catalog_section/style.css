@@ -34,6 +34,12 @@
   position: relative;
   box-shadow: -1px -1px 1px 1px #666;
 }
+.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li.brand-collection-subtable-header span:before {
+  content: " ";
+  position: relative;
+  display: block;
+  padding: 0 50%;
+}
 .catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li.brand-collection-header,
 .catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li.brand-collection-header {
   display: table-row;
