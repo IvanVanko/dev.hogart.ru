@@ -81,7 +81,7 @@ if (!empty($arResult["PROPERTIES"]["collection"]["VALUE"])) {
         ['RAND' => 'DESC'],
         $arFilter,
         false,
-        false,
+        ["nPageSize" => 9],
         $arSelect);
     
 
