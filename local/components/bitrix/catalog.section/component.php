@@ -200,12 +200,15 @@ if ($arParams['DISPLAY_TOP_PAGER'] || $arParams['DISPLAY_BOTTOM_PAGER'])
 	if($arNavigation["PAGEN"]==0 && $arParams["PAGER_DESC_NUMBERING_CACHE_TIME"]>0)
 		$arParams["CACHE_TIME"] = $arParams["PAGER_DESC_NUMBERING_CACHE_TIME"];
 }
-else
+elseif (intval($arParams["PAGE_ELEMENT_COUNT"]) > 0)
 {
 	$arNavParams = array(
 		"nTopCount" => $arParams["PAGE_ELEMENT_COUNT"],
 		"bDescPageNumbering" => $arParams["PAGER_DESC_NUMBERING"],
 	);
+	$arNavigation = false;
+} else {
+	$arNavParams = array();
 	$arNavigation = false;
 }
 
