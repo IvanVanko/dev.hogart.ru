@@ -175,11 +175,11 @@
     <div class="inner-cnt" id="popup-subscribe-email">
         <form action="/ajax/send_to_email.php" method="post">
             <div class="inner form-cont-box">
-                <p>Название старницы: <?= $APPLICATION->GetTitle() ?>
+                <p><?= GetMessage("Название страницы") ?>: <?= $APPLICATION->GetTitle() ?>
                     <input name="title_name" value="<?= $APPLICATION->GetTitle() ?>" type="hidden"/>
                 </p>
 
-                <p>Ссылка: http://hogart.ru<?= $APPLICATION->GetCurDir() ?></p>
+                <p><?= GetMessage("Ссылка") ?>: http://hogart.ru<?= $APPLICATION->GetCurDir() ?></p>
                 <input name="page_href" value="http://hogart.ru<?=$APPLICATION->GetCurDir() ?>" type="hidden"/>
                 </div>
             <hr>
@@ -191,11 +191,11 @@
             </div>
             <hr>
             <div class="inner form-cont-box">
-                <input type="submit" name="sending_email_form" class="empty-btn black" value="Отправить">
-                <small>Поля, отмеченные * обязательны для заполнения.</small>
+                <input type="submit" name="sending_email_form" class="empty-btn black" value="<?= GetMessage("Отправить") ?>">
+                <small><?= GetMessage("Поля, отмеченные * обязательны для заполнения.") ?></small>
             </div>
             <div class="inner success" style="display: none;">
-                Вы поделились ссылкой успешно!
+                <?= GetMessage("Вы поделились ссылкой успешно!")?>
             </div>
         </form>
     </div>
@@ -260,7 +260,7 @@
             </div>
             <hr>
             <div class="inner form-cont-box">
-                <input type="submit" name="sending_phone_form" class="empty-btn black" value="Отправить">
+                <input type="submit" name="sending_phone_form" class="empty-btn black" value="<?= GetMessage("Отправить") ?>">
                 <small><?= GetMessage("Поля, отмеченные * обязательны для заполнения.")?></small>
             </div>
             <div class="inner success" style="display: none;">

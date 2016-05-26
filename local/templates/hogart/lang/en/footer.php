@@ -13,3 +13,7 @@ $MESS["Ссылка"] = "Link";
 $MESS["Телефон"] = "Phone";
 $MESS["Поля, отмеченные * обязательны для заполнения."] = "Fields marked * are mandatory";
 $MESS["Вы поделились ссылкой успешно!"] = "You have successfully shared a link!";
+$MESS["Отправить"] = "Send";
+$MESS["Название страницы"] = "Page title";
+$MESS["Ссылка"] = "Link";
+$MESS["Поля, отмеченные * обязательны для заполнения."] = "Fields marked * are mandatory";
