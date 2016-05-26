@@ -754,6 +754,32 @@ if($this->StartResultCache(false, array($arrFilter, ($arParams["CACHE_GROUPS"]==
 		$arParams["ELEMENT_SORT_FIELD2"] => $arParams["ELEMENT_SORT_ORDER2"],
 	);
 
+	$prop_section_sort_result = \CUSTOM\Entity\SectionPropertySortTable::GetList(array(
+		"select" => array(
+			'UF_SECTION_ID',
+			'UF_PROPERTY_ID',
+			'UF_SORT_TABLE',
+			'UF_MAIN_TABLE'
+		),
+		"filter" => array(
+			['UF_SECTION_ID' => $arFilter['SECTION_ID']],
+			[
+				'LOGIC' => 'OR',
+				['UF_MAIN_TABLE' => true],
+				['UF_SORT_TABLE' => true],
+			]
+		),
+		"order" => [
+			'UF_MAIN_TABLE' => 'DESC'
+		]
+	));
+
+	while ($propSort = $prop_section_sort_result->fetch()) {
+		$arSort[] = [
+			"PROPERTY_" . $propSort["UF_PROPERTY_ID"] => "ASC"
+		];
+	}
+
 	$arDefaultMeasure = array();
 	if ($bIBlockCatalog)
 		$arDefaultMeasure = CCatalogMeasure::getDefaultMeasure(true, true);
