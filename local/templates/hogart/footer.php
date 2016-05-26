@@ -123,12 +123,15 @@ Loc::loadLanguageFile(__FILE__);
         <?
         global $USER;
         $user_mail = $USER->GetEmail();
+        $form_sid = "SHARE_EMAIL_" . strtoupper(LANGUAGE_ID);
+        CModule::IncludeModule("form");
+        $form_id = CForm::GetById($form_sid, "Y")->Fetch()["ID"];
         ?>
         <? $APPLICATION->IncludeComponent(
             "bitrix:form.result.new",
             "share_email",
             Array(
-                "WEB_FORM_ID" => "10",
+                "WEB_FORM_ID" => $form_id,
                 "IGNORE_CUSTOM_TEMPLATE" => "N",
                 "USE_EXTENDED_ERRORS" => "Y",
                 "SEF_MODE" => "N",

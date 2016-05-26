@@ -54,13 +54,11 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 
     <? if ($i == 1): ?>
     <div class="inner">
-    <p>Имя страницы: <? $APPLICATION->ShowTitle() ?></p>
-
-<!--    <p><a href="http://hogart.ru--><?//= $APPLICATION->GetCurDir() ?><!--">Ссылка на страницу</a></p>-->
-    <p><a href="http://<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']?>">Ссылка на страницу</a></p>
+    <p><?= GetMessage("Имя страницы") ?>: <? $APPLICATION->ShowTitle() ?></p>
+    <p><a href="http://<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']?>"><?= GetMessage("Ссылка на страницу") ?></a></p>
     <? elseif ($i == 3): ?>
     </div>
-        <div class="hr"><span>Контактная информация</span></div>
+        <div class="hr"><span><?= GetMessage("Контактная информация") ?></span></div>
         <div class="inner">
             <? endif; ?>
 
@@ -80,9 +78,6 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     class="field custom_label custom_select <? if ($arQuestion["REQUIRED"] == "Y"): ?>js-validation-empty<? endif ?>">
                     <label
                         for="form_dropdown_<?= $FIELD_SID ?>"><?= $arQuestion["CAPTION"] ?> <? if ($arQuestion["REQUIRED"] == "Y"): ?><?= $arResult["REQUIRED_SIGN"]; ?><? endif; ?></label>
-                    <!--                <select id="form_dropdown_-->
-                    <? //=$FIELD_SID?><!--" class="js-validation-empty" name="form_dropdown_-->
-                    <? //=$FIELD_SID?><!--">-->
                     <select id="form_dropdown_<?= $FIELD_SID ?>" name="form_dropdown_<?= $FIELD_SID ?>">
                         <option value="">Выбрать тему</option>
                         <? foreach ($arQuestion['STRUCTURE'] as $value): ?>
@@ -94,7 +89,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             else: ?>
                 <?if ($arQuestion["CAPTION"] == 'Телефон'):
                     $customClass = 'phone js-validation-phone';
-                elseif ($arQuestion['STRUCTURE'][0]['ID'] == 67):
+                elseif (strtolower($arQuestion['CAPTION']) == 'materials'):
                     $customClass = 'js-validation-empty materials';
                 elseif ($arQuestion["CAPTION"] == 'E-mail'):
                     $customClass = 'js-validation-email';
@@ -136,8 +131,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 
         <hr/>
         <div class="inner">
-            <input type="submit" name="web_form_submit" class="empty-btn black" value="Отправить"/>
-            <small>Поля, отмеченные * обязательны для заполнения.</small>
+            <input type="submit" name="web_form_submit" class="empty-btn black" value="<?= GetMessage("Отправить") ?>"/>
+            <small><?= GetMessage("Поля, отмеченные * обязательны для заполнения.") ?></small>
         </div>
 
         <?= $arResult["FORM_FOOTER"] ?>
