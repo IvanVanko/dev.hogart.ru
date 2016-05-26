@@ -775,9 +775,10 @@ if($this->StartResultCache(false, array($arrFilter, ($arParams["CACHE_GROUPS"]==
 	));
 
 	while ($propSort = $prop_section_sort_result->fetch()) {
-		$arSort[] = [
-			"PROPERTY_" . $propSort["UF_PROPERTY_ID"] . ".VALUE" => "ASC"
-		];
+		$arSort["PROPERTY_" . $propSort["UF_PROPERTY_ID"]] = "ASC";
+		if ($propSort["UF_MAIN_TABLE"]) {
+			$arParams["TABLE_SORT"] = CIBlockProperty::GetByID($propSort["UF_PROPERTY_ID"])->Fetch();
+		}
 	}
 
 	$arDefaultMeasure = array();

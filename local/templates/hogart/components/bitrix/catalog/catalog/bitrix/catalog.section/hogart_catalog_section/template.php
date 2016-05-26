@@ -63,7 +63,7 @@ $this->setFrameMode(true);
 </div>
 <? endif; ?>
 <ul class="perechen-produts js-target-perechen <?=$arParams['VIEW_TYPE']?> <? if ($arParams["IS_TABLE_VIEW"]): ?>table-view<? endif; ?>">
-<? $collectionId = null; $brandId = null; ?>
+<? $collectionId = null; $brandId = null; $table_sort = null; ?>
 <? foreach ($arResult["ITEMS"] as $arItem):?>
         <?
         $rsFile = CFile::GetByID($arItem['PROPERTIES']['photos']['VALUE'][0]);
@@ -74,14 +74,14 @@ $this->setFrameMode(true);
         <? if (!empty($collectionId) && $collectionId != $arItem["PROPERTIES"]["collection"]["VALUE"]): ?>
             </ul></div>
             <!-- закрываем блок коллекции <?= $collectionId ?> -->
-            <?  $collectionId = ""; ?>
+            <?  $collectionId = null; $table_sort = null; ?>
         <? endif; ?>
         <? if (!empty($brandId) && $brandId != $arItem["PROPERTIES"]["brand"]["VALUE"]): ?>
 
             <? if ($brand_block): ?>
                 </ul>
                 <!-- конец блока товаров без коллекции -->
-                <? $brand_block = false; ?>
+                <? $brand_block = null; ?>
             <? endif; ?>
 
             </div></li>
@@ -107,7 +107,7 @@ $this->setFrameMode(true);
             <span class="cell"><i class="icon-cart"></i></span>
         </li>
         <? $brand_collection_header = ob_get_clean(); ?>
-
+        
         <? if (!empty($arItem["PROPERTIES"]["brand"]["VALUE"]) && $brandId != $arItem["PROPERTIES"]["brand"]["VALUE"]): ?>
             <?
                 $brandId = $arItem["PROPERTIES"]["brand"]["VALUE"];
@@ -162,6 +162,13 @@ $this->setFrameMode(true);
                 </div>
             </li>
             <?= $brand_collection_header ?>
+        <? endif; ?>
+
+        <? if (!empty($arParams["TABLE_SORT"]) && $table_sort != $arItem["PROPERTIES"][$arParams["TABLE_SORT"]["CODE"]]["VALUE"]): ?>
+        <? $table_sort = $arItem["PROPERTIES"][$arParams["TABLE_SORT"]["CODE"]]["VALUE"]; ?>
+        <li class="brand-collection-subtable-header">
+            <span><?= $table_sort ?></span>
+        </li>
         <? endif; ?>
 
         <li <? if (!empty($collectionId)):?> data-collection-item-id="<?= $arItem["ID"] ?>"<? endif; ?> <? if (!empty($brandId) && empty($collectionId)):?> data-brand-item-id="<?= $arItem["ID"] ?>"<? endif; ?> >
@@ -393,7 +400,7 @@ $this->setFrameMode(true);
 <? if (!empty($collectionId) && $arParams["IS_TABLE_VIEW"]): ?>
     <!-- закрываем блок коллекции -->
     </ul></div>
-    <?  $collectionId = null; ?>
+    <? $collectionId = null; $table_sort = null; ?>
 <? endif; ?>
 
 <? if (!empty($brandId) && $arParams["IS_TABLE_VIEW"]): ?>
