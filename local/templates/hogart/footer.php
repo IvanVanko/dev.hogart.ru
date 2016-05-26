@@ -1,6 +1,9 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
     die();
-} ?>
+}
+use \Bitrix\Main\Localization\Loc;
+Loc::loadLanguageFile(__FILE__);
+?>
 <? if($APPLICATION->GetCurDir() != SITE_DIR): ?>
     <footer class="inner">
         <span>© 2014, ООО «Хогарт», 117041,  г. Москва, ул Поляны, 52</span>
