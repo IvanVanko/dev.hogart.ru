@@ -1213,8 +1213,11 @@ app.popup = function () {
         var $cnt = $(id);
         $cnt.css({
             'margin-left': $cnt.width() / -2,
-            'margin-top': $cnt.height() / -2
+            'transfrom': "translateY(-50%)"
         });
+        if ($cnt.outerHeight() > $(document).height()) {
+            $cnt.css({"transform": "translateY(-50%) scale(" + (Math.round($(document).height() / $cnt.outerHeight() * 100) / 100) + ")"});
+        }
 
         resizeFeedbackForm();
     });
