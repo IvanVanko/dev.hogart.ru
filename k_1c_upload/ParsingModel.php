@@ -785,7 +785,6 @@ class ParsingModel {
             "XML_ID" => $xmlId,
             "PROPERTY_VALUES" => array(
                 'type' => $type,
-                'file' => $file,
                 'brand' => $brand,
                 'access_level' => $access_level,
                 'show_in_object' => $show_in_object
@@ -793,6 +792,10 @@ class ParsingModel {
             "NAME" => $name,
             "ACTIVE" => $active,
         );
+
+        if (!empty($file)) {
+            $arLoadArray["PROPERTY_VALUES"]["file"] = $file;
+        }
 
         $el = new CIBlockElement;
         $item = $this->findEl(array('IBLOCK_ID' => self::DOCUMENTATION_IBLOCK_ID, "=XML_ID" => $xmlId));
@@ -810,7 +813,7 @@ class ParsingModel {
                 if($el->Update($item['ID'], $arLoadArray)) {
                     echo 'Документация обновлена: ['.$item['ID'].'] '.$xmlId.'<br>';
                     $id_r = $item['ID'];
-                    if($this->answer) {
+                    if($this->answer && !empty($file)) {
                         unlink($file['tmp_name']);
                     }
                 }
@@ -825,7 +828,7 @@ class ParsingModel {
                 if($doc_b = $el->Add($arLoadArray)) {
                     echo 'Документация добавлена: ['.$doc_b.'] '.$xmlId.'<br>';
                     $id_r = $doc_b;
-                    if($this->answer) {
+                    if($this->answer && !empty($file)) {
                         unlink($file['tmp_name']);
                     }
                 }
