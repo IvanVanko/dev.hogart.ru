@@ -453,7 +453,6 @@ class ParsingModel {
             $type_index = $file->type_id;
             $access_level = $file->access_level;
             $actual = $file->actual;
-            $show_in_object = $file->show_in_object;
 
             if(empty($access_level)) {
                 $access_level = 1;
@@ -485,6 +484,7 @@ class ParsingModel {
             foreach($lines as $line) {
                 $elementXmlID = $line->obj_id;
                 $type = $line->obj_type;
+                $show_in_object = $line->show_in_object;
 
                 if($type == 'brands') {
                     $iblock_id = self::BRAND_IBLOCK_ID;
