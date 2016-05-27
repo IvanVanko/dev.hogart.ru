@@ -84,7 +84,7 @@ if (!empty($arResult["VARIABLES"]["ELEMENT_CODE"])) {
             "PROPS"         => "Y",
             "FILTER"        => array(
                 'PROPERTY_BRAND' => $ElementID, 
-                'PROPERTY_show_in_object_VALUE' => "Y", 
+                'PROPERTY_show_in_object' => "Y", 
                 'PROPERTY_access_level' => ($access_level = ($USER->IsAuthorized()) ? array(1, 2) : 1)
             ),
         ),
