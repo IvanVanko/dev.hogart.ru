@@ -7,7 +7,7 @@
 			</div>
 			<?if (count($arResult["ITEMS"]) > 0):?>
 				<div class="padding">
-					<h2>Прайс - листы</h2>
+					<h2>Документация</h2>
 					<ul class="price-list">
 						<?foreach ($arResult["ITEMS"] as $arItem):
 							$arFile = CFile::GetFileArray($arItem['PROPERTIES']['file']['VALUE']);
