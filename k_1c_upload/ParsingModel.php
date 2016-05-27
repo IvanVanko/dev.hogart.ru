@@ -453,6 +453,7 @@ class ParsingModel {
             $type_index = $file->type_id;
             $access_level = $file->access_level;
             $actual = $file->actual;
+            $show_in_object = $file->show_in_object;
 
             if(empty($access_level)) {
                 $access_level = 1;
@@ -607,7 +608,7 @@ class ParsingModel {
                     $param[] = array('VALUE' => $brand['id_b']);
                 }
                 if ($this->addDoc($fileXmlID, $file_obj, $name, $param, $del, $this->classTrans[$type_index],
-                    $access_level, $actual ? "Y" : "N")) {
+                    $access_level, $actual ? "Y" : "N", $show_in_object ? "Y" : "N")) {
                     $answer['StringTehDoc'][] = $fileXmlID;
                 }
             }
@@ -625,7 +626,7 @@ class ParsingModel {
                                 );
                             }
                             $id_doc_dynamic = $this->addDoc($fileXmlID, $file_obj, $name, $arFile, $del,
-                                $this->classTrans[$type_index], $access_level);
+                                $this->classTrans[$type_index], $access_level, $actual ? "Y" : "N", $show_in_object ? "Y" : "N");
 
                             $id_doc_dynamic = array(array('VALUE' => $id_doc_dynamic));
                             if($this->setPropertyValue($product['id_b'], "docs", $id_doc_dynamic)) {
@@ -776,7 +777,7 @@ class ParsingModel {
         return $el->SetPropertyValueCode($objId, $property_code, $values);
     }
 
-    function addDoc($xmlId, $file, $name, $brand, $del, $type, $access_level = 1, $active = "Y") {
+    function addDoc($xmlId, $file, $name, $brand, $del, $type, $access_level = 1, $active = "Y", $show_in_object = "N") {
 
         $arLoadArray = array(
             "IBLOCK_SECTION_ID" => false,
@@ -786,7 +787,8 @@ class ParsingModel {
                 'type' => $type,
                 'file' => $file,
                 'brand' => $brand,
-                'access_level' => $access_level
+                'access_level' => $access_level,
+                'show_in_object' => $show_in_object
             ),
             "NAME" => $name,
             "ACTIVE" => $active,
