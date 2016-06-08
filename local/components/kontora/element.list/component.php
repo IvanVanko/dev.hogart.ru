@@ -15,6 +15,8 @@ if(!isset($arParams['GROUP_BY'])) {
 $arSelect = (isset($arParams['SELECT']) && !empty($arParams['SELECT'])) ? $arParams['SELECT'] : array();
 $arOrder = (isset($arParams['ORDER']) && !empty($arParams['ORDER'])) ? $arParams['ORDER'] : array('sort' => 'asc');
 $arNavParams = (isset($arParams['ELEMENT_COUNT']) && !empty($arParams['ELEMENT_COUNT'])) ? array("nPageSize" => $arParams["ELEMENT_COUNT"]) : false;
+$arNavigation = CDBResult::GetNavParams($arNavParams);
+
 $arParams["IBLOCK_ID"] = trim($arParams["IBLOCK_ID"]);
 
 $arFilter = array('SITE_ID' => SITE_ID, 'IBLOCK_ID' => $arParams["IBLOCK_ID"], 'ACTIVE' => 'Y');
@@ -22,7 +24,7 @@ if(!empty($arParams['FILTER'])) {
     $arFilter = array_merge($arFilter, $arParams['FILTER']);
 }
 
-if($this->StartResultCache(false)) {
+if($this->StartResultCache(false, [($arParams["CACHE_GROUPS"]==="N"? false: $USER->GetGroups()), $arNavParams, $arNavigation, $arFilter])) {
     if(!CModule::IncludeModule("iblock")) {
         $this->AbortResultCache();
         ShowError(GetMessage("IBLOCK_MODULE_NOT_INSTALLED"));
@@ -52,9 +54,7 @@ if($this->StartResultCache(false)) {
     }
 
     $arResult["NAV_STRING"] = $res->GetPageNavStringEx($navComponentObject, '', '', 'N');
-    if (is_object($navComponentObject) && method_exists($navComponentObject, "GetTemplateCachedData")) {
-        $arResult["NAV_CACHED_DATA"] = $navComponentObject->GetTemplateCachedData();
-    }
+    $arResult["NAV_CACHED_DATA"] = null;
     $arResult["NAV_RESULT"] = $res;
     $this->SetResultCacheKeys(array(
         "ID",
