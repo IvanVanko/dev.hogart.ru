@@ -47,6 +47,16 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
         } ?>
         <?
     } ?>
+    <? if ($arResult["isUseCaptcha"] == "Y"): ?>
+        <div class="field custom_label"><label for="captcha_word" class="">Код с картинки*</label>
+            <input type="hidden" name="captcha_sid" value="<?=htmlspecialcharsbx($arResult["CAPTCHACode"]);?>" />
+            <img src="/bitrix/tools/captcha.php?captcha_sid=<?=htmlspecialcharsbx($arResult["CAPTCHACode"]);?>" width="180" height="40" />
+            <input type="text" class="" name="captcha_word" value="" size="0" id="form_text_34"
+                   data-rule-required="true" data-msg-required="Пожалуйста заполните это поле"
+                   aria-required="true">
+        </div>
+    <? endif; // isUseCaptcha ?>
+
     <input type="hidden" name="web_form_apply" value="Y"/>
 <? if($arParams['HIDE_SUBMIT'] != 'Y') { ?>
         <input type="submit" class="empty-btn" value="<?= GetMessage("Отправить") ?>">
@@ -54,25 +64,6 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
     <br>
     <br>
     <small><?= GetMessage("Поля, отмеченные * обязательны для заполнения.")?></small>
-    <?
-    if($arResult["isUseCaptcha"] == "Y") {
-        ?>
-        <tr>
-            <th colspan="2"><b><?=GetMessage("FORM_CAPTCHA_TABLE_TITLE")?></b></th>
-        </tr>
-        <tr>
-            <td>&nbsp;</td>
-            <td><input type="hidden" name="captcha_sid" value="<?=htmlspecialcharsbx($arResult["CAPTCHACode"]);?>"/><img
-                    src="/bitrix/tools/captcha.php?captcha_sid=<?=htmlspecialcharsbx($arResult["CAPTCHACode"]);?>"
-                    width="180" height="40"/></td>
-        </tr>
-        <tr>
-            <td><?=GetMessage("FORM_CAPTCHA_FIELD_TITLE")?><?=$arResult["REQUIRED_SIGN"];?></td>
-            <td><input type="text" name="captcha_word" size="30" maxlength="50" value="" class="inputtext"/></td>
-        </tr>
-        <?
-    } // isUseCaptcha
-    ?>
     <?=$arResult["FORM_FOOTER"]?>
     <?
 }
