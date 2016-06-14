@@ -15,7 +15,7 @@ $aMenuLinks = Array(
 		"" 
 	),
 	Array(
-		"Склады и офисы", 
+		"Контакты",
 		"/contacts/tsentralnyy-ofis-khogart-v-moskve-sklad-i-servisnaya-sluzhba/",
 		Array(), 
 		Array(), 

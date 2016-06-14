@@ -49,8 +49,6 @@ Loc::loadLanguageFile(__FILE__);
     </div>
 </noscript>
 <!-- /Yandex.Metrika counter -->
-
-
 <script>
     (function (i, s, o, g, r, a, m) {
         i['GoogleAnalyticsObject'] = r;
@@ -69,9 +67,20 @@ Loc::loadLanguageFile(__FILE__);
 
 </script>
 
+<? if($APPLICATION->GetCurDir() == SITE_DIR): ?>
+    </div>
+    </div>
+<? else: ?>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+<?endif; ?>
+
 </div>
-</div>
-</div>
+
 <div class="popup-cnt">
     <div class="inner-cnt" id="popup-os">
         <? $APPLICATION->IncludeComponent(
@@ -94,7 +103,6 @@ Loc::loadLanguageFile(__FILE__);
         ); ?>
     </div>
 </div>
-
 <div class="popup-cnt">
     <div class="inner-cnt" id="popup-pm">
         <? $APPLICATION->IncludeComponent(

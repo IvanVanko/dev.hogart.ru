@@ -67,35 +67,26 @@ Loc::loadLanguageFile(__FILE__);
 <? endif; ?>
 <? $APPLICATION->ShowPanel() ?>
 <div class="wrapper">
-    <header class="header-cnt js-fixed-block" data-fixed="top">
+    
+    <? ob_start(); ?>
+    <header class="header-cnt">
         <div class="inner">
-            <? $switcher = $APPLICATION->GetLangSwitcherArray(); ?>
-            <? if (count($switcher) > 1): ?>
-            <div style="border-right: 1px solid #d0d0d0;text-align: center;height: 55px;display: block;float: left;width: 5%;font-size: 14px;text-transform: uppercase;background-color: #95c600;">
-                <? foreach ($switcher as $lang): ?>
-                    <? if ($lang["LANGUAGE_ID"] == LANGUAGE_ID): ?>
-                        <? continue; ?>
-                    <? endif; ?>
-                    <a class="switcher-<?= $lang["LANGUAGE_ID"] ?>" style="display: inline-block;line-height: 55px;color: white;text-decoration: none;" href="<?= $lang["DIR"] ?>"><?= $lang["LANGUAGE_ID"] ?></a>
-                <? endforeach; ?>
-            </div>
-            <? endif; ?>
             <? $APPLICATION->IncludeComponent("bitrix:search.form", "header", Array(
                     "USE_SUGGEST" => "N",
                     "PAGE" => "#SITE_DIR#search/index.php"
                 )
             ); ?>
             <? if (LANGUAGE_ID != 'en'): ?>
-            <a class="profile-url<? if($USER->IsAuthorized()): ?> authorized<? else: ?> js-popup-open<? endif; ?>"
-               href="<? if($USER->IsAuthorized()): ?>/profile/<? else: ?>#<? endif; ?>"
-               <? if(!$USER->IsAuthorized()): ?>data-popup="#popup-login"<? endif; ?>>
-                <i class="icon-profile icon-full"></i>
-                <? if($USER->IsAuthorized()): ?>
-                    <span class="hide-text"><?=$USER->GetFullName()?></span>
-                <? else: ?>
-                    <span class="hide-text"><?=Loc::getMessage("Личный кабинет")?></span>
-                <? endif; ?>
-            </a>
+                <a class="profile-url<? if($USER->IsAuthorized()): ?> authorized<? else: ?> js-popup-open<? endif; ?>"
+                   href="<? if($USER->IsAuthorized()): ?>/profile/<? else: ?>#<? endif; ?>"
+                   <? if(!$USER->IsAuthorized()): ?>data-popup="#popup-login"<? endif; ?>>
+                    <i class="icon-profile icon-full"></i>
+                    <? if($USER->IsAuthorized()): ?>
+                        <span class="hide-text"><?=$USER->GetFullName()?></span>
+                    <? else: ?>
+                        <span class="hide-text"><?=Loc::getMessage("Личный кабинет")?></span>
+                    <? endif; ?>
+                </a>
             <? endif; ?>
             <nav class="header-nav">
                 <ul>
@@ -103,20 +94,20 @@ Loc::loadLanguageFile(__FILE__);
                         <a href="<?=SITE_DIR?>stock/"><?=Loc::getMessage("Акции")?></a>
                     </li>
                     <li class="ya-phone">
-                            <? $APPLICATION->IncludeComponent("bitrix:main.include", "", Array(
-                                    "AREA_FILE_SHOW" => "sect",
-                                    "AREA_FILE_SUFFIX" => "inc_phone",
-                                    "AREA_FILE_RECURSIVE" => "Y",
-                                    "EDIT_TEMPLATE" => "standard.php"
-                                )
-                            ); ?>
-                            <? $APPLICATION->IncludeComponent("bitrix:main.include", "", Array(
-                                    "AREA_FILE_SHOW" => "sect",
-                                    "AREA_FILE_SUFFIX" => "inc_piter_phone",
-                                    "AREA_FILE_RECURSIVE" => "Y",
-                                    "EDIT_TEMPLATE" => "standard.php"
-                                )
-                            ); ?>
+                        <? $APPLICATION->IncludeComponent("bitrix:main.include", "", Array(
+                                "AREA_FILE_SHOW" => "sect",
+                                "AREA_FILE_SUFFIX" => "inc_phone",
+                                "AREA_FILE_RECURSIVE" => "Y",
+                                "EDIT_TEMPLATE" => "standard.php"
+                            )
+                        ); ?>
+                        <? $APPLICATION->IncludeComponent("bitrix:main.include", "", Array(
+                                "AREA_FILE_SHOW" => "sect",
+                                "AREA_FILE_SUFFIX" => "inc_piter_phone",
+                                "AREA_FILE_RECURSIVE" => "Y",
+                                "EDIT_TEMPLATE" => "standard.php"
+                            )
+                        ); ?>
                     </li>
                     <li class="email">
                         <? $APPLICATION->IncludeComponent("pirogov:headerEmail", "", Array(
@@ -127,18 +118,27 @@ Loc::loadLanguageFile(__FILE__);
                     </li>
                     <li class="feedback"><a class="js-popup-open" data-popup="#popup-os" href="#"><?=Loc::getMessage('Обратная связь')?></a></li>
                 </ul>
+                <? $switcher = $APPLICATION->GetLangSwitcherArray(); ?>
+                <? if (count($switcher) > 1): ?>
+                    <div class="lang-switcher">
+                        <? foreach ($switcher as $lang): ?>
+                            <? if ($lang["LANGUAGE_ID"] == LANGUAGE_ID): ?>
+                                <? continue; ?>
+                            <? endif; ?>
+                            <a class="switcher-<?= $lang["LANGUAGE_ID"] ?>" style="display: inline-block;line-height: 55px;color: white;text-decoration: none;" href="<?= $lang["DIR"] ?>"><?= $lang["LANGUAGE_ID"] ?></a>
+                        <? endforeach; ?>
+                    </div>
+                <? endif; ?>
             </nav>
-
         </div>
 
     </header>
+    <? $header = ob_get_clean(); ?>
+    <? if($APPLICATION->GetCurDir() == SITE_DIR): ?>
+    <?= $header ?>
     <div class="blur-main">
         <aside class="main-sidebar js-fp">
             <div class="wrap js-fp">
-                <div class="trigger-menu-cnt js-fh js-fixed-block" data-fixed="top">
-                    <label for="main-menu-trigger" class="icon-menu icon-full"></label>
-                    <label for="main-menu-trigger" class="menu-trigger-line"></label>
-                </div>
                 <div class="present-cnt js-fh js-fp">
                     <a style="display: inline-block" href="<?= SITE_DIR ?>">
                         <? if (LANGUAGE_ID == 'en'): ?>
@@ -193,22 +193,8 @@ Loc::loadLanguageFile(__FILE__);
                 </div>
             </div>
         </aside>
-        <? $APPLICATION->IncludeComponent("bitrix:menu", "left_menu", Array(
-                "ROOT_MENU_TYPE" => "top",
-                "MAX_LEVEL" => "2",
-                "CHILD_MENU_TYPE" => "left",
-                "USE_EXT" => "Y",
-                "DELAY" => "N",
-                "ALLOW_MULTI_SELECT" => "Y",
-                "MENU_CACHE_TYPE" => "N",
-                "MENU_CACHE_TIME" => "3600",
-                "MENU_CACHE_USE_GROUPS" => "Y",
-                "MENU_CACHE_GET_VARS" => ""
-            )
-        ); ?>
     </div>
-    <? if($APPLICATION->GetCurDir() == SITE_DIR): ?>
-        <div class="credits">
+    <div class="credits">
             <p class="address">
                 <? $APPLICATION->IncludeComponent("bitrix:main.include", "", Array(
                         "AREA_FILE_SHOW" => "sect",
@@ -224,9 +210,41 @@ Loc::loadLanguageFile(__FILE__);
                 </li>
             </ul>
         </div>
-    <? endif ?>
     <div class="main-container">
         <div class="container-inner">
-            <? if($APPLICATION->GetCurDir() != '/' && $APPLICATION->GetCurDir() != '/en/') {
+            <? if($APPLICATION->GetCurDir() != SITE_DIR) {
                 $APPLICATION->IncludeFile("/local/include/breadcrumb.php");
             } ?>
+    <? else: ?>
+    <div class="row">
+        <div class="col-md-1" style="padding-right: 0">
+            <a style="display: inline-block; margin: 10px 0 0 10px;" href="<?= SITE_DIR ?>">
+                <img style="width: 100%" src="/images/<?=LANGUAGE_ID?>-logo-black.svg" class="logo" alt="Hogart"/>
+            </a>
+        </div>
+        <div class="col-md-11">
+            <div class="row">
+                <div class="col-md-12">
+                    <?= $header ?>
+                    <?
+                    $APPLICATION->IncludeComponent("bitrix:menu", "top_menu", Array(
+                            "ROOT_MENU_TYPE" => "top",
+                            "MAX_LEVEL" => "2",
+                            "CHILD_MENU_TYPE" => "left",
+                            "USE_EXT" => "Y",
+                            "DELAY" => "N",
+                            "ALLOW_MULTI_SELECT" => "Y",
+                            "MENU_CACHE_TYPE" => "N",
+                            "MENU_CACHE_TIME" => "3600",
+                            "MENU_CACHE_USE_GROUPS" => "Y",
+                            "MENU_CACHE_GET_VARS" => "",
+                            "CLASS" => "top_menu"
+                        )
+                    );
+                    ?>
+                    <div class="main-container">
+                        <div class="container-inner">
+                            <? if($APPLICATION->GetCurDir() != SITE_DIR) {
+                                $APPLICATION->IncludeFile("/local/include/breadcrumb.php");
+                            } ?>
+    <? endif; ?>
