@@ -1,0 +1,28 @@
+@import (reference) "../../../../variables";
+
+.sections-news {
+  border-left: 1px solid @brand-green;
+  .more,
+  .title {
+    line-height: (@headings-line-height * @font-size-h2);
+    height: (@headings-line-height * @font-size-h2);
+    margin-top: (@line-height-computed / 2);
+    margin-bottom: (@line-height-computed / 2);
+    a {
+      color: @brand-green;
+      text-decoration: underline;
+      font-weight: normal;
+    }
+  }
+
+  .news-item {
+    margin-bottom: 10px;
+    font-size: @font-size-base;
+    .date * {
+      font-family: @font-family-base !important;
+      font-weight: 700 !important;
+      text-transform: uppercase;
+      font-size: @font-size-h6;
+    }
+  }
+}

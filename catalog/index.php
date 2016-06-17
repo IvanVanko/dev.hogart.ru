@@ -91,7 +91,7 @@ else {
             "TOP_PROPERTY_CODE" => array("", "undefined", ""),
             "SECTION_USER_FIELDS" => array("UF_SECTION_VIEW"),
             "SECTION_COUNT_ELEMENTS" => "Y",
-            "SECTION_TOP_DEPTH" => "2",
+            "SECTION_TOP_DEPTH" => "3",
             "SECTIONS_VIEW_MODE" => "LIST",
             "SECTIONS_SHOW_PARENT_NAME" => "Y",
             "PAGE_ELEMENT_COUNT" => "99",

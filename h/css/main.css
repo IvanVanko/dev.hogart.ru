@@ -695,11 +695,11 @@ textarea {
 }
 .breadcrumbs,
 .breadcrumbs-big {
-  margin-top: 15px;
   padding: 0;
   overflow: hidden;
   list-style: none;
   margin-bottom: 15px;
+  padding-top: 15px;
 }
 .breadcrumbs li,
 .breadcrumbs-big li {
@@ -859,7 +859,7 @@ textarea {
   border-left: 1px solid #d0d0d0;
   float: right;
   display: block;
-  height: 54px;
+  height: 55px;
   width: 59px;
   -webkit-transition: all 0.6s;
   -moz-transition: all 0.6s;
@@ -1661,13 +1661,11 @@ footer.right {
     height: 610px !important;
   }
   .main-container {
-    height: 650px !important;
   }
   .blur-main {
     top: 0 !important;
   }
   .main-container .sidebar {
-    height: 610px !important;
     top: 0 !important;
   }
   body > .wrapper,
@@ -1698,13 +1696,11 @@ footer.right {
     height: 610px !important;
   }
   .main-container {
-    height: 650px !important;
   }
   .blur-main {
     top: 0 !important;
   }
   .main-container .sidebar {
-    height: 610px !important;
     top: 0 !important;
   }
   body > .wrapper,

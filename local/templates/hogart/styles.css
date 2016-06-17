@@ -1,0 +1,30 @@
+.fixed-block {
+  display: block;
+  transition: all 0.5s;
+}
+.fixed-block.sticky {
+  position: fixed;
+  top: 0;
+}
+#header-block.sticky {
+  z-index: 5;
+  background-color: white;
+  width: 100%;
+}
+#header-block.sticky + .row {
+  margin-top: 95px;
+}
+.row.vertical-align {
+  display: flex;
+  flex-direction: row;
+}
+@media (max-width: 767px) {
+  .row.vertical-align {
+    display: block;
+  }
+}
+.row.vertical-align > [class^="col-"],
+.row.vertical-align > [class*=" col-"] {
+  display: flex;
+  align-items: center;
+}

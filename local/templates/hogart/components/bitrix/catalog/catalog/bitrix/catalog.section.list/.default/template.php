@@ -1,44 +1,69 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
-$this->setFrameMode(true);?>
+$this->setFrameMode(true);
+?>
+<? $relative_level = 0; ?>
+<div class="row d-0"><div class="col-md-12">
+		<? foreach ($arResult['SECTIONS'] as $key => $arSection): ?>
+		<?
+		if (empty($arSection["ELEMENT_CNT"])) continue;
+		$this->AddEditAction($arSection['ID'], $arSection['EDIT_LINK'], $strSectionEdit);
+		$this->AddDeleteAction($arSection['ID'], $arSection['DELETE_LINK'], $strSectionDelete, $arSectionDeleteParams);
+		?>
+		<? if($relative_level != $arSection["DEPTH_LEVEL"] && $relative_level != 0): ?>
+	</div></div><div class="row d-<?= $arSection["DEPTH_LEVEL"] ?>"><div class="col-md-12">
+		<? endif; ?>
 
-<section class="catalog_list_cnt inner no-padding">
-    <ul class="catalog_ul">
-		<?$depth_level = 0;
-		foreach ($arResult['SECTIONS'] as $key => $arSection):
-			$this->AddEditAction($arSection['ID'], $arSection['EDIT_LINK'], $strSectionEdit);
-			$this->AddDeleteAction($arSection['ID'], $arSection['DELETE_LINK'], $strSectionDelete, $arSectionDeleteParams);?>
-			<?if ($arSection['RELATIVE_DEPTH_LEVEL'] == 1):?>
-				<?if ($depth_level == 2):?></ul><?endif?>
-				<?if ($depth_level == 1):?></li><?endif?>
-				<li class="js-equal-height" data-group="catG">
-					<div class="img_wrap" style="background-image: url(<?=$arSection['PICTURE']['SRC']?>);">
-<!--	                    <img src="--><?//=$arSection['PICTURE']['SRC']?><!--" alt=""/>-->
-	                </div>
+		<? if ($arSection["DEPTH_LEVEL"] == 1): ?>
+			<div class="row depth-1 vertical-align">
+				<i id="<?= ("bx_cat_" . $arSection['ID']) ?>"></i>
+				<div class="col-md-6">
+					<div class="row vertical-align">
+						<div class="col-md-1">
+							<i class="icon-<?= $arSection["CODE"] ?>"></i>
+						</div>
+						<div class="col-md-11 text-uppercase title"><a href="<?= $arSection["SECTION_PAGE_URL"] ?>"><?= $arSection["NAME"] ?></a></div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<? if(!empty($arSection["UF_PRICE"])): ?>
+						<? $priceFileMeta = CFile::MakeFileArray($arSection["UF_PRICE"]) ?>
+						<span class="price-list">
+									<a href="<?=CFile::GetPath($arSection["UF_PRICE"]); ?>" class="download">
+										<i class="fa fa-download"></i> <span>Скачать <?=$arSection["UF_PRICE_LABEL"]?></span>
+									</a>
+									<span class="file-metadata">
+										<?= strtoupper(explode('/', $priceFileMeta['type'])[1]) ?>, <?= convert($priceFileMeta['size']) ?>
+									</span>
+								</span>
+					<? endif; ?>
+				</div>
+			</div>
+		<? endif; ?>
 
-                        <h2><a href="<?=$arSection["SECTION_PAGE_URL"]; ?>"><?=$arSection['NAME']?></a></h2>
-                        <?if ((int)$arSection["UF_PRICE"]>0) {?>
-                        <div class="small_href">
-                            <a href="<?=CFile::GetPath($arSection["UF_PRICE"]); ?>" class="doc_view icon_doc" download><?=$arSection["UF_PRICE_LABEL"]?></a>
-                        </div>
-                        <?}?>
-			<?elseif ($arSection['RELATIVE_DEPTH_LEVEL'] == 2):?>
-				<?if ($depth_level == 1):?><ul><?endif?>
-				<li><a data-href="<?=$arResult['SECTIONS_F'][$key]['SECTION_PAGE_URL']; ?>" href="<?=$arSection["SECTION_PAGE_URL"]; ?>"><?=$arSection["NAME"];?>  (<?=$arSection["ELEMENT_CNT"];?>)</a> </li>
-				<li>
-
-                    <?
-                   /* $sub_sect_url = array();
-                    foreach($arResult['SECTIONS_F'] as $key => $sect_f){
-
-                        if($sect_f['IBLOCK_SECTION_ID']==$arSection['ID']){
-                            array_push($sub_sect_url, $sect_f['SECTION_PAGE_URL']);
-                        }
-                    }*/
-                    ?>
-
-<!--                    <a href="--><?//=$sub_sect_url[0]?><!--">--><?//=$arSection["NAME"];?><!--  (--><?//=$arSection["ELEMENT_CNT"];?><!--)</a> </li>-->
-			<?endif;?>
-		<?$depth_level = $arSection['RELATIVE_DEPTH_LEVEL'];
-		endforeach;?>
-	</ul>
-</section>
+		<? if ($arSection["DEPTH_LEVEL"] == 2): ?>
+			<div class="row depth-2">
+				<div class="col-md-6" id="<?= ("bx_cat_" . $arSection['ID']) ?>">
+					<div class="row">
+						<div class="col-md-offset-1 col-md-11 text-uppercase title"><a href="<?= $arSection["SECTION_PAGE_URL"] ?>"><?= $arSection["NAME"] ?></a></div>
+					</div>
+				</div>
+			</div>
+		<? endif; ?>
+		<? if ($arSection["DEPTH_LEVEL"] == 3): ?>
+			<div class="row depth-3">
+				<div class="col-md-6" id="<?= ("bx_cat_" . $arSection['ID']) ?>">
+					<div class="row">
+						<div class="col-md-offset-1 col-md-11 title"><a href="<?= $arSection["SECTION_PAGE_URL"] ?>"><?= $arSection["NAME"] ?></a></div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<? foreach ($arSection["BRANDS"] as $brand): ?>
+						<span class="brand"><a href="<?= $arSection["SECTION_PAGE_URL"] ?>?arrFilter_<?= $arParams["FILTER"]["brand"] ?>_<?= abs(crc32($brand["ID"])) ?>=Y&set_filter=Показать"><?= $brand["NAME"] ?></a></span>
+					<? endforeach; ?>
+				</div>
+			</div>
+		<? endif; ?>
+		<? $relative_level = $arSection["DEPTH_LEVEL"]; ?>
+		<? endforeach; ?>
+	</div>
+</div>

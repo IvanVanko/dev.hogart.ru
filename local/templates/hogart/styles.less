@@ -1,0 +1,36 @@
+@import (reference) "variables";
+
+.fixed-block {
+  display: block;
+  transition: all 0.5s;
+  &.sticky {
+    position: fixed;
+    top: 0;
+  }
+}
+
+#header-block {
+  &.sticky {
+    z-index: 5;
+    background-color: white;
+    width: 100%;
+    +.row {
+      margin-top: 95px;
+    }
+  }
+}
+
+.row {
+  &.vertical-align {
+    display: flex;
+    @media (max-width: 767px) {
+      display: block;
+    }
+    flex-direction: row;
+    > [class^="col-"],
+    > [class*=" col-"] {
+      display: flex;
+      align-items: center;
+    }
+  }
+}

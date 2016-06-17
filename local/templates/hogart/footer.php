@@ -70,16 +70,14 @@ Loc::loadLanguageFile(__FILE__);
 <? if($APPLICATION->GetCurDir() == SITE_DIR): ?>
     </div>
     </div>
+    </div>
 <? else: ?>
     </div>
     </div>
     </div>
     </div>
     </div>
-    </div>
 <?endif; ?>
-
-</div>
 
 <div class="popup-cnt">
     <div class="inner-cnt" id="popup-os">

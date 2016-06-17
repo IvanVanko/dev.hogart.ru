@@ -646,7 +646,7 @@ body {
     border-left: 1px solid #d0d0d0;
     display: block;
     float: right;
-    height: 54px;
+    height: 55px;
     line-height: 64px;
     -webkit-transition: all 0.6s ease 0s;
     -moz-transition: all 0.6s ease 0s;
@@ -1049,48 +1049,19 @@ body {
 
 /**/
 body {
-    overflow: hidden;
-    /*overflow-x: scroll;*/
 }
 
 .main-container {
-    overflow-y: scroll;
 }
 
-/**/
 .main-container .sidebar .inner {
     min-height: 100px;
 }
 
 .main-container .sidebar .inner {
-/*
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-
-    min-height: 100vh;
-
-    -webkit-flex-direction: column;
-    -moz-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    */
 }
 
 .main-container .sidebar .inner .sidebar_padding_cnt {
-    /*-webkit-box-flex: 1 1 0;*/
-    /*-moz-box-flex: 1 1 0;*/
-    /*-webkit-flex: 1 1 0;*/
-    /*-ms-flex: 1 1 0;*/
-    /*flex: 1 1 0;*/
-  
-  /*  -webkit-box-flex: 1 1 auto;
-    -moz-box-flex: 1 1 auto;
-    -webkit-flex: 1 1 auto;
-    -ms-flex: 1 1 auto;
-    flex: 1 1 auto; */
 }
 
 .main-container .sidebar .inner hr {
@@ -1362,6 +1333,7 @@ ul.all-project-box {
 
 .container-inner{
     min-height: 100%;
+    position: relative;
 }
 
 .main-container footer.right span {

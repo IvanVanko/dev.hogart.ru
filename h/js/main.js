@@ -37,11 +37,7 @@ app.initFullHeight = function () {
 
         var window_height = $(window).outerHeight() - 55;
 
-        $('.js-fh').each(function () {
-            //if (/*$(this).outerHeight() < $(window).outerHeight() ||*/ $(this).hasClass('js-fhi')) {
-            $(this).height($(window).outerHeight());
-            //}
-        });
+        
         $(".index-page .blur-main").height($(window).outerHeight());
         $(".index-page .wrapper").height($(window).outerHeight());
 
@@ -54,7 +50,6 @@ app.initFullHeight = function () {
          */
 
         $("aside.sidebar").css({
-            height: $(window).outerHeight() - 55,
             overflow: "auto"
         });
 
@@ -94,13 +89,7 @@ app.initFullHeight = function () {
         }
 
         if (inner_height <= window_height - 55) {
-            $(".main-container footer").css({
-                position: "absolute",
-                bottom: "0px",
-                height: "",
-                width: "100%",
-                right: "0px"
-            }).addClass("right");
+            $(".main-container footer").addClass("right");
             if (!$('.presentation-main-page').length) {
                 $("footer .p_logo").css({
                     'position': 'relative',
@@ -116,12 +105,7 @@ app.initFullHeight = function () {
         else {
             var window1024 = ($(window).outerWidth() < 1024) ? 1024 : $(window).outerWidth();
             if ($("aside.sidebar").length) {
-                $(".main-container footer").css({
-                    position: "static",
-                    bottom: "auto",
-                    height: 50,
-                    width: window1024 - 565
-                }).removeClass("right");
+                $(".main-container footer").removeClass("right");
 
                 $(".learn-head-link").parent().css({
                     position: "static",
@@ -1522,7 +1506,6 @@ $(document).ready(function () {
     //todo andrew
     $(window).resize(function () {
         $(".main-container").css({
-            height: $(window).outerHeight(),
             paddingLeft: "0px"
         });
         $(".index-page .main-container").css({
@@ -1535,15 +1518,11 @@ $(document).ready(function () {
             paddingLeft: "0px",
             overflow: "hidden"
         });
-        $(".sidebar").css({
-            height: $(".sidebar .js-paralax-item").outerHeight()
-        });
         app.initFullHeight();
         resizeFeedbackForm();
     });
     $(document).click(function () {
         $(".main-container").css({
-            height: $(window).outerHeight(),
             paddingLeft: "0px"
         });
         $(".index-page .main-container").css({
@@ -1559,7 +1538,6 @@ $(document).ready(function () {
         app.initFullHeight();
         setTimeout(function () {
             $(".main-container").css({
-                height: $(window).outerHeight(),
                 paddingLeft: "0px"
             });
             $(".index-page .main-container").css({
@@ -1576,7 +1554,6 @@ $(document).ready(function () {
         }, 100 / 10);
     });
     $(".main-container").css({
-        height: $(window).outerHeight(),
         paddingLeft: "0px"
     });
     $(".index-page .main-container").css({
@@ -1588,9 +1565,6 @@ $(document).ready(function () {
         height: $(window).outerHeight() - 40,
         paddingLeft: "0px",
         overflow: "hidden"
-    });
-    $(".sidebar").css({
-        height: $(".sidebar .js-paralax-item").outerHeight()
     });
 
     if ($('.js-company-slider').length) {
