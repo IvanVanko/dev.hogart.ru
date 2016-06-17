@@ -1201,10 +1201,15 @@ app.popup = function () {
         e.preventDefault();
         $('body').addClass('no-scroll');
         var id = $(this).attr('data-popup');
+        var $cnt = $(id);
+        $cnt.find('.inner').show();
+        $cnt.find('.success').hide();
+
         $(id).parent().show().animate({
             'opacity': 1
         }, 300);
-        var $cnt = $(id);
+        console.log('+');
+
         if ($cnt.outerHeight() > $(document).height()) {
             $cnt.css({"transform": "translate(-50%, -50%) scale(" + (Math.round(($(document).height() - 50) / $cnt.outerHeight() * 100) / 100) + ")"});
         }
@@ -1931,11 +1936,16 @@ $(document).ready(function () {
     var formPhone = $('#popup-subscribe-phone form');
     formPhone.submit(function () {
         var bError = false;
-        var subsPhone = formPhone.find('input[type=text]');
+        var subsPhone = formPhone.find('input[name=sending_phone]');
+        var userSign = formPhone.find('input[name=user_msg]');
+
         //console.log(subsPhone.val(),subsPhone.val().length);
         if (subsPhone.val() == '' || subsPhone.val().length < 16) {
             subsPhone.parent().addClass('error');
             //console.log('-');
+        }
+        if (userSign.val() != '' && userSign.val().length > 25) {
+            userSign.parent().addClass('error');
         }
         else {
             //console.log('+');
@@ -1945,7 +1955,6 @@ $(document).ready(function () {
                 data: formPhone.serialize(),
                 success: function (data) {
                     if (data == 1) {
-
                         $('#popup-subscribe-phone .inner.form-cont-box, #popup-subscribe-phone hr').slideUp(400, function () {
                             $('#popup-subscribe-phone .inner.success').slideDown(400);
                         });

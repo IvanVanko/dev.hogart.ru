@@ -3,6 +3,7 @@
 }
 use \Bitrix\Main\Localization\Loc;
 Loc::loadLanguageFile(__FILE__);
+global $MESS;
 ?>
 <? if($APPLICATION->GetCurDir() != SITE_DIR): ?>
     <footer class="inner">
@@ -123,6 +124,7 @@ Loc::loadLanguageFile(__FILE__);
         <?
         global $USER;
         $user_mail = $USER->GetEmail();
+        $user_fio = $USER->GetFullName();
         $form_sid = "SHARE_EMAIL_" . strtoupper(LANGUAGE_ID);
         CModule::IncludeModule("form");
         $form_id = CForm::GetById($form_sid, "Y")->Fetch()["ID"];
@@ -260,12 +262,19 @@ Loc::loadLanguageFile(__FILE__);
             <div class="inner form-cont-box">
                 <div class="field custom_label phone">
                     <label for="sending_phone"><?= GetMessage("Телефон") ?>:<span class="form-required starrequired">*</span></label>
-                    <input type="text" class="inputtext" name="sending_phone"
-                           value="<?=($GLOBALS['USER']->IsAuthorized()) ? $user_mail : ''?>" size="0">
+                    <input type="text" class="inputtext" name="sending_phone" value="" size="0">
+                </div>
+            </div>
+            <div class="inner form-cont-box">
+                <div class="field custom_label">
+                    <label for="sending_phone"><?= GetMessage("Подпись") ?>:</label>
+                    <input type="text" class="inputtext" name="user_msg"
+                           value="<?=($GLOBALS['USER']->IsAuthorized()) ? "от ".$user_fio : ''?>" size="25">
                 </div>
             </div>
             <hr>
             <div class="inner form-cont-box">
+                <input type="hidden" name="message_title" value="<?= $MESS['SMS_TITLE']; ?>">
                 <input type="submit" name="sending_phone_form" class="empty-btn black" value="<?= GetMessage("Отправить") ?>">
                 <small><?= GetMessage("Поля, отмеченные * обязательны для заполнения.")?></small>
             </div>

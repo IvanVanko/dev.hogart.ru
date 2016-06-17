@@ -2,6 +2,9 @@
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetPageProperty("title", "Акции");
 $APPLICATION->SetTitle("Акции");
+global $MESS;
+$MESS['SMS_TITLE'] = 'Обращаем ваше внимание на акцию: ';
+
 ?>
 <?$APPLICATION->IncludeComponent(
 	"bitrix:news",
