@@ -2,6 +2,7 @@
 
 .sections-news {
   border-left: 1px solid @brand-green;
+  padding-right: (@grid-gutter-width / 2);
   .more,
   .title {
     line-height: (@headings-line-height * @font-size-h2);
@@ -16,6 +17,12 @@
   }
 
   .news-item {
+    &:hover,
+    &:active {
+      a {
+        text-decoration: underline;
+      }
+    }
     margin-bottom: 10px;
     font-size: @font-size-base;
     .date * {

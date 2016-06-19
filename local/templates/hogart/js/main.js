@@ -1,4 +1,5 @@
 "use strict";
+
 var hogartApp = {};
 $(function () {
     hogartApp = new HogartApp();
@@ -14,6 +15,7 @@ HogartApp.prototype.init = function () {
 
 HogartApp.prototype.setHandlers = function () {
     var self = this;
+    
     $('.eventRegistrationForm').on('forms.submit.success', function(event, data){
         if(data.redirect) {
             var link = document.createElement('A');
@@ -24,20 +26,29 @@ HogartApp.prototype.setHandlers = function () {
             link.click();
         }
     });
+    
+    $(window).on('popstate', function (event) {
+        event.preventDefault();
+        var target = $(window.location.hash);
+        if (target.length) {
+            $('html, body').animate({
+                scrollTop: target.offset().top
+            }, 800);
+            return false;
+        }
+    });
 
     $('a[href*="#"]:not([href="#"])').click(function(event) {
-        if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
-            var self = this;
+        if (window.location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && window.location.hostname == this.hostname) {
+            event.preventDefault();
             var target = $(this.hash);
-            target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
             if (target.length) {
                 $('html, body').animate({
                     scrollTop: target.offset().top
-                }, 1000, function () {
-                    document.location.hash = self.hash;
-                });
-                event.preventDefault();
+                }, 800);
+                history.pushState(null, null, this.hash);
             }
+            return false;
         }
     });
 
@@ -50,8 +61,8 @@ HogartApp.prototype.setHandlers = function () {
             top -= extTop;
             top = Math.max(0, top);
         }
-        $(window).scroll(function() {
-            if ($(this).scrollTop() > top ) {
+        var checkScroll = function () {
+            if ($(window).scrollTop() > top - (extTop ? 20 : 0) ) {
                 $(el).addClass('sticky');
                 if (extTop) {
                     $(el).css({ "margin-top": extTop + 20 });
@@ -62,7 +73,24 @@ HogartApp.prototype.setHandlers = function () {
                 }
                 $(el).removeClass('sticky');
             }
-        });
+        };
+        $(window).scroll(checkScroll);
+        checkScroll();
     });
+
+    $('#scroll-up').click(function () {
+        $('html, body').animate({
+            scrollTop: 0
+        }, 800);
+    });
+    function checkScrollUp () {
+        if ($(window).scrollTop() > 1 ) {
+            $('#scroll-up').css({ visibility: "visible"})
+        } else {
+            $('#scroll-up').css({ visibility: "hidden"})
+        }
+    }
+    $(window).scroll(checkScrollUp);
+    checkScrollUp ();
 };
 

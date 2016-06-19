@@ -21,7 +21,7 @@ $this->setFrameMode(true);
 						<div class="col-md-1">
 							<i class="icon-<?= $arSection["CODE"] ?>"></i>
 						</div>
-						<div class="col-md-11 text-uppercase title"><a href="<?= $arSection["SECTION_PAGE_URL"] ?>"><?= $arSection["NAME"] ?></a></div>
+						<div class="col-md-11 text-uppercase title"><?= $arSection["NAME"] ?></div>
 					</div>
 				</div>
 				<div class="col-md-6">

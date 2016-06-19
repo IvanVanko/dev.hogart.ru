@@ -320,5 +320,9 @@ Loc::loadLanguageFile(__FILE__);
     </div>
 </div>
 
+<div id="scroll-up">
+    <i class="fa fa-chevron-up" aria-hidden="true"></i>
+</div>
+
 </body>
 </html>

@@ -13,7 +13,8 @@
   border-radius: 5px;
 }
 .tag-left-menu li:hover,
-.tag-left-menu li:active {
+.tag-left-menu li:active,
+.tag-left-menu li.active {
   background-color: #2c2432;
 }
 .tag-left-menu li a {

@@ -1,5 +1,6 @@
 .sections-news {
   border-left: 1px solid #95c600;
+  padding-right: 15px;
 }
 .sections-news .more,
 .sections-news .title {
@@ -17,6 +18,10 @@
 .sections-news .news-item {
   margin-bottom: 10px;
   font-size: 14px;
+}
+.sections-news .news-item:hover a,
+.sections-news .news-item:active a {
+  text-decoration: underline;
 }
 .sections-news .news-item .date * {
   font-family: "Roboto", Helvetica, Arial, sans-serif !important;

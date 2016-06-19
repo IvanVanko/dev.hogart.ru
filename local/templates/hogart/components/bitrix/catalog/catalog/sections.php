@@ -41,7 +41,7 @@ $this->setFrameMode(true);
 		?>
 	</div>
 	<!-- блок новостей -->
-	<div class="col-md-3">
+	<div class="col-md-3" style="padding-right: 0; overflow-x: hidden">
 		<div class="aside-blocks fixed-block" data-rel-fixed-block="#header-block">
 			<?
 			$newsIBlockId = (LANGUAGE_ID == 'en' ? '28' : '3');

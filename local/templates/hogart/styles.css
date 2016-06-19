@@ -1,10 +1,26 @@
 .fixed-block {
   display: block;
-  transition: all 0.5s;
 }
 .fixed-block.sticky {
   position: fixed;
   top: 0;
+}
+#scroll-up {
+  visibility: hidden;
+  display: block;
+  position: fixed;
+  font-size: 20px;
+  border: 1px solid #95c600;
+  border-radius: 5px;
+  padding: 4px 8px;
+  left: 15px;
+  bottom: 15px;
+  background-color: white;
+  cursor: pointer;
+  color: #95c600;
+}
+#header-block {
+  overflow: hidden;
 }
 #header-block.sticky {
   z-index: 5;
