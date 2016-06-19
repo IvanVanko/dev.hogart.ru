@@ -1086,12 +1086,12 @@ textarea {
   line-height: inherit;
 }
 a {
-  color: #337ab7;
+  color: #95c600;
   text-decoration: none;
 }
 a:hover,
 a:focus {
-  color: #23527c;
+  color: #5b7a00;
   text-decoration: underline;
 }
 a:focus {
@@ -1323,11 +1323,11 @@ mark,
   color: #777777;
 }
 .text-primary {
-  color: #337ab7;
+  color: #95c600;
 }
 a.text-primary:hover,
 a.text-primary:focus {
-  color: #286090;
+  color: #6f9300;
 }
 .text-success {
   color: #3c763d;
@@ -1359,11 +1359,11 @@ a.text-danger:focus {
 }
 .bg-primary {
   color: #fff;
-  background-color: #337ab7;
+  background-color: #95c600;
 }
 a.bg-primary:hover,
 a.bg-primary:focus {
-  background-color: #286090;
+  background-color: #6f9300;
 }
 .bg-success {
   background-color: #dff0d8;
@@ -3100,26 +3100,26 @@ fieldset[disabled] .btn-default.focus {
 }
 .btn-primary {
   color: #fff;
-  background-color: #337ab7;
-  border-color: #2e6da4;
+  background-color: #95c600;
+  border-color: #82ad00;
 }
 .btn-primary:focus,
 .btn-primary.focus {
   color: #fff;
-  background-color: #286090;
-  border-color: #122b40;
+  background-color: #6f9300;
+  border-color: #222d00;
 }
 .btn-primary:hover {
   color: #fff;
-  background-color: #286090;
-  border-color: #204d74;
+  background-color: #6f9300;
+  border-color: #546f00;
 }
 .btn-primary:active,
 .btn-primary.active,
 .open > .dropdown-toggle.btn-primary {
   color: #fff;
-  background-color: #286090;
-  border-color: #204d74;
+  background-color: #6f9300;
+  border-color: #546f00;
 }
 .btn-primary:active:hover,
 .btn-primary.active:hover,
@@ -3131,8 +3131,8 @@ fieldset[disabled] .btn-default.focus {
 .btn-primary.active.focus,
 .open > .dropdown-toggle.btn-primary.focus {
   color: #fff;
-  background-color: #204d74;
-  border-color: #122b40;
+  background-color: #546f00;
+  border-color: #222d00;
 }
 .btn-primary:active,
 .btn-primary.active,
@@ -3148,11 +3148,11 @@ fieldset[disabled] .btn-primary:focus,
 .btn-primary.disabled.focus,
 .btn-primary[disabled].focus,
 fieldset[disabled] .btn-primary.focus {
-  background-color: #337ab7;
-  border-color: #2e6da4;
+  background-color: #95c600;
+  border-color: #82ad00;
 }
 .btn-primary .badge {
-  color: #337ab7;
+  color: #95c600;
   background-color: #fff;
 }
 .btn-success {
@@ -3384,7 +3384,7 @@ fieldset[disabled] .btn-danger.focus {
   background-color: #fff;
 }
 .btn-link {
-  color: #337ab7;
+  color: #95c600;
   font-weight: normal;
   border-radius: 0;
 }
@@ -3405,7 +3405,7 @@ fieldset[disabled] .btn-link {
 }
 .btn-link:hover,
 .btn-link:focus {
-  color: #23527c;
+  color: #5b7a00;
   text-decoration: underline;
   background-color: transparent;
 }

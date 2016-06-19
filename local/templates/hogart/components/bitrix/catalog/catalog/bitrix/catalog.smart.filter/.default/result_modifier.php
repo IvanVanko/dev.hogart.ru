@@ -243,7 +243,8 @@ $arStoreItem = array(
             'SORT' => 1,
             'UPPER' => 'ЕСТЬ В НАЛИЧИИ',
             'FLAG' => false,
-            'CHECKED' => $selected_active ? "Y" : false
+            'CHECKED' => $selected_active ? "Y" : false,
+            'URL_ID' => 'stores-active'
         ),
         array(
             'CONTROL_ID' => 'arrFilter_stores_warehouse',
@@ -255,7 +256,8 @@ $arStoreItem = array(
             'SORT' => 1,
             'UPPER' => 'СКЛАДСКАЯ ПРОГРАММА',
             'FLAG' => false,
-            'CHECKED' => !empty($selected_warehouse) ? "Y" : false
+            'CHECKED' => !empty($selected_warehouse) ? "Y" : false,
+            'URL_ID' => 'stores-warehouse'
         )
     )
 );

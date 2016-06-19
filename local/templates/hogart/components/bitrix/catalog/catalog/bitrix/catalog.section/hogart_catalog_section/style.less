@@ -1,6 +1,38 @@
 @import (reference) "../../../../../../../variables";
 
 .catalog_page .perechen {
+  .perechen-produts.grid {
+    > li > div {
+      padding: 15px;
+      border: 1px solid transparent;
+
+      .quantity {
+        &-success {
+          color: @brand-green;
+        }
+        &-fail {
+          color: @brand-danger;
+        }
+      }
+
+      .buy-btn {
+        display: block;
+        visibility: hidden;
+        margin-top: (@grid-gutter-width / 2);
+        transition: all 0s linear;
+      }
+
+      &:hover {
+        border: 1px solid @brand-green;
+        border-radius: 5px;
+        padding: 15px;
+
+        .buy-btn {
+          visibility: visible;
+        }
+      }
+    }
+  }
   .perechen-produts.list {
     &.table-view {
       overflow: initial;

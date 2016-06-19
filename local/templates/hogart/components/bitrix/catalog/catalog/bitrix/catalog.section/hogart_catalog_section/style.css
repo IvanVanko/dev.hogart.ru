@@ -1,3 +1,27 @@
+.catalog_page .perechen .perechen-produts.grid > li > div {
+  padding: 15px;
+  border: 1px solid transparent;
+}
+.catalog_page .perechen .perechen-produts.grid > li > div .quantity-success {
+  color: #95c600;
+}
+.catalog_page .perechen .perechen-produts.grid > li > div .quantity-fail {
+  color: #d9534f;
+}
+.catalog_page .perechen .perechen-produts.grid > li > div .buy-btn {
+  display: block;
+  visibility: hidden;
+  margin-top: 15px;
+  transition: all 0s linear;
+}
+.catalog_page .perechen .perechen-produts.grid > li > div:hover {
+  border: 1px solid #95c600;
+  border-radius: 5px;
+  padding: 15px;
+}
+.catalog_page .perechen .perechen-produts.grid > li > div:hover .buy-btn {
+  visibility: visible;
+}
 .catalog_page .perechen .perechen-produts.list.table-view {
   overflow: initial;
 }

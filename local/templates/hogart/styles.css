@@ -23,7 +23,7 @@
   overflow: hidden;
 }
 #header-block.sticky {
-  z-index: 5;
+  z-index: 999;
   background-color: white;
   width: 100%;
 }
