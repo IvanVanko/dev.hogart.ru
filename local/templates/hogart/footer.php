@@ -119,7 +119,7 @@ global $MESS;
 
     </div>
 </div>
-<div class="popup-cnt">
+<div class="popup-cnt popup-email">
     <div class="inner-cnt" id="popup-subscribe">
         <?
         global $USER;
