@@ -1152,6 +1152,10 @@ app.popup = function () {
         e.preventDefault();
         $('body').addClass('no-scroll');
         var id = $(this).attr('data-popup');
+        var $cnt = $(id);
+        $cnt.find('.inner').show();
+        $cnt.find('.success').hide();
+
         $(id).parent().show().animate({
             'opacity': 1
         }, 300);
@@ -1745,9 +1749,13 @@ $(document).ready(function () {
     var formPhone = $('#popup-subscribe-phone form');
     formPhone.submit(function () {
         var bError = false;
-        var subsPhone = formPhone.find('input[type=text]');
+        var subsPhone = formPhone.find('input[name=sending_phone]');
+        var userSign = formPhone.find('input[name=user_msg]');
         if (subsPhone.val() == '' || subsPhone.val().length < 16) {
             subsPhone.parent().addClass('error');
+        }
+        if (userSign.val() != '' && userSign.val().length > 25) {
+            userSign.parent().addClass('error');
         }
         else {
             $.ajax({
@@ -1756,7 +1764,6 @@ $(document).ready(function () {
                 data: formPhone.serialize(),
                 success: function (data) {
                     if (data == 1) {
-
                         $('#popup-subscribe-phone .inner.form-cont-box, #popup-subscribe-phone hr').slideUp(400, function () {
                             $('#popup-subscribe-phone .inner.success').slideDown(400);
                         });

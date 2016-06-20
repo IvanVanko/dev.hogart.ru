@@ -4,28 +4,40 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 <? if ($arResult["isFormErrors"] == "Y"): ?><?= $arResult["FORM_ERRORS_TEXT"]; ?><? endif; ?>
 
 <? if ($arResult["FORM_NOTE"]) { ?>
-    <div class="js-validation-form">
-        <div class="head inner">
+    <div class="js-validation-form" id="sharedEmailSuccess">
+        <div class="head inner success-send">
             <h2><?= $arResult["FORM_TITLE"] ?></h2>
-            <a href="#" class="close"></a>
+            <a href="#" class="close close-success"></a>
         </div>
         <div class="inner">
             <div id="form_note">
-                <?= $arResult["FORM_NOTE"] ?>
+                <?= GetMessage('Вы успешно поделились ссылкой!'); ?>
             </div>
         </div>
     </div>
+    <script>
+        $(function() {
+            // показываем popup с результаттом отправки
+            var popup = $('.popup-email');
+            $('body').addClass('no-scroll');
+            popup.css('opacity', 1).show();
+            // меняем форму что бы можно было еще раз расшарить по email
+            $('.close-success').click(function (e) {
+                popup.css('opacity', 0).hide();
+                $('#sharedEmailSuccess').hide();
+                $('.head-form').show();
+                $('#sharedEmailForm').show();
+            });
+        });
+    </script>
 <? } ?>
-<?if ($arResult["isFormNote"] != "Y") {
-    ?>
-
     <?
     /***********************************************************************************
      * form header
      ***********************************************************************************/
     ?>
     <? if ($arResult["isFormTitle"]): ?>
-        <div class="head inner">
+        <div class="head inner head-form" <? if($arResult["isFormNote"] == "Y"){ ?>style="display:none;"<? } ?>>
             <h2><?= $arResult["FORM_TITLE"] ?></h2>
             <a href="#" class="close"></a>
         </div>
@@ -45,7 +57,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 
     ?>
 
-    <div class="js-validation-form">
+    <div class="js-validation-form" id="sharedEmailForm" <? if ($arResult["isFormNote"] == "Y"):?>style="display: none"<? endif; ?>>
 
         <?= $arResult["FORM_HEADER"] ?>
 
@@ -55,17 +67,18 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
     <? if ($i == 1): ?>
     <div class="inner">
     <p><?= GetMessage("Имя страницы") ?>: <? $APPLICATION->ShowTitle() ?></p>
-    <p><a href="http://<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']?>"><?= GetMessage("Ссылка на страницу") ?></a>: http://<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']?></p>
+    <p><a href="http://<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']?>"><?= GetMessage("Ссылка на страницу") ?></a>: http://<?=$_SERVER['HTTP_HOST'].str_replace('&formresult=addok','',$_SERVER['REQUEST_URI'])?></p>
     <? elseif ($i == 3): ?>
     </div>
         <div class="hr"><span><?= GetMessage("Контактная информация") ?></span></div>
         <div class="inner">
             <? endif; ?>
 
-            <?if ($arQuestion['STRUCTURE'][0]['FIELD_TYPE'] == 'hidden'):
-                echo $arQuestion["HTML_CODE"];
+            <?if ($arQuestion['STRUCTURE'][0]['FIELD_TYPE'] == 'hidden' && $FIELD_SID == 'PAGE_URL'):
+                echo '<input type="hidden" name="form_hidden_'.$arQuestion['STRUCTURE'][0]['ID'].'" value="http://'.$_SERVER['HTTP_HOST'].str_replace('&formresult=addok','',$_SERVER['REQUEST_URI']).'">';
+            elseif ($arQuestion['STRUCTURE'][0]['FIELD_TYPE'] == 'hidden' && $FIELD_SID == 'SENDTO_TITLE' ):
+                echo '<input type="hidden" name="form_hidden_'.$arQuestion['STRUCTURE'][0]['ID'].'" value="'.$APPLICATION->GetTitle().'">';
             elseif ($arQuestion['STRUCTURE'][0]['FIELD_TYPE'] == 'textarea'):?>
-
                 <div
                     class="field custom_label <?=(in_array(strtolower(trim($arQuestion['CAPTION'])), ['materials', 'материалы страницы']))?'js-validation-empty materials':''?>">
                     <label
@@ -121,6 +134,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                         src="/bitrix/tools/captcha.php?captcha_sid=<?= htmlspecialcharsbx($arResult["CAPTCHACode"]); ?>"
                         width="180" height="40"/></td>
             </tr>
+
             <tr>
                 <td><?= GetMessage("FORM_CAPTCHA_FIELD_TITLE") ?><?= $arResult["REQUIRED_SIGN"]; ?></td>
                 <td><input type="text" name="captcha_word" size="30" maxlength="50" value="" class="inputtext"/></td>
@@ -137,9 +151,6 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 
         <?= $arResult["FORM_FOOTER"] ?>
     </div>
-<?
-} //endif (isFormNote)
-?>
 <?if ($arResult['arForm']['ID']==10):?>
     <script type="text/javascript">
         $('.js-validation-empty.materials textarea').val('материалы со страницы');
