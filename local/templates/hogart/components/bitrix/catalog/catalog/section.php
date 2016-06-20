@@ -396,7 +396,7 @@ if ($section["DEPTH_LEVEL"] == 1): ?>
                     'VIEW_TYPES' => $viewTypes,
                     'VIEW_TYPE' => $viewType,
                     'IS_TABLE_VIEW' => $isTableViewExt,
-                    "IS_FILTERED" => (bool)$arResult["VARIABLES"]["SMART_FILTER_PATH"],
+                    "IS_FILTERED" => $arResult["VARIABLES"]["SMART_FILTER_PATH"] == 'clear' ? false : (bool)$arResult["VARIABLES"]["SMART_FILTER_PATH"],
                     "DEPTH_LEVEL" => $section["DEPTH_LEVEL"]
                 ),
                 $component

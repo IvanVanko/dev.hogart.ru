@@ -237,14 +237,17 @@ $this->setFrameMode(true);
                         if (!empty($arItem["PREVIEW_PICTURE"]['SRC'])) {
                             $file = CFile::ResizeImageGet(
                                 $arItem["PREVIEW_PICTURE"]['ID'], array("width" => 400, "height" => 160), BX_RESIZE_IMAGE_PROPORTIONAL, true);
-                            $pic = $file['src'];
+                            if (file_exists(realpath($_SERVER["DOCUMENT_ROOT"] . $file['src'])))
+                                $pic = $file['src'];
                         }
                         elseif (!empty($arItem["DETAIL_PICTURE"]['SRC'])) {
 
                             $file = CFile::ResizeImageGet(
                                 $arItem["DETAIL_PICTURE"]['ID'], array("width" => 400, "height" => 160), BX_RESIZE_IMAGE_PROPORTIONAL, true);
-                            $pic = $file['src'];
-                        }?>
+                            if (file_exists(realpath($_SERVER["DOCUMENT_ROOT"] . $file['src'])))
+                                $pic = $file['src'];
+                        }
+                        ?>
                         <img src="<?=$pic?>" alt=""/>
                     </a>
                 </span>
