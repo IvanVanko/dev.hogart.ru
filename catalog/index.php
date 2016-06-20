@@ -151,6 +151,7 @@ else {
             "VARIABLE_ALIASES" => Array("sections" => Array(),
                                         "section" => Array(),
                                         "element" => Array(),
+                                        "smart_filter" => Array(),
                                         "compare" => Array("ACTION_CODE" => "action"),),
         )
     ); ?>

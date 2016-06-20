@@ -14,9 +14,10 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
+
 ?>
 <ul class="row perechen-produts js-target-perechen <?=$arParams['VIEW_TYPE']?> <? if ($arParams["IS_TABLE_VIEW"]): ?>table-view<? endif; ?>">
-<? $collectionId = null; $brandId = null; $table_sort = null; ?>
+<? $collectionId = null; $brandId = null; $table_sort = null; $section_id = null; ?>
 <? foreach ($arResult["ITEMS"] as $arItem):?>
         <?
         $rsFile = CFile::GetByID($arItem['PROPERTIES']['photos']['VALUE'][0]);
@@ -214,6 +215,19 @@ $this->setFrameMode(true);
         </li>
 
     <? else: ?>
+        <? if($section_id != $arItem["~IBLOCK_SECTION_ID"] && $arParams["DEPTH_LEVEL"] == 2 && !$arParams["IS_FILTERED"]): ?>
+        <li class="col-md-12 section-title" data-section-id="<?= $arItem["~IBLOCK_SECTION_ID"] ?>" data-section-name="<?= $arResult["SUBS"][$arItem["~IBLOCK_SECTION_ID"]]["NAME"] ?>">
+            <span>
+                <?= $arResult["SUBS"][$arItem["~IBLOCK_SECTION_ID"]]["NAME"] ?>
+                <? if ($arResult["SUBS"][$arItem["~IBLOCK_SECTION_ID"]]["ELEMENTS_COUNT"] > $arParams["SUB_SECTION_COUNT"]): ?>
+                <span class="section-link">
+                    <a href="<?= $arResult["SUBS"][$arItem["~IBLOCK_SECTION_ID"]]["SECTION_PAGE_URL"] ?>">Посмотреть все (<?= $arResult["SUBS"][$arItem["~IBLOCK_SECTION_ID"]]["ELEMENTS_COUNT"] ?>) <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+                </span>
+                <? endif; ?>
+            </span>
+        </li>
+        <? $section_id = $arItem["~IBLOCK_SECTION_ID"] ?>
+        <? endif; ?>
         <li class="col-md-4 col-sm-6">
             <div>
                 <span class="perechen-img">
@@ -258,8 +272,8 @@ $this->setFrameMode(true);
                             ?>
                             <li class="note">
                                 <div class="row">
-                                    <div class="col-md-6 dotted"><span><?= $arProperty["NAME"] ?></span></div>
-                                    <div class="col-md-6 text-right">
+                                    <div class="col-md-4 dotted"><span><?= $arProperty["NAME"] ?></span></div>
+                                    <div class="col-md-8 text-right">
                                         <a href="<?= $arResult["ALL_BRANDS"][$arProperty["VALUE"]]['DETAIL_PAGE_URL'] ?>">
                                             <span class="pr"><?= $arResult["ALL_BRANDS"][$arProperty["VALUE"]]['NAME'] ?></span>
                                         </a>
@@ -268,9 +282,11 @@ $this->setFrameMode(true);
                             </li>
                             <? if(!empty($arItem['DISPLAY_PROPERTIES']["collection"]['NAME'])): ?>
                             <li class="note">
-                                <span><?= $arItem['DISPLAY_PROPERTIES']["collection"]['NAME'] ?></span>
-                                <?$collectionElement = current($arItem['DISPLAY_PROPERTIES']["collection"]["LINK_ELEMENT_VALUE"]);?>
-                                <span class="pr"><?= $collectionElement['NAME'] ?></span>
+                                <div class="row">
+                                    <?$collectionElement = current($arItem['DISPLAY_PROPERTIES']["collection"]["LINK_ELEMENT_VALUE"]);?>
+                                    <div class="col-md-4 dotted"><span><?= $arItem['DISPLAY_PROPERTIES']["collection"]['NAME'] ?></span></div>
+                                    <div class="col-md-8 text-right"><span class="pr"><?= $collectionElement['NAME'] ?></span></div>
+                                </div>
                             </li>
                             <? endif; ?>
                             <? unset($arItem['PROPERTIES'][$propertyName]) ?>
@@ -280,20 +296,24 @@ $this->setFrameMode(true);
                                 <? if (!empty($arProperty["VALUE"]) && $arProperty['SMART_FILTER'] == 'Y'): ?>
                                     <? if (substr($propertyName, 0, 4) == "coll"): ?>
                                         <li class="note">
-                                            <span><?= $arProperty["NAME"] ?></span>
-                                            <span class="pr"><?= $arResult["ALL_COLLS"][$arProperty["VALUE"]]['NAME'] ?></span>
+                                            <div class="row">
+                                                <div class="col-md-4 dotted"><span><?= $arProperty["NAME"] ?></span></div>
+                                                <div class="col-md-8 text-right"><span class="pr"><?= $arResult["ALL_COLLS"][$arProperty["VALUE"]]['NAME'] ?></span></div>
+                                            </div>
                                         </li>
                                     <? elseif (substr($propertyName, 0, 3) != "pho"): ?>
                                         <li class="note"
                                             <? if ($arProperty['DISPLAY_EXPANDED'] != 'Y') { $hiddenPropsExist=true;?>style="display: none"<? } ?>>
-                                            <span><?= $arProperty["NAME"] ?></span>
-                                            <span class="pr"><?= $arProperty["VALUE"] ?></span>
+                                            <div class="row">
+                                                <div class="col-md-4 dotted"><span><?= $arProperty["NAME"] ?></span></div>
+                                                <div class="col-md-8 text-right"><span class="pr"><?= $arProperty["VALUE"] ?></span></div>
+                                            </div>
                                         </li>
                                     <? endif; ?>
                                 <? endif; ?>
                             <? endforeach; ?>
                             <?if ($hiddenPropsExist) {?>
-                                <li class="open">развернуть</li>
+                                <!-- li class="open">развернуть</li -->
                             <?}?>
                         </ul>
                     </div>

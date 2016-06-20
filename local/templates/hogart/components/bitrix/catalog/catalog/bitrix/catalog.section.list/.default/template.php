@@ -58,7 +58,7 @@ $this->setFrameMode(true);
 				</div>
 				<div class="col-md-6">
 					<? foreach ($arSection["BRANDS"] as $brand): ?>
-						<span class="brand"><a href="<?= $arSection["SECTION_PAGE_URL"] ?>/filter/brand-is-<?= $brand["CODE"] ?>/apply/"><?= $brand["NAME"] ?></a></span>
+						<span class="brand"><a href="<?= $arSection["SECTION_PAGE_URL"] ?>?arrFilter_<?= $arParams["FILTER"]["brand"] ?>_<?= abs(crc32($brand["ID"])) ?>=Y&set_filter=Показать"><?= $brand["NAME"] ?></a></span>
 					<? endforeach; ?>
 				</div>
 			</div>

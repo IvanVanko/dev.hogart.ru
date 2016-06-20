@@ -2,6 +2,30 @@
 
 .catalog_page .perechen {
   .perechen-produts.grid {
+    .section-title {
+      text-transform: uppercase;
+      font-weight: 500;
+      font-size: @font-size-h5;
+      padding-bottom: 5px;
+      padding-left: 0;
+      padding-right: 0;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid @brand-green;
+      > span {
+        display: block;
+        .section-link {
+          float: right;
+          font-size: @font-size-h6;
+          font-weight: normal;
+          text-transform: none;
+          a {
+            color: @brand-green;
+          }
+        }
+      }
+    }
+    margin-top: 0 !important;
     > li > div {
       padding: 15px;
       border: 1px solid transparent;

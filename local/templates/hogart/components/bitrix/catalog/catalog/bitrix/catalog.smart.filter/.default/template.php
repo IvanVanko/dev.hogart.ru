@@ -589,6 +589,7 @@ if (isset($templateData['TEMPLATE_THEME']))
 														name="<? echo $ar["CONTROL_NAME"] ?>"
 														id="<? echo $ar["CONTROL_ID"] ?>"
 														<? echo $ar["CHECKED"]? 'checked="checked"': '' ?>
+														<? echo $ar["DISABLED"] ? 'disabled="disabled"': '' ?>
 														onclick="smartFilter.click(this)"
 													/>
 													<span class="bx-filter-param-text" title="<?=$ar["VALUE"];?>"><?=$ar["VALUE"];?><?

@@ -1,6 +1,7 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
     die();
 }
+/** @var CBitrixComponentTemplate $this */
 
 if(isset($arParams["TEMPLATE_THEME"]) && !empty($arParams["TEMPLATE_THEME"])) {
     $arAvailableThemes = array();
@@ -226,17 +227,17 @@ $arStoreItem = array(
     'IBLOCK_ID' => false,
     'CODE' => 'STORES',
     'NAME' => 'Наличие',
-    'PROPERTY_TYPE' => 'ST',
+    'PROPERTY_TYPE' => 'L',
     'USER_TYPE' => false,
     'USER_TYPE_SETTINGS' => false,
     'DISPLAY_TYPE' => 'F',
     'DISPLAY_EXPANDED' => 'Y',
     'DISPLAY_SORT' => -30, //ставим сортировку отображения так чтобы Бренды всегда вверху выводились
     'VALUES' => array(
-        array(
-            'CONTROL_ID' => 'arrFilter_stores_active',
+        'active' => array(
+            'CONTROL_ID' => 'arrFilter_stores',
             'CONTROL_NAME' => 'arrFilter_stores[]',
-            'CONTROL_NAME_ALT' => 'arrFilter_stores[]',
+            'CONTROL_NAME_ALT' => 'arrFilter_stores%5B0%5D',
             'HTML_VALUE_ALT' => implode(",", $arActiveStores),
             'HTML_VALUE' => implode(",", $arActiveStores),
             'VALUE' => 'Есть в наличии',
@@ -244,21 +245,21 @@ $arStoreItem = array(
             'UPPER' => 'ЕСТЬ В НАЛИЧИИ',
             'FLAG' => false,
             'CHECKED' => $selected_active ? "Y" : false,
-            'URL_ID' => 'stores-active'
+            'URL_ID' => 'active'
         ),
-        array(
-            'CONTROL_ID' => 'arrFilter_stores_warehouse',
-            'CONTROL_NAME' => 'arrFilter_warehouse',
-            'CONTROL_NAME_ALT' => 'arrFilter_warehouse',
-            'HTML_VALUE_ALT' => "Y",
-            'HTML_VALUE' => "Y",
-            'VALUE' => 'Складская программа',
-            'SORT' => 1,
-            'UPPER' => 'СКЛАДСКАЯ ПРОГРАММА',
-            'FLAG' => false,
-            'CHECKED' => !empty($selected_warehouse) ? "Y" : false,
-            'URL_ID' => 'stores-warehouse'
-        )
+//        'warehouse' => array(
+//            'CONTROL_ID' => 'arrFilter_stores',
+//            'CONTROL_NAME' => 'arrFilter_warehouse',
+//            'CONTROL_NAME_ALT' => 'arrFilter_warehouse',
+//            'HTML_VALUE_ALT' => "Y",
+//            'HTML_VALUE' => "Y",
+//            'VALUE' => 'Складская программа',
+//            'SORT' => 1,
+//            'UPPER' => 'СКЛАДСКАЯ ПРОГРАММА',
+//            'FLAG' => false,
+//            'CHECKED' => !empty($selected_warehouse) ? "Y" : false,
+//            'URL_ID' => 'warehouse'
+//        )
     )
 );
 
@@ -269,7 +270,50 @@ foreach($arResult['ITEMS'] as $arFilterItem) {
 
 $offset = array_search('brand', $filter_keys);
 array_splice($arResult['ITEMS'], $offset, 0, array($arStoreItem));
+$items = [];
+foreach ($arResult['ITEMS'] as $item) {
+    $items[$item['CODE']] = $item;
+}
+$arResult['ITEMS'] = $items;
+
+if ($_REQUEST["ajax"] == 'y') {
+    $_CHECK = &$_REQUEST;
+} else {
+    $_CHECK = $this->getComponent()->convertUrlToCheck($arParams["SMART_FILTER_PATH"]);
+}
+
+foreach ($arResult['ITEMS']["STORES"]["VALUES"] as &$ar) {
+    if ($_CHECK[$ar["CONTROL_NAME"]] == $ar["HTML_VALUE"]) {
+        $ar["CHECKED"] = true;
+    }
+}
+
 //ставим после пункта Бренда. По сути можно поставить где угодно, в любом случае массив будет отсортировать по DISPLAY_SORT
+
+$sectionList = CIBlockSection::GetList(array(), array(
+    "=ID" => $this->getComponent()->SECTION_ID,
+    "IBLOCK_ID" => $this->getComponent()->IBLOCK_ID,
+), false, array("ID", "IBLOCK_ID", "SECTION_PAGE_URL"));
+$sectionList->SetUrlTemplates($arParams["SEF_RULE"]);
+$section = $sectionList->GetNext();
+if ($section)
+{
+    $arResult["JS_FILTER_PARAMS"]["SEF_SET_FILTER_URL"] = $this->getComponent()->makeSmartUrl($section["DETAIL_PAGE_URL"], true);
+    $arResult["JS_FILTER_PARAMS"]["SEF_DEL_FILTER_URL"] = $this->getComponent()->makeSmartUrl($section["DETAIL_PAGE_URL"], false);
+}
+
+if ($arResult["JS_FILTER_PARAMS"]["SEF_SET_FILTER_URL"])
+{
+    $arResult["FILTER_URL"] = $arResult["JS_FILTER_PARAMS"]["SEF_SET_FILTER_URL"];
+    $arResult["FILTER_AJAX_URL"] = htmlspecialcharsbx(CHTTP::urlAddParams($arResult["FILTER_URL"], array(
+        "bxajaxid" => $_GET["bxajaxid"],
+    ), array(
+        "skip_empty" => true,
+        "encode" => true,
+    )));
+    $arResult["SEF_SET_FILTER_URL"] = $arResult["JS_FILTER_PARAMS"]["SEF_SET_FILTER_URL"];
+    $arResult["SEF_DEL_FILTER_URL"] = $arResult["JS_FILTER_PARAMS"]["SEF_DEL_FILTER_URL"];
+}
 
 usort($arResult['ITEMS'], function($a, $b){
     if($b['DISPLAY_SORT'] == $a['DISPLAY_SORT']){
@@ -278,7 +322,3 @@ usort($arResult['ITEMS'], function($a, $b){
 
     return $a['DISPLAY_SORT'] > $b['DISPLAY_SORT'] ? 1 : 0;
 });
-
-//$arResult['ITEMS'] = BXHelper::complex_sort($arResult['ITEMS'], array('DISPLAY_EXPANDED' => 'DESC',
-//                                                                      'DISPLAY_SORT' => 'ASC'), false);
-//

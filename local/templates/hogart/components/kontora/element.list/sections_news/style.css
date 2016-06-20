@@ -11,7 +11,7 @@
 }
 .sections-news .more a,
 .sections-news .title a {
-  color: #95c600;
+  color: #95c600 !important;
   text-decoration: underline;
   font-weight: normal;
 }

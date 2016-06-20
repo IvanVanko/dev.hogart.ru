@@ -1,5 +1,11 @@
 <? if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
 
+//global $$arParams["FILTER_NAME"];
+//pr($arParams["FILTER_NAME"]);
+//pr($GLOBALS[$arParams["FILTER_NAME"]]);
+//pr(CStorage::getVar('CUSTOM_SECTION_FILTER'));
+//exit;
+
 if ($arResult['DEPTH_LEVEL'] > 2) {
     $arFilter = array('IBLOCK_ID' => $arParams["IBLOCK_ID"], 'ID' => $arResult["IBLOCK_SECTION_ID"]);
     $rsSect = CIBlockSection::GetList(array('left_margin' => 'asc'), $arFilter);
@@ -185,8 +191,10 @@ $rsParentSection = CIBlockSection::GetList(array('NAME' => 'ASC'), $arFilter, fa
     {
 
         $count = CIBlockElement::GetList(Array(), array('IBLOCK_ID' => $arParams["IBLOCK_ID"],'SECTION_ID' => $arSect["ID"]), Array());
-        if ($count>0)
-        $arResult["SUBS"][] = $arSect;
+        if ($count>0) {
+            $arResult["SUBS"][$arSect["ID"]] = $arSect;
+            $arResult["SUBS"][$arSect["ID"]]["ELEMENTS_COUNT"] = $count;
+        }
     }
 
 if (count($arResult["SUBS"]) == 1) {

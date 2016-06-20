@@ -3,9 +3,7 @@
   min-width: 220px;
 }
 .bx-filter .bx-filter-section {
-  /*background: #edf6fc; /* color */
   position: relative;
-  padding-top: 26px;
 }
 .bx-filter .bx-filter-section > .row {
   padding: 0 5px;

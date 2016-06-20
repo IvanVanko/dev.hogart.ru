@@ -1,5 +1,8 @@
 <?if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 
+$brandProperty = CIBlockProperty::GetList([], ["CODE" => "brand", "IBLOCK_ID" => CATALOG_IBLOCK_ID])->Fetch();
+$arParams["FILTER"]["brand"] = $brandProperty["ID"];
+
 $brandRes = CIBlockElement::GetList([], ["IBLOCK_ID" => BRAND_IBLOCK_ID]);
 $brands = [];
 while (($brandElement = $brandRes->Fetch())) {
