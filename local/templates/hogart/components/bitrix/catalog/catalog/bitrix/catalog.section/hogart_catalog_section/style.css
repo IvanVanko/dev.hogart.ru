@@ -21,7 +21,7 @@
   display: block;
 }
 .catalog-subs a:hover {
-  color: #95c600;
+  color: #95c600 !important;
 }
 .catalog_page .perechen .perechen-produts.grid {
   margin-top: 0 !important;
