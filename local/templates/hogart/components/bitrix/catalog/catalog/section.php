@@ -334,7 +334,7 @@ if ($section["DEPTH_LEVEL"] == 1): ?>
                     "USE_PRICE_COUNT" => $arParams["USE_PRICE_COUNT"],
                     "SHOW_PRICE_COUNT" => $arParams["SHOW_PRICE_COUNT"],
                     
-                    "SUB_SECTION_COUNT" => 6,
+                    "SUB_SECTION_COUNT" => 12,
 
                     "PRICE_VAT_INCLUDE" => $arParams["PRICE_VAT_INCLUDE"],
                     "USE_PRODUCT_QUANTITY" => $arParams['USE_PRODUCT_QUANTITY'],
@@ -406,6 +406,7 @@ if ($section["DEPTH_LEVEL"] == 1): ?>
         </div>
         <div class="col-md-3">
             <?= $APPLICATION->GetViewContent("CATALOG_FILTER"); ?>
+            <?= $APPLICATION->GetViewContent("CATALOG_SUBS"); ?>
         </div>
     </div>
 <? endif; ?>

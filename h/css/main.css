@@ -4415,11 +4415,6 @@ blockquote:before {
   float: left;
   margin-bottom: 20px;
 }
-@media screen and (max-width: 1330px) {
-  .catalog_page .perechen .perechen-produts.grid > li {
-    width: 100%;
-  }
-}
 .catalog_page .perechen .perechen-produts.grid > li img {
   margin: 0 auto;
 }
@@ -4428,12 +4423,11 @@ blockquote:before {
 }
 .catalog_page .perechen .perechen-produts.grid > li h3 {
   font-size: 12px;
-  line-height: 22px;
-  font-weight: normal;
+  line-height: 16px;
   text-transform: uppercase;
   text-decoration: none;
-  margin-top: 0px;
-  height: 44px;
+  margin-top: 0;
+  height: 32px;
   font-weight: 700;
   overflow: hidden;
 }
@@ -4464,12 +4458,6 @@ blockquote:before {
   font-weight: 100;
   vertical-align: bottom;
 }
-.catalog_page .perechen .perechen-produts.grid > li ul.param li .dotted:after {
-  float: left;
-  width: 0;
-  white-space: nowrap;
-  content: ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . ";
-}
 .catalog_page .perechen .perechen-produts.grid > li ul.param li > span.pr {
   float: right;
 }
@@ -4486,7 +4474,7 @@ blockquote:before {
   margin-top: -18px;
 }
 .catalog_page .perechen .perechen-produts.grid > li .price {
-  font-size: 20px;
+  font-size: 18px;
   line-height: 22px;
   color: #000;
 }
@@ -4511,7 +4499,7 @@ blockquote:before {
 }
 .catalog_page .perechen .perechen-produts.grid > li .perechen-img a img {
   display: block;
-  height: 100%;
+  width: 100%;
   margin: 0 auto;
 }
 .catalog_page .perechen .perechen-produts.grid .grid-hide {
@@ -9005,9 +8993,11 @@ hr {
 }
 .text-left {
   text-align: left !important;
+  justify-content: flex-start;
 }
 .text-right {
   text-align: right !important;
+  justify-content: flex-end;
 }
 .text-right.for-comm-button {
   position: relative;

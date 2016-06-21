@@ -1,3 +1,77 @@
+@media print {
+  .bx-filter .btn-more > .caret,
+  .dropup > .bx-filter .btn-more > .caret {
+    border-top-color: #000 !important;
+  }
+}
+@media screen and (max-width: 767px) {
+}
+@media (min-width: 768px) {
+}
+.bx-filter .btn-more {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.bx-filter .btn-more:focus,
+.bx-filter .btn-more:active:focus,
+.bx-filter .btn-more.active:focus,
+.bx-filter .btn-more.focus,
+.bx-filter .btn-more:active.focus,
+.bx-filter .btn-more.active.focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+.bx-filter .btn-more:hover,
+.bx-filter .btn-more:focus,
+.bx-filter .btn-more.focus {
+  color: #333;
+  text-decoration: none;
+}
+.bx-filter .btn-more:active,
+.bx-filter .btn-more.active {
+  outline: 0;
+  background-image: none;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+.bx-filter .btn-more.disabled,
+.bx-filter .btn-more[disabled],
+fieldset[disabled] .bx-filter .btn-more {
+  cursor: not-allowed;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+a.bx-filter .btn-more.disabled,
+fieldset[disabled] a.bx-filter .btn-more {
+  pointer-events: none;
+}
+.bx-filter-parameters-box-container[data-code]:before,
+.bx-filter-parameters-box-container[data-code]:after {
+  content: " ";
+  display: table;
+}
+.bx-filter-parameters-box-container[data-code]:after {
+  clear: both;
+}
 .bx-filter {
   width: 100%;
   min-width: 220px;
@@ -69,6 +143,27 @@
 }
 .bx-filter-parameters-box-container {
   padding-bottom: 20px;
+}
+.bx-filter-parameters-box-container .more {
+  display: none;
+}
+.bx-filter-parameters-box-container[data-code] {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+.bx-filter-parameters-box-container[data-code] .checkbox {
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+@media (min-width: 768px) {
+  .bx-filter-parameters-box-container[data-code] .checkbox {
+    float: left;
+    width: 50%;
+  }
 }
 .bx-filter-parameters-box-container .checkbox:first-child {
   margin-top: 0;
@@ -523,6 +618,74 @@ COLOR
   margin: 0 10px;
   vertical-align: middle;
   color: #000;
+}
+.bx-filter .btn-more {
+  padding: 1px 5px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+  margin-top: 5px;
+}
+.bx-filter .btn-more:focus,
+.bx-filter .btn-more.focus {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #8c8c8c;
+}
+.bx-filter .btn-more:hover {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.bx-filter .btn-more:active,
+.bx-filter .btn-more.active,
+.open > .dropdown-toggle.bx-filter .btn-more {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.bx-filter .btn-more:active:hover,
+.bx-filter .btn-more.active:hover,
+.open > .dropdown-toggle.bx-filter .btn-more:hover,
+.bx-filter .btn-more:active:focus,
+.bx-filter .btn-more.active:focus,
+.open > .dropdown-toggle.bx-filter .btn-more:focus,
+.bx-filter .btn-more:active.focus,
+.bx-filter .btn-more.active.focus,
+.open > .dropdown-toggle.bx-filter .btn-more.focus {
+  color: #333;
+  background-color: #d4d4d4;
+  border-color: #8c8c8c;
+}
+.bx-filter .btn-more:active,
+.bx-filter .btn-more.active,
+.open > .dropdown-toggle.bx-filter .btn-more {
+  background-image: none;
+}
+.bx-filter .btn-more.disabled:hover,
+.bx-filter .btn-more[disabled]:hover,
+fieldset[disabled] .bx-filter .btn-more:hover,
+.bx-filter .btn-more.disabled:focus,
+.bx-filter .btn-more[disabled]:focus,
+fieldset[disabled] .bx-filter .btn-more:focus,
+.bx-filter .btn-more.disabled.focus,
+.bx-filter .btn-more[disabled].focus,
+fieldset[disabled] .bx-filter .btn-more.focus {
+  background-color: #fff;
+  border-color: #ccc;
+}
+.bx-filter .btn-more .badge {
+  color: #fff;
+  background-color: #333;
+}
+.bx-filter .btn-more .fa:before {
+  content: "\f107";
+}
+.bx-filter .btn-more.opened .fa:before {
+  content: "\f106";
 }
 /*
 *	icon

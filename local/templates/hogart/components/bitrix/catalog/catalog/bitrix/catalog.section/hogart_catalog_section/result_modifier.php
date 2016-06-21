@@ -186,20 +186,24 @@ $arFilter = array(
     'SECTION_ID' => $arResult["ID"],
 );
 $rsParentSection = CIBlockSection::GetList(array('NAME' => 'ASC'), $arFilter, false, array('NAME','ID','CODE','SECTION_PAGE_URL'));
+while ($arSect = $rsParentSection ->GetNext())
+{
 
-    while ($arSect = $rsParentSection ->GetNext())
-    {
-
-        $count = CIBlockElement::GetList(Array(), array('IBLOCK_ID' => $arParams["IBLOCK_ID"],'SECTION_ID' => $arSect["ID"]), Array());
-        if ($count>0) {
-            $arResult["SUBS"][$arSect["ID"]] = $arSect;
-            $arResult["SUBS"][$arSect["ID"]]["ELEMENTS_COUNT"] = $count;
-        }
+    $count = CIBlockElement::GetList(Array(), array('IBLOCK_ID' => $arParams["IBLOCK_ID"],'SECTION_ID' => $arSect["ID"]), Array());
+    if ($count>0) {
+        $arResult["SUBS"][$arSect["ID"]] = $arSect;
+        $arResult["SUBS"][$arSect["ID"]]["ELEMENTS_COUNT"] = $count;
     }
+}
 
 if (count($arResult["SUBS"]) == 1) {
     LocalRedirect($arResult["SUBS"][0]["SECTION_PAGE_URL"]);
 }
+
+$subs = array_flip(array_keys($arResult["SUBS"]));
+usort($arResult["ITEMS"], function ($a, $b) use ($subs) {
+    return $subs[$a["~IBLOCK_SECTION_ID"]] > $subs[$b["~IBLOCK_SECTION_ID"]];  
+});
 
 $arFilterBrands = array(
     'IBLOCK_ID' => 2

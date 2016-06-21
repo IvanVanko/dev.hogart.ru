@@ -624,7 +624,6 @@ body {
 }
 
 .catalog_page .perechen .perechen-produts.grid > li .perechen-img {
-    height: 134px;
     display: block;
 }
 
@@ -798,7 +797,7 @@ body {
 .catalog_page .perechen .perechen-produts.list > li .price,
 .catalog_page .perechen .perechen-produts.grid > li .price {
     font-family: "Roboto Condensed", sans-serif;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .catalog_page .perechen .perechen-produts.list > li .icon-carTon {

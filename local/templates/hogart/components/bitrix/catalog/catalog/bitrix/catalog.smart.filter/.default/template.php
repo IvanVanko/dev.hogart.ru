@@ -173,7 +173,7 @@ if (isset($templateData['TEMPLATE_THEME']))
 						</div>
 
 						<div class="bx-filter-block" data-role="bx_filter_block">
-							<div class="bx-filter-parameters-box-container">
+							<div class="bx-filter-parameters-box-container" data-code="<?= strtolower($arItem["CODE"]) ?>">
 							<?
 							$arCur = current($arItem["VALUES"]);
 							switch ($arItem["DISPLAY_TYPE"])
@@ -579,8 +579,10 @@ if (isset($templateData['TEMPLATE_THEME']))
 									break;
 								default://CHECKBOXES
 									?>
+									<? $_counter = 0; ?>
+									<? usort($arItem["VALUES"], function ($a, $b) { return $a["CHECKED"] < $b["CHECKED"]; }); ?>
 									<?foreach($arItem["VALUES"] as $val => $ar):?>
-										<div class="checkbox">
+										<div class="checkbox <?= (($_counter > 3 && !$ar["CHECKED"]) ? "more" : "")?>">
 											<label data-role="label_<?=$ar["CONTROL_ID"]?>" class="bx-filter-param-label <? echo $ar["DISABLED"] ? 'disabled': '' ?>" for="<? echo $ar["CONTROL_ID"] ?>">
 												<span class="bx-filter-input-checkbox">
 													<input
@@ -588,7 +590,7 @@ if (isset($templateData['TEMPLATE_THEME']))
 														value="<? echo $ar["HTML_VALUE"] ?>"
 														name="<? echo $ar["CONTROL_NAME"] ?>"
 														id="<? echo $ar["CONTROL_ID"] ?>"
-														<? echo $ar["CHECKED"]? 'checked="checked"': '' ?>
+														<? echo $ar["CHECKED"] ? 'checked="checked"': '' ?>
 														<? echo $ar["DISABLED"] ? 'disabled="disabled"': '' ?>
 														onclick="smartFilter.click(this)"
 													/>
@@ -599,7 +601,13 @@ if (isset($templateData['TEMPLATE_THEME']))
 												</span>
 											</label>
 										</div>
+										<? $_counter++; ?>
 									<?endforeach;?>
+									<? if ($_counter > 3): ?>
+										<div class="col-sm-12">
+											<span class="btn-more" onclick="smartFilter.more(this)">Еще <i class="fa"></i></span>
+										</div>
+									<? endif; ?>
 							<?
 							}
 							?>

@@ -1,3 +1,5 @@
+@import (reference) "../../../../../../../bootstrap";
+
 .bx-filter {
   width: 100%;
   min-width: 220px;
@@ -70,6 +72,17 @@
 }
 .bx-filter-parameters-box-container {
   padding-bottom: 20px;
+  .more {
+    display: none;
+  }
+  &[data-code] {
+    .make-row();
+    .checkbox {
+      .make-sm-column(6);
+      margin-top: 0;
+      margin-bottom: 5px;
+    }
+  }
 }
 .bx-filter-parameters-box-container .checkbox:first-child {
   margin-top: 0;
@@ -543,6 +556,19 @@ COLOR
   margin: 0 10px;
   vertical-align: middle;
   color: #000;
+}
+
+.bx-filter .btn-more {
+  &:extend(.btn all);
+  .button-size(@padding-xs-vertical; @padding-xs-horizontal; @font-size-small; @line-height-small; @btn-border-radius-small);
+  .button-variant(@btn-default-color; @btn-default-bg; @btn-default-border);
+  margin-top: 5px;
+  .fa:before {
+    content: "\f107";
+  }
+  &.opened .fa:before {
+    content: "\f106";
+  }
 }
 /*
 *	icon

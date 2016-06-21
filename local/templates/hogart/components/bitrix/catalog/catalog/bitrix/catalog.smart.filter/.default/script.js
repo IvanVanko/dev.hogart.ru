@@ -6,10 +6,14 @@ function JCSmartFilter(ajaxURL, viewMode, params)
 	this.cacheKey = '';
 	this.cache = [];
 	this.viewMode = viewMode;
+	this.__lastResult = params;
+	this.SMART_FILTER_PATH = null;
 	if (params && params.SEF_SET_FILTER_URL)
 	{
+
 		this.bindUrlToButton('set_filter', params.SEF_SET_FILTER_URL);
 		this.sef = true;
+		this.SMART_FILTER_PATH = params.SEF_SET_FILTER_URL.replace(/.*\/(filter\/(.*)\/apply\/)$/, "$1");
 	}
 	if (params && params.SEF_DEL_FILTER_URL)
 	{
@@ -213,7 +217,9 @@ JCSmartFilter.prototype.postHandler = function (result, fromCache)
 
 				if (result.SEF_SET_FILTER_URL)
 				{
+					this.__lastResult = result;
 					this.bindUrlToButton('set_filter', result.SEF_SET_FILTER_URL);
+					this.SMART_FILTER_PATH = result.SEF_SET_FILTER_URL.replace(/.*\/(filter\/.*\/apply\/)$/, "$1");
 				}
 			}
 		}
@@ -230,6 +236,13 @@ JCSmartFilter.prototype.postHandler = function (result, fromCache)
 		this.cache[this.cacheKey] = result;
 	}
 	this.cacheKey = '';
+};
+
+JCSmartFilter.prototype.sectionFilter = function (sectionLink)
+{
+	if (BX('set_filter').disabled) return false;
+	window.location.href = sectionLink.getAttribute('data-src-href') + this.SMART_FILTER_PATH;
+	return false;
 };
 
 JCSmartFilter.prototype.bindUrlToButton = function (buttonId, url)
@@ -380,10 +393,9 @@ JCSmartFilter.prototype.hideFilterProps = function(element)
 			duration : 300,
 			start : { opacity: 0,  height: 0 },
 			finish : { opacity: 1, height: obj_children_height },
-			transition : BX.easing.transitions.quart,
 			step : function(state){
 				filterBlock.style.opacity = state.opacity;
-				filterBlock.style.height = state.height + "px";
+				filterBlock.style.height = "auto";
 			},
 			complete : function() {
 			}
@@ -418,6 +430,12 @@ JCSmartFilter.prototype.selectDropDownItem = function(element, controlId)
 	var currentOption = wrapContainer.querySelector('[data-role="currentOption"]');
 	currentOption.innerHTML = element.innerHTML;
 	BX.PopupWindowManager.getCurrentPopup().close();
+};
+
+JCSmartFilter.prototype.more = function(more)
+{
+	$('.more', $(more).parents('.bx-filter-parameters-box-container')).animate({ height: "toggle" })
+	$(more).toggleClass('opened');
 };
 
 BX.namespace("BX.Iblock.SmartFilter");
@@ -494,7 +512,7 @@ BX.Iblock.SmartFilter = (function()
 			}, this));
 		}
 	};
-
+	
 	SmartFilter.prototype.init = function()
 	{
 		var priceDiff;

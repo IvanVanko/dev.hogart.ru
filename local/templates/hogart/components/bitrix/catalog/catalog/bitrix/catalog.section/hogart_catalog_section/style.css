@@ -1,10 +1,35 @@
+.catalog-subs {
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+@media screen and (max-width: 767px) {
+}
+@media (min-width: 768px) {
+}
+.catalog-subs {
+  background: white;
+  border-left: 1px solid #95c600;
+}
+.catalog-subs a {
+  font-size: 12px;
+  font-family: "Roboto Condensed", sans-serif;
+  text-transform: uppercase;
+  text-decoration: underline !important;
+  margin-bottom: 5px;
+  display: block;
+}
+.catalog-subs a:hover {
+  color: #95c600;
+}
 .catalog_page .perechen .perechen-produts.grid {
   margin-top: 0 !important;
 }
 .catalog_page .perechen .perechen-produts.grid .section-title {
-  text-transform: uppercase;
   font-weight: 500;
   font-size: 14px;
+  text-transform: uppercase;
   padding-bottom: 5px;
   padding-left: 0;
   padding-right: 0;
@@ -17,16 +42,39 @@
 }
 .catalog_page .perechen .perechen-produts.grid .section-title > span .section-link {
   float: right;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: normal;
   text-transform: none;
 }
 .catalog_page .perechen .perechen-produts.grid .section-title > span .section-link a {
-  color: #95c600;
+  color: #2c2432;
 }
 .catalog_page .perechen .perechen-produts.grid > li > div {
+  height: 100%;
   padding: 15px;
   border: 1px solid transparent;
+}
+.catalog_page .perechen .perechen-produts.grid > li > div .note .dotted {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+  position: relative;
+}
+.catalog_page .perechen .perechen-produts.grid > li > div .note .dotted span {
+  z-index: 1;
+}
+.catalog_page .perechen .perechen-produts.grid > li > div .note .dotted:before {
+  position: absolute;
+  width: 0;
+  z-index: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  content: ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . ";
+}
+.catalog_page .perechen .perechen-produts.grid > li > div .quantity {
+  font-size: 12px;
 }
 .catalog_page .perechen .perechen-produts.grid > li > div .quantity-success {
   color: #95c600;
@@ -36,14 +84,14 @@
 }
 .catalog_page .perechen .perechen-produts.grid > li > div .buy-btn {
   display: block;
-  visibility: hidden;
+  visibility: visible;
   margin-top: 15px;
   transition: all 0s linear;
 }
 .catalog_page .perechen .perechen-produts.grid > li > div:hover {
   border: 1px solid #95c600;
   border-radius: 5px;
-  padding: 15px;
+  box-shadow: 1px 1px 1px 1px #ccc;
 }
 .catalog_page .perechen .perechen-produts.grid > li > div:hover .buy-btn {
   visibility: visible;

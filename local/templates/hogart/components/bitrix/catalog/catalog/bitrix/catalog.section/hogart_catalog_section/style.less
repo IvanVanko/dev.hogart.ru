@@ -1,11 +1,29 @@
 @import (reference) "../../../../../../../variables";
+@import (reference) "../../../../../../../bootstrap";
 
+.catalog-subs {
+  &:extend(.container-fluid);
+  background: white;
+  border-left: 1px solid @brand-green;
+
+  a {
+    font-size: @font-size-h6;
+    font-family: @font-family-serif;
+    text-transform: uppercase;
+    text-decoration: underline !important;
+    margin-bottom: 5px;
+    display: block;
+    &:hover {
+      color: @brand-green;
+    }
+  }
+}
 .catalog_page .perechen {
   .perechen-produts.grid {
     .section-title {
-      text-transform: uppercase;
       font-weight: 500;
       font-size: @font-size-h5;
+      text-transform: uppercase;
       padding-bottom: 5px;
       padding-left: 0;
       padding-right: 0;
@@ -16,21 +34,49 @@
         display: block;
         .section-link {
           float: right;
-          font-size: @font-size-h6;
+          font-size: @font-size-h5;
           font-weight: normal;
           text-transform: none;
           a {
-            color: @brand-green;
+            color: @brand-black;
           }
         }
       }
     }
     margin-top: 0 !important;
     > li > div {
+      height: 100%;
       padding: 15px;
       border: 1px solid transparent;
 
+      .note {
+        .dotted {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          overflow: hidden;
+          position: relative;
+          span {
+            z-index: 1;
+          }
+          &:before {
+            position: absolute;
+            width: 0;
+            z-index: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            white-space: nowrap;
+            content:
+                    ". . . . . . . . . . . . . . . . . . . . "
+                    ". . . . . . . . . . . . . . . . . . . . "
+                    ". . . . . . . . . . . . . . . . . . . . "
+                    ". . . . . . . . . . . . . . . . . . . . "
+          }
+        }
+      }
+
       .quantity {
+        font-size: @font-size-h6;
         &-success {
           color: @brand-green;
         }
@@ -41,7 +87,7 @@
 
       .buy-btn {
         display: block;
-        visibility: hidden;
+        visibility: visible;
         margin-top: (@grid-gutter-width / 2);
         transition: all 0s linear;
       }
@@ -49,7 +95,7 @@
       &:hover {
         border: 1px solid @brand-green;
         border-radius: 5px;
-        padding: 15px;
+        box-shadow: 1px 1px 1px 1px #ccc;
 
         .buy-btn {
           visibility: visible;
