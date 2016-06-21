@@ -603,7 +603,7 @@ if (isset($templateData['TEMPLATE_THEME']))
 										</div>
 										<? $_counter++; ?>
 									<?endforeach;?>
-									<? if ($_counter > 3): ?>
+									<? if ($_counter > 4): ?>
 										<div class="col-sm-12">
 											<span class="btn-more" onclick="smartFilter.more(this)">Еще <i class="fa"></i></span>
 										</div>
