@@ -7,13 +7,25 @@
   color: #2c2432;
   font-weight: 700;
 }
+.bx-filter.bx-green .bx-filter-parameters-box {
+  padding-top: 10px;
+  border-bottom: 1px solid rgba(204, 204, 204, 0.3);
+}
+.bx-filter.bx-green .bx-filter-parameters-box:last-child {
+  margin-bottom: 20px;
+}
+.bx-filter.bx-green .bx-filter-parameters-box.bx-active:active,
+.bx-filter.bx-green .bx-filter-parameters-box.bx-active:hover {
+  background-color: rgba(149, 198, 0, 0.1);
+}
 .bx-filter.bx-green .bx-filter-parameters-box-title span,
 .bx-filter.bx-green .bx-filter-parameters-box-title span:hover,
 .bx-filter.bx-green .bx-filter-parameters-box-title span:active {
-  color: #95c600;
+  color: #2c2432;
 }
 .bx-filter.bx-green .bx-filter-parameters-box-title span:hover {
-  border-color: #95c600;
+  color: #95c600;
+  border-color: transparent;
 }
 .bx-filter.bx-green .disabled .bx-filter-input-checkbox .bx-filter-param-text {
   font-weight: 300;

@@ -30,7 +30,7 @@ else {
     $arParams["TEMPLATE_THEME"] = "blue";
 }
 
-$arParams["FILTER_VIEW_MODE"] = (isset($arParams["FILTER_VIEW_MODE"]) && $arParams["FILTER_VIEW_MODE"] == "horizontal") ? "horizontal" : "vertical";
+$arParams["FILTER_VIEW_MODE"] = strtoupper((isset($arParams["FILTER_VIEW_MODE"]) && $arParams["FILTER_VIEW_MODE"] == "horizontal") ? "horizontal" : "vertical");
 $arParams["POPUP_POSITION"] = (isset($arParams["POPUP_POSITION"]) && in_array($arParams["POPUP_POSITION"], array("left",
                                                                                                                  "right"))) ? $arParams["POPUP_POSITION"] : "left";
 

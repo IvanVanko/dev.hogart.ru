@@ -1398,12 +1398,7 @@ ul.all-project-box {
         margin-left: 20px;
     }
 }
-@media screen and (max-width: 1200px) {
-  .header-cnt .profile-url:hover + .header-nav,
-  .header-cnt .header-nav {
-  margin-right: 84px;
-  }
-}
+
 .news__aside__filter .news_tags.tag6 {
     margin-top: 40px;
 }

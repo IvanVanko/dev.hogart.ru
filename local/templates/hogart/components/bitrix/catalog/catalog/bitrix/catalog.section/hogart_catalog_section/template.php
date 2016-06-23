@@ -17,7 +17,7 @@ $this->setFrameMode(true);
 
 ?>
 <ul class="row perechen-produts js-target-perechen <?=$arParams['VIEW_TYPE']?> <? if ($arParams["IS_TABLE_VIEW"]): ?>table-view<? endif; ?>">
-<? $collectionId = null; $brandId = null; $table_sort = null; $section_id = null; ?>
+<? $collectionId = null; $brandId = null; $table_sort = null; $sectionId = null; ?>
 <? foreach ($arResult["ITEMS"] as $i => $arItem):?>
         <?
         $rsFile = CFile::GetByID($arItem['PROPERTIES']['photos']['VALUE'][0]);
@@ -70,8 +70,8 @@ $this->setFrameMode(true);
             <li class="brand-table">
                 <div data-brand-wrapper="<?= $brandId?>">
                     <div class="caption">
-                        <div class="brand-name"><?= $arResult["ALL_BRANDS"][$brandId]["NAME"] ?></div>
-                        <hr class="brand-hr">
+                        <div class="brand-name"><i class="fa"></i><?= $arResult["ALL_BRANDS"][$brandId]["NAME"] ?></div>
+                        <div class="brand-hr"><hr></div>
                     </div>
                 <? if (empty($arItem["PROPERTIES"]["collection"]["VALUE"])): ?>
                     <!-- блок товаров без коллекции -->
@@ -112,7 +112,17 @@ $this->setFrameMode(true);
                 <? endif; ?>
                 <div class="collection-description">
                     <div class="collection-title"><?= $collection["NAME"] ?></div>
-                    <div class="collection-text"><?= $collection["DETAIL_TEXT"] ?></div>
+                    <div class="collection-text">
+                        <? if (!empty($collection["PREVIEW_TEXT"])): ?>
+                            <div class="preview"><?= $collection["PREVIEW_TEXT"] ?></div>
+                        <? endif; ?>
+                        <? if (!empty($collection["DETAIL_TEXT"])): ?>
+                            <? if(!empty($collection["PREVIEW_TEXT"])): ?>
+                            <div class="more">Далее</div>
+                            <? endif; ?>
+                            <div class="detail"><?= $collection["DETAIL_TEXT"] ?></div>
+                        <? endif; ?>
+                    </div>
                 </div>
             </li>
             <?= $brand_collection_header ?>
@@ -215,7 +225,7 @@ $this->setFrameMode(true);
         </li>
 
     <? else: ?>
-        <? if($section_id != $arItem["~IBLOCK_SECTION_ID"] && $arParams["DEPTH_LEVEL"] == 2 && !$arParams["IS_FILTERED"]): ?>
+        <? if($sectionId != $arItem["~IBLOCK_SECTION_ID"] && $arParams["DEPTH_LEVEL"] == 2 && !$arParams["IS_FILTERED"]): ?>
         <li class="col-md-12 section-title" data-section-id="<?= $arItem["~IBLOCK_SECTION_ID"] ?>" data-section-name="<?= $arResult["SUBS"][$arItem["~IBLOCK_SECTION_ID"]]["NAME"] ?>">
             <span>
                 <?= $arResult["SUBS"][$arItem["~IBLOCK_SECTION_ID"]]["NAME"] ?>
@@ -226,8 +236,19 @@ $this->setFrameMode(true);
                 <? endif; ?>
             </span>
         </li>
-        <? $section_id = $arItem["~IBLOCK_SECTION_ID"] ?>
+        <? $sectionId = $arItem["~IBLOCK_SECTION_ID"] ?>
         <? endif; ?>
+        
+        <? if($arParams["DEPTH_LEVEL"] > 2 && $brandId != $arItem["PROPERTIES"]["brand"]["VALUE"] && !$arParams["IS_FILTERED"]): ?>
+        <? $brandId = $arItem["PROPERTIES"]["brand"]["VALUE"]; ?>
+        
+        <li class="col-md-12 section-title" data-brand-id="<?= $arItem["PROPERTIES"]["brand"]["VALUE"] ?>" data-brand-name="<?= $arResult["ALL_BRANDS"][$brandId]["NAME"] ?>">
+            <span>
+                <?= $arResult["ALL_BRANDS"][$brandId]["NAME"] ?>
+            </span>
+        </li>
+        <? endif; ?>
+        
         <li class="col-lg-3 col-md-4 col-sm-6">
             <div>
                 <span class="perechen-img">

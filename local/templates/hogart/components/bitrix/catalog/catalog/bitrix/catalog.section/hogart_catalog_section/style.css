@@ -102,6 +102,28 @@
 .catalog_page .perechen .perechen-produts.list.table-view li.brand-table {
   overflow: initial;
 }
+.catalog_page .perechen .perechen-produts.list.table-view li.brand-table [data-brand-wrapper] {
+  padding-left: 25px;
+  margin-left: -25px;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+.catalog_page .perechen .perechen-produts.list.table-view li.brand-table [data-brand-wrapper] > .caption {
+  cursor: pointer;
+}
+.catalog_page .perechen .perechen-produts.list.table-view li.brand-table [data-brand-wrapper] > .caption .fa {
+  margin-left: -20px;
+  margin-right: 4px;
+}
+.catalog_page .perechen .perechen-produts.list.table-view li.brand-table [data-brand-wrapper] > .caption .fa:before {
+  content: "\f056";
+}
+.catalog_page .perechen .perechen-produts.list.table-view li.brand-table [data-brand-wrapper].closed {
+  max-height: 30px !important;
+}
+.catalog_page .perechen .perechen-produts.list.table-view li.brand-table [data-brand-wrapper].closed > .caption .fa:before {
+  content: "\f055";
+}
 .catalog_page .perechen .perechen-produts.list div.collection-table {
   display: block;
   margin-top: 30px;
@@ -373,6 +395,9 @@
 .catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li.caption .collection-description .collection-text * {
   font-size: 12px;
 }
+.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li.caption .collection-description .collection-text .more + .detail {
+  display: none;
+}
 .catalog_page .perechen .perechen-produts.list li.brand-table {
   border: none;
 }
@@ -386,6 +411,7 @@
 .catalog_page .perechen .perechen-produts.list li.brand-table div.caption {
   text-align: right;
   margin-bottom: 20px;
+  display: table-row;
 }
 .catalog_page .perechen .perechen-produts.list li.brand-table div.caption:after {
   content: " ";
@@ -393,19 +419,22 @@
   clear: both;
 }
 .catalog_page .perechen .perechen-produts.list li.brand-table div.caption .brand-name {
-  width: 15%;
-  float: left;
   font-size: 18px;
   line-height: 22px;
   padding-right: 15px;
   color: #95c600;
   font-weight: bold;
+  display: table-cell;
+  white-space: nowrap;
 }
-.catalog_page .perechen .perechen-produts.list li.brand-table div.caption hr.brand-hr {
-  display: inline-block;
-  margin: 0;
-  width: 85%;
+.catalog_page .perechen .perechen-produts.list li.brand-table div.caption .brand-hr {
+  display: table-cell;
+  width: 100%;
+  vertical-align: middle;
   line-height: 22px;
+}
+.catalog_page .perechen .perechen-produts.list li.brand-table div.caption .brand-hr hr {
+  margin: 0;
   background-color: #95c600;
   text-align: right;
 }

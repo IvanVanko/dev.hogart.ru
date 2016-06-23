@@ -950,7 +950,6 @@ if($this->StartResultCache(false, array($arrFilter, ($arParams["CACHE_GROUPS"]==
 		);
 		$propertyIDs = array_keys(CIBlockSectionPropertyLink::GetArray($arParams['IBLOCK_ID'], $arFilter['SECTION_ID']));
 		CIBlockElement::GetPropertyValuesArray($arElementLink, $arParams["IBLOCK_ID"], $arPropFilter, ['ID' => $propertyIDs]);
-
 		foreach ($arResult["ITEMS"] as &$arItem)
 		{
 			if ($bCatalog && $boolNeedCatalogCache)

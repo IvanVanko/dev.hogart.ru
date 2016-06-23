@@ -108,6 +108,34 @@
       overflow: initial;
       li.brand-table {
         overflow: initial;
+        [data-brand-wrapper] {
+          padding-left: 25px;
+          margin-left: -25px;
+          overflow: hidden;
+          transition: max-height .4s ease;
+          > .caption {
+            cursor: pointer;
+            .fa {
+              margin-left: -20px;
+              margin-right: 4px;
+              &:before {
+                content: "\f056";
+              }
+            }
+          }
+
+          &.closed {
+            max-height: 30px !important;
+
+            > .caption {
+              .fa {
+                &:before {
+                  content: "\f055";
+                }
+              }
+            }
+          }
+        }
       }
     }
     div.collection-table {
@@ -345,6 +373,17 @@
                 * {
                   font-size: 12px;
                 }
+                .preview {
+
+                }
+                .detail {
+
+                }
+                .more {
+                  + .detail {
+                    display: none;
+                  }
+                }
               }
             }
           }
@@ -372,27 +411,31 @@
       div.caption {
         text-align: right;
         margin-bottom: 20px;
+        display: table-row;
         &:after {
           content: " ";
           display: table;
           clear: both;
         }
         .brand-name {
-          width: 15%;
-          float: left;
           font-size: 18px;
           line-height: 22px;
           padding-right: 15px;
           color: @brand-green;
           font-weight: bold;
+          display: table-cell;
+          white-space: nowrap;
         }
-        hr.brand-hr {
-          display: inline-block;
-          margin: 0;
-          width: 85%;
+        .brand-hr {
+          display: table-cell;
+          width: 100%;
+          vertical-align: middle;
           line-height: 22px;
-          background-color: @brand-green;
-          text-align: right;
+          hr {
+            margin: 0;
+            background-color: @brand-green;
+            text-align: right;
+          }
         }
       }
     }

@@ -289,16 +289,21 @@ if ($section["DEPTH_LEVEL"] == 1): ?>
                 $arParams["DISPLAY_TOP_PAGER"] = "N";
             }
 
-            if ($isTableViewExt) {
+
+            if ($section["DEPTH_LEVEL"] > 2) {
                 $sort = "PROPERTY_brand.NAME";
                 $order = "asc";
                 $arParams["ELEMENT_SORT_FIELD2"] = "PROPERTY_collection.NAME";
                 $arParams["ELEMENT_SORT_ORDER2"] = "ASC";
+            }
+
+            if ($isTableViewExt) {
                 $arParams["PAGE_ELEMENT_COUNT"] = 0;
                 $arParams['DISPLAY_BOTTOM_PAGER'] = "N";
                 $arParams["DISPLAY_TOP_PAGER"] = "N";
                 $viewType = "list";
             }
+
             $intSectionID = $APPLICATION->IncludeComponent(
                 "bitrix:catalog.section",
                 "hogart_catalog_section",
