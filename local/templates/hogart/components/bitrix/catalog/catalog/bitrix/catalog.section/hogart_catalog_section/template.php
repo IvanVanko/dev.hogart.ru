@@ -71,7 +71,6 @@ $this->setFrameMode(true);
                 <div data-brand-wrapper="<?= $brandId?>">
                     <div class="caption">
                         <div class="brand-name"><i class="fa"></i><?= $arResult["ALL_BRANDS"][$brandId]["NAME"] ?></div>
-                        <div class="brand-hr"><hr></div>
                     </div>
                 <? if (empty($arItem["PROPERTIES"]["collection"]["VALUE"])): ?>
                     <!-- блок товаров без коллекции -->
@@ -240,12 +239,14 @@ $this->setFrameMode(true);
         <? endif; ?>
         
         <? if($arParams["DEPTH_LEVEL"] > 2 && $brandId != $arItem["PROPERTIES"]["brand"]["VALUE"] && !$arParams["IS_FILTERED"]): ?>
+        <? if(null !== $brandId): ?>
+        </ul>
+        <ul class="row perechen-produts js-target-perechen <?=$arParams['VIEW_TYPE']?> <? if ($arParams["IS_TABLE_VIEW"]): ?>table-view<? endif; ?>">
+        <? endif; ?>
         <? $brandId = $arItem["PROPERTIES"]["brand"]["VALUE"]; ?>
         
-        <li class="col-md-12 section-title" data-brand-id="<?= $arItem["PROPERTIES"]["brand"]["VALUE"] ?>" data-brand-name="<?= $arResult["ALL_BRANDS"][$brandId]["NAME"] ?>">
-            <span>
-                <?= $arResult["ALL_BRANDS"][$brandId]["NAME"] ?>
-            </span>
+        <li class="col-md-12 caption" data-brand-id="<?= $arItem["PROPERTIES"]["brand"]["VALUE"] ?>" data-brand-name="<?= $arResult["ALL_BRANDS"][$brandId]["NAME"] ?>">
+            <span class="brand-name"><i class="fa"></i><?= $arResult["ALL_BRANDS"][$brandId]["NAME"] ?></span>
         </li>
         <? endif; ?>
         

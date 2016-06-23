@@ -19,9 +19,6 @@
   cursor: pointer;
   color: #95c600;
 }
-#header-block {
-  overflow: hidden;
-}
 #header-block.sticky {
   z-index: 999;
   background-color: white;

@@ -20,7 +20,21 @@
 }
 .catalog_page .perechen {
   .perechen-produts.grid {
-    .section-title {
+    padding-left: 25px !important;
+    margin-left: -25px !important;
+    overflow: hidden;
+    transition: max-height .4s ease;
+    &.closed {
+      max-height: 46px !important;
+      .brand-name {
+        .fa {
+          &:before {
+            content: "\f055" !important;
+          }
+        }
+      }
+    }
+    > .caption {
       font-weight: 500;
       font-size: @font-size-h5;
       text-transform: uppercase;
@@ -30,8 +44,20 @@
       margin-top: 10px;
       margin-bottom: 10px;
       border-bottom: 1px solid @brand-green;
-      > span {
+      > span,
+      > div {
         display: block;
+        padding: 0;
+        &.brand-name {
+          cursor: pointer;
+          .fa {
+            margin-left: -17px;
+            margin-right: 5px;
+            &:before {
+              content: "\f056";
+            }
+          }
+        }
         .section-link {
           float: right;
           font-size: @font-size-h5;
@@ -109,31 +135,14 @@
       li.brand-table {
         overflow: initial;
         [data-brand-wrapper] {
-          padding-left: 25px;
-          margin-left: -25px;
-          overflow: hidden;
-          transition: max-height .4s ease;
-          > .caption {
-            cursor: pointer;
-            .fa {
-              margin-left: -20px;
-              margin-right: 4px;
-              &:before {
-                content: "\f056";
-              }
-            }
-          }
-
+          &:extend(.catalog_page .perechen .perechen-produts.grid);
+          margin-bottom: 20px;
           &.closed {
-            max-height: 30px !important;
-
-            > .caption {
-              .fa {
-                &:before {
-                  content: "\f055";
-                }
-              }
-            }
+            margin-bottom: 0;
+            &:extend(.catalog_page .perechen .perechen-produts.grid.closed all);
+          }
+          > .caption {
+            &:extend(.catalog_page .perechen .perechen-produts.grid > .caption all);
           }
         }
       }
@@ -393,6 +402,8 @@
 
     li.brand-table {
       border: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
       ul[data-brand] {
         display: table;
         width: 100%;
@@ -405,36 +416,6 @@
           }
           &[data-brand-item-id] {
             &:extend(.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li[data-collection-item-id] all);
-          }
-        }
-      }
-      div.caption {
-        text-align: right;
-        margin-bottom: 20px;
-        display: table-row;
-        &:after {
-          content: " ";
-          display: table;
-          clear: both;
-        }
-        .brand-name {
-          font-size: 18px;
-          line-height: 22px;
-          padding-right: 15px;
-          color: @brand-green;
-          font-weight: bold;
-          display: table-cell;
-          white-space: nowrap;
-        }
-        .brand-hr {
-          display: table-cell;
-          width: 100%;
-          vertical-align: middle;
-          line-height: 22px;
-          hr {
-            margin: 0;
-            background-color: @brand-green;
-            text-align: right;
           }
         }
       }
