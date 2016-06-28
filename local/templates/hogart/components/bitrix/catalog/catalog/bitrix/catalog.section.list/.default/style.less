@@ -1,0 +1,107 @@
+@import (reference) "../../../../../../../variables";
+
+div.sections {
+  .d {
+    &-1 {
+      margin-top: 20px;
+    }
+  }
+  .depth {
+    &-1 {
+      margin-bottom: 10px;
+      [id^="bx_cat_"] {
+        top: -95px;
+        display: block;
+        position: relative;
+        visibility: hidden;
+      }
+      [class^="icon-"], [class*=" icon-"] {
+        font-size: @font-size-h3;
+        color: @brand-green;
+        &:before {
+          margin-left: 0;
+        }
+        &.icon-santekhnika:before {
+          margin-left: -10px !important;
+        }
+      }
+      vertical-align: middle;
+      .title {
+        font-size: @font-size-h3;
+        padding-left: @font-size-h3;
+        text-decoration: none;
+        font-weight: 500;
+      }
+      .price-list {
+        line-height: (@headings-line-height * @font-size-h2);
+        height: (@headings-line-height * @font-size-h2);
+        margin-top: (@line-height-computed / 2);
+        margin-bottom: (@line-height-computed / 2);
+        color: @brand-green;
+        display: block;
+        font-weight: 500;
+        .fa {
+          margin-right: 10px;
+          font-size: @font-size-h4;
+        }
+        a {
+          color: @brand-green;
+          text-decoration: none;
+          margin-right: 10px;
+          > span {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+    &-2 {
+      font-size: @font-size-h4;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      .title {
+        text-decoration: underline;
+        font-weight: 500;
+      }
+    }
+    &-3 {
+      font-size: @font-size-h5;
+      .title {
+        text-decoration: none;
+        font-weight: 300;
+        overflow-x: hidden;
+        a {
+          background-color: white;
+          padding-right: 10px;
+        }
+        &:after {
+          float: left;
+          width: 0;
+          white-space: nowrap;
+          content:
+                  ". . . . . . . . . . . . . . . . . . . . "
+                  ". . . . . . . . . . . . . . . . . . . . "
+                  ". . . . . . . . . . . . . . . . . . . . "
+                  ". . . . . . . . . . . . . . . . . . . . "
+        }
+      }
+      span.brand {
+        text-decoration: none;
+        font-weight: 300;
+        &:after {
+          content: "|";
+          display: inline-block;
+          position: relative;
+          color: @brand-green;
+          font-weight: 700;
+          padding: 0 3px 0 6px;
+          font-size: 14px;
+          line-height: 12px;
+          height: 12px;
+        }
+        &:last-child:after {
+          content: normal;
+        }
+      }
+    }
+  }
+}

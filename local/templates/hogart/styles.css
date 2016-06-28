@@ -1,0 +1,98 @@
+.fixed-block {
+  display: block;
+}
+.fixed-block.sticky {
+  position: fixed;
+  top: 0;
+}
+.old.currency {
+  font-family: "Roboto Condensed", sans-serif;
+  display: inline-block;
+  border-radius: 5px;
+  border: 1px solid #95c600;
+  padding: 5px;
+  line-height: 18px;
+  vertical-align: middle;
+  height: 28px;
+  text-decoration: line-through;
+  color: #aaa;
+}
+.quantity {
+  font-size: 12px;
+}
+.quantity-success {
+  color: #95c600;
+}
+.quantity-fail {
+  color: #d9534f;
+}
+.dotted {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+  position: relative;
+}
+.dotted span {
+  z-index: 1;
+  background-color: #fff;
+  padding-right: 3px;
+}
+.dotted span:last-child {
+  padding-right: 0;
+  padding-left: 3px;
+}
+.dotted:before {
+  position: absolute;
+  width: 0;
+  z-index: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  content: ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . ";
+}
+#scroll-up {
+  visibility: hidden;
+  display: block;
+  position: fixed;
+  font-size: 20px;
+  border: 1px solid #95c600;
+  border-radius: 5px;
+  padding: 4px 8px;
+  left: 15px;
+  bottom: 15px;
+  background-color: white;
+  cursor: pointer;
+  color: #95c600;
+}
+#header-block {
+  overflow-x: hidden;
+}
+#header-block.sticky {
+  z-index: 999;
+  background-color: white;
+  width: 100%;
+}
+#header-block.sticky + .row {
+  margin-top: 95px;
+}
+.row.vertical-align {
+  display: flex;
+  flex-direction: row;
+}
+@media (max-width: 767px) {
+  .row.vertical-align {
+    display: block;
+  }
+}
+.row.vertical-align > [class^="col-"],
+.row.vertical-align > [class*=" col-"] {
+  display: flex;
+  align-items: center;
+}
+.breadcrumbs span:last-child {
+  color: #95c600;
+}
+footer {
+  margin-top: 20px;
+}

@@ -1,0 +1,98 @@
+div.sections .d-1 {
+  margin-top: 20px;
+}
+div.sections .depth-1 {
+  margin-bottom: 10px;
+  vertical-align: middle;
+}
+div.sections .depth-1 [id^="bx_cat_"] {
+  top: -95px;
+  display: block;
+  position: relative;
+  visibility: hidden;
+}
+div.sections .depth-1 [class^="icon-"],
+div.sections .depth-1 [class*=" icon-"] {
+  font-size: 24px;
+  color: #95c600;
+}
+div.sections .depth-1 [class^="icon-"]:before,
+div.sections .depth-1 [class*=" icon-"]:before {
+  margin-left: 0;
+}
+div.sections .depth-1 [class^="icon-"].icon-santekhnika:before,
+div.sections .depth-1 [class*=" icon-"].icon-santekhnika:before {
+  margin-left: -10px !important;
+}
+div.sections .depth-1 .title {
+  font-size: 24px;
+  padding-left: 24px;
+  text-decoration: none;
+  font-weight: 500;
+}
+div.sections .depth-1 .price-list {
+  line-height: 33px;
+  height: 33px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: #95c600;
+  display: block;
+  font-weight: 500;
+}
+div.sections .depth-1 .price-list .fa {
+  margin-right: 10px;
+  font-size: 18px;
+}
+div.sections .depth-1 .price-list a {
+  color: #95c600;
+  text-decoration: none;
+  margin-right: 10px;
+}
+div.sections .depth-1 .price-list a > span {
+  text-decoration: underline;
+}
+div.sections .depth-2 {
+  font-size: 18px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+div.sections .depth-2 .title {
+  text-decoration: underline;
+  font-weight: 500;
+}
+div.sections .depth-3 {
+  font-size: 14px;
+}
+div.sections .depth-3 .title {
+  text-decoration: none;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+div.sections .depth-3 .title a {
+  background-color: white;
+  padding-right: 10px;
+}
+div.sections .depth-3 .title:after {
+  float: left;
+  width: 0;
+  white-space: nowrap;
+  content: ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . ";
+}
+div.sections .depth-3 span.brand {
+  text-decoration: none;
+  font-weight: 300;
+}
+div.sections .depth-3 span.brand:after {
+  content: "|";
+  display: inline-block;
+  position: relative;
+  color: #95c600;
+  font-weight: 700;
+  padding: 0 3px 0 6px;
+  font-size: 14px;
+  line-height: 12px;
+  height: 12px;
+}
+div.sections .depth-3 span.brand:last-child:after {
+  content: normal;
+}

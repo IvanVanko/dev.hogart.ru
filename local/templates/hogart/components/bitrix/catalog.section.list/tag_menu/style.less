@@ -1,0 +1,37 @@
+@import (reference) "../../../../variables";
+
+.tag-left-menu {
+  margin-top: 15px;
+  padding: 0;
+  list-style: none;
+  width: 90px;
+  li {
+    margin-bottom: 20px;
+    height: 90px;
+    padding: 15px 0;
+    line-height: 30px;
+    background-color: @brand-green;
+    border-radius: 5px;
+    &:hover, &:active, &.active {
+      background-color: @brand-black;
+    }
+    a {
+      display: block;
+      color: white;
+      text-align: center;
+      font-weight: 300;
+
+      i {
+        display: block;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        font-size: 30px;
+        font-weight: 300;
+        &.icon-santekhnika:before {
+          width: 100%;
+          margin-left: 0;
+        }
+      }
+    }
+  }
+}

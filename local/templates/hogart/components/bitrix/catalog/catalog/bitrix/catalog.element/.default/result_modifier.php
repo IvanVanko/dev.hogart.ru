@@ -35,10 +35,10 @@ if (!empty($arResult["PROPERTIES"]["buy_with_this"]["VALUE"])) {
         $arFields = $ob->GetFields();
         $arFields['PRICE'] = BXHelper::calculateDicountPrice($arFields, 1, $arParams['PRICE_CODE'][0],SITE_ID, $arFields['CATALOG_CURRENCY_1']);
         $arFields["PROPERTIES"] = $ob->GetProperties();
-        $arResult["buy_with_this"][] = $arFields;
+        $arResult["buy_with_this"]["ITEMS"][] = $arFields;
     }
 }
-foreach ($arResult['buy_with_this'] as $i => $arCollItem) {
+foreach ($arResult['buy_with_this']["ITEMS"] as $i => $arCollItem) {
     $sections_for_links[] = $arCollItem['IBLOCK_SECTION_ID'];
 }
 if (!empty($arResult["PROPERTIES"]["related"]["VALUE"])) {
@@ -48,10 +48,10 @@ if (!empty($arResult["PROPERTIES"]["related"]["VALUE"])) {
 
         $arFields['PRICE'] = BXHelper::calculateDicountPrice($arFields, 1, $arParams['PRICE_CODE'][0],SITE_ID, $arFields['CATALOG_CURRENCY_1']);
         $arFields["PROPERTIES"] = $ob->GetProperties();
-        $arResult["related"][] = $arFields;
+        $arResult["related"]["ITEMS"][] = $arFields;
     }
 }
-foreach ($arResult['related'] as $i => $arCollItem) {
+foreach ($arResult['related']["ITEMS"] as $i => $arCollItem) {
     $sections_for_links[] = $arCollItem['IBLOCK_SECTION_ID'];
 }
 
@@ -72,34 +72,67 @@ foreach ($arResult['alternative'] as $i => $arCollItem) {
 if (!empty($arResult["PROPERTIES"]["collection"]["VALUE"])) {
     $arSelect = array('ID', 'NAME', 'DETAIL_PAGE_URL', "CATALOG_GROUP_1", "PROPERTY_SKU", "PROPERTY_PHOTOS", "PREVIEW_PICTURE");
     $arFilter = array(
+        "IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
         "IBLOCK_ID" => $arParams['IBLOCK_ID'],
-        "PROPERTY_collection" => $arResult["PROPERTIES"]["collection"]["VALUE"], "!ID" => $arResult['ID'],
+        "PROPERTY_collection" => $arResult["PROPERTIES"]["collection"]["VALUE"], 
         'ACTIVE' => "Y"
     );
 
-    $res = CIBlockElement::GetList(
-        ['RAND' => 'DESC'],
-        $arFilter,
-        false,
-        ["nPageSize" => 9],
-        $arSelect);
+    $arNavParams = array(
+        "nPageSize" => 4
+    );
+    $arNavigation = CDBResult::GetNavParams($arNavParams);
     
-
-    while($ob = $res->GetNextElement()) {
-
+    $res = CIBlockElement::GetList(
+        [],
+        $arFilter,
+        ["ID"],
+        $arNavParams,
+        []);
+    
+    while($ob = $res->Fetch()) {
+        $ob = CIBlockElement::GetList([], array_merge($arFilter, ['ID' => $ob['ID']]), false, false, $arSelect)->GetNextElement();
         $arFields = $ob->GetFields();
         $arFields['PRICE'] = BXHelper::calculateDicountPrice($arFields, 1, $arParams['PRICE_CODE'][0],SITE_ID, $arFields['CATALOG_CURRENCY_1']);
         $arFields["PROPERTIES"] = $ob->GetProperties();
-        if (!isset($arResult["this_collection"][$arFields['ID']])) {
-            $arResult["this_collection"][$arFields['ID']] = $arFields;
+        if (!isset($arResult["this_collection"]['ITEMS'][$arFields['ID']])) {
+            $arResult["this_collection"]['ITEMS'][$arFields['ID']] = $arFields;
         } else {
-            $arResult["this_collection"][$arFields['ID']]['PROPERTY_SKU_VALUE'] = $arFields['PROPERTY_SKU_VALUE'];
-            $arResult["this_collection"][$arFields['ID']]['PROPERTY_PHOTOS_VALUE'] = $arFields['PROPERTY_PHOTOS_VALUE'];
+            $arResult["this_collection"]['ITEMS'][$arFields['ID']]['PROPERTY_SKU_VALUE'] = $arFields['PROPERTY_SKU_VALUE'];
+            $arResult["this_collection"]['ITEMS'][$arFields['ID']]['PROPERTY_PHOTOS_VALUE'] = $arFields['PROPERTY_PHOTOS_VALUE'];
         }
     }
-    foreach ($arResult['this_collection'] as $i => $arCollItem) {
+
+    foreach ($arResult['this_collection']['ITEMS'] as $i => $arCollItem) {
         $sections_for_links[] = $arCollItem['IBLOCK_SECTION_ID'];
     }
+    
+    $collection = CIBlockElement::GetByID($arResult["PROPERTIES"]["collection"]["VALUE"])->GetNext();
+    $arResult["DISPLAY_PROPERTIES"]["collection"]["PREVIEW_TEXT"] = $collection["PREVIEW_TEXT"];
+    $arResult["DISPLAY_PROPERTIES"]["collection"]["DETAIL_TEXT"] = $collection["DETAIL_TEXT"];
+
+    $navComponentParameters["BASE_LINK"] = CHTTP::urlAddParams(GetPagePath(false, false), ["collection" => $arResult["PROPERTIES"]["collection"]["VALUE"]], array("encode"=>true));
+
+
+    $arResult["this_collection"]["NAV_STRING"] = $res->GetPageNavStringEx(
+        $navComponentObject,
+        $arParams["PAGER_TITLE"],
+        $arParams["PAGER_TEMPLATE"],
+        $arParams["PAGER_SHOW_ALWAYS"],
+        $this,
+        $navComponentParameters
+    );
+
+    $strNavQueryString = ($navComponentObject->arResult["NavQueryString"] != "" ? $navComponentObject->arResult["NavQueryString"]."&amp;" : "");
+
+    if ($navComponentObject->arResult["NavPageNomer"] - 1 > 0) {
+        $arResult["this_collection"]["PREV_LINK"] = $navComponentObject->arResult["sUrlPath"] . "?" . $strNavQueryString . "PAGEN_" . $navComponentObject->arResult["NavNum"] . "=" . ($navComponentObject->arResult["NavPageNomer"]-1);
+    }
+
+    if ($navComponentObject->arResult["NavPageNomer"] + 1 <= $navComponentObject->arResult["NavPageCount"]) {
+        $arResult["this_collection"]["NEXT_LINK"] = $navComponentObject->arResult["sUrlPath"] . "?" . $strNavQueryString . "PAGEN_" . $navComponentObject->arResult["NavNum"] . "=" . ($navComponentObject->arResult["NavPageNomer"]+1);
+    }
+    
 }
 
 $sections_for_links = array_unique($sections_for_links);
@@ -119,7 +152,7 @@ if (!empty($prop_ids)) {
 
 $arAdjacentCollsBrandsIds = array();
 foreach (array('this_collection','alternative','related','buy_with_this') as $i => $result_key) {
-    foreach ($arResult[$result_key] as &$arResultItem) {
+    foreach ($arResult[$result_key]['ITEMS'] as &$arResultItem) {
         $arResultItem['DETAIL_PAGE_URL'] = HogartHelpers::rebuildBrandElementHref($arResultItem['DETAIL_PAGE_URL'], $brands[$arResultItem['PROPERTIES']['brand']['VALUE']]['VALUE']);
         foreach ($arResultItem['PROPERTIES'] as $code =>  &$arItemProp) {
             if (!empty($arSectionProps[$arResultItem['IBLOCK_SECTION_ID']][$arItemProp['CODE']])) {
@@ -153,7 +186,7 @@ foreach (array('this_collection','alternative','related','buy_with_this') as $i 
 }
 $linkedElements = BXHelper::getElements(array(), array('IBLOCK_ID' => array(COLLECTION_IBLOCK_ID, BRAND_IBLOCK_ID), 'ID' => $arAdjacentCollsBrandsIds), false, false, array("ID", "CODE", "NAME"), true, 'ID');
 foreach (array('this_collection','alternative','related','buy_with_this') as $i => $result_key) {
-    foreach ($arResult[$result_key] as &$arResultItem) {
+    foreach ($arResult[$result_key]["ITEMS"] as &$arResultItem) {
         $arResultItem['COLLECTION_NAME'] = $linkedElements['RESULT'][$arResultItem['PROPERTIES']['collection']['VALUE']]['NAME'];
         $arResultItem['BRAND_NAME'] = $linkedElements['RESULT'][$arResultItem['PROPERTIES']['brand']['VALUE']]['NAME'];
         unset($arResultItem['PROPERTIES']);
@@ -187,3 +220,34 @@ foreach ($arResult['PROPERTIES'] as $arProp) {
 $res = CIBlockElement::GetByID($arResult['DISPLAY_PROPERTIES']['brand']['VALUE']);
 if($ar_res = $res->GetNext())
 $arResult["CUSTOM"]["BRAND_NAME"]=$ar_res['NAME'];
+
+$stores = BXHelper::getStores(array(), array('UF_TRANSIT' => '0'), false, false, array('ID', 'TITLE', 'ADDRESS'), 'ID');
+$arResult["STORES"] = $stores;
+
+if ($arParams['STORES_FILTERED'] != 'Y') {
+    $catalog_store_filter = array('LOGIC' => 'OR');
+    foreach ($stores as $store_id) {
+        $store_keys[] = 'CATALOG_STORE_AMOUNT_'.$store_id['ID'];
+        $catalog_store_filter[] = array('>CATALOG_STORE_AMOUNT_'.$store_id['ID'] => 0);
+    }
+    $custom_filter[] = $catalog_store_filter;
+    $custom_filter['ID'] = $arResult["ID"];
+    $elements = BXHelper::getElements(array(), $custom_filter, false, false, array('ID'), true, 'ID');
+
+    if (isset($elements['RESULT'][$arResult["ID"]])) {
+        foreach ($store_keys as $s_key) {
+            $arResult[$s_key] +=intval($elements['RESULT'][$arResult["ID"]][$s_key]);
+        }
+    }
+
+    if (!isset($store_keys)) {
+        $store_keys = preg_grep("/^CATALOG_STORE_AMOUNT_/",array_keys($arResult));
+    }
+    if (!empty($store_keys)) {
+        $arResult['CATALOG_QUANTITY'] = 0;
+        foreach ($store_keys as $s_key) {
+            $arResult['CATALOG_QUANTITY'] +=intval($arResult[$s_key]);
+        }
+    }
+    
+}

@@ -22,8 +22,8 @@ $aMenuLinks = Array(
 		""
 	),
 	Array(
-		"Акции",
-		"/stock/",
+		"Документация",
+		"/documentation/",
 		Array(),
 		Array(),
 		""
@@ -45,27 +45,6 @@ $aMenuLinks = Array(
 	Array(
 		"Обучение",
 		"/learn/",
-		Array(),
-		Array(),
-		""
-	),
-	Array(
-		"Документация",
-		"/documentation/",
-		Array(),
-		Array(),
-		""
-	),
-	Array(
-		"Подбор оборудования",
-		"/selection-equipment/",
-		Array(),
-		Array(),
-		""
-	),
-	Array(
-		"Полезная информация",
-		"/helpful-information/",
 		Array(),
 		Array(),
 		""

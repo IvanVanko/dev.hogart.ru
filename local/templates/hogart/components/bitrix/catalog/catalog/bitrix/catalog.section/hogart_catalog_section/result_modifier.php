@@ -1,5 +1,11 @@
 <? if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
 
+//global $$arParams["FILTER_NAME"];
+//pr($arParams["FILTER_NAME"]);
+//pr($GLOBALS[$arParams["FILTER_NAME"]]);
+//pr(CStorage::getVar('CUSTOM_SECTION_FILTER'));
+//exit;
+
 if ($arResult['DEPTH_LEVEL'] > 2) {
     $arFilter = array('IBLOCK_ID' => $arParams["IBLOCK_ID"], 'ID' => $arResult["IBLOCK_SECTION_ID"]);
     $rsSect = CIBlockSection::GetList(array('left_margin' => 'asc'), $arFilter);
@@ -180,17 +186,26 @@ $arFilter = array(
     'SECTION_ID' => $arResult["ID"],
 );
 $rsParentSection = CIBlockSection::GetList(array('NAME' => 'ASC'), $arFilter, false, array('NAME','ID','CODE','SECTION_PAGE_URL'));
+while ($arSect = $rsParentSection ->GetNext())
+{
 
-    while ($arSect = $rsParentSection ->GetNext())
-    {
-
-        $count = CIBlockElement::GetList(Array(), array('IBLOCK_ID' => $arParams["IBLOCK_ID"],'SECTION_ID' => $arSect["ID"]), Array());
-        if ($count>0)
-        $arResult["SUBS"][] = $arSect;
+    $count = CIBlockElement::GetList(Array(), array('IBLOCK_ID' => $arParams["IBLOCK_ID"],'SECTION_ID' => $arSect["ID"]), Array());
+    if ($count>0) {
+        $arResult["SUBS"][$arSect["ID"]] = $arSect;
+        $arResult["SUBS"][$arSect["ID"]]["ELEMENTS_COUNT"] = $count;
     }
+}
 
 if (count($arResult["SUBS"]) == 1) {
     LocalRedirect($arResult["SUBS"][0]["SECTION_PAGE_URL"]);
+}
+
+if ($arParams["DEPTH_LEVEL"] == 2 && !$arParams["IS_FILTERED"]) {
+    $subs = array_flip(array_keys($arResult["SUBS"]));
+    usort($arResult["ITEMS"], function ($a, $b) use ($subs) {
+        return $subs[$a["~IBLOCK_SECTION_ID"]] > $subs[$b["~IBLOCK_SECTION_ID"]];
+    });
+
 }
 
 $arFilterBrands = array(
@@ -207,12 +222,12 @@ while ($res = $arBrands ->GetNext())
 $arFilterColls = array(
     'IBLOCK_ID' => 22
 );
-$arSelectColls = Array("ID", "NAME", 'DETAIL_PAGE_URL', 'DETAIL_TEXT', 'DETAIL_PICTURE');
+$arSelectColls = Array("ID", "NAME", 'DETAIL_PAGE_URL', 'DETAIL_TEXT', 'DETAIL_PICTURE', 'PREVIEW_TEXT');
 $arColls = CIBlockElement::GetList(array(), $arFilterColls, false, false, false, $arSelectColls);
 
 while ($res = $arColls ->GetNext())
 {
-    $arResult["ALL_COLLS"][$res['ID']] = array('NAME' => $res['NAME'], 'DETAIL_TEXT' => $res['DETAIL_TEXT'], 'DETAIL_PICTURE' => $res['DETAIL_PICTURE']);
+    $arResult["ALL_COLLS"][$res['ID']] = array('NAME' => $res['NAME'], 'PREVIEW_TEXT' => $res['PREVIEW_TEXT'], 'DETAIL_TEXT' => $res['DETAIL_TEXT'], 'DETAIL_PICTURE' => $res['DETAIL_PICTURE']);
 }
 //echo '<pre>';
 //var_dump($arResult["ALL_COLLS"]);

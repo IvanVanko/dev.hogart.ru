@@ -3,6 +3,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetPageProperty("title", "Продукция");
 $APPLICATION->SetTitle("Продукция");
 
+
 //переписываем URL для компонента catalog с помощью SetCurPage если мы перешли по URL-шаблону /brands/BRAND_CODE/CATALOG_SECTION_CODE/
 //шаблон задан в URL-rewrite
 //метод проперяет, что BRAND_CODE и SECTION_CODE заданы. Это произойдет тольк в случае перехода по вышеописанному шаблону.
@@ -18,9 +19,9 @@ else {
     //далее идет вызовы метода проверяющего что мы перешли по URL шаблон которого /catalog/SECTION_CODE_PATH/BRAND_CODE/ELEMENT_CODE/
     //что будет означать что мы перешли по URL с подраздела каталога и раздела сайта "Бренды"
     //3ий параметр служит для того чтобы передать в метод имя Поля элемента каталога, для которого построен URL ( либо ID либо CODE а зависимости от настроек инфоблока и компонента)
-    if(!HogartHelpers::rewriteBrandElementUrlToCatalog(CATALOG_IBLOCK_ID, BRAND_IBLOCK_ID, 'CODE', 'brand')) {
-        $show_component = false;
-    };
+//    if(!HogartHelpers::rewriteBrandElementUrlToCatalog(CATALOG_IBLOCK_ID, BRAND_IBLOCK_ID, 'CODE', 'brand')) {
+//        $show_component = false;
+//    };
 }
 ?>
 
@@ -91,7 +92,7 @@ else {
             "TOP_PROPERTY_CODE" => array("", "undefined", ""),
             "SECTION_USER_FIELDS" => array("UF_SECTION_VIEW"),
             "SECTION_COUNT_ELEMENTS" => "Y",
-            "SECTION_TOP_DEPTH" => "2",
+            "SECTION_TOP_DEPTH" => "3",
             "SECTIONS_VIEW_MODE" => "LIST",
             "SECTIONS_SHOW_PARENT_NAME" => "Y",
             "PAGE_ELEMENT_COUNT" => "99",
@@ -138,7 +139,9 @@ else {
             "SEF_URL_TEMPLATES" => Array("sections" => "",
                                          "section" => "#SECTION_CODE_PATH#/",
                                          "element" => "#SECTION_CODE_PATH#/#BRAND#/#ELEMENT_CODE#/",
-                                         "compare" => "compare.php?action=#ACTION_CODE#"),
+                                         "compare" => "compare.php?action=#ACTION_CODE#",
+                                         "smart_filter" => "#SECTION_CODE_PATH#/filter/#SMART_FILTER_PATH#/apply/",
+            ),
             "FILTER_NAME" => "",
             "FILTER_FIELD_CODE" => array("", "undefined", ""),
             "FILTER_PROPERTY_CODE" => array("", "undefined", ""),
@@ -148,6 +151,10 @@ else {
             "VARIABLE_ALIASES" => Array("sections" => Array(),
                                         "section" => Array(),
                                         "element" => Array(),
+                                        "smart_filter" => Array(),
+                                        "rel" => Array("REL_TYPE" => [
+                                            "collection"
+                                        ]),
                                         "compare" => Array("ACTION_CODE" => "action"),),
         )
     ); ?>

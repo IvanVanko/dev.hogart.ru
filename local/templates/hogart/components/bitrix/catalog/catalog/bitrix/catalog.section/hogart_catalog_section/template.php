@@ -16,55 +16,9 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 $this->setFrameMode(true);
 
 ?>
-<h1><?= $arResult["NAME"] ?></h1>
-<!--Если пользователь не авторизован-->
-
-<small class="green-bg">
-    В каталоге представлены рекомендуемые розничные цены
-</small>
-<? if ($arResult['DEPTH_LEVEL'] > '1') : ?>
-
-<? $APPLICATION->GetViewContent("CATALOG_FILTER"); ?>
-
-<? endif; ?>
-<!---->
-<? if (!$arParams["IS_TABLE_VIEW"]): ?>
-<div class="view-filter">
-    <div class="left">
-        <span>Выводить:</span>
-        <?foreach ($arParams['VIEW_TYPES'] as $type => $name) {
-            $active = $type == $arParams['VIEW_TYPE'] ? "active":"";
-            echo "<a class=\"icon-".$type." ".$active." js-trigger-perechen\" href=\"#".$type."\">".$name."</a>";
-        }?>
-    </div>
-    <div class="right">
-        <span>Сортировать по:</span>
-        <a
-            href="<?= $APPLICATION->GetCurPageParam("sort=shows&order=desc", array("sort", "order")); ?>"
-            <? if ($_REQUEST['sort'] == 'shows' || !isset($_REQUEST['sort'])): ?>class="active"<? endif; ?>
-            >
-            Популярности
-        </a>
-
-        <a
-            href="<?= $APPLICATION->GetCurPageParam("sort=catalog_PRICE_1&order=asc", array("sort", "order")); ?>"
-            <? if ($_REQUEST['sort'] == 'catalog_PRICE_1'): ?>class="active"<? endif; ?>
-            >
-            Цене
-        </a>
-
-        <a
-            href="<?= $APPLICATION->GetCurPageParam("sort=created_date&order=desc", array("sort", "order")); ?>"
-            <? if ($_REQUEST['sort'] == 'created_date'): ?>class="active"<? endif; ?>
-            >
-            Новизне
-        </a>
-    </div>
-</div>
-<? endif; ?>
-<ul class="perechen-produts js-target-perechen <?=$arParams['VIEW_TYPE']?> <? if ($arParams["IS_TABLE_VIEW"]): ?>table-view<? endif; ?>">
-<? $collectionId = null; $brandId = null; $table_sort = null; ?>
-<? foreach ($arResult["ITEMS"] as $arItem):?>
+<ul class="row perechen-produts js-target-perechen <?=$arParams['VIEW_TYPE']?> <? if ($arParams["IS_TABLE_VIEW"]): ?>table-view<? endif; ?>">
+<? $collectionId = null; $brandId = null; $table_sort = null; $sectionId = null; ?>
+<? foreach ($arResult["ITEMS"] as $i => $arItem):?>
         <?
         $rsFile = CFile::GetByID($arItem['PROPERTIES']['photos']['VALUE'][0]);
         $arFile = $rsFile->Fetch();
@@ -107,7 +61,7 @@ $this->setFrameMode(true);
             <span class="cell"><i class="icon-cart"></i></span>
         </li>
         <? $brand_collection_header = ob_get_clean(); ?>
-        
+
         <? if (!empty($arItem["PROPERTIES"]["brand"]["VALUE"]) && $brandId != $arItem["PROPERTIES"]["brand"]["VALUE"]): ?>
             <?
                 $brandId = $arItem["PROPERTIES"]["brand"]["VALUE"];
@@ -116,8 +70,7 @@ $this->setFrameMode(true);
             <li class="brand-table">
                 <div data-brand-wrapper="<?= $brandId?>">
                     <div class="caption">
-                        <div class="brand-name"><?= $arResult["ALL_BRANDS"][$brandId]["NAME"] ?></div>
-                        <hr class="brand-hr">
+                        <div class="brand-name"><i class="fa"></i><?= $arResult["ALL_BRANDS"][$brandId]["NAME"] ?></div>
                     </div>
                 <? if (empty($arItem["PROPERTIES"]["collection"]["VALUE"])): ?>
                     <!-- блок товаров без коллекции -->
@@ -149,7 +102,7 @@ $this->setFrameMode(true);
                         $file = CFile::ResizeImageGet(
                             $collection["DETAIL_PICTURE"], array("width" => 400, "height" => 300), BX_RESIZE_IMAGE_PROPORTIONAL, true);
                         ?>
-                        <img 
+                        <img
                             data-big-img="<?= $big["SRC"] ?>"
                             class="js-popup-open-img"
                             src="<?= $file['src'] ?>"
@@ -158,7 +111,17 @@ $this->setFrameMode(true);
                 <? endif; ?>
                 <div class="collection-description">
                     <div class="collection-title"><?= $collection["NAME"] ?></div>
-                    <div class="collection-text"><?= $collection["DETAIL_TEXT"] ?></div>
+                    <div class="collection-text">
+                        <? if (!empty($collection["PREVIEW_TEXT"])): ?>
+                            <div class="preview"><?= $collection["PREVIEW_TEXT"] ?></div>
+                        <? endif; ?>
+                        <? if (!empty($collection["DETAIL_TEXT"])): ?>
+                            <? if(!empty($collection["PREVIEW_TEXT"])): ?>
+                            <div class="more">Далее</div>
+                            <? endif; ?>
+                            <div class="detail"><?= $collection["DETAIL_TEXT"] ?></div>
+                        <? endif; ?>
+                    </div>
                 </div>
             </li>
             <?= $brand_collection_header ?>
@@ -261,7 +224,37 @@ $this->setFrameMode(true);
         </li>
 
     <? else: ?>
-        <li>
+        <? if($sectionId != $arItem["~IBLOCK_SECTION_ID"] && $arParams["DEPTH_LEVEL"] == 2 && !$arParams["IS_FILTERED"]): ?>
+        <? if(null !== $sectionId): ?>
+        </ul>
+        <ul class="row perechen-produts js-target-perechen <?=$arParams['VIEW_TYPE']?> <? if ($arParams["IS_TABLE_VIEW"]): ?>table-view<? endif; ?>">
+        <? endif; ?>
+        <li class="col-md-12 caption" data-section-id="<?= $arItem["~IBLOCK_SECTION_ID"] ?>" data-section-name="<?= $arResult["SUBS"][$arItem["~IBLOCK_SECTION_ID"]]["NAME"] ?>">
+            <span>
+                <span class="section-name"><i class="fa"></i><?= $arResult["SUBS"][$arItem["~IBLOCK_SECTION_ID"]]["NAME"] ?></span>
+                <? if ($arResult["SUBS"][$arItem["~IBLOCK_SECTION_ID"]]["ELEMENTS_COUNT"] > $arParams["SUB_SECTION_COUNT"]): ?>
+                <span class="section-link">
+                    <a href="<?= $arResult["SUBS"][$arItem["~IBLOCK_SECTION_ID"]]["SECTION_PAGE_URL"] ?>">Посмотреть все (<?= $arResult["SUBS"][$arItem["~IBLOCK_SECTION_ID"]]["ELEMENTS_COUNT"] ?>) <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+                </span>
+                <? endif; ?>
+            </span>
+        </li>
+        <? $sectionId = $arItem["~IBLOCK_SECTION_ID"] ?>
+        <? endif; ?>
+        
+        <? if($arParams["DEPTH_LEVEL"] > 2 && $brandId != $arItem["PROPERTIES"]["brand"]["VALUE"] && !$arParams["IS_FILTERED"]): ?>
+        <? if(null !== $brandId): ?>
+        </ul>
+        <ul class="row perechen-produts js-target-perechen <?=$arParams['VIEW_TYPE']?> <? if ($arParams["IS_TABLE_VIEW"]): ?>table-view<? endif; ?>">
+        <? endif; ?>
+        <? $brandId = $arItem["PROPERTIES"]["brand"]["VALUE"]; ?>
+        
+        <li class="col-md-12 caption" data-brand-id="<?= $arItem["PROPERTIES"]["brand"]["VALUE"] ?>" data-brand-name="<?= $arResult["ALL_BRANDS"][$brandId]["NAME"] ?>">
+            <span class="brand-name"><i class="fa"></i><?= $arResult["ALL_BRANDS"][$brandId]["NAME"] ?></span>
+        </li>
+        <? endif; ?>
+        
+        <li class="col-lg-3 col-md-4 col-sm-6">
             <div>
                 <span class="perechen-img">
                     <a href="<?= $arItem["DETAIL_PAGE_URL"] ?>">
@@ -270,129 +263,151 @@ $this->setFrameMode(true);
                         if (!empty($arItem["PREVIEW_PICTURE"]['SRC'])) {
                             $file = CFile::ResizeImageGet(
                                 $arItem["PREVIEW_PICTURE"]['ID'], array("width" => 400, "height" => 160), BX_RESIZE_IMAGE_PROPORTIONAL, true);
-                            $pic = $file['src'];
+                            if (file_exists(realpath($_SERVER["DOCUMENT_ROOT"] . $file['src'])))
+                                $pic = $file['src'];
                         }
                         elseif (!empty($arItem["DETAIL_PICTURE"]['SRC'])) {
 
                             $file = CFile::ResizeImageGet(
                                 $arItem["DETAIL_PICTURE"]['ID'], array("width" => 400, "height" => 160), BX_RESIZE_IMAGE_PROPORTIONAL, true);
-                            $pic = $file['src'];
-                        }?>
+                            if (file_exists(realpath($_SERVER["DOCUMENT_ROOT"] . $file['src'])))
+                                $pic = $file['src'];
+                        }
+                        ?>
                         <img src="<?=$pic?>" alt=""/>
                     </a>
                 </span>
 
                 <div class="prod-box">
                     <? if (!empty($arItem["PROPERTIES"]["sku"]["VALUE"])): ?>
-                        <div class="art">Артикул: <span><?= $arItem["PROPERTIES"]["sku"]["VALUE"] ?></span></div>
-                    <? endif; ?>
-                    <a href="<?= $arItem["DETAIL_PAGE_URL"] ?>"><h3><?= $arItem["NAME"] ?></h3></a>
-                </div>
-                <div>
-                    <div class="col3 param-cnt">
-                        <ul class="param">
-                            <?
-                            $propertyName = 'brand';
-                            $arProperty = $arItem['PROPERTIES'][$propertyName]
-                            ?>
-                            <li class="note">
-                                <span><?= $arProperty["NAME"] ?></span>
-                                <a href="<?= $arResult["ALL_BRANDS"][$arProperty["VALUE"]]['DETAIL_PAGE_URL'] ?>">
-                                    <span class="pr"><?= $arResult["ALL_BRANDS"][$arProperty["VALUE"]]['NAME'] ?></span>
-                                </a>
-                            </li>
-                            <li class="note">
-                                <span><?= $arItem['DISPLAY_PROPERTIES']["collection"]['NAME'] ?></span>
-                                <?$collectionElement = current($arItem['DISPLAY_PROPERTIES']["collection"]["LINK_ELEMENT_VALUE"]);?>
-                                <span class="pr"><?= $collectionElement['NAME'] ?></span>
-                            </li>
-                            <? unset($arItem['PROPERTIES'][$propertyName]) ?>
-                            <? unset($arItem['PROPERTIES']['collection']) ?>
-                            <?$hiddenPropsExist=false;?>
-                            <? foreach ($arItem["PROPERTIES"] as $propertyName => $arProperty): ?>
-                                <? if (!empty($arProperty["VALUE"]) && $arProperty['SMART_FILTER'] == 'Y'): ?>
-                                    <? if (substr($propertyName, 0, 4) == "coll"): ?>
-                                        <li class="note">
-                                            <span><?= $arProperty["NAME"] ?></span>
-                                            <span class="pr"><?= $arResult["ALL_COLLS"][$arProperty["VALUE"]]['NAME'] ?></span>
-                                        </li>
-                                    <? elseif (substr($propertyName, 0, 3) != "pho"): ?>
-                                        <li class="note"
-                                            <? if ($arProperty['DISPLAY_EXPANDED'] != 'Y') { $hiddenPropsExist=true;?>style="display: none"<? } ?>>
-                                            <span><?= $arProperty["NAME"] ?></span>
-                                            <span class="pr"><?= $arProperty["VALUE"] ?></span>
-                                        </li>
-                                    <? endif; ?>
-                                <? endif; ?>
-                            <? endforeach; ?>
-                            <?if ($hiddenPropsExist) {?>
-                                <li class="open">развернуть</li>
-                            <?}?>
-                        </ul>
-                    </div>
-                    <div class="col3 price-cnt <? if ($USER->IsAuthorized()): ?> auth-block<? endif; ?>">
                         <div class="row">
-                            <div class="col2">
-                                <div class="price currency-<?= strtolower($arItem["PRICES"]["BASE"]["CURRENCY"]) ?>">
-                                    <? if ($USER->IsAuthorized() && !empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
-                                        <?= HogartHelpers::wPrice($arItem["PRICES"]["BASE"]["PRINT_DISCOUNT_VALUE"]); ?>
-                                    <? else: ?>
-                                        <?= HogartHelpers::wPrice($arItem["PRICES"]["BASE"]["PRINT_VALUE"]); ?>
-                                    <? endif; ?>
-                                </div>
-                                <!--Только для авторизованных-->
-                                <? if ($USER->IsAuthorized() && !empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
-                                    <div class="grid-hide discount">
-                                        <?= $arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"] ?>%
-                                    </div>
-                                <? endif; ?>
-                                <!---->
-                            </div>
-                            <div class="col2 text-right">
-                                <?
-                                $class_pop = '';
-                                $attr_pop = '';
-                                ?>
-                                <?
-                                if (!$USER->IsAuthorized()) {
-                                    $class_pop = 'js-popup-open';
-                                    $attr_pop = 'data-popup="#popup-msg-product"';
-                                }
-                                ?>
-                                <a id="<?= $arItem['BUY_URL'] ?>"
-                                   class="empty-btn black grid-hide <?= $class_pop ?>" <?= $attr_pop ?>
-                                   href="javascript:void(0)" rel="nofollow">
-                                    <i class="icon-cart"></i> Купить
-                                </a>
+                            <div class="col-md-12">
+                                <div class="art">Артикул: <span><?= $arItem["PROPERTIES"]["sku"]["VALUE"] ?></span></div>
                             </div>
                         </div>
-                        <!--Только для авторизованных-->
-                        <? if ($USER->IsAuthorized() && !empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
-                            <div class="info-block grid-hide">
-                                <div class="old currency-<?= strtolower($arItem["PRICES"]["BASE"]["CURRENCY"]) ?>"><?= HogartHelpers::wPrice($arItem["PRICES"]["BASE"]["PRINT_VALUE"]); ?></div>
-                                <p>Цена указана с учетом скидки клиента</p>
+                    <? endif; ?>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a href="<?= $arItem["DETAIL_PAGE_URL"] ?>"><h3><?= $arItem["NAME"] ?></h3></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="param-cnt">
+                    <ul class="param">
+                        <?
+                        $propertyName = 'brand';
+                        $arProperty = $arItem['PROPERTIES'][$propertyName]
+                        ?>
+                        <li class="note">
+                            <div class="dotted">
+                                <span class="text-left"><?= $arProperty["NAME"] ?></span>
+                                <span class="text-right">
+                                    <a href="<?= $arResult["ALL_BRANDS"][$arProperty["VALUE"]]['DETAIL_PAGE_URL'] ?>">
+                                        <span class="pr"><?= $arResult["ALL_BRANDS"][$arProperty["VALUE"]]['NAME'] ?></span>
+                                    </a>
+                                </span>
                             </div>
+                        </li>
+                        <? if(!empty($arItem['DISPLAY_PROPERTIES']["collection"]['NAME'])): ?>
+                        <li class="note">
+                            <div class="dotted">
+                                <?$collectionElement = current($arItem['DISPLAY_PROPERTIES']["collection"]["LINK_ELEMENT_VALUE"]);?>
+                                <span class="text-left"><?= $arItem['DISPLAY_PROPERTIES']["collection"]['NAME'] ?></span>
+                                <span class="text-right"><?= $collectionElement['NAME'] ?></span>
+                            </div>
+                        </li>
                         <? endif; ?>
-                        <!---->
-                        <hr class="grid-hide"/>
-                        <div class="icon-carTon">
-                            <? if ($arItem["CATALOG_QUANTITY"] > 0): ?>
-                                <div class="line <? if ($USER->IsAuthorized()): ?> line2<? endif; ?>">В
-                                    наличии<? if ($USER->IsAuthorized()): ?> <span><?= $arItem["CATALOG_QUANTITY"]; ?>
-                                        <?=$arItem['CATALOG_MEASURE_NAME']?>.</span><? endif; ?></div>
-                            <? else: ?>
-                                Под заказ
-                                <? if (!empty($arItem["PROPERTIES"]["delivery_period"]["VALUE"])): ?>
-                                    <br>
-                                    Срок поставки
-                                    <span><?= $arItem["PROPERTIES"]["delivery_period"]["VALUE"] ?> <?= number($arItem["PROPERTIES"]["delivery_period"]["VALUE"], array('день', 'дня', 'дней'))
-                                        ?></span>
+                        <? unset($arItem['PROPERTIES'][$propertyName]) ?>
+                        <? unset($arItem['PROPERTIES']['collection']) ?>
+                        <?$hiddenPropsExist=false;?>
+                        <? foreach ($arItem["PROPERTIES"] as $propertyName => $arProperty): ?>
+                            <? if (!empty($arProperty["VALUE"]) && $arProperty['SMART_FILTER'] == 'Y'): ?>
+                                <? if (substr($propertyName, 0, 4) == "coll"): ?>
+                                    <li class="note">
+                                        <div class="dotted">
+                                            <span class="text-left"><?= $arProperty["NAME"] ?></span>
+                                            <span class="text-right"><?= $arResult["ALL_COLLS"][$arProperty["VALUE"]]['NAME'] ?></span>
+                                        </div>
+                                    </li>
+                                <? elseif (substr($propertyName, 0, 3) != "pho"): ?>
+                                    <li class="note"
+                                        <? if ($arProperty['DISPLAY_EXPANDED'] != 'Y') { $hiddenPropsExist=true;?>style="display: none"<? } ?>>
+                                        <div class="dotted">
+                                            <span class="text-left"><?= $arProperty["NAME"] ?></span>
+                                            <span class="text-right"><?= $arProperty["VALUE"] ?></span>
+                                        </div>
+                                    </li>
                                 <? endif; ?>
                             <? endif; ?>
+                        <? endforeach; ?>
+                        <?if ($hiddenPropsExist) {?>
+                            <!-- li class="open">развернуть</li -->
+                        <?}?>
+                    </ul>
+                </div>
+                <div class="price-cnt <? if ($USER->IsAuthorized()): ?> auth-block<? endif; ?>">
+                    <div class="row vertical-align">
+                        <div class="col-md-6">
+                            <div class="price currency-<?= strtolower($arItem["PRICES"]["BASE"]["CURRENCY"]) ?> text-nowrap">
+                                <? if ($USER->IsAuthorized() && !empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
+                                    <?= HogartHelpers::woPrice($arItem["PRICES"]["BASE"]["PRINT_DISCOUNT_VALUE"]); ?>
+                                <? else: ?>
+                                    <?= HogartHelpers::woPrice($arItem["PRICES"]["BASE"]["PRINT_VALUE"]); ?>
+                                <? endif; ?>
+                                <i class="fa fa-<?=strtolower($arItem["PRICES"]["BASE"]["CURRENCY"])?>" aria-hidden="true"></i>
+                            </div>
+                            <!--Только для авторизованных-->
+                            <? if ($USER->IsAuthorized() && !empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
+                                <div class="grid-hide discount">
+                                    <?= $arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"] ?>%
+                                </div>
+                            <? endif; ?>
+                            <!---->
+                        </div>
+                        <div class="col-md-6 text-right text-nowrap">
+                        <? if ($arItem["CATALOG_QUANTITY"] > 0): ?>
+                            <div class="quantity quantity-success line <? if ($USER->IsAuthorized()): ?> line2<? endif; ?>">В
+                                наличии<? if ($USER->IsAuthorized()): ?> <span><?= $arItem["CATALOG_QUANTITY"]; ?>
+                                    <?=$arItem['CATALOG_MEASURE_NAME']?>.</span><? endif; ?></div>
+                        <? else: ?>
+                            <div class="quantity quantity-fail text-nowrap">
+                                <i class="fa fa-truck" aria-hidden="true"></i> Под заказ
+                            </div>
+                        <? endif; ?>
                         </div>
                     </div>
+                    <!--Только для авторизованных-->
+                    <? if ($USER->IsAuthorized() && !empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
+                    <div class="info-block">
+                        <div class="old currency">
+                            <?= HogartHelpers::woPrice($arItem["PRICES"]["BASE"]["PRINT_VALUE"]); ?>
+                            <i class="fa fa-<?=strtolower($arItem["PRICES"]["BASE"]["CURRENCY"])?>" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                    <? endif; ?>
+                    <? if(!empty($arItem["PRICES"]["BASE"]["PRINT_VALUE"])): ?>
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <?
+                            $class_pop = '';
+                            $attr_pop = '';
+                            ?>
+                            <?
+                            if (!$USER->IsAuthorized()) {
+                                $class_pop = 'js-popup-open';
+                                $attr_pop = 'data-popup="#popup-msg-product"';
+                            }
+                            ?>
+                            <a id="<?= $arItem['BUY_URL'] ?>"
+                               class="buy-btn btn btn-primary <?= $class_pop ?>" <?= $attr_pop ?>
+                               href="javascript:void(0)" rel="nofollow">
+                                <i class="fa fa-shopping-cart" aria-hidden="true"></i> Купить
+                            </a>
+                        </div>
+                    </div>
+                    <? endif; ?>
+                    <!---->
                 </div>
-                <!--                    </div>-->
             </div>
         </li>
     <? endif; ?>
@@ -416,47 +431,28 @@ $this->setFrameMode(true);
     <?  $brandId = null; ?>
 <? endif; ?>
 
-</div>
-<div class="text-center">
-<? echo $arResult["NAV_STRING"]; ?>
-</div>
-<div class="ceo-text">
-<?= $arResult["DESCRIPTION"] ?>
-</div>
-
-<? DebugMemory() ?>
-
-</div>
-
-<? $this->SetViewTarget('top_section_wrapper') ?>
-
-<? if ($arResult['DEPTH_LEVEL'] <= 2): ?>
-<aside class="sidebar category js-fh js-fixed-block js-paralax-height" data-fixed="top">
-    <div class="inner js-paralax-item">
-        <div class="side_href">
-
-            <a href="/documentation/" <? /*href="/documentation/?direction[]=<?= $arResult['ID'] ?>&direction_<?= $arResult['ID'] ?>_left=<?= $arResult['LEFT_MARGIN'] ?>&direction_<?= $arResult['ID'] ?>_right=<?= $arResult['RIGHT_MARGIN'] ?>"*/ ?>
-               class="icon_doc">Перейти<br>к документации</a>
-
-            <? if ($arResult["eqSelectID"]) { ?>
-                <a href="/selection-equipment/#tab<?= $arResult["eqSelectID"] ?>" class="icon_ok">Заявка<br>на подбор<br>оборудования</a>
-            <? } ?>
-            <? if ((int)$arResult["UF_PRICE"] > 0) { ?>
-                <a href="<?= CFile::GetPath($arResult["UF_PRICE"]); ?>" class="doc_view icon_doc" download>Скачать
-                    каталог</a>
-            <? } ?>
-        </div>
-        <? if ($arResult['DEPTH_LEVEL'] == '2') : ?>
-            <div class="sidebar_padding_cnt">
-            <? $page = $APPLICATION->GetCurDir(true); ?>
-                <div class="subs-links">
-                <? foreach ($arResult['SUBS'] as $item): ?>
-                    <a <?= ($page == $item['SECTION_PAGE_URL']) ? 'class="active"' : '' ?>
-                        href="<?= $item['SECTION_PAGE_URL'] ?>"><?= $item['NAME'] ?></a>
-                <? endforeach; ?>
-                </div>
-            </div>
-        <? endif; ?>
+<? if(!empty($arResult["NAV_STRING"])): ?>
+    <div class="text-center">
+        <?= $arResult["NAV_STRING"]; ?>
+    </div>
 <? endif; ?>
 
-<? $this->EndViewTarget() ?>
+<? if(!empty($arResult["DESCRIPTION"])): ?>
+    <div class="ceo-text">
+        <?= $arResult["DESCRIPTION"] ?>
+    </div>
+<? endif; ?>
+
+<? if (!empty($arResult["SUBS"])): ?>
+    <? $this->SetViewTarget('CATALOG_SUBS'); ?>
+    <div class="catalog-subs">
+    <? foreach ($arResult["SUBS"] as $sub): ?>
+        <div class="row">
+            <div class="col-md-12">
+                <a data-src-href="<?= $sub["SECTION_PAGE_URL"] ?>" href="javascript:void(0)" onclick="smartFilter.sectionFilter(this);"><?= $sub["NAME"] ?></a>
+            </div>    
+        </div>
+    <? endforeach; ?>
+    </div>
+    <? $this->EndViewTarget(); ?>
+<? endif; ?>
