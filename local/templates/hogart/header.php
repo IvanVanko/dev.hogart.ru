@@ -22,6 +22,8 @@ Loc::loadLanguageFile(__FILE__);
     $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH . "/bootstrap.css");
     $APPLICATION->SetAdditionalCSS("/local/assets/fontello/css/animation.css");
     $APPLICATION->SetAdditionalCSS("/local/assets/fontello/css/fontello.css");
+
+
     $APPLICATION->SetAdditionalCSS("/h/css/main.css");
     $APPLICATION->SetAdditionalCSS("/h/css/dop-css.css");
     $APPLICATION->SetAdditionalCSS("/h/css/bug-fix.css");
@@ -31,6 +33,7 @@ Loc::loadLanguageFile(__FILE__);
     $APPLICATION->SetAdditionalCSS("/h/css/houdini.min.css");
 
     $APPLICATION->AddHeadScript("/h/js/jquery-1.11.2.min.js");
+    $APPLICATION->AddHeadScript("/local/assets/bootstrap/js/tab.js");
     $APPLICATION->AddHeadScript("/h/js/jquery.reject.js");
     $APPLICATION->SetAdditionalCSS("/h/css/jquery.reject.css");
     $APPLICATION->AddHeadString('<script src="http://maps.google.com/maps/api/js?sensor=true"></script>');

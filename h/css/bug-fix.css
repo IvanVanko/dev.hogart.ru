@@ -570,45 +570,6 @@ body {
     letter-spacing: 1px;
 }
 
-.catalog_page .product .product-info .info-wrap .old {
-    color: #4c4c4c;
-    font-family: "Roboto", sans-serif;
-    font-size: 11px;
-    font-weight: bold;
-    letter-spacing: 1px;
-    line-height: 18px;
-    margin: 0;
-    text-transform: uppercase;
-    text-decoration: line-through;
-}
-
-.catalog_page .products-similar-tabs {
-    padding: 0 50px;
-}
-
-.catalog_page .products-similar-tabs .tabs-similar {
-    padding: 0px;
-}
-
-.catalog_page .products-similar-tabs .tabs-similar li a {
-    font-family: "Roboto Condensed", sans-serif;
-}
-
-.catalog_page .products-similar-tabs .items-similar .item-similar ul li .preview-img {
-    min-height: 134px;
-    display: block;
-}
-
-.catalog_page .product.sidebar ul li {
-    font-family: "Roboto Condensed", sans-serif;
-    margin-bottom: 8px;
-}
-
-.catalog_page .products-similar-tabs .tabs-similar li {
-    text-align: center;
-    width: 25%;
-}
-
 .catalog_page .perechen .perechen-produts.list > li .empty-btn:hover,
 .catalog_page .product .product-info .info-wrap .empty-btn:hover {
     background: #95c600;
@@ -621,10 +582,6 @@ body {
     min-height: 1px;
     width: 24%;
 
-}
-
-.catalog_page .perechen .perechen-produts.grid > li .perechen-img {
-    display: block;
 }
 
 .catalog_page .perechen .perechen-produts.list > li img {
@@ -816,95 +773,6 @@ body {
     padding-right: 0;
 }
 
-.catalog_page .product .product-info .info-wrap .list-href {
-    margin: 0px;
-}
-
-.catalog_page .product .product-info .info-wrap .list-href li a.icon-info {
-    background: url("/images/product_info.png") no-repeat scroll 0px center rgba(0, 0, 0, 0);
-}
-
-.catalog_page .product .product-info .info-wrap .list-href li {
-    padding: 8px 15px;
-}
-
-.catalog_page .product .product-info .features .doc-cnt a {
-    font-family: "Roboto Condensed", sans-serif;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    padding: 10px 10px 10px 36px;
-}
-
-.catalog_page .product .product-info .list-href .features {
-    margin-top: 0px;
-}
-
-.catalog_page .product .product-info .features .doc-cnt a span {
-    color: #95c600;
-    font-size: 11px;
-    font-weight: 100;
-    font-family: "Roboto", sans-serif;
-    text-transform: none;
-}
-
-.catalog_page .product .product-info .features .doc-cnt a::before {
-    left: 2px;
-}
-
-.catalog_page .product .product-info .features .doc-cnt a.file-pdf:hover::before {
-    background: url("/images/pdf.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
-}
-
-.catalog_page .product .product-info .features .doc-cnt a:hover {
-    color: #95c600;
-}
-
-.catalog_page .product .product-info .video-block {
-    margin-bottom: 0px;
-}
-
-.catalog_page .product .product-info .product-small {
-    height: 230px;
-    margin-top: 6px;
-}
-
-.catalog_page .product .product-info .product-small img {
-    width: 100%;
-}
-
-.catalog_page .product .product-info .product-small.video-item {
-    width: 100%;
-}
-
-.catalog_page .product .product-info .info-wrap .list-href li.item {
-    margin-bottom: 1px;
-}
-
-.catalog_page .product .product-info .list-href .doc-features {
-    height: 203px;
-}
-
-.catalog_page .product .product-info .info-wrap .price {
-    letter-spacing: 1.2px;
-    padding: 8px 0px 15px;
-}
-
-.catalog_page .product .product-info .info-wrap hr {
-    margin: 15px 0px;
-}
-
-.catalog_page .product .product-info .info-wrap .empty-btn {
-    min-width: 124px;
-    text-align: center;
-    margin-right: 0px;
-}
-
-.catalog_page .product .product-info .info-wrap .product-info-block {
-    height: 203px;
-}
-
-
 .catalog_page .perechen .perechen-produts.list > li .col3.price-cnt {
     padding-top: 0;
     position: relative;
@@ -921,15 +789,6 @@ body {
     .catalog_page .perechen .perechen-produts.list > li .col3.price-cnt {
         top: 5px;
     }
-}
-
-.catalog_page .product .product-info .info-wrap .info-block .discount {
-
-    margin-left: 0px;
-}
-
-.catalog_page .product .product-info .features .doc-cnt a {
-    padding: 10px 10px 2px 36px;
 }
 
 .carusel {

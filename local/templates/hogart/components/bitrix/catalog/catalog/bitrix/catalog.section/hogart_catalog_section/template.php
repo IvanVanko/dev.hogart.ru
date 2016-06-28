@@ -225,9 +225,13 @@ $this->setFrameMode(true);
 
     <? else: ?>
         <? if($sectionId != $arItem["~IBLOCK_SECTION_ID"] && $arParams["DEPTH_LEVEL"] == 2 && !$arParams["IS_FILTERED"]): ?>
-        <li class="col-md-12 section-title" data-section-id="<?= $arItem["~IBLOCK_SECTION_ID"] ?>" data-section-name="<?= $arResult["SUBS"][$arItem["~IBLOCK_SECTION_ID"]]["NAME"] ?>">
+        <? if(null !== $sectionId): ?>
+        </ul>
+        <ul class="row perechen-produts js-target-perechen <?=$arParams['VIEW_TYPE']?> <? if ($arParams["IS_TABLE_VIEW"]): ?>table-view<? endif; ?>">
+        <? endif; ?>
+        <li class="col-md-12 caption" data-section-id="<?= $arItem["~IBLOCK_SECTION_ID"] ?>" data-section-name="<?= $arResult["SUBS"][$arItem["~IBLOCK_SECTION_ID"]]["NAME"] ?>">
             <span>
-                <?= $arResult["SUBS"][$arItem["~IBLOCK_SECTION_ID"]]["NAME"] ?>
+                <span class="section-name"><i class="fa"></i><?= $arResult["SUBS"][$arItem["~IBLOCK_SECTION_ID"]]["NAME"] ?></span>
                 <? if ($arResult["SUBS"][$arItem["~IBLOCK_SECTION_ID"]]["ELEMENTS_COUNT"] > $arParams["SUB_SECTION_COUNT"]): ?>
                 <span class="section-link">
                     <a href="<?= $arResult["SUBS"][$arItem["~IBLOCK_SECTION_ID"]]["SECTION_PAGE_URL"] ?>">Посмотреть все (<?= $arResult["SUBS"][$arItem["~IBLOCK_SECTION_ID"]]["ELEMENTS_COUNT"] ?>) <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
@@ -346,10 +350,11 @@ $this->setFrameMode(true);
                         <div class="col-md-6">
                             <div class="price currency-<?= strtolower($arItem["PRICES"]["BASE"]["CURRENCY"]) ?> text-nowrap">
                                 <? if ($USER->IsAuthorized() && !empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
-                                    <?= HogartHelpers::wPrice($arItem["PRICES"]["BASE"]["PRINT_DISCOUNT_VALUE"]); ?>
+                                    <?= HogartHelpers::woPrice($arItem["PRICES"]["BASE"]["PRINT_DISCOUNT_VALUE"]); ?>
                                 <? else: ?>
-                                    <?= HogartHelpers::wPrice($arItem["PRICES"]["BASE"]["PRINT_VALUE"]); ?>
+                                    <?= HogartHelpers::woPrice($arItem["PRICES"]["BASE"]["PRINT_VALUE"]); ?>
                                 <? endif; ?>
+                                <i class="fa fa-<?=strtolower($arItem["PRICES"]["BASE"]["CURRENCY"])?>" aria-hidden="true"></i>
                             </div>
                             <!--Только для авторизованных-->
                             <? if ($USER->IsAuthorized() && !empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
@@ -374,7 +379,10 @@ $this->setFrameMode(true);
                     <!--Только для авторизованных-->
                     <? if ($USER->IsAuthorized() && !empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
                     <div class="info-block">
-                        <div class="old currency-<?= strtolower($arItem["PRICES"]["BASE"]["CURRENCY"]) ?>"><?= HogartHelpers::wPrice($arItem["PRICES"]["BASE"]["PRINT_VALUE"]); ?></div>
+                        <div class="old currency">
+                            <?= HogartHelpers::woPrice($arItem["PRICES"]["BASE"]["PRINT_VALUE"]); ?>
+                            <i class="fa fa-<?=strtolower($arItem["PRICES"]["BASE"]["CURRENCY"])?>" aria-hidden="true"></i>
+                        </div>
                     </div>
                     <? endif; ?>
                     <? if(!empty($arItem["PRICES"]["BASE"]["PRINT_VALUE"])): ?>

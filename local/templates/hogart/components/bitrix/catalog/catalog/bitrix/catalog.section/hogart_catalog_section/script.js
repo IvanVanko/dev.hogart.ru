@@ -6,8 +6,10 @@ $(function () {
     caption = $(caption);
     var height = caption.parent().outerHeight();
     caption.parent().css({ 'max-height': height });
-    caption.click( function () {
-      $(this).parent().toggleClass('closed');
+    caption.click( function (event) {
+      if (event.target.tagName !== "A") {
+        $(this).parent().toggleClass('closed');
+      }
     });
   });
 });

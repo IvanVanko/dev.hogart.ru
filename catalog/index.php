@@ -140,7 +140,7 @@ else {
                                          "section" => "#SECTION_CODE_PATH#/",
                                          "element" => "#SECTION_CODE_PATH#/#BRAND#/#ELEMENT_CODE#/",
                                          "compare" => "compare.php?action=#ACTION_CODE#",
-                                         "smart_filter" => "#SECTION_CODE_PATH#/filter/#SMART_FILTER_PATH#/apply/"
+                                         "smart_filter" => "#SECTION_CODE_PATH#/filter/#SMART_FILTER_PATH#/apply/",
             ),
             "FILTER_NAME" => "",
             "FILTER_FIELD_CODE" => array("", "undefined", ""),
@@ -152,6 +152,9 @@ else {
                                         "section" => Array(),
                                         "element" => Array(),
                                         "smart_filter" => Array(),
+                                        "rel" => Array("REL_TYPE" => [
+                                            "collection"
+                                        ]),
                                         "compare" => Array("ACTION_CODE" => "action"),),
         )
     ); ?>

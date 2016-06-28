@@ -26,7 +26,8 @@
     transition: max-height .4s ease;
     &.closed {
       max-height: 46px !important;
-      .brand-name {
+      .brand-name,
+      .section-name {
         .fa {
           &:before {
             content: "\f055" !important;
@@ -48,7 +49,8 @@
       > div {
         display: block;
         padding: 0;
-        &.brand-name {
+        &.brand-name,
+        .section-name {
           cursor: pointer;
           .fa {
             margin-left: -17px;
@@ -74,42 +76,6 @@
       height: 100%;
       padding: 15px;
       border: 1px solid transparent;
-
-      .note {
-        .dotted {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          overflow: hidden;
-          position: relative;
-          span {
-            z-index: 1;
-          }
-          &:before {
-            position: absolute;
-            width: 0;
-            z-index: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            white-space: nowrap;
-            content:
-                    ". . . . . . . . . . . . . . . . . . . . "
-                    ". . . . . . . . . . . . . . . . . . . . "
-                    ". . . . . . . . . . . . . . . . . . . . "
-                    ". . . . . . . . . . . . . . . . . . . . "
-          }
-        }
-      }
-
-      .quantity {
-        font-size: @font-size-h6;
-        &-success {
-          color: @brand-green;
-        }
-        &-fail {
-          color: @brand-danger;
-        }
-      }
 
       .buy-btn {
         display: block;
