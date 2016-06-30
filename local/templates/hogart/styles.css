@@ -31,6 +31,12 @@ h6,
   text-decoration: line-through;
   color: #aaa;
 }
+.color-green {
+  color: #95c600 !important;
+}
+.color-black {
+  color: #2c2432 !important;
+}
 .quantity {
   font-size: 12px;
 }

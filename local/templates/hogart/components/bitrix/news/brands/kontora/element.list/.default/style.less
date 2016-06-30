@@ -1,4 +1,6 @@
 @import (reference) "../../../../../../../variables";
+@import (reference) "../../../../../../../bootstrap";
+
 
 h3 {
   margin-top: 0 !important;
@@ -24,6 +26,26 @@ i[id^="brand_letter_"] {
     &:hover {
       text-decoration: underline !important;
       color: @brand-green !important;
+    }
+  }
+}
+.brands-page .brands-list {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  li {
+    border: 1px solid transparent;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    padding: 10px;
+    a {
+      display: block;
+    }
+    .transition(all .3s linear);
+    &:hover {
+      border: 1px solid @brand-green;
+      border-radius: 5px;
+      box-shadow: 1px 1px 1px 1px #ccc;
     }
   }
 }

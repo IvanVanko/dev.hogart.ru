@@ -1,3 +1,7 @@
+@media screen and (max-width: 767px) {
+}
+@media (min-width: 768px) {
+}
 h3 {
   margin-top: 0 !important;
 }
@@ -23,4 +27,26 @@ i[id^="brand_letter_"] {
 .letters a:hover {
   text-decoration: underline !important;
   color: #95c600 !important;
+}
+.brands-page .brands-list {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+.brands-page .brands-list li {
+  border: 1px solid transparent;
+  margin-bottom: 20px;
+  margin-right: 20px;
+  padding: 10px;
+  -webkit-transition: all 0.3s linear;
+  -o-transition: all 0.3s linear;
+  transition: all 0.3s linear;
+}
+.brands-page .brands-list li a {
+  display: block;
+}
+.brands-page .brands-list li:hover {
+  border: 1px solid #95c600;
+  border-radius: 5px;
+  box-shadow: 1px 1px 1px 1px #ccc;
 }

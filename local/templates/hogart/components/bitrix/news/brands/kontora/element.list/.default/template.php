@@ -3,27 +3,35 @@ if (count($arResult["ITEMS"]) > 0):?>
     <? $brand_links = []; ?>
     <? $first_letter = null; ?>
     <? $this->SetViewTarget("brands-list"); ?>
-    <ul class="brands-list">
-        <? foreach ($arResult["ITEMS"] as $arItem):
-            $this->AddEditAction($arItem["ID"], $arItem["EDIT_LINK"], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_EDIT"));
-            $this->AddDeleteAction($arItem["ID"], $arItem["DELETE_LINK"], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_DELETE"), array("CONFIRM" => GetMessage('CT_BNL_ELEMENT_DELETE_CONFIRM'))); ?>
-            <? $date = explode(".", $arItem["ACTIVE_FROM"]); ?>
-            <? if ($first_letter != mb_substr($arItem['NAME'], 0, 1)): ?>
-                <? $first_letter = mb_substr($arItem['NAME'], 0, 1); ?>
-                <i id="<?= ("brand_letter_" . $first_letter) ?>"></i>
-                <? $brand_links["brand_letter_" . $first_letter] = $first_letter; ?>
+    <? foreach ($arResult["ITEMS"] as $arItem):
+        $this->AddEditAction($arItem["ID"], $arItem["EDIT_LINK"], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_EDIT"));
+        $this->AddDeleteAction($arItem["ID"], $arItem["DELETE_LINK"], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_DELETE"), array("CONFIRM" => GetMessage('CT_BNL_ELEMENT_DELETE_CONFIRM'))); ?>
+        <? $date = explode(".", $arItem["ACTIVE_FROM"]); ?>
+        <? if ($first_letter != mb_substr($arItem['NAME'], 0, 1)): ?>
+            <? if (null !== $first_letter): ?>
+                </ul>
             <? endif; ?>
-            <?  ?>
-            <li id="<?= $this->GetEditAreaId($arItem['ID']) ?>">
+            <? $first_letter = mb_substr($arItem['NAME'], 0, 1); ?>
+            <i id="<?= ("brand_letter_" . $first_letter) ?>"></i>
+            <div class="h3 text-uppercase color-green"><?= $first_letter ?></div>
+            <? $brand_links["brand_letter_" . $first_letter] = $first_letter; ?>
+        <ul class="brands-list row">
+        <? endif; ?>
+            <li class="col-lg-2 col-md-3 col-sm-4 col-xs-6" id="<?= $this->GetEditAreaId($arItem['ID']) ?>">
                 <a href="<?= $arItem['DETAIL_PAGE_URL'] ?>">
                     <span>
-                        <? $file = CFile::ResizeImageGet($arItem['PREVIEW_PICTURE']['ID'], array("width" => 160, "height" => 90), BX_RESIZE_IMAGE_EXACT); ?>
-                        <img class="js-vertical-center" src="<?= $arItem['PREVIEW_PICTURE']['SRC'] ?>" alt=""/>
+                        <? $pic = "/images/project_no_img.jpg"; ?>
+                        <? if (!empty($arItem['PREVIEW_PICTURE']['SRC']) && file_exists($_SERVER["DOCUMENT_ROOT"] . $arItem['PREVIEW_PICTURE']["SRC"])): ?>
+                            <? $file = CFile::ResizeImageGet($arItem['PREVIEW_PICTURE']['ID'], array("width" => 160, "height" => 90), BX_RESIZE_IMAGE_EXACT); ?>
+                            <? $pic = $file["src"]; ?>
+                        <? endif; ?>
+                        
+                        <img class="js-vertical-center" src="<?= $pic ?>" alt=""/>
                     </span>
                     <span><?= $arItem['NAME'] ?></span>
                 </a>
             </li>
-        <? endforeach; ?>
+    <? endforeach; ?>
     </ul>
     <? $this->EndViewTarget(); ?>
     <? $this->SetViewTarget("brands-letters"); ?>

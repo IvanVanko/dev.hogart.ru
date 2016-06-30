@@ -26,6 +26,15 @@ h1, h2, h3, h4, h5, h6,
   color: #aaa;
 }
 
+.color {
+  &-green {
+    color: @brand-green !important;
+  }
+  &-black {
+    color: @brand-black !important;
+  }
+}
+
 .quantity {
   font-size: @font-size-h6;
   &-success {

@@ -66,7 +66,7 @@ $this->setFrameMode(true);
 
                     //result_modifier.php
                     "ORDER" => array($arParams["SORT_BY1"] => $arParams["SORT_ORDER1"], $arParams["SORT_BY2"] => $arParams["SORT_ORDER2"]),
-                    "SEF_FOLDER" => $arParams['SEF_FOLDER']
+                    "SEF_FOLDER" => $arParams['SEF_FOLDER'],
                 ),
                 $component
             );

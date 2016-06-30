@@ -15,6 +15,7 @@ ul.sert-slider-cnt.js-service-slider {
 .brand-photo-thing {
   width: 100%;
   + a {
+    margin-top: 40px;
     display: block;
     text-align: center;
     font-family: @font-family-serif;
@@ -24,6 +25,9 @@ ul.sert-slider-cnt.js-service-slider {
       text-decoration: underline !important;
     }
   }
+}
+.collapseDetail {
+  margin-top: 30px;
 }
 .brand-catalog {
   &:extend(.container-fluid);
@@ -35,6 +39,12 @@ ul.sert-slider-cnt.js-service-slider {
     color: @brand-green;
     .brand-name {
       border-bottom: 1px dashed @brand-black;
+    }
+  }
+  a {
+    &:hover {
+      color: @brand-green !important;
+      text-decoration: underline !important;
     }
   }
   ul {

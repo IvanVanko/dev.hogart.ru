@@ -22,6 +22,7 @@ ul.sert-slider-cnt.js-service-slider:after {
   width: 100%;
 }
 .brand-photo-thing + a {
+  margin-top: 40px;
   display: block;
   text-align: center;
   font-family: "Roboto Condensed", sans-serif;
@@ -30,6 +31,9 @@ ul.sert-slider-cnt.js-service-slider:after {
 .brand-photo-thing + a:hover {
   color: #95c600 !important;
   text-decoration: underline !important;
+}
+.collapseDetail {
+  margin-top: 30px;
 }
 .brand-catalog {
   background: white;
@@ -42,6 +46,10 @@ ul.sert-slider-cnt.js-service-slider:after {
 }
 .brand-catalog .title .brand-name {
   border-bottom: 1px dashed #2c2432;
+}
+.brand-catalog a:hover {
+  color: #95c600 !important;
+  text-decoration: underline !important;
 }
 .brand-catalog ul {
   list-style: none;
