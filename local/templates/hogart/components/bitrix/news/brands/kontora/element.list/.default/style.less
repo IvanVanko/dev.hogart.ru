@@ -1,0 +1,27 @@
+@import (reference) "../../../../../../../variables";
+
+h3 {
+  margin-top: 0 !important;
+}
+i[id^="brand_letter_"] {
+  top: -105px;
+  display: block;
+  position: relative;
+  visibility: hidden;
+  clear: both;
+}
+.letters {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  a {
+    display: block;
+    font-size: @font-size-h4;
+    font-family: @font-family-serif;
+    &:hover {
+      text-decoration: underline !important;
+      color: @brand-green !important;
+    }
+  }
+}

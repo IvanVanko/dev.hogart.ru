@@ -1,0 +1,25 @@
+h3 {
+  margin-top: 0 !important;
+}
+i[id^="brand_letter_"] {
+  top: -105px;
+  display: block;
+  position: relative;
+  visibility: hidden;
+  clear: both;
+}
+.letters {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.letters a {
+  display: block;
+  font-size: 18px;
+  font-family: "Roboto Condensed", sans-serif;
+}
+.letters a:hover {
+  text-decoration: underline !important;
+  color: #95c600 !important;
+}

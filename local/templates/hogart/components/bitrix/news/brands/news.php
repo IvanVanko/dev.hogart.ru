@@ -12,19 +12,10 @@
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);?>
 <?
-if ($APPLICATION->GetCurDir() === $arParams["SEF_FOLDER"]) {?>
-    <div class="inner">
-        <h1><?$APPLICATION->ShowTitle()?></h1>
-
-        <p>
-            <?$APPLICATION->IncludeComponent("bitrix:main.include","",Array(
-                    "AREA_FILE_SHOW" => "sect",
-                    "AREA_FILE_SUFFIX" => "inc_brands",
-                    "AREA_FILE_RECURSIVE" => "Y",
-                    "EDIT_TEMPLATE" => "standard.php"
-                )
-            );?>
-        </p>
+?>
+<div class="row">
+    <div class="col-md-9">
+        <h3><?$APPLICATION->ShowTitle()?></h3>
         <?$APPLICATION->IncludeComponent(
             "kontora:element.list",
             "",
@@ -36,15 +27,29 @@ if ($APPLICATION->GetCurDir() === $arParams["SEF_FOLDER"]) {?>
             ),
             $component
         );?>
+        <? $APPLICATION->ShowViewContent("brands-letters") ?>
+        <p>
+            <?$APPLICATION->IncludeComponent("bitrix:main.include","",Array(
+                    "AREA_FILE_SHOW" => "sect",
+                    "AREA_FILE_SUFFIX" => "inc_brands",
+                    "AREA_FILE_RECURSIVE" => "Y",
+                    "EDIT_TEMPLATE" => "standard.php"
+                )
+            );?>
+        </p>
+        <? $APPLICATION->ShowViewContent("brands-list") ?>
     </div>
-    <?$APPLICATION->IncludeComponent("kontora:element.detail", "brands", array(
-        "ID"    => "21",
-        "PROPS" => "Y",
-        "ADD_CHAIN_ITEM" => "N"
-    ));?>
-<?
-} else {
-    BXHelper::NotFound();
-}
-?>
-
+    <div class="col-md-3">
+        <?$APPLICATION->IncludeComponent(
+            "kontora:element.list",
+            "aside",
+            Array(
+                "IBLOCK_ID"	    => $arParams["IBLOCK_ID"],
+                "PROPS"         => "Y",
+                "FILTER"        => $arFilter,
+                "ORDER"         => array($arParams["SORT_BY1"] => $arParams["SORT_ORDER1"], $arParams["SORT_BY2"] => $arParams["SORT_ORDER2"]),
+            ),
+            $component
+        );?>
+    </div>
+</div>
