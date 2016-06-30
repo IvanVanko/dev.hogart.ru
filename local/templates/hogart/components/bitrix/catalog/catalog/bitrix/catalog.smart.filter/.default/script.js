@@ -82,6 +82,7 @@ JCSmartFilter.prototype.reload = function(input)
 			{
 				var set_filter = BX('set_filter');
 				set_filter.disabled = true;
+				$('body').addClass("loading")
 			}
 
 			this.curFilterinput = input;
@@ -229,6 +230,7 @@ JCSmartFilter.prototype.postHandler = function (result, fromCache)
 	{
 		var set_filter = BX('set_filter');
 		set_filter.disabled = false;
+		$('body').removeClass("loading")
 	}
 
 	if (!fromCache && this.cacheKey !== '')

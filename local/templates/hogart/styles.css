@@ -12,6 +12,12 @@ h6,
 .h6 {
   font-family: "Roboto Condensed", sans-serif;
 }
+body.loading {
+  cursor: wait;
+}
+body.loading * {
+  cursor: wait !important;
+}
 .fixed-block {
   display: block;
 }

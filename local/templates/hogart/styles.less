@@ -4,7 +4,14 @@ h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
   font-family: @font-family-serif;
 }
-
+body {
+  &.loading {
+    cursor: wait;
+    * {
+      cursor: wait !important;
+    }
+  }
+}
 .fixed-block {
   display: block;
   &.sticky {
