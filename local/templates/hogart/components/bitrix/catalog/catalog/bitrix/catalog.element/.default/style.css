@@ -1123,10 +1123,17 @@
   margin-top: 15px;
   transition: all 0s linear;
 }
+.product ul[data-control] > li > div .perechen-img {
+  border: 1px solid rgba(238, 238, 238, 0.7);
+  border-radius: 3px;
+}
 .product ul[data-control] > li > div:hover {
   border: 1px solid #95c600;
   border-radius: 5px;
   box-shadow: 1px 1px 1px 1px #ccc;
+}
+.product ul[data-control] > li > div:hover .perechen-img {
+  border-color: transparent;
 }
 .product ul[data-control] > li > div:hover .buy-btn {
   visibility: visible;

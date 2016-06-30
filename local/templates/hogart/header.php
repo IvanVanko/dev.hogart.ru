@@ -225,7 +225,7 @@ Loc::loadLanguageFile(__FILE__);
     <div class="main-container">
         <div class="container-inner">
 <? else: ?>
-<div class="container-fluid">
+<div class="container-fluid" style="overflow: hidden;">
     <div id="header-block" class="row fixed-block">
         <div class="col-md-1" style="padding-right: 0">
             <a style="display: inline-block; margin: 10px 0 0 10px;" href="<?= SITE_DIR ?>">

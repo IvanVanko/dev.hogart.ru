@@ -17,7 +17,7 @@ global $elementFilter;
 
 //метод устанавливает параметр в REQUEST для принудительной фильтрации по брендам если перешли на подраздел из карточки бренда
 HogartHelpers::setBrandRequestFilter(CStorage::getVar('CATALOG_BRAND_CODE'), BRAND_IBLOCK_ID, CATALOG_IBLOCK_ID, CATALOG_BRAND_PROPERTY_CODE);
-$section = BXHelper::getSections(array(), array('ID' => $arResult["VARIABLES"]["SECTION_ID"], 'IBLOCK_ID' => $arParams['IBLOCK_ID']), false, array('ID', 'DEPTH_LEVEL', 'UF_*'));
+$section = BXHelper::getSections(array(), array('ID' => $arResult["VARIABLES"]["SECTION_ID"], 'IBLOCK_ID' => $arParams['IBLOCK_ID']), false, array('ID', 'IBLOCK_SECTION_ID', 'DEPTH_LEVEL', 'UF_*'));
 $section = $section['RESULT'][0];
 
 if ($arParams['USE_FILTER'] == 'Y') {
@@ -406,6 +406,16 @@ if ($section["DEPTH_LEVEL"] == 1): ?>
                 ),
                 $component
             );
+            $chain_section = $section;
+            while ($chain_section["DEPTH_LEVEL"] > 1) {
+                $chain_section = BXHelper::getSections(array(), array('ID' => $chain_section["IBLOCK_SECTION_ID"], 'IBLOCK_ID' => $arParams['IBLOCK_ID']), false, array('ID', 'IBLOCK_SECTION_ID', 'DEPTH_LEVEL'));
+                $chain_section = $chain_section["RESULT"][0];
+            }
+
+            $APPLICATION->arAdditionalChain[0] = [
+                'TITLE' => $APPLICATION->arAdditionalChain[0]["TITLE"],
+                'LINK' => $arParams["SEF_FOLDER"] . "#bx_cat_" . $chain_section["ID"]
+            ];
             $GLOBALS['CATALOG_CURRENT_SECTION_ID'] = $intSectionID;
             ?>
         </div>

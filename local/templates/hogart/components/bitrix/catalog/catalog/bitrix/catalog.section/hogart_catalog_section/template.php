@@ -259,19 +259,22 @@ $this->setFrameMode(true);
                 <span class="perechen-img">
                     <a href="<?= $arItem["DETAIL_PAGE_URL"] ?>">
                         <?
-                        $pic = "/images/project_no_img.jpg";
-                        if (!empty($arItem["PREVIEW_PICTURE"]['SRC'])) {
-                            $file = CFile::ResizeImageGet(
-                                $arItem["PREVIEW_PICTURE"]['ID'], array("width" => 400, "height" => 160), BX_RESIZE_IMAGE_PROPORTIONAL, true);
-                            if (file_exists(realpath($_SERVER["DOCUMENT_ROOT"] . $file['src'])))
-                                $pic = $file['src'];
+                        $arImage = null;
+                        if (!empty($arItem["PREVIEW_PICTURE"]['SRC']) && file_exists(realpath($_SERVER["DOCUMENT_ROOT"] . $arItem["PREVIEW_PICTURE"]["SRC"]))) {
+                            $arImage = $arItem["PREVIEW_PICTURE"];
                         }
-                        elseif (!empty($arItem["DETAIL_PICTURE"]['SRC'])) {
-
-                            $file = CFile::ResizeImageGet(
-                                $arItem["DETAIL_PICTURE"]['ID'], array("width" => 400, "height" => 160), BX_RESIZE_IMAGE_PROPORTIONAL, true);
-                            if (file_exists(realpath($_SERVER["DOCUMENT_ROOT"] . $file['src'])))
-                                $pic = $file['src'];
+                        elseif (!empty($arItem["DETAIL_PICTURE"]['SRC']) && file_exists(realpath($_SERVER["DOCUMENT_ROOT"] . $arItem["DETAIL_PICTURE"]["SRC"]))) {
+                            $arImage = $arItem["DETAIL_PICTURE"];
+                        }
+                        if (!empty($arImage)) {
+                            $file = CFile::ResizeImageGet($arImage, array("width" => 400, "height" => 160), BX_RESIZE_IMAGE_PROPORTIONAL, true);
+                            $pic = $file['src'];
+                        } else {
+                            if (!file_exists($_SERVER["DOCUMENT_ROOT"] . "/images/project_no_img_400x160.jpg")) {
+                                $file = $_SERVER["DOCUMENT_ROOT"] . "/images/project_no_img_400x160.jpg";
+                                CFile::ResizeImageFile($_SERVER["DOCUMENT_ROOT"] . "/images/project_no_img.jpg", $file, array("width" => 400, "height" => 160));                            
+                            }
+                            $pic = "/images/project_no_img_400x160.jpg";
                         }
                         ?>
                         <img src="<?=$pic?>" alt=""/>
