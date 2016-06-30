@@ -1,0 +1,49 @@
+@import (reference) "../../../../../../../variables";
+@import (reference) "../../../../../../../bootstrap";
+
+
+ul.sert-slider-cnt.js-service-slider {
+  padding-left: 0;
+  z-index: 0;
+  &:after {
+    position: relative;
+    display: block;
+    clear: both;
+    content: "";
+  }
+}
+.brand-photo-thing {
+  width: 100%;
+  + a {
+    display: block;
+    text-align: center;
+    font-family: @font-family-serif;
+    font-size: @font-size-base;
+    &:hover {
+      color: @brand-green !important;
+      text-decoration: underline !important;
+    }
+  }
+}
+.brand-catalog {
+  &:extend(.container-fluid);
+  background: white;
+  border-left: 1px solid @brand-green;
+  min-height: calc(~"100vh - 215px") !important;
+  .title {
+    text-transform: uppercase;
+    color: @brand-green;
+    .brand-name {
+      border-bottom: 1px dashed @brand-black;
+    }
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+    ul {
+      padding-left: 20px;
+      margin: 10px 0;
+    }
+  }
+}

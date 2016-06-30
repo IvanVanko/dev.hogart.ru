@@ -1240,15 +1240,6 @@
 .product .products-similar-tabs div[role="tabpanel"] {
   padding-top: 10px;
 }
-.product .products-similar-tabs .controls .next,
-.product .products-similar-tabs .controls .prev {
-  display: inline-block;
-  font-size: 24px;
-}
-.product .products-similar-tabs .controls .next a,
-.product .products-similar-tabs .controls .prev a {
-  color: #82ad00;
-}
 .product .main-info > .art {
   font-family: "Roboto Condensed", sans-serif;
   text-transform: uppercase;
