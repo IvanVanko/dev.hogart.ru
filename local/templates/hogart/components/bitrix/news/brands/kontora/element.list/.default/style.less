@@ -1,0 +1,51 @@
+@import (reference) "../../../../../../../variables";
+@import (reference) "../../../../../../../bootstrap";
+
+
+h3 {
+  margin-top: 0 !important;
+}
+
+i[id^="brand_letter_"] {
+  top: -105px;
+  display: block;
+  position: relative;
+  visibility: hidden;
+  clear: both;
+}
+.letters {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  a {
+    display: block;
+    font-size: @font-size-h4;
+    font-family: @font-family-serif;
+    color: #b3b3b3 !important;
+    &:hover {
+      text-decoration: underline !important;
+      color: @brand-green !important;
+    }
+  }
+}
+.brands-page .brands-list {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  li {
+    border: 1px solid transparent;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    padding: 10px;
+    a {
+      display: block;
+    }
+    .transition(all .3s linear);
+    &:hover {
+      border: 1px solid @brand-green;
+      border-radius: 5px;
+      box-shadow: 1px 1px 1px 1px #ccc;
+    }
+  }
+}

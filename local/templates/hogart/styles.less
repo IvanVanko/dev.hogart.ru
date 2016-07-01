@@ -1,5 +1,17 @@
 @import (reference) "variables";
 
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: @font-family-serif;
+}
+body {
+  &.loading {
+    cursor: wait;
+    * {
+      cursor: wait !important;
+    }
+  }
+}
 .fixed-block {
   display: block;
   &.sticky {
@@ -19,6 +31,15 @@
   height: 28px;
   text-decoration: line-through;
   color: #aaa;
+}
+
+.color {
+  &-green {
+    color: @brand-green !important;
+  }
+  &-black {
+    color: @brand-black !important;
+  }
 }
 
 .quantity {
@@ -98,6 +119,38 @@
     > [class*=" col-"] {
       display: flex;
       align-items: center;
+    }
+  }
+}
+
+.collapse {
+  &.in {
+    + a[data-toggle="collapse"] {
+      display: none;
+    }
+  }
+}
+a[data-toggle="collapse"] {
+  font-size: @font-size-base;
+  text-transform: uppercase;
+  border-bottom: 1px dashed @brand-black;
+  font-family: @font-family-serif;
+  display: block;
+  float: right;
+  &:after {
+    content: "";
+    position: relative;
+    display: block;
+  }
+}
+
+.controls {
+  .next,
+  .prev {
+    display: inline-block;
+    font-size: @font-size-h3;
+    a {
+      color: darken(@brand-green, 5%);
     }
   }
 }

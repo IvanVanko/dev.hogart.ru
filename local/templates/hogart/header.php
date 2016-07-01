@@ -30,9 +30,10 @@ Loc::loadLanguageFile(__FILE__);
     $APPLICATION->SetAdditionalCSS("/h/css/jquery-ui.min.css");
     $APPLICATION->SetAdditionalCSS("/h/css/nouislider.min.css");
     $APPLICATION->SetAdditionalCSS("/h/css/jquery.mCustomScrollbar.css");
-    $APPLICATION->SetAdditionalCSS("/h/css/houdini.min.css");
 
     $APPLICATION->AddHeadScript("/h/js/jquery-1.11.2.min.js");
+    $APPLICATION->AddHeadScript("/local/assets/bootstrap/js/transition.js");
+    $APPLICATION->AddHeadScript("/local/assets/bootstrap/js/collapse.js");
     $APPLICATION->AddHeadScript("/local/assets/bootstrap/js/tab.js");
     $APPLICATION->AddHeadScript("/h/js/jquery.reject.js");
     $APPLICATION->SetAdditionalCSS("/h/css/jquery.reject.css");
@@ -43,7 +44,6 @@ Loc::loadLanguageFile(__FILE__);
     $APPLICATION->AddHeadScript("/h/js/jquery.validate.min.js");
     $APPLICATION->AddHeadScript("/h/js/nouislider.js");
     $APPLICATION->AddHeadScript("/h/js/readmore.min.js");
-    $APPLICATION->AddHeadScript("/h/js/houdini.min.js");
     $APPLICATION->AddHeadScript("/h/js/classList.min.js");
     $APPLICATION->AddHeadScript("/h/js/jquery.expander.min.js");
     $APPLICATION->AddHeadScript("/h/js/ResizeSensor.js");
@@ -68,10 +68,10 @@ Loc::loadLanguageFile(__FILE__);
 
     <? $APPLICATION->ShowHead(); ?>
 </head>
-<? if ($APPLICATION->GetCurDir() == '/'): ?>
+<? if ($APPLICATION->GetCurDir() == SITE_DIR): ?>
 <body class="index-page no-load">
 <? else: ?>
-<body class="<? $APPLICATION->ShowProperty("body_class") ?> no-load">
+<body class="<? $APPLICATION->ShowProperty("body_class") ?>">
 <? endif; ?>
 <? $APPLICATION->ShowPanel() ?>
 <? ob_start(); ?>

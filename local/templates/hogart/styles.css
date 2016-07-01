@@ -1,3 +1,23 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-family: "Roboto Condensed", sans-serif;
+}
+body.loading {
+  cursor: wait;
+}
+body.loading * {
+  cursor: wait !important;
+}
 .fixed-block {
   display: block;
 }
@@ -16,6 +36,12 @@
   height: 28px;
   text-decoration: line-through;
   color: #aaa;
+}
+.color-green {
+  color: #95c600 !important;
+}
+.color-black {
+  color: #2c2432 !important;
 }
 .quantity {
   font-size: 12px;
@@ -86,6 +112,31 @@
 .row.vertical-align > [class*=" col-"] {
   display: flex;
   align-items: center;
+}
+.collapse.in + a[data-toggle="collapse"] {
+  display: none;
+}
+a[data-toggle="collapse"] {
+  font-size: 14px;
+  text-transform: uppercase;
+  border-bottom: 1px dashed #2c2432;
+  font-family: "Roboto Condensed", sans-serif;
+  display: block;
+  float: right;
+}
+a[data-toggle="collapse"]:after {
+  content: "";
+  position: relative;
+  display: block;
+}
+.controls .next,
+.controls .prev {
+  display: inline-block;
+  font-size: 24px;
+}
+.controls .next a,
+.controls .prev a {
+  color: #82ad00;
 }
 .breadcrumbs span:last-child {
   color: #95c600;

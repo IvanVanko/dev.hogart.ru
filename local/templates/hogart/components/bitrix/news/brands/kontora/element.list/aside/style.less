@@ -1,0 +1,16 @@
+@import (reference) "../../../../../../../variables";
+@import (reference) "../../../../../../../bootstrap";
+
+.brand-links {
+  &:extend(.container-fluid);
+  background: white;
+  border-left: 1px solid @brand-green;
+  a {
+    font-size: @font-size-h5;
+    font-family: @font-family-serif;
+    &:hover {
+      text-decoration: underline !important;
+      color: @brand-green !important;
+    }
+  }
+}
