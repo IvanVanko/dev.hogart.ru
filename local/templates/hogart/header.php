@@ -36,12 +36,9 @@ Loc::loadLanguageFile(__FILE__);
     $APPLICATION->AddHeadScript("/local/assets/bootstrap/js/collapse.js");
     $APPLICATION->AddHeadScript("/local/assets/bootstrap/js/tab.js");
 
-    if ($APPLICATION->GetCurDir() == SITE_DIR) {
-        $APPLICATION->SetAdditionalCSS("/h/css/houdini.min.css");
-        $APPLICATION->AddHeadScript("/h/js/houdini.min.js");
-    }
+    $APPLICATION->SetAdditionalCSS("/h/css/houdini.min.css");
+    $APPLICATION->AddHeadScript("/h/js/houdini.min.js");
 
-    
     $APPLICATION->AddHeadScript("/h/js/jquery.reject.js");
     $APPLICATION->SetAdditionalCSS("/h/css/jquery.reject.css");
     $APPLICATION->AddHeadString('<script src="http://maps.google.com/maps/api/js?sensor=true"></script>');
