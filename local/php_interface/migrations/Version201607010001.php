@@ -43,7 +43,7 @@ HTML;
 
 
         \CModule::IncludeModule("iblock");
-        \CIBlockElement::Update("21", [
+        (new \CIBlockElement())->Update("21", [
             "DETAIL_TEXT" => $detail_text,
             "PROPERTY_VALUES" => [
                 "partners" => $partners_text
