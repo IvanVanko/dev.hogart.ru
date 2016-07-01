@@ -155,6 +155,27 @@ a[data-toggle="collapse"] {
   }
 }
 
+.aside {
+  &:extend(.container-fluid);
+  background: white;
+  border-left: 1px solid @brand-green;
+  min-height: calc(~"100vh - 215px") !important;
+}
+
+.left-menu {
+  &:extend(.text-center all);
+  padding-left: 0;
+  list-style: none;
+  a {
+    &:extend(.h5 all);
+    color: @brand-green;
+    text-transform: uppercase;
+  }
+  &.sticky {
+    margin-left: 10px;
+  }
+}
+
 .breadcrumbs {
   span:last-child {
     color: @brand-green;

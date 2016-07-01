@@ -3109,46 +3109,6 @@ blockquote:before {
 .index-page .presentation-main-page > li:hover ul {
   max-height: 300px;
 }
-.company-page .counter-company {
-  list-style: none;
-  padding: 0;
-  overflow: hidden;
-  margin: 40px 0 20px 0;
-}
-.company-page .counter-company li {
-  float: left;
-  width: 50%;
-  position: relative;
-  margin-bottom: 30px;
-}
-.company-page .counter-company li.clearfix {
-  clear: both;
-  margin: 0;
-}
-@media screen and (max-width: 1060px) {
-  .company-page .counter-company li {
-    width: 100%;
-  }
-}
-.company-page .counter-company li span {
-  font-family: 'Roboto Condensed', sans-serif;
-  font-size: 73px;
-  line-height: 73px;
-  font-weight: bold;
-  color: #95c600;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-.company-page .counter-company li p {
-  margin: 0;
-  padding: 8px 10px 0 60px;
-  font-family: 'Roboto Condensed', sans-serif;
-  font-size: 12px;
-  line-height: 20px;
-  font-weight: normal;
-  text-transform: uppercase;
-}
 .company-page #js-control-company {
   text-align: right;
   margin-top: 30px;

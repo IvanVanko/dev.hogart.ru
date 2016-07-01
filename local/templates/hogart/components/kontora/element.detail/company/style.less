@@ -1,0 +1,49 @@
+@import (reference) "../../../../variables";
+@import (reference) "../../../../bootstrap";
+@import (reference) "../../../../styles";
+
+.company {
+  .preview-text,
+  .detail-text {
+    font-size: @font-size-h5;
+  }
+  .aside {
+    ul {
+      padding-left: 20px;
+      list-style: none;
+    }
+
+    .direction-list {
+      a {
+        &:extend(.h5 all);
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .counter-company {
+      padding-left: 0;
+      li {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 10px;
+        > span {
+          font-size: @font-size-h3;
+          font-family: @font-family-serif;
+          margin: 10px 20px 10px 0;
+          float: left;
+          color: @brand-green;
+        }
+        > p {
+          margin: 0;
+          font-weight: 300;
+          font-size: @font-size-h5;
+        }
+      }
+    }
+
+  }
+
+}
