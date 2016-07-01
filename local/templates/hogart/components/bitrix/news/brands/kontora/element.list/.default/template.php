@@ -22,7 +22,7 @@ if (count($arResult["ITEMS"]) > 0):?>
                     <span>
                         <? $pic = "/images/project_no_img.jpg"; ?>
                         <? if (!empty($arItem['PREVIEW_PICTURE']['SRC']) && file_exists($_SERVER["DOCUMENT_ROOT"] . $arItem['PREVIEW_PICTURE']["SRC"])): ?>
-                            <? $file = CFile::ResizeImageGet($arItem['PREVIEW_PICTURE']['ID'], array("width" => 160, "height" => 90), BX_RESIZE_IMAGE_EXACT); ?>
+                            <? $file = CFile::ResizeImageGet($arItem['PREVIEW_PICTURE']['ID'], array("width" => 160, "height" => 90), BX_RESIZE_IMAGE_PROPORTIONAL); ?>
                             <? $pic = $file["src"]; ?>
                         <? endif; ?>
                         
