@@ -28,6 +28,9 @@
 .company .aside .direction-list a {
   font-family: "Roboto Condensed", sans-serif;
 }
+.company .video-item {
+  z-index: 0;
+}
 .company .preview-text,
 .company .detail-text {
   font-size: 14px;
