@@ -32,7 +32,7 @@ ul.sert-slider-cnt.js-service-slider:after {
   color: #95c600 !important;
   text-decoration: underline !important;
 }
-.collapseDetail {
+#collapseDetail {
   margin-top: 30px;
 }
 .brand-catalog {
