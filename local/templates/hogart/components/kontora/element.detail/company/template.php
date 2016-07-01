@@ -33,9 +33,9 @@
                     <? endforeach ?>
                 </ul>
                 <? if (count($arResult["PROPERTIES"]["honors"]["VALUE"]) > 6): ?>
-                    <div id="js-control-company" class="control">
-                        <span class="prev black"></span>
-                        <span class="next black"></span>
+                    <div id="js-control-company" class="controls text-right">
+                        <span class="prev"></span>
+                        <span class="next"></span>
                     </div>
                 <? else: ?>
                     <br/>
