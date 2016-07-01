@@ -1,5 +1,39 @@
-extend ' .container-fluid' has no matches
-extend ' .text-center' has no matches
+.left-menu a {
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.1;
+  color: inherit;
+}
+.left-menu a small,
+.left-menu a .small {
+  font-weight: normal;
+  line-height: 1;
+  color: #777777;
+}
+.left-menu a {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.left-menu a small,
+.left-menu a .small {
+  font-size: 75%;
+}
+.left-menu a {
+  font-size: 14px;
+}
+.left-menu {
+  text-align: center;
+}
+.aside {
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+@media screen and (max-width: 767px) {
+}
+@media (min-width: 768px) {
+}
 h1,
 h2,
 h3,
