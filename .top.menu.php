@@ -1,7 +1,7 @@
 <?
 $aMenuLinks = Array(
 	Array(
-		"Компания",
+		"О компании",
 		"/company/",
 		Array(),
 		Array(),
@@ -36,13 +36,6 @@ $aMenuLinks = Array(
 		""
 	),
 	Array(
-		"Сервис",
-		"/services/",
-		Array(),
-		Array(),
-		""
-	),
-	Array(
 		"Обучение",
 		"/learn/",
 		Array(),
@@ -50,8 +43,8 @@ $aMenuLinks = Array(
 		""
 	),
 	Array(
-		"Контакты",
-		"/contacts/tsentralnyy-ofis-khogart-v-moskve-sklad-i-servisnaya-sluzhba/",
+		"Сервис",
+		"/services/",
 		Array(),
 		Array(),
 		""

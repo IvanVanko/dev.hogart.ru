@@ -36,6 +36,7 @@ Loc::loadLanguageFile(__FILE__);
     $APPLICATION->AddHeadScript("/local/assets/bootstrap/js/transition.js");
     $APPLICATION->AddHeadScript("/local/assets/bootstrap/js/collapse.js");
     $APPLICATION->AddHeadScript("/local/assets/bootstrap/js/tab.js");
+    $APPLICATION->AddHeadScript("/local/assets/bootstrap/js/tooltip.js");
 
     $APPLICATION->SetAdditionalCSS("/h/css/houdini.min.css");
     $APPLICATION->AddHeadScript("/h/js/houdini.min.js");

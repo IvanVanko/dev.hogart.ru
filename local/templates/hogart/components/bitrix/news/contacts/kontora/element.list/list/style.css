@@ -1,6 +1,10 @@
-.contacts-list .active a {
+.contacts-list li {
+  margin-bottom: 30px;
+}
+.contacts-list li.active a {
   color: #95c600 !important;
 }
-.contacts-list .fa {
+.contacts-list li .fa {
   margin-right: 10px;
+  font-size: 18px;
 }

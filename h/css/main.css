@@ -3459,10 +3459,8 @@ blockquote:before {
 }
 .vacancy_page .demands-box ul li {
   font-family: 'Roboto', sans-serif;
-  font-size: 12px;
   line-height: 20px;
   font-weight: 300;
-  color: #4c4c4c;
 }
 .vacancy_page .sidebar-vacancy {
   padding: 55px 50px;
@@ -6233,7 +6231,6 @@ ul.all-project-box li a span {
 }
 .contact-page .contacts-list li {
   background-position: left 3px;
-  margin-bottom: 18px;
 }
 .contact-page .contacts-list li,
 .contact-page .contacts-list li * {
@@ -6242,19 +6239,19 @@ ul.all-project-box li a span {
   -o-transition: all 0.3s;
   transition: all 0.3s;
 }
-.contact-page .contacts-list li:hover a {
-  border-bottom-color: transparent;
-}
 .contact-page .contacts-list li a {
+  text-transform: uppercase;
   font-family: 'Roboto', sans-serif;
-  font-weight: 300;
   font-size: 12px;
   line-height: 18px;
   color: #000;
   text-decoration: none;
-  border-bottom: 1px dotted #000;
+  border-bottom: 1px dashed #000;
 }
 .contact-page .contacts-list li a:hover {
+  color: #95c600;
+}
+.contact-page .contacts-list li:hover {
   color: #95c600;
 }
 .contact-page .address-cnt h2 {

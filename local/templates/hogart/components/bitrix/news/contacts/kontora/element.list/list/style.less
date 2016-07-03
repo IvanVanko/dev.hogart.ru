@@ -1,12 +1,16 @@
 @import "../../../../../../../variables";
 
 .contacts-list {
-  .active {
-    a {
-      color: @brand-green !important;
+  li {
+    margin-bottom: 30px;
+    &.active {
+      a {
+        color: @brand-green !important;
+      }
     }
-  }
-  .fa {
-    margin-right: 10px;
+    .fa {
+      margin-right: 10px;
+      font-size: @font-size-h4;
+    }
   }
 }

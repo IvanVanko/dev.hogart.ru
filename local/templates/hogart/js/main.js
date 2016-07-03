@@ -15,6 +15,8 @@ HogartApp.prototype.init = function () {
 
 HogartApp.prototype.setHandlers = function () {
     var self = this;
+
+    $('[data-toggle="tooltip"]').tooltip();
     
     $('.eventRegistrationForm').on('forms.submit.success', function(event, data){
         if(data.redirect) {

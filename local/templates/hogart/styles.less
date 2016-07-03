@@ -108,6 +108,10 @@ body {
       margin-top: 95px;
     }
   }
+  .profile-url {
+    margin: 0 !important;
+    border-bottom: none;
+  }
 }
 
 .row {
@@ -153,6 +157,20 @@ a[data-toggle="collapse"] {
     font-size: @font-size-h3;
     a {
       color: darken(@brand-green, 5%);
+    }
+  }
+}
+.hogart-share {
+  a {
+    border: none;
+    text-align: left;
+    display: inline-block;
+    .fa {
+      font-size: 20px;
+      margin-left: 10px;
+      &:hover {
+        color: @brand-green;
+      }
     }
   }
 }

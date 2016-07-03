@@ -2,8 +2,21 @@
     die();
 }
 ?>
+
 <div class="col-md-9">
-    <h3><?=\Bitrix\Main\Localization\Loc::getMessage("title_contacts")?></h3>
+    <div class="row">
+        <div class="col-md-10">
+            <h3><?=\Bitrix\Main\Localization\Loc::getMessage("title_contacts")?></h3>
+        </div>
+        <div class="col-md-2">
+            <div class="hogart-share text-right">
+                <a data-toggle="tooltip" data-placement="top" href="#" class="js-popup-open" data-popup="#popup-subscribe" title="<?= GetMessage("Отправить на e-mail")?>"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+                <a data-toggle="tooltip" data-placement="top" href="#" onclick="window.print(); return false;" title="<?= GetMessage("Распечатать")?>"><i class="fa fa-print" aria-hidden="true"></i></a>
+                <a data-toggle="tooltip" data-placement="top" href="#" class="js-popup-open" data-popup="#popup-subscribe-phone" title="<?= GetMessage("Отправить SMS")?>"><i class="fa fa-mobile" aria-hidden="true"></i></a>
+            </div>
+        </div>
+    </div>
+
 
     <h4><?=$arResult['NAME']?></h4>
     <address>

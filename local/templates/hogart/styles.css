@@ -153,6 +153,10 @@ body.loading * {
 #header-block.sticky + .row {
   margin-top: 95px;
 }
+#header-block .profile-url {
+  margin: 0 !important;
+  border-bottom: none;
+}
 .row.vertical-align {
   display: flex;
   flex-direction: row;
@@ -191,6 +195,18 @@ a[data-toggle="collapse"]:after {
 .controls .next a,
 .controls .prev a {
   color: #82ad00;
+}
+.hogart-share a {
+  border: none;
+  text-align: left;
+  display: inline-block;
+}
+.hogart-share a .fa {
+  font-size: 20px;
+  margin-left: 10px;
+}
+.hogart-share a .fa:hover {
+  color: #95c600;
 }
 .side_href div {
   margin-bottom: 10px;

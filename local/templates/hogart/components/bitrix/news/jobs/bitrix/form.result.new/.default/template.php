@@ -15,8 +15,6 @@ if($arResult["isFormTitle"] && $arResult["SUCCESS"] !== "Y"):?>
 
 <? if($arResult["isFormNote"] != "Y") {
     ?>
-
-
     <?
     /***********************************************************************************
      * form questions
@@ -29,7 +27,6 @@ if($arResult["isFormTitle"] && $arResult["SUCCESS"] !== "Y"):?>
                 echo $arQuestion["HTML_CODE"];
             elseif($arQuestion['STRUCTURE'][0]['FIELD_TYPE'] == 'textarea'):?>
                 <div class="field js-validation-empty">
-
                     <a class="trigger-border-bottom<?=($arQuestion["CAPTION"] == 'Сопроводительное письмо') ? ' sopr' : '';?>"
                        href="#"><?=$arQuestion["CAPTION"]?></a> <?=($arQuestion["REQUIRED"] == "Y")?'*':'';?>
                     <?=$arQuestion["HTML_CODE"]?>
@@ -56,7 +53,6 @@ if($arResult["isFormTitle"] && $arResult["SUCCESS"] !== "Y"):?>
                     $customClass = 'js-validation-empty';
                 endif; ?>
                 <div class="field custom_label <?=$customClass?>">
-                    <!--			<div class="field custom_label">-->
                     <label
                         for="form_<?=$arQuestion['STRUCTURE'][0]['FIELD_TYPE'].'_'.$arQuestion['STRUCTURE'][0]['ID']?>">
                         <?=$arQuestion["CAPTION"]?> <?=($arQuestion["REQUIRED"] == "Y")?'*':'';?>
@@ -85,7 +81,7 @@ if($arResult["isFormTitle"] && $arResult["SUCCESS"] !== "Y"):?>
         } // isUseCaptcha
         ?>
 
-        <input type="submit" name="web_form_submit" class="empty-btn" value="Отправить"/>
+        <input type="submit" name="web_form_submit" class="btn btn-primary" value="Отправить"/>
         <div><br> Поля, отмеченные * обязательны для заполнения.</div>
         <?=$arResult["FORM_FOOTER"]?>
     </div>

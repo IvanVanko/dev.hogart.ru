@@ -11,17 +11,5 @@
                 </li>
             <?endforeach;?>
         </ul>
-
-        <div class="side_href">
-            <div>
-                <i class="fa fa-envelope" aria-hidden="true"></i><a href="#" class="js-popup-open" data-popup="#popup-subscribe"><?= GetMessage("Отправить на e-mail")?></a>
-            </div>
-            <div>
-                <i class="fa fa-print" aria-hidden="true"></i><a href="#" onclick="window.print(); return false;"><?= GetMessage("Распечатать")?></a>
-            </div>
-            <div>
-                <i class="fa fa-mobile" aria-hidden="true"></i><a href="#" class="js-popup-open" data-popup="#popup-subscribe-phone"><?= GetMessage("Отправить SMS")?></a>
-            </div>
-        </div>
     </div>
 <? endif; ?>
