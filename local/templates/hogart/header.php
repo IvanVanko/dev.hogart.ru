@@ -28,6 +28,7 @@ Loc::loadLanguageFile(__FILE__);
     $APPLICATION->SetAdditionalCSS("/h/css/dop-css.css");
     $APPLICATION->SetAdditionalCSS("/h/css/bug-fix.css");
     $APPLICATION->SetAdditionalCSS("/h/css/jquery-ui.min.css");
+    $APPLICATION->SetAdditionalCSS("/h/css/jquery-ui.hogart-dark.theme.min.css");
     $APPLICATION->SetAdditionalCSS("/h/css/nouislider.min.css");
     $APPLICATION->SetAdditionalCSS("/h/css/jquery.mCustomScrollbar.css");
 

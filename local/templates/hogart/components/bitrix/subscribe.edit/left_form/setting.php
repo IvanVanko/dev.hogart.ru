@@ -24,22 +24,12 @@
         $('#subs-box .field.custom_checkbox').click(function () {
             if (!$(this).hasClass('all')) {
                 if ($('#subs-box .field.custom_checkbox.all input').is(':checked')) {
-                    console.log('+');
                     $('#subs-box .field.custom_checkbox.all input').prop({"checked": false});
                 } else {
-                    console.log('-');
                 }
-                console.clear();
-                console.log($('#subs-box .field.custom_checkbox').find('input').filter(':checked').length);
-
                 if ($('#subs-box .field.custom_checkbox').find('input').filter(':checked').length == ($('#subs-box .field.custom_checkbox').length - 1)) {
                     $('#subs-box .field.custom_checkbox.all input').prop({"checked": true});
                 }
-                /*$('#subs-box .field.custom_checkbox').each(function () {
-                 if(!$(this).hasClass('all')){
-                 $(this).children('input').filter()
-                 }
-                 });*/
             }
         });
     });
@@ -52,10 +42,15 @@
         <? echo bitrix_sessid_post(); ?>
         <div id="subs-box">
             <? foreach ($arResult["RUBRICS"] as $itemID => $itemValue): ?>
-                <div class="field custom_checkbox <?= ($itemValue["NAME"] == 'Все') ? 'all' : '' ?>">
-                    <input id="s_<?= $itemValue["ID"] ?>" type="checkbox" name="RUB_ID[]"
-                           value="<?= $itemValue["ID"] ?>"<? if ($itemValue["CHECKED"]) echo " checked" ?> />
-                    <label for="s_<?= $itemValue["ID"] ?>"><?= $itemValue["NAME"] ?></label>
+
+                <div class="checkbox <?= ($itemValue["NAME"] == 'Все') ? 'all' : '' ?>">
+                    <label>
+                        <input type="checkbox"
+                               id="s_<?= $itemValue["ID"] ?>"
+                               name="RUB_ID[]"
+                               value="<?= $itemValue["ID"] ?>"<? if ($itemValue["CHECKED"]) echo " checked" ?>
+                        > <?= $itemValue["NAME"] ?>
+                    </label>
                 </div>
             <? endforeach; ?>
         </div>
@@ -74,7 +69,8 @@
                    value="<?= $arResult["SUBSCRIPTION"]["PHONE"] != "" ? $arResult["SUBSCRIPTION"]["PHONE"] : $arResult["REQUEST"]["PHONE"]; ?>"/>
         </div>
         <input type="hidden" name="FORMAT" value="html"/>
-        <button name="Save" class="empty-btn"><?= GetMessage("subscr_add") ?></button>
+        <br><br>
+        <button name="Save" class="btn btn-primary"><?= GetMessage("subscr_add") ?></button>
 
 
         <input type="hidden" name="PostAction" value="<? echo($arResult["ID"] > 0 ? "Update" : "Add") ?>"/>

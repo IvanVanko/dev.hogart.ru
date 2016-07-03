@@ -1,6 +1,6 @@
 <?if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 if (count($arResult['ITEMS']) > 0):?>
-	<h2><?= GetMessage("Календарь событий")?></h2>
+	<h3><?= GetMessage("Календарь событий")?></h3>
 	<div class="side-datepicker-cnt">
         <ul class="js-dateArray" id="side_news_array">
 			<?foreach ($arResult["ITEMS"] as $arItem):
@@ -10,6 +10,6 @@ if (count($arResult['ITEMS']) > 0):?>
 				</li>
 			<?endforeach;?>
 		</ul>
-		<div data-datepicker="#side_news_array" class="js-datepicker" data-lang="<?=LANGUAGE_ID?>"></div>
+		<div data-datepicker="#side_news_array" class="hogart-dark js-datepicker-hogart" data-lang="<?=LANGUAGE_ID?>"></div>
 	</div>
 <?endif; ?>

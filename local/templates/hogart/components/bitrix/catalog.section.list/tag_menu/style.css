@@ -1,6 +1,10 @@
+@media screen and (max-width: 767px) {
+}
+@media (min-width: 768px) {
+}
 .tag-left-menu {
   margin-top: 15px;
-  padding: 0;
+  padding-left: 0;
   list-style: none;
   width: 90px;
 }
@@ -11,6 +15,10 @@
   line-height: 30px;
   background-color: #95c600;
   border-radius: 5px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 }
 .tag-left-menu li:hover,
 .tag-left-menu li:active,
@@ -21,16 +29,16 @@
   display: block;
   color: white;
   text-align: center;
-  font-weight: 300;
+  text-transform: uppercase;
 }
 .tag-left-menu li a i {
   display: block;
   margin-top: 5px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   font-size: 30px;
   font-weight: 300;
 }
-.tag-left-menu li a i.icon-santekhnika:before {
+.tag-left-menu i.icon-santekhnika:before {
   width: 100%;
   margin-left: 0;
 }

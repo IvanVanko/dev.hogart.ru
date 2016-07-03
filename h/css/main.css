@@ -1,6 +1,5 @@
 @import "jquery-ui.min.css";
 @import "jquery-ui.structure.min.css";
-@import "jquery-ui.theme.min.css";
 /*Для ретина дисплеев*/
 .clearfix:before,
 .clearfix:after {
@@ -1462,7 +1461,6 @@ footer.right {
   width: 22px;
   height: 22px;
   background: #464646;
-  border-radius: 100%;
   color: #fff;
   font-family: 'Roboto Condensed', sans-serif;
   font-size: 12px;
@@ -1873,37 +1871,6 @@ footer.right {
   font-size: 12px;
   line-height: 16px;
 }
-.field.custom_checkbox input[type=checkbox] {
-  display: none;
-}
-.field.custom_checkbox label {
-  position: relative;
-  cursor: pointer;
-  display: block;
-}
-.field.custom_checkbox label:before {
-  width: 8px;
-  height: 8px;
-  border: 1px solid #fff;
-}
-.field.custom_checkbox label:before,
-.field.custom_checkbox label:after {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 2px;
-}
-.field.custom_checkbox label:after {
-  width: 15px;
-  height: 12px;
-  top: -2px;
-  left: -1px;
-  background: url('/images/ok.png') no-repeat;
-  display: none;
-}
-.field.custom_checkbox input[type=checkbox]:checked + label:after {
-  display: block;
-}
 .field.custom_radio input[type=radio] {
   display: none;
 }
@@ -2037,9 +2004,6 @@ footer.right {
   border: 1px solid #cccccc;
   background: none;
 }
-.field.custom_upload.white-btn.otz-b label {
-  color: #fff;
-}
 .field.custom_upload.white-btn.otz-b * {
   cursor: pointer;
 }
@@ -2064,13 +2028,6 @@ footer.right {
   -moz-transition: all 0.3s;
   -o-transition: all 0.3s;
   transition: all 0.3s;
-}
-.field.custom_upload.white-btn:hover {
-  background: transparent;
-  border-color: #fff;
-}
-.field.custom_upload.white-btn:hover label {
-  color: #fff;
 }
 .field .ui-slider {
   margin-bottom: 70px;
@@ -3549,22 +3506,6 @@ blockquote:before {
 }
 .vacancy_page .sidebar-vacancy .faces {
   margin-top: 15px !important;
-}
-.vacancy_page .sidebar-vacancy .faces li {
-  margin-bottom: 15px !important;
-}
-.vacancy_page .sidebar-vacancy .faces li .img {
-  margin-bottom: 5px !important;
-}
-.vacancy_page .sidebar-vacancy .faces li .face-pre-text {
-  line-height: 14px !important;
-}
-.vacancy_page .sidebar-vacancy .faces li .face-name {
-  line-height: 16px;
-  margin-top: 3px !important;
-}
-.vacancy_page .sidebar-vacancy .faces li .face-job {
-  margin-bottom: 4px !important;
 }
 .vacancy_page .creator-big {
   border: 1px solid #95c600;
@@ -8415,10 +8356,6 @@ body.mac-os .container-inner > .inner.no-full {
 }
 #feednews.subscribe-black .trigger-accordion.js-accordion {
   border-bottom: 1px dotted #000;
-}
-a.js-popup-open[data-popup="#popup-subscribe-mod"] {
-  text-decoration: none;
-  border-bottom: 1px dotted #fff;
 }
 .way-scheme img {
   max-width: 100%;

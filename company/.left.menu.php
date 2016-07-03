@@ -4,7 +4,7 @@ $aMenuLinks = Array(
 		"Новости", 
 		"/company/news/", 
 		Array(), 
-		Array(), 
+		Array("icon"=>"test"), 
 		"" 
 	),
 	Array(
@@ -15,8 +15,8 @@ $aMenuLinks = Array(
 		"" 
 	),
 	Array(
-		"Контакты",
-		"/contacts/tsentralnyy-ofis-khogart-v-moskve-sklad-i-servisnaya-sluzhba/",
+		"Контакты", 
+		"/contacts/tsentralnyy-ofis-khogart-v-moskve-sklad-i-servisnaya-sluzhba/", 
 		Array(), 
 		Array(), 
 		"" 

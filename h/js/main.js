@@ -289,7 +289,7 @@ app.initFixedBlock = function () {
     return this;
 };
 app.initDatepicker = function () {
-    $('.js-datepicker').each(function () {
+    $('.js-datepicker, .js-datepicker-hogart').each(function () {
         var dates = {};
         var id = $(this).attr('data-datepicker');
         $(id).find('li').each(function () {
@@ -300,12 +300,6 @@ app.initDatepicker = function () {
             beforeShowDay: function (date) {
                 var hlText = dates[date.getTime()];
                 return (hlText) ? [true, "js-tooltip-hover", hlText] : [true, '', ''];
-                //var hlText = dates[date.getTime()];
-                //var seminarDate = date.getTime();
-                //var now = new Date().getTime();
-                //console.log(date.getTime(), now.getTime());
-                //return (hlText) ? [true, (seminarDate < now)?"js-tooltipL-hover past":"js-tooltipL-hover", hlText] :
-                // [true, '', ''];
             }
         });
 

@@ -54,6 +54,7 @@ HogartApp.prototype.setHandlers = function () {
 
     $(".fixed-block").each(function (i, el) {
         var top = $(el).offset().top;
+        $(this).css({ width: $(this).outerWidth() });
         var extTop;
         if ($(el).data('rel-fixed-block') && $($(el).data('rel-fixed-block')).length) {
             extTop = $($(el).data('rel-fixed-block')).outerHeight();

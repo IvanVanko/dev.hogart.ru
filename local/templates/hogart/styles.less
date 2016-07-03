@@ -4,6 +4,7 @@
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
   font-family: @font-family-serif;
+  margin-top: (@line-height-computed / 2);
 }
 body {
   &.loading {
@@ -156,6 +157,25 @@ a[data-toggle="collapse"] {
   }
 }
 
+.side_href {
+  div {
+    margin-bottom: 10px;
+    a {
+      &:extend(.h5 all);
+      border-bottom: 1px dashed @brand-black;
+      &:hover {
+        color: @brand-green;
+      }
+    }
+    .fa {
+      font-size: (@font-size-h5 * 1.3);
+      margin-right: 10px;
+      width: 18px;
+      text-align: center;
+    }
+  }
+}
+
 .aside {
   &:extend(.container-fluid);
   background: white;
@@ -163,17 +183,45 @@ a[data-toggle="collapse"] {
   min-height: calc(~"100vh - 215px") !important;
 }
 
+.js-popup-open {
+  &:extend(.h5 all);
+  border-bottom: 1px dashed @brand-black;
+}
+
 .left-menu {
   &:extend(.text-center all);
+  margin-top: 15px;
   padding-left: 0;
   list-style: none;
-  a {
-    &:extend(.h5 all);
-    color: @brand-green;
-    text-transform: uppercase;
-  }
-  &.sticky {
-    margin-left: 10px;
+  width: 90px;
+  li {
+    margin-bottom: 20px;
+    height: 90px;
+    padding: 15px 0;
+    line-height: 30px;
+    background-color: @brand-green;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    &:hover, &:active, &.active {
+      background-color: @brand-black;
+    }
+    a {
+      &:extend(.h5 all);
+      display: block;
+      color: white;
+      text-align: center;
+      text-transform: uppercase;
+      i {
+        display: block;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        font-size: 30px;
+        font-weight: 300;
+      }
+    }
   }
 }
 

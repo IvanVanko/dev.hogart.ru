@@ -11,11 +11,12 @@
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
-
-if ($APPLICATION->GetCurDir() === $arParams["SEF_FOLDER"]) {
 ?>
-    <div class="inner">
-        <h1><?$APPLICATION->ShowTitle()?></h1>
+
+<? if ($APPLICATION->GetCurDir() === $arParams["SEF_FOLDER"]): ?>
+<div class="row">
+    <div class="col-md-9">
+        <h3><?$APPLICATION->ShowTitle()?></h3>
         <p>
             <?$APPLICATION->IncludeComponent("bitrix:main.include","",Array(
                     "AREA_FILE_SHOW" => "sect",
@@ -37,17 +38,21 @@ if ($APPLICATION->GetCurDir() === $arParams["SEF_FOLDER"]) {
             $component
         );?>
     </div>
-    <?$APPLICATION->IncludeComponent(
-        "kontora:element.list",
-        "history",
-        Array(
-            "IBLOCK_ID"     => 14,
-            'ORDER'         => array('sort' => 'asc'),
-            'PROPS'         => 'Y',
-            'ELEMENT_COUNT' => 2
-        ),
-        $component
-    );
-} else {
+    <div class="col-md-3 aside">
+        <?$APPLICATION->IncludeComponent(
+            "kontora:element.list",
+            "history",
+            Array(
+                "IBLOCK_ID"     => 14,
+                'ORDER'         => array('sort' => 'asc'),
+                'PROPS'         => 'Y',
+                'ELEMENT_COUNT' => 2
+            ),
+            $component
+        );?>
+    </div>
+</div>
+    
+<? else: ?>
     BXHelper::NotFound();
-}
+<? endif; ?>
