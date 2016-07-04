@@ -9,7 +9,7 @@ $qzip = array_filter(explode(',', $_REQUEST['qzip']));
 if(empty($qzip)) {
     LocalRedirect($_SERVER['HTTP_REFERER']);
 }
-
+$APPLICATION->RestartBuffer();
 $zip = new ZipArchive();
 
 $zip_name = 'hogart_docs'.time().'.zip';
@@ -48,4 +48,5 @@ if(file_exists($a_file)) {
     header('Content-Disposition: attachment; filename='.$zip_name);
     readfile($a_file);
     unlink($a_file);
+    exit;
 }
