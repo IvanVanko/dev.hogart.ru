@@ -8,7 +8,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 <? if($arResult["isFormNote"] != "Y") {
     ?>
     <? if($arResult["isFormTitle"]) { ?>
-        <h2 class="nomargin"><?=$arResult["FORM_TITLE"]?></h2>
+        <h3 class="nomargin"><?=$arResult["FORM_TITLE"]?></h3>
         <?
     } ?>
     <?=$arResult["FORM_HEADER"]?>
@@ -59,7 +59,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 
     <input type="hidden" name="web_form_apply" value="Y"/>
 <? if($arParams['HIDE_SUBMIT'] != 'Y') { ?>
-        <input type="submit" class="empty-btn" value="<?= GetMessage("Отправить") ?>">
+        <input type="submit" class="btn btn-primary" value="<?= GetMessage("Отправить") ?>">
     <?} ?>
     <br>
     <br>

@@ -311,5 +311,5 @@ footer {
   color: #95c600;
 }
 .sections-list a.selected {
-  color: #95c600;
+  color: #95c600 !important;
 }
