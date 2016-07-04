@@ -87,9 +87,9 @@
 
                 <? if(count($arResult['FILTER']['BRANDS']) > 0): ?>
                     <h3>Бренд</h3>
-                    <div class="breands hide-big-cnt" data-hide="Еще бренды">
+                    <div class="row breands hide-big-cnt" data-hide="Еще бренды">
                         <? foreach($arResult['FILTER']['BRANDS'] as $key => $arBrand): ?>
-                            <div class="checkbox">
+                            <div class="col-md-6 checkbox" style="margin-top: 0;">
                                 <label>
                                     <input
                                         name="brand[]"

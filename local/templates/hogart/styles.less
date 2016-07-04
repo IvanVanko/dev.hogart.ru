@@ -152,10 +152,10 @@ a[data-toggle="collapse"] {
 
 .controls {
   margin: 0 20px;
-  position: relative;
   color: darken(@brand-green, 5%);
   .next,
   .prev {
+    position: relative;
     display: inline-block;
     font-size: @font-size-h3;
     a {
@@ -167,6 +167,9 @@ a[data-toggle="collapse"] {
         bottom: 0;
         left: 0;
         right: 0;
+        &.disabled {
+          display: none;
+        }
       }
     }
   }

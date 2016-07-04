@@ -189,11 +189,11 @@ a[data-toggle="collapse"]:after {
 }
 .controls {
   margin: 0 20px;
-  position: relative;
   color: #82ad00;
 }
 .controls .next,
 .controls .prev {
+  position: relative;
   display: inline-block;
   font-size: 24px;
 }
@@ -210,6 +210,12 @@ a[data-toggle="collapse"]:after {
   bottom: 0;
   left: 0;
   right: 0;
+}
+.controls .next a.bx-next.disabled,
+.controls .prev a.bx-next.disabled,
+.controls .next a.bx-prev.disabled,
+.controls .prev a.bx-prev.disabled {
+  display: none;
 }
 .hogart-share a {
   border: none;
