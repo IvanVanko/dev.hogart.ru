@@ -22,7 +22,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 					form header
 ***********************************************************************************/
 if ($arResult["isFormTitle"]):?>
-	<h2><?=$arResult["FORM_TITLE"]?></h2>
+	<h3><?=$arResult["FORM_TITLE"]?></h3>
 <?endif;?>
 
 <?
@@ -114,7 +114,7 @@ if($arResult["isUseCaptcha"] == "Y")
 } // isUseCaptcha
 ?>
     <br/>
-	<input type="submit" name="web_form_submit" class="empty-btn" value="<?= GetMessage("Отправить") ?>" />
+	<input type="submit" name="web_form_submit" class="btn btn-primary" value="<?= GetMessage("Отправить") ?>" />
 
 <?=$arResult["FORM_FOOTER"]?>
 </div>

@@ -179,10 +179,6 @@ $date_to = !empty($arResult["DATE_ACTIVE_TO"]) ? FormatDate("d F", MakeTimeStamp
                 $(document).ready(function () {
                     $('.js-validation-empty.stock').hide();
                     $('.js-validation-empty.stock input').val('<?=$arResult['~NAME']?>');
-
-                    setTimeout(function () {
-                        $(window).resize();
-                    }, 200);
                 });
             </script>
             <div class="padding">
@@ -224,13 +220,14 @@ $date_to = !empty($arResult["DATE_ACTIVE_TO"]) ? FormatDate("d F", MakeTimeStamp
                 </div>
             </div>
         <? else: ?>
+            <h3><?= GetMessage("Другие акции") ?></h3>
             <? $APPLICATION->IncludeComponent(
                 "kontora:element.list",
                 "stock_detail",
                 Array(
                     "IBLOCK_ID" => $arParams["IBLOCK_ID"],
                     "PROPS" => "Y",
-                    "ELEMENT_COUNT" => "3",
+                    "ELEMENT_COUNT" => "5",
                     "FILTER" => array('!ID' => $arResult['ID']),
                     'SEF_FOLDER' => $arParams['SEF_FOLDER'],
                 )

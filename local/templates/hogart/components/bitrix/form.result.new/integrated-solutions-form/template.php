@@ -18,10 +18,10 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
     ?>
     <? if($arResult["isFormTitle"]):?>
         <? if($arResult['arForm']['ID'] == 8 || $arResult['arForm']['ID'] == 7):?>
-            <h2 class="nomargin"><?=$arResult["FORM_TITLE"]?></h2>
+            <h3 class="nomargin"><?=$arResult["FORM_TITLE"]?></h3>
         <? else:?>
             <div class="head inner">
-                <h2><?=$arResult["FORM_TITLE"]?></h2>
+                <h3><?=$arResult["FORM_TITLE"]?></h3>
                 <a href="#" class="close"></a>
             </div>
         <? endif; ?>
@@ -73,7 +73,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
                     </div>
                 <? endif; ?>
             <? endforeach; ?>
-            <input type="submit" name="web_form_submit" class="empty-btn" value="<?= GetMessage("Отправить") ?>"/>
+            <input type="submit" name="web_form_submit" class="btn btn-primary" value="<?= GetMessage("Отправить") ?>"/>
             <br/>
             <small><?= GetMessage("Поля, отмеченные * обязательны для заполнения.") ?></small>
         </div>

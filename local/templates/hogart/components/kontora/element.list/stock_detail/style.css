@@ -5,7 +5,7 @@
 .stock-preview a.stock-preview-item {
   display: block;
   font-size: 14px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 .stock-preview a.stock-preview-item .date_small {
   font-family: "Roboto", Helvetica, Arial, sans-serif;

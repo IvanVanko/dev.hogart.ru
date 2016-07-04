@@ -151,15 +151,27 @@ a[data-toggle="collapse"] {
 }
 
 .controls {
+  margin: 0 20px;
+  position: relative;
+  color: darken(@brand-green, 5%);
   .next,
   .prev {
     display: inline-block;
     font-size: @font-size-h3;
     a {
       color: darken(@brand-green, 5%);
+      &.bx-next,
+      &.bx-prev {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
     }
   }
 }
+
 .hogart-share {
   a {
     border: none;
