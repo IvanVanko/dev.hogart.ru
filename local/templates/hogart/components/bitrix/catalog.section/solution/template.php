@@ -86,7 +86,7 @@
                 </div>
             </div>
             <script type="text/javascript">
-                setTimeout(function () {
+                $(function () {
                     $('.js-solutions-slider-<?=$count?>').bxSlider({
                         minSlides: 3,
                         maxSlides: 3,
@@ -99,10 +99,7 @@
                         prevSelector: $('#js-solutions-slider-<?=$count?>').find('.prev'),
                         infiniteLoop: false
                     });
-                    $(window).resize();
-                }, 200);
-
-
+                });
             </script>
         <? endforeach; ?>
 
