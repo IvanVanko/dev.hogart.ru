@@ -56,7 +56,7 @@ if (!isset($arParams['ITEM_TEMPLATE']) && empty($arParams['ITEM_TEMPLATE'])):?>
     <? endif; ?>
     <? if (!empty($arResult["PROPERTIES"]['problem'])): ?>
         <div class="inner no-full">
-            <h3><?= GetMessage("особенности проекта") ?></h3>
+            <h3><?= GetMessage("Особенности проекта") ?></h3>
             <?= $arResult["PROPERTIES"]['problem']['~VALUE']['TEXT']; ?>
             <?= $arResult["PROPERTIES"]['solution_project']['~VALUE']['TEXT']; ?>
         </div>
@@ -228,7 +228,7 @@ if (!isset($arParams['ITEM_TEMPLATE']) && empty($arParams['ITEM_TEMPLATE'])):?>
     <? endif ?>
     <? if (!empty($arResult['PROPERTIES']['video']['VALUE'])) : ?>
         <div class="proj-video-box">
-            <div class="open-video">видео презентация</div>
+            <div class="open-video">Видео презентация</div>
             <div id="proj-video" class="popup-img-cnt " style="display: none;">
                 <div class="inner-popup-img">
                     <div class="content-img">
