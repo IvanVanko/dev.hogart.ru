@@ -86,7 +86,7 @@
                 </div>
             </div>
             <script type="text/javascript">
-                if (bxSlider typeof  == "undefined") {
+                if (typeof bxSlider == "undefined") {
                     var bxSlider = {};
                 }
                 $('#collapse-<?= $arElement["ID"]; ?>').on('show.bs.collapse', function () {
