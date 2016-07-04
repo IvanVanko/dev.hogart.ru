@@ -29,12 +29,12 @@
                     <? if (!empty($arElement["PROPERTIES"]["pictures"]['VALUE']) || !empty($arElement["PROPERTIES"]["videos"]['VALUE'])): ?>
                         <hr>
                         <? if (count($arElement["PROPERTIES"]["pictures"]["VALUE"]) + count($arElement["PROPERTIES"]["videos"]["VALUE"]) > 3): ?>
-                            <div id="js-solutions-slider-<?= $count ?>" class="controls text-right">
+                            <div id="js-solutions-slider-<?= $arElement["ID"]; ?>" class="controls text-right">
                                 <div class="prev"><i class="fa fa-arrow-circle-o-left"></i></div>
                                 <div class="next"><i class="fa fa-arrow-circle-o-right"></i></div>
                             </div>
                         <? endif; ?>
-                        <ul class="sert-slider-cnt js-solutions-slider-<?= $count ?>">
+                        <ul class="sert-slider-cnt js-solutions-slider-<?= $arElement["ID"]; ?>">
                             <?
                             foreach ($arElement["PROPERTIES"]["pictures"]["VALUE"] as $key => $picId):
                                 $file = CFile::ResizeImageGet($picId, array('width' => 480, 'height' => 360), BX_RESIZE_IMAGE_EXACT, true);
@@ -86,19 +86,24 @@
                 </div>
             </div>
             <script type="text/javascript">
-                $(function () {
-                    $('.js-solutions-slider-<?=$count?>').bxSlider({
-                        minSlides: 3,
-                        maxSlides: 3,
-                        slideMargin: 22,
-                        slideWidth: $(this).width() / 3 - 22,
-                        pager: false,
-                        nextText: '',
-                        prevText: '',
-                        nextSelector: $('#js-solutions-slider-<?=$count?>').find('.next'),
-                        prevSelector: $('#js-solutions-slider-<?=$count?>').find('.prev'),
-                        infiniteLoop: false
-                    });
+                if (bxSlider typeof  == "undefined") {
+                    var bxSlider = {};
+                }
+                $('#collapse-<?= $arElement["ID"]; ?>').on('show.bs.collapse', function () {
+                    if (!bxSlider[<?= $arElement["ID"]; ?>]) {
+                        bxSlider[<?= $arElement["ID"]; ?>] = $('.js-solutions-slider-<?= $arElement["ID"]; ?>').bxSlider({
+                            minSlides: 3,
+                            maxSlides: 3,
+                            slideMargin: 22,
+                            slideWidth: $(this).width() / 3 - 22,
+                            pager: false,
+                            nextText: '',
+                            prevText: '',
+                            nextSelector: $('#js-solutions-slider-<?= $arElement["ID"]; ?>').find('.next'),
+                            prevSelector: $('#js-solutions-slider-<?= $arElement["ID"]; ?>').find('.prev'),
+                            infiniteLoop: false
+                        });
+                    }
                 });
             </script>
         <? endforeach; ?>
