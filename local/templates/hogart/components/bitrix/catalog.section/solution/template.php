@@ -89,7 +89,7 @@
                 if (typeof bxSlider == "undefined") {
                     var bxSlider = {};
                 }
-                $('#collapse-<?= $arElement["ID"]; ?>').on('show.bs.collapse', function () {
+                $('#collapse-<?= $arElement["ID"]; ?>').on('shown.bs.collapse', function () {
                     if (!bxSlider[<?= $arElement["ID"]; ?>]) {
                         bxSlider[<?= $arElement["ID"]; ?>] = $('.js-solutions-slider-<?= $arElement["ID"]; ?>').bxSlider({
                             minSlides: 3,
