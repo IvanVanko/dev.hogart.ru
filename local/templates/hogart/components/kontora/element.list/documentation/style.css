@@ -1,0 +1,13 @@
+@media screen and (max-width: 767px) {
+}
+@media (min-width: 768px) {
+}
+.doc-loadlist .head span {
+  border-bottom: 1px dashed #2c2432;
+}
+.doc-loadlist .item-box {
+  margin-left: 20px;
+}
+.doc-loadlist .item-box .item {
+  margin-left: 20px;
+}

@@ -7920,12 +7920,6 @@ hr {
   padding: 0;
   margin: 0;
 }
-.documentation_page .doc-loadlist .item-box {
-  display: none;
-}
-.documentation_page .doc-loadlist .item-box.active {
-  display: block;
-}
 .documentation_page .doc-loadlist li {
   padding: 12px;
   cursor: pointer;
@@ -7994,7 +7988,7 @@ hr {
 .documentation_page .doc-loadlist li .field label * {
   color: #000;
 }
-.documentation_page .doc-loadlist li span {
+.documentation_page .doc-loadlist li:not(.head) span {
   display: block;
   padding-left: 30px;
   margin-left: 5px;
@@ -8069,62 +8063,7 @@ hr {
   -o-transform: rotate(90deg);
   transform: rotate(90deg);
 }
-.documentation_page .doc-loadlist .head {
-  background: #95c600;
-  margin: 12px 0;
-  position: relative;
-}
-.documentation_page .doc-loadlist .head label {
-  font-family: 'Roboto Condensed', sans-serif;
-  font-size: 16px;
-  line-height: 16px;
-  color: #000;
-  text-transform: uppercase;
-}
-.documentation_page .doc-loadlist .head:before {
-  position: absolute;
-  content: '';
-  right: 15px;
-  top: 50%;
-  margin-top: -2px;
-  width: 7px;
-  height: 4px;
-  background: url("/images/product_down.png") no-repeat center;
-  -webkit-transition: all .3s;
-  -moz-transition: all .3s;
-  -o-transition: all .3s;
-  transition: all .3s;
-}
-.documentation_page .doc-loadlist .head.active:before {
-  -webkit-transform: rotate(180deg);
-  -moz-transform: rotate(180deg);
-  -ms-transform: rotate(180deg);
-  -o-transform: rotate(180deg);
-  transform: rotate(180deg);
-}
-.documentation_page .doc-loadlist .head_sub {
-  position: relative;
-}
-.documentation_page .doc-loadlist .head_sub:before {
-  position: absolute;
-  right: 15px;
-  top: 50%;
-  margin-top: -2px;
-  width: 7px;
-  height: 4px;
-  background: url("/images/product_down.png") no-repeat center;
-  -webkit-transition: all .3s;
-  -moz-transition: all .3s;
-  -o-transition: all .3s;
-  transition: all .3s;
-}
-.documentation_page .doc-loadlist .head_sub.active:before {
-  -webkit-transform: rotate(180deg);
-  -moz-transform: rotate(180deg);
-  -ms-transform: rotate(180deg);
-  -o-transform: rotate(180deg);
-  transform: rotate(180deg);
-}
+
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none;   /* Chrome/Safari/Opera */

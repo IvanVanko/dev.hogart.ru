@@ -150,6 +150,23 @@ a[data-toggle="collapse"] {
   }
 }
 
+.more & {
+  display: none;
+}
+
+.btn-more {
+  &:extend(.btn all);
+  .button-size(@padding-xs-vertical; @padding-xs-horizontal; @font-size-small; @line-height-small; @btn-border-radius-small);
+  .button-variant(@btn-default-color; @btn-default-bg; @btn-default-border);
+  margin-top: 5px;
+  .fa:before {
+    content: "\f107";
+  }
+  &.opened .fa:before {
+    content: "\f106";
+  }
+}
+
 .complex-page-all-href {
   a {
     &:extend(.h5 all);

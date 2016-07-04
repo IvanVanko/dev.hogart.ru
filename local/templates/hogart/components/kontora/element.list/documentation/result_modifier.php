@@ -19,7 +19,6 @@ foreach ($arResult['ITEMS'] as $key => $arItem) {
 	$info = new SplFileInfo($file["FILE_NAME"]);
 	$file["EXTENTION"] = $info->getExtension();
 	$arItem["FILE"] = $file;
-    //$arResult['ITEMS'][$key]['DOWNLOAD_LINK'] = BXHelper::getDownloadLink($arItem['FILE']['ID'], 'download.php', CUtil::translit($arItem['NAME'], "ru", array("max_len" => 100, "replace_space" => "-", "replace_other" => "-")), $file["EXTENTION"]);
     $arItem['DOWNLOAD_LINK'] = $arResult['ITEMS'][$key]['DOWNLOAD_LINK'] = BXHelper::getDownloadLink($arItem['FILE']['ID'], 'download.php', str_replace(array("/","|","\\", "?", ":", ";"), "", $arItem['NAME']), $file["EXTENTION"]);
 
     //fileDump(array($arItem, $file), true);

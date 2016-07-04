@@ -1,5 +1,6 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
+
 if(!isset($_REQUEST['qzip'])) {
     LocalRedirect($_SERVER['HTTP_REFERER']);
 }
@@ -16,8 +17,7 @@ $file_folder = '/upload/';
 
 $a_file = $_SERVER["DOCUMENT_ROOT"].$file_folder.$zip_name;
 
-// echo "<PRE>";
-$zip->open($a_file, ZIPARCHIVE::CREATE);
+$zip->open($a_file, ZipArchive::CREATE);
 
 foreach($qzip as $file) {
     $ci__documentation__element = CIBlockElement::GetList(
@@ -37,8 +37,6 @@ foreach($qzip as $file) {
     $document__extension = $document__extension[1];
 
     $documentation__name__cp862 = CUtil::translit($documentation__item['NAME'], "ru").".".$document__extension;
-    //        $documentation__name__cp862 = iconv("UTF-8","CP1252//IGNORE", $documentation__item['NAME'] . "." . $document__extension);
-
     $filePath = $_SERVER["DOCUMENT_ROOT"].CFile::GetPath($file);
     $zip->addFile($filePath, $documentation__name__cp862);
 }

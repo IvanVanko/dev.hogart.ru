@@ -17,7 +17,7 @@ $(document).ready(function () {
             section.find(".head input").prop('checked', false);
         }
     }
-    function formLink(){
+    function formLink() {
         var documents = [],
             zipLink;
 
@@ -31,6 +31,37 @@ $(document).ready(function () {
         $(".icon-doc-sc").attr({href: zipLink});
     }
 
+    $('.doc-loadlist .head').click(function (e) {
+        if (e.target.tagName == "INPUT") {
+            $('+.collapse', this).find('input[type="checkbox"]').prop("checked", $('input[type="checkbox"]', this).prop("checked"));
+            e.stopPropagation();
+        }
+        formLink();
+    });
+
+    $('.doc-loadlist .head_sub').click(function (e) {
+        if (e.target.tagName == "INPUT") {
+            $('.item input[type="checkbox"]', $(this).parents('.item-box')).prop("checked", $('input[type="checkbox"]', this).prop("checked"));
+            e.stopPropagation();
+        }
+        formLink();
+    });
+
+    $('.doc-loadlist .item input[type="checkbox"]').click(function () {
+        formLink();
+    });
+
+    $('.doc-loadlist .item .download-link').click(function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        var $field = $(this).parents('.checkbox');
+        if($('input', $field).length){
+            window.open($('input', $field).val(), '_blank');
+        }
+    });
+
+    /*
+    
     $('.doc-loadlist .head, .doc-loadlist .head_sub').click(function (e) {
         if ($(this).hasClass('head')) {
             toggleDoc($(this));
@@ -41,25 +72,21 @@ $(document).ready(function () {
         }
     });
 
-    $('.doc-loadlist .head span').click(function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-
-        var $parent = $(this).parents('.li-container'),
+    $('.doc-loadlist .head').click(function (e) {
+        var $parent = $(this),
             $list = $(this).parents('.doc-loadlist');
 
         var enabled = !$parent.find('input').prop("checked");
-
+        if (e.target.tagName == "INPUT") {
+            enabled = !!e.target.checked; 
+        }
         $parent.find('input').prop({
             "checked": enabled
         });
-
         $list.find('.item-box input').prop('checked', enabled);
         formLink();
-    });
-
-    $('.doc-loadlist .head label, .doc-loadlist .head label').click(function (e) {
-        toggleDoc($(this));
+        e.stopPropagation();
+        e.preventDefault();
     });
 
     $('.doc-loadlist .head_sub span').click(function (e) {
@@ -77,7 +104,7 @@ $(document).ready(function () {
         formLink();
     });
 
-    $('.doc-loadlist .head h4').click(function (e) {
+    $('.doc-loadlist .head .h4').click(function (e) {
         var $parent = $(this).parents('.li-container');
         $parent.find('.item').slideToggle();
     });
@@ -109,4 +136,5 @@ $(document).ready(function () {
         formLink();
         checkCheckedSections($(this));
     });
+     */
 });

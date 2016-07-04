@@ -15,6 +15,12 @@ HogartApp.prototype.init = function () {
 
 HogartApp.prototype.setHandlers = function () {
     var self = this;
+    
+    $('.btn-more').click(function () {
+        var container = $("#" + $(this).attr('rel'));
+        $('.more', container).animate({ height: "toggle" });
+        $(this).toggleClass('opened');
+    });
 
     $('[data-toggle="tooltip"]').tooltip();
     

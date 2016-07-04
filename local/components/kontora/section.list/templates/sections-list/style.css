@@ -1,3 +1,9 @@
+@media print {
+  .btn-more > .caret,
+  .dropup > .btn-more > .caret {
+    border-top-color: #000 !important;
+  }
+}
 .complex-page-all-href a,
 .side_href div a,
 .js-popup-open,
@@ -61,6 +67,62 @@
 @media screen and (max-width: 767px) {
 }
 @media (min-width: 768px) {
+}
+.btn-more {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.btn-more:focus,
+.btn-more:active:focus,
+.btn-more.active:focus,
+.btn-more.focus,
+.btn-more:active.focus,
+.btn-more.active.focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+.btn-more:hover,
+.btn-more:focus,
+.btn-more.focus {
+  color: #333;
+  text-decoration: none;
+}
+.btn-more:active,
+.btn-more.active {
+  outline: 0;
+  background-image: none;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+.btn-more.disabled,
+.btn-more[disabled],
+fieldset[disabled] .btn-more {
+  cursor: not-allowed;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+a.btn-more.disabled,
+fieldset[disabled] a.btn-more {
+  pointer-events: none;
 }
 h1,
 h2,
@@ -202,6 +264,77 @@ a[data-toggle="collapse"]:after {
   content: "";
   position: relative;
   display: block;
+}
+.more  {
+  display: none;
+}
+.btn-more {
+  padding: 1px 5px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+  margin-top: 5px;
+}
+.btn-more:focus,
+.btn-more.focus {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #8c8c8c;
+}
+.btn-more:hover {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.btn-more:active,
+.btn-more.active,
+.open > .dropdown-toggle.btn-more {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.btn-more:active:hover,
+.btn-more.active:hover,
+.open > .dropdown-toggle.btn-more:hover,
+.btn-more:active:focus,
+.btn-more.active:focus,
+.open > .dropdown-toggle.btn-more:focus,
+.btn-more:active.focus,
+.btn-more.active.focus,
+.open > .dropdown-toggle.btn-more.focus {
+  color: #333;
+  background-color: #d4d4d4;
+  border-color: #8c8c8c;
+}
+.btn-more:active,
+.btn-more.active,
+.open > .dropdown-toggle.btn-more {
+  background-image: none;
+}
+.btn-more.disabled:hover,
+.btn-more[disabled]:hover,
+fieldset[disabled] .btn-more:hover,
+.btn-more.disabled:focus,
+.btn-more[disabled]:focus,
+fieldset[disabled] .btn-more:focus,
+.btn-more.disabled.focus,
+.btn-more[disabled].focus,
+fieldset[disabled] .btn-more.focus {
+  background-color: #fff;
+  border-color: #ccc;
+}
+.btn-more .badge {
+  color: #fff;
+  background-color: #333;
+}
+.btn-more .fa:before {
+  content: "\f107";
+}
+.btn-more.opened .fa:before {
+  content: "\f106";
 }
 .complex-page-all-href a {
   border-bottom: 1px dashed #2c2432;
