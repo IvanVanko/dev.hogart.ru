@@ -2,10 +2,6 @@
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetTitle("Реализованные проекты");
 ?><?
-/*$APPLICATION->IncludeComponent("kontora:section.detail", "solution", array(
-  'SECTION_CODE' => $_REQUEST['section'],
-  'SELECT'       => array('UF_*', 'ID', 'IBLOCK_ID', 'NAME', 'DESCRIPTION')
-));*/
 $section_codes = BXHelper::getSections(array('ID' => 'ASC'), array('ACTIVE' => 'Y', 'IBLOCK_ID' => '7'), false, array('CODE'), true, 'CODE');
 $section_codes = array_keys($section_codes['RESULT']);
 if (in_array($_REQUEST["SECTION_CODE"], $section_codes)) {

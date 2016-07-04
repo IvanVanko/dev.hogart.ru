@@ -1,0 +1,16 @@
+@media screen and (max-width: 767px) {
+}
+@media (min-width: 768px) {
+}
+.zones h4 {
+  cursor: pointer;
+  text-transform: uppercase;
+}
+.zones h4 span {
+  border-bottom: 1px dashed #2c2432;
+  padding-right: 0 !important;
+  margin-left: 0 !important;
+}
+.zones h4:hover {
+  color: #95c600;
+}
