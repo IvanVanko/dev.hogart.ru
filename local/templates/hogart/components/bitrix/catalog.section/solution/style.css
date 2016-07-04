@@ -14,3 +14,9 @@
 .zones > h4:hover {
   color: #95c600;
 }
+.zones .pres-material a {
+  border-bottom: 1px dashed #2c2432;
+}
+.zones .pres-material a:hover {
+  color: #95c600 !important;
+}
