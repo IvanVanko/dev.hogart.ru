@@ -150,6 +150,16 @@ a[data-toggle="collapse"] {
   }
 }
 
+.complex-page-all-href {
+  a {
+    &:extend(.h5 all);
+    border-bottom: 1px dashed @brand-black;
+    &:hover {
+      color: @brand-green;
+    }
+  }
+}
+
 .controls {
   margin: 0 20px;
   color: darken(@brand-green, 5%);
