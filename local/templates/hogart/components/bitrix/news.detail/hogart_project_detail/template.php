@@ -56,7 +56,7 @@ if (!isset($arParams['ITEM_TEMPLATE']) && empty($arParams['ITEM_TEMPLATE'])):?>
     <? endif; ?>
     <? if (!empty($arResult["PROPERTIES"]['problem'])): ?>
         <div class="inner no-full">
-            <h2><?= GetMessage("особенности проекта") ?></h2>
+            <h3><?= GetMessage("особенности проекта") ?></h3>
             <?= $arResult["PROPERTIES"]['problem']['~VALUE']['TEXT']; ?>
             <?= $arResult["PROPERTIES"]['solution_project']['~VALUE']['TEXT']; ?>
         </div>
