@@ -319,10 +319,11 @@ footer {
 .sections-list a {
   display: block;
   text-transform: uppercase;
-  text-decoration: underline !important;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 .sections-list a:hover {
-  color: #95c600;
+  color: #95c600 !important;
 }
 .sections-list a.selected {
   color: #95c600 !important;

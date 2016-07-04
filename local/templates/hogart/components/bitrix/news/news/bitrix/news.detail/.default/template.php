@@ -2,31 +2,37 @@
 $date_from = FormatDate("d F Y", MakeTimeStamp($arResult["ACTIVE_FROM"]));
 $share_img_src = false;
 ?>
-<div class="row vertical-align">
-    <div class="col-md-11">
-        <h3 style="margin-top: 10px"><?$APPLICATION->ShowTitle()?></h3>
-    </div>
-    <div class="col-md-1">
-        <div id="con-4" class="controls text-right">
-            <? if (!empty($arResult["PREV"])): ?>
-                <div class="prev">
-                    <a href="<?= $arResult["PREV"] ?>">
-                        <i class="fa fa-arrow-circle-o-left"></i>
-                    </a>
-                </div>
-            <? endif; ?>
-            <? if (!empty($arResult["NEXT"])): ?>
-                <div class="next">
-                    <a href="<?= $arResult["NEXT"] ?>">
-                        <i class="fa fa-arrow-circle-o-right"></i>
-                    </a>
-                </div>
-            <? endif; ?>
-        </div>
-    </div>
-</div>
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-9">
+        <div class="row vertical-align">
+            <div class="col-md-10">
+                <h3 style="margin-top: 10px"><?$APPLICATION->ShowTitle()?></h3>
+                <div class="controls text-right">
+                    <? if (!empty($arResult["PREV"])): ?>
+                        <div class="prev">
+                            <a href="<?= $arResult["PREV"] ?>">
+                                <i class="fa fa-arrow-circle-o-left"></i>
+                            </a>
+                        </div>
+                    <? endif; ?>
+                    <? if (!empty($arResult["NEXT"])): ?>
+                        <div class="next">
+                            <a href="<?= $arResult["NEXT"] ?>">
+                                <i class="fa fa-arrow-circle-o-right"></i>
+                            </a>
+                        </div>
+                    <? endif; ?>
+                </div>
+            </div>
+            <div class="col-md-2 text-right">
+                <div class="hogart-share text-right">
+                    <a data-toggle="tooltip" data-placement="top" href="#" class="js-popup-open" data-popup="#popup-subscribe" title="<?= GetMessage("Отправить на e-mail")?>"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+                    <a data-toggle="tooltip" data-placement="top" href="#" onclick="window.print(); return false;" title="<?= GetMessage("Распечатать")?>"><i class="fa fa-print" aria-hidden="true"></i></a>
+                    <a data-toggle="tooltip" data-placement="top" href="#" class="js-popup-open" data-popup="#popup-subscribe-phone" title="<?= GetMessage("Отправить SMS")?>"><i class="fa fa-mobile" aria-hidden="true"></i></a>
+                </div>
+            </div>
+        </div>
+
         <div class="news-one-cnt">
             <div class="padding-news">
                 <div class="date">
@@ -79,9 +85,9 @@ $share_img_src = false;
                     </li>
                 </ul>
                 <? if (count($arResult['PROPERTIES']['photogallery']['VALUE']) > 4) { ?>
-                    <div class="control">
-                        <span class="prev black" id="galP"></span>
-                        <span class="next black" id="galN"></span>
+                    <div class="controls">
+                        <div class="prev" id="galP"><i class="fa fa-arrow-circle-o-left"></i></div>
+                        <div class="next" id="galN"><i class="fa fa-arrow-circle-o-right"></i></div>
                     </div>
                 <?}?>
             </div>
@@ -99,7 +105,7 @@ $share_img_src = false;
         );?>
         <a class="back_page icon-news-back" href="/company/news/"><?= GetMessage("Назад к новостям") ?></a>
     </div>
-    <!-- div class="col-md-3">
+    <div class="col-md-3 aside">
         <?$APPLICATION->IncludeComponent(
             "kontora:element.list",
             "news_detail",
@@ -114,5 +120,5 @@ $share_img_src = false;
                 "CHECK_PERMISSIONS" => "Y",
             )
         );?>
-    </div -->
+    </div>
 </div>

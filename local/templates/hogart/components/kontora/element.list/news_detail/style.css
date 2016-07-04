@@ -1,0 +1,27 @@
+@media screen and (max-width: 767px) {
+}
+@media (min-width: 768px) {
+}
+.news-aside {
+  list-style: none;
+  padding: 0;
+}
+.news-aside li {
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+.news-aside li .date sub {
+  text-transform: uppercase;
+  font-weight: 700 !important;
+}
+.news-aside li p {
+  font-weight: 300;
+}
+.news-aside li:hover {
+  color: #95c600;
+}
+.news-aside li:hover a {
+  color: #95c600;
+  text-decoration: underline !important;
+}

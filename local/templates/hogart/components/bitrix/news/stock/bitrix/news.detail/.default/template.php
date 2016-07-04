@@ -7,11 +7,27 @@ $date_to = !empty($arResult["DATE_ACTIVE_TO"]) ? FormatDate("d F", MakeTimeStamp
 
 <div class="row">
     <div class="col-md-9">
-        <div class="row">
+        <div class="row vertical-align">
             <div class="col-md-10">
                 <h3><?= $arResult['NAME'] ?></h3>
+                <div class="controls text-right">
+                    <? if (!empty($arResult["PREV"])): ?>
+                        <div class="prev">
+                            <a href="<?= $arResult["PREV"] ?>">
+                                <i class="fa fa-arrow-circle-o-left"></i>
+                            </a>
+                        </div>
+                    <? endif; ?>
+                    <? if (!empty($arResult["NEXT"])): ?>
+                        <div class="next">
+                            <a href="<?= $arResult["NEXT"] ?>">
+                                <i class="fa fa-arrow-circle-o-right"></i>
+                            </a>
+                        </div>
+                    <? endif; ?>
+                </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2 text-right">
                 <div class="hogart-share text-right">
                     <a data-toggle="tooltip" data-placement="top" href="#" class="js-popup-open"
                        data-popup="#popup-subscribe" title="<?= GetMessage("Отправить на e-mail") ?>"><i

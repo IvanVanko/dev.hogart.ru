@@ -1,23 +1,27 @@
 @import (reference) "../../../../variables";
 @import (reference) "../../../../styles";
 
-.stock-preview {
-  a.stock-preview-item {
+.news-aside {
+  list-style: none;
+  padding: 0;
+  li {
     font-family: @font-family-serif;
-    display: block;
     font-size: @font-size-base;
     margin-bottom: 30px;
-    .date_small {
-      font-weight: 700 !important;
-      text-transform: uppercase;
-      font-size: @font-size-h6;
+    .date {
+      sub {
+        text-transform: uppercase;
+        font-weight: 700 !important;
+      }
     }
-    .small_news {
+    p {
       font-weight: 300;
     }
-
     &:hover {
-      text-decoration: underline;
+      a {
+        color: @brand-green;
+        text-decoration: underline !important;
+      }
       color: @brand-green;
     }
   }
