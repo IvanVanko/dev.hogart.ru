@@ -19,7 +19,7 @@ class Version201607040001 extends Version
     {
         $block_id = CATALOG_IBLOCK_ID;
         $arSelect = Array("ID", "IBLOCK_ID", "NAME", "IBLOCK_SECTION_ID", 'CODE');
-        $arFilter = Array("IBLOCK_ID"=>intval($block_id), "CODE"=>false);
+        $arFilter = Array("IBLOCK_ID"=>intval($block_id), /*"CODE"=>false*/ 'ID'=>30086);
 
         $res = (new \CIBlockElement)->GetList(Array(), $arFilter, false, Array(), $arSelect);
 
@@ -29,6 +29,7 @@ class Version201607040001 extends Version
 
             $code = \CUtil::translit(trim($arFields['NAME']), 'ru',
                 array('change_case' => 'L', 'replace_space' => '-', 'replace_other' => '-'));
+            var_dump($code);
 
             //проверяем наличие элемента с таким же кодом
             $rsItems = (new \CIBlockElement)->GetList(array(), array(
@@ -39,8 +40,8 @@ class Version201607040001 extends Version
             if ($rsItems->AffectedRowsCount()) {
                 $code = $code . uniqid("_");
             }
-            var_dump($code);
-            $update = (new \CIBlockElement)->Update($arFields['ID'], array('CODE'=>$code));
+            var_dump($code);exit();
+            $update = (new \CIBlockElement)->Update($arFields['ID'], array('NAME'=>$arFields['NAME']));
             var_dump($update);
             exit();
         }
