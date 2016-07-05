@@ -25,6 +25,8 @@ class Version201607040001 extends Version
 
         while($ob = $res->GetNextElement()){
             $arFields = $ob->GetFields();
+//            if($arFields['CODE'] != '')
+//                continue;
             var_dump($arFields);
 
             $code = \CUtil::translit(trim($arFields['NAME']), 'ru',
