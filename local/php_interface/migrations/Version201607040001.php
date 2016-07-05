@@ -43,7 +43,7 @@ class Version201607040001 extends Version
                 $code = $code . uniqid("_");
             }
             var_dump($code);
-            $update = (new \CIBlockElement)->Update($arFields['ID'], array('CODE'=>$code));
+            $update = (new \CIBlockElement)->Update($arFields['ID'], array('CODE'=>''));
             var_dump($update);
             exit();
         }
