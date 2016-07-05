@@ -19,7 +19,7 @@ class Version201607040001 extends Version
     {
         $block_id = CATALOG_IBLOCK_ID;
         $arSelect = Array("ID", "IBLOCK_ID", "NAME", "IBLOCK_SECTION_ID", 'CODE');
-        $arFilter = Array("IBLOCK_ID"=>intval($block_id), /*"CODE"=>false*/ 'ID'=>30086);
+        $arFilter = Array("IBLOCK_ID"=>intval($block_id), /*"CODE"=>false*/ 'ID'=>38951);
 
         $res = (new \CIBlockElement)->GetList(Array(), $arFilter, false, Array(), $arSelect);
 
