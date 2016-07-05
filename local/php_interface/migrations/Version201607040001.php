@@ -40,7 +40,7 @@ class Version201607040001 extends Version
             if ($rsItems->AffectedRowsCount()) {
                 $code = $code . uniqid("_");
             }
-            var_dump($code);exit();
+            var_dump($code);
             $update = (new \CIBlockElement)->Update($arFields['ID'], array('NAME'=>$arFields['NAME']));
             var_dump($update);
             exit();
