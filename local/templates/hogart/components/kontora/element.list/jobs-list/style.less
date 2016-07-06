@@ -1,0 +1,23 @@
+@import (reference) "../../../../variables";
+@import (reference) "../../../../styles";
+
+.job-list {
+  list-style: none;
+  padding: 0;
+  li {
+    a {
+      &:extend(.h5 all);
+      display: block;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-bottom: 20px;
+      &:hover {
+        color: @brand-green !important;
+      }
+      &.selected {
+        color: @brand-green !important;
+      }
+    }
+  }
+}
+
