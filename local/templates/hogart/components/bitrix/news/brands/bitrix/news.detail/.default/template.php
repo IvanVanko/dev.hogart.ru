@@ -1,11 +1,9 @@
 <? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die(); ?>
 
 <div class="row vertical-align">
-    <div class="col-md-11">
+    <div class="col-md-10">
         <h3 style="margin-top: 10px"><?= $arResult['NAME'] ?></h3>
-    </div>
-    <div class="col-md-1">
-        <div id="con-4" class="controls text-right">
+        <div class="controls text-right">
             <? if (!empty($arResult["PREV"])): ?>
                 <div class="prev">
                     <a href="<?= $arResult["PREV"] ?>">
@@ -20,6 +18,18 @@
                     </a>
                 </div>
             <? endif; ?>
+        </div>
+    </div>
+    <div class="col-md-2 text-right">
+        <div class="hogart-share text-right">
+            <a data-toggle="tooltip" data-placement="top" href="#" class="js-popup-open"
+               data-popup="#popup-subscribe" title="<?= GetMessage("Отправить на e-mail") ?>"><i
+                    class="fa fa-envelope" aria-hidden="true"></i></a>
+            <a data-toggle="tooltip" data-placement="top" href="#" onclick="window.print(); return false;"
+               title="<?= GetMessage("Распечатать") ?>"><i class="fa fa-print" aria-hidden="true"></i></a>
+            <a data-toggle="tooltip" data-placement="top" href="#" class="js-popup-open"
+               data-popup="#popup-subscribe-phone" title="<?= GetMessage("Отправить SMS") ?>"><i
+                    class="fa fa-mobile" aria-hidden="true"></i></a>
         </div>
     </div>
 </div>
@@ -48,83 +58,82 @@
 
 <div class="row">
     <div class="col-md-12">
-        <? $videogallery = $arResult['PROPERTIES']['videogallery']['VALUE'] ?>
-        <?$galleries = array_merge($arResult["PROPERTIES"]["photogallery"]['VALUE'], $arResult["PROPERTIES"]["videogallery"]['VALUE']);?>
-        <?if (!empty($arResult["PROPERTIES"]["photogallery"]['VALUE']) || !empty($arResult["PROPERTIES"]["videogallery"]['VALUE'])):?>
-            <?if (count($arResult["PROPERTIES"]["photogallery"]['VALUE'])>3):?>
-                <div id="js-service-slider" class="controls text-right">
-                    <div class="prev"></div>
-                    <div class="next"></div>
+        <? if (!empty($arResult["PROPERTIES"]["photogallery"]['VALUE'])): ?>
+            <? if (count($arResult["PROPERTIES"]["photogallery"]['VALUE']) > 3):?>
+                <div id="js-service-slider-photo" class="controls text-right">
+                    <div class="prev"><i class="fa fa-arrow-circle-o-left"></i></div>
+                    <div class="next"><i class="fa fa-arrow-circle-o-right"></i></div>
                 </div>
-                <ul class="sert-slider-cnt js-service-slider">
-                    <?foreach ($arResult["PROPERTIES"]["videogallery"]["VALUE"] as $key => $picId) {?>
-                        <li>
-                            <div class="img-wrap video">
-                                <img class="js-popup-open-img" title="<?=$arResult["NAME"]?>" data-big-video="<?=$arResult["PROPERTIES"]["videogallery"]['VALUE'][$key]?>" src="http://img.youtube.com/vi/<?=$arResult["PROPERTIES"]["videogallery"]['VALUE'][$key]?>/mqdefault.jpg"  alt=""/>
-                            </div>
-                        </li>
-                    <?}?>
+            <? endif; ?>
+                <ul class="sert-slider-cnt js-service-slider-photo">
                     <?foreach ($arResult["PROPERTIES"]["photogallery"]["VALUE"] as $key => $picId):
                         $file = CFile::ResizeImageGet($picId, array('width'=>320, 'height'=>180), BX_RESIZE_IMAGE_EXACT, true);
                         $fileBig = CFile::ResizeImageGet($picId, array('width'=>800, 'height'=>600), BX_RESIZE_IMAGE_EXACT, true);
                         ?>
                         <li>
                             <div class="img-wrap">
-                                <img class="js-popup-open-img"src="<?= $file['src']; ?>" title="<?=$arResult["NAME"]?>" data-group="gallG" data-big-img="<?= $fileBig['src']; ?>" alt=""/>
+                                <img class="js-popup-open-img" src="<?= $file['src']; ?>" title="<?=$arResult["NAME"]?>" data-group="gallG" data-big-img="<?= $fileBig['src']; ?>" alt=""/>
                             </div>
                         </li>
                     <?endforeach?>
                 </ul>
-            <?else:?>
-                <ul class="gall-list">
-                    <?foreach ($arResult["PROPERTIES"]["videogallery"]["VALUE"] as $key => $picId) {?>
-                        <li>
-                            <div class="img-wrap video">
-                                <img class="js-popup-open-img" title="<?=$arResult["NAME"]?>" data-big-video="<?=$arResult["PROPERTIES"]["videogallery"]['VALUE'][$key]?>" src="http://img.youtube.com/vi/<?=$arResult["PROPERTIES"]["videogallery"]['VALUE'][$key]?>/mqdefault.jpg"  alt=""/>
-                            </div>
-                        </li>
-                    <?}?>
-                    <?foreach ($arResult["PROPERTIES"]["photogallery"]["VALUE"] as $key => $picId):
-                        $file = CFile::ResizeImageGet($picId, array('width'=>200, 'height'=>135), BX_RESIZE_IMAGE_EXACT, true);
-                        $fileBig = CFile::ResizeImageGet($picId, array('width'=>800, 'height'=>600), BX_RESIZE_IMAGE_EXACT, true);
-                        ?>
-                        <li>
-                            <div class="img-wrap">
-                                <img class="js-popup-open-img"src="<?= $file['src']; ?>" title="<?=$arResult["NAME"]?>" data-group="gallG" data-big-img="<?= $fileBig['src']; ?>" alt=""/>
-                            </div>
-                        </li>
-
-                    <?endforeach?>
-                </ul>
-            <?endif;?>
             <script>
                 $(function () {
-                    $('.js-service-slider').bxSlider({
+                    $('.js-service-slider-photo').bxSlider({
                         minSlides: 3,
                         maxSlides: 3,
                         slideMargin: 22,
                         slideWidth: $(this).width() / 3 - 22,
                         pager: false,
-                        nextText: '<i class="fa fa-arrow-circle-o-right"></i>',
-                        prevText: '<i class="fa fa-arrow-circle-o-left"></i>',
-                        nextSelector: $('#js-service-slider').find('.next'),
-                        prevSelector: $('#js-service-slider').find('.prev'),
+                        nextText: '',
+                        prevText: '',
+                        nextSelector: $('#js-service-slider-photo').find('.next'),
+                        prevSelector: $('#js-service-slider-photo').find('.prev'),
                         infiniteLoop: false
                     });
                 });
             </script>
-        <?endif;?>
+        <? endif; ?>
+
+        <? if (!empty($arResult["PROPERTIES"]["videogallery"]['VALUE'])): ?>
+            <? if (count($arResult["PROPERTIES"]["videogallery"]['VALUE']) > 3):?>
+                <div id="js-service-slider-video" class="controls text-right">
+                    <div class="prev"><i class="fa fa-arrow-circle-o-left"></i></div>
+                    <div class="next"><i class="fa fa-arrow-circle-o-right"></i></div>
+                </div>
+            <? endif; ?>
+            <ul class="sert-slider-cnt js-service-slider-video">
+                <? foreach ($arResult["PROPERTIES"]["videogallery"]["VALUE"] as $key => $picId): ?>
+                    <li>
+                        <div class="img-wrap video">
+                            <img class="js-popup-open-img" title="<?=$arResult["NAME"]?>" data-big-video="<?=$arResult["PROPERTIES"]["videogallery"]['VALUE'][$key]?>" src="http://img.youtube.com/vi/<?=$arResult["PROPERTIES"]["videogallery"]['VALUE'][$key]?>/mqdefault.jpg"  alt=""/>
+                        </div>
+                    </li>
+                <? endforeach; ?>
+            </ul>
+            <script>
+                $(function () {
+                    $('.js-service-slider-video').bxSlider({
+                        minSlides: 3,
+                        maxSlides: 3,
+                        slideMargin: 22,
+                        slideWidth: $(this).width() / 3 - 22,
+                        pager: false,
+                        nextText: '',
+                        prevText: '',
+                        nextSelector: $('#js-service-slider-video').find('.next'),
+                        prevSelector: $('#js-service-slider-video').find('.prev'),
+                        infiniteLoop: false
+                    });
+                });
+            </script>
+        <? endif; ?>
     </div>
 </div>
 
 <div class="row">
     <div class="col-md-12">
-        <div class="collapse" id="collapseDetail">
-            <?= $arResult['DETAIL_TEXT'] ?>
-        </div>
-        <? if (!empty($arResult['DETAIL_TEXT'])): ?>
-        <a data-toggle="collapse" href="#collapseDetail" aria-expanded="false" aria-controls="collapseDetail">Читать далее</a>
-        <? endif; ?>
+        <?= $arResult['DETAIL_TEXT'] ?>
     </div>
 </div>
 

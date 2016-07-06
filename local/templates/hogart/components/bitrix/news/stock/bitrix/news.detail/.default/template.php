@@ -41,11 +41,6 @@ $date_to = !empty($arResult["DATE_ACTIVE_TO"]) ? FormatDate("d F", MakeTimeStamp
             </div>
         </div>
 
-        <!-- div class="control control-action">
-            <span class="prev <? if (isset($arResult['PREV'])): ?> black <? endif; ?>"><? if (!empty($arResult['PREV'])): ?><a href="<?= $arResult['PREV'] ?>"></a><? endif; ?></span>
-            <span class="next <? if (isset($arResult['NEXT'])): ?> black <? endif; ?>"><? if (!empty($arResult['NEXT'])): ?><a href="<?= $arResult['NEXT'] ?>"></a><? endif; ?></span>
-        </div-->
-
         <ul class="action-list-one">
             <li>
                 <div class="date">
@@ -236,7 +231,11 @@ $date_to = !empty($arResult["DATE_ACTIVE_TO"]) ? FormatDate("d F", MakeTimeStamp
                 </div>
             </div>
         <? else: ?>
-            <h3><?= GetMessage("Другие акции") ?></h3>
+            <h3 class="title"><?= GetMessage("Другие акции") ?></h3>
+            <h6 class="more text-right">
+                <a href="<?= SITE_DIR ?>stock/"><?= GetMessage("Все акции") ?> <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+            </h6>
+            <div class="clearfix"></div>
             <? $APPLICATION->IncludeComponent(
                 "kontora:element.list",
                 "stock_detail",

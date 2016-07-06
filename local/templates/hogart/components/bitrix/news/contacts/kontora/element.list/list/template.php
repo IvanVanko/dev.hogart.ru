@@ -4,8 +4,8 @@
         <ul class="contacts-list">
             <?foreach ($arResult['ITEMS'] as $arItem):?>
                 <li class="<?if ($arItem['ID'] == $arParams['CURRENT_ID']):?> active<?endif;?>">
-                    <i class="fa fa-map-marker" aria-hidden="true"></i>
                     <a href="<?=$arItem['DETAIL_PAGE_URL']?>">
+                        <i class="fa fa-map-marker" aria-hidden="true"></i>
                         <?=$arItem['NAME']?>
                     </a>
                 </li>

@@ -60,77 +60,23 @@ $APPLICATION->SetTitle("Комплексные решения");
                 )
             ); ?>
         </div>
-        <p class="complex-page-all-href">
-            <a href="all_projects.php">Посмотреть все объекты</a>
-        </p>
-
-        <div class="carusel">
-            <div class="inner">
-                <h3><a href="/integrated-solutions/all_projects.php">Реализованные проекты</a></h3>
-                <? $section_ids = BXHelper::getSections(array('ID' => 'ASC'), array('ACTIVE' => 'Y',
-                    'IBLOCK_ID' => '7'), false, array('ID'), true, 'ID'); ?>
-                <? $section_ids = array_keys($section_ids['RESULT']); ?>
-                <? $APPLICATION->IncludeComponent(
-                    "kontora:element.list",
-                    "real-projects",
-                    Array(
-                        "IBLOCK_ID" => "18",
-                        "PROPS" => "Y",
-                        "FILTER" => array("PROPERTY_SOLUTION_ID" => $section_ids),
-                        "SEF_MODE" => "Y",
-                        "VARIABLE_ALIASES" => Array(),
-                    )
-                ); ?>
-            </div>
-        </div>
     </div>
     <div class="col-md-3 aside">
-        <?
-        $form_id = 7;
-        if (BXHelper::can_show_form($form_id)) {
-            BXHelper::start_ajax_block();
-            $APPLICATION->IncludeComponent(
-                "bitrix:form.result.new",
-                "hogart_request",
-                Array(
-                    "SEF_MODE" => "N",
-                    "WEB_FORM_ID" => $form_id,
-                    "LIST_URL" => "",
-                    "EDIT_URL" => "",
-                    "SUCCESS_URL" => "",
-                    "CHAIN_ITEM_TEXT" => "",
-                    "CHAIN_ITEM_LINK" => "",
-                    "IGNORE_CUSTOM_TEMPLATE" => "N",
-                    "USE_EXTENDED_ERRORS" => "N",
-                    "CACHE_TYPE" => "A",
-                    "CACHE_TIME" => "3600",
-                    "CACHE_NOTES" => "",
-                    "VARIABLE_ALIASES" => Array(
-                        "WEB_FORM_ID" => "WEB_FORM_ID",
-                        "RESULT_ID" => "RESULT_ID"
-                    ),
-                    "CUSTOM_INPUT_PARAMS" => array(
-                        "SOLUTION_EMAIL" => array(
-                            "data-rule-email" => "true",
-                            "data-msg-email" => "Введите правильный email адрес"
-                        ),
-                    ),
-                    "CUSTOM_WRAPPER_PARAMS" => array(
-                    ),
-                    "CUSTOM_WRAPPER_CSS" => array(
-                        "SOLUTION_PHONE" => "field custom_label phone"
-                    ),
-                    "CUSTOM_REQUIRED_MESS" => array(
-                    ),
-                    "TITLE" => "Обратная связь",
-                    "SUCCESS_RELOAD" => "N",
-                    "SUCCESS_MESSAGE" => "Спасибо что обратились в нашу компанию! В ближайшее время с вами свяжется наш специалист для уточнения дополнительной информации."
-
-                )
-            );
-            BXHelper::end_ajax_block(false, false, false, false);
-        }
-        ?>
+        <h3><a href="/integrated-solutions/all_projects.php">Реализованные проекты</a></h3>
+        <? $section_ids = BXHelper::getSections(array('ID' => 'ASC'), array('ACTIVE' => 'Y',
+            'IBLOCK_ID' => '7'), false, array('ID'), true, 'ID'); ?>
+        <? $section_ids = array_keys($section_ids['RESULT']); ?>
+        <? $APPLICATION->IncludeComponent(
+            "kontora:element.list",
+            "real-projects",
+            Array(
+                "IBLOCK_ID" => "18",
+                "PROPS" => "Y",
+                "FILTER" => array("PROPERTY_SOLUTION_ID" => $section_ids),
+                "SEF_MODE" => "Y",
+                "VARIABLE_ALIASES" => Array(),
+            )
+        ); ?>
     </div>
 </div>
 <? require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>

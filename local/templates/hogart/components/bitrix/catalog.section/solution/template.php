@@ -140,8 +140,15 @@
         ); ?>
     </div>
     <div class="col-md-3 aside">
-        <h3><?= GetMessage("Наши проекты") ?></h3>
-
+        <h3 class="title">
+            <?= GetMessage("Наши проекты") ?>
+        </h3>
+        <? if (count($arResult['PROJECTS']) > 0): ?>
+        <h6 class="more text-right">
+            <a href="<?= SITE_DIR ?>integrated-solutions/all_projects.php"><?= GetMessage("смотреть все") ?> <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+        </h6>
+        <? endif; ?>
+        
         <div class="preview-project-viewport">
             <div class="preview-project-viewport-inner">
                 <ul class="preview-project">
@@ -163,9 +170,5 @@
                 </ul>
             </div>
         </div>
-        <? if (count($arResult['PROJECTS']) > 0): ?>
-            <a class="complex-link"
-               href="<?= SITE_DIR ?>integrated-solutions/all_projects.php"><?= GetMessage("Все проекты") ?></a>
-        <? endif; ?>
     </div>
 </div>

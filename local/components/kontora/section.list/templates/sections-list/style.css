@@ -6,7 +6,6 @@
 }
 .complex-page-all-href a,
 .side_href div a,
-.js-popup-open,
 .left-menu li a,
 .sections-list a {
   font-family: inherit;
@@ -18,8 +17,6 @@
 .complex-page-all-href a .small,
 .side_href div a small,
 .side_href div a .small,
-.js-popup-open small,
-.js-popup-open .small,
 .left-menu li a small,
 .left-menu li a .small,
 .sections-list a small,
@@ -30,7 +27,6 @@
 }
 .complex-page-all-href a,
 .side_href div a,
-.js-popup-open,
 .left-menu li a,
 .sections-list a {
   margin-top: 10px;
@@ -40,8 +36,6 @@
 .complex-page-all-href a .small,
 .side_href div a small,
 .side_href div a .small,
-.js-popup-open small,
-.js-popup-open .small,
 .left-menu li a small,
 .left-menu li a .small,
 .sections-list a small,
@@ -50,7 +44,6 @@
 }
 .complex-page-all-href a,
 .side_href div a,
-.js-popup-open,
 .left-menu li a,
 .sections-list a {
   font-size: 14px;
@@ -138,7 +131,6 @@ h6,
 .h6,
 .complex-page-all-href a,
 .side_href div a,
-.js-popup-open,
 .left-menu li a,
 .sections-list a {
   font-family: "Roboto Condensed", sans-serif;
@@ -403,9 +395,6 @@ fieldset[disabled] .btn-more.focus {
   background: white;
   border-left: 1px solid #95c600;
   min-height: calc(100vh - 215px) !important;
-}
-.js-popup-open {
-  border-bottom: 1px dashed #2c2432;
 }
 .left-menu {
   margin-top: 15px;

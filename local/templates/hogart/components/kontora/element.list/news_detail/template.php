@@ -1,7 +1,14 @@
 <?if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die(); ?>
 <? global $USER; ?>
 
-<h3>Другие новости</h3>
+<h3 class="title">Другие новости</h3>
+<h6 class="more text-right">
+    <a href="<?= SITE_DIR ?>company/news/">
+        <?= GetMessage("Ко всем новостям") ?>
+        <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+    </a>
+</h6>
+<div class="clearfix"></div>
 <? if (count($arResult['ITEMS']) > 0): ?>
     <ul class="news-aside">
         <?foreach ($arResult["ITEMS"] as $arItem): //Цикл по всем элементам

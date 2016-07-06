@@ -26,3 +26,30 @@
     }
   }
 }
+.aside {
+  .more,
+  .title {
+    line-height: (@headings-line-height * @font-size-h2);
+    height: (@headings-line-height * @font-size-h2);
+    margin-top: (@line-height-computed / 2);
+    margin-bottom: (@line-height-computed / 2);
+    display: block;
+    a {
+      color: @brand-green !important;
+      text-decoration: underline;
+      font-weight: normal;
+    }
+  }
+  .title {
+    float: left;
+  }
+  .more {
+    float: right;
+    &:after {
+      content: "";
+      position: relative;
+      display: block;
+      clear: both;
+    }
+  }
+}

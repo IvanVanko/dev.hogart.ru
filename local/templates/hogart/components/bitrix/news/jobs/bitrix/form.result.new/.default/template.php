@@ -20,7 +20,11 @@ if($arResult["isFormTitle"] && $arResult["SUCCESS"] !== "Y"):?>
      * form questions
      ***********************************************************************************/
     ?>
-    <div class="js-validation-form-new">
+    <div class="form-desc-txt">
+        <span class="show-js-validation-form-new btn btn-primary">Откликнуться</span>
+    </div>
+    
+    <div class="js-validation-form-new"  style="display: none;">
         <?=$arResult["FORM_HEADER"]?>
         <? foreach($arResult["QUESTIONS"] as $FIELD_SID => $arQuestion):?>
             <? if($arQuestion['STRUCTURE'][0]['FIELD_TYPE'] == 'hidden'):

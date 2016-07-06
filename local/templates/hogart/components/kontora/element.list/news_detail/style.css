@@ -25,3 +25,29 @@
   color: #95c600;
   text-decoration: underline !important;
 }
+.aside .more,
+.aside .title {
+  line-height: 33px;
+  height: 33px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: block;
+}
+.aside .more a,
+.aside .title a {
+  color: #95c600 !important;
+  text-decoration: underline;
+  font-weight: normal;
+}
+.aside .title {
+  float: left;
+}
+.aside .more {
+  float: right;
+}
+.aside .more:after {
+  content: "";
+  position: relative;
+  display: block;
+  clear: both;
+}

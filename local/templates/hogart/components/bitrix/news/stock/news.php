@@ -40,7 +40,7 @@ if($APPLICATION->GetCurDir() === $arParams["SEF_FOLDER"]) {
     if(!empty($_REQUEST["city"])) {
         $arFilter["PROPERTY_city"] = $_REQUEST["city"];
     }
-
+    
     // не показываем в списке акции, у которых стоит флаг с запретом
     $arFilter['!PROPERTY_NOT_SHOW_IN_LIST'] = "Y";
 

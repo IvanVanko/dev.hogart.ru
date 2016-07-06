@@ -16,6 +16,11 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 $this->setFrameMode(false); ?>
 <div class="col-md-3 aside">
     <h3><?= GetMessage("Оставьте отзыв") ?></h3>
+
+    <div class="form-desc-txt">
+        <span class="show-js-validation-form-new btn btn-primary"><?= GetMessage("Заполнить форму")?></span>
+    </div>
+
     <? //Изменяем порядок вывода полей
     $arResult["PROPERTY_LIST"] = $arParams["PROPERTY_CODES"];
 
@@ -30,7 +35,7 @@ $this->setFrameMode(false); ?>
             ]) ?>
         </div>
     <? else: ?>
-        <div class="js-validation-form-new">
+        <div class="js-validation-form-new"  style="display: none;">
             <form name="iblock_add" action="<?= POST_FORM_ACTION_URI ?>" method="post"
                   enctype="multipart/form-data">
                 <?= bitrix_sessid_post() ?>

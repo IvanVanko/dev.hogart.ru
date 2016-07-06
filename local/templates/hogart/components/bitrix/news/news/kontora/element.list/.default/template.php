@@ -70,34 +70,39 @@ $page = $APPLICATION->GetCurDir();
         <h3><?= GetMessage("Тип новости")?></h3>
 
         <form action="#" class="no-padding">
-            <? foreach($arResult["FILTER"]["TAG"] as $key => $tag): ?>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox"
-                               id="checkbox_<?=$key?>"
-                               name="tag[<?=$tag["PROPERTY_TAG_VALUE_ENUM_ID"]?>]"
-                               value="<?=$tag["PROPERTY_TAG_VALUE_VALUE"]?>"
-                               onchange="this.form.submit()"
-                            <? if(isset($_REQUEST["tag"][$tag["PROPERTY_TAG_VALUE_ENUM_ID"]])): ?> checked<? endif; ?>
-                        > <?=$tag["PROPERTY_TAG_VALUE_VALUE"]?>
-                    </label>
+            <div class="form-group">
+                <? foreach($arResult["FILTER"]["TAG"] as $key => $tag): ?>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox"
+                                   id="checkbox_<?=$key?>"
+                                   name="tag[<?=$tag["PROPERTY_TAG_VALUE_ENUM_ID"]?>]"
+                                   value="<?=$tag["PROPERTY_TAG_VALUE_VALUE"]?>"
+                                   onchange="this.form.submit()"
+                                <? if(isset($_REQUEST["tag"][$tag["PROPERTY_TAG_VALUE_ENUM_ID"]])): ?> checked<? endif; ?>
+                            > <?=$tag["PROPERTY_TAG_VALUE_VALUE"]?>
+                        </label>
+                    </div>
+                <? endforeach; ?>
+            </div>
+            <? if (!empty($arResult["FILTER"]["DIRECTIONS"])): ?>
+                <div class="form-group">
+                    <select onchange="this.form.submit()" class="form-control" name="direction">
+                        <option value=""><?= GetMessage("Без направления")?></option>
+                        <? foreach($arResult["FILTER"]["DIRECTIONS"] as $direction): ?>
+                            <option
+                                value="<?=$direction["ID"]?>"<? if($_REQUEST["direction"] == $direction["ID"]): ?> selected<? endif ?>><?=$direction["NAME"]?></option>
+                        <? endforeach ?>
+                    </select>
+                    <? foreach($arResult["FILTER"]["DIRECTIONS"] as $direction): ?>
+                        <input type="hidden" name="direction_<?=$direction['ID']?>_left"
+                               value=<?=$direction['LEFT_MARGIN']?>/>
+                        <input type="hidden" name="direction_<?=$direction['ID']?>_right"
+                               value=<?=$direction['RIGHT_MARGIN']?>/>
+                    <? endforeach; ?>
                 </div>
-            <? endforeach; ?>
+            <? endif; ?>
         </form>
-        <? if (LANGUAGE_ID != "en"): ?>
-            <? /*$APPLICATION->IncludeComponent("kontora:element.list", "news_calendar", array(
-                "IBLOCK_ID" => "3",
-                "FILTER" => array(
-                    array(
-                        "LOGIC" => "OR",
-                        array(">DATE_ACTIVE_TO" => date('d.m.Y H:i:s')),
-                        array("DATE_ACTIVE_TO" => false),
-                    ),
-                ),
-                "PROPS" => "Y",
-                "CHECK_PERMISSIONS" => "Y",
-            )); */ ?>
-        <? endif; ?>
-        <a href="#" class="js-popup-open" data-popup="#popup-subscribe-mod"><?= GetMessage("Подписаться на новости")?></a>
+        <a href="#" class="js-popup-open btn btn-primary" data-popup="#popup-subscribe-mod"><?= GetMessage("Подписаться на новости")?></a>
     </div>
 </div>
