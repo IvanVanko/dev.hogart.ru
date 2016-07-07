@@ -15,13 +15,14 @@ if($arResult["isFormTitle"] && $arResult["SUCCESS"] !== "Y"):?>
 
 <? if($arResult["isFormNote"] != "Y") {
     ?>
+    <h3>Откликнуться на вакансию</h3>
     <?
     /***********************************************************************************
      * form questions
      ***********************************************************************************/
     ?>
     <div class="form-desc-txt">
-        <span class="show-js-validation-form-new btn btn-primary">Откликнуться</span>
+        <span class="show-js-validation-form-new btn btn-primary">Заполнить форму</span>
     </div>
     
     <div class="js-validation-form-new"  style="display: none;">

@@ -174,7 +174,6 @@ $date_to = !empty($arResult["DATE_ACTIVE_TO"]) ? FormatDate("d F", MakeTimeStamp
                 </div>
             </div>
         <? endif; ?>
-        <a class="back_page icon-news-back" href="<?= $arParams['SEF_FOLDER'] ?>">Назад к акциям</a>
     </div>
     <div class="col-md-3 aside">
         <?

@@ -31,15 +31,17 @@ if($APPLICATION->GetCurDir() === $arParams["SEF_FOLDER"]) {
         $arFilter["PROPERTY_catalog_section"] = $_REQUEST["catalog_section"];
     }
 
-    if(!empty($_REQUEST["direction"]) && empty($_REQUEST['catalog_section'])) {
-        $arFilterSections = array(
-            'IBLOCK_ID' => 1,
-            '>=LEFT_BORDER' => $_REQUEST['direction_'.$_REQUEST['direction'].'_left'],
-            '<=RIGHT_BORDER' => $_REQUEST['direction_'.$_REQUEST['direction'].'_right'],
-        );
-        $rsSect = CIBlockSection::GetList(array('left_margin' => 'asc'), $arFilterSections);
-        while($arSect = $rsSect->GetNext()) {
-            $arFilter["PROPERTY_catalog_section"][] = $arSect["ID"];
+    if(!empty($_REQUEST["direction"])) {
+        foreach($_REQUEST["direction"] as $section) {
+            $arFilterSections = array(
+                'IBLOCK_ID' => 1,
+                '>=LEFT_BORDER' => $_REQUEST['direction_'.$section.'_left'],
+                '<=RIGHT_BORDER' => $_REQUEST['direction_'.$section.'_right'],
+            );
+            $rsSect = CIBlockSection::GetList(array('left_margin' => 'asc'), $arFilterSections);
+            while($arSect = $rsSect->GetNext()) {
+                $arFilter["PROPERTY_catalog_section"][] = $arSect["ID"];
+            }
         }
     }
 

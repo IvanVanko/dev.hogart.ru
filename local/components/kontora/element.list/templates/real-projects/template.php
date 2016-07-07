@@ -11,7 +11,9 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die(); ?>
                         <? if (!empty($arItem["PREVIEW_PICTURE"])): ?>
                             <img src="<?= $file['src'] ?>" alt="<?= $arItem['NAME'] ?>"/>
                         <? endif; ?>
-                        <p><?= $arItem['NAME'] ?></p>
+                        <span class="proj-txt">
+                            <span class="head"><?= $arItem['NAME'] ?></span>
+                        </span>
                     </a>
                 </li>
             <? endforeach; ?>
