@@ -1,6 +1,12 @@
 <?
 $arUrlRewrite = array(
 	array(
+		"CONDITION" => "#^/documentation/([\\w-_]+)/(\\?.*|\$)#",
+		"RULE" => "ELEMENT_CODE=\$1",
+		"ID" => "",
+		"PATH" => "/documentation/detail.php",
+	),
+	array(
 		"CONDITION" => "#^/en/integrated-solutions/([\\w-_]+)/([\\w-_]+)/(\\?.*|\$)#",
 		"RULE" => "section=\$1&ELEMENT_CODE=\$2",
 		"ID" => "",

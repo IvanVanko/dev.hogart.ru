@@ -1,0 +1,87 @@
+@media screen and (max-width: 767px) {
+}
+@media (min-width: 768px) {
+}
+h3 {
+  margin-top: 0 !important;
+}
+i[id^="brand_letter_"] {
+  top: -105px;
+  display: block;
+  position: relative;
+  visibility: hidden;
+  clear: both;
+}
+.letters {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.letters a {
+  display: block;
+  font-size: 18px;
+  font-family: "Roboto Condensed", sans-serif;
+  color: #b3b3b3 !important;
+}
+.letters a:hover {
+  text-decoration: underline !important;
+  color: #95c600 !important;
+}
+.brand-links a {
+  font-size: 14px;
+  font-family: "Roboto Condensed", sans-serif;
+}
+.brand-links a:hover {
+  text-decoration: underline !important;
+  color: #95c600 !important;
+}
+.documentation_page .brands-list {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+.documentation_page .brands-list li {
+  text-decoration: none;
+  border: 1px solid transparent;
+  margin-bottom: 20px;
+  margin-right: 20px;
+  padding: 10px;
+  -webkit-transition: all 0.3s linear;
+  -o-transition: all 0.3s linear;
+  transition: all 0.3s linear;
+}
+.documentation_page .brands-list li span {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  line-height: 20px;
+  color: #000;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.9px;
+}
+.documentation_page .brands-list li span:first-child {
+  height: 100px;
+}
+.documentation_page .brands-list li span:first-child img {
+  display: inline-block;
+  max-width: 80%;
+  max-height: 90px;
+  vertical-align: middle;
+  margin-top: 0 !important;
+}
+.documentation_page .brands-list li a {
+  display: block;
+}
+.documentation_page .brands-list li:hover {
+  border: 1px solid #95c600;
+  border-radius: 5px;
+  box-shadow: 1px 1px 1px 1px #ccc;
+}
