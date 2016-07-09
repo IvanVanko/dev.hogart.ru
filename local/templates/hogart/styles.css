@@ -388,6 +388,30 @@ fieldset[disabled] .btn-more.focus {
   border-left: 1px solid #95c600;
   min-height: calc(100vh - 215px) !important;
 }
+ul.right-menu {
+  padding: 0;
+  list-style: none;
+}
+ul.right-menu li a {
+  -webkit-transition: all 0.3s linear;
+  -o-transition: all 0.3s linear;
+  transition: all 0.3s linear;
+  font-family: "Roboto Condensed", sans-serif;
+  display: block;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+ul.right-menu li a:hover {
+  color: #95c600 !important;
+}
+ul.right-menu li.active a {
+  color: #95c600 !important;
+}
+ul.right-menu li .fa {
+  margin-right: 10px;
+  font-size: 18px;
+}
 .left-menu {
   margin-top: 15px;
   padding-left: 0;

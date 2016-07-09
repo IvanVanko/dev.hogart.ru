@@ -1,33 +1,6 @@
-.company .aside .direction-list a {
-  font-family: inherit;
-  font-weight: 500;
-  line-height: 1.1;
-  color: inherit;
-}
-.company .aside .direction-list a small,
-.company .aside .direction-list a .small {
-  font-weight: normal;
-  line-height: 1;
-  color: #777777;
-}
-.company .aside .direction-list a {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-.company .aside .direction-list a small,
-.company .aside .direction-list a .small {
-  font-size: 75%;
-}
-.company .aside .direction-list a {
-  font-size: 14px;
-}
 @media screen and (max-width: 767px) {
 }
 @media (min-width: 768px) {
-}
-.company .aside .direction-list a {
-  font-family: "Roboto Condensed", sans-serif;
-  margin-top: 10px;
 }
 .company .video-item {
   z-index: 0;
@@ -36,30 +9,23 @@
 .company .detail-text {
   font-size: 14px;
 }
-.company .aside ul {
-  padding-left: 20px;
-  list-style: none;
-}
-.company .aside .direction-list a:hover {
-  text-decoration: underline;
-}
-.company .aside .counter-company {
+.company .counter-company {
   padding-left: 0;
 }
-.company .aside .counter-company li {
+.company .counter-company li {
   display: flex;
   flex-direction: row;
   align-items: center;
   margin-bottom: 10px;
 }
-.company .aside .counter-company li > span {
-  font-size: 30px;
+.company .counter-company li > span {
+  font-size: 36px;
   font-family: "Roboto Condensed", sans-serif;
   margin: 10px 20px 10px 0;
   float: left;
   color: #95c600;
 }
-.company .aside .counter-company li > p {
+.company .counter-company li > p {
   margin: 0;
   font-weight: 300;
   font-size: 14px;

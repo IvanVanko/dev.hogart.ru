@@ -56,17 +56,20 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-12">
-        <? if (!empty($arResult["PROPERTIES"]["photogallery"]['VALUE'])): ?>
-            <? if (count($arResult["PROPERTIES"]["photogallery"]['VALUE']) > 3):?>
-                <div id="js-service-slider-photo" class="controls text-right">
-                    <div class="prev"><i class="fa fa-arrow-circle-o-left"></i></div>
-                    <div class="next"><i class="fa fa-arrow-circle-o-right"></i></div>
-                </div>
-            <? endif; ?>
-                <ul class="sert-slider-cnt js-service-slider-photo">
-                    <?foreach ($arResult["PROPERTIES"]["photogallery"]["VALUE"] as $key => $picId):
+<? foreach (['about_company' => "О компании", 'about_products' => "О продуктах и решениях"] as $gallery_key => $section_name): ?>
+    <? if (!empty($arResult["PROPERTIES"]["photogallery_" . $gallery_key]['VALUE']) || !empty($arResult["PROPERTIES"]["videogallery_" . $gallery_key]['VALUE'])): ?>
+        <div class="row">
+            <div class="col-md-12 <?= $gallery_key?>">
+                <h4><?= $section_name ?></h4>
+                <? if (count($arResult["PROPERTIES"]["photogallery_" . $gallery_key]['VALUE']) + count($arResult["PROPERTIES"]["videogallery_" . $gallery_key]['VALUE']) > 3):?>
+                    <div id="js-service-slider-<?= $gallery_key ?>" class="controls text-right">
+                        <div class="prev"><i class="fa fa-arrow-circle-o-left"></i></div>
+                        <div class="next"><i class="fa fa-arrow-circle-o-right"></i></div>
+                    </div>
+                <? endif; ?>
+
+                <ul class="sert-slider-cnt js-service-slider-<?=$gallery_key?>">
+                    <?foreach ($arResult["PROPERTIES"]["photogallery_" . $gallery_key]["VALUE"] as $key => $picId):
                         $file = CFile::ResizeImageGet($picId, array('width'=>320, 'height'=>180), BX_RESIZE_IMAGE_EXACT, true);
                         $fileBig = CFile::ResizeImageGet($picId, array('width'=>800, 'height'=>600), BX_RESIZE_IMAGE_EXACT, true);
                         ?>
@@ -76,62 +79,38 @@
                             </div>
                         </li>
                     <?endforeach?>
+
+                    <? foreach ($arResult["PROPERTIES"]["videogallery_" . $gallery_key]["VALUE"] as $key => $picId): ?>
+                        <li>
+                            <div class="img-wrap video">
+                                <img class="js-popup-open-img" title="<?=$arResult["NAME"]?>" data-big-video="<?=$arResult["PROPERTIES"]["videogallery_" . $gallery_key]['VALUE'][$key]?>" src="http://img.youtube.com/vi/<?=$arResult["PROPERTIES"]["videogallery_" . $gallery_key]['VALUE'][$key]?>/mqdefault.jpg"  alt=""/>
+                            </div>
+                        </li>
+                    <? endforeach; ?>
+
                 </ul>
-            <script>
-                $(function () {
-                    $('.js-service-slider-photo').bxSlider({
-                        minSlides: 3,
-                        maxSlides: 3,
-                        slideMargin: 22,
-                        slideWidth: $(this).width() / 3 - 22,
-                        pager: false,
-                        nextText: '',
-                        prevText: '',
-                        nextSelector: $('#js-service-slider-photo').find('.next'),
-                        prevSelector: $('#js-service-slider-photo').find('.prev'),
-                        infiniteLoop: false
+                <script>
+                    $(function () {
+                        $('.js-service-slider-<?= $gallery_key ?>').bxSlider({
+                            minSlides: 3,
+                            maxSlides: 3,
+                            slideMargin: 22,
+                            slideWidth: $(this).width() / 3 - 22,
+                            pager: false,
+                            nextText: '',
+                            prevText: '',
+                            nextSelector: $('#js-service-slider-<?= $gallery_key ?>').find('.next'),
+                            prevSelector: $('#js-service-slider-<?= $gallery_key ?>').find('.prev'),
+                            infiniteLoop: false
+                        });
                     });
-                });
-            </script>
-        <? endif; ?>
+                </script>
+            </div>
+        </div>
+    <? endif; ?>
+<? endforeach; ?>
 
-        <? if (!empty($arResult["PROPERTIES"]["videogallery"]['VALUE'])): ?>
-            <? if (count($arResult["PROPERTIES"]["videogallery"]['VALUE']) > 3):?>
-                <div id="js-service-slider-video" class="controls text-right">
-                    <div class="prev"><i class="fa fa-arrow-circle-o-left"></i></div>
-                    <div class="next"><i class="fa fa-arrow-circle-o-right"></i></div>
-                </div>
-            <? endif; ?>
-            <ul class="sert-slider-cnt js-service-slider-video">
-                <? foreach ($arResult["PROPERTIES"]["videogallery"]["VALUE"] as $key => $picId): ?>
-                    <li>
-                        <div class="img-wrap video">
-                            <img class="js-popup-open-img" title="<?=$arResult["NAME"]?>" data-big-video="<?=$arResult["PROPERTIES"]["videogallery"]['VALUE'][$key]?>" src="http://img.youtube.com/vi/<?=$arResult["PROPERTIES"]["videogallery"]['VALUE'][$key]?>/mqdefault.jpg"  alt=""/>
-                        </div>
-                    </li>
-                <? endforeach; ?>
-            </ul>
-            <script>
-                $(function () {
-                    $('.js-service-slider-video').bxSlider({
-                        minSlides: 3,
-                        maxSlides: 3,
-                        slideMargin: 22,
-                        slideWidth: $(this).width() / 3 - 22,
-                        pager: false,
-                        nextText: '',
-                        prevText: '',
-                        nextSelector: $('#js-service-slider-video').find('.next'),
-                        prevSelector: $('#js-service-slider-video').find('.prev'),
-                        infiniteLoop: false
-                    });
-                });
-            </script>
-        <? endif; ?>
-    </div>
-</div>
-
-<div class="row">
+<div class="row" style="margin-top: 20px;">
     <div class="col-md-12">
         <?= $arResult['DETAIL_TEXT'] ?>
     </div>

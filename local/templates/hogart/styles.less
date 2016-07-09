@@ -243,6 +243,33 @@ a[data-toggle="collapse"] {
   min-height: calc(~"100vh - 215px") !important;
 }
 
+ul.right-menu {
+  padding: 0;
+  list-style: none;
+  li {
+    a {
+      .transition(all .3s linear);
+      font-family: @font-family-serif;
+      display: block;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-bottom: 20px;
+      &:hover {
+        color: @brand-green !important;
+      }
+    }
+    &.active {
+      a {
+        color: @brand-green !important;
+      }
+    }
+    .fa {
+      margin-right: 10px;
+      font-size: @font-size-h4;
+    }
+  }
+}
+
 .left-menu {
   &:extend(.text-center all);
   margin-top: 15px;
