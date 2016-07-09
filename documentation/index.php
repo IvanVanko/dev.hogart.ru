@@ -1,6 +1,6 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
-$APPLICATION->SetPageProperty("title", "Поиск документации");
+$APPLICATION->SetPageProperty("title", "Техническая документация");
 $APPLICATION->SetTitle("Документация");
 ?>
 
