@@ -3,9 +3,9 @@ $mainItem = array();
 ?>
 <div class="row">
     <div class="col-md-12">
-        <h3><?$APPLICATION->ShowTitle()?></h3>
         <div class="row">
             <div class="col-md-6">
+                <h3><?$APPLICATION->ShowTitle()?></h3>
                 <?if (count($arResult['ITEMS']) > 0):?>
                     <ul class="contacts-list">
                         <?foreach ($arResult['ITEMS'] as $key => $arItem):

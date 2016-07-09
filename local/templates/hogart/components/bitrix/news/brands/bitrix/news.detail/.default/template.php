@@ -116,29 +116,34 @@
     </div>
 </div>
 
-<? if (!empty($arResult['PARENT_SECTIONS']) && !empty($arResult['PRODUCT_SECTION_GROUPS']) && !empty($arResult['PRODUCT_GROUPS'])): ?>
-    <? $this->SetViewTarget('brand-catalog') ?>
+<? $this->SetViewTarget('brand-catalog') ?>
     <div class="brand-catalog">
         <div class="title h4 text-uppercase">Каталог продукции <span class="brand-name"><?= $arResult['NAME'] ?></span></div>
-        <ul>
-            <? foreach ($arResult['PARENT_SECTIONS'] as $arParentSection): ?>
-                <li>
-                    <a class="h4 text-uppercase" href="<?= $arParentSection['SECTION_PAGE_URL'] ?>"><?= $arParentSection['NAME'] ?></a>
-                    <ul>
-                        <? foreach ($arResult['PRODUCT_SECTION_GROUPS'][$arParentSection['ID']] as $arChildSection): ?>
-                            <? $ch_id = $arChildSection['ID'] ?>
-
-                            <li><a class="h5" href="<?= $arChildSection['SECTION_PAGE_URL'] ?>"><?= $arChildSection['NAME'] ?></a>
-                                (<?= $arResult['PRODUCT_GROUPS'][$ch_id]['CNT'] ?>)
-                            </li>
-                        <? endforeach; ?>
-                    </ul>
-                </li>
-            <? endforeach; ?>
-        </ul>
+        <? if (!empty($arResult['PARENT_SECTIONS']) && !empty($arResult['PRODUCT_SECTION_GROUPS']) && !empty($arResult['PRODUCT_GROUPS'])): ?>
+            <ul>
+                <? foreach ($arResult['PARENT_SECTIONS'] as $arParentSection): ?>
+                    <li>
+                        <a class="h4 text-uppercase" href="<?= $arParentSection['SECTION_PAGE_URL'] ?>"><?= $arParentSection['NAME'] ?></a>
+                        <ul>
+                            <? foreach ($arResult['PRODUCT_SECTION_GROUPS'][$arParentSection['ID']] as $arChildSection): ?>
+                                <? $ch_id = $arChildSection['ID'] ?>
+    
+                                <li><a class="h5" href="<?= $arChildSection['SECTION_PAGE_URL'] ?>"><?= $arChildSection['NAME'] ?></a>
+                                    (<?= $arResult['PRODUCT_GROUPS'][$ch_id]['CNT'] ?>)
+                                </li>
+                            <? endforeach; ?>
+                        </ul>
+                    </li>
+                <? endforeach; ?>
+            </ul>
+        <? else: ?>
+            <p class="no-catalog">
+                Для подбора оборудования <span class="brand-name"><?= $arResult['NAME'] ?></span>
+                 <a href="<?= SITE_DIR ?>contacts/tsentralnyy-ofis-khogart-v-moskve-sklad-i-servisnaya-sluzhba/">обращайтесь к менеджерам компании</a>
+            </p>
+        <? endif; ?>
     </div>
-    <? $this->EndViewTarget() ?>
-<? endif; ?>
+<? $this->EndViewTarget() ?>
 
 <?$APPLICATION->IncludeFile(
     "/local/include/share.php",

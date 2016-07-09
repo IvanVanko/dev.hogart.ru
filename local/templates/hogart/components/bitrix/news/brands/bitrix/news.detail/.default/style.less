@@ -1,7 +1,24 @@
 @import (reference) "../../../../../../../variables";
+@import (reference) "../../../../../../../styles";
 @import (reference) "../../../../../../../bootstrap";
 
-
+.no-catalog {
+  font-family: @font-family-serif;
+  display: block;
+  text-transform: uppercase;
+  font-weight: normal;
+  a {
+    .transition(all .3s linear);
+    display: inline-block;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-decoration: underline !important;
+    &:hover {
+      color: @brand-green !important;
+      border-bottom-color: @brand-green;
+    }
+  }
+}
 ul.sert-slider-cnt.js-service-slider {
   padding-left: 0;
   z-index: 0;
@@ -41,7 +58,6 @@ ul.sert-slider-cnt.js-service-slider {
     text-transform: uppercase;
     color: @brand-green;
     .brand-name {
-      border-bottom: 1px dashed @brand-black;
     }
   }
   a {
