@@ -9,6 +9,9 @@
             ?>
             <li>
                 <a href="<?= $arItem["LINK"] ?>">
+                    <? if(!empty($arItem["PARAMS"]["icon"])): ?>
+                        <i class="<?= $arItem["PARAMS"]["icon"] ?>"></i>
+                    <? endif; ?>
                     <?= $arItem["TEXT"] ?>
                 </a>
             </li>

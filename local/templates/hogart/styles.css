@@ -408,7 +408,10 @@ ul.right-menu li a:hover {
 ul.right-menu li.active a {
   color: #95c600 !important;
 }
-ul.right-menu li .fa {
+ul.right-menu li .fa,
+ul.right-menu li [class^="icon-"]:before,
+ul.right-menu li [class*=" icon-"]:before {
+  margin-left: 0;
   margin-right: 10px;
   font-size: 18px;
 }

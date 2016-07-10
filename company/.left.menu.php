@@ -1,31 +1,38 @@
 <?
 $aMenuLinks = Array(
 	Array(
-		"Новости", 
-		"/company/news/", 
+		"Акции",
+		"/stock/",
 		Array(), 
-		Array("icon"=>"test"), 
+		Array("icon"=>"fa fa-bullhorn"),
 		"" 
+	),
+	Array(
+		"Новости",
+		"/company/news/",
+		Array(),
+		Array("icon"=>"fa fa-feed"),
+		""
 	),
 	Array(
 		"Отзывы", 
 		"/company/comments/", 
 		Array(), 
-		Array(), 
+		Array("icon"=>"fa fa-comment-o"), 
 		"" 
 	),
 	Array(
 		"Контакты", 
 		"/contacts/tsentralnyy-ofis-khogart-v-moskve-sklad-i-servisnaya-sluzhba/", 
 		Array(), 
-		Array(), 
+		Array("icon"=>"fa fa-envelope-o"), 
 		"" 
 	),
 	Array(
 		"Вакансии", 
 		"/company/jobs/", 
 		Array(), 
-		Array(), 
+		Array("icon"=>"fa fa-briefcase"), 
 		"" 
 	)
 );

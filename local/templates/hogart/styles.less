@@ -263,7 +263,10 @@ ul.right-menu {
         color: @brand-green !important;
       }
     }
-    .fa {
+    .fa,
+    [class^="icon-"]:before,
+    [class*=" icon-"]:before {
+      margin-left: 0;
       margin-right: 10px;
       font-size: @font-size-h4;
     }

@@ -19,9 +19,10 @@ class Version201607090002 extends Version
     {
         $iBlockHelper = new IblockHelper();
         $iBlockHelper->addPropertyIfNotExists(5, [
-            "NAME" => "Инфографика",
+            "NAME" => "Преимущества компании",
             "CODE" => "infographics",
             "MULTIPLE" => "Y",
+            "WITH_DESCRIPTION" => "Y",
             "PROPERTY_TYPE" => "F",
             "FILE_TYPE" => "jpg, gif, bmp, png, jpeg"
         ]);

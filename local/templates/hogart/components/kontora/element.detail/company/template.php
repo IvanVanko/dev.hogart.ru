@@ -13,51 +13,23 @@
             <?= $arResult["DETAIL_TEXT"] ?>
         </div>
 
-        <? if (!empty($arResult['PROPERTIES']['points']['VALUE'])): ?>
-            <ul class="counter-company row">
-                <? foreach ($arResult['PROPERTIES']['points']['VALUE'] as $key => $value): ?>
-                    <li class="col-md-12">
-                        <span><?= $key + 1 ?></span>
-                        <p><?= $value ?></p>
-                    </li>
-                <? endforeach; ?>
-            </ul>
-        <? endif; ?>
-
         <? if (!empty($arResult['PROPERTIES']['infographics']['VALUE'])): ?>
-            <h4><?= $arResult['PROPERTIES']['infographics']["NAME"] ?></h4>
-            <? if (count($arResult["PROPERTIES"]["infographics"]["VALUE"]) > 6): ?>
-                <div id="js-control-infographics" class="controls text-right">
-                    <span class="prev"></span>
-                    <span class="next"></span>
-                </div>
-                <ul class="sert-slider-cnt js-infographics-slider">
-                    <? foreach ($arResult["PROPERTIES"]["infographics"]["VALUE"] as $value):
-                        $file = CFile::ResizeImageGet($value, array('width' => 126, 'height' => 179), BX_RESIZE_IMAGE_EXACT, true);
-                        $fileBig = CFile::GetPath($value);
-                        ?>
-                        <li><img src="<?= $file['src'] ?>" data-group="gallG" data-big-img="<?= $fileBig ?>"
-                                 class="js-popup-open-img" alt=""/></li>
-                    <? endforeach ?>
-                </ul>
-
-            <script>
-                $(function () {
-                    $('.js-infographics-slider').bxSlider({
-                        minSlides: 6,
-                        maxSlides: 6,
-                        slideMargin: 22,
-                        slideWidth: $(this).width() / 6 - 22,
-                        pager: false,
-                        nextText: '',
-                        prevText: '',
-                        nextSelector: $('#js-control-infographics').find('.next'),
-                        prevSelector: $('#js-control-infographics').find('.prev'),
-                        infiniteLoop: false
-                    });
-                });
-            </script>
-            <? endif; ?>
+            <br>
+            <h3><?= $arResult['PROPERTIES']['infographics']["NAME"] ?></h3>
+            <ul class="counter-company row">
+                <? foreach ($arResult["PROPERTIES"]["infographics"]["VALUE"] as $key => $value):
+                    $file = CFile::ResizeImageGet($value, array('width' => 200, 'height' => 100), BX_RESIZE_IMAGE_PROPORTIONAL, true);
+                    $fileBig = CFile::GetPath($value);
+                    ?>
+                    <li class="col-md-12">
+                        <span class="img-wrap">
+                            <img src="<?= $file['src'] ?>" data-group="gallInfo" data-big-img="<?= $fileBig ?>"
+                                 class="js-popup-open-img" alt="" title="<?= $arResult["PROPERTIES"]["infographics"]["DESCRIPTION"][$key] ?>"/>
+                        </span>
+                        <p><?= $arResult["PROPERTIES"]["infographics"]["DESCRIPTION"][$key] ?></p>
+                    </li>
+                <? endforeach ?>
+            </ul>
         <? endif; ?>
 
         <h3><?=GetMessage("Хогарт сегодня")?></h3>
