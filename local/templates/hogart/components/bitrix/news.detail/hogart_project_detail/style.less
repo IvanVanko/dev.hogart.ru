@@ -1,0 +1,19 @@
+@import "../../../../variables";
+@import (reference) "../../../../styles";
+
+.address {
+  &:extend(.h5 all);
+  font-size: 16px;
+  color: @brand-black;
+  display: block;
+  &:before {
+    margin-right: 10px;
+    content: "\f041";
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: 1.1em;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
