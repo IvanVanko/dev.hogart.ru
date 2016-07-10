@@ -9,10 +9,7 @@
         <div class="preview-text">
             <?= $arResult["PREVIEW_TEXT"] ?>
         </div>
-        <div class="detail-text">
-            <?= $arResult["DETAIL_TEXT"] ?>
-        </div>
-
+        
         <? if (!empty($arResult['PROPERTIES']['infographics']['VALUE'])): ?>
             <br>
             <h3><?= $arResult['PROPERTIES']['infographics']["NAME"] ?></h3>
