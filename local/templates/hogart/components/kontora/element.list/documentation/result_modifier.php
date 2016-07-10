@@ -7,8 +7,9 @@ $arResult['EXISTS_SECTIONS'] = $_REQUEST['section'];
 
 $request_section = ($_REQUEST['section'][0] != '' || $_REQUEST['section'][1] != '' || $_REQUEST['section'][2] != '');
 $no_request = (!$request_section && !$_REQUEST['product']);
+$arResult['TYPE_COUNTS'] = [];
 
-foreach ($arResult['ITEMS'] as $key => $arItem) {
+foreach ($arResult['ITEMS'] as $key => &$arItem) {
 	$file = CFile::GetFileArray($arItem["PROPERTIES"]['file']["VALUE"]);
 	$file["FILE_SIZE"] = round($file["FILE_SIZE"] / 1048576, 2);
 	$info = new SplFileInfo($file["FILE_NAME"]);
@@ -33,13 +34,9 @@ foreach ($arResult['ITEMS'] as $key => $arItem) {
 					$exists_name_flag = true;
 				}
 
-				if ($exists_name_flag) {
-					$arResult['DOCUMENTATION'][$arItem['PROPERTIES']['type']['VALUE']][] = $arItem;
-				} else {
+				if (!$exists_name_flag) {
 					unset($arResult['ITEMS'][$key]);
 				}
-			} else {
-				$arResult['DOCUMENTATION'][$arItem['PROPERTIES']['type']['VALUE']][] = $arItem;
 			}
 		} else {
 			unset($arResult['ITEMS'][$key]);
@@ -52,14 +49,13 @@ foreach ($arResult['ITEMS'] as $key => $arItem) {
 				$exists_name_flag = true;
 			}
 
-			if ($exists_name_flag) {
-				$arResult['DOCUMENTATION'][$arItem['PROPERTIES']['type']['VALUE']][] = $arItem;
-			} else {
+			if (!$exists_name_flag) {
 				unset($arResult['ITEMS'][$key]);
 			}
-		} else {
-			$arResult['DOCUMENTATION'][$arItem['PROPERTIES']['type']['VALUE']][] = $arItem;
 		}
+	}
+	if (!empty($arResult['ITEMS'][$key])) {
+		$arResult['TYPE_COUNTS'][$arItem["PROPERTIES"]["type"]["VALUE"]]++;
 	}
 }
 

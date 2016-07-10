@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-md-6">
                 <? $count = count($arResult['ITEMS']) ?>
-                <h3>Найдено <?= $count ?> <?= number($count, array('документ', 'документа', 'документов')); ?></h3>
+                <div class="h5">Найдено <?= $count ?> <?= number($count, array('документ', 'документа', 'документов')); ?></div>
             </div>
             <div class="col-md-6 text-right">
                 <a href="/arch/" class="icon-doc-sc">Скачать выбранные</a>
@@ -15,46 +15,54 @@
         </div>
         <div class="row">
             <div class="col-md-12 doc-loadlist">
-                <? foreach ($arResult["DOCUMENTATION"] as $type => $arType): ?>
-                    <div class="item-box">
-                        <li class="li-container head_sub<? if ($_REQUEST['fbrand'] == 'y'): ?> active<? endif ?>"
-                            style="display: <? if ($_REQUEST['fbrand'] == 'y'): ?>list-item<? else: ?><? endif ?>;">
+                <? $type = null; ?>
+                <? foreach ($arResult["ITEMS"] as $i => $arItem): ?>
+                    <? if ($type !== $arItem["PROPERTIES"]["type"]["VALUE"]): ?>
+                        <? if (null !== $type): ?>
+                            </div></div>
+                        <? endif; ?>
+                        <div class="item-box">
+                            <? $type = $arItem["PROPERTIES"]["type"]["VALUE"]; ?>
+                            <li class="li-container head_sub" data-type="<?= $arItem["PROPERTIES"]["type"]["VALUE_XML_ID"] ?>">
+                                <div class="checkbox">
+                                    <label class="h3 pull-left">
+                                        <input type="checkbox"
+                                               name="doc_brands_<?= $i ?>"
+                                               id="doc_brands_<?= $i ?>"
+                                        > 
+                                    </label>
+                                    <h3 class="pull-left" data-toggle="collapse" data-target="#<?= $arItem["PROPERTIES"]["type"]["VALUE_XML_ID"] ?>" aria-expanded="true" aria-controls="collapseTypes">
+                                        <?= $type ?> (<?= $arResult['TYPE_COUNTS'][$type] ?>)
+                                    </h3>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </li>
+                            <div style="overflow: hidden;" class="collapse in" aria-expanded="true" id="<?= $arItem["PROPERTIES"]["type"]["VALUE_XML_ID"] ?>">
+                                
+                            
+                    <? endif; ?>
+                        <li class="item" data-type="<?= $arItem["PROPERTIES"]["type"]["VALUE_XML_ID"] ?>">
                             <div class="checkbox">
                                 <label class="h4">
                                     <input type="checkbox"
-                                           name="doc_brands_<?= $i ?>"
-                                           id="doc_brands<?= $i ?>"
-                                    > <?= $type ?> (<?= count($arType) ?>)
+                                           name="document"
+                                           id="doc_brands_<?= $i ?>"
+                                           value="/download.php?id=<?= $arItem['PROPERTIES']['file']['VALUE'] ?>&name=<?= $arItem['NAME'] ?>.<?= $arItem['FILE']['EXTENTION'] ?>"
+                                           data-file-id="<?= $arItem['ID'] ?>"
+                                    >
+                                    <span class="icon-acrobat"><?= $arItem['NAME'] ?></span>
+                                            <span class="h6 green">— .<?= $arItem['FILE']['EXTENTION'] ?>
+                                                , <?= $arItem["FILE"]['FILE_SIZE'] ?> mb <i class="download-link fa fa-download"></i>
+                                            </span>
                                 </label>
                             </div>
                         </li>
-                        <? $i++; ?>
-                        <? foreach ($arType as $arItem): ?>
-                            <li class="item"
-                                style="display: <? if ($_REQUEST['fbrand'] == 'y'): ?>list-item<? else: ?><? endif ?>;">
-                                <div class="checkbox">
-                                    <label class="h5">
-                                        <input type="checkbox"
-                                               name="document"
-                                               id="doc_brands<?= $i ?>"
-                                               value="/download.php?id=<?= $arItem['PROPERTIES']['file']['VALUE'] ?>&name=<?= $arItem['NAME'] ?>.<?= $arItem['FILE']['EXTENTION'] ?>"
-                                               data-file-id="<?= $arItem['ID'] ?>"
-                                        >
-                                        <span class="icon-acrobat"><?= $arItem['NAME'] ?></span>
-                                            <span class="green">— .<?= $arItem['FILE']['EXTENTION'] ?>
-                                                , <?= $arItem["FILE"]['FILE_SIZE'] ?> mb <i class="download-link fa fa-download"></i>
-                                            </span>
-                                    </label>
-                                </div>
-                            </li>
-                            <? $i++; ?>
-                        <? endforeach; ?>
-                    </div>
                 <? endforeach; ?>
+                </div></div>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3 aside">
         <div class="reg-side-cnt padding">
             <form action="">
                 <? if (!empty($arResult['FILTER']['TYPES']) && count($arResult['FILTER']['TYPES']) > 1): ?>

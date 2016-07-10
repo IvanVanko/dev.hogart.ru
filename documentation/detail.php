@@ -66,7 +66,7 @@ if (!$USER->IsAuthorized()) {
 
 $APPLICATION->IncludeComponent("kontora:element.list", "documentation", array(
     'IBLOCK_ID' => '10',
-    'ORDER' => array('NAME' => 'ASC'),
+    'ORDER' => array('PROPERTYSORT_type' => 'ASC', 'PROPERTY_type' => 'ASC', 'NAME' => 'ASC'),
     'SELECT'    => array('NAME', 'PROPERTY_brand.NAME', 'IBLOCK_ID', 'ID'),
     'PROPS'     => 'Y',
     'FILTER'    => $arFilter,

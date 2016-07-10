@@ -31,19 +31,15 @@ $(document).ready(function () {
         $(".icon-doc-sc").attr({href: zipLink});
     }
 
-    $('.doc-loadlist .head').click(function (e) {
-        if (e.target.tagName == "INPUT") {
-            $('+.collapse', this).find('input[type="checkbox"]').prop("checked", $('input[type="checkbox"]', this).prop("checked"));
-            e.stopPropagation();
-        }
-        formLink();
-    });
-
-    $('.doc-loadlist .head_sub').click(function (e) {
-        if (e.target.tagName == "INPUT") {
-            $('.item input[type="checkbox"]', $(this).parents('.item-box')).prop("checked", $('input[type="checkbox"]', this).prop("checked"));
-            e.stopPropagation();
-        }
+    $('.doc-loadlist .head_sub input').click(function (e) {
+        console.log(e.target.tagName);
+        console.log(e.currentTarget.tagName);
+        console.log(e);
+        $('+.collapse', $(this).parents('.head_sub'))
+          .find('.item input[type="checkbox"]')
+          .prop("checked", $(this).prop("checked"))
+        ;
+        e.stopPropagation();
         formLink();
     });
 
@@ -59,82 +55,4 @@ $(document).ready(function () {
             window.open($('input', $field).val(), '_blank');
         }
     });
-
-    /*
-    
-    $('.doc-loadlist .head, .doc-loadlist .head_sub').click(function (e) {
-        if ($(this).hasClass('head')) {
-            toggleDoc($(this));
-        }
-        else if ($(this).hasClass('head_sub')) {
-            $(this).toggleClass('active');
-            $(this).parent().find('.item').slideToggle();
-        }
-    });
-
-    $('.doc-loadlist .head').click(function (e) {
-        var $parent = $(this),
-            $list = $(this).parents('.doc-loadlist');
-
-        var enabled = !$parent.find('input').prop("checked");
-        if (e.target.tagName == "INPUT") {
-            enabled = !!e.target.checked; 
-        }
-        $parent.find('input').prop({
-            "checked": enabled
-        });
-        $list.find('.item-box input').prop('checked', enabled);
-        formLink();
-        e.stopPropagation();
-        e.preventDefault();
-    });
-
-    $('.doc-loadlist .head_sub span').click(function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-
-        var $this = $(this),
-            $field = $this.parents('.field'),
-            $list = $this.parents('.item-box').find('.item'),
-            checked = !$field.find('input').prop("checked");
-
-        $this.toggleClass('active');
-        $field.find('input').prop("checked", checked);
-        $list.find('input').prop("checked", checked);
-        formLink();
-    });
-
-    $('.doc-loadlist .head .h4').click(function (e) {
-        var $parent = $(this).parents('.li-container');
-        $parent.find('.item').slideToggle();
-    });
-
-    $('.doc-loadlist li IMG').click(function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-        var $field = $(this).parents('.field ');
-        if($('input', $field).length){
-            window.open($('input', $field).val(), '_blank');
-        }
-    });
-
-    $('.doc-loadlist .doc-download-link .icon-acrobat').on('click', function () {
-        var link = $(this).find('input');
-        if (link.length == 0) {
-            link = $(this).parents('.custom_checkbox').find('input[name="document"]');
-        }
-        window.open(link.val(), '_blank');
-    });
-
-    $('.doc-loadlist .doc-download-link .fake-checkbox').on('click', function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-
-        var checkbox = $(this).parents('.custom_checkbox').find('input[name="document"]');
-        checkbox.prop('checked', !checkbox.prop('checked'));
-        checkbox.trigger('change');
-        formLink();
-        checkCheckedSections($(this));
-    });
-     */
 });

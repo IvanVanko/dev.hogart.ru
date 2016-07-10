@@ -10,8 +10,30 @@
   .item-box {
     margin-left: 20px;
 
+    h3[data-toggle="collapse"] {
+      border-bottom: 1px dashed @brand-black;
+      transition: all .3s linear;
+      &:hover {
+        color: @brand-green;
+        border-bottom: 1px dashed @brand-green;
+      }
+    }
+
     .item {
       margin-left: 20px;
+      .green {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 0;
+        .download-link {
+          font-size: @font-size-h4;
+          margin-left: 10px;
+          &:hover {
+            color: @brand-black;
+          }
+        }
+      }
     }
   }
 }

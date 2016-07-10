@@ -8,6 +8,27 @@
 .doc-loadlist .item-box {
   margin-left: 20px;
 }
+.doc-loadlist .item-box h3[data-toggle="collapse"] {
+  border-bottom: 1px dashed #2c2432;
+  transition: all .3s linear;
+}
+.doc-loadlist .item-box h3[data-toggle="collapse"]:hover {
+  color: #95c600;
+  border-bottom: 1px dashed #95c600;
+}
 .doc-loadlist .item-box .item {
   margin-left: 20px;
+}
+.doc-loadlist .item-box .item .green {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 0;
+}
+.doc-loadlist .item-box .item .green .download-link {
+  font-size: 18px;
+  margin-left: 10px;
+}
+.doc-loadlist .item-box .item .green .download-link:hover {
+  color: #2c2432;
 }
