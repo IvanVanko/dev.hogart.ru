@@ -25,10 +25,10 @@
   align-items: center;
   margin-bottom: 0;
 }
-.doc-loadlist .item-box .item .green .download-link {
+.doc-loadlist .item-box .item .download-link {
   font-size: 18px;
   margin-left: 10px;
 }
-.doc-loadlist .item-box .item .green .download-link:hover {
-  color: #2c2432;
+.doc-loadlist .item-box .item .download-link:hover {
+  color: #95c600;
 }

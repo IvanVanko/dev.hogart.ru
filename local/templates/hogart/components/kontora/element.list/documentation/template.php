@@ -50,9 +50,9 @@
                                            value="/download.php?id=<?= $arItem['PROPERTIES']['file']['VALUE'] ?>&name=<?= $arItem['NAME'] ?>.<?= $arItem['FILE']['EXTENTION'] ?>"
                                            data-file-id="<?= $arItem['ID'] ?>"
                                     >
-                                    <span class="icon-acrobat"><?= $arItem['NAME'] ?></span>
+                                    <span class="icon-acrobat"><?= $arItem['NAME'] ?> <i class="download-link fa fa-download"></i></span>
                                             <span class="h6 green">— .<?= $arItem['FILE']['EXTENTION'] ?>
-                                                , <?= $arItem["FILE"]['FILE_SIZE'] ?> mb <i class="download-link fa fa-download"></i>
+                                                , <?= $arItem["FILE"]['FILE_SIZE'] ?> mb
                                             </span>
                                 </label>
                             </div>
