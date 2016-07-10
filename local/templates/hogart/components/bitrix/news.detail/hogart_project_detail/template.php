@@ -38,7 +38,7 @@ if (!isset($arParams['ITEM_TEMPLATE']) && empty($arParams['ITEM_TEMPLATE'])):?>
             <!-- Адрес -->
             <div class="row">
                 <div class="col-md-12">
-                    <span class="address"><?= $arResult["DETAIL_TEXT"] ?></span>
+                    <span class="address"><?= trim(preg_replace(["%^(&nbsp;)%", "%\s+%"], [" ", " "], trim(strip_tags($arResult["~DETAIL_TEXT"])))) ?></span>
                 </div>
             </div>
         <? endif; ?>
