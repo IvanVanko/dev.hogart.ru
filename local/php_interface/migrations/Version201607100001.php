@@ -9,15 +9,20 @@
 namespace Sprint\Migration;
 
 
+use Sprint\Migration\Helpers\IblockHelper;
+
 class Version201607100001 extends Version
 {
     protected $description = "Обновление формы элементов блока Компания";
 
     public function up()
     {
+        $iBlockHelper = new IblockHelper();
+        $property = $iBlockHelper->getProperty(5, "infographics");
+            
         \CUserOptions::DeleteOptionsByName("form", "form_element_5");
         \CUserOptions::SetOption("form", "form_element_5", [
-            "tabs" => "edit1--#--Компания--,--ACTIVE--#--Активность--,--NAME--#--*Название--,--PREVIEW_TEXT--#--Описание для анонса--,--PROPERTY_18--#--Достижения и награды--,--PROPERTY_1815--#--Преимущества компании--;--"
+            "tabs" => "edit1--#--Компания--,--ACTIVE--#--Активность--,--NAME--#--*Название--,--PREVIEW_TEXT--#--Описание для анонса--,--PROPERTY_18--#--Достижения и награды--,--PROPERTY_" . $property["ID"] . "--#--Преимущества компании--;--"
         ], true);
     }
 
