@@ -10,7 +10,6 @@
 /** @var string $templateFolder */
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
-//var_dump($arResult['ITEMS']);
 ?>
 <? if (!empty($arResult['ITEMS'])): ?>
     <ul class="list-base-learn">
@@ -23,11 +22,9 @@
             $now=date($DB->DateFormatToPHP(CSite::GetDateFormat("SHORT")), time());
             $now=strtotime($now);
             ?>
-            <?// if ($arItem['PROPERTIES']['time']['VALUE'] != ''): ?>
             <?if ($date_sem_start > $now):?>
                 <li>
                     <?$file = CFile::ResizeImageGet($arItem['PREVIEW_PICTURE']['ID'], array("width" => 101, "height" => 101), BX_RESIZE_IMAGE_EXACT);?>
-<!--                    <img src="--><?//= $arItem['PREVIEW_PICTURE']['SRC']; ?><!--" alt=""/>-->
                     <img src="<?= $file['src']; ?>" alt=""/>
                     <time class="top-time">
                         <? if ($arItem['PROPERTIES']['sem_start_date']['VALUE'] != ''): ?>

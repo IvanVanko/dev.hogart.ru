@@ -6472,6 +6472,10 @@ ul.all-project-box li a span {
 .learn-page .head-learn {
   width: 100%;
   position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 .learn-page .head-learn .col1 {
   width: 600px;
@@ -6488,6 +6492,7 @@ ul.all-project-box li a span {
 }
 .learn-page .head-learn .var-view {
   list-style: none;
+  margin-bottom: 0;
 }
 .learn-page .head-learn .var-view li {
   float: left;
@@ -6584,7 +6589,7 @@ ul.all-project-box li a span {
   background: none;
   border: none;
   border-radius: 0;
-  color: #000;
+  color: #95c600;
 }
 .learn-page .calendar-cnt > div {
   width: 100%;
@@ -6655,6 +6660,9 @@ ul.all-project-box li a span {
   font-family: 'Roboto Condensed', sans-serif;
   font-size: 16px;
   padding: 10px 8px;
+  span {
+    color: #2c2432;
+  }
 }
 .learn-page .calendar-cnt .ui-datepicker-calendar tr {
   border-bottom: 1px solid #7f7f7f;
@@ -6686,8 +6694,12 @@ ul.all-project-box li a span {
   }
 }
 .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover {
-  background: #038100;
+  background: #95c600;
   position: relative;
+  transition: opacity .3s linear;
+  * {
+    color: white !important;
+  }
 }
 .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover .ui-state-default {
   color: #fff;
@@ -6696,7 +6708,7 @@ ul.all-project-box li a span {
   left: 0;
 }
 .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover .content {
-  background: #038100;
+  background: #95c600;
   overflow: hidden;
   -webkit-transition: all 0.3s;
   -moz-transition: all 0.3s;
@@ -6733,11 +6745,8 @@ ul.all-project-box li a span {
 }
 .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover .content .inner a {
   text-align: left;
-  color: #fff;
+  color: #95c600;
   text-decoration: none;
-}
-.learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover .content .inner a h3 {
-  color: #fff;
 }
 .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover .content .inner a:hover {
   background: none;
@@ -6807,6 +6816,7 @@ ul.all-project-box li a span {
   position: relative;
   z-index: 100;
   box-shadow: 0 0 4px #ccc;
+  opacity: 1;
 }
 .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover:hover .content {
   width: 300px;
@@ -6821,10 +6831,10 @@ ul.all-project-box li a span {
   left: 1px;
 }
 .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover.past {
-  background: #ccc;
+  background: #2c2432;
 }
 .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover.past .content {
-  background: #ccc;
+  background: #2c2432;
 }
 .learn-page .list-base-learn {
   list-style: none;

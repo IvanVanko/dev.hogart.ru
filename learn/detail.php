@@ -17,7 +17,6 @@ $APPLICATION->SetPageProperty("body_class","reg_page");
     });
 
 </script>
-<div class="inner">
 <?
     $APPLICATION->IncludeComponent(
         "bitrix:news.detail",
@@ -44,7 +43,7 @@ $APPLICATION->SetPageProperty("body_class","reg_page");
                 "sem_start_date"
             )
         ),
-        $component
+        false
     );
 global $seminarTitle;
 if($seminarTitle)

@@ -22,7 +22,9 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 					form header
 ***********************************************************************************/
 if ($arResult["isFormTitle"]):?>
-	<h3><?=$arResult["FORM_TITLE"]?></h3>
+    <div class="form-desc-txt">
+        <span class="show-js-validation-form-new btn btn-primary">Предложить тему</span>
+    </div>
 <?endif;?>
 
 <?
@@ -30,7 +32,8 @@ if ($arResult["isFormTitle"]):?>
 						form questions
 ***********************************************************************************/
 ?>
-	<div id="form-<?=$arResult["arForm"]['ID'];?>" class="js-validation-form-new">
+	<div id="form-<?=$arResult["arForm"]['ID'];?>" class="js-validation-form-new" style="display: none;">
+        <h4>Предложить тему</h4>
     <?=$arResult["FORM_HEADER"]?>
 	<?foreach ($arResult["QUESTIONS"] as $FIELD_SID => $arQuestion):?>
         <? if (in_array($FIELD_SID, ["EVENT_NAME", "EVENT_ID"])): ?>
