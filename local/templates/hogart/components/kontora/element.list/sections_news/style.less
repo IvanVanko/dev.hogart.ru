@@ -1,7 +1,8 @@
 @import (reference) "../../../../variables";
+@import (reference) "../../../../styles";
 
 .sections-news {
-  border-left: 1px solid @brand-green;
+  &:extend(.aside all);
   padding-right: (@grid-gutter-width / 2);
   .more,
   .title {

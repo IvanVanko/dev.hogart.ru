@@ -22,7 +22,7 @@ $now = date($DB->DateFormatToPHP(CSite::GetDateFormat("SHORT")), time()); ?>
         </ul>
     <? } ?>
     <? if (!empty($arResult['ORGS'])): ?>
-        <h2>Об организаторе</h2>
+        <h3>Об организаторе</h3>
         <div class="info-creator">
             <? if ($arResult['ORGS']['PREVIEW_PICTURE']) { ?>
                 <div class="photo">
