@@ -267,12 +267,12 @@ $this->setFrameMode(true);
                             $arImage = $arItem["DETAIL_PICTURE"];
                         }
                         if (!empty($arImage)) {
-                            $file = CFile::ResizeImageGet($arImage, array("width" => 400, "height" => 160), BX_RESIZE_IMAGE_EXACT, true);
+                            $file = CFile::ResizeImageGet($arImage, array("width" => 213, "height" => 160), BX_RESIZE_IMAGE_EXACT, true);
                             $pic = $file['src'];
                         } else {
                             if (!file_exists($_SERVER["DOCUMENT_ROOT"] . "/images/project_no_img_400x160.jpg")) {
                                 $file = $_SERVER["DOCUMENT_ROOT"] . "/images/project_no_img_400x160.jpg";
-                                CFile::ResizeImageFile($_SERVER["DOCUMENT_ROOT"] . "/images/project_no_img.jpg", $file, array("width" => 400, "height" => 160));                            
+                                CFile::ResizeImageFile($_SERVER["DOCUMENT_ROOT"] . "/images/project_no_img.jpg", $file, array("width" => 213, "height" => 160));
                             }
                             $pic = "/images/project_no_img_400x160.jpg";
                         }
