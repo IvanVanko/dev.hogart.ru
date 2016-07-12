@@ -71,7 +71,7 @@ $this->setFrameMode(true);?>
             BXHelper::NotFound();
         }?>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3 aside">
         <?$APPLICATION->IncludeComponent(
             "kontora:element.list",
             "sections_news",

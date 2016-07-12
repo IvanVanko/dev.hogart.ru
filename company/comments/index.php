@@ -32,7 +32,6 @@ while($prop = $dbProps->GetNext()) {
                 "PREVIEW_TEXT"),
             "PROPERTY_CODES_REQUIRED" => array("NAME",
                 $props['name']['ID'],
-                $props['surname']['ID'],
                 $props['post']['ID'],
                 $props['mail']['ID'],
                 "PREVIEW_TEXT"),

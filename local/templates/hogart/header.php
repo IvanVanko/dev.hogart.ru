@@ -6,8 +6,8 @@ use \Bitrix\Main\Localization\Loc;
 Loc::loadLanguageFile(__FILE__);
 ?>
 <!DOCTYPE html>
-<html>
-<head lang="en">
+<html data-lang="<?= LANGUAGE_ID ?>">
+<head>
     <meta charset="UTF-8">
     <meta name="mailru-verification" content="7d762af6578aa853"/>
     <title><? $APPLICATION->ShowTitle("title") ?></title>

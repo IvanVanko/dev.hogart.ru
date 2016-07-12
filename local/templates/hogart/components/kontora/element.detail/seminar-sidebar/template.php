@@ -90,7 +90,6 @@ $now = date($DB->DateFormatToPHP(CSite::GetDateFormat("SHORT")), time()); ?>
         });
     </script>
     <? $form_id = "SEMINAR_REG_" . strtoupper(LANGUAGE_ID);
-    if (BXHelper::can_show_form($form_id)) {
         BXHelper::start_ajax_block();
         $APPLICATION->IncludeFile(
             "/local/include/seminar_form.php",
@@ -107,7 +106,7 @@ $now = date($DB->DateFormatToPHP(CSite::GetDateFormat("SHORT")), time()); ?>
             )
         );
         BXHelper::end_ajax_block(false, false, false, false);
-    } ?>
+    ?>
     <a class="append-form trigger-border-bottom" href="#" data-clone-form><?= GetMessage("Добавить участника") ?></a>
     <button type="submit" class="btn btn-primary"
             data-submit-form="<?= CStorage::getVar("seminar_form_name"); ?>"><?= GetMessage("Отправить") ?>
@@ -161,7 +160,6 @@ $now = date($DB->DateFormatToPHP(CSite::GetDateFormat("SHORT")), time()); ?>
         });
     </script>
     <? $form_id = "SEMINAR_REG_" . strtoupper(LANGUAGE_ID);
-    if (BXHelper::can_show_form($form_id)) {
         BXHelper::start_ajax_block();
         $APPLICATION->IncludeFile(
             "/local/include/seminar_form.php",
@@ -178,7 +176,7 @@ $now = date($DB->DateFormatToPHP(CSite::GetDateFormat("SHORT")), time()); ?>
             )
         );
         BXHelper::end_ajax_block(false, false, false, false);
-    } ?>
+    ?>
     <a class="append-form trigger-border-bottom" href="#" data-clone-form><?= GetMessage("Добавить участника") ?></a><br>
     <button type="submit" class="btn btn-primary"
             data-submit-form="<?= CStorage::getVar("seminar_form_name"); ?>"><?= GetMessage("Отправить")?>

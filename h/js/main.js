@@ -89,13 +89,13 @@ app.initFullHeight = function () {
         }
 
         if (inner_height <= window_height - 55) {
-            $(".main-container footer").addClass("right");
+            $(".main-container footer:not(.blockquote)").addClass("right");
             if (!$('.presentation-main-page').length) {
-                $("footer .p_logo").css({
+                $("footer:not(.blockquote) .p_logo").css({
                     'position': 'relative',
                     'right': '330px'
                 });
-                $("footer span").css({
+                $("footer:not(.blockquote) span").css({
                     'position': 'relative',
                     'left': '220px'
                 });
@@ -105,7 +105,7 @@ app.initFullHeight = function () {
         else {
             var window1024 = ($(window).outerWidth() < 1024) ? 1024 : $(window).outerWidth();
             if ($("aside.sidebar").length) {
-                $(".main-container footer").removeClass("right");
+                $(".main-container footer:not(.blockquote)").removeClass("right");
 
                 $(".learn-head-link").parent().css({
                     position: "static",
@@ -117,7 +117,7 @@ app.initFullHeight = function () {
 
             }
             else {
-                $(".main-container footer").css({
+                $(".main-container footer:not(.blockquote)").css({
                     position: "static",
                     bottom: "auto",
                     width: window1024 - 235
@@ -132,11 +132,11 @@ app.initFullHeight = function () {
                 }).removeClass("right");
             }
             if (!$('.presentation-main-page').length) {
-                $("footer .p_logo").css({
+                $("footer:not(.blockquote) .p_logo").css({
                     'position': '',
                     'right': ''
                 });
-                $("footer span").css({
+                $("footer:not(.blockquote) span").css({
                     'position': '',
                     'left': ''
                 });
@@ -1096,8 +1096,8 @@ app.ProductSlider = function () {
 app.popup = function () {
     $('.popup-cnt').each(function () {
         var $cnt = $(this).find('.inner-cnt');
-        if ($cnt.outerHeight() > $(document).height()) {
-            $cnt.css({"transform": "translate(-50%, 50%) scale(" + (Math.round(($(document).height() - 50) / $cnt.outerHeight() * 100) / 100) + ")"});
+        if ($cnt.outerHeight() > $(window).height()) {
+            $cnt.css({"transform": "translate(-50%, 50%) scale(" + (Math.round(($(window).height() - 50) / $cnt.outerHeight() * 100) / 100) + ")"});
         }
 
         $(this).css('opacity', 0).hide();
@@ -1153,54 +1153,13 @@ app.popup = function () {
         $(id).parent().show().animate({
             'opacity': 1
         }, 300);
-        var $cnt = $(id);
-        if ($cnt.outerHeight() > $(document).height()) {
-            $cnt.css({"transform": "translate(-50%, -50%) scale(" + (Math.round(($(document).height() - 50) / $cnt.outerHeight() * 100) / 100) + ")"});
+        if ($cnt.outerHeight() > $(window).height()) {
+            $cnt.css({"transform": "translate(-50%, -50%) scale(" + (Math.round(($(window).height() - 50) / $cnt.outerHeight() * 100) / 100) + ")"});
         }
-
-        resizeFeedbackForm();
     });
     return this;
 };
 
-function resizeFeedbackForm() {
-    if ($('[name="SIMPLE_FORM_1"]').length) {
-        var popup = $('.popup-cnt .inner-cnt');
-
-        popup.css({
-            "-webkit-transform": "scale(1)",
-            "-moz-transform": "scale(1)",
-            "-ms-transform": "scale(1)",
-            "-o-transform": "scale(1)",
-            "transform": "scale(1)"
-        });
-
-        var height = popup.outerHeight();
-        while (height > $(window).height()) {
-            var style = window.getComputedStyle(popup[0], ""),
-                matrix = style.getPropertyValue("-webkit-transform") ||
-                    style.getPropertyValue("-moz-transform") ||
-                    style.getPropertyValue("-ms-transform") ||
-                    style.getPropertyValue("-o-transform") ||
-                    style.getPropertyValue("transform");
-
-            var values = matrix.split('(')[1],
-                values = values.split(')')[0],
-                values = values.split(','),
-                height = popup.outerHeight() * values[0];
-
-            console.log(values)
-            values[0] -= 0.01;
-            popup.css({
-                "-webkit-transform": "scale(" + values[0] + ")",
-                "-moz-transform": "scale(" + values[0] + ")",
-                "-ms-transform": "scale(" + values[0] + ")",
-                "-o-transform": "scale(" + values[0] + ")",
-                "transform": "scale(" + values[0] + ")"
-            });
-        }
-    }
-}
 app.validationForm = function () {
     var self = this;
     this.messages = {
@@ -1215,7 +1174,7 @@ app.validationForm = function () {
             'Введите настоящий E-mail': 'Введите настоящий E-mail'
         }
     };
-    self.messages = this.messages[document.getElementsByTagName("head")[0].getAttribute("lang")];
+    self.messages = this.messages[$('html').data('lang')];
     
     var isEmail = function (email) {
             var re = /\S+@\S+\.\S+/;
@@ -1517,7 +1476,6 @@ $(document).ready(function () {
             overflow: "hidden"
         });
         app.initFullHeight();
-        resizeFeedbackForm();
     });
     $(document).click(function () {
         $(".main-container").css({

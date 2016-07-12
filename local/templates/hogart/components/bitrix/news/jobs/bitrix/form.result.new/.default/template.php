@@ -31,18 +31,18 @@ if($arResult["isFormTitle"] && $arResult["SUCCESS"] !== "Y"):?>
             <? if($arQuestion['STRUCTURE'][0]['FIELD_TYPE'] == 'hidden'):
                 echo $arQuestion["HTML_CODE"];
             elseif($arQuestion['STRUCTURE'][0]['FIELD_TYPE'] == 'textarea'):?>
-                <div class="field js-validation-empty">
-                    <a class="trigger-border-bottom<?=($arQuestion["CAPTION"] == 'Сопроводительное письмо') ? ' sopr' : '';?>"
+                <div class="field <?= ($arQuestion["REQUIRED"] == "Y" ? "js-validation-empty" : "") ?>">
+                    <a class="btn btn-default<?=($arQuestion["CAPTION"] == 'Сопроводительное письмо') ? ' sopr' : '';?>"
                        href="#"><?=$arQuestion["CAPTION"]?></a> <?=($arQuestion["REQUIRED"] == "Y")?'*':'';?>
                     <?=$arQuestion["HTML_CODE"]?>
                 </div>
             <? elseif($arQuestion['STRUCTURE'][0]['FIELD_TYPE'] == 'file'):?>
 
-                <div class="field custom_upload js-validation-empty">
+                <div class="field custom_upload <?= ($arQuestion["REQUIRED"] == "Y" ? "js-validation-empty" : "") ?>">
                     <input type="hidden" name="MAX_FILE_SIZE" value="4000000"/>
                     <input type="file" class="inputfile" name="form_file_<?=$arQuestion['STRUCTURE'][0]['ID']?>"
                            accept="application/pdf,application/msword,text/plain">
-                    <a class="trigger-border-bottom resume add-file-hidden" href="#">Приложить резюме <?=($arQuestion["REQUIRED"] == "Y")?'*':'';?></a>
+                    <a class="btn btn-default resume add-file-hidden" href="#">Приложить резюме <?=($arQuestion["REQUIRED"] == "Y")?'*':'';?></a>
                 </div>
 
                 <p>
@@ -54,10 +54,8 @@ if($arResult["isFormTitle"] && $arResult["SUCCESS"] !== "Y"):?>
                     $customClass = 'phone js-validation-phone';
                 elseif($arQuestion["CAPTION"] == 'E-mail'):
                     $customClass = 'js-validation-email';
-                else:
-                    $customClass = 'js-validation-empty';
                 endif; ?>
-                <div class="field custom_label <?=$customClass?>">
+                <div class="field custom_label <?=$customClass?> <?= ($arQuestion["REQUIRED"] == "Y" ? "js-validation-empty" : "not") ?>">
                     <label
                         for="form_<?=$arQuestion['STRUCTURE'][0]['FIELD_TYPE'].'_'.$arQuestion['STRUCTURE'][0]['ID']?>">
                         <?=$arQuestion["CAPTION"]?> <?=($arQuestion["REQUIRED"] == "Y")?'*':'';?>

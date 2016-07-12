@@ -63,7 +63,7 @@ $seminarTitle = $arResult['NAME'];
         <? endif; ?>
         <? if (!empty($arResult['LECTORS'])): ?>
             <div class="clearfix">
-                <h2 class="display-inline-block"><?= GetMessage($arResult["PROPERTIES"]["lecturer"]["NAME"]); ?></h2>
+                <h4 class="display-inline-block"><?= GetMessage($arResult["PROPERTIES"]["lecturer"]["NAME"]); ?></h4>
                 <? if (count($arResult['LECTORS']) > 2): ?>
                     <div class="control control-action null-margin">
                         <span class="prev black"><a href="#" id="prev"></a></span>
@@ -90,7 +90,7 @@ $seminarTitle = $arResult['NAME'];
                 </ul>
         <? endif; ?>
         <? if (!empty($arResult['PROPERTIES']['adress']['VALUE'])): ?>
-            <h2><?= GetMessage("Адрес и контактная информация") ?></h2>
+            <h4><?= GetMessage("Адрес и контактная информация") ?></h4>
 
             <p class="light">
                 <?= GetMessage("Адрес офиса") ?>: <?= $arResult['PROPERTIES']['adress']['VALUE']; ?><br>

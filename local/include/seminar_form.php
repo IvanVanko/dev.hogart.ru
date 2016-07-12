@@ -4,6 +4,7 @@ if((!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) &&
     else if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
         require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
         extract($_POST);
+        $APPLICATION->RestartBuffer();
     }
 
 $APPLICATION->IncludeComponent(
@@ -26,23 +27,6 @@ $APPLICATION->IncludeComponent(
             "WEB_FORM_ID" => "WEB_FORM_ID",
             "RESULT_ID" => "RESULT_ID"
         ),
-
-        /*"DISPLAY_LEFT_COL" => array(
-            "FBK_NAME",
-            "FBK_PHONE",
-            "FBK_EMAIL",
-            "FBK_ORDER_WHERE",
-            "FBK_CITY",
-        ),
-        "DISPLAY_RIGHT_COL" => array(
-            "FBK_ORDER_DATE",
-            "FBK_ORDER_ID",
-            "FBK_COMMENT",
-            "FBK_FILE64",
-        ),
-        "MERGED_FIELDS" => array(
-            array("FBK_ORDER_DATE", "FBK_ORDER_ID")
-        ),*/
 
         "CUSTOM_INPUT_PARAMS" => array(
             "SEMINAR_USER_EMAIL" => array(
