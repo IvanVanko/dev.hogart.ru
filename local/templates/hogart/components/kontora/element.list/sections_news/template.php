@@ -6,12 +6,12 @@ global $USER;
 <? if (!empty($arResult['ITEMS'])): ?>
     <div class="row sections-news">
         <div class="col-md-12">
-            <div class="row">
+            <div class="row vertical-align">
                 <div class="col-md-6">
                     <h4 class="title"><a href="<?= $arParams["LINK"] ?>"><?= $arParams["BLOCK_TITLE"] ?></a></h4>
                 </div>
                 <div class="col-md-6">
-                    <h6 class="more">
+                    <h6 class="more-link">
                         <a href="<?= $arParams["LINK"] ?>"><?= GetMessage("смотреть все") ?> <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
                     </h6>
                 </div>

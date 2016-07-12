@@ -10,14 +10,14 @@
 .sections-news {
   padding-right: 15px;
 }
-.sections-news .more,
+.sections-news .more-link,
 .sections-news .title {
   line-height: 33px;
   height: 33px;
   margin-top: 10px;
   margin-bottom: 10px;
 }
-.sections-news .more a,
+.sections-news .more-link a,
 .sections-news .title a {
   color: #95c600 !important;
   text-decoration: underline;

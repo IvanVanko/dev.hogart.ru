@@ -23,7 +23,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 ***********************************************************************************/
 if ($arResult["isFormTitle"]):?>
     <div class="form-desc-txt">
-        <span class="show-js-validation-form-new btn btn-primary">Предложить тему</span>
+        <span class="show-js-validation-form-new btn btn-primary"><?= $arResult["FORM_TITLE"] ?></span>
     </div>
 <?endif;?>
 
@@ -33,7 +33,7 @@ if ($arResult["isFormTitle"]):?>
 ***********************************************************************************/
 ?>
 	<div id="form-<?=$arResult["arForm"]['ID'];?>" class="js-validation-form-new" style="display: none;">
-        <h4>Предложить тему</h4>
+        <h4><?= $arResult["FORM_TITLE"] ?></h4>
     <?=$arResult["FORM_HEADER"]?>
 	<?foreach ($arResult["QUESTIONS"] as $FIELD_SID => $arQuestion):?>
         <? if (in_array($FIELD_SID, ["EVENT_NAME", "EVENT_ID"])): ?>

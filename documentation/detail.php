@@ -70,7 +70,8 @@ $APPLICATION->IncludeComponent("kontora:element.list", "documentation", array(
     'SELECT'    => array('NAME', 'PROPERTY_brand.NAME', 'IBLOCK_ID', 'ID'),
     'PROPS'     => 'Y',
     'FILTER'    => $arFilter,
-    'BRAND_ID'  => $brand["ID"]
+    'BRAND_ID'  => $brand["ID"],
+    'BRAND_NAME' => $brand["NAME"]
 ));?>
 
 <? require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>

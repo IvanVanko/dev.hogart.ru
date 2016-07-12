@@ -81,7 +81,7 @@ $this->setFrameMode(true);?>
                 "FILTER"    => array("!ID" => $ElementID),
                 "ORDER"     => array('active_from' => 'desc'),
                 'SEF_FOLDER' => $arParams['SEF_FOLDER'],
-                'LINK' => SITE_DIR . $arParams['SEF_FOLDER'],
+                'LINK' => $arParams['SEF_FOLDER'],
                 'BLOCK_TITLE' => 'Другие статьи'
             ),
             $component

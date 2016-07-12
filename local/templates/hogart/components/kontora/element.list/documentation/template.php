@@ -4,13 +4,14 @@
 <div class="row">
     <div class="col-md-9">
         <h3><?= $APPLICATION->GetTitle() ?></h3>
-        <div class="row">
+        <h5><a class="color-green" data-toggle="tooltip" data-placement="right" title="Информация о бренде <?= $arParams["BRAND_NAME"] ?>" href="/brands/<?= $_REQUEST["ELEMENT_CODE"] ?>/">О бренде <i class="fa fa-angle-double-right" aria-hidden="true"></i></a></h5>
+        <div class="row vertical-align">
             <div class="col-md-6">
                 <? $count = count($arResult['ITEMS']) ?>
                 <div class="h5">Найдено <?= $count ?> <?= number($count, array('документ', 'документа', 'документов')); ?></div>
             </div>
             <div class="col-md-6 text-right">
-                <a href="/arch/" class="icon-doc-sc">Скачать выбранные</a>
+                <a href="/arch/" class="icon-doc-sc"><i class="fa fa-file-archive-o" aria-hidden="true"></i> Скачать выбранные</a>
             </div>
         </div>
         <div class="row">
@@ -37,7 +38,7 @@
                                     <div class="clearfix"></div>
                                 </div>
                             </li>
-                            <div style="overflow: hidden;" class="collapse in" aria-expanded="true" id="<?= $arItem["PROPERTIES"]["type"]["VALUE_XML_ID"] ?>">
+                            <div style="overflow: hidden;" class="collapse <?= ($i <= 0 ? "in" : "") ?>" aria-expanded="<?= ($i <= 0 ? "true" : "false") ?>" id="<?= $arItem["PROPERTIES"]["type"]["VALUE_XML_ID"] ?>">
                                 
                             
                     <? endif; ?>

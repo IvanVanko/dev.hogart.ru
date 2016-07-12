@@ -22,6 +22,7 @@
     </div>
     <div class="col-md-2 text-right">
         <div class="hogart-share text-right">
+            <a data-toggle="tooltip" data-placement="top" title="Документация" href="<?= SITE_DIR ?>documentation/<?= $arResult['CODE'] ?>/"><i class="fa fa-file-archive-o" aria-hidden="true"></i></a>
             <a data-toggle="tooltip" data-placement="top" href="#" class="js-popup-open"
                data-popup="#popup-subscribe" title="<?= GetMessage("Отправить на e-mail") ?>"><i
                     class="fa fa-envelope" aria-hidden="true"></i></a>
