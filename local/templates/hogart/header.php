@@ -132,7 +132,7 @@ Loc::loadLanguageFile(__FILE__);
                                         href="#"><?= Loc::getMessage('Обратная связь') ?></a></li>
             </ul>
             <? $switcher = $APPLICATION->GetLangSwitcherArray(); ?>
-            <? if (count($switcher) > 1): ?>
+            <? /*if (count($switcher) > 1): ?>
                 <div class="lang-switcher">
                     <? foreach ($switcher as $lang): ?>
                         <? if ($lang["LANGUAGE_ID"] == LANGUAGE_ID): ?>
@@ -143,7 +143,7 @@ Loc::loadLanguageFile(__FILE__);
                            href="<?= $lang["DIR"] ?>"><?= $lang["LANGUAGE_ID"] ?></a>
                     <? endforeach; ?>
                 </div>
-            <? endif; ?>
+            <? endif;*/ ?>
         </nav>
     </div>
 
