@@ -163,7 +163,7 @@ foreach ($arResult['ITEMS'] as &$arItem) {
         array_splice( $exploded_url, $c-2, 0, array($brand_code) );
         $arItem['DETAIL_PAGE_URL'] = implode("/",$exploded_url);
     }
-    $items[$arItem["ID"]] = $arItem;
+    $items[$arItem["ID"]] = &$arItem;
 }
 $arResult['ITEMS'] = $items;
 
