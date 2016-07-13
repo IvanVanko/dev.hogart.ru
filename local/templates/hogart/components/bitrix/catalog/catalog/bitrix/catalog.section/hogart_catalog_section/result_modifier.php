@@ -1,11 +1,5 @@
 <? if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
 
-//global $$arParams["FILTER_NAME"];
-//pr($arParams["FILTER_NAME"]);
-//pr($GLOBALS[$arParams["FILTER_NAME"]]);
-//pr(CStorage::getVar('CUSTOM_SECTION_FILTER'));
-//exit;
-
 if ($arResult['DEPTH_LEVEL'] > 2) {
     $arFilter = array('IBLOCK_ID' => $arParams["IBLOCK_ID"], 'ID' => $arResult["IBLOCK_SECTION_ID"]);
     $rsSect = CIBlockSection::GetList(array('left_margin' => 'asc'), $arFilter);
@@ -145,6 +139,7 @@ if (!empty($arParams['HREF_BRAND_CODE'])) {
 }
 $section_ids = array();
 $property_ids = array();
+$items = [];
 foreach ($arResult['ITEMS'] as &$arItem) {
 
     $elements_ids[] = $arItem['ID'];
@@ -168,7 +163,9 @@ foreach ($arResult['ITEMS'] as &$arItem) {
         array_splice( $exploded_url, $c-2, 0, array($brand_code) );
         $arItem['DETAIL_PAGE_URL'] = implode("/",$exploded_url);
     }
+    $items[$arItem["ID"]] = $arItem;
 }
+$arResult['ITEMS'] = $items;
 
 
 //список соседних разделов
