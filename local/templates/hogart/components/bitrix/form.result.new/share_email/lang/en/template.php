@@ -10,6 +10,7 @@ $MESS ['FORM_NOT_FOUND'] = "Web-form is not found.";
 $MESS ['Имя страницы'] = "Page title";
 $MESS ['Ссылка на страницу'] = "Page link";
 $MESS ['Контактная информация'] = "Contacts";
+$MESS ['Вы успешно поделились ссылкой!'] = "Link successfully shared";
 $MESS ['Отправить'] = "Send";
 $MESS ['Поля, отмеченные * обязательны для заполнения.'] = "Fields marked * are mandatory";
 ?>

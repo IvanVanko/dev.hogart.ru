@@ -1,0 +1,18 @@
+@import "../../../../../templates/hogart/variables";
+@import "../../../../../templates/hogart/styles";
+
+.sections-list {
+  a {
+    &:extend(.h5 all);
+    display: block;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 20px;
+    &:hover {
+      color: @brand-green !important;
+    }
+    &.selected {
+      color: @brand-green !important;
+    }
+  }
+}

@@ -1,0 +1,47 @@
+@media screen and (max-width: 767px) {
+}
+@media (min-width: 768px) {
+}
+.zones > h4 {
+  cursor: pointer;
+}
+.zones > h4 span {
+  border-bottom: 1px dashed #2c2432;
+  padding-right: 0 !important;
+  margin-left: 0 !important;
+}
+.zones > h4:hover {
+  color: #95c600;
+}
+.zones .pres-material a {
+  border-bottom: 1px dashed #2c2432;
+}
+.zones .pres-material a:hover {
+  color: #95c600 !important;
+}
+.aside .more,
+.aside .title {
+  line-height: 33px;
+  height: 33px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: block;
+}
+.aside .more a,
+.aside .title a {
+  color: #95c600 !important;
+  text-decoration: underline;
+  font-weight: normal;
+}
+.aside .title {
+  float: left;
+}
+.aside .more {
+  float: right;
+}
+.aside .more:after {
+  content: "";
+  position: relative;
+  display: block;
+  clear: both;
+}

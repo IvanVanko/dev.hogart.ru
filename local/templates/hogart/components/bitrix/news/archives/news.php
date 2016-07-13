@@ -12,8 +12,6 @@
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
 
-
-
 if ($APPLICATION->GetCurDir() === $arParams["SEF_FOLDER"]) {
     $arFilter = array(
         '<PROPERTY_sem_start_date' => date("Y-m-d", time()),
@@ -23,10 +21,6 @@ if ($APPLICATION->GetCurDir() === $arParams["SEF_FOLDER"]) {
             array('<PROPERTY_sem_end_date' => date("Y-m-d", time()))
         )
     );
-
-    //$arFilter['PROPERTY_sem_end_date'] = false;
-
-    //$arFilter['<PROPERTY_sem_end_date'] = date("Y-m-d", time());
 
     if (!empty($_REQUEST["brand"]))
         foreach ($_REQUEST["brand"] as $brand)
@@ -54,8 +48,6 @@ if ($APPLICATION->GetCurDir() === $arParams["SEF_FOLDER"]) {
         }
     }
 
-    // $GLOBALS['filter'] = $arFilter;
-
     $arrID = $APPLICATION->IncludeComponent(
         "kontora:element.list",
         "",
@@ -63,7 +55,7 @@ if ($APPLICATION->GetCurDir() === $arParams["SEF_FOLDER"]) {
             "IBLOCK_ID"	    => $arParams["IBLOCK_ID"],
             "PROPS"         => "Y",
             "NAV"           => "Y",
-            "ELEMENT_COUNT" => 5,
+            "ELEMENT_COUNT" => 20,
             "FILTER"        => $arFilter,
             'ORDER'         => $arParams['ORDER'],
         ),

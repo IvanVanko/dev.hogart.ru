@@ -1,7 +1,7 @@
 <?
 $aMenuLinks = Array(
 	Array(
-		"Компания",
+		"О компании",
 		"/company/",
 		Array(),
 		Array(),
@@ -22,8 +22,8 @@ $aMenuLinks = Array(
 		""
 	),
 	Array(
-		"Акции",
-		"/stock/",
+		"Документация",
+		"/documentation/",
 		Array(),
 		Array(),
 		""
@@ -36,13 +36,6 @@ $aMenuLinks = Array(
 		""
 	),
 	Array(
-		"Сервис",
-		"/services/",
-		Array(),
-		Array(),
-		""
-	),
-	Array(
 		"Обучение",
 		"/learn/",
 		Array(),
@@ -50,29 +43,8 @@ $aMenuLinks = Array(
 		""
 	),
 	Array(
-		"Документация",
-		"/documentation/",
-		Array(),
-		Array(),
-		""
-	),
-	Array(
-		"Подбор оборудования",
-		"/selection-equipment/",
-		Array(),
-		Array(),
-		""
-	),
-	Array(
-		"Полезная информация",
-		"/helpful-information/",
-		Array(),
-		Array(),
-		""
-	),
-	Array(
-		"Контакты",
-		"/contacts/tsentralnyy-ofis-khogart-v-moskve-sklad-i-servisnaya-sluzhba/",
+		"Сервис",
+		"/services/",
 		Array(),
 		Array(),
 		""

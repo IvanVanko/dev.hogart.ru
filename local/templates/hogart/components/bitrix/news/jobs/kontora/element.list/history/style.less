@@ -1,0 +1,33 @@
+@import (reference) "../../../../../../../variables";
+@import (reference) "../../../../../../../styles";
+
+.faces {
+  li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .face-name,
+    .face-job,
+    .face-pre-text {
+      font-family: @font-family-serif;
+      font-size: @font-size-base;
+    }
+    .face-name {
+      font-weight: 700;
+    }
+    .face-job {
+
+    }
+    .face-pre-text {
+      margin-top: 10px;
+      text-align: center;
+    }
+    .read-more {
+      &:extend(.h5 all);
+      border-bottom: 1px dashed @brand-black;
+      &:hover {
+        color: @brand-green;
+      }
+    }
+  }
+}

@@ -22,7 +22,9 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 					form header
 ***********************************************************************************/
 if ($arResult["isFormTitle"]):?>
-	<h2><?=$arResult["FORM_TITLE"]?></h2>
+    <div class="form-desc-txt">
+        <span class="show-js-validation-form-new btn btn-primary"><?= $arResult["FORM_TITLE"] ?></span>
+    </div>
 <?endif;?>
 
 <?
@@ -30,7 +32,8 @@ if ($arResult["isFormTitle"]):?>
 						form questions
 ***********************************************************************************/
 ?>
-	<div id="form-<?=$arResult["arForm"]['ID'];?>" class="js-validation-form-new">
+	<div id="form-<?=$arResult["arForm"]['ID'];?>" class="js-validation-form-new" style="display: none;">
+        <h4><?= $arResult["FORM_TITLE"] ?></h4>
     <?=$arResult["FORM_HEADER"]?>
 	<?foreach ($arResult["QUESTIONS"] as $FIELD_SID => $arQuestion):?>
         <? if (in_array($FIELD_SID, ["EVENT_NAME", "EVENT_ID"])): ?>
@@ -114,7 +117,7 @@ if($arResult["isUseCaptcha"] == "Y")
 } // isUseCaptcha
 ?>
     <br/>
-	<input type="submit" name="web_form_submit" class="empty-btn" value="<?= GetMessage("Отправить") ?>" />
+	<input type="submit" name="web_form_submit" class="btn btn-primary" value="<?= GetMessage("Отправить") ?>" />
 
 <?=$arResult["FORM_FOOTER"]?>
 </div>

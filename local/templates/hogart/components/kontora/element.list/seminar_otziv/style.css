@@ -1,0 +1,38 @@
+ul.comment-learn .mycomment .user {
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.1;
+  color: inherit;
+}
+ul.comment-learn .mycomment .user small,
+ul.comment-learn .mycomment .user .small {
+  font-weight: normal;
+  line-height: 1;
+  color: #777777;
+}
+ul.comment-learn .mycomment .user {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+ul.comment-learn .mycomment .user small,
+ul.comment-learn .mycomment .user .small {
+  font-size: 75%;
+}
+ul.comment-learn .mycomment .user {
+  font-size: 14px;
+}
+@media screen and (max-width: 767px) {
+}
+@media (min-width: 768px) {
+}
+ul.comment-learn .mycomment .user {
+  font-family: "Roboto Condensed", sans-serif;
+  margin-top: 10px;
+}
+ul.comment-learn {
+  padding: 0 0 0 20px;
+  list-style: none;
+}
+ul.comment-learn .mycomment .user {
+  color: #95c600;
+}

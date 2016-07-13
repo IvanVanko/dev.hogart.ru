@@ -1,0 +1,14 @@
+.contacts-list li a {
+  font-family: "Roboto Condensed", sans-serif;
+  display: block;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+.contacts-list li.active a {
+  color: #95c600 !important;
+}
+.contacts-list li .fa {
+  margin-right: 10px;
+  font-size: 18px;
+}

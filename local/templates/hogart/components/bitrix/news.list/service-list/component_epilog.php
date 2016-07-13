@@ -27,7 +27,7 @@ if(isset($arResult['arResult'])) {
 <?foreach($arResult["ITEMS"] as $count => $arItem):?>
     <?if ($count==0):?>
 
-    <h1><?=$arItem['NAME']?></h1>
+    <h3><?=$arItem['NAME']?></h3>
     <div class="service-item-box">
         <?=$arItem["PREVIEW_TEXT"]?>
     </div>

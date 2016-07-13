@@ -17,13 +17,12 @@ $APPLICATION->SetPageProperty("body_class","reg_page");
     });
 
 </script>
-<div class="inner">
 <?
     $APPLICATION->IncludeComponent(
         "bitrix:news.detail",
         "hogart_seminar_detail",
         Array(
-            "AJAX_MODE" => "Y",
+            "AJAX_MODE" => "N",
             "DISPLAY_DATE" => "Y",
             "DISPLAY_NAME" => "Y",
             "DISPLAY_PICTURE" => "Y",

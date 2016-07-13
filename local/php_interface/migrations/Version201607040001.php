@@ -22,8 +22,6 @@ class Version201607040001 extends Version
         $arFilter = Array("IBLOCK_ID"=>intval($block_id), "CODE"=>false);
 
         $res = (new \CIBlockElement)->GetList(Array(), $arFilter, false, false, $arSelect);
-        var_dump($res->AffectedRowsCount());
-
         while($ob = $res->GetNextElement()){
             $arFields = $ob->GetFields();
             if($arFields['CODE'] != '')

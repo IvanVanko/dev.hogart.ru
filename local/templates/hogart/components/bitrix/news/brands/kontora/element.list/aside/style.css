@@ -1,0 +1,22 @@
+.brand-links {
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+@media screen and (max-width: 767px) {
+}
+@media (min-width: 768px) {
+}
+.brand-links {
+  background: white;
+  border-left: 1px solid #95c600;
+}
+.brand-links a {
+  font-size: 14px;
+  font-family: "Roboto Condensed", sans-serif;
+}
+.brand-links a:hover {
+  text-decoration: underline !important;
+  color: #95c600 !important;
+}

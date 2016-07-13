@@ -12,10 +12,21 @@
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);?>
 <?
-if ($APPLICATION->GetCurDir() === $arParams["SEF_FOLDER"]) {?>
-    <div class="inner">
-        <h1><?$APPLICATION->ShowTitle()?></h1>
-
+?>
+<div class="row">
+    <div class="col-md-9">
+        <h3><?$APPLICATION->ShowTitle()?></h3>
+        <?$APPLICATION->IncludeComponent(
+            "kontora:element.list",
+            "",
+            Array(
+                "IBLOCK_ID"	    => $arParams["IBLOCK_ID"],
+                "PROPS"         => "Y",
+                "ORDER"         => array($arParams["SORT_BY1"] => $arParams["SORT_ORDER1"], $arParams["SORT_BY2"] => $arParams["SORT_ORDER2"]),
+            ),
+            $component
+        );?>
+        <? $APPLICATION->ShowViewContent("brands-letters") ?>
         <p>
             <?$APPLICATION->IncludeComponent("bitrix:main.include","",Array(
                     "AREA_FILE_SHOW" => "sect",
@@ -25,26 +36,18 @@ if ($APPLICATION->GetCurDir() === $arParams["SEF_FOLDER"]) {?>
                 )
             );?>
         </p>
+        <? $APPLICATION->ShowViewContent("brands-list") ?>
+    </div>
+    <div class="col-md-3">
         <?$APPLICATION->IncludeComponent(
             "kontora:element.list",
-            "",
+            "aside",
             Array(
                 "IBLOCK_ID"	    => $arParams["IBLOCK_ID"],
                 "PROPS"         => "Y",
-                "FILTER"        => $arFilter,
                 "ORDER"         => array($arParams["SORT_BY1"] => $arParams["SORT_ORDER1"], $arParams["SORT_BY2"] => $arParams["SORT_ORDER2"]),
             ),
             $component
         );?>
     </div>
-    <?$APPLICATION->IncludeComponent("kontora:element.detail", "brands", array(
-        "ID"    => "21",
-        "PROPS" => "Y",
-        "ADD_CHAIN_ITEM" => "N"
-    ));?>
-<?
-} else {
-    BXHelper::NotFound();
-}
-?>
-
+</div>

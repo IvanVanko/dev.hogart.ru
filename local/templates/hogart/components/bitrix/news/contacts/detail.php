@@ -11,26 +11,33 @@
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
+?>
 
-if (strlen($arResult["VARIABLES"]["ELEMENT_CODE"])) {
-    $ElementID = $APPLICATION->IncludeComponent("kontora:element.detail", "", array(
+<? if (strlen($arResult["VARIABLES"]["ELEMENT_CODE"])): ?>
+    <div class="row">
+        <?
+        $ElementID = $APPLICATION->IncludeComponent("kontora:element.detail", "", array(
             "IBLOCK_ID"  => $arParams["IBLOCK_ID"],
             "CODE"    => $arResult["VARIABLES"]["ELEMENT_CODE"],
             'PROPS' => 'Y',
             'SET_STATUS_404' => $arParams['SET_STATUS_404']
         ),
-        $component
-    );
+            $component
+        );
+        ?>
 
-    $APPLICATION->IncludeComponent(
-        "kontora:element.list",
-        "list",
-        Array(
-            "IBLOCK_ID"  => $arParams["IBLOCK_ID"],
-            'ORDER'      => array('sort' => 'asc'),
-            'CURRENT_ID' => $ElementID,
-        ), $component
-    );
-} else {
+        <?
+        $APPLICATION->IncludeComponent(
+            "kontora:element.list",
+            "list",
+            Array(
+                "IBLOCK_ID"  => $arParams["IBLOCK_ID"],
+                'ORDER'      => array('sort' => 'asc'),
+                'CURRENT_ID' => $ElementID,
+            ), $component
+        );
+        ?>
+    </div>
+<? else: ?>
     BXHelper::NotFound();
-}
+<? endif; ?>

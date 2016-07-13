@@ -1,28 +1,21 @@
 <?php
 if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED!==true) die();
 
-// echo "<PRE>";
-// var_dump($_REQUEST);
-
-
-
-$arResult['BRANDS'] = array();
+$arResult['DOCUMENTATION'] = array();
 
 $arResult['EXISTS_SECTIONS'] = $_REQUEST['section'];
 
 $request_section = ($_REQUEST['section'][0] != '' || $_REQUEST['section'][1] != '' || $_REQUEST['section'][2] != '');
 $no_request = (!$request_section && !$_REQUEST['product']);
+$arResult['TYPE_COUNTS'] = [];
 
-foreach ($arResult['ITEMS'] as $key => $arItem) {
+foreach ($arResult['ITEMS'] as $key => &$arItem) {
 	$file = CFile::GetFileArray($arItem["PROPERTIES"]['file']["VALUE"]);
 	$file["FILE_SIZE"] = round($file["FILE_SIZE"] / 1048576, 2);
 	$info = new SplFileInfo($file["FILE_NAME"]);
 	$file["EXTENTION"] = $info->getExtension();
 	$arItem["FILE"] = $file;
-    //$arResult['ITEMS'][$key]['DOWNLOAD_LINK'] = BXHelper::getDownloadLink($arItem['FILE']['ID'], 'download.php', CUtil::translit($arItem['NAME'], "ru", array("max_len" => 100, "replace_space" => "-", "replace_other" => "-")), $file["EXTENTION"]);
     $arItem['DOWNLOAD_LINK'] = $arResult['ITEMS'][$key]['DOWNLOAD_LINK'] = BXHelper::getDownloadLink($arItem['FILE']['ID'], 'download.php', str_replace(array("/","|","\\", "?", ":", ";"), "", $arItem['NAME']), $file["EXTENTION"]);
-
-    //fileDump(array($arItem, $file), true);
 
 	if ($request_section) {
 		$exists_flag = false;
@@ -41,13 +34,9 @@ foreach ($arResult['ITEMS'] as $key => $arItem) {
 					$exists_name_flag = true;
 				}
 
-				if ($exists_name_flag) {
-					$arResult['BRANDS'][$arItem['PROPERTY_BRAND_NAME']][$arItem['PROPERTIES']['type']['VALUE']][] = $arItem;
-				} else {
+				if (!$exists_name_flag) {
 					unset($arResult['ITEMS'][$key]);
 				}
-			} else {
-				$arResult['BRANDS'][$arItem['PROPERTY_BRAND_NAME']][$arItem['PROPERTIES']['type']['VALUE']][] = $arItem;
 			}
 		} else {
 			unset($arResult['ITEMS'][$key]);
@@ -60,18 +49,13 @@ foreach ($arResult['ITEMS'] as $key => $arItem) {
 				$exists_name_flag = true;
 			}
 
-			if ($exists_name_flag) {
-				$arResult['BRANDS'][$arItem['PROPERTY_BRAND_NAME']][$arItem['PROPERTIES']['type']['VALUE']][] = $arItem;
-			} else {
+			if (!$exists_name_flag) {
 				unset($arResult['ITEMS'][$key]);
 			}
-		} else {
-			$arResult['BRANDS'][$arItem['PROPERTY_BRAND_NAME']][$arItem['PROPERTIES']['type']['VALUE']][] = $arItem;
 		}
 	}
-
-	if ($no_request) {
-		//$arResult['BRANDS'][$arItem['PROPERTY_BRAND_NAME']][$arItem['PROPERTIES']['type']['VALUE']][] = $arItem;
+	if (!empty($arResult['ITEMS'][$key])) {
+		$arResult['TYPE_COUNTS'][$arItem["PROPERTIES"]["type"]["VALUE"]]++;
 	}
 }
 
@@ -80,21 +64,17 @@ $arResult['FILTER']['TYPES'] = array();
 $arFilter = array(
 	"IBLOCK_ID" => $arParams['IBLOCK_ID'], 
 	"ACTIVE"    => "Y",
+	"PROPERTY_BRAND.ID" => $arParams["BRAND_ID"]
 );
-$arFilter['PROPERTY_access_level'] = ($USER->IsAuthorized()) ? array(1, 2) : 1;
+if (!$USER->IsAuthorized()) {
+	$arFilter['PROPERTY_access_level'] = 1;
+}
 
 //Types
 $res = CIBlockElement::GetList(array(), $arFilter, array('PROPERTY_TYPE'), false, array());
 while ($ob = $res->GetNextElement()) {
 	$arFields = $ob->GetFields();
 	$arResult['FILTER']['TYPES'][] = $arFields['PROPERTY_TYPE_VALUE'];
-}
-
-//Brands
-$res = CIBlockElement::GetList(array('PROPERTY_BRAND.NAME' => 'asc'), $arFilter, array('PROPERTY_BRAND'), false, array());
-while ($ob = $res->GetNextElement()) {
-	$arFields = $ob->GetFields();
-	$arResult['FILTER']['BRANDS'][$arFields['PROPERTY_BRAND_VALUE']] = $arFields['PROPERTY_BRAND_NAME'];
 }
 
 /* Murdoc:
@@ -203,4 +183,3 @@ foreach ($directionsId as $one_directions) {
 		}
 	}
 }
-ksort($arResult['BRANDS']); //нормально сделать сортировку

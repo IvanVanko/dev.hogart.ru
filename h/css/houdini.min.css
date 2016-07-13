@@ -20,7 +20,7 @@
     visibility: visible
 }
 
-.js-houdini .collapse {
+.js-houdini .collapse:not([aria-expanded]) {
     max-height: 0;
     overflow: hidden;
     opacity: 0;
@@ -28,7 +28,7 @@
     transition: opacity .35s ease
 }
 
-.js-houdini .collapse.active {
+.js-houdini .collapse:not([aria-expanded]).active {
     max-height: 9999em;
     opacity: 1;
     overflow: visible;

@@ -1,31 +1,54 @@
 ul.organizers li.organizer-item {
-    height: 80px;
-    vertical-align: middle;
-    position: relative;
-    list-style-type: none;
-    margin-bottom: 20px;
-    border-bottom: #95c600 1px solid;
-    box-sizing: content-box;
-    padding-bottom: 20px;
+  height: 80px;
+  vertical-align: middle;
+  position: relative;
+  list-style-type: none;
+  margin-bottom: 20px;
+  border-bottom: #95c600 1px solid;
+  box-sizing: content-box;
+  padding-bottom: 20px;
 }
-
 ul.organizers li.organizer-item img {
-    display: block;
-    float: left;
-    margin-right: 10px;
-    height: 100%;
-    border-radius: 100%;
+  display: block;
+  float: left;
+  margin-right: 10px;
+  height: 100%;
+  border-radius: 100%;
 }
-
 ul.organizers li.organizer-item span {
-    display: block;
-    margin-left: 10px;
-    margin-top: 5px;
+  display: block;
+  margin-left: 10px;
+  margin-top: 5px;
 }
-
 ul.organizers li.organizer-item:after {
-    content: " ";
-    display: block;
-    position: relative;
-    clear: both;
+  content: " ";
+  display: block;
+  position: relative;
+  clear: both;
+}
+.aside .more,
+.aside .title {
+  line-height: 33px;
+  height: 33px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: block;
+}
+.aside .more a,
+.aside .title a {
+  color: #95c600 !important;
+  text-decoration: underline;
+  font-weight: normal;
+}
+.aside .title {
+  float: left;
+}
+.aside .more {
+  float: right;
+}
+.aside .more:after {
+  content: "";
+  position: relative;
+  display: block;
+  clear: both;
 }

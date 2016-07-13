@@ -401,7 +401,7 @@ class ParsingModel {
                     "XML_ID" => $TypeTehDoc->id,
                     "VALUE" => $TypeTehDoc->name,
                     "PROPERTY_ID" => $techDocTypeProperty["ID"],
-                    "SORT" => 500
+                    "SORT" => $TypeTehDoc->sort ? : 500
                 ];
             }
 

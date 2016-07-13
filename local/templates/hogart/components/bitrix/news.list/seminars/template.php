@@ -20,18 +20,9 @@
             <?if ($arItem['PROPERTIES']['sem_start_date']['VALUE']!=''):?>
 		        <?$date = explode('.', $arItem['PROPERTIES']['sem_start_date']['VALUE']);?>
 		        <?$date_from = FormatDate("m/d/Y", MakeTimeStamp($arItem['PROPERTIES']['sem_start_date']['VALUE']));?>
-                <?
-                /*$date_sem_start = FormatDate("d.m.Y", MakeTimeStamp($arItem['PROPERTIES']['sem_start_date']['VALUE']));
-                $date_sem_start = strtotime($date_sem_start);
-                $date_sem_start =(!empty($date_sem_start))?$date_sem_start:0;
-
-                $now=date($DB->DateFormatToPHP(CSite::GetDateFormat("SHORT")), time());
-                $now=strtotime($now);*/
-                ?>
-                <?//=$date_sem_start =$now;?>
                 <li data-date="<?=$date_from;?>">
                     <a href="<?=$arItem['DETAIL_PAGE_URL'];?>">
-                        <h3><?=$arItem['NAME'];?></h3>
+                        <h4><?=$arItem['NAME'];?></h4>
                     </a>
                     <br/>
                     <?
@@ -39,7 +30,6 @@
                     $arItem["PREVIEW_TEXT"] = $obParser->html_cut($arItem["PREVIEW_TEXT"], 200);
                     ?>
                     <?=$arItem["PREVIEW_TEXT"];?>
-                    <?//=$arItem['PREVIEW_TEXT'];?>
                 </li>
             <?endif;?>
 

@@ -785,6 +785,28 @@ if($this->StartResultCache(false, array($arrFilter, ($arParams["CACHE_GROUPS"]==
 		$arDefaultMeasure = CCatalogMeasure::getDefaultMeasure(true, true);
 	$currencyList = array();
 	$arSections = array();
+	
+	if (!empty($arParams["SUB_SECTION_COUNT"])) {
+		$rsParentSection = CIBlockSection::GetList(array('NAME' => 'ASC'), [
+			'IBLOCK_ID' => $arParams["IBLOCK_ID"],
+			'SECTION_ID' => $arFilter['SECTION_ID']
+		], false, array('NAME','ID','CODE','SECTION_PAGE_URL'));
+		
+		$_el_ids = [];
+		while ($arSect = $rsParentSection ->GetNext())
+		{
+			$__arFilter = array_merge(array_merge($arrFilter, $arFilter), ['SECTION_ID' => $arSect["ID"]]);
+			$_elementsRes = CIBlockElement::GetList([], $__arFilter, false, [
+				"nTopCount" => intval($arParams["SUB_SECTION_COUNT"])
+			], ["ID"]);
+			while ($_elId = $_elementsRes->Fetch()) {
+				$_el_ids[] = $_elId["ID"];
+			}
+		}
+		if (!empty($_el_ids)) {
+			$arrFilter["ID"] = array_merge($arrFilter["ID"] ? : [], $_el_ids);
+		}
+	}
 
 	//EXECUTE
 	$rsElements = CIBlockElement::GetList($arSort, array_merge($arrFilter, $arFilter), false, $arNavParams, $arSelect);
@@ -928,7 +950,6 @@ if($this->StartResultCache(false, array($arrFilter, ($arParams["CACHE_GROUPS"]==
 		);
 		$propertyIDs = array_keys(CIBlockSectionPropertyLink::GetArray($arParams['IBLOCK_ID'], $arFilter['SECTION_ID']));
 		CIBlockElement::GetPropertyValuesArray($arElementLink, $arParams["IBLOCK_ID"], $arPropFilter, ['ID' => $propertyIDs]);
-
 		foreach ($arResult["ITEMS"] as &$arItem)
 		{
 			if ($bCatalog && $boolNeedCatalogCache)

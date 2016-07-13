@@ -1,7 +1,8 @@
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetPageProperty("title", "Вакансии");
 $APPLICATION->SetTitle("Вакансии");?>
-<?$APPLICATION->IncludeComponent("bitrix:news", "jobs", array(
+<?
+$APPLICATION->IncludeComponent("bitrix:news", "jobs", array(
 		"IBLOCK_ID" => "4",
 		"SEF_MODE" => "Y",
 		"SEF_FOLDER" => "/company/jobs/",
@@ -74,5 +75,6 @@ $APPLICATION->SetTitle("Вакансии");?>
 				"section" => "",
 				"detail" => "#ELEMENT_CODE#/",
 		)
-));?>
+));
+?>
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

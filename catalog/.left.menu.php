@@ -1,18 +1,23 @@
 <?
-$aMenuLinks = Array(
-    Array(
-        "Все бренды",
+global $APPLICATION;
+$aMenuLinks = [];
+
+if ($APPLICATION->GetCurDir() == SITE_DIR) {
+    $aMenuLinks[] = Array(
+        "Бренды",
         "/brands/",
         Array(),
         Array(),
         ""
-    ),
-    Array(
-        "Документация (скачать)",
+    );
+
+    $aMenuLinks[] = Array(
+        "Документация",
         "/documentation/",
         Array(),
         Array(),
         ""
-    ),
-);
+    );
+}
+
 ?>

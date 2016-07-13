@@ -17,7 +17,7 @@ $(document).ready(function () {
             section.find(".head input").prop('checked', false);
         }
     }
-    function formLink(){
+    function formLink() {
         var documents = [],
             zipLink;
 
@@ -31,82 +31,28 @@ $(document).ready(function () {
         $(".icon-doc-sc").attr({href: zipLink});
     }
 
-    $('.doc-loadlist .head, .doc-loadlist .head_sub').click(function (e) {
-        if ($(this).hasClass('head')) {
-            toggleDoc($(this));
-        }
-        else if ($(this).hasClass('head_sub')) {
-            $(this).toggleClass('active');
-            $(this).parent().find('.item').slideToggle();
-        }
-    });
-
-    $('.doc-loadlist .head span').click(function (e) {
+    $('.doc-loadlist .head_sub input').click(function (e) {
+        console.log(e.target.tagName);
+        console.log(e.currentTarget.tagName);
+        console.log(e);
+        $('+.collapse', $(this).parents('.head_sub'))
+          .find('.item input[type="checkbox"]')
+          .prop("checked", $(this).prop("checked"))
+        ;
         e.stopPropagation();
-        e.preventDefault();
-
-        var $parent = $(this).parents('.li-container'),
-            $list = $(this).parents('.doc-loadlist');
-
-        var enabled = !$parent.find('input').prop("checked");
-
-        $parent.find('input').prop({
-            "checked": enabled
-        });
-
-        $list.find('.item-box input').prop('checked', enabled);
         formLink();
     });
 
-    $('.doc-loadlist .head label, .doc-loadlist .head label').click(function (e) {
-        toggleDoc($(this));
-    });
-
-    $('.doc-loadlist .head_sub span').click(function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-
-        var $this = $(this),
-            $field = $this.parents('.field'),
-            $list = $this.parents('.item-box').find('.item'),
-            checked = !$field.find('input').prop("checked");
-
-        $this.toggleClass('active');
-        $field.find('input').prop("checked", checked);
-        $list.find('input').prop("checked", checked);
+    $('.doc-loadlist .item input[type="checkbox"]').click(function () {
         formLink();
     });
 
-    $('.doc-loadlist .head h4').click(function (e) {
-        var $parent = $(this).parents('.li-container');
-        $parent.find('.item').slideToggle();
-    });
-
-    $('.doc-loadlist li IMG').click(function (e) {
+    $('.doc-loadlist .item .download-link').click(function (e) {
         e.stopPropagation();
         e.preventDefault();
-        var $field = $(this).parents('.field ');
+        var $field = $(this).parents('.checkbox');
         if($('input', $field).length){
             window.open($('input', $field).val(), '_blank');
         }
-    });
-
-    $('.doc-loadlist .doc-download-link .icon-acrobat').on('click', function () {
-        var link = $(this).find('input');
-        if (link.length == 0) {
-            link = $(this).parents('.custom_checkbox').find('input[name="document"]');
-        }
-        window.open(link.val(), '_blank');
-    });
-
-    $('.doc-loadlist .doc-download-link .fake-checkbox').on('click', function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-
-        var checkbox = $(this).parents('.custom_checkbox').find('input[name="document"]');
-        checkbox.prop('checked', !checkbox.prop('checked'));
-        checkbox.trigger('change');
-        formLink();
-        checkCheckedSections($(this));
     });
 });

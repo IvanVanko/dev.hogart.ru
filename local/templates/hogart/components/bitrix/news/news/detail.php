@@ -13,15 +13,6 @@
 $this->setFrameMode(true);
 
 if (!empty($arResult["VARIABLES"]["ELEMENT_CODE"])) {
-//    $ElementID = $APPLICATION->IncludeComponent("kontora:element.detail", "", array(
-//            "ID"        => $arResult["VARIABLES"]["ELEMENT_ID"],
-//            'PROPS'     => 'Y',
-//            'ORDER'     => $arParams['ORDER'],
-//            'IBLOCK_ID' => $arParams['IBLOCK_ID'],
-//            'SET_STATUS_404' => $arParams['SET_STATUS_404']
-//        ),
-//        $component
-//    );
     $ElementID = $APPLICATION->IncludeComponent(
         "bitrix:news.detail",
         "",

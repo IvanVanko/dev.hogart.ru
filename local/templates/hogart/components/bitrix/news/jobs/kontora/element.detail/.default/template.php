@@ -1,42 +1,39 @@
 <?if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();?>
-<h2><?=$arResult['NAME']?></h2>
+<h3><?=$arResult['NAME']?></h3>
 
 <?if (!empty($arResult['PROPERTIES']['duties']['VALUE'])):?>
-	<h3>Обязанности</h3>
-	<?=$arResult['PROPERTIES']['duties']['~VALUE']['TEXT']?>
+	<h4>Обязанности</h4>
+	<div class="demands-box">
+		<?=$arResult['PROPERTIES']['duties']['~VALUE']['TEXT']?>
+	</div>
 <?endif;?>
 
 <?if (!empty($arResult['PROPERTIES']['demands']['VALUE'])):?>
-	<h3>Требования</h3>
+	<h4>Требования</h4>
     <div class="demands-box">
-
         <?=$arResult['PROPERTIES']['demands']['~VALUE']['TEXT']?>
     </div>
 <?endif;?>
 
 <?if (!empty($arResult['PROPERTIES']['conditions']['VALUE'])):?>
-	<h3>Условия работы</h3>
+	<h4>Условия работы</h4>
     <div class="demands-box">
         <?=$arResult['PROPERTIES']['conditions']['~VALUE']['TEXT']?>
     </div>
 <?endif;?>            
             
 <?if (!empty($arResult['PROPERTIES']['salary']['VALUE'])):?>            
-    <div class="fixheight"></div>
-    <h3>Уровень заработной платы от <span><?=$arResult['PROPERTIES']['salary']['VALUE']?></span> рублей</h3>
+    <h4>Уровень заработной платы от <span class="color-green"><?=$arResult['PROPERTIES']['salary']['VALUE']?></span> рублей</h4>
 <?endif;?>
-<?//var_dump($arResult['LECTORS'])?>
 
 <?if(!empty($arResult['LECTORS'])):?>
-	<h2>Адрес и контактная информация</h2>
-
 	<div class="creator-big">
-		<span>По всем вопросам вы можете обратиться к специалисту по кадрам:</span>
+		<span class="h5">По всем вопросам вы можете обратиться к специалисту по кадрам:</span>
 
 		<div class="creator-cont">
 			<img src="<?=$arResult['LECTORS']['PREVIEW_PICTURE']?>" alt=""/>
 
-			<h3><?=$arResult['LECTORS']['NAME']?></h3>
+			<h4><?=$arResult['LECTORS']['NAME']?></h4>
 			<span class="head"><?=$arResult['LECTORS']['PROPERTY_STATUS_VALUE']?><? if (!empty($arResult['LECTORS']['PROPERTY_COMPANY_VALUE'])) echo " / ".$arResult['LECTORS']['PROPERTY_COMPANY_VALUE']?></span>
 			<ul class="contact">
 				<li class="phone"><?=$arResult['LECTORS']['PROPERTY_PHONE_VALUE']?></li>

@@ -1,0 +1,47 @@
+.job-list li a {
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.1;
+  color: inherit;
+}
+.job-list li a small,
+.job-list li a .small {
+  font-weight: normal;
+  line-height: 1;
+  color: #777777;
+}
+.job-list li a {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.job-list li a small,
+.job-list li a .small {
+  font-size: 75%;
+}
+.job-list li a {
+  font-size: 14px;
+}
+@media screen and (max-width: 767px) {
+}
+@media (min-width: 768px) {
+}
+.job-list li a {
+  font-family: "Roboto Condensed", sans-serif;
+  margin-top: 10px;
+}
+.job-list {
+  list-style: none;
+  padding: 0;
+}
+.job-list li a {
+  display: block;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+.job-list li a:hover {
+  color: #95c600 !important;
+}
+.job-list li a.selected {
+  color: #95c600 !important;
+}

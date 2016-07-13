@@ -1,5 +1,22 @@
 <?
 class HogartHelpers {
+    public static function GetStaticContent($code)
+    {
+        static $cacheStatic = [];
+        if (empty($cacheStatic[$code])) {
+            $cacheStatic[$code] = CIBlockElement::GetList([], [
+                "IBLOCK_CODE" => "STATIC_CONTENT",
+                "IBLOCK_TYPE_ID" => "content",
+                "CODE" => $code
+            ])->Fetch();
+        }
+        return $cacheStatic[$code];
+    }
+    public static function ShowStaticContent($code, $prop = null)
+    {
+        return self::GetStaticContent($code)[$prop];
+    }
+
     public static function rewriteBrandUrlToCatalog($brand_code, $catalog_section_code, $catalog_iblock_id) {
         $catalog_section_code = end(explode("/", $catalog_section_code));
         global $APPLICATION;

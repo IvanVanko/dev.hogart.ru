@@ -1,11 +1,125 @@
-@brand-green: #95c600;
+@import (reference) "../../../../../../../variables";
+@import (reference) "../../../../../../../bootstrap";
 
+.catalog-subs {
+  &:extend(.container-fluid);
+  background: white;
+  border-left: 1px solid @brand-green;
+
+  a {
+    font-size: @font-size-h6;
+    font-family: @font-family-serif;
+    text-transform: uppercase;
+    text-decoration: underline !important;
+    margin-bottom: 5px;
+    display: block;
+    &:hover {
+      color: @brand-green !important;
+    }
+  }
+}
 .catalog_page .perechen {
+  .perechen-produts.grid {
+    padding-left: 25px !important;
+    margin-left: -25px !important;
+    overflow: hidden;
+    transition: max-height .4s ease;
+
+    &.closed {
+      max-height: 46px !important;
+      .brand-name,
+      .section-name {
+        .fa {
+          &:before {
+            content: "\f055" !important;
+          }
+        }
+      }
+    }
+    > .caption {
+      font-weight: 500;
+      font-size: @font-size-h5;
+      text-transform: uppercase;
+      padding-bottom: 5px;
+      padding-left: 0;
+      padding-right: 0;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid @brand-green;
+      > span,
+      > div {
+        display: block;
+        padding: 0;
+        &.brand-name,
+        .section-name {
+          cursor: pointer;
+          .fa {
+            margin-left: -17px;
+            margin-right: 5px;
+            &:before {
+              content: "\f056";
+            }
+          }
+        }
+        .section-link {
+          float: right;
+          font-size: @font-size-h5;
+          font-weight: normal;
+          text-transform: none;
+          a {
+            color: @brand-black;
+          }
+        }
+      }
+    }
+    margin-top: 0 !important;
+    > li > div {
+      height: 100%;
+      padding: 15px;
+      border: 1px solid transparent;
+
+      .buy-btn {
+        display: block;
+        visibility: visible;
+        margin-top: (@grid-gutter-width / 2);
+        transition: all 0s linear;
+      }
+
+      .perechen-img {
+        border: 1px solid rgba(238, 238, 238, .7);
+        border-radius: 3px;
+      }
+
+      &:hover {
+        border: 1px solid @brand-green;
+        border-radius: 5px;
+        box-shadow: 1px 1px 1px 1px #ccc;
+
+        .perechen-img {
+          border-color: transparent;
+        }
+        .buy-btn {
+          visibility: visible;
+        }
+      }
+    }
+  }
   .perechen-produts.list {
     &.table-view {
       overflow: initial;
       li.brand-table {
         overflow: initial;
+        [data-brand-wrapper] {
+          &:extend(.catalog_page .perechen .perechen-produts.grid);
+          margin-bottom: 20px;
+          &.closed {
+            margin-bottom: 0;
+            &:extend(.catalog_page .perechen .perechen-produts.grid.closed all);
+          }
+          > .caption {
+            &:extend(.catalog_page .perechen .perechen-produts.grid > .caption all);
+          }
+        }
       }
     }
     div.collection-table {
@@ -243,6 +357,17 @@
                 * {
                   font-size: 12px;
                 }
+                .preview {
+
+                }
+                .detail {
+
+                }
+                .more {
+                  + .detail {
+                    display: none;
+                  }
+                }
               }
             }
           }
@@ -252,6 +377,8 @@
 
     li.brand-table {
       border: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
       ul[data-brand] {
         display: table;
         width: 100%;
@@ -265,32 +392,6 @@
           &[data-brand-item-id] {
             &:extend(.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li[data-collection-item-id] all);
           }
-        }
-      }
-      div.caption {
-        text-align: right;
-        margin-bottom: 20px;
-        &:after {
-          content: " ";
-          display: table;
-          clear: both;
-        }
-        .brand-name {
-          width: 15%;
-          float: left;
-          font-size: 18px;
-          line-height: 22px;
-          padding-right: 15px;
-          color: @brand-green;
-          font-weight: bold;
-        }
-        hr.brand-hr {
-          display: inline-block;
-          margin: 0;
-          width: 85%;
-          line-height: 22px;
-          background-color: @brand-green;
-          text-align: right;
         }
       }
     }

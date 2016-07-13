@@ -40,7 +40,6 @@ if($this->StartResultCache(false, [($arParams["CACHE_GROUPS"]==="N"? false: $USE
         if($arParams['PROPS'] == 'Y') {
             $arFields['PROPERTIES'] = $ob->GetProperties();
         }
-
         $arFields['PREVIEW_PICTURE'] = array(
             'ID' => $arFields['PREVIEW_PICTURE'],
             'SRC' => CFile::GetPath($arFields['PREVIEW_PICTURE'])

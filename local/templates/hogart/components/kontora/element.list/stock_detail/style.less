@@ -1,0 +1,24 @@
+@import (reference) "../../../../variables";
+@import (reference) "../../../../styles";
+
+.stock-preview {
+  a.stock-preview-item {
+    font-family: @font-family-serif;
+    display: block;
+    font-size: @font-size-base;
+    margin-bottom: 30px;
+    .date_small {
+      font-weight: 700 !important;
+      text-transform: uppercase;
+      font-size: @font-size-h6;
+    }
+    .small_news {
+      font-weight: 300;
+    }
+
+    &:hover {
+      text-decoration: underline;
+      color: @brand-green;
+    }
+  }
+}

@@ -26,7 +26,7 @@ $(document).ready(function () {
             $(this).val(jQuery.trim($(this).val()));
             if (!isEmpty($(this).val())) {
                 e.preventDefault();
-                $(this).parent().addClass('error').attr({'data-error': messages[$('head').lang]['Заполните, пожалуйста, это поле']});
+                $(this).parent().addClass('error').attr({'data-error': messages[$('html').data('lang')]['Заполните, пожалуйста, это поле']});
             }
             else {
                 $(this).parent().removeClass('error')
@@ -39,7 +39,7 @@ $(document).ready(function () {
             if (!isEmpty($(this).val())) {
                 e.preventDefault();
                 $(this).parent().addClass('error').attr({
-                    'data-error': messages[$('head').lang]['Заполните, пожалуйста, это поле']
+                    'data-error': messages[$('html').data('lang')]['Заполните, пожалуйста, это поле']
                 });
             }
             else {
@@ -54,7 +54,7 @@ $(document).ready(function () {
                     $(this).val(jQuery.trim($(this).val()));
                     if (!isEmpty($(this).val())) {
                         e.preventDefault();
-                        $(this).parent().addClass('error').attr({'data-error': messages[$('head').lang]['Заполните, пожалуйста, это поле']});
+                        $(this).parent().addClass('error').attr({'data-error': messages[$('html').data('lang')]['Заполните, пожалуйста, это поле']});
                     }
                     else {
                         $(this).parent().removeClass('error')
@@ -68,7 +68,7 @@ $(document).ready(function () {
                 if (!$(this).parent().hasClass('not')) {
                     if (!isEmpty($(this).val())) {
                         e.preventDefault();
-                        $(this).parent().addClass('error').attr({'data-error': messages[$('head').lang]['Заполните, пожалуйста, это поле']});
+                        $(this).parent().addClass('error').attr({'data-error': messages[$('html').data('lang')]['Заполните, пожалуйста, это поле']});
                     }
                     else {
                         $(this).parent().removeClass('error')
@@ -81,7 +81,7 @@ $(document).ready(function () {
                 $(this).val(jQuery.trim($(this).val()));
                 if (!isEmpty($(this).val())) {
                     e.preventDefault();
-                    $(this).parent().addClass('error').attr({'data-error': messages[$('head').lang]['Заполните, пожалуйста, это поле']});
+                    $(this).parent().addClass('error').attr({'data-error': messages[$('html').data('lang')]['Заполните, пожалуйста, это поле']});
                 }
                 else {
                     $(this).parent().removeClass('error')
@@ -93,7 +93,7 @@ $(document).ready(function () {
                 $(this).val(jQuery.trim($(this).val()));
                 if (!isEmpty($(this).val())) {
                     e.preventDefault();
-                    $(this).parent().addClass('error').attr({'data-error': messages[$('head').lang]['Заполните, пожалуйста, это поле']});
+                    $(this).parent().addClass('error').attr({'data-error': messages[$('html').data('lang')]['Заполните, пожалуйста, это поле']});
                 }
                 else {
                     $(this).parent().removeClass('error')
@@ -106,12 +106,12 @@ $(document).ready(function () {
             $(this).val(jQuery.trim($(this).val()));
             if (!isEmpty($(this).val())) {
                 e.preventDefault();
-                $(this).parent().addClass('error').attr({'data-error': messages[$('head').lang]['Заполните, пожалуйста, это поле']});
+                $(this).parent().addClass('error').attr({'data-error': messages[$('html').data('lang')]['Заполните, пожалуйста, это поле']});
             }
             else {
                 if (!isPhone($(this).val())) {
                     e.preventDefault();
-                    $(this).parent().addClass('error').attr({'data-error': messages[$('head').lang]['Заполните это поле правильно']});
+                    $(this).parent().addClass('error').attr({'data-error': messages[$('html').data('lang')]['Заполните это поле правильно']});
                 }
                 else {
                     $(this).parent().removeClass('error')
@@ -123,12 +123,12 @@ $(document).ready(function () {
             $(this).val(jQuery.trim($(this).val()));
             if (!isEmpty($(this).val())) {
                 e.preventDefault();
-                $(this).parent().addClass('error').attr({'data-error': messages[$('head').lang]['Заполните, пожалуйста, это поле']});
+                $(this).parent().addClass('error').attr({'data-error': messages[$('html').data('lang')]['Заполните, пожалуйста, это поле']});
             }
             else {
                 if (!isEmail($(this).val())) {
                     e.preventDefault();
-                    $(this).parent().addClass('error').attr({'data-error': messages[$('head').lang]['Введите настоящий E-mail']});
+                    $(this).parent().addClass('error').attr({'data-error': messages[$('html').data('lang')]['Введите настоящий E-mail']});
                 }
                 else {
                     $(this).parent().removeClass('error')

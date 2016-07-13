@@ -9,13 +9,18 @@ if (isset($templateData['TEMPLATE_THEME']))
 	$APPLICATION->SetAdditionalCSS($templateData['TEMPLATE_THEME']);
 }
 
-$arFilterStores = $_REQUEST['arrFilter_stores'];
+$items = [];
+foreach ($this->arResult["ITEMS"] as $item) {
+    $items[$item["CODE"]] = $item;
+}
+$this->arResult["ITEMS"] = $items;
+$_CHECK = $this->convertUrlToCheck($arParams["~SMART_FILTER_PATH"]);
+
+$arFilterStores = $_REQUEST['arrFilter_stores'] ? : array($_CHECK['arrFilter_stores[]']);
 $stores = array();
 foreach ($arFilterStores as $arFilterStoreGroup) {
     $stores = array_merge(explode(",",$arFilterStoreGroup),$stores);
 }
-
-//слава Аллаху что в 15.0.2 сделали возможность фильтрации по складам.
 
 $arCustomFilter = array();
 if (!empty($stores)) {
@@ -34,6 +39,6 @@ if (!empty($arFilterWarehouse)) {
 
 }
 
-CStorage::setVar($arCustomFilter,'CUSTOM_SECTION_FILTER');
-CStorage::setVar($active_stores_filtered,'ACTIVE_STORES_FILTERED');
-?>
+if (!empty($arCustomFilter)) {
+    $GLOBALS[$arParams["FILTER_NAME"]] = array_merge($GLOBALS[$arParams["FILTER_NAME"]], (array)$arCustomFilter);
+}

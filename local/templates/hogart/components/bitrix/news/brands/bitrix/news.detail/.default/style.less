@@ -1,0 +1,77 @@
+@import (reference) "../../../../../../../variables";
+@import (reference) "../../../../../../../styles";
+@import (reference) "../../../../../../../bootstrap";
+
+.no-catalog {
+  font-family: @font-family-serif;
+  display: block;
+  text-transform: uppercase;
+  font-weight: normal;
+  a {
+    .transition(all .3s linear);
+    display: inline-block;
+    margin-bottom: 20px;
+    text-decoration: underline !important;
+    &:hover {
+      color: @brand-green !important;
+      border-bottom-color: @brand-green;
+    }
+  }
+}
+ul.sert-slider-cnt.js-service-slider {
+  padding-left: 0;
+  z-index: 0;
+  &:after {
+    position: relative;
+    display: block;
+    clear: both;
+    content: "";
+  }
+}
+.brand-photo-thing {
+  width: 100%;
+  + a {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-top: 40px;
+    display: block;
+    text-align: center;
+    font-family: @font-family-serif;
+    font-size: @font-size-base;
+    &:hover {
+      color: @brand-green !important;
+      text-decoration: underline !important;
+    }
+  }
+}
+#collapseDetail {
+  margin-top: 30px;
+}
+.brand-catalog {
+  &:extend(.container-fluid);
+  background: white;
+  border-left: 1px solid @brand-green;
+  min-height: calc(~"100vh - 215px") !important;
+  .title {
+    text-transform: uppercase;
+    color: @brand-green;
+    .brand-name {
+    }
+  }
+  a {
+    &:hover {
+      color: @brand-green !important;
+      text-decoration: underline !important;
+    }
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+    ul {
+      padding-left: 20px;
+      margin: 10px 0;
+    }
+  }
+}

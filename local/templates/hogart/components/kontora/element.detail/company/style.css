@@ -1,0 +1,32 @@
+@media screen and (max-width: 767px) {
+}
+@media (min-width: 768px) {
+}
+.company .video-item {
+  z-index: 0;
+}
+.company .preview-text,
+.company .detail-text {
+  font-size: 14px;
+}
+.company .counter-company {
+  padding-left: 0;
+}
+.company .counter-company li {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.company .counter-company li > span {
+  font-size: 36px;
+  font-family: "Roboto Condensed", sans-serif;
+  margin: 10px 20px 10px 0;
+  float: left;
+  color: #95c600;
+}
+.company .counter-company li > p {
+  margin: 0;
+  font-weight: 300;
+  font-size: 14px;
+}

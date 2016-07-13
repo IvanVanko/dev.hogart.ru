@@ -4,20 +4,17 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 }
 ?>
 <?
-/***********************************************************************************
- * form header
- ***********************************************************************************/
 ?>
 <?if($arResult["isFormTitle"]): ?>
     <? if($arResult['arForm']['SID'] == 'REQUEST_FOR_SERVICE_EN' || $arResult['arForm']['SID'] == 'REQUEST_FOR_SERVICE_RU'): ?>
-        <h2 class="nomargin"><?=$arResult["FORM_TITLE"]?></h2>
+        <h3 class="nomargin"><?=$arResult["FORM_TITLE"]?></h3>
         <div class="form-desc-txt">
-            <span class="show-js-validation-form-new empty-btn"><?= GetMessage("Заполнить заявку")?></span>
+            <span class="show-js-validation-form-new btn btn-primary"><?= GetMessage("Заполнить заявку")?></span>
         </div>
         <br>
     <? else: ?>
         <div class="head inner">
-            <h2><?=$arResult["FORM_TITLE"]?></h2>
+            <h3><?=$arResult["FORM_TITLE"]?></h3>
             <?if($arResult["isFormNote"] != "Y"){?>
             <a href="#" class="close"></a>
             <?}?>
@@ -65,8 +62,8 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
                             <div class="field custom_label">
                                 <label for="form_dropdown_<?=$FIELD_SID?>"><?=$arQuestion["CAPTION"]?> *</label>
                             </div>
-                            <div class="field custom_select js-validation-empty">
-                                <select id="form_dropdown_<?=$FIELD_SID?>" name="form_dropdown_<?=$FIELD_SID?>">
+                            <div class="form-group js-validation-empty">
+                                <select class="form-control" id="form_dropdown_<?=$FIELD_SID?>" name="form_dropdown_<?=$FIELD_SID?>">
                                     <? if($arResult['arForm']['SID'] == 'REQUEST_FOR_SERVICE_EN' || $arResult['arForm']['SID'] == 'REQUEST_FOR_SERVICE_RU'): ?>
                                         <? foreach($arQuestion['STRUCTURE'] as $value): ?>
                                             <option value="<?=$value['ID']?>"><?=$value['MESSAGE']?></option>
@@ -100,10 +97,8 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
                         endif; ?>
                         <? $i++; ?>
                 <? endforeach; ?>
-                <br>
-                <hr/>
                 <div class="inner">
-                    <input type="submit" name="web_form_submit" class="empty-btn" value="<?= GetMessage("Отправить") ?>"/> <br/><br/>
+                    <input type="submit" name="web_form_submit" class="btn btn-primary" value="<?= GetMessage("Отправить") ?>"/> <br/><br/>
                     <small><?= GetMessage("Поля, отмеченные * обязательны для заполнения.") ?></small>
                 </div>
 

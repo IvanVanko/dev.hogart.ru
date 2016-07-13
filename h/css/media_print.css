@@ -1,0 +1,27 @@
+@media print {
+  /*.container.main-container * {
+    display: inline-block !important;
+  }*/
+  header,
+  .blur-main,
+  .container.main-container .sidebar {
+    display: none !important;
+  }
+  .container > .inner.no-full {
+    /* margin-right: 100px; */
+  }
+  .container > .container-inner > .inner.no-full {
+    margin-right: 0px !important;
+  }
+  .container.main-container {
+    height: auto !important;
+    overflow: auto !important;
+  }
+  body {
+    overflow: auto !important;
+  }
+  #bx-panel,
+  #bx-panel-top {
+    display: none !important;
+  }
+}

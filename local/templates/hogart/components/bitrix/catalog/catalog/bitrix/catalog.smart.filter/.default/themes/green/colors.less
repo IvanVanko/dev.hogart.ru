@@ -1,0 +1,177 @@
+@import (reference) "../../../../../../../../../variables";
+
+.bx-filter.bx-green .bx-filter-section {
+  background: white;
+  border-left: 1px solid @brand-green;
+  padding-right: (@grid-gutter-width / 2);
+}
+
+.bx-filter.bx-green .bx-filter-parameters-box.bx-active .bx-filter-parameters-box-title span {
+  color: @brand-black;
+  font-weight: 700;
+}
+
+
+.bx-filter.bx-green .bx-filter-parameters-box {
+  padding-top: 10px;
+  border-bottom: 1px solid rgba(204, 204, 204, 0.3);
+
+  &:last-child {
+    margin-bottom: 20px;
+  }
+}
+
+.bx-filter.bx-green .bx-filter-parameters-box.bx-active:active,
+.bx-filter.bx-green .bx-filter-parameters-box.bx-active:hover {
+  background-color: rgba(149, 198, 0, 0.1);
+}
+
+.bx-filter.bx-green .bx-filter-parameters-box-title span,
+.bx-filter.bx-green .bx-filter-parameters-box-title span:hover,
+.bx-filter.bx-green .bx-filter-parameters-box-title span:active {
+  color: @brand-black;
+}
+
+.bx-filter.bx-green .bx-filter-parameters-box-title span:hover {
+  color: @brand-green;
+  border-color: transparent;
+}
+
+.bx-filter.bx-green .disabled .bx-filter-input-checkbox .bx-filter-param-text {
+  font-weight: 300;
+}
+
+.bx-filter.bx-green .bx-filter-popup-result a {
+  color: @brand-green;
+}
+
+.bx-filter.bx-green .btn-link {
+  color: @brand-green;
+}
+/*
+* INPUTS
+*
+*/
+.bx-filter.bx-green .bx-filter-input-container input:focus {
+  border-color: lighten(@brand-green, 5%);
+}
+.bx-retina .bx-filter.bx-green .bx-filter-input-container input:focus {
+  -webkit-border-image: url(images/active.png) 2 repeat;
+  -moz-border-image: url(images/active.png) 2 repeat;
+  -o-border-image: url(images/active.png) 2 repeat;
+  border-image: url(images/active.png) 2 repeat;
+}
+/*
+*Track
+*
+*/
+.bx-filter.bx-green .bx-ui-slider-track{background: #e7e7e7;}
+.bx-filter.bx-green .bx-ui-slider-pricebar-vd{background: lighten(@brand-green, 5%);}
+.bx-filter.bx-green .bx-ui-slider-pricebar-vn{background: lighten(@brand-green, 5%);}
+.bx-filter.bx-green .bx-ui-slider-pricebar-v {background: @brand-green;}
+
+.bx-filter.bx-green .bx-ui-slider-handle.left {
+  transform: rotate(-45deg);
+  transform-origin: top right;
+  border-top: 10px solid lighten(@brand-green, 5%);
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+}
+.bx-filter.bx-green .bx-ui-slider-handle.right {
+  transform: rotate(45deg);
+  transform-origin: top left;
+  border-top: 10px solid lighten(@brand-green, 5%);
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+}
+/*
+*	Select
+*
+*/
+.bx-filter.bx-green .bx-filter-select-container.bx-active,
+.bx-filter.bx-green .bx-filter-select-container:focus {
+  border-color: #3BC915;
+}
+.bx-retina .bx-filter.bx-green .bx-filter-select-container.bx-active,
+.bx-retina .bx-filter.bx-green .bx-filter-select-container:focus {
+  -webkit-border-image: url(images/active.png) 2 repeat;
+  -moz-border-image: url(images/active.png) 2 repeat;
+  -o-border-image: url(images/active.png) 2 repeat;
+  border-image: url(images/active.png) 2 repeat;
+}
+/*
+*	Select popup
+*
+*/
+/*
+* TAGS
+*
+*/
+.bx-filter.bx-green .bx-filter-tag {
+  border-top: 1px solid lighten(@brand-green, 5%);
+  border-bottom: 1px solid lighten(@brand-green, 5%);
+}
+.bx-filter.bx-green .bx-tag-link {
+  color: @brand-green;
+}
+/*
+*	LABEL
+*
+*/
+/*
+*	Checkbox / Radio
+*
+*/
+/*
+* 	BTN
+*
+*/
+.bx-filter.bx-green .bx-filter-param-label.bx-active .bx-filter-param-btn,
+.bx-filter.bx-green .bx-filter-param-btn:hover,
+.bx-filter.bx-green .bx-filter-param-btn:active,
+.bx-filter.bx-green .bx-filter-param-btn:focus {
+  border-color: @brand-green;
+}
+.bx-retina .bx-filter.bx-green .bx-filter-param-label.bx-active .bx-filter-param-btn,
+.bx-retina .bx-filter.bx-green .bx-filter-param-btn:hover,
+.bx-retina .bx-filter.bx-green .bx-filter-param-btn:active,
+.bx-retina .bx-filter.bx-green .bx-filter-select-container:focus {
+  -webkit-border-image: url(images/active.png) 2 repeat;
+  -moz-border-image: url(images/active.png) 2 repeat;
+  -o-border-image: url(images/active.png) 2 repeat;
+  border-image: url(images/active.png) 2 repeat;
+}
+/*
+* BTN P/M
+*
+*/
+/*
+*	icon
+*
+*/
+/*
+* 	BIZ
+*
+*/
+/*
+*	BTN result and reset
+*
+*/
+.bx-filter.bx-green .btn-themes {
+  background-color: @brand-green;
+  border-color: @brand-green;
+  color: #FFF
+}
+.bx-filter.bx-green .btn-themes.bx-active,
+.bx-filter.bx-green .btn-themes.focus,
+.bx-filter.bx-green .btn-themes:active,
+.bx-filter.bx-green .btn-themes:focus,
+.bx-filter.bx-green .btn-themes:hover{
+  background-color: @brand-green;
+  border-color: @brand-green;
+  color: #FFF
+}
+/*
+* 	Result Popup
+*
+*/

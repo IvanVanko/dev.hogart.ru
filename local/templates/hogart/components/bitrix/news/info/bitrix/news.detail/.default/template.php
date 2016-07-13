@@ -1,15 +1,39 @@
 <?if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();?>
-<div class="control control-action">
-        <? /* if (isset($arResult['PREV'])):?>
-            <span class="prev black"><a href="<?=$arResult['PREV']?>"></a></span>
-        <?endif;?>
-        <?if (isset($arResult['NEXT'])):?>
-            <span class="next black"><a href="<?=$arResult['NEXT']?>"></a></span>
-        <?endif; */ ?>
-        <span class="prev <?if (isset($arResult['PREV'])):?> black <?endif;?>"><?if (!empty($arResult['PREV'])): ?><a href="<?=$arResult['PREV']?>"></a><? endif; ?></span>
-        <span class="next <?if (isset($arResult['NEXT'])):?> black <?endif;?>"><?if (!empty($arResult['NEXT'])): ?><a href="<?=$arResult['NEXT']?>"></a><? endif; ?></span>
+
+
+<div class="row vertical-align">
+    <div class="col-md-10">
+        <h3><?= $arResult['NAME'] ?></h3>
+        <div class="controls text-right">
+            <? if (!empty($arResult["PREV"])): ?>
+                <div class="prev">
+                    <a href="<?= $arResult["PREV"] ?>">
+                        <i class="fa fa-arrow-circle-o-left"></i>
+                    </a>
+                </div>
+            <? endif; ?>
+            <? if (!empty($arResult["NEXT"])): ?>
+                <div class="next">
+                    <a href="<?= $arResult["NEXT"] ?>">
+                        <i class="fa fa-arrow-circle-o-right"></i>
+                    </a>
+                </div>
+            <? endif; ?>
+        </div>
     </div>
-<h1><?=$arResult["NAME"]?></h1>
+    <div class="col-md-2 text-right">
+        <div class="hogart-share text-right">
+            <a data-toggle="tooltip" data-placement="top" href="#" class="js-popup-open"
+               data-popup="#popup-subscribe" title="<?= GetMessage("Отправить на e-mail") ?>"><i
+                    class="fa fa-envelope" aria-hidden="true"></i></a>
+            <a data-toggle="tooltip" data-placement="top" href="#" onclick="window.print(); return false;"
+               title="<?= GetMessage("Распечатать") ?>"><i class="fa fa-print" aria-hidden="true"></i></a>
+            <a data-toggle="tooltip" data-placement="top" href="#" class="js-popup-open"
+               data-popup="#popup-subscribe-phone" title="<?= GetMessage("Отправить SMS") ?>"><i
+                    class="fa fa-mobile" aria-hidden="true"></i></a>
+        </div>
+    </div>
+</div>
 
 <?=$arResult["DETAIL_TEXT"]?>
 <?$share_img_src = $_SERVER['SERVER_NAME'].$arResult['DETAIL_PICTURE']['SRC'];?>
@@ -22,4 +46,3 @@
         "IMAGE"=> $share_img_src
     )
 );?>
-<a class="back_page icon-news-back" href="<?=$arParams['SEF_FOLDER']?>"><?= GetMessage("Назад к полезной информации") ?></a>

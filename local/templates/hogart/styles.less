@@ -1,0 +1,342 @@
+@import (reference) "variables";
+@import (reference) "bootstrap";
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: @font-family-serif;
+  margin-top: (@line-height-computed / 2);
+}
+body {
+  &.loading {
+    cursor: wait;
+    * {
+      cursor: wait !important;
+    }
+  }
+}
+.fixed-block {
+  display: block;
+  &.sticky {
+    position: fixed;
+    top: 0;
+  }
+}
+
+.old.currency {
+  font-family: @font-family-serif;
+  display: inline-block;
+  border-radius: 5px;
+  border: 1px solid @brand-green;
+  padding: 5px;
+  line-height: 18px;
+  vertical-align: middle;
+  height: 28px;
+  text-decoration: line-through;
+  color: #aaa;
+}
+
+.color {
+  &-green {
+    color: @brand-green !important;
+  }
+  &-black {
+    color: @brand-black !important;
+  }
+}
+
+.quantity {
+  font-size: @font-size-h6;
+  &-success {
+    color: @brand-green;
+  }
+  &-fail {
+    color: @brand-danger;
+  }
+}
+
+.dotted {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+  position: relative;
+  span {
+    z-index: 1;
+    background-color: @body-bg;
+    padding-right: 3px;
+    &:last-child {
+      padding-right: 0;
+      padding-left: 3px;
+    }
+  }
+  &:before {
+    position: absolute;
+    width: 0;
+    z-index: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    content:
+            ". . . . . . . . . . . . . . . . . . . . "
+            ". . . . . . . . . . . . . . . . . . . . "
+            ". . . . . . . . . . . . . . . . . . . . "
+            ". . . . . . . . . . . . . . . . . . . . "
+  }
+}
+
+#scroll-up {
+  visibility: hidden;
+  display: block;
+  position: fixed;
+  font-size: 20px;
+  border: 1px solid @brand-green;
+  border-radius: 5px;
+  padding: 4px 8px;
+  left: (@grid-gutter-width / 2);
+  bottom: (@grid-gutter-width / 2);
+  background-color: white;
+  cursor: pointer;
+  color: @brand-green;
+}
+
+#header-block {
+  &.sticky {
+    z-index: 999;
+    background-color: white;
+    width: 100%;
+    +.row {
+      margin-top: 95px;
+    }
+  }
+  .profile-url {
+    margin: 0 !important;
+    border-bottom: none;
+  }
+}
+
+.row {
+  &.vertical-align {
+    display: flex;
+    @media (max-width: 767px) {
+      display: block;
+    }
+    flex-direction: row;
+    > [class^="col-"],
+    > [class*=" col-"] {
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
+.collapse {
+  &.in {
+    + a[data-toggle="collapse"] {
+      display: none;
+    }
+  }
+}
+a[data-toggle="collapse"] {
+  font-size: @font-size-base;
+  text-transform: uppercase;
+  border-bottom: 1px dashed @brand-black;
+  font-family: @font-family-serif;
+  display: block;
+  float: right;
+  &:after {
+    content: "";
+    position: relative;
+    display: block;
+  }
+}
+
+.more & {
+  display: none;
+}
+
+.btn-more {
+  &:extend(.btn all);
+  .button-size(@padding-xs-vertical; @padding-xs-horizontal; @font-size-small; @line-height-small; @btn-border-radius-small);
+  .button-variant(@btn-default-color; @btn-default-bg; @btn-default-border);
+  margin-top: 5px;
+  .fa:before {
+    content: "\f107";
+  }
+  &.opened .fa:before {
+    content: "\f106";
+  }
+}
+
+.complex-page-all-href {
+  a {
+    &:extend(.h5 all);
+    border-bottom: 1px dashed @brand-black;
+    &:hover {
+      color: @brand-green;
+    }
+  }
+}
+
+.controls {
+  margin: 0 20px;
+  color: darken(@brand-green, 5%);
+  .next,
+  .prev {
+    position: relative;
+    display: inline-block;
+    font-size: @font-size-h3;
+    a {
+      color: darken(@brand-green, 5%);
+      &.bx-next,
+      &.bx-prev {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        &.disabled {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+.hogart-share {
+  a {
+    border: none;
+    text-align: left;
+    display: inline-block;
+    .fa {
+      font-size: 20px;
+      margin-left: 10px;
+      &:hover {
+        color: @brand-green;
+      }
+    }
+  }
+}
+
+.side_href {
+  div {
+    margin-bottom: 10px;
+    a {
+      &:extend(.h5 all);
+      border-bottom: 1px dashed @brand-black;
+      &:hover {
+        color: @brand-green;
+      }
+    }
+    .fa {
+      font-size: (@font-size-h5 * 1.3);
+      margin-right: 10px;
+      width: 18px;
+      text-align: center;
+    }
+  }
+}
+
+.aside {
+  &:extend(.container-fluid);
+  background: white;
+  border-left: 1px solid @brand-green;
+  min-height: calc(~"100vh - 215px") !important;
+}
+
+ul.right-menu {
+  padding: 0;
+  list-style: none;
+  li {
+    a {
+      .transition(all .3s linear);
+      font-family: @font-family-serif;
+      display: block;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-bottom: 20px;
+      &:hover {
+        color: @brand-green !important;
+      }
+    }
+    &.active {
+      a {
+        color: @brand-green !important;
+      }
+    }
+    .fa,
+    [class^="icon-"]:before,
+    [class*=" icon-"]:before {
+      margin-left: 0;
+      margin-right: 10px;
+      font-size: @font-size-h4;
+    }
+  }
+}
+
+.left-menu {
+  &:extend(.text-center all);
+  margin-top: 15px;
+  padding-left: 0;
+  list-style: none;
+  width: 90px;
+  li {
+    margin-bottom: 20px;
+    height: 90px;
+    padding: 15px 0;
+    line-height: 30px;
+    background-color: @brand-green;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    &:hover, &:active, &.active {
+      background-color: @brand-black;
+    }
+    a {
+      &:extend(.h5 all);
+      display: block;
+      color: white;
+      text-align: center;
+      text-transform: uppercase;
+      i {
+        display: block;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        font-size: 30px;
+        font-weight: 300;
+      }
+    }
+  }
+}
+
+a[href^="mailto:"] {
+  display: inline-block;
+  margin-left: 5px;
+  transition: all .3s linear;
+  font-family: @font-family-serif;
+  font-size: 1.1em;
+  &:before {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    content: "\f0e0";
+    margin-right: 5px;
+  }
+  &:hover {
+    color: @brand-green !important;
+    text-decoration: underline !important;
+  }
+}
+
+.breadcrumbs {
+  span:last-child {
+    color: @brand-green;
+  }
+}
+
+footer {
+  margin-top: 20px;
+}

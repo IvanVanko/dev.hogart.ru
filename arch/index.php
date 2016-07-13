@@ -1,5 +1,6 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
+
 if(!isset($_REQUEST['qzip'])) {
     LocalRedirect($_SERVER['HTTP_REFERER']);
 }
@@ -8,7 +9,7 @@ $qzip = array_filter(explode(',', $_REQUEST['qzip']));
 if(empty($qzip)) {
     LocalRedirect($_SERVER['HTTP_REFERER']);
 }
-
+$APPLICATION->RestartBuffer();
 $zip = new ZipArchive();
 
 $zip_name = 'hogart_docs'.time().'.zip';
@@ -16,8 +17,7 @@ $file_folder = '/upload/';
 
 $a_file = $_SERVER["DOCUMENT_ROOT"].$file_folder.$zip_name;
 
-// echo "<PRE>";
-$zip->open($a_file, ZIPARCHIVE::CREATE);
+$zip->open($a_file, ZipArchive::CREATE);
 
 foreach($qzip as $file) {
     $ci__documentation__element = CIBlockElement::GetList(
@@ -37,8 +37,6 @@ foreach($qzip as $file) {
     $document__extension = $document__extension[1];
 
     $documentation__name__cp862 = CUtil::translit($documentation__item['NAME'], "ru").".".$document__extension;
-    //        $documentation__name__cp862 = iconv("UTF-8","CP1252//IGNORE", $documentation__item['NAME'] . "." . $document__extension);
-
     $filePath = $_SERVER["DOCUMENT_ROOT"].CFile::GetPath($file);
     $zip->addFile($filePath, $documentation__name__cp862);
 }
@@ -50,4 +48,5 @@ if(file_exists($a_file)) {
     header('Content-Disposition: attachment; filename='.$zip_name);
     readfile($a_file);
     unlink($a_file);
+    exit;
 }
