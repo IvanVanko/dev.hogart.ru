@@ -298,8 +298,8 @@ if ($section["DEPTH_LEVEL"] == 1): ?>
             }
 
             if ($isTableViewExt) {
-                $arParams["PAGE_ELEMENT_COUNT"] = 0;
-                $arParams['DISPLAY_BOTTOM_PAGER'] = "N";
+                $arParams["PAGE_ELEMENT_COUNT"] = 100;
+                $arParams['DISPLAY_BOTTOM_PAGER'] = "Y";
                 $arParams["DISPLAY_TOP_PAGER"] = "N";
                 $viewType = "list";
             }
