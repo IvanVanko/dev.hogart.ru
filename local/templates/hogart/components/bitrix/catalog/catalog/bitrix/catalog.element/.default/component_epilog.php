@@ -3,6 +3,13 @@
 /** @var @global CMain $APPLICATION */
 use Bitrix\Main\Loader;
 global $APPLICATION;
+
+if (!empty($_REQUEST["collection"])) {
+	$APPLICATION->RestartBuffer();
+	$APPLICATION->ShowViewContent("related-collection-items");
+	exit(0);
+}
+
 if (isset($templateData['TEMPLATE_THEME']))
 {
 	$APPLICATION->SetAdditionalCSS($templateData['TEMPLATE_THEME']);
@@ -34,3 +41,4 @@ BX.ready(BX.defer(function(){
 </script><?
 }
 ?>
+
