@@ -165,6 +165,13 @@ $collectionComponentId = CAjax::GetComponentID("bitrix:catalog.element", "", "co
 </ul>
 <? $this->EndViewTarget(); ?>
 
+
+<? if (!empty($_REQUEST["collection"])): ?>
+    <? $APPLICATION->RestartBuffer() ?>
+    <? $APPLICATION->ShowViewContent("related-collection-items") ?>
+    <? exit; ?>
+<? endif; ?>
+
 <div class="row">
     <div class="col-md-9 main-info">
         <? if(!empty($arResult["DISPLAY_PROPERTIES"]["sku"]["VALUE"])): ?>

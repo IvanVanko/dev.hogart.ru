@@ -45,7 +45,7 @@ else
 		"PRODUCT_QUANTITY_VARIABLE" => $arParams["PRODUCT_QUANTITY_VARIABLE"],
 		"PRODUCT_PROPS_VARIABLE" => $arParams["PRODUCT_PROPS_VARIABLE"],
 		"AJAX_MODE" => "Y",
-		"CACHE_TYPE" => $arParams["CACHE_TYPE"],
+		"CACHE_TYPE" => "N",
 		"CACHE_TIME" => $arParams["CACHE_TIME"],
 		"CACHE_GROUPS" => $arParams["CACHE_GROUPS"],
 		"SET_TITLE" => $arParams["SET_TITLE"],
