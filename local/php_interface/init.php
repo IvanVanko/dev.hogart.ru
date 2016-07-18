@@ -57,6 +57,18 @@ function convert($size) {
 	return @round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
 }
 
+function DebugTime() {
+	global $__timer;
+	
+	$d = debug_backtrace();
+	$line = $d[0]['line'];
+	$file = $d[0]['file'];
+	
+	$time = microtime(true);
+	DebugMessage("Файл {$file}:{$line}, время: " . ($__timer !== null ? ($time - $__timer) : 0));
+	$__timer = $time;
+}
+
 function DebugMemory() {
 	if (defined('DEBUG_MEMORY') && DEBUG_MEMORY === true) {
 		$d = debug_backtrace();

@@ -68,42 +68,6 @@ while($arSect = $rsSect->GetNext()) {
     $arSections[] = $arSect['ID'];
 }
 
-//Акции
-$stock = true;
-$arResult["STOCK"] = array();
-
-$arFilter = array(
-    "IBLOCK_ID" => 6,
-    "ACTIVE_DATE" => "Y",
-    "ACTIVE" => "Y",
-);
-
-if(!empty($arItems) && !empty($arSections)) {
-    $arFilter[] = array(
-        "LOGIC" => "OR",
-        array("PROPERTY_goods" => $arItems),
-        array("PROPERTY_catalog_section" => $arSections),
-    );
-}
-elseif(!empty($arItems)) {
-    $arFilter["PROPERTY_goods"] = $arItems;
-}
-elseif(!empty($arSections)) {
-    $arFilter["PROPERTY_catalog_section"] = $arSections;
-}
-else {
-    $stock = false;
-}
-
-if($stock) {
-    $res = CIBlockElement::GetList(array('sort' => 'asc'), $arFilter, false, false, array());
-    while($ob = $res->GetNextElement()) {
-        $arFields = $ob->GetFields();
-        $arResult["STOCK"][$arFields["ID"]] = $arFields["NAME"];
-    }
-}
-
-
 $item_ids = array();
 
 foreach($arResult['ITEMS'] as $arItem) {
@@ -123,7 +87,6 @@ $arResult['ITEMS'] = BXHelper::complex_sort($arResult['ITEMS'], array('CUSTOM_SE
 
 $cnt = 0;
 foreach($arResult['ITEMS'] as &$arItem) {
-//    echo "<pre>"; var_dump($arItem); echo "</pre>";
     $cnt++;
     if($arItem['CODE'] == 'brand') {
         $arItem['DISPLAY_SORT'] = -20;//ставим сортировку отображения так чтобы Бренды всегда вверху выводились
@@ -134,16 +97,6 @@ foreach($arResult['ITEMS'] as &$arItem) {
     else {
         $arItem['DISPLAY_SORT'] = $cnt * 100;
     };
-    if($arItem['DISPLAY_TYPE'] == "A" || $arItem['DISPLAY_TYPE'] == "RV"){
-        $propertyValuesList = [];
-        $dbResult = BXHelper::getSectionPropertyValues($arParams['IBLOCK_ID'], array($arParams['SECTION_ID']), [$arItem['ID']]);
-        while($next = $dbResult->getNext()) {
-            $propertyValuesList[] = $next;
-        }
-        if(count($propertyValuesList) <= 3){
-            $arResult['SHOW_AS_CHECKBOXES'][$arItem['PROPERTY_ID']] = $arItem;
-        }
-    }
 }
 
 
@@ -247,19 +200,6 @@ $arStoreItem = array(
             'CHECKED' => $selected_active ? "Y" : false,
             'URL_ID' => 'active'
         ),
-//        'warehouse' => array(
-//            'CONTROL_ID' => 'arrFilter_stores',
-//            'CONTROL_NAME' => 'arrFilter_warehouse',
-//            'CONTROL_NAME_ALT' => 'arrFilter_warehouse',
-//            'HTML_VALUE_ALT' => "Y",
-//            'HTML_VALUE' => "Y",
-//            'VALUE' => 'Складская программа',
-//            'SORT' => 1,
-//            'UPPER' => 'СКЛАДСКАЯ ПРОГРАММА',
-//            'FLAG' => false,
-//            'CHECKED' => !empty($selected_warehouse) ? "Y" : false,
-//            'URL_ID' => 'warehouse'
-//        )
     )
 );
 
