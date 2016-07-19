@@ -76,7 +76,7 @@ if (!isset($arParams['ITEM_TEMPLATE']) && empty($arParams['ITEM_TEMPLATE'])):?>
                             <? $countGalImg = 0; ?>
                             <li>
                                 <div class="gall-news-one">
-                                    <? foreach ($arResult['PROPERTIES']['photogallery']['VALUE'] as $photo):
+                                    <? foreach ($arResult['PROPERTIES']['photogallery']['VALUE'] as $key => $photo):
                                         $photoBig = CFile::GetPath($photo);
                                         $photo = CFile::ResizeImageGet(
                                             $photo,
@@ -86,7 +86,7 @@ if (!isset($arParams['ITEM_TEMPLATE']) && empty($arParams['ITEM_TEMPLATE'])):?>
                                         );
                                         ?>
                                         <div class="img-wrap">
-                                            <img class="js-popup-open-img" data-big-img="<?= $photoBig ?>" data-group="gallG" data-bi src="<?= $photo['src'] ?>"
+                                            <img class="js-popup-open-img" title="<?= $arResult['PROPERTIES']['photogallery']['DESCRIPTION'][$key] ?>" data-big-img="<?= $photoBig ?>" data-group="gallG" data-bi src="<?= $photo['src'] ?>"
                                                  alt=""/>
                                         </div>
                                         <? $countGalImg++;

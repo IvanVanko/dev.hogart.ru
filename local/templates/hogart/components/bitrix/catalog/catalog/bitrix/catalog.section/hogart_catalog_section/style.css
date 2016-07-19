@@ -8,6 +8,15 @@
 }
 @media (min-width: 768px) {
 }
+.price-list a {
+  transition: all .3s linear;
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 1.1em;
+}
+.price-list a:hover {
+  color: #95c600 !important;
+  text-decoration: underline !important;
+}
 .catalog-subs {
   background: white;
   border-left: 1px solid #95c600;

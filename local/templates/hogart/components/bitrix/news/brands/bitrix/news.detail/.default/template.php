@@ -76,7 +76,7 @@
                         ?>
                         <li>
                             <div class="img-wrap">
-                                <img class="js-popup-open-img" src="<?= $file['src']; ?>" title="<?=$arResult["NAME"]?>" data-group="gallG" data-big-img="<?= $fileBig['src']; ?>" alt=""/>
+                                <img class="js-popup-open-img" src="<?= $file['src']; ?>" title="<?= $arResult["PROPERTIES"]["photogallery_" . $gallery_key]["DESCRIPTION"][$key] ?>" data-group="gallG" data-big-img="<?= $fileBig['src']; ?>" alt=""/>
                             </div>
                         </li>
                     <?endforeach?>
@@ -84,7 +84,7 @@
                     <? foreach ($arResult["PROPERTIES"]["videogallery_" . $gallery_key]["VALUE"] as $key => $picId): ?>
                         <li>
                             <div class="img-wrap video">
-                                <img class="js-popup-open-img" title="<?=$arResult["NAME"]?>" data-big-video="<?=$arResult["PROPERTIES"]["videogallery_" . $gallery_key]['VALUE'][$key]?>" src="http://img.youtube.com/vi/<?=$arResult["PROPERTIES"]["videogallery_" . $gallery_key]['VALUE'][$key]?>/mqdefault.jpg"  alt=""/>
+                                <img class="js-popup-open-img" title="<?=$arResult["PROPERTIES"]["videogallery_" . $gallery_key]["DESCRIPTION"][$key] ?>" data-big-video="<?=$arResult["PROPERTIES"]["videogallery_" . $gallery_key]['VALUE'][$key]?>" src="http://img.youtube.com/vi/<?=$arResult["PROPERTIES"]["videogallery_" . $gallery_key]['VALUE'][$key]?>/mqdefault.jpg"  alt=""/>
                             </div>
                         </li>
                     <? endforeach; ?>

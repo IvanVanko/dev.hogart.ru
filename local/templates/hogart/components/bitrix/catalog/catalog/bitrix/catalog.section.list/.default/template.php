@@ -28,13 +28,13 @@ $this->setFrameMode(true);
 					<? if(!empty($arSection["UF_PRICE"])): ?>
 						<? $priceFileMeta = CFile::MakeFileArray($arSection["UF_PRICE"]) ?>
 						<span class="price-list">
-									<a href="<?=CFile::GetPath($arSection["UF_PRICE"]); ?>" class="download">
-										<i class="fa fa-download"></i> <span>Скачать <?=$arSection["UF_PRICE_LABEL"]?></span>
-									</a>
-									<span class="file-metadata">
-										<?= strtoupper(explode('/', $priceFileMeta['type'])[1]) ?>, <?= convert($priceFileMeta['size']) ?>
-									</span>
-								</span>
+							<a href="<?=CFile::GetPath($arSection["UF_PRICE"]); ?>" class="download">
+								<i class="fa fa-download"></i> <span><?=$arSection["UF_PRICE_LABEL"]?></span>
+							</a>
+							<span class="file-metadata">
+								<?= strtoupper(explode('/', $priceFileMeta['type'])[1]) ?>, <?= convert($priceFileMeta['size']) ?>
+							</span>
+						</span>
 					<? endif; ?>
 				</div>
 			</div>
