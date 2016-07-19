@@ -14,8 +14,22 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
-
+//$arResult['PARENT_PARENT_SECTION']
 ?>
+
+<? if(!empty($arResult['PARENT_PARENT_SECTION']["UF_PRICE"])): ?>
+<div class="text-right">
+    <? $priceFileMeta = CFile::MakeFileArray($arResult['PARENT_PARENT_SECTION']["UF_PRICE"]) ?>
+    <span class="price-list">
+        <a href="<?=CFile::GetPath($arResult['PARENT_PARENT_SECTION']["UF_PRICE"]); ?>" class="download">
+            <i class="fa fa-download"></i> <span><?=$arResult['PARENT_PARENT_SECTION']["UF_PRICE_LABEL"]?></span>
+        </a>
+        <span class="file-metadata">
+            <?= strtoupper(explode('/', $priceFileMeta['type'])[1]) ?>, <?= convert($priceFileMeta['size']) ?>
+        </span>
+    </span>
+</div>
+<? endif; ?>
 <ul class="row perechen-produts js-target-perechen <?=$arParams['VIEW_TYPE']?> <? if ($arParams["IS_TABLE_VIEW"]): ?>table-view<? endif; ?>">
 <? $collectionId = null; $brandId = null; $table_sort = null; $sectionId = null; ?>
 <? foreach ($arResult["ITEMS"] as $i => $arItem):?>

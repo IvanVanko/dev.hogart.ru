@@ -1,6 +1,18 @@
 @import (reference) "../../../../../../../variables";
 @import (reference) "../../../../../../../bootstrap";
 
+.price-list {
+  a {
+    transition: all .3s linear;
+    font-family: @font-family-serif;
+    font-size: 1.1em;
+
+    &:hover {
+      color: @brand-green !important;
+      text-decoration: underline !important;
+    }
+  }
+}
 .catalog-subs {
   &:extend(.container-fluid);
   background: white;

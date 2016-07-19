@@ -4,7 +4,7 @@ if ($arResult['DEPTH_LEVEL'] > 2) {
     $arFilter = array('IBLOCK_ID' => $arParams["IBLOCK_ID"], 'ID' => $arResult["IBLOCK_SECTION_ID"]);
     $rsSect = CIBlockSection::GetList(array('left_margin' => 'asc'), $arFilter);
     if ($arSect = $rsSect->GetNext()) {
-        $arResult['PARENT_PARENT_SECTION_ID'] = $arSect['IBLOCK_SECTION_ID'];
+        $arResult['PARENT_PARENT_SECTION'] = CIBlockSection::GetList([], array_merge($arFilter, ["ID" => $arSect['IBLOCK_SECTION_ID']]), false, ["UF_*"])->Fetch();
     }
 }
 //echo '<pre>';
