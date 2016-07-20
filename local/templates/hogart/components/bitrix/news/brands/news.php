@@ -28,13 +28,7 @@ $this->setFrameMode(true);?>
         );?>
         <? $APPLICATION->ShowViewContent("brands-letters") ?>
         <p>
-            <?$APPLICATION->IncludeComponent("bitrix:main.include","",Array(
-                    "AREA_FILE_SHOW" => "sect",
-                    "AREA_FILE_SUFFIX" => "inc_brands",
-                    "AREA_FILE_RECURSIVE" => "Y",
-                    "EDIT_TEMPLATE" => "standard.php"
-                )
-            );?>
+            <?= HogartHelpers::ShowStaticContent("brandheadertext", "PREVIEW_TEXT") ?>
         </p>
         <? $APPLICATION->ShowViewContent("brands-list") ?>
     </div>
