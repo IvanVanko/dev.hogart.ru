@@ -2002,6 +2002,8 @@ class ParsingModel {
 
         $updated_property_values_xml_ids = array();
 
+        $site_format = CSite::GetDateFormat();
+
         foreach($ost->return->item as $key => $value) {
             $section_id = false;
             if($this->sectionsCache[$value->cat_id]) {
@@ -2162,6 +2164,16 @@ class ParsingModel {
             $propA['collection'] = $id_col;
             $propA['brand'] = $id_brand;
             $propA['is_new'] = $value->novelty ? 19 : '';
+            $propA['kit_count'] = $value->kit_count;
+            $propA['default_count'] = $value->default_count;
+            if($value->kit_count_unitmessure_id != 0)
+                $propA['kit_count_unitmessure_id'] = $value->kit_count_unitmessure_id;
+            if($value->date_added != '0001-01-01') {
+                $propA['date_added'] = CDatabase::FormatDate($value->date_added, 'YYYY-MM-DD', 'DD.MM.YYYY 00:00:00');
+            }
+            if($value->date_changed != '0001-01-01')
+                $propA['date_changed'] = CDatabase::FormatDate($value->date_changed, 'YYYY-MM-DD', 'DD.MM.YYYY 00:00:00');
+
             $arLoadProductArray = Array(
                 "IBLOCK_SECTION_ID" => $section_id,
                 "IBLOCK_ID" => $BLOCK_ID,
@@ -2171,6 +2183,7 @@ class ParsingModel {
                 "ACTIVE" => "Y",
                 "DETAIL_TEXT" => $value->description,
             );
+
 
             //проверяем наличие такого элемента
             $rsItems = CIBlockElement::GetList(array(), array(
