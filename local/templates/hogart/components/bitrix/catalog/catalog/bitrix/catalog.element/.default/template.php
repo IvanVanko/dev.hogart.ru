@@ -44,16 +44,16 @@ $collectionComponentId = CAjax::GetComponentID("bitrix:catalog.element", "", "co
                     <a href="<?= $arProduct["DETAIL_PAGE_URL"] ?>">
                         <?
                         $pic = "/images/project_no_img.jpg";
-                        if (!empty($arProduct["PREVIEW_PICTURE"]['SRC'])) {
+                        if (!empty($arProduct["PREVIEW_PICTURE"])) {
                             $file = CFile::ResizeImageGet(
-                                $arProduct["PREVIEW_PICTURE"]['ID'], array("width" => 400, "height" => 160), BX_RESIZE_IMAGE_PROPORTIONAL, true);
+                                $arProduct["PREVIEW_PICTURE"], array("width" => 400, "height" => 160), BX_RESIZE_IMAGE_PROPORTIONAL, true);
                             if (file_exists(realpath($_SERVER["DOCUMENT_ROOT"] . $file['src'])))
                                 $pic = $file['src'];
                         }
-                        elseif (!empty($arProduct["DETAIL_PICTURE"]['SRC'])) {
+                        elseif (!empty($arProduct["DETAIL_PICTURE"])) {
 
                             $file = CFile::ResizeImageGet(
-                                $arProduct["DETAIL_PICTURE"]['ID'], array("width" => 400, "height" => 160), BX_RESIZE_IMAGE_PROPORTIONAL, true);
+                                $arProduct["DETAIL_PICTURE"], array("width" => 400, "height" => 160), BX_RESIZE_IMAGE_PROPORTIONAL, true);
                             if (file_exists(realpath($_SERVER["DOCUMENT_ROOT"] . $file['src'])))
                                 $pic = $file['src'];
                         }
