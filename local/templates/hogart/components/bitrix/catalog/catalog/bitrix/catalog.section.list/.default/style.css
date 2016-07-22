@@ -38,15 +38,16 @@ div.sections .depth-1 .price-list {
   color: #95c600;
   display: block;
   font-weight: 500;
+  font-family: "Roboto Condensed", sans-serif;
 }
 div.sections .depth-1 .price-list .fa {
-  margin-right: 10px;
+  margin-right: 5px;
   font-size: 18px;
 }
 div.sections .depth-1 .price-list a {
-  color: #95c600;
+  color: #2c2432;
   text-decoration: none;
-  margin-right: 10px;
+  margin-right: 5px;
 }
 div.sections .depth-1 .price-list a > span {
   text-decoration: underline;
