@@ -6700,9 +6700,10 @@ ul.all-project-box li a span {
 .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover {
   background: #95c600;
   position: relative;
-  transition: opacity .3s linear;
+  transition: opacity,background .3s linear;
   * {
     color: white !important;
+    transition: color .3s linear;
   }
 }
 .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover .ui-state-default {
@@ -6825,6 +6826,11 @@ ul.all-project-box li a span {
 .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover:hover .content {
   width: 300px;
   height: auto;
+  background-color: white;
+  box-shadow: 1px 1px 1px 1px #ccc;
+  * {
+    color: #2c2432 !important;
+  }
 }
 .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover:hover .content:before {
   bottom: -10px;
