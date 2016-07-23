@@ -15,7 +15,7 @@ $page = $APPLICATION->GetCurDir(true);
 ?>
 <div class="row">
     <div class="col-md-9">
-        <h3><?$APPLICATION->ShowTitle()?></h3>
+        <h3><?= $APPLICATION->GetTitle() ?></h3>
         <ul class="list-base-learn">
             <?foreach ($arResult["ITEMS"] as $arItem):
                 $this->AddEditAction($arItem["ID"], $arItem["EDIT_LINK"], CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_EDIT"));
