@@ -43,7 +43,7 @@
 
 <div class="row">
     <div class="col-md-9">
-        <h3><?$APPLICATION->ShowTitle()?></h3>
+        <h3><?= $APPLICATION->GetTitle() ?></h3>
         <p>
             <?= HogartHelpers::ShowStaticContent("documentation", "PREVIEW_TEXT") ?>
         </p>
