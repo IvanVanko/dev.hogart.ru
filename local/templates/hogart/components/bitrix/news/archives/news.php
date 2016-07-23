@@ -58,6 +58,7 @@ if ($APPLICATION->GetCurDir() === $arParams["SEF_FOLDER"]) {
             "ELEMENT_COUNT" => 20,
             "FILTER"        => $arFilter,
             'ORDER'         => $arParams['ORDER'],
+            "CACHE_TIME"    => 0
         ),
         $component
     );
