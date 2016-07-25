@@ -176,6 +176,43 @@ class ParsingModel {
         return $this->client->__soapCall($method, $param);
     }
 
+    function initBranch() {
+        $BLOCK_ID = self::CATALOG_IBLOCK_ID;
+        $ost = $this->GetResultFunction("BranchGet");
+        $answer = array();
+        $answer['ID_Portal'] = 'HG';
+        $answer['StringBranches'] = array();
+        
+        $el = new CIBlockSection;
+        echo "<div class='suc'>";
+        foreach ($ost->return->Branch as $branch) {
+            $code = CUtil::translit($branch->name, 'ru',
+                array('change_case' => 'L', 'replace_space' => '-', 'replace_other' => '-'));
+
+            $arFields = [
+                "IBLOCK_ID" => $BLOCK_ID,
+                "XML_ID" => $branch->id,
+                "ACTIVE" => $branch->deletion_mark ? "N" : "Y",
+                "NAME" => $branch->name,
+                "CODE" => $code
+            ];
+
+            $bitrixBranch = $el->GetList([], ["XML_ID" => $branch->id, "IBLOCK_ID" => $BLOCK_ID])->Fetch();
+            if (!empty($bitrixBranch)) {
+                if ($el->Update($bitrixBranch["ID"], $arFields)) {
+                    echo "Запись обновлена: " . $branch->id . " - " . $branch->name . "<br />";
+                } else {
+                    echo "Произошла ошибка обновления записи {$bitrixBranch['ID']}<br />";
+                }
+            } else {
+                if (($branchId = $el->Add($arFields))) {
+                    echo "Запись создана: " . $branch->id . " - " . $branch->name . "<br />";
+                }
+            }
+        }
+        echo "</div>";
+    }
+
     /**
      * выполняем все операции по брендам
      * @return bool|mixed
@@ -1079,6 +1116,11 @@ class ParsingModel {
         $answer['StringCategory'] = array();
         //Объект элемента в модели битрикса
         $el = new CIBlockSection;
+        $branchesRes = $el->GetList([], ["IBLOCK_ID" => self::CATALOG_IBLOCK_ID, "DEPTH_LEVEL" => 1], false, ["ID", "CODE", "XML_ID"]);
+        while ($branch = $branchesRes->Fetch()) {
+            
+        }
+
         echo "<div class='suc'>";
 
         if(is_object($ost->return->Category)) {

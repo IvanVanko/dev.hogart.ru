@@ -43,7 +43,6 @@ else {
                     <small>+колекции</small>
                 </th>
                 <td><a href="?q=Vbreands">Посмотреть</a></td>
-                <!--                <td><a href="?q=breands">Загрузить</a></td>-->
                 <td><a href="?q=breands&answer=Y">Загрузить и ответить</a></td>
                 <td>
                     <?= $parce->getCountEl(2); ?> брендов<br>
@@ -55,9 +54,14 @@ else {
                 <th>Категории <br>
                     <small>Характеристики и значения характеристик</small>
                 </th>
-                <td><a href="?q=Vcategory">Посмотреть</a></td>
-                <!--                <td><a href="?q=category">Загрузить</a></td>-->
-                <td><a href="?q=category&answer=Y">Загрузить и ответить</a></td>
+                <td>
+                    <a href="?q=Vcategory">Посмотреть</a>
+                    <a href="?q=Vbranch">Посмотреть главные категории</a>
+                </td>
+                <td>
+                    <a href="?q=category&answer=Y">Загрузить и ответить</a>
+                    <a href="?q=branch&answer=Y">Загрузить главные категории и ответить</a>
+                </td>
                 <td>
                     <?= $parce->getCountSec(1); ?> категорий<br>
                     <?= $parce->getCountProp(1); ?> свойств
@@ -67,7 +71,6 @@ else {
             <tr>
                 <th>Продукты</th>
                 <td><a href="?q=Vproduct">Посмотреть</a></td>
-                <!--                <td><a href="?q=product">Загрузить</a></td>-->
                 <td><a href="?q=product&answer=Y">Загрузить и ответить</a></td>
                 <td><?= $parce->getCountEl(1) ?> продуктов</td>
                 <td><?= $state['product']; ?></td>
@@ -75,7 +78,6 @@ else {
             <tr>
                 <th>Цены для продуктов</th>
                 <td><a href="?q=Vprice">Посмотреть</a></td>
-                <!--                <td><a href="?q=price">Загрузить</a></td>-->
                 <td>
                     <a href="?q=price&answer=Y">Загрузить и ответить</a>
                 </td>
@@ -88,9 +90,6 @@ else {
                     <a href="?q=Vtehdoc">Посмотреть</a>
                     <a href="?q=VTypeTehDocGet">Посмотреть Типы</a>
                 </td>
-                <!--                <td>-->
-                <!--<!--                    <a href="?q=tehdoc">Загрузить</a><br>-->-->
-                <!--                </td>-->
                 <td>
                     <a href="?q=tehdoc&answer=Y">Загрузить и ответить</a><br>
                     <a href="?q=TypeTehDocGet&answer=Y">Загрузить Типы и ответить</a>
@@ -172,6 +171,11 @@ else {
                 $parce->csv->saveState('category');
                 $parce->initCategory();
             }
+            if ($val == "branch" or $val == "*") {
+                echo '<div class="info"><h2>[' . $key . '] ' . $val . '</h2></div>';
+                $parce->csv->saveState('branch');
+                $parce->initBranch();
+            }
             if ($val == "product" or $val == "*") {
                 echo '<div class="info"><h2>[' . $key . '] ' . $val . '</h2></div>';
                 $parce->csv->saveState('product');
@@ -209,6 +213,11 @@ else {
             if ($val == "Vcategory") {
                 echo '<div class="info"><h2>[' . $key . '] ' . $val . '</h2></div><pre>';
                 var_dump($parce->GetResultFunction('CategoryGet'));
+                echo '</pre>';
+            }
+            if ($val == "Vbranch") {
+                echo '<div class="info"><h2>[' . $key . '] ' . $val . '</h2></div><pre>';
+                var_dump($parce->GetResultFunction('BranchGet'));
                 echo '</pre>';
             }
             if ($val == "Vproduct") {
