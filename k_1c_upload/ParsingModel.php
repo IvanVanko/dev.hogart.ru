@@ -197,17 +197,34 @@ class ParsingModel {
             $bitrixBranch = $el->GetList([], ["XML_ID" => $branch->id, "IBLOCK_ID" => $BLOCK_ID])->Fetch();
             if (!empty($bitrixBranch)) {
                 if ($el->Update($bitrixBranch["ID"], $arFields)) {
+                    $answer['StringBranches'][] = $branch->id;
                     echo "Запись обновлена: " . $branch->id . " - " . $branch->name . "<br />";
                 } else {
                     echo "Произошла ошибка обновления записи {$bitrixBranch['ID']}<br />";
                 }
             } else {
                 if (($branchId = $el->Add($arFields))) {
+                    $answer['StringBranches'][] = $branch->id;
                     echo "Запись создана: " . $branch->id . " - " . $branch->name . "<br />";
                 }
             }
         }
         echo "</div>";
+
+        if ($this->answer && count($answer['StringBrands']) > 0) {
+            $answer['StringBrands'] = implode(";", $answer['StringBrands']);
+            $ost = $this->client->__soapCall("BranchAnswer", array('parameters' => $answer));
+            echo '<i>Ответ на сервер отправлен</i>';
+        }
+
+        if(($ost->return == true)) {
+            echo "<div class='suc'>Главные категории загружены</div>";
+            echo "<div class='info'>В количестве: ".count($ost->return->branch)."</div>";
+        }
+        else {
+            echo "<div class='error'>Главные категории не загружены</div>";
+            $this->csv->saveLog(array('Главные категории не загружены', 'Не получен подходящий ответ от сервера'));
+        }
     }
 
     /**
