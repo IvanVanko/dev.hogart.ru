@@ -2,6 +2,9 @@
     die();
 }
 
+$APPLICATION->SetTitle($arResult["NAME"]);
+//$APPLICATION->AddChainItem($arResult["NAME"]);
+
 if(!empty($arResult['PROPERTIES']['ORGANIZER']['VALUE'])) {
 
     $arFilter = Array('ID' => $arResult['PROPERTIES']['ORGANIZER']['VALUE']);

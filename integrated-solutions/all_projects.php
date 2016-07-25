@@ -23,7 +23,8 @@ $APPLICATION->SetTitle("Все проекты");
             'PROPS' => 'Y',
             "SEF_MODE" => "Y",
             "SEF_FOLDER" => "/integrated-solutions/",
-            "FILTER" => array()
+            "FILTER" => array(),
+            "CACHE_TIME" => 0
         ));
         ?>
     </div>

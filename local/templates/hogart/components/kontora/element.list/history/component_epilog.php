@@ -14,9 +14,7 @@ if(isset($arResult['arResult'])) {
 			<li>
 				<?if (!empty($arItem['PREVIEW_PICTURE']['SRC'])):?>
 					<div class="photo">
-						<div class="inner">
-							<img src="<?=$arItem['PREVIEW_PICTURE']['SRC']?>" alt=""/>
-						</div>
+						<img src="<?=$arItem['PREVIEW_PICTURE']['SRC']?>" alt=""/>
 					</div>
 				<?endif;?>
 				<div class="info">
