@@ -178,7 +178,7 @@ class ParsingModel {
         $ost = $this->GetResultFunction("BranchGet");
         $answer = array();
         $answer['ID_Portal'] = 'HG';
-        $answer['StringBranches'] = array();
+        $answer['StringBranchs'] = array();
         
         $el = new CIBlockSection;
         echo "<div class='suc'>";
@@ -197,22 +197,22 @@ class ParsingModel {
             $bitrixBranch = $el->GetList([], ["XML_ID" => $branch->id, "IBLOCK_ID" => $BLOCK_ID])->Fetch();
             if (!empty($bitrixBranch)) {
                 if ($el->Update($bitrixBranch["ID"], $arFields)) {
-                    $answer['StringBranches'][] = $branch->id;
+                    $answer['StringBranchs'][] = $branch->id;
                     echo "Запись обновлена: " . $branch->id . " - " . $branch->name . "<br />";
                 } else {
                     echo "Произошла ошибка обновления записи {$bitrixBranch['ID']}<br />";
                 }
             } else {
                 if (($branchId = $el->Add($arFields))) {
-                    $answer['StringBranches'][] = $branch->id;
+                    $answer['StringBranchs'][] = $branch->id;
                     echo "Запись создана: " . $branch->id . " - " . $branch->name . "<br />";
                 }
             }
         }
         echo "</div>";
 
-        if ($this->answer && count($answer['StringBranches']) > 0) {
-            $answer['StringBranches'] = implode(";", $answer['StringBranches']);
+        if ($this->answer && count($answer['StringBranchs']) > 0) {
+            $answer['StringBranchs'] = implode(";", $answer['StringBranchs']);
             $ost = $this->client->__soapCall("BranchAnswer", array('parameters' => $answer));
             echo '<i>Ответ на сервер отправлен</i>';
         }
