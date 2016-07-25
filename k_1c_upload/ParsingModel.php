@@ -211,8 +211,8 @@ class ParsingModel {
         }
         echo "</div>";
 
-        if ($this->answer && count($answer['StringBrands']) > 0) {
-            $answer['StringBrands'] = implode(";", $answer['StringBrands']);
+        if ($this->answer && count($answer['StringBranches']) > 0) {
+            $answer['StringBranches'] = implode(";", $answer['StringBranches']);
             $ost = $this->client->__soapCall("BranchAnswer", array('parameters' => $answer));
             echo '<i>Ответ на сервер отправлен</i>';
         }
