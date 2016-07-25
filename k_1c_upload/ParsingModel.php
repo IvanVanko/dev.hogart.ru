@@ -21,11 +21,7 @@ class ParsingModel {
         "2" => "BOOL"
     );
 
-    private static $topSections = [
-        'otoplenie',
-        'ventilyatsiya',
-        'santekhnika',
-    ];
+    private static $topSections = [];
 
     const CATALOG_IBLOCK_ID = 1;
     const BRAND_IBLOCK_ID = 2;
@@ -76,10 +72,11 @@ class ParsingModel {
             }
         }
 
-        $topSectionsRes = CIBlockSection::GetList([], ["CODE" => self::$topSections], false, ["ID", "CODE"]);
+
+        $topSectionsRes = CIBlockSection::GetList([], ["IBLOCK_ID" => self::CATALOG_IBLOCK_ID, "DEPTH_LEVEL" => 1], false, ["ID", "CODE", "XML_ID"]);
         self::$topSections = [];
         while (($section = $topSectionsRes->Fetch())) {
-            self::$topSections[$section["CODE"]] = $section["ID"];
+            self::$topSections[$section["XML_ID"]] = $section;
         }
         
         $this->csv = new csv($create_dir);
@@ -174,6 +171,60 @@ class ParsingModel {
 
     function QueryAnswer($method, $param) {
         return $this->client->__soapCall($method, $param);
+    }
+
+    function initBranch() {
+        $BLOCK_ID = self::CATALOG_IBLOCK_ID;
+        $ost = $this->GetResultFunction("BranchGet");
+        $answer = array();
+        $answer['ID_Portal'] = 'HG';
+        $answer['StringBranchs'] = array();
+        
+        $el = new CIBlockSection;
+        echo "<div class='suc'>";
+        foreach ($ost->return->Branch as $branch) {
+            $code = CUtil::translit($branch->name, 'ru',
+                array('change_case' => 'L', 'replace_space' => '-', 'replace_other' => '-'));
+
+            $arFields = [
+                "IBLOCK_ID" => $BLOCK_ID,
+                "XML_ID" => $branch->id,
+                "ACTIVE" => $branch->deletion_mark ? "N" : "Y",
+                "NAME" => $branch->name,
+                "CODE" => $code
+            ];
+
+            $bitrixBranch = $el->GetList([], ["XML_ID" => $branch->id, "IBLOCK_ID" => $BLOCK_ID])->Fetch();
+            if (!empty($bitrixBranch)) {
+                if ($el->Update($bitrixBranch["ID"], $arFields)) {
+                    $answer['StringBranchs'][] = $branch->id;
+                    echo "Запись обновлена: " . $branch->id . " - " . $branch->name . "<br />";
+                } else {
+                    echo "Произошла ошибка обновления записи {$bitrixBranch['ID']}<br />";
+                }
+            } else {
+                if (($branchId = $el->Add($arFields))) {
+                    $answer['StringBranchs'][] = $branch->id;
+                    echo "Запись создана: " . $branch->id . " - " . $branch->name . "<br />";
+                }
+            }
+        }
+        echo "</div>";
+
+        if ($this->answer && count($answer['StringBranchs']) > 0) {
+            $answer['StringBranchs'] = implode(";", $answer['StringBranchs']);
+            $ost = $this->client->__soapCall("BranchAnswer", array('parameters' => $answer));
+            echo '<i>Ответ на сервер отправлен</i>';
+        }
+
+        if(($ost->return == true)) {
+            echo "<div class='suc'>Главные категории загружены</div>";
+            echo "<div class='info'>В количестве: ".count($ost->return->branch)."</div>";
+        }
+        else {
+            echo "<div class='error'>Главные категории не загружены</div>";
+            $this->csv->saveLog(array('Главные категории не загружены', 'Не получен подходящий ответ от сервера'));
+        }
     }
 
     /**
@@ -1079,6 +1130,7 @@ class ParsingModel {
         $answer['StringCategory'] = array();
         //Объект элемента в модели битрикса
         $el = new CIBlockSection;
+
         echo "<div class='suc'>";
 
         if(is_object($ost->return->Category)) {
@@ -1098,17 +1150,7 @@ class ParsingModel {
                 }
             }
 
-            $iblock_section_id = $parent_id
-                ?
-                $parent_id
-                : (
-                $value->branch == 0
-                    ?
-                    self::$topSections['otoplenie']
-                    : (
-                $value->branch == 1 ? self::$topSections['ventilyatsiya'] : self::$topSections['santekhnika']
-                )
-                );
+            $iblock_section_id = $parent_id ? $parent_id : self::$topSections[$value->branch]["ID"];
 
             $arLoadProductArray = Array(
                 "IBLOCK_SECTION_ID" => $iblock_section_id,
@@ -1133,11 +1175,6 @@ class ParsingModel {
                         echo '<p class="error">При деактивации раздела произошла ошибка ['.$arItem['ID'].']<br>
                                     '.$el->LAST_ERROR." ".__LINE__." ".__FUNCTION__.'</p>';
                     }
-                    //                    if (CIBlockSection::Delete($arItem['ID'])) {
-                    //                        echo 'Запись удалена - ' . $arItem['ID'];
-                    //                    } else {
-                    //                        echo '<p class="error">При удалении элемента произошла ошибка [' . $arItem['ID'] . ']<br>' . $el->LAST_ERROR." ".__LINE__." ".__FUNCTION__ . '</p>';
-                    //                    }
                 }
                 else {
                     //Если удалять не нужно, то обновляем и выводим сообщение
