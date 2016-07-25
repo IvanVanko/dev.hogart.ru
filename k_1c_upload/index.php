@@ -55,11 +55,11 @@ else {
                     <small>Характеристики и значения характеристик</small>
                 </th>
                 <td>
-                    <a href="?q=Vcategory">Посмотреть</a>
+                    <a href="?q=Vcategory">Посмотреть</a><br>
                     <a href="?q=Vbranch">Посмотреть главные категории</a>
                 </td>
                 <td>
-                    <a href="?q=category&answer=Y">Загрузить и ответить</a>
+                    <a href="?q=category&answer=Y">Загрузить и ответить</a><br>
                     <a href="?q=branch&answer=Y">Загрузить главные категории и ответить</a>
                 </td>
                 <td>

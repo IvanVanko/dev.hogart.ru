@@ -21,11 +21,7 @@ class ParsingModel {
         "2" => "BOOL"
     );
 
-    private static $topSections = [
-        'otoplenie',
-        'ventilyatsiya',
-        'santekhnika',
-    ];
+    private static $topSections = [];
 
     const CATALOG_IBLOCK_ID = 1;
     const BRAND_IBLOCK_ID = 2;
@@ -76,10 +72,11 @@ class ParsingModel {
             }
         }
 
-        $topSectionsRes = CIBlockSection::GetList([], ["CODE" => self::$topSections], false, ["ID", "CODE"]);
+
+        $topSectionsRes = CIBlockSection::GetList([], ["IBLOCK_ID" => self::CATALOG_IBLOCK_ID, "DEPTH_LEVEL" => 1], false, ["ID", "CODE", "XML_ID"]);
         self::$topSections = [];
         while (($section = $topSectionsRes->Fetch())) {
-            self::$topSections[$section["CODE"]] = $section["ID"];
+            self::$topSections[$section["XML_ID"]] = $section;
         }
         
         $this->csv = new csv($create_dir);
@@ -1116,10 +1113,6 @@ class ParsingModel {
         $answer['StringCategory'] = array();
         //Объект элемента в модели битрикса
         $el = new CIBlockSection;
-        $branchesRes = $el->GetList([], ["IBLOCK_ID" => self::CATALOG_IBLOCK_ID, "DEPTH_LEVEL" => 1], false, ["ID", "CODE", "XML_ID"]);
-        while ($branch = $branchesRes->Fetch()) {
-            
-        }
 
         echo "<div class='suc'>";
 
@@ -1140,17 +1133,7 @@ class ParsingModel {
                 }
             }
 
-            $iblock_section_id = $parent_id
-                ?
-                $parent_id
-                : (
-                $value->branch == 0
-                    ?
-                    self::$topSections['otoplenie']
-                    : (
-                $value->branch == 1 ? self::$topSections['ventilyatsiya'] : self::$topSections['santekhnika']
-                )
-                );
+            $iblock_section_id = $parent_id ? $parent_id : self::$topSections[$value->branch]["ID"];
 
             $arLoadProductArray = Array(
                 "IBLOCK_SECTION_ID" => $iblock_section_id,
@@ -1175,11 +1158,6 @@ class ParsingModel {
                         echo '<p class="error">При деактивации раздела произошла ошибка ['.$arItem['ID'].']<br>
                                     '.$el->LAST_ERROR." ".__LINE__." ".__FUNCTION__.'</p>';
                     }
-                    //                    if (CIBlockSection::Delete($arItem['ID'])) {
-                    //                        echo 'Запись удалена - ' . $arItem['ID'];
-                    //                    } else {
-                    //                        echo '<p class="error">При удалении элемента произошла ошибка [' . $arItem['ID'] . ']<br>' . $el->LAST_ERROR." ".__LINE__." ".__FUNCTION__ . '</p>';
-                    //                    }
                 }
                 else {
                     //Если удалять не нужно, то обновляем и выводим сообщение
