@@ -32,14 +32,16 @@ class hogart_lk extends CModule
     function InstallDB()
     {
         CModule::IncludeModule($this->MODULE_ID);
-        \Hogart\Lk\HogartCompanyTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\HogartCompanyTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\ClientCompanyTable::createTableIfNotExists();
         return true;
     }
 
     function UnInstallDB()
     {
         CModule::IncludeModule($this->MODULE_ID);
-        \Hogart\Lk\HogartCompanyTable::dropTableIfExists();
+        \Hogart\Lk\Entity\HogartCompanyTable::dropTableIfExists();
+        \Hogart\Lk\Entity\ClientCompanyTable::dropTableIfExists();
     }
 
     function DoInstall()
@@ -51,6 +53,7 @@ class hogart_lk extends CModule
 
     function DoUninstall()
     {
+        $this->UnInstallDB();
         DeleteDirFiles(__DIR__ . "/admin", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/admin");
         UnRegisterModule($this->MODULE_ID);
     }

@@ -6,7 +6,7 @@
  * Time: 21:52
  */
 
-namespace Hogart\Lk;
+namespace Hogart\Lk\Entity;
 
 use Bitrix\Main\Entity;
 
@@ -17,9 +17,9 @@ class AbstractEntity extends Entity\DataManager
      */
     public static function createTableIfNotExists()
     {
-        if (!self::getEntity()->getConnection()->isTableExists(self::getTableName())) {
+        if (!self::getEntity()->getConnection()->isTableExists(static::getTableName())) {
             self::getEntity()->createDbTable();
-            return self::getEntity()->getConnection()->isTableExists(self::getTableName());
+            return self::getEntity()->getConnection()->isTableExists(static::getTableName());
         }
         return false;
     }
@@ -29,9 +29,9 @@ class AbstractEntity extends Entity\DataManager
      */
     public static function dropTableIfExists()
     {
-        if (self::getEntity()->getConnection()->isTableExists(self::getTableName())) {
-            self::getEntity()->getConnection()->dropTable(self::getTableName());
-            return !self::getEntity()->getConnection()->isTableExists(self::getTableName());
+        if (self::getEntity()->getConnection()->isTableExists(static::getTableName())) {
+            self::getEntity()->getConnection()->dropTable(static::getTableName());
+            return !self::getEntity()->getConnection()->isTableExists(static::getTableName());
         }
         return false;
     }

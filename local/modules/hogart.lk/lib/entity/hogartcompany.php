@@ -6,13 +6,15 @@
  * Time: 19:39
  */
 
-namespace Hogart\Lk;
+namespace Hogart\Lk\Entity;
 
 
 use Bitrix\Main\Entity;
+use Hogart\Lk\Field\GuidField;
 
 class HogartCompanyTable extends AbstractEntity
 {
+    
     /**
      * @inheritDoc
      */
@@ -31,15 +33,11 @@ class HogartCompanyTable extends AbstractEntity
                 'primary' => true,
                 'autocomplete' => true
             ]),
-            new Entity\StringField("hogart_id", [
-                'size' => 36
-            ]),
+            new GuidField("hogart_id"),
             new Entity\StringField("name"),
             new Entity\StringField("inn"),
             new Entity\StringField("kpp"),
-            new Entity\StringField("chief_id", [
-                'size' => 36
-            ])
+            new GuidField("chief_id")
         ];
     }
 }
