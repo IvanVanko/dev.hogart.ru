@@ -34,6 +34,10 @@ class hogart_lk extends CModule
         CModule::IncludeModule($this->MODULE_ID);
         \Hogart\Lk\Entity\HogartCompanyTable::createTableIfNotExists();
         \Hogart\Lk\Entity\ClientCompanyTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\ContactTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\ContactInfoTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\ContactRelationTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\UserStoreTable::createTableIfNotExists();
         return true;
     }
 
@@ -42,10 +46,19 @@ class hogart_lk extends CModule
         CModule::IncludeModule($this->MODULE_ID);
         \Hogart\Lk\Entity\HogartCompanyTable::dropTableIfExists();
         \Hogart\Lk\Entity\ClientCompanyTable::dropTableIfExists();
+        \Hogart\Lk\Entity\ContactTable::dropTableIfExists();
+        \Hogart\Lk\Entity\ContactInfoTable::dropTableIfExists();
+        \Hogart\Lk\Entity\ContactRelationTable::dropTableIfExists();
+        \Hogart\Lk\Entity\UserStoreTable::dropTableIfExists();
     }
 
     function DoInstall()
     {
+        global $APPLICATION;
+        if (!extension_loaded("amqp")) {
+            $APPLICATION->ThrowException("Не загружена PECL библиотека amqp");
+            return false;
+        }
         RegisterModule($this->MODULE_ID);
         CopyDirFiles(__DIR__ . "/admin", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/admin");
         $this->InstallDB();

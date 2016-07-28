@@ -37,7 +37,19 @@ class HogartCompanyTable extends AbstractEntity
             new Entity\StringField("name"),
             new Entity\StringField("inn"),
             new Entity\StringField("kpp"),
-            new GuidField("chief_id")
+            new Entity\IntegerField("chief_id"),
+            new Entity\ReferenceField("chief", "Hogart\\Lk\\Entity\\ContactInfoTable", ["=this.chief_id" => "ref.id"]),
+            new Entity\BooleanField("is_active")
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected static function getIndexes()
+    {
+        return [
+            new Index("idx_hogart_id", ["hogart_id" => 36])
         ];
     }
 }
