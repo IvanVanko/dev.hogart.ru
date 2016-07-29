@@ -29,7 +29,7 @@ class ContactRelationTable extends AbstractEntityRelation
     {
         return array_merge([
             new IntegerField("contact_id", ['primary' => true]),
-            new ReferenceField("contact", "Hogart\\Lk\\Entity\\ContactTable", ["=this.contact_id" => "ref.id"]),
+            new ReferenceField("contact", "ContactTable", ["=this.contact_id" => "ref.id"]),
         ], parent::getMap());
     }
 

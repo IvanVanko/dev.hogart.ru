@@ -38,6 +38,9 @@ class hogart_lk extends CModule
         \Hogart\Lk\Entity\ContactInfoTable::createTableIfNotExists();
         \Hogart\Lk\Entity\ContactRelationTable::createTableIfNotExists();
         \Hogart\Lk\Entity\UserStoreTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\CompanyDiscountTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\ContractTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\KindOfActivityTable::createTableIfNotExists();
         return true;
     }
 
@@ -50,6 +53,9 @@ class hogart_lk extends CModule
         \Hogart\Lk\Entity\ContactInfoTable::dropTableIfExists();
         \Hogart\Lk\Entity\ContactRelationTable::dropTableIfExists();
         \Hogart\Lk\Entity\UserStoreTable::dropTableIfExists();
+        \Hogart\Lk\Entity\CompanyDiscountTable::dropTableIfExists();
+        \Hogart\Lk\Entity\ContractTable::dropTableIfExists();
+        \Hogart\Lk\Entity\KindOfActivityTable::dropTableIfExists();
     }
 
     function DoInstall()

@@ -38,7 +38,7 @@ class HogartCompanyTable extends AbstractEntity
             new Entity\StringField("inn"),
             new Entity\StringField("kpp"),
             new Entity\IntegerField("chief_id"),
-            new Entity\ReferenceField("chief", "Hogart\\Lk\\Entity\\ContactInfoTable", ["=this.chief_id" => "ref.id"]),
+            new Entity\ReferenceField("chief", "ContactInfoTable", ["=this.chief_id" => "ref.id"]),
             new Entity\BooleanField("is_active")
         ];
     }

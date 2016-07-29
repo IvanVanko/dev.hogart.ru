@@ -45,7 +45,7 @@ class ContactInfoTable extends AbstractEntity
             ]),
             new GuidField("hogart_id"),
             new IntegerField("contact_id"),
-            new ReferenceField("contact", "Hogart\\Lk\\Entity\\ContactTable", ["=this.contact_id" => "ref.id"]),
+            new ReferenceField("contact", "ContactTable", ["=this.contact_id" => "ref.id"]),
             new EnumField("type", [
                 'values' => [
                     self::TYPE_PHONE,
