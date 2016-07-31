@@ -46,7 +46,7 @@ class ParsingModel {
         global $DB;
         try {
             //Подключаемся к soap-серверу
-            ini_set("soap.wsdl_cache_enabled", 0);
+            ini_set("soap.wsdl_cache_enabled", WSDL_CACHE_NONE);
             $this->arr_params['type_id'] = '';
             $obConfig = new SoapLocalConfig();
             $this->client = new SoapClient(

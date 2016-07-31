@@ -60,14 +60,32 @@ class hogart_lk extends CModule
 
     function DoInstall()
     {
-        global $APPLICATION;
+        global $APPLICATION, $step;
         if (!extension_loaded("amqp")) {
             $APPLICATION->ThrowException("Не загружена PECL библиотека amqp");
             return false;
         }
-        RegisterModule($this->MODULE_ID);
-        CopyDirFiles(__DIR__ . "/admin", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/admin");
-        $this->InstallDB();
+        if (!extension_loaded("soap")) {
+            $APPLICATION->ThrowException("Не загружена библиотека soap");
+            return false;
+        }
+
+        $stepTitles = [
+            " - Параметры RabbitMQ",
+            " - Параметры SOAP-сервиса"
+        ];
+        $step = max(1, intval($step));
+
+        $GLOBALS['MODULE_ID'] = $this->MODULE_ID;
+        $GLOBALS['MODULE_NAME'] = $this->MODULE_NAME;
+        
+        if ($step == 3) {
+            RegisterModule($this->MODULE_ID);
+            CopyDirFiles(__DIR__ . "/admin", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/admin");
+            $this->InstallDB();
+        }
+        
+        $APPLICATION->IncludeAdminFile("Установка модуля \"{$this->MODULE_NAME}\"{$stepTitles[$step - 1]}", __DIR__ . "/step{$step}.php");
     }
 
     function DoUninstall()
