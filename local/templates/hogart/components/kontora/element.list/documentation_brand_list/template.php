@@ -43,12 +43,12 @@
 
 <div class="row">
     <div class="col-md-9">
-        <h3><?$APPLICATION->ShowTitle()?></h3>
+        <h3><?= $APPLICATION->GetTitle() ?></h3>
         <p>
             <?= HogartHelpers::ShowStaticContent("documentation", "PREVIEW_TEXT") ?>
         </p>
-        <? $APPLICATION->ShowViewContent("brands-letters") ?>
-        <? $APPLICATION->ShowViewContent("brands-list") ?>
+        <?= $APPLICATION->GetViewContent("brands-letters") ?>
+        <?= $APPLICATION->GetViewContent("brands-list") ?>
     </div>
     <div class="col-md-3 aside">
         <div class="brand-links">

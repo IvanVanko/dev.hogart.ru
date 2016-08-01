@@ -57,7 +57,7 @@ if ($APPLICATION->GetCurDir() === $arParams["SEF_FOLDER"]) {
             "NAV"           => "Y",
             "ELEMENT_COUNT" => 20,
             "FILTER"        => $arFilter,
-            'ORDER'         => $arParams['ORDER'],
+            'ORDER'         => $arParams['ORDER']
         ),
         $component
     );

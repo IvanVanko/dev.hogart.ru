@@ -6414,6 +6414,9 @@ ul.all-project-box li a span {
   width: 170px;
   height: 170px;
 }
+.history_page .history-human-list .photo img {
+  width: 100%;
+}
 .history_page .history-human-list .photo .inner {
   position: absolute;
   left: 50%;
@@ -6679,10 +6682,11 @@ ul.all-project-box li a span {
 .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover {
   background: #95c600;
   position: relative;
-  transition: opacity .3s linear;
+  transition: opacity,background .3s linear;
 }
 .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover * {
   color: white !important;
+  transition: color .3s linear;
 }
 .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover .ui-state-default {
   color: #fff;
@@ -6804,6 +6808,11 @@ ul.all-project-box li a span {
 .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover:hover .content {
   width: 300px;
   height: auto;
+  background-color: white;
+  box-shadow: 1px 1px 1px 1px #ccc;
+}
+.learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover:hover .content * {
+  color: #2c2432 !important;
 }
 .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover:hover .content:before {
   bottom: -10px;
@@ -6818,6 +6827,9 @@ ul.all-project-box li a span {
 }
 .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover.past .content {
   background: #2c2432;
+}
+.learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover.past .content * {
+  color: white !important;
 }
 .learn-page .list-base-learn {
   list-style: none;

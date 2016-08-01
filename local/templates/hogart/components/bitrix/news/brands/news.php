@@ -15,7 +15,7 @@ $this->setFrameMode(true);?>
 ?>
 <div class="row">
     <div class="col-md-9">
-        <h3><?$APPLICATION->ShowTitle()?></h3>
+        <h3><?= $APPLICATION->GetTitle()?></h3>
         <?$APPLICATION->IncludeComponent(
             "kontora:element.list",
             "",
@@ -26,11 +26,11 @@ $this->setFrameMode(true);?>
             ),
             $component
         );?>
-        <? $APPLICATION->ShowViewContent("brands-letters") ?>
         <p>
             <?= HogartHelpers::ShowStaticContent("brandheadertext", "PREVIEW_TEXT") ?>
         </p>
-        <? $APPLICATION->ShowViewContent("brands-list") ?>
+        <?= $APPLICATION->GetViewContent("brands-letters") ?>
+        <?= $APPLICATION->GetViewContent("brands-list") ?>
     </div>
     <div class="col-md-3">
         <?$APPLICATION->IncludeComponent(

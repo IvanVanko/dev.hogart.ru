@@ -1,15 +1,15 @@
 <? if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
 
+$arFilter = array('IBLOCK_ID' => $arParams["IBLOCK_ID"], 'ID' => $arResult["IBLOCK_SECTION_ID"]);
 if ($arResult['DEPTH_LEVEL'] > 2) {
-    $arFilter = array('IBLOCK_ID' => $arParams["IBLOCK_ID"], 'ID' => $arResult["IBLOCK_SECTION_ID"]);
     $rsSect = CIBlockSection::GetList(array('left_margin' => 'asc'), $arFilter);
     if ($arSect = $rsSect->GetNext()) {
         $arResult['PARENT_PARENT_SECTION'] = CIBlockSection::GetList([], array_merge($arFilter, ["ID" => $arSect['IBLOCK_SECTION_ID']]), false, ["UF_*"])->Fetch();
     }
+} else {
+    $arResult['PARENT_PARENT_SECTION'] = CIBlockSection::GetList([], array_merge($arFilter, ["ID" => $arResult["IBLOCK_SECTION_ID"]]), false, ["UF_*"])->Fetch();
 }
-//echo '<pre>';
-//var_dump($arResult['PARENT_PARENT_SECTION_ID']);
-//echo '</pre>';
+
 if (!empty($arParams['HREF_BRAND_CODE'])) {
 
     //делаем маппинг для дочерних классов представляющие разделы Хогарт

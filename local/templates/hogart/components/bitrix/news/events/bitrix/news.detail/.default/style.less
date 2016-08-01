@@ -1,0 +1,22 @@
+@import (reference) "../../../../../../../variables";
+
+ul.contact {
+  list-style: none;
+  padding-left: 10px;
+  .phone {
+    display: inline-block;
+    margin-left: 5px;
+    transition: all .3s linear;
+    font-family: @font-family-serif;
+    font-size: 1.1em;
+    &:before {
+      display: inline-block;
+      font: normal normal normal 14px/1 FontAwesome;
+      font-size: inherit;
+      text-rendering: auto;
+      -webkit-font-smoothing: antialiased;
+      content: "\f098";
+      margin-right: 5px;
+    }
+  }
+}
