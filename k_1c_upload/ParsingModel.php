@@ -2,9 +2,10 @@
 
 require_once('csv.php');
 require_once('config.php');
+use CUSTOM\Entity\ProductItemMeasureTable;
 
 ini_set('max_execution_time', 0);
-ini_set('memory_limit', '512Mb');
+ini_set('memory_limit', '512M');
 
 class ParsingModel {
     //Приватные переменные для хранения ссылки на подключение
@@ -1977,6 +1978,7 @@ class ParsingModel {
         $prop_codes = array();
 
         $measures = array();
+        $itemMeasures =  array(); // key - item_id, value - measure data
         $measure_units = array();
         $arCatalogMeasures = array();
 
@@ -2003,6 +2005,7 @@ class ParsingModel {
             $temp_meas = array();
             foreach($measures as $m_unit_product) {
                 $temp_meas[$m_unit_product['id']] = $m_unit_product;
+                $itemMeasures[$m_unit_product['item_id']][] = $m_unit_product;
             }
             $measures = $temp_meas;
             $this->debug_memory();
@@ -2038,6 +2041,8 @@ class ParsingModel {
         $this->debug_memory();
 
         $updated_property_values_xml_ids = array();
+
+        $site_format = CSite::GetDateFormat();
 
         foreach($ost->return->item as $key => $value) {
             $section_id = false;
@@ -2199,6 +2204,13 @@ class ParsingModel {
             $propA['collection'] = $id_col;
             $propA['brand'] = $id_brand;
             $propA['is_new'] = $value->novelty ? 19 : '';
+            $propA['default_count'] = $value->default_count;
+            if($value->date_added != '0001-01-01') {
+                $propA['date_added'] = CDatabase::FormatDate($value->date_added, 'YYYY-MM-DD', 'DD.MM.YYYY 00:00:00');
+            }
+            if($value->date_changed != '0001-01-01')
+                $propA['date_changed'] = CDatabase::FormatDate($value->date_changed, 'YYYY-MM-DD', 'DD.MM.YYYY 00:00:00');
+
             $arLoadProductArray = Array(
                 "IBLOCK_SECTION_ID" => $section_id,
                 "IBLOCK_ID" => $BLOCK_ID,
@@ -2209,6 +2221,8 @@ class ParsingModel {
                 "DETAIL_TEXT" => $value->description,
             );
 
+
+            $ELEMENT_ID = false;
             //проверяем наличие такого элемента
             $rsItems = CIBlockElement::GetList(array(), array(
                 'IBLOCK_ID' => $BLOCK_ID,
@@ -2220,7 +2234,7 @@ class ParsingModel {
 
             //Если элемент уже существует, обновляем его или удаляем, при условии что флаг установлен
             if($arItem = $rsItems->GetNext()) {
-
+                $ELEMENT_ID = $arItem['ID'];
                 $__props[$arItem['ID']] = [];
 
                 CIBlockElement::GetPropertyValuesArray($__props, $BLOCK_ID, ["ID" => $arItem['ID']]);
@@ -2267,6 +2281,21 @@ class ParsingModel {
             $this->debug_memory();
 
             $answer['StringItems'][] = $value->id;
+            // обновляем информацию по HL-блоку с данными по еденицам измерения в упаковке
+            if($ELEMENT_ID && isset($itemMeasures[$value->id]) && is_array($itemMeasures[$value->id]) && count($itemMeasures[$value->id]) > 0) {
+                foreach ($itemMeasures[$value->id] as $itemMeasure){
+                    ProductItemMeasureTable::UpdateMeasures(
+                        [
+                            "UF_ITEM_ID" => $ELEMENT_ID,
+                            "UF_MESSURE_ID" => $itemMeasure['unit_messure_catalog_id'],
+                            "UF_IS_MAIN" => ($itemMeasure['id'] == $value->unit_messure_id ? '1' : '0'),
+                            "UF_XML_ID" => $itemMeasure['id'],
+                            "UF_KOEF" => $itemMeasure['koef'],
+                            "UF_MESSURE_NAME" => $itemMeasure['name'],
+                        ]
+                    );
+                }
+            }
         }
 
         $isGo = false;

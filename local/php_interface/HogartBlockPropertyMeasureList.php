@@ -20,7 +20,17 @@ class HogartBlockPropertyMeasureList
 
     public function GetPropertyFieldHtml($arProperty, $value, $strHTMLControlName)
     {
-        
+        $html = '';
+        if(CModule::IncludeModule('catalog')){
+            $res = CCatalogMeasure::getList();
+
+            $html = "<select name={$strHTMLControlName}>";
+            while($measure = $res->GetNext()){
+                $html .="<option value='{$measure['ID']}'".($value == $measure['ID'] ? 'selected' : '' ).">{$measure['MEASURE_TITLE']}";
+            }
+            $html .='</select>';
+        }
+        return $html;
     }
 }
 

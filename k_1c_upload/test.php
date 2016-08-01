@@ -15,9 +15,14 @@ $parse = new ParsingModel();
 //
 //$res = $parse->GetResultFunction("RegCategory");
 
+$parse->arr_params['ID_Portal'] = "HG";
+$parse->arr_params['ID_Item'] = "ae44e58f-2385-11df-bf4d-00155d0a5302";
+$parse->arr_params['Del_Reg'] = false;
+$parse->arr_params['RegAll'] = false;
+$res = $parse->GetResultFunction("RegItem");
+var_dump($res);
+exit();
 
-//$parse->arr_params['ID_Item'] = "170f6de1-5e65-11de-a726-00155d0a1e01";
-//$parse->arr_params['Del_Reg'] = false;
 //
 //$res = $parse->GetResultFunction("RegItem");
 //echo "<pre>"; var_dump($res); echo "</pre>";
