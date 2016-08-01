@@ -5,7 +5,7 @@ require_once('config.php');
 use CUSTOM\Entity\ProductItemMeasureTable;
 
 ini_set('max_execution_time', 0);
-ini_set('memory_limit', '512Mb');
+ini_set('memory_limit', '512M');
 
 class ParsingModel {
     //Приватные переменные для хранения ссылки на подключение
@@ -2167,10 +2167,7 @@ class ParsingModel {
             $propA['collection'] = $id_col;
             $propA['brand'] = $id_brand;
             $propA['is_new'] = $value->novelty ? 19 : '';
-//            $propA['kit_count'] = $value->kit_count;
             $propA['default_count'] = $value->default_count;
-//            if($value->kit_count_unitmessure_id != 0)
-//                $propA['kit_count_unitmessure_id'] = $value->kit_count_unitmessure_id;
             if($value->date_added != '0001-01-01') {
                 $propA['date_added'] = CDatabase::FormatDate($value->date_added, 'YYYY-MM-DD', 'DD.MM.YYYY 00:00:00');
             }
@@ -2248,33 +2245,19 @@ class ParsingModel {
 
             $answer['StringItems'][] = $value->id;
             // обновляем информацию по HL-блоку с данными по еденицам измерения в упаковке
-            if($ELEMENT_ID && isset($itemMeasures[$value->id])){
-                $measureData = $itemMeasures[$value->id];
-                ProductItemMeasureTable::UpdateMeasures(
-                    array(
-                        "UF_ITEM_ID" => $ELEMENT_ID,
-                        "UF_MESSURE_ID" => $measureData['unit_messure_catalog_id'],
-                        "UF_IS_MAIN" => 'Y',
-                        "UF_XML_ID" => $measureData['id'],
-                        "UF_KOEF" => $measureData['koef'],
-                        "UF_MESSURE_NAME" => $measureData['name'],
-                    )
-                );
-            }
-        }
-
-        // сохранени данных по еденицам измерения товара
-        if(count($itemMeasures) > 0){
-            $arFilter = array('CODE' => array_keys($itemMeasures));
-
-            $dbCatalogMeasureResult = CCatalogProduct::GetList(array(), $arFilter);
-
-            while($next = $dbCatalogMeasureResult->GetNext()) {
-                $arCatalogMeasures[$next['CODE']] = $next;
-            }
-
-            foreach($itemMeasures as $item_id=>$mesData){
-
+            if($ELEMENT_ID && isset($itemMeasures[$value->id]) && is_array($itemMeasures[$value->id]) && count($itemMeasures[$value->id]) > 0) {
+                foreach ($itemMeasures[$value->id] as $itemMeasure){
+                    ProductItemMeasureTable::UpdateMeasures(
+                        [
+                            "UF_ITEM_ID" => $ELEMENT_ID,
+                            "UF_MESSURE_ID" => $itemMeasure['unit_messure_catalog_id'],
+                            "UF_IS_MAIN" => ($itemMeasure['id'] == $value->unit_messure_id ? '1' : '0'),
+                            "UF_XML_ID" => $itemMeasure['id'],
+                            "UF_KOEF" => $itemMeasure['koef'],
+                            "UF_MESSURE_NAME" => $itemMeasure['name'],
+                        ]
+                    );
+                }
             }
         }
 

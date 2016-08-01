@@ -67,17 +67,16 @@ class ProductItemMeasureTable extends Entity\DataManager
     /** Получить Элементы едениц измерения в упаковке по item_id и messure_id */
     public static function GetListByItem($itemID, $messure_id = null){
         $params = array(
-            'select' => array('*'),
-            'filter' => array('UF_ITEM_ID' => $itemID)
+            'select' => array('ID'),
+            'filter' => array('=UF_ITEM_ID' => $itemID)
         );
         if($messure_id !== null)
-            $params['filter']['UF_MESSURE_ID'] = $messure_id;
+            $params['filter']['=UF_MESSURE_ID'] = $messure_id;
         return self::GetList($params);
     }
 
     // Обновить один элемент едениц измерения $measure_data - массив данных для добавления в self hL-block
-    public static function UpdateMeasures(array $measure_data=array()){
-        var_dump($measure_data);
+    public static function UpdateMeasures(array $measure_data){
         $existedResult = self::GetListByItem($measure_data['UF_ITEM_ID'], $measure_data['UF_MESSURE_ID']);
 
         if($existedResult->getSelectedRowsCount() > 0){
