@@ -69,7 +69,7 @@ class Version201607220001 extends Version
 //            )
 //        );
 //        var_dump($entity);
-        exit();
+
 //        $UserTypeEntityHelper = new UserTypeEntityHelper();
 //        $entityId = "HLBLOCK_" . \CHLEntity::GetEntityIdByName('SectionPropertySort');
 //        $UserTypeEntityHelper->addUserTypeEntityIfNotExists($entityId, "UF_MAIN_TABLE", [
