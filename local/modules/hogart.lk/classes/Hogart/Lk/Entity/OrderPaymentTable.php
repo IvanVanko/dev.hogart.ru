@@ -65,6 +65,7 @@ class OrderPaymentTable extends AbstractEntity
             ]),
             new FloatField("total"),
             new StringField("currency_code"),
+            new ReferenceField("currency", "Bitrix\\Currency\\CurrencyTable", ["=this.currency_code" => "ref.CURRENCY"]),
             new BooleanField("is_active")
         ];
     }

@@ -49,6 +49,7 @@ class RTUTable extends AbstractEntity
             new StringField("number"),
             new DateField("rtu_date"),
             new StringField("currency_code"),
+            new ReferenceField("currency", "Bitrix\\Currency\\CurrencyTable", ["=this.currency_code" => "ref.CURRENCY"]),
             new EnumField("order_type", [
                 'values' => [
                     self::DELIVERY_OUR,
