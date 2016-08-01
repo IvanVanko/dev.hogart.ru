@@ -34,7 +34,7 @@ class KindOfActivityTable extends AbstractEntity
                 'primary' => true,
                 "autocomplete" => true
             ]),
-            new GuidField("hogart_id"),
+            new GuidField("guid_id"),
             new StringField("name"),
             new TextField("description")
         ];

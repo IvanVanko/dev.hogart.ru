@@ -43,7 +43,7 @@ class ContactInfoTable extends AbstractEntity
                 'primary' => true,
                 "autocomplete" => true
             ]),
-            new GuidField("hogart_id"),
+            new GuidField("guid_id"),
             new IntegerField("contact_id"),
             new ReferenceField("contact", "ContactTable", ["=this.contact_id" => "ref.id"]),
             new EnumField("type", [
@@ -69,7 +69,7 @@ class ContactInfoTable extends AbstractEntity
     protected static function getIndexes()
     {
         return [
-            new Index("idx_hogart_id", ["hogart_id" => 36]),
+            new Index("idx_guid_id", ["guid_id" => 36]),
             new Index("idx_contact_id", ["contact_id"]),
         ];
     }

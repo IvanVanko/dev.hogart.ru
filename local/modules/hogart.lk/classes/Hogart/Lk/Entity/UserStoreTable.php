@@ -11,6 +11,7 @@ namespace Hogart\Lk\Entity;
 
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ReferenceField;
+use Hogart\Lk\Field\GuidField;
 
 class UserStoreTable extends AbstractEntity
 {
@@ -28,9 +29,9 @@ class UserStoreTable extends AbstractEntity
     public static function getMap()
     {
         return [
-            new IntegerField("store_id", ['primary' => true]),
+            new GuidField("store_guid", ['primary' => true]),
             new IntegerField("user_id", ['primary' => true]),
-            new ReferenceField("store", "Bitrix\\Catalog\\StoreTable", ["=this.store_id" => "ref.ID"]),
+            new ReferenceField("store", "Bitrix\\Catalog\\StoreTable", ["=this.store_guid" => "ref.XML_ID"]),
             new ReferenceField("user", "Bitrix\\Main\\UserTable", ["=this.user_id" => "ref.ID"]),
         ];
     }

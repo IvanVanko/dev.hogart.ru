@@ -37,6 +37,5 @@ class StaffExchange extends AbstractExchange
     {
         // some work
         var_dump($this->getQueueName(), $envelope->getDeliveryTag());
-        throw new EnvelopeException("Test exception");
     }
 }

@@ -20,7 +20,7 @@ class LoggerCollection implements LoggerInterface
      */
     public function __construct($loggers = [])
     {
-        if (!is_array($loggers)) $loggers = (array)$loggers;
+        if (is_object($loggers)) $loggers = [$loggers];
         foreach ($loggers as $logger) {
             $this->registerLogger($logger);
         }

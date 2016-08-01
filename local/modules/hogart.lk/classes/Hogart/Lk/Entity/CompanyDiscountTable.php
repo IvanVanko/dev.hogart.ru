@@ -10,6 +10,7 @@ namespace Hogart\Lk\Entity;
 
 
 use Bitrix\Main\DB\SqlExpression;
+use Bitrix\Main\Entity\FloatField;
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ReferenceField;
 
@@ -37,7 +38,7 @@ class CompanyDiscountTable extends AbstractEntity
             new ReferenceField("company", "CompanyTable", ["=this.company_id" => "ref.id"]),
             new IntegerField("item_id"),
             new ReferenceField("item", "Bitrix\\Iblock\\ElementTable", ["=this.item_id" => "ref.ID", "=ref.IBLOCK_ID" => new SqlExpression('?i', CATALOG_IBLOCK_ID)]),
-            new IntegerField("discount")
+            new FloatField("discount")
         ];
     }
 

@@ -10,6 +10,7 @@ namespace Hogart\Lk\Entity;
 
 
 use Bitrix\Main\DB\SqlExpression;
+use Bitrix\Main\Entity\BooleanField;
 use Bitrix\Main\Entity\EnumField;
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ReferenceField;
@@ -38,6 +39,9 @@ class AbstractEntityRelation extends AbstractEntity
             new ReferenceField("hogart_company", "HogartCompanyTable", ["=this.owner_id" => "ref.id", "=this.owner_type" => new SqlExpression('?i', self::OWNER_TYPE_HOGART_COMPANY)]),
             new ReferenceField("store", "Bitrix\\Catalog\\StoreTable", ["=this.owner_id" => "ref.ID", "=this.owner_type" => new SqlExpression('?i', self::OWNER_TYPE_STORE)]),
             new ReferenceField("contact", "ContactTable", ["=this.owner_id" => "ref.id", "=this.owner_type" => new SqlExpression('?i', self::OWNER_TYPE_CONTACT)]),
+            new BooleanField("is_main", [
+                'default_value' => false
+            ]),
             new EnumField("owner_type", [
                 'primary' => true,
                 'values' => [

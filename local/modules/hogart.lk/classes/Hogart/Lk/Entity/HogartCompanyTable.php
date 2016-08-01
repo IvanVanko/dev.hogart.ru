@@ -33,7 +33,7 @@ class HogartCompanyTable extends AbstractEntity
                 'primary' => true,
                 'autocomplete' => true
             ]),
-            new GuidField("hogart_id"),
+            new GuidField("guid_id"),
             new Entity\StringField("name"),
             new Entity\StringField("inn"),
             new Entity\StringField("kpp"),
@@ -49,7 +49,7 @@ class HogartCompanyTable extends AbstractEntity
     protected static function getIndexes()
     {
         return [
-            new Index("idx_hogart_id", ["hogart_id" => 36])
+            new Index("idx_guid_id", ["guid_id" => 36])
         ];
     }
 }

@@ -111,7 +111,7 @@ class Producer
      */
     public function registerExchange($exchangeInterface)
     {
-        if (!is_array($exchangeInterface)) $exchangeInterface = (array)$exchangeInterface;
+        if (is_object($exchangeInterface)) $exchangeInterface = [$exchangeInterface];
 
         foreach ($exchangeInterface as $exchange) {
             $this->exchanges[] = $exchange->useProducer($this);

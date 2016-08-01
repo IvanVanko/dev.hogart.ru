@@ -46,7 +46,7 @@ class ClientCompanyTable extends AbstractEntity
             ]),
             new IntegerField("user_id"),
             new ReferenceField("user", "Bitrix\\Main\\UserTable", ["=this.user_id" => "ref.ID"]),
-            new GuidField("hogart_id"),
+            new GuidField("guid_id"),
             new StringField("name"),
             new EnumField("type", [
                 'values' => [
