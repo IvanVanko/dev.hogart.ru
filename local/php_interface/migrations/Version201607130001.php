@@ -23,29 +23,11 @@ class Version201607130001 extends Version
                 RemoveEventHandler("iblock", "OnBeforeIBlockPropertyUpdate", $iKey);
             }
         }
-        var_dump(\CDatabase::FormatDate('0001-01-01', 'YYYY-MM-DD', 'DD.MM.YYYY 00:00:00'));
-        exit();
 
         $iBlockHelper = new IblockHelper();
         $documentIblockId = \CIBlock::GetList(array('SORT' => 'ASC'), array('CHECK_PERMISSIONS' => 'N', '=NAME' => 'Документация'))->Fetch()['ID'];
 
-        if ($iBlockHelper->addPropertyIfNotExists(1, [
-            "CODE" => "kit_count",
-            "NAME" => "Упаковочное количество",
-            "PROPERTY_TYPE" => "N",
-            "FILTRABLE" => "N"
-        ])) {
-            $this->outSuccess("Добавлено свойство \"Упаковочное количество\" а инфоблок \"Каталог\"");
-        }
-        if ($iBlockHelper->addPropertyIfNotExists(1, [
-            "CODE" => "kit_count_unitmessure_id",
-            "NAME" => "Единица измерения упаковочного количества",
-            "PROPERTY_TYPE" => "L",
-            "USER_TYPE" => "LMeasure",
-            "FILTRABLE" => "Y"
-        ])) {
-            $this->outSuccess("Добавлено свойство \"Единица измерения упаковочного количества\" а инфоблок \"Каталог\"");
-        }
+
         if ($iBlockHelper->addPropertyIfNotExists(1, [
             "CODE" => "default_count",
             "NAME" => "Кратность отгрузки (число)",
