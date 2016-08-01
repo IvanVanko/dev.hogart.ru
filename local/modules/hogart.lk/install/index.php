@@ -41,6 +41,10 @@ class hogart_lk extends CModule
         \Hogart\Lk\Entity\CompanyDiscountTable::createTableIfNotExists();
         \Hogart\Lk\Entity\ContractTable::createTableIfNotExists();
         \Hogart\Lk\Entity\KindOfActivityTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\RTUTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\RTUItemTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\OrderPaymentTable::createTableIfNotExists();
+
         return true;
     }
 
@@ -56,6 +60,9 @@ class hogart_lk extends CModule
         \Hogart\Lk\Entity\CompanyDiscountTable::dropTableIfExists();
         \Hogart\Lk\Entity\ContractTable::dropTableIfExists();
         \Hogart\Lk\Entity\KindOfActivityTable::dropTableIfExists();
+        \Hogart\Lk\Entity\RTUTable::dropTableIfExists();
+        \Hogart\Lk\Entity\RTUItemTable::dropTableIfExists();
+        \Hogart\Lk\Entity\OrderPaymentTable::dropTableIfExists();
     }
 
     function DoInstall()
