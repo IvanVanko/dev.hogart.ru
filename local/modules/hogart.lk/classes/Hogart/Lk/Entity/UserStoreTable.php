@@ -9,6 +9,7 @@
 namespace Hogart\Lk\Entity;
 
 
+use Bitrix\Main\Entity\BooleanField;
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ReferenceField;
 use Hogart\Lk\Field\GuidField;
@@ -33,6 +34,9 @@ class UserStoreTable extends AbstractEntity
             new IntegerField("user_id", ['primary' => true]),
             new ReferenceField("store", "Bitrix\\Catalog\\StoreTable", ["=this.store_guid" => "ref.XML_ID"]),
             new ReferenceField("user", "Bitrix\\Main\\UserTable", ["=this.user_id" => "ref.ID"]),
+            new BooleanField("is_main", [
+                'default_value' => false
+            ]),
         ];
     }
 }

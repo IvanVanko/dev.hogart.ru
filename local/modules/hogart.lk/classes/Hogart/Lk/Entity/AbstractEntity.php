@@ -64,4 +64,20 @@ abstract class AbstractEntity extends Entity\DataManager
             self::getEntity()->getConnection()->query($sql);
         }
     }
+
+    /**
+     * @param $data
+     * @return Entity\AddResult
+     * @throws \Exception
+     */
+    public static function replace($data)
+    {
+        $primary = static::getEntity()->getPrimaryArray();
+        $id = [];
+        foreach ($primary as $key) {
+            $id[$key] = $data[$key];
+        }
+        static::delete($id);
+        return static::add($data);
+    }
 }

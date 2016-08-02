@@ -11,13 +11,13 @@ namespace Hogart\Lk\Exchange\SOAP;
 
 abstract class AbstractMethod implements MethodInterface
 {
-    /** @var  \SoapClient */
+    /** @var  Client */
     protected $client;
 
     /**
      * @inheritDoc
      */
-    function useSoapClient(\SoapClient $client)
+    function useSoapClient(Client $client)
     {
         $this->client = $client;
 

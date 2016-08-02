@@ -31,7 +31,7 @@ class Account extends AbstractMethod
      */
     public function getAccounts()
     {
-        return $this->client->AccountGet(new AccountGet());
+        return $this->client->getSoapClient()->AccountGet(new AccountGet());
     }
 
     /**
@@ -40,7 +40,7 @@ class Account extends AbstractMethod
      */
     public function accountAnswer(AccountAnswer $answer)
     {
-        return $this->client->AccountAnswer($answer);
+        return $this->client->getSoapClient()->AccountAnswer($answer);
     }
 
     public function createOrUpdateAccounts()
@@ -56,19 +56,13 @@ class Account extends AbstractMethod
             ])->fetch();
 
             if (!empty($user)) {
-
-                $stores = UserStoreTable::getList([
-                    'filter' => [
-                        '=user.ID' => $user['ID'],
-                        '@store.XML_ID' => array_values($accountInfo->Acc_Warehouses)
-                    ]
-                ])->fetchAll();
-
                 foreach ($accountInfo->Acc_Warehouses as $acc_Warehouse) {
-                    $result = UserStoreTable::add([
+                    $result = UserStoreTable::replace([
                         'user_id' => $user["ID"],
-                        'store_guid' => $acc_Warehouse
+                        'store_guid' => $acc_Warehouse,
+                        'is_main' => $accountInfo->Acc_ID_Main_Warehouse == $acc_Warehouse
                     ]);
+                    $this->client->getLogger()->notice("Обработан склад клиента {$acc_Warehouse}: добавлена запись");
                 }
             } else {
 

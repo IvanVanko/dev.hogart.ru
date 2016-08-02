@@ -6,7 +6,7 @@
  * Time: 03:11
  */
 
-namespace Hogart\Lk\Exchange\RabbitMQ\Logger;
+namespace Hogart\Lk\Logger;
 
 
 interface LoggerInterface
@@ -15,4 +15,5 @@ interface LoggerInterface
     function warning($message);
     function notice($message);
     function debug($message);
+    function setService($service);
 }

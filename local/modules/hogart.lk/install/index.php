@@ -121,7 +121,7 @@ class hogart_lk extends CModule
     {
         $uf = (new \CUserTypeEntity)->GetList([], ["ENTITY_ID" => 'USER', "FIELD_NAME" => 'UF_PROMO_ACCESS'])->Fetch();
         if (!empty($uf)) {
-            (new \CUserTypeEntity)->Delete([$uf["ID"]]);
+            (new \CUserTypeEntity)->Delete($uf["ID"]);
         }
         $this->UnInstallDB();
         DeleteDirFiles(__DIR__ . "/admin", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/admin");

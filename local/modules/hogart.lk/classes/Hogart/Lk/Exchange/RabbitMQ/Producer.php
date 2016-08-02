@@ -10,9 +10,9 @@ namespace Hogart\Lk\Exchange\RabbitMQ;
 
 
 use Hogart\Lk\Exchange\RabbitMQ\Exchange\ExchangeInterface;
-use Hogart\Lk\Exchange\RabbitMQ\Logger\BitrixLogger;
-use Hogart\Lk\Exchange\RabbitMQ\Logger\LoggerCollection;
-use Hogart\Lk\Exchange\RabbitMQ\Logger\LoggerInterface;
+use Hogart\Lk\Logger\BitrixLogger;
+use Hogart\Lk\Logger\LoggerCollection;
+use Hogart\Lk\Logger\LoggerInterface;
 
 class Producer
 {
@@ -44,7 +44,7 @@ class Producer
         ]);
         $this->connection->connect();
         $this->channel = new \AMQPChannel($this->connection);
-        $this->logger = new LoggerCollection(new BitrixLogger());
+        $this->logger = new LoggerCollection("RABBITMQ", new BitrixLogger());
     }
 
     /**

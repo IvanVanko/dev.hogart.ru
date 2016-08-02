@@ -23,7 +23,7 @@ $producer = new \Hogart\Lk\Exchange\RabbitMQ\Producer(
     COption::GetOptionString("hogart.lk", "RABBITMQ_PASSWORD")
 );
 
-$producer->registerLogger(new \Hogart\Lk\Exchange\RabbitMQ\Logger\FileLogger(__DIR__ . "/../logs/rabbitmq.log"));
+$producer->registerLogger(new \Hogart\Lk\Logger\FileLogger(__DIR__ . "/../logs/rabbitmq.log"));
 
 $producer->registerExchange([
     $staff = new \Hogart\Lk\Exchange\RabbitMQ\Exchange\StaffExchange(),

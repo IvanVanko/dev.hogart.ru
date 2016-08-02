@@ -12,10 +12,10 @@ namespace Hogart\Lk\Exchange\SOAP;
 interface MethodInterface
 {
     /**
-     * @param \SoapClient $client
+     * @param Client $client
      * @return $this
      */
-    function useSoapClient(\SoapClient $client);
+    function useSoapClient(Client $client);
 
     /**
      * @return string

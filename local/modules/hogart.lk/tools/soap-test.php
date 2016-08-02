@@ -19,9 +19,10 @@ CModule::IncludeModule("catalog");
 
 /** @var \Hogart\Lk\Exchange\SOAP\Client $soap */
 $soap = \Hogart\Lk\Exchange\SOAP\Client::getInstance();
+$soap->getLogger()->registerLogger(new \Hogart\Lk\Logger\FileLogger(__DIR__ . "/../logs/soap.log"));
 
-$answer = new \Hogart\Lk\Exchange\SOAP\Method\Account\AccountAnswer();
-$answer->addAnswer(new \Hogart\Lk\Exchange\SOAP\Method\AnswerObject("25dcd338-57d2-11e6-82d6-00155d000a02"));
+//$answer = new \Hogart\Lk\Exchange\SOAP\Method\Account\AccountAnswer();
+//$answer->addAnswer(new \Hogart\Lk\Exchange\SOAP\Method\AnswerObject("25dcd338-57d2-11e6-82d6-00155d000a02"));
 
 //print_r($soap->Account->getAccounts());
 //$soap->Account->accountAnswer($answer);

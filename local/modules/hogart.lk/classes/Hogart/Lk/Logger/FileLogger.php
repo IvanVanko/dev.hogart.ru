@@ -6,10 +6,10 @@
  * Time: 03:52
  */
 
-namespace Hogart\Lk\Exchange\RabbitMQ\Logger;
+namespace Hogart\Lk\Logger;
 
 
-class FileLogger implements LoggerInterface
+class FileLogger extends AbstractLogger
 {
     const SEVERITY_NOTICE = "NOTICE";
     const SEVERITY_ERROR = "ERROR";
@@ -20,10 +20,12 @@ class FileLogger implements LoggerInterface
 
     /**
      * FileLogger constructor.
+     * @param string $service
      * @param string $filePath
      */
-    public function __construct($filePath)
+    public function __construct($filePath, $service = null)
     {
+        parent::__construct($service);
         if(!file_exists(dirname($filePath))) {
             mkdir(dirname($filePath), 0777, true);
         }
@@ -32,7 +34,7 @@ class FileLogger implements LoggerInterface
     }
 
     public function log($message, $severity){
-        $log = "";
+        $log = "[{$this->service}]\t";
         $log .= "[{$severity}]\t";
         $log .= "[" . date("D M d H:i:s Y", time()) . "]\t";
         $log .= $message;

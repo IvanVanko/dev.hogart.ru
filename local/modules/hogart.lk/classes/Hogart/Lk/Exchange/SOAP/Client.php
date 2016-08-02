@@ -11,6 +11,9 @@ namespace Hogart\Lk\Exchange\SOAP;
 
 use Hogart\Lk\Creational\Singleton;
 use Hogart\Lk\Exchange\SOAP\Method\Account;
+use Hogart\Lk\Logger\BitrixLogger;
+use Hogart\Lk\Logger\LoggerCollection;
+use Hogart\Lk\Logger\LoggerInterface;
 
 /**
  * Class Client
@@ -22,9 +25,11 @@ class Client
 {
     use Singleton;
     /** @var \SoapClient */
-    protected $client;
+    protected $soapClient;
     /** @var  MethodInterface[] */
     protected $methods = [];
+    /** @var  LoggerCollection */
+    protected $logger;
 
     /**
      * Client constructor.
@@ -52,16 +57,57 @@ class Client
             'password'   => \COption::GetOptionString("hogart.lk", "SOAP_SERVICE_PASSWORD"),
             'features' => SOAP_SINGLE_ELEMENT_ARRAYS
         ];
-        $this->client = new \SoapClient($wsdl, $options);
+        $this->soapClient = new \SoapClient($wsdl, $options);
+        $this->logger = new LoggerCollection("SOAP-SERVICE", new BitrixLogger());
         $this->defaultMethodsRegister();
+    }
+
+    /**
+     * @param LoggerInterface $logger
+     * @return $this
+     */
+    public function registerLogger(LoggerInterface $logger)
+    {
+        $this->logger->registerLogger($logger);
+
+        return $this;
+    }
+
+    /**
+     * @param LoggerInterface $logger
+     * @return $this
+     */
+    public function unregisterLogger(LoggerInterface $logger)
+    {
+        $this->logger->unregisterLogger($logger);
+
+        return $this;
+    }
+
+    /**
+     * @return LoggerCollection
+     */
+    public function getLogger()
+    {
+        return $this->logger;
+    }
+
+    /**
+     * @param LoggerInterface $logger
+     * @return $this
+     */
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+        return $this;
     }
 
     /**
      * @return \SoapClient
      */
-    public function getClient()
+    public function getSoapClient()
     {
-        return $this->client;
+        return $this->soapClient;
     }
 
     protected function defaultMethodsRegister()
@@ -80,7 +126,7 @@ class Client
             if (isset($this->methods[$method->getName()]) && get_class($method) !== get_class($this->methods[$method->getName()])) {
                 throw new \RuntimeException("Duplicate method name!");
             }
-            $this->methods[$method->getName()] = $method->useSoapClient($this->client);
+            $this->methods[$method->getName()] = $method->useSoapClient($this);
         }
 
         return $this;

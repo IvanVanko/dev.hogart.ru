@@ -6,17 +6,17 @@
  * Time: 03:11
  */
 
-namespace Hogart\Lk\Exchange\RabbitMQ\Logger;
+namespace Hogart\Lk\Logger;
 
 
-class BitrixLogger implements LoggerInterface
+class BitrixLogger extends AbstractLogger
 {
     function error($message)
     {
         return \CEventLog::Add(array(
             "SEVERITY" => "ERROR",
             "MODULE_ID" => "hogart.lk",
-            "AUDIT_TYPE_ID" => "RABBITMQ",
+            "AUDIT_TYPE_ID" => $this->service,
             "DESCRIPTION" => $message,
         ));
     }
@@ -26,7 +26,7 @@ class BitrixLogger implements LoggerInterface
         return \CEventLog::Add(array(
             "SEVERITY" => "WARNING",
             "MODULE_ID" => "hogart.lk",
-            "AUDIT_TYPE_ID" => "RABBITMQ",
+            "AUDIT_TYPE_ID" => $this->service,
             "DESCRIPTION" => $message,
         ));
     }
@@ -36,7 +36,7 @@ class BitrixLogger implements LoggerInterface
         return \CEventLog::Add(array(
             "SEVERITY" => "INFO",
             "MODULE_ID" => "hogart.lk",
-            "AUDIT_TYPE_ID" => "RABBITMQ",
+            "AUDIT_TYPE_ID" => $this->service,
             "DESCRIPTION" => $message,
         ));
     }
@@ -46,7 +46,7 @@ class BitrixLogger implements LoggerInterface
         return \CEventLog::Add(array(
             "SEVERITY" => "DEBUG",
             "MODULE_ID" => "hogart.lk",
-            "AUDIT_TYPE_ID" => "RABBITMQ",
+            "AUDIT_TYPE_ID" => $this->service,
             "DESCRIPTION" => $message,
         ));
     }
