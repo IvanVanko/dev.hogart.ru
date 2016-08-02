@@ -19,12 +19,15 @@ CModule::IncludeModule("catalog");
 
 /** @var \Hogart\Lk\Exchange\SOAP\Client $soap */
 $soap = \Hogart\Lk\Exchange\SOAP\Client::getInstance();
+
 $soap->getLogger()->registerLogger(new \Hogart\Lk\Logger\FileLogger(__DIR__ . "/../logs/soap.log"));
 
-$answer = new \Hogart\Lk\Exchange\SOAP\Method\Account\AccountAnswer();
-$answer->addResponse(new \Hogart\Lk\Exchange\SOAP\Method\ResponseObject("25dcd338-57d2-11e6-82d6-00155d000a02"));
+var_dump($soap->Staff->getStaff());
 
-$soap->Address->updateAddresses();
+//$response = new \Hogart\Lk\Exchange\SOAP\Method\Response();
+//$response->addResponse(new \Hogart\Lk\Exchange\SOAP\Method\ResponseObject("25dcd338-57d2-11e6-82d6-00155d000a02"));
+
+//$soap->Address->updateAddresses();
 //print_r($soap->Address->getAddresses());
 //var_dump($answer);
 //print_r($soap->Account->getAccounts());

@@ -12,8 +12,6 @@ namespace Hogart\Lk\Exchange\SOAP\Method;
 use Bitrix\Main\UserTable;
 use Hogart\Lk\Entity\UserStoreTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
-use Hogart\Lk\Exchange\SOAP\Method\Account\AccountAnswer;
-use Hogart\Lk\Exchange\SOAP\Method\Account\AccountGet;
 
 class Account extends AbstractMethod
 {
@@ -34,19 +32,19 @@ class Account extends AbstractMethod
     }
 
     /**
-     * @param AccountAnswer $answer
+     * @param Response $response
      * @return mixed
      */
-    public function accountAnswer(AccountAnswer $answer)
+    public function accountAnswer(Response $response)
     {
-        $response = $this->client->getSoapClient()->AccountAnswer($answer);
+        $response = $this->client->getSoapClient()->AccountAnswer($response);
         $this->client->getLogger()->debug("Ответ на метод AccountAnswer: " . ($response->return ? "true" : "false"));
         return $response;
     }
 
     public function createOrUpdateAccounts()
     {
-        $answer = new AccountAnswer();
+        $answer = new Response();
         $response = $this->getAccounts();
 
         foreach ($response->return->AccInfo as $accountInfo) {
@@ -68,6 +66,8 @@ class Account extends AbstractMethod
             } else {
 
             }
+
+            $answer->addResponse(new ResponseObject($accountInfo->Acc_ID));
         }
 
 

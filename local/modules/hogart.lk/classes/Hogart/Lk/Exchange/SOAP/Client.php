@@ -12,6 +12,8 @@ namespace Hogart\Lk\Exchange\SOAP;
 use Hogart\Lk\Creational\Singleton;
 use Hogart\Lk\Exchange\SOAP\Method\Account;
 use Hogart\Lk\Exchange\SOAP\Method\Address;
+use Hogart\Lk\Exchange\SOAP\Method\HogartCompany;
+use Hogart\Lk\Exchange\SOAP\Method\Staff;
 use Hogart\Lk\Logger\BitrixLogger;
 use Hogart\Lk\Logger\LoggerCollection;
 use Hogart\Lk\Logger\LoggerInterface;
@@ -22,6 +24,8 @@ use Hogart\Lk\Logger\LoggerInterface;
  *
  * @property Account $Account
  * @property Address $Address
+ * @property HogartCompany $HogartCompany
+ * @property Staff $Staff
  */
 class Client
 {
@@ -116,13 +120,15 @@ class Client
     {
         $this->registerMethod(new Account());
         $this->registerMethod(new Address());
+        $this->registerMethod(new HogartCompany());
+        $this->registerMethod(new Staff());
     }
 
     /**
      * @param MethodInterface|MethodInterface[] $methods
      * @return $this
      */
-    protected function registerMethod($methods)
+    public function registerMethod($methods)
     {
         if (is_object($methods)) $methods = [$methods];
         foreach ($methods as $method) {
@@ -139,7 +145,7 @@ class Client
      * @param MethodInterface $method
      * @return $this
      */
-    protected function unregisterMethod(MethodInterface $method)
+    public function unregisterMethod(MethodInterface $method)
     {
         if (isset($this->methods[$method->getName()]) && get_class($method) !== get_class($this->methods[$method->getName()])) {
             throw new \RuntimeException("Duplicate method name!");
