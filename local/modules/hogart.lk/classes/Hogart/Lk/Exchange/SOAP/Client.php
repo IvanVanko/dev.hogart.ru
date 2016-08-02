@@ -12,6 +12,7 @@ namespace Hogart\Lk\Exchange\SOAP;
 use Hogart\Lk\Creational\Singleton;
 use Hogart\Lk\Exchange\SOAP\Method\Account;
 use Hogart\Lk\Exchange\SOAP\Method\Address;
+use Hogart\Lk\Exchange\SOAP\Method\Contact;
 use Hogart\Lk\Exchange\SOAP\Method\HogartCompany;
 use Hogart\Lk\Exchange\SOAP\Method\Staff;
 use Hogart\Lk\Logger\BitrixLogger;
@@ -26,6 +27,7 @@ use Hogart\Lk\Logger\LoggerInterface;
  * @property Address $Address
  * @property HogartCompany $HogartCompany
  * @property Staff $Staff
+ * @property Contact $Contact
  */
 class Client
 {
@@ -122,6 +124,7 @@ class Client
         $this->registerMethod(new Address());
         $this->registerMethod(new HogartCompany());
         $this->registerMethod(new Staff());
+        $this->registerMethod(new Contact());
     }
 
     /**

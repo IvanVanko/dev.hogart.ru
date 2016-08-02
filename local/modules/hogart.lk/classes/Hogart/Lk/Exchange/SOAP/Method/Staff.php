@@ -34,7 +34,6 @@ class Staff extends AbstractMethod
     public function createOrUpdateStaff()
     {
         $response = $this->getStaff();
-        /** @var object $staff */
         foreach ($response->return->Staff_Line as $staff) {
             $chief = StaffTable::getList([
                 'filter' => [
