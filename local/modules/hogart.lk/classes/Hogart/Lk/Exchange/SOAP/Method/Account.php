@@ -40,7 +40,9 @@ class Account extends AbstractMethod
      */
     public function accountAnswer(AccountAnswer $answer)
     {
-        return $this->client->getSoapClient()->AccountAnswer($answer);
+        $response = $this->client->getSoapClient()->AccountAnswer($answer);
+        $this->client->getLogger()->debug("Ответ на метод AccountAnswer: " . ($response->return ? "true" : "false"));
+        return $response;
     }
 
     public function createOrUpdateAccounts()

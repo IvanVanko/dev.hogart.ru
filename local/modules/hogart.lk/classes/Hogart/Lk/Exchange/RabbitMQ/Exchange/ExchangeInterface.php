@@ -9,7 +9,7 @@
 namespace Hogart\Lk\Exchange\RabbitMQ\Exchange;
 
 
-use Hogart\Lk\Exchange\RabbitMQ\Producer;
+use Hogart\Lk\Exchange\RabbitMQ\Consumer;
 
 interface ExchangeInterface
 {
@@ -19,10 +19,10 @@ interface ExchangeInterface
     function getPriority();
 
     /**
-     * @param Producer $producer
+     * @param Consumer $consumer
      * @return ExchangeInterface
      */
-    function useProducer(Producer $producer);
+    function useConsumer(Consumer $consumer);
 
     /**
      * @return string

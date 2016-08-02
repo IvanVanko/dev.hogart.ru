@@ -10,12 +10,12 @@ namespace Hogart\Lk\Exchange\RabbitMQ\Exchange;
 
 
 use Hogart\Lk\Exchange\RabbitMQ\EnvelopeException;
-use Hogart\Lk\Exchange\RabbitMQ\Producer;
+use Hogart\Lk\Exchange\RabbitMQ\Consumer;
 
 abstract class AbstractExchange implements ExchangeInterface
 {
-    /** @var Producer */
-    protected $producer;
+    /** @var Consumer */
+    protected $consumer;
     /** @var \AMQPExchange */
     protected $exchange;
     /** @var \AMQPQueue */
@@ -24,9 +24,9 @@ abstract class AbstractExchange implements ExchangeInterface
     /**
      * @inheritDoc
      */
-    function useProducer(Producer $producer)
+    function useConsumer(Consumer $consumer)
     {
-        $this->producer = $producer;
+        $this->consumer = $consumer;
         $this
             ->declareExchange()
             ->declareQueue();
@@ -47,7 +47,7 @@ abstract class AbstractExchange implements ExchangeInterface
      */
     protected function declareExchange()
     {
-        $this->exchange = new \AMQPExchange($this->producer->getChannel());
+        $this->exchange = new \AMQPExchange($this->consumer->getChannel());
         $this->exchange->setName($this->getExchangeName());
         $this->exchange->setType(AMQP_EX_TYPE_TOPIC);
         $this->exchange->setFlags(AMQP_DURABLE);
@@ -61,7 +61,7 @@ abstract class AbstractExchange implements ExchangeInterface
      */
     protected function declareQueue()
     {
-        $this->queue = new \AMQPQueue($this->producer->getChannel());
+        $this->queue = new \AMQPQueue($this->consumer->getChannel());
         $this->queue->setName($this->getQueueName());
         $this->queue->setFlags(AMQP_DURABLE);
         $this->queue->declareQueue();
@@ -82,22 +82,22 @@ abstract class AbstractExchange implements ExchangeInterface
             try {
                 $this->runEnvelope($message);
                 $this->queue->ack($message->getDeliveryTag());
-                $this->producer->getLogger()->notice("Задача {$message->getRoutingKey()} обработана");
+                $this->consumer->getLogger()->notice("Задача {$message->getRoutingKey()} обработана");
             } catch (EnvelopeException $e) {
                 $this->queue->nack($message->getDeliveryTag());
-                $this->producer->getLogger()->error("Ошибка обработки задачи {$message->getRoutingKey()}: {$e->getMessage()}");
+                $this->consumer->getLogger()->error("Ошибка обработки задачи {$message->getRoutingKey()}: {$e->getMessage()}");
             } catch (\Exception $e) {
-                $this->producer->getLogger()->error("Ошибка обработки задачи {$message->getRoutingKey()}: {$e->getMessage()}");
+                $this->consumer->getLogger()->error("Ошибка обработки задачи {$message->getRoutingKey()}: {$e->getMessage()}");
             }
         }
     }
 
     /**
-     * @return Producer
+     * @return Consumer
      */
-    public function getProducer()
+    public function getConsumer()
     {
-        return $this->producer;
+        return $this->consumer;
     }
 
     /**

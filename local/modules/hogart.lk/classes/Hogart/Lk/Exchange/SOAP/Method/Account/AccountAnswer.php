@@ -9,9 +9,9 @@
 namespace Hogart\Lk\Exchange\SOAP\Method\Account;
 
 
-use Hogart\Lk\Exchange\SOAP\Method\Answer;
+use Hogart\Lk\Exchange\SOAP\Method\Response;
 
-class AccountAnswer extends Answer
+class AccountAnswer extends Response
 {
     
 }

@@ -14,7 +14,7 @@ use Hogart\Lk\Logger\BitrixLogger;
 use Hogart\Lk\Logger\LoggerCollection;
 use Hogart\Lk\Logger\LoggerInterface;
 
-class Producer
+class Consumer
 {
     /** @var \AMQPConnection  */
     protected $connection;
@@ -26,7 +26,7 @@ class Producer
     protected $logger;
 
     /**
-     * Producer constructor.
+     * Consumer constructor.
      *
      * @param string $host
      * @param int $port
@@ -114,7 +114,7 @@ class Producer
         if (is_object($exchangeInterface)) $exchangeInterface = [$exchangeInterface];
 
         foreach ($exchangeInterface as $exchange) {
-            $this->exchanges[] = $exchange->useProducer($this);
+            $this->exchanges[] = $exchange->useConsumer($this);
         }
         usort($this->exchanges, function ($a, $b) { return $a->getPriority() < $b->getPriority(); });
         

@@ -16,22 +16,21 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
 
 CModule::IncludeModule("hogart.lk");
 
-$producer = new \Hogart\Lk\Exchange\RabbitMQ\Producer(
+$consumer = new \Hogart\Lk\Exchange\RabbitMQ\Consumer(
     COption::GetOptionString("hogart.lk", "RABBITMQ_HOST"),
     COption::GetOptionString("hogart.lk", "RABBITMQ_PORT"),
     COption::GetOptionString("hogart.lk", "RABBITMQ_LOGIN"),
     COption::GetOptionString("hogart.lk", "RABBITMQ_PASSWORD")
 );
 
-$staff = new \Hogart\Lk\Exchange\RabbitMQ\Exchange\StaffExchange();
-$account = new \Hogart\Lk\Exchange\RabbitMQ\Exchange\AccountExchange();
+$consumer->registerLogger(new \Hogart\Lk\Logger\FileLogger(__DIR__ . "/../logs/rabbitmq.log"));
 
-$staff
-    ->useProducer($producer)
-    ->getExchange()
-    ->publish("", "staff.update", AMQP_NOPARAM, ["delivery_mode" => 2]);
+$consumer->registerExchange([
+    $staff = new \Hogart\Lk\Exchange\RabbitMQ\Exchange\StaffExchange(),
+    $account = new \Hogart\Lk\Exchange\RabbitMQ\Exchange\AccountExchange(),
+]);
 
-$account
-    ->useProducer($producer)
-    ->getExchange()
-    ->publish("", "account.get", AMQP_NOPARAM, ["delivery_mode" => 2]);
+$consumer->run();
+
+require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/epilog_after.php");
+

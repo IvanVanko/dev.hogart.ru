@@ -9,14 +9,14 @@
 namespace Hogart\Lk\Exchange\SOAP\Method;
 
 
-class Answer extends Request
+class Response extends Request
 {
-    /** @var  AnswerObject[] */
-    public $Answer = [];
+    /** @var  ResponseObject[] */
+    public $Response = [];
 
-    public function addAnswer(AnswerObject $answerObject)
+    public function addResponse(ResponseObject $responseObject)
     {
-        $this->Answer[] = $answerObject;
+        $this->Response[] = $responseObject;
 
         return $this;
     }
