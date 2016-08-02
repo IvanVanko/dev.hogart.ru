@@ -16,7 +16,7 @@ use Bitrix\Main\Entity\ReferenceField;
 use Bitrix\Main\Entity\StringField;
 use Hogart\Lk\Field\GuidField;
 
-class ClientCompanyTable extends AbstractEntity
+class CompanyTable extends AbstractEntity
 {
     const TYPE_LEGAL_ENTITY = 1;
     const TYPE_INDIVIDUAL_ENTREPRENEUR = 2;
@@ -31,7 +31,7 @@ class ClientCompanyTable extends AbstractEntity
      */
     public static function getTableName()
     {
-        return 'h_client_company';
+        return 'h_company';
     }
 
     /**

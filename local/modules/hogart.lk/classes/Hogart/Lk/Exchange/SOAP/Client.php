@@ -11,6 +11,7 @@ namespace Hogart\Lk\Exchange\SOAP;
 
 use Hogart\Lk\Creational\Singleton;
 use Hogart\Lk\Exchange\SOAP\Method\Account;
+use Hogart\Lk\Exchange\SOAP\Method\Address;
 use Hogart\Lk\Logger\BitrixLogger;
 use Hogart\Lk\Logger\LoggerCollection;
 use Hogart\Lk\Logger\LoggerInterface;
@@ -20,6 +21,7 @@ use Hogart\Lk\Logger\LoggerInterface;
  * @package Hogart\Lk\Exchange\SOAP
  *
  * @property Account $Account
+ * @property Address $Address
  */
 class Client
 {
@@ -113,6 +115,7 @@ class Client
     protected function defaultMethodsRegister()
     {
         $this->registerMethod(new Account());
+        $this->registerMethod(new Address());
     }
 
     /**

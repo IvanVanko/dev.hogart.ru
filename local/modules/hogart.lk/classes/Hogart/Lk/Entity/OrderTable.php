@@ -49,7 +49,7 @@ class OrderTable extends AbstractEntity
             ]),
             new GuidField("guid_id"),
             new IntegerField("company_id"),
-            new ReferenceField("company", "ClientCompanyTable", ["=this.company_id" => "ref.id"]),
+            new ReferenceField("company", "CompanyTable", ["=this.company_id" => "ref.id"]),
             new IntegerField("hogart_company_id"),
             new ReferenceField("hogart_company", "HogartCompanyTable", ["=this.hogart_company_id" => "ref.id"]),
             new StringField("number"),

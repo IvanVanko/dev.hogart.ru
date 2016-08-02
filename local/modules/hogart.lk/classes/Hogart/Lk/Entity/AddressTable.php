@@ -9,9 +9,11 @@
 namespace Hogart\Lk\Entity;
 
 
+use Bitrix\Main\Entity\BooleanField;
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ReferenceField;
 use Bitrix\Main\Entity\StringField;
+use Hogart\Lk\Field\GuidField;
 
 class AddressTable extends AbstractEntity
 {
@@ -36,10 +38,15 @@ class AddressTable extends AbstractEntity
             new IntegerField("type_id"),
             new ReferenceField("type", "AddressTypeTable", ["=this.type_id" => "ref.id"]),
             new StringField("postal_code"),
+            new StringField("region"),
             new StringField("city"),
             new StringField("street"),
             new StringField("house"),
-            
+            new StringField("building"),
+            new StringField("flat"),
+            new GuidField("fias_code"),
+            new StringField("kladr_code"),
+            new BooleanField("is_active")
         ];
     }
 

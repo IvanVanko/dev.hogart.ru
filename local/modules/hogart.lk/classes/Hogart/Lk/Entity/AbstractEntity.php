@@ -80,4 +80,32 @@ abstract class AbstractEntity extends Entity\DataManager
         static::delete($id);
         return static::add($data);
     }
+
+    /**
+     * @param $data
+     * @param $field
+     * @return Entity\AddResult|Entity\UpdateResult
+     * @throws \Bitrix\Main\ArgumentException
+     * @throws \Exception
+     */
+    public static function createOrUpdateByField($data, $field)
+    {
+        $row = static::getList([
+            'filter' => [
+                "={$field}" => $data[$field]
+            ]
+        ])->fetch();
+        if (!empty($row)) {
+            $primary = static::getEntity()->getPrimaryArray();
+            $id = [];
+            foreach ($primary as $key) {
+                $id[$key] = $row[$key];
+            }
+            $result = static::update($id, $data);
+        } else {
+            $result = static::add($data);
+        }
+        
+        return $result;
+    }
 }

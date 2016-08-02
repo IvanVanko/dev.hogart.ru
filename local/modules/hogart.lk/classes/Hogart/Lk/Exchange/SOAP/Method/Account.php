@@ -9,7 +9,6 @@
 namespace Hogart\Lk\Exchange\SOAP\Method;
 
 
-use Bitrix\Main\DB\SqlExpression;
 use Bitrix\Main\UserTable;
 use Hogart\Lk\Entity\UserStoreTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
@@ -31,7 +30,7 @@ class Account extends AbstractMethod
      */
     public function getAccounts()
     {
-        return $this->client->getSoapClient()->AccountGet(new AccountGet());
+        return $this->client->getSoapClient()->AccountGet(new Request());
     }
 
     /**
@@ -59,7 +58,7 @@ class Account extends AbstractMethod
 
             if (!empty($user)) {
                 foreach ($accountInfo->Acc_Warehouses as $acc_Warehouse) {
-                    $result = UserStoreTable::replace([
+                    UserStoreTable::replace([
                         'user_id' => $user["ID"],
                         'store_guid' => $acc_Warehouse,
                         'is_main' => $accountInfo->Acc_ID_Main_Warehouse == $acc_Warehouse
@@ -72,6 +71,6 @@ class Account extends AbstractMethod
         }
 
 
-        return count($answer->Answer);
+        return count($answer->Response);
     }
 }

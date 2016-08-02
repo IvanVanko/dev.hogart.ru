@@ -32,8 +32,11 @@ class hogart_lk extends CModule
     function InstallDB()
     {
         CModule::IncludeModule($this->MODULE_ID);
+        \Hogart\Lk\Entity\AddressTypeTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\AddressTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\AddressRelationTable::createTableIfNotExists();
         \Hogart\Lk\Entity\HogartCompanyTable::createTableIfNotExists();
-        \Hogart\Lk\Entity\ClientCompanyTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\CompanyTable::createTableIfNotExists();
         \Hogart\Lk\Entity\ContactTable::createTableIfNotExists();
         \Hogart\Lk\Entity\ContactInfoTable::createTableIfNotExists();
         \Hogart\Lk\Entity\ContactRelationTable::createTableIfNotExists();
@@ -44,6 +47,10 @@ class hogart_lk extends CModule
         \Hogart\Lk\Entity\RTUTable::createTableIfNotExists();
         \Hogart\Lk\Entity\RTUItemTable::createTableIfNotExists();
         \Hogart\Lk\Entity\OrderPaymentTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\OrderTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\OrderItemTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\PaymentAccountTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\PaymentAccountRelationTable::createTableIfNotExists();
 
         return true;
     }
@@ -51,8 +58,11 @@ class hogart_lk extends CModule
     function UnInstallDB()
     {
         CModule::IncludeModule($this->MODULE_ID);
+        \Hogart\Lk\Entity\AddressTypeTable::dropTableIfExists();
+        \Hogart\Lk\Entity\AddressTable::dropTableIfExists();
+        \Hogart\Lk\Entity\AddressRelationTable::dropTableIfExists();
         \Hogart\Lk\Entity\HogartCompanyTable::dropTableIfExists();
-        \Hogart\Lk\Entity\ClientCompanyTable::dropTableIfExists();
+        \Hogart\Lk\Entity\CompanyTable::dropTableIfExists();
         \Hogart\Lk\Entity\ContactTable::dropTableIfExists();
         \Hogart\Lk\Entity\ContactInfoTable::dropTableIfExists();
         \Hogart\Lk\Entity\ContactRelationTable::dropTableIfExists();
@@ -63,6 +73,10 @@ class hogart_lk extends CModule
         \Hogart\Lk\Entity\RTUTable::dropTableIfExists();
         \Hogart\Lk\Entity\RTUItemTable::dropTableIfExists();
         \Hogart\Lk\Entity\OrderPaymentTable::dropTableIfExists();
+        \Hogart\Lk\Entity\OrderTable::dropTableIfExists();
+        \Hogart\Lk\Entity\OrderItemTable::dropTableIfExists();
+        \Hogart\Lk\Entity\PaymentAccountTable::dropTableIfExists();
+        \Hogart\Lk\Entity\PaymentAccountRelationTable::dropTableIfExists();
     }
 
     function DoInstall()

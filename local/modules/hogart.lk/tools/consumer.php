@@ -28,6 +28,7 @@ $consumer->registerLogger(new \Hogart\Lk\Logger\FileLogger(__DIR__ . "/../logs/r
 $consumer->registerExchange([
     $staff = new \Hogart\Lk\Exchange\RabbitMQ\Exchange\StaffExchange(),
     $account = new \Hogart\Lk\Exchange\RabbitMQ\Exchange\AccountExchange(),
+    $address = new \Hogart\Lk\Exchange\RabbitMQ\Exchange\AddressExchange(),
 ]);
 
 $consumer->run();

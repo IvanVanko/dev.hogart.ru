@@ -39,7 +39,7 @@ abstract class AbstractExchange implements ExchangeInterface
      */
     function getExchangeName()
     {
-        return "amq.topic";
+        return "hogart.lk";
     }
 
     /**
