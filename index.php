@@ -4,21 +4,6 @@ $APPLICATION->SetPageProperty("keywords", "Хогарт - официальный
 $APPLICATION->SetPageProperty("description", "Хогарт - официальный сайт.");
 $APPLICATION->SetTitle("Хогарт - официальный сайт.");
 
-$APPLICATION->RestartBuffer();
-//$cacheManager = \Bitrix\Main\Application::getInstance()->getManagedCache();
-//$cacheManager->clean("b_module");
-//exit;
-CModule::IncludeModule("hogart.lk");
-var_dump(\Bitrix\Main\UserTable::getList([
-    'filter' => array('=ID' => 277),
-    'select' => [
-        'NAME',
-        'ID',
-        'contact_' => '\Hogart\Lk\Entity\ContactRelationTable:account.contact'
-    ]
-])->fetchAll());
-exit;
-
 $APPLICATION->IncludeComponent("bitrix:menu","main",Array(
         "ROOT_MENU_TYPE" => "main", 
         "MAX_LEVEL" => "2", 

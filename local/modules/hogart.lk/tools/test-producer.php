@@ -34,4 +34,4 @@ $staff
 $account
     ->useProducer($producer)
     ->getExchange()
-    ->publish("", "account.update", AMQP_NOPARAM, ["delivery_mode" => 2]);
+    ->publish("", "account.get", AMQP_NOPARAM, ["delivery_mode" => 2]);

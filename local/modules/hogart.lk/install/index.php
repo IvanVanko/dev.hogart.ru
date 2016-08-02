@@ -90,6 +90,28 @@ class hogart_lk extends CModule
             RegisterModule($this->MODULE_ID);
             CopyDirFiles(__DIR__ . "/admin", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/admin");
             $this->InstallDB();
+            (new \CUserTypeEntity)->Add([
+                "ENTITY_ID" => 'USER',
+                "FIELD_NAME" => 'UF_PROMO_ACCESS',
+                "USER_TYPE_ID" => 'boolean',
+                "XML_ID" => '',
+                "SORT" => 500,
+                "MULTIPLE" => 'N',
+                "MANDATORY" => 'N',
+                "SHOW_FILTER" => 'N',
+                "SHOW_IN_LIST" => 'Y',
+                "EDIT_IN_LIST" => 'N',
+                "IS_SEARCHABLE" => 'N',
+                "SETTINGS" => [
+                    "DEFAULT_VALUE" => 1,
+                    "DISPLAY" => "CHECKBOX"
+                ],
+                "EDIT_FORM_LABEL" => array('ru' => '', 'en' => ''),
+                "LIST_COLUMN_LABEL" => array('ru' => '', 'en' => ''),
+                "LIST_FILTER_LABEL" => array('ru' => '', 'en' => ''),
+                "ERROR_MESSAGE" => '',
+                "HELP_MESSAGE" => ''
+            ]);
         }
         
         $APPLICATION->IncludeAdminFile("Установка модуля \"{$this->MODULE_NAME}\"{$stepTitles[$step - 1]}", __DIR__ . "/step{$step}.php");
@@ -97,6 +119,10 @@ class hogart_lk extends CModule
 
     function DoUninstall()
     {
+        $uf = (new \CUserTypeEntity)->GetList([], ["ENTITY_ID" => 'USER', "FIELD_NAME" => 'UF_PROMO_ACCESS'])->Fetch();
+        if (!empty($uf)) {
+            (new \CUserTypeEntity)->Delete([$uf["ID"]]);
+        }
         $this->UnInstallDB();
         DeleteDirFiles(__DIR__ . "/admin", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/admin");
         UnRegisterModule($this->MODULE_ID);

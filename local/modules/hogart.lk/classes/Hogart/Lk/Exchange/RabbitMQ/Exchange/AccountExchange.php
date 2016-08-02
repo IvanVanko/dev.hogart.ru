@@ -9,6 +9,8 @@
 namespace Hogart\Lk\Exchange\RabbitMQ\Exchange;
 
 
+use Hogart\Lk\Exchange\SOAP\Client;
+
 class AccountExchange extends AbstractExchange
 {
     /**
@@ -32,8 +34,16 @@ class AccountExchange extends AbstractExchange
      */
     function runEnvelope(\AMQPEnvelope $envelope)
     {
-        // some work
-        var_dump($this->getQueueName(), $envelope->getDeliveryTag());
+        switch ($envelope->getRoutingKey()) {
+            case 'account.get':
+                $count = Client::getInstance()->Account->createOrUpdateAccounts();
+                if (!empty($count)) {
+                    $this
+                        ->exchange
+                        ->publish("", "account.get", AMQP_NOPARAM, ["delivery_mode" => 2]);
+                }
+                break;
+        }
     }
 
 }
