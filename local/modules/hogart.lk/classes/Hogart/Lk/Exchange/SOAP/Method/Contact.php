@@ -47,7 +47,7 @@ class Contact extends AbstractMethod
                 ]
             ])->fetch();
             if (!empty($result->getId())) {
-                if ($response instanceof UpdateResult) {
+                if ($result instanceof UpdateResult) {
                     $this->client->getLogger()->notice("Обновлена запись Контакта {$result->getId()}");
                 } else {
                     $this->client->getLogger()->notice("Добавлена запись Контакта {$result->getId()} ({$contact->Cont_ID})");
