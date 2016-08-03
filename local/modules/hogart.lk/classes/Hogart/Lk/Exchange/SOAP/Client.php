@@ -13,6 +13,7 @@ use Hogart\Lk\Creational\Singleton;
 use Hogart\Lk\Exchange\SOAP\Method\Account;
 use Hogart\Lk\Exchange\SOAP\Method\Address;
 use Hogart\Lk\Exchange\SOAP\Method\Contact;
+use Hogart\Lk\Exchange\SOAP\Method\Contract;
 use Hogart\Lk\Exchange\SOAP\Method\ContactInfo;
 use Hogart\Lk\Exchange\SOAP\Method\HogartCompany;
 use Hogart\Lk\Exchange\SOAP\Method\Staff;
@@ -32,6 +33,7 @@ use Hogart\Lk\Logger\LoggerInterface;
  * @property Staff $Staff
  * @property Contact $Contact
  * @property ContactInfo $ContactInfo
+ * @property Contract $Contract
  */
 class Client
 {
@@ -131,6 +133,7 @@ class Client
         $this->registerMethod(new Staff());
         $this->registerMethod(new Contact());
         $this->registerMethod(new ContactInfo());
+        $this->registerMethod(new Contract());
     }
 
     /**

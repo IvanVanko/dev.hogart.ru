@@ -48,9 +48,9 @@ class Company extends AbstractMethod
 
             if (!empty($result->getId())) {
                 if ($result instanceof UpdateResult) {
-                    $this->client->getLogger()->notice("Обновлена запись Компании {$result->getId()}");
+                    $this->client->getLogger()->notice("Обновлена запись 'Типа занятости компании' {$result->getId()}");
                 } else {
-                    $this->client->getLogger()->notice("Добавлена запись Компании {$result->getId()} ({$kind_of_activity->ID})");
+                    $this->client->getLogger()->notice("Добавлена запись 'Типа занятости компании' {$result->getId()} ({$kind_of_activity->ID})");
                 }
             }
         }
