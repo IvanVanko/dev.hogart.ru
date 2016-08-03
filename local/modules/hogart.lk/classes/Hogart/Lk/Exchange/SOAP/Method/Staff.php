@@ -68,9 +68,9 @@ class Staff extends AbstractMethod
             } else {
                 if ($result->getId()) {
                     if ($result instanceof UpdateResult) {
-                        $this->client->getLogger()->notice("Обновлена запись Сотрундника Хогарт {$result->getId()} ({$staff->Staff_ID})");
+                        $this->client->getLogger()->notice("Обновлена запись Сотрудника Хогарт {$result->getId()} ({$staff->Staff_ID})");
                     } else {
-                        $this->client->getLogger()->notice("Добавлена запись Сотрундника Хогарт {$result->getId()} ({$staff->Staff_ID})");
+                        $this->client->getLogger()->notice("Добавлена запись Сотрудника Хогарт {$result->getId()} ({$staff->Staff_ID})");
                     }
                     $answer->addResponse(new ResponseObject($staff->Staff_ID));
                 } else {
