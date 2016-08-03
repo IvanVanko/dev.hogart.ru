@@ -2,47 +2,41 @@
 /**
  * By: Ivan Kiselev aka shaqito[at]gmail.com
  * Via: PhpStorm.
- * At: 03.08.2016 11:55
+ * At: 03.08.2016 16:36
  */
 
 namespace Hogart\Lk\Exchange\SOAP\Method;
-
-use Hogart\Lk\Entity\ContractTable;
-use Hogart\Lk\Entity\CompanyTable;
-use Hogart\Lk\Entity\HogartCompanyTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
-use Bitrix\Main\Entity\UpdateResult;
-use Bitrix\Main\Type\Date;
-/**
- * Class Contract - добавление Договоров (они же Контракты)
- * @package Hogart\Lk\Exchange\SOAP\Method
- */
-class Contract extends AbstractMethod
+use Hogart\Lk\Entity\PaymentAccountTable;
+use Hogart\Lk\Entity\PaymentAccountRelationTable;
+
+class PaymentAccount extends AbstractMethod
 {
     /**
      * @inheritDoc
      */
     function getName()
     {
-        return "Contract";
+        return "PaymentAccount";
     }
 
-    public function getContract()
+    public function getPaymentAccounts()
     {
-        return $this->client->getSoapClient()->ContractGet(new Request());
+        return $this->client->getSoapClient()->PaymentAccountsGet(new Request());
     }
 
-    public function contractAnswer(Response $response)
+    public function paymentAccountAnswer(Response $response)
     {
         if (count($response->Response) && $this->is_answer) {
-            return $this->client->getSoapClient()->ContractAnswer($response);
+            return $this->client->getSoapClient()->PaymentAccountsAnswer($response);
         }
     }
 
-    public function updateContracts()
+    public function updatePaymentAccounts()
     {
         $answer = new Response();
-        $response = $this->getContract();
+    $response = $this->getPaymentAccount();
+        var_dump($response);exit;
 
         foreach ($response->return->Contract as $contract) {
 
@@ -104,4 +98,5 @@ class Contract extends AbstractMethod
         $this->contractAnswer($answer);
         return count($answer->Response);
     }
+
 }

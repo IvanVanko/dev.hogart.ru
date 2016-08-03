@@ -18,6 +18,7 @@ use Hogart\Lk\Exchange\SOAP\Method\ContactInfo;
 use Hogart\Lk\Exchange\SOAP\Method\HogartCompany;
 use Hogart\Lk\Exchange\SOAP\Method\Staff;
 use Hogart\Lk\Exchange\SOAP\Method\Company;
+use Hogart\Lk\Exchange\SOAP\Method\PaymentAccount;
 use Hogart\Lk\Logger\BitrixLogger;
 use Hogart\Lk\Logger\FileLogger;
 use Hogart\Lk\Logger\LoggerCollection;
@@ -35,6 +36,7 @@ use Hogart\Lk\Logger\LoggerInterface;
  * @property Contact $Contact
  * @property ContactInfo $ContactInfo
  * @property Contract $Contract
+ * @property PaymentAccount $PaymentAccount
  */
 class Client
 {
@@ -135,6 +137,7 @@ class Client
         $this->registerMethod(new Contact());
         $this->registerMethod(new ContactInfo());
         $this->registerMethod(new Contract());
+        $this->registerMethod(new PaymentAccount());
     }
 
     /**

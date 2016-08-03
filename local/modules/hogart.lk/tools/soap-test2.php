@@ -22,7 +22,8 @@ $soap = \Hogart\Lk\Exchange\SOAP\Client::getInstance();
 $soap->getLogger()->registerLogger(new \Hogart\Lk\Logger\FileLogger(__DIR__ . "/../logs/soap2.log"));
 
 $soap = \Hogart\Lk\Exchange\SOAP\Client::getInstance();
-print_r($soap->Contract->setIsAnswer(false)->updateContracts());
+//print_r($soap->Contract->setIsAnswer(false)->updateContracts());
+print_r($soap->PaymentAccount->setIsAnswer(false)->updatePaymentAccounts());
 
 //var_dump($soap->Contract->getContracts());
 
