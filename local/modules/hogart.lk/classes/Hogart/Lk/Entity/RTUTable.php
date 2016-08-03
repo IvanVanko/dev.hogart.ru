@@ -18,8 +18,8 @@ use Hogart\Lk\Field\GuidField;
 
 class RTUTable extends AbstractEntity
 {
-    const DELIVERY_OUR = 0;
-    const DELIVERY_SELF = 1;
+    const DELIVERY_OUR = 1;
+    const DELIVERY_SELF = 2;
     /**
      * @inheritDoc
      */

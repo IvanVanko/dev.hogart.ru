@@ -23,6 +23,8 @@ use Hogart\Lk\Logger\BitrixLogger;
 use Hogart\Lk\Logger\FileLogger;
 use Hogart\Lk\Logger\LoggerCollection;
 use Hogart\Lk\Logger\LoggerInterface;
+use Hogart\Lk\Exchange\SOAP\Method\RTU;
+use Hogart\Lk\Exchange\SOAP\Method\RTUItem;
 
 /**
  * Class Client
@@ -37,6 +39,8 @@ use Hogart\Lk\Logger\LoggerInterface;
  * @property ContactInfo $ContactInfo
  * @property Contract $Contract
  * @property PaymentAccount $PaymentAccount
+ * @property RTU $RTU
+ * @property RTUItem $RTUItem
  */
 class Client
 {
@@ -138,6 +142,8 @@ class Client
         $this->registerMethod(new ContactInfo());
         $this->registerMethod(new Contract());
         $this->registerMethod(new PaymentAccount());
+        $this->registerMethod(new RTU());
+        $this->registerMethod(new RTUItem());
     }
 
     /**

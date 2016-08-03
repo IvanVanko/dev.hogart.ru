@@ -38,7 +38,6 @@ class RTUItemTable extends AbstractEntity
             ]),
             new IntegerField("rtu_id"),
             new ReferenceField("rtu", "RTUTable", ["=this.order_id" => "ref.id"]),
-            new GuidField("rtu_guid_id"),
 
             new IntegerField("item_id"),
             new ReferenceField("item", "Bitrix\\Iblock\\ElementTable", ["=this.item_id" => "ref.ID", "=ref.IBLOCK_ID" => new SqlExpression('?i', CATALOG_IBLOCK_ID)]),
