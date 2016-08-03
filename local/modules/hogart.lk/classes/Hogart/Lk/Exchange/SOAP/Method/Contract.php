@@ -30,7 +30,7 @@ class Contract extends AbstractMethod
         return "Contract";
     }
 
-    public function getContrcats()
+    public function getContracts()
     {
         return $this->client->getSoapClient()->ContractsGet(new Request());
     }
