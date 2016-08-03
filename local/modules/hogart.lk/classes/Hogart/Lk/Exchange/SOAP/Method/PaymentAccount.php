@@ -38,7 +38,7 @@ class PaymentAccount extends AbstractMethod
     public function updatePaymentAccounts()
     {
         $answer = new Response();
-    $response = $this->getPaymentAccounts();
+        $response = $this->getPaymentAccounts();
 
         foreach ($response->return->Payment_Account as $payment_account) {
 
