@@ -1,9 +1,8 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Ivan Kiselev aka ivan.kiselev[at]gmail.com
- * Date: 02/08/16
- * Time: 12:15
+ * By: Ivan Kiselev aka shaqito[at]gmail.com
+ * Via: PhpStorm.
+ * At: 03.08.2016 22:51
  */
 
 namespace Hogart\Lk\Exchange\RabbitMQ\Exchange;
@@ -11,10 +10,10 @@ namespace Hogart\Lk\Exchange\RabbitMQ\Exchange;
 use Hogart\Lk\Exchange\SOAP\Client;
 
 /**
- * Class RTUExchange - Обмен RMQ по Реализациям отгрузки (RTU, RTU_Item)
+ * Class RTUItemExchange - Обмен RMQ по Элементам реализации отгрузки (RTU, RTU_Item)
  * @package Hogart\Lk\Exchange\RabbitMQ\Exchange
  */
-class RTUExchange extends AbstractExchange
+class RTUItemExchange extends AbstractExchange
 {
     /**
      * @inheritDoc
@@ -29,7 +28,7 @@ class RTUExchange extends AbstractExchange
      */
     function getQueueName()
     {
-        return "rtu";
+        return "rtu_item";
     }
 
     /**
@@ -39,7 +38,7 @@ class RTUExchange extends AbstractExchange
     {
         switch ($envelope->getRoutingKey()) {
             case 'rtu.get':
-                $count = Client::getInstance()->RTU->updateRTUs();
+                $count = Client::getInstance()->RTUItem->updateRTUItems();
                 if (!empty($count)) {
                     $this
                         ->exchange

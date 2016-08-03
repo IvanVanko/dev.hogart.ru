@@ -6,12 +6,13 @@
  */
 
 namespace Hogart\Lk\Exchange\SOAP\Method;
-use Hogart\Lk\Entity\OrderItemTable;
+use Bitrix\Iblock\ElementTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
 use Hogart\Lk\Entity\RTUItemTable;
 use Hogart\Lk\Entity\RTUTable;
 use Bitrix\Main\Type\Date;
 use Bitrix\Main\Entity\UpdateResult;
+use Bitrix\Main\DB\SqlExpression;
 
 class RTUItem extends AbstractMethod
 {
@@ -35,7 +36,7 @@ class RTUItem extends AbstractMethod
         }
     }
 
-    public function updatePaymentAccounts()
+    public function updateRTUItems()
     {
         $answer = new Response();
         $response = $this->getRTUItems();
@@ -47,16 +48,17 @@ class RTUItem extends AbstractMethod
                 ]
             ])->fetch();
 
-            $order_item = OrderItemTable::getList([
+            $order_item = ElementTable::getList([
                 'filter'=>[
-                    '=item_id'=>$rtu_item->ID_Item
+                    '=XML_ID' => $rtu_item->ID_Item,
+                    '=ref.IBLOCK_ID' => new SqlExpression('?i', CATALOG_IBLOCK_ID)
                 ]
             ])->fetch();
             // данные по Элементам Платежных документов на отгрузку
             $result = RTUTable::createOrUpdateByField([
-                'guid_id' => $rtu_item->RTU_Item_ID, // @todo такого поля с guid'ом нету - проверить что бы добавили
+                'guid_id' => $rtu_item->RTU_Item_ID, // @todo такого поля с guid'ом нету - проверить что бы добавили - или возможно делать вместе с RTU
                 'rtu_id' => $rtu['id'],
-                'item_id' => $order_item['id'], // @todo уточнить тут дейстивтельно ли мы линкуем с итемом
+                'item_id' => $order_item['ID'],
                 'count' => $rtu_item->Count,
                 'cost' => $rtu_item->Cost,
                 'discount' => $rtu_item->Discount,
@@ -88,5 +90,4 @@ class RTUItem extends AbstractMethod
         $this->RTUItemAnswer($answer);
         return count($answer->Response);
     }
-
 }
