@@ -1,8 +1,8 @@
 <?php
 /**
- * By: Ivan Kiselev aka shaqito@gmail.com
- * Using: PhpStorm.
- * Date: 02.08.2016 19:24
+ * By: Ivan Kiselev aka shaqito[at]gmail.com
+ * Via: PhpStorm.
+ * At: 03.08.2016 22:35
  */
 
 namespace Hogart\Lk\Exchange\RabbitMQ\Exchange;
@@ -10,14 +10,14 @@ namespace Hogart\Lk\Exchange\RabbitMQ\Exchange;
 
 use Hogart\Lk\Exchange\SOAP\Client;
 
-class CompanyExchange extends AbstractExchange
+class CompanyDiscountExchange extends AbstractExchange
 {
     /**
      * @inheritDoc
      */
     function getPriority()
     {
-        return 96;
+        return 100;
     }
 
     /**
@@ -25,7 +25,7 @@ class CompanyExchange extends AbstractExchange
      */
     function getQueueName()
     {
-        return "company";
+        return "company_discount";
     }
 
     /**
@@ -34,12 +34,12 @@ class CompanyExchange extends AbstractExchange
     function runEnvelope(\AMQPEnvelope $envelope)
     {
         switch ($envelope->getRoutingKey()) {
-            case 'company.get':
-                $count = Client::getInstance()->Company->updateCompanies();
+            case 'company_discount.get':
+                $count = Client::getInstance()->CompanyDiscount->updateCompanyDiscounts();
                 if (!empty($count)) {
                     $this
                         ->exchange
-                        ->publish("", "company.get", AMQP_NOPARAM, ["delivery_mode" => 2]);
+                        ->publish("", "company_discount.get", AMQP_NOPARAM, ["delivery_mode" => 2]);
                 }
                 break;
         }

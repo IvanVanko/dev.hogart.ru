@@ -12,6 +12,7 @@ namespace Hogart\Lk\Exchange\SOAP;
 use Hogart\Lk\Creational\Singleton;
 use Hogart\Lk\Exchange\SOAP\Method\Account;
 use Hogart\Lk\Exchange\SOAP\Method\Address;
+use Hogart\Lk\Exchange\SOAP\Method\CompanyDiscount;
 use Hogart\Lk\Exchange\SOAP\Method\Contact;
 use Hogart\Lk\Exchange\SOAP\Method\Contract;
 use Hogart\Lk\Exchange\SOAP\Method\ContactInfo;
@@ -41,6 +42,7 @@ use Hogart\Lk\Exchange\SOAP\Method\RTUItem;
  * @property PaymentAccount $PaymentAccount
  * @property RTU $RTU
  * @property RTUItem $RTUItem
+ * @property CompanyDiscount $CompanyDiscount
  */
 class Client
 {
@@ -144,6 +146,7 @@ class Client
         $this->registerMethod(new PaymentAccount());
         $this->registerMethod(new RTU());
         $this->registerMethod(new RTUItem());
+        $this->registerMethod(new CompanyDiscount());
     }
 
     /**
