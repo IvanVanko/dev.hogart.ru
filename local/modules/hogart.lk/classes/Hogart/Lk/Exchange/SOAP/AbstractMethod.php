@@ -19,6 +19,8 @@ abstract class AbstractMethod implements MethodInterface
 
     /** @var  Client */
     protected $client;
+    /** @var bool  */
+    protected $is_answer = true;
 
     /**
      * @inheritDoc
@@ -30,4 +32,21 @@ abstract class AbstractMethod implements MethodInterface
         return $this;
     }
 
+    /**
+     * @return boolean
+     */
+    public function isIsAnswer()
+    {
+        return $this->is_answer;
+    }
+
+    /**
+     * @param boolean $is_answer
+     * @return $this
+     */
+    public function setIsAnswer($is_answer)
+    {
+        $this->is_answer = $is_answer;
+        return $this;
+    }
 }

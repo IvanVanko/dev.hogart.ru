@@ -36,7 +36,7 @@ class Company extends AbstractMethod
 
     public function companyAnswer(Response $response)
     {
-        if (count($response->Response)) {
+        if (count($response->Response) && $this->is_answer) {
             return $this->client->getSoapClient()->CompanyAnswer($response);
         }
     }
@@ -71,17 +71,18 @@ class Company extends AbstractMethod
             ])->fetch();
 
             $result = CompanyTable::createOrUpdateByField([
-                'kind_activity_id' => $activities[$company->Comp_ID_KindOfActivity],
+                'guid_id' => $company->Comp_ID,
+                'kind_activity_id' => $activities[$company->Comp_ID_KindOfActivity] ? : '',
                 'name' => $company->Comp_Name,
                 'type' => $company->Comp_OOOIPFL,
-                'type_form' => $company->Comp_OOO_tipe,
+                'type_form' => (string)$company->Comp_OOO_type,
                 'inn' => $company->Comp_INN,
                 'kpp' => $company->Comp_KPP,
-                'date_fact_address' => $company->Comp_DataFactAdress,
+                'date_fact_address' => new Date((string)$company->Comp_DataFactAdress, 'Y-m-d'),
                 'chief_id' => $chief['ID'] ? : 0,
                 'certificate_number' => $company->Comp_Certificate_Number,
                 'certificate_date' => new Date($company->Comp_Certificate_Date, 'Y-m-d'),
-                'doc_pass' => $company->Comp_DocPass,
+                'doc_pass' => intval($company->Comp_DocPass),
                 'doc_serial' => $company->Comp_DocSerial,
                 'doc_number' => $company->Comp_DocNumber,
                 'doc_ufms' => $company->Comp_DocUFMS,
