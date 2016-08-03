@@ -26,3 +26,6 @@ spl_autoload_register(function ($className) {
         }
     }
 });
+
+CModule::IncludeModule("main");
+CModule::IncludeModule("catalog");
