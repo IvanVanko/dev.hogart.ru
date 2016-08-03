@@ -34,7 +34,7 @@ class RTU extends AbstractMethod
         }
     }
 
-    public function updatePaymentAccounts()
+    public function updateRTUs()
     {
         $answer = new Response();
         $response = $this->getRTUs();

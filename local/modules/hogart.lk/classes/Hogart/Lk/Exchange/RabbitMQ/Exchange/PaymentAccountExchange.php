@@ -7,7 +7,6 @@
 
 namespace Hogart\Lk\Exchange\RabbitMQ\Exchange;
 
-
 use Hogart\Lk\Exchange\SOAP\Client;
 
 class PaymentAccountExchange extends AbstractExchange

@@ -8,9 +8,7 @@
 
 namespace Hogart\Lk\Exchange\RabbitMQ\Exchange;
 
-
-use Hogart\Lk\Exchange\RabbitMQ\EnvelopeException;
-use Hogart\Lk\Exchange\RabbitMQ\Logger\BitrixLogger;
+use Hogart\Lk\Exchange\SOAP\Client;
 
 /**
  * Class OrderPaymentExchange - обмен с RQM по Оплатам (Payment)
@@ -39,8 +37,16 @@ class OrderPaymentExchange extends AbstractExchange
      */
     function runEnvelope(\AMQPEnvelope $envelope)
     {
-        // some work with OrderPayment
-        var_dump($this->getQueueName(), $envelope->getDeliveryTag());
+        switch ($envelope->getRoutingKey()) {
+            case 'order_payment.get':
+                $count = Client::getInstance()->OrderPayment->updateRTUs();
+                if (!empty($count)) {
+                    $this
+                        ->exchange
+                        ->publish("", "order_payment.get", AMQP_NOPARAM, ["delivery_mode" => 2]);
+                }
+                break;
+        }
 
     }
 }

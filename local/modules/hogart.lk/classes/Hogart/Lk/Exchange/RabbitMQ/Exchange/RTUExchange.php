@@ -10,7 +10,7 @@ namespace Hogart\Lk\Exchange\RabbitMQ\Exchange;
 
 
 use Hogart\Lk\Exchange\RabbitMQ\EnvelopeException;
-use Hogart\Lk\Exchange\RabbitMQ\Logger\BitrixLogger;
+use Hogart\Lk\Exchange\SOAP\Client;
 
 /**
  * Class RTUExchange - Обмен RMQ по Реализациям отгрузки (RTU, RTU_Item)
@@ -39,8 +39,15 @@ class RTUExchange extends AbstractExchange
      */
     function runEnvelope(\AMQPEnvelope $envelope)
     {
-        // some work with RTU, RTUItem
-        var_dump($this->getQueueName(), $envelope->getDeliveryTag());
-
+        switch ($envelope->getRoutingKey()) {
+            case 'rtu.get':
+                $count = Client::getInstance()->RTU->updateRTUs();
+                if (!empty($count)) {
+                    $this
+                        ->exchange
+                        ->publish("", "rtu.get", AMQP_NOPARAM, ["delivery_mode" => 2]);
+                }
+                break;
+        }
     }
 }
