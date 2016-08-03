@@ -15,7 +15,7 @@ use Hogart\Lk\Exchange\SOAP\AbstractMethod;
 use Bitrix\Main\UserTable;
 use Bitrix\Currency\CurrencyTable;
 use Bitrix\Main\Entity\UpdateResult;
-
+use Bitrix\Main\Type\Date;
 /**
  * Class Contract - добавление Договоров (они же Контракты)
  * @package Hogart\Lk\Exchange\SOAP\Method
@@ -30,23 +30,25 @@ class Contract extends AbstractMethod
         return "Contract";
     }
 
-    public function getContracts()
+    public function getContract()
     {
-        return $this->client->getSoapClient()->ContractsGet(new Request());
+        return $this->client->getSoapClient()->ContractGet(new Request());
+    }
+
+    public function contractAnswer(Response $response)
+    {
+        if (count($response->Response) && $this->is_answer) {
+            return $this->client->getSoapClient()->ContractAnswer($response);
+        }
     }
 
     public function updateContracts()
     {
         $answer = new Response();
-        $response = $this->getContracts();
-        $activities = [];
-        
+        $response = $this->getContract();
+
         foreach ($response->return->Contract as $contract) {
-            $currency = CurrencyTable::getList([
-                'filter' => [
-                    '=CURRENCY' => $contract->Contr_ID_Money
-                ]
-            ]);
+
             $clientCompany = CompanyTable::getList([
                 'filter' => [
                     '=guid_id' => $contract->Contr_ID_Company
@@ -55,47 +57,54 @@ class Contract extends AbstractMethod
 
             $hogartCompany = HogartCompanyTable::getList([
                 'filter' => [
-                    '=guid_id' => $contract->Contr_ID_Hogart
+                    '=guid_id' => $contract->Contr_ID_Holding
                 ]
             ])->fetch();
 
-
             $result = ContractTable::createOrUpdateByField([
-                'company_id' => $clientCompany['ID'],
-                'hogart_company_id' => $hogartCompany['ID'],
+                'company_id' => $clientCompany['id'],
+                'hogart_company_id' => $hogartCompany['id'],
                 'guid_id' => $contract->Contr_ID,
                 'number' => $contract->Contr_Number,
-                'start_date' => $contract->Contr_Date,
-                'end_date' => $contract->Contr_DateTO,
+                'start_date' =>new Date((string)$contract->Contr_Date, 'Y-m-d'),
+                'end_date' =>  new Date((string)$contract->Contr_DateTO, 'Y-m-d'),
                 'extension' => $contract->Contr_Prolon,
-                'currency_code' => $currency['ID'],
-                'perm_item' => ($contract->Contr_Perm_Item === 'true'),
-                'prem_promo' => ($contract->Contr_Perm_Promo === 'true'),
-                'perm_clearing' => ($contract->Contr_Perm_Clearing === 'true'),
-                'perm_card' => ($contract->Contr_Perm_Card === 'true'),
-                'perm_cash' => ($contract->Contr_Perm_Cash === 'true'),
-                'cash_control' => ($contract->Contr_Cash_Control === 'true'),
+                'currency_code' => $contract->Contr_ID_Money,
+                'perm_item' => (bool)$contract->Contr_Perm_Item,
+                'prem_promo' => (bool)$contract->Contr_Perm_Promo,
+                'perm_clearing' => (bool)$contract->Contr_Perm_Clearing,
+                'perm_card' => (bool)$contract->Contr_Perm_Card,
+                'perm_cash' => (bool)$contract->Contr_Perm_Cash,
+                'cash_control' => (bool)$contract->Contr_Cash_Control,
                 'cash_limit' => $contract->Contr_Limit_Cash,
                 'deferral' => $contract->Contr_Defferal,
                 'credit_limit' => $contract->Contr_Credit_Limit,
-                'have_original' => ($contract->Contr_IHaveDocs === 'true'),
-                'accept' => ($contract->Contr_Accept === 'true'),
+                'have_original' => (bool)$contract->Contr_IHaveDocs,
+                'accept' => (bool)$contract->Contr_Accept,
                 'vat_rate' => $contract->Contr_Accept,
-                'vat_include' => ($contract->Contr_VAT_Include === 'true'),
-                'is_active' => !($contract->deletion_mark === 'true'),
+                'vat_include' => (bool)$contract->Contr_VAT_Include,
+                'is_active' => !(bool)$contract->deletion_mark,
             ], 'guid_id');
 
-            if (!empty($result->getId())) {
-                if ($result instanceof UpdateResult) {
-                    $this->client->getLogger()->notice("Обновлена запись Договора {$result->getId()}");
+            if ($result->getErrorCollection()->count()) {
+                $error = $result->getErrorCollection()->current();
+                $answer->addResponse(new ResponseObject($contract->Contr_ID, new MethodException($error->getMessage(), intval($error->getCode()))));
+                $this->client->getLogger()->error($error->getMessage() . " (" . $error->getCode() . ")");
+            } else {
+                if ($result->getId()) {
+                    if ($result instanceof UpdateResult) {
+                        $this->client->getLogger()->notice("Обновлена запись Договора {$result->getId()} ({$contract->Contr_ID})");
+                    } else {
+                        $this->client->getLogger()->notice("Добавлена запись Договора {$result->getId()} ({$contract->Contr_ID})");
+                    }
+                    $answer->addResponse(new ResponseObject($contract->Contr_ID));
                 } else {
-                    $this->client->getLogger()->notice("Добавлена запись Договора {$result->getId()} ({$contract->Comp_ID})");
+                    $answer->addResponse(new ResponseObject($contract->Contr_ID, new MethodException(self::$default_errors[self::ERROR_UNDEFINED], self::ERROR_UNDEFINED)));
+                    $this->client->getLogger()->error(self::$default_errors[self::ERROR_UNDEFINED] . " (" . self::ERROR_UNDEFINED . ")");
                 }
             }
-
-            $answer->addResponse(new ResponseObject($contract->Contr_ID));
         }
-
+        $this->contractAnswer($answer);
         return count($answer->Response);
     }
 }
