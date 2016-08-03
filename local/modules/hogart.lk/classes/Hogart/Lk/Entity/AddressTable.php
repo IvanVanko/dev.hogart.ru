@@ -9,7 +9,9 @@
 namespace Hogart\Lk\Entity;
 
 
+use Bitrix\Main\DB\SqlExpression;
 use Bitrix\Main\Entity\BooleanField;
+use Bitrix\Main\Entity\EnumField;
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ReferenceField;
 use Bitrix\Main\Entity\StringField;
@@ -17,6 +19,31 @@ use Hogart\Lk\Field\GuidField;
 
 class AddressTable extends AbstractEntity
 {
+    const OWNER_TYPE_COMPANY = 1;
+    const OWNER_TYPE_HOGART_COMPANY = 2;
+    const OWNER_TYPE_STORE = 3;
+
+    public static $types = [
+        self::OWNER_TYPE_COMPANY => [
+            "name" => "company",
+            "table" => __NAMESPACE__ . "\\CompanyTable",
+            "rel" => "guid_id",
+            "rel_id" => "id"
+        ],
+        self::OWNER_TYPE_HOGART_COMPANY => [
+            "name" => "hogart_company",
+            "table" => __NAMESPACE__ . "\\HogartCompanyTable",
+            "rel" => "guid_id",
+            "rel_id" => "id"
+        ],
+        self::OWNER_TYPE_STORE => [
+            "name" => "store",
+            "table" => "Bitrix\\Catalog\\StoreTable",
+            "rel" => "XML_ID",
+            "rel_id" => "ID"
+        ]
+    ];
+
     /**
      * @inheritDoc
      */
@@ -31,11 +58,24 @@ class AddressTable extends AbstractEntity
     public static function getMap()
     {
         return [
-            new IntegerField("id", [
+            new IntegerField("owner_id", ['primary' => true]),
+            new EnumField("owner_type", [
                 'primary' => true,
-                "autocomplete" => true
+                'values' => [
+                    self::OWNER_TYPE_COMPANY,
+                    self::OWNER_TYPE_HOGART_COMPANY,
+                    self::OWNER_TYPE_STORE,
+                ]
             ]),
-            new IntegerField("type_id"),
+            new ReferenceField(self::$types[self::OWNER_TYPE_COMPANY]['name'], self::$types[self::OWNER_TYPE_COMPANY]['table'], ["=this.owner_id" => "ref.id", "=this.owner_type" => new SqlExpression('?i', self::OWNER_TYPE_COMPANY)]),
+            new ReferenceField(self::$types[self::OWNER_TYPE_HOGART_COMPANY]['name'], self::$types[self::OWNER_TYPE_HOGART_COMPANY]['table'], ["=this.owner_id" => "ref.id", "=this.owner_type" => new SqlExpression('?i', self::OWNER_TYPE_HOGART_COMPANY)]),
+            new ReferenceField(self::$types[self::OWNER_TYPE_STORE]['name'], self::$types[self::OWNER_TYPE_STORE]['table'], ["=this.owner_id" => "ref.ID", "=this.owner_type" => new SqlExpression('?i', self::OWNER_TYPE_STORE)]),
+            new BooleanField("is_main", [
+                'default_value' => false
+            ]),
+            new IntegerField("type_id", [
+                'primary' => true
+            ]),
             new ReferenceField("type", "AddressTypeTable", ["=this.type_id" => "ref.id"]),
             new StringField("postal_code"),
             new StringField("region"),
@@ -49,5 +89,4 @@ class AddressTable extends AbstractEntity
             new BooleanField("is_active")
         ];
     }
-
 }
