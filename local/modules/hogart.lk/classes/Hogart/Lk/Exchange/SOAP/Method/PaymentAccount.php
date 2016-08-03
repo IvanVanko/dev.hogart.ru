@@ -9,6 +9,9 @@ namespace Hogart\Lk\Exchange\SOAP\Method;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
 use Hogart\Lk\Entity\PaymentAccountTable;
 use Hogart\Lk\Entity\PaymentAccountRelationTable;
+use Hogart\Lk\Entity\CompanyTable;
+use Hogart\Lk\Entity\HogartCompanyTable;
+use Bitrix\Main\Entity\UpdateResult;
 
 class PaymentAccount extends AbstractMethod
 {
@@ -35,67 +38,71 @@ class PaymentAccount extends AbstractMethod
     public function updatePaymentAccounts()
     {
         $answer = new Response();
-    $response = $this->getPaymentAccount();
-        var_dump($response);exit;
+    $response = $this->getPaymentAccounts();
 
-        foreach ($response->return->Contract as $contract) {
+        foreach ($response->return->Payment_Account as $payment_account) {
 
-            $clientCompany = CompanyTable::getList([
-                'filter' => [
-                    '=guid_id' => $contract->Contr_ID_Company
-                ]
-            ])->fetch();
-
-            $hogartCompany = HogartCompanyTable::getList([
-                'filter' => [
-                    '=guid_id' => $contract->Contr_ID_Holding
-                ]
-            ])->fetch();
-
-            $result = ContractTable::createOrUpdateByField([
-                'company_id' => $clientCompany['id'],
-                'hogart_company_id' => $hogartCompany['id'],
-                'guid_id' => $contract->Contr_ID,
-                'number' => $contract->Contr_Number,
-                'start_date' =>new Date((string)$contract->Contr_Date, 'Y-m-d'),
-                'end_date' =>  new Date((string)$contract->Contr_DateTO, 'Y-m-d'),
-                'extension' => $contract->Contr_Prolon,
-                'currency_code' => $contract->Contr_ID_Money,
-                'perm_item' => (bool)$contract->Contr_Perm_Item,
-                'prem_promo' => (bool)$contract->Contr_Perm_Promo,
-                'perm_clearing' => (bool)$contract->Contr_Perm_Clearing,
-                'perm_card' => (bool)$contract->Contr_Perm_Card,
-                'perm_cash' => (bool)$contract->Contr_Perm_Cash,
-                'cash_control' => (bool)$contract->Contr_Cash_Control,
-                'cash_limit' => $contract->Contr_Limit_Cash,
-                'deferral' => $contract->Contr_Defferal,
-                'credit_limit' => $contract->Contr_Credit_Limit,
-                'have_original' => (bool)$contract->Contr_IHaveDocs,
-                'accept' => (bool)$contract->Contr_Accept,
-                'vat_rate' => $contract->Contr_Accept,
-                'vat_include' => (bool)$contract->Contr_VAT_Include,
-                'is_active' => !(bool)$contract->deletion_mark,
+            // данные по Расчетному счету
+            $result = PaymentAccountTable::createOrUpdateByField([
+                'guid_id' => $payment_account->PayAc_ID,
+                'number' => $payment_account->PayAc_Number,
+                'currency_code' => $payment_account->PayAc_ID_Money,
+                'bik' => $payment_account->PayAc_BIK,
+                'bank_name' => $payment_account->PayAc_BankName,
+                'corr_number' => $payment_account->PayAc_CorrNumber,
+                'is_active' => !$payment_account->deletion_mark,
             ], 'guid_id');
+
 
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
-                $answer->addResponse(new ResponseObject($contract->Contr_ID, new MethodException($error->getMessage(), intval($error->getCode()))));
+                $answer->addResponse(new ResponseObject($payment_account->PayAc_ID, new MethodException($error->getMessage(), intval($error->getCode()))));
                 $this->client->getLogger()->error($error->getMessage() . " (" . $error->getCode() . ")");
             } else {
                 if ($result->getId()) {
-                    if ($result instanceof UpdateResult) {
-                        $this->client->getLogger()->notice("Обновлена запись Договора {$result->getId()} ({$contract->Contr_ID})");
-                    } else {
-                        $this->client->getLogger()->notice("Добавлена запись Договора {$result->getId()} ({$contract->Contr_ID})");
+                    // связь Расчетного счета и Компании Клиента||Хогарта
+                    $owner_type = PaymentAccountRelationTable::OWNER_TYPE_CLIENT_COMPANY;
+                    $company = CompanyTable::getList([
+                        'filter' => [
+                            '=guid_id' => $payment_account->PayAc_ID_Company
+                        ]
+                    ])->fetch();
+                    if(!$company) {
+                        $owner_type = PaymentAccountRelationTable::OWNER_TYPE_HOGART_COMPANY;
+                        $company = HogartCompanyTable::getList([
+                            'filter' => [
+                                '=guid_id' => $payment_account->PayAc_ID_Company
+                            ]
+                        ])->fetch();
                     }
-                    $answer->addResponse(new ResponseObject($contract->Contr_ID));
+
+                    if (!empty($company['id'])) {
+                        $resultRelation = PaymentAccountRelationTable::replace([
+                            'payment_account_id' => $result->getId(),
+                            'owner_id' => $company['id'],
+                            'owner_type' => $owner_type,
+                            'is_main' => $payment_account->PayAc_Main
+                        ]);
+                        if (!empty($resultRelation->getId())) {
+                            $this->client->getLogger()->notice("Обновлена связь Расчетного счета ({$result->getId()}) и Компании ".
+                                ($owner_type == PaymentAccountRelationTable::OWNER_TYPE_CLIENT_COMPANY ? 'Клиента' : 'Хогарт')
+                                ." ({$company['id']})");
+                        }
+                    }
+
+                    if ($result instanceof UpdateResult) {
+                        $this->client->getLogger()->notice("Обновлена запись Расчетного счета {$result->getId()} ({$payment_account->PayAc_ID})");
+                    } else {
+                        $this->client->getLogger()->notice("Добавлена запись Расчетного счета {$result->getId()} ({$payment_account->PayAc_ID})");
+                    }
+                    $answer->addResponse(new ResponseObject($payment_account->PayAc_ID));
                 } else {
-                    $answer->addResponse(new ResponseObject($contract->Contr_ID, new MethodException(self::$default_errors[self::ERROR_UNDEFINED], self::ERROR_UNDEFINED)));
+                    $answer->addResponse(new ResponseObject($payment_account->PayAc_ID, new MethodException(self::$default_errors[self::ERROR_UNDEFINED], self::ERROR_UNDEFINED)));
                     $this->client->getLogger()->error(self::$default_errors[self::ERROR_UNDEFINED] . " (" . self::ERROR_UNDEFINED . ")");
                 }
             }
         }
-        $this->contractAnswer($answer);
+//        $this->paymentAccountAnswer($answer);
         return count($answer->Response);
     }
 

@@ -9,6 +9,7 @@
 namespace Hogart\Lk\Entity;
 
 
+use Bitrix\Bizproc\BaseType\Bool;
 use Bitrix\Main\Entity\BooleanField;
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ReferenceField;
