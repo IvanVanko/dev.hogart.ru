@@ -15,8 +15,7 @@ class GuidField extends StringField
     public function __construct($name, $parameters = array())
     {
         parent::__construct($name, array_merge([
-            'size' => 32,
-            'format' => '%[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}%',
+            'format' => '%(^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}$|^$)%',
             'unique' => true
         ], $parameters));
     }

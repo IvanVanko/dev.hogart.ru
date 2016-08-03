@@ -50,6 +50,7 @@ class hogart_lk extends CModule
         \Hogart\Lk\Entity\OrderTable::createTableIfNotExists();
         \Hogart\Lk\Entity\OrderItemTable::createTableIfNotExists();
         \Hogart\Lk\Entity\PaymentAccountTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\StaffTable::createTableIfNotExists();
         \Hogart\Lk\Entity\PaymentAccountRelationTable::createTableIfNotExists();
 
         return true;
@@ -77,6 +78,7 @@ class hogart_lk extends CModule
         \Hogart\Lk\Entity\OrderItemTable::dropTableIfExists();
         \Hogart\Lk\Entity\PaymentAccountTable::dropTableIfExists();
         \Hogart\Lk\Entity\PaymentAccountRelationTable::dropTableIfExists();
+        \Hogart\Lk\Entity\StaffTable::dropTableIfExists();
     }
 
     function DoInstall()

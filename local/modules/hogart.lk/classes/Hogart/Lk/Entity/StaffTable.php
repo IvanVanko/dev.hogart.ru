@@ -34,6 +34,7 @@ class StaffTable extends AbstractEntity
                 'primary' => true,
                 "autocomplete" => true
             ]),
+            new GuidField("guid_id"),
             new StringField("name"),
             new StringField("last_name"),
             new StringField("middle_name"),
