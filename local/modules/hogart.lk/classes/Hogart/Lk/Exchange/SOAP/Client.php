@@ -17,6 +17,7 @@ use Hogart\Lk\Exchange\SOAP\Method\Contact;
 use Hogart\Lk\Exchange\SOAP\Method\Contract;
 use Hogart\Lk\Exchange\SOAP\Method\ContactInfo;
 use Hogart\Lk\Exchange\SOAP\Method\HogartCompany;
+use Hogart\Lk\Exchange\SOAP\Method\OrderPayment;
 use Hogart\Lk\Exchange\SOAP\Method\Staff;
 use Hogart\Lk\Exchange\SOAP\Method\Company;
 use Hogart\Lk\Exchange\SOAP\Method\PaymentAccount;
@@ -40,9 +41,10 @@ use Hogart\Lk\Exchange\SOAP\Method\RTUItem;
  * @property ContactInfo $ContactInfo
  * @property Contract $Contract
  * @property PaymentAccount $PaymentAccount
- * @property RTU $RTU
- * @property RTUItem $RTUItem
- * @property CompanyDiscount $CompanyDiscount
+ * @property RTU $RTU [-] test
+ * @property RTUItem $RTUItem [-] test
+ * @property CompanyDiscount $CompanyDiscount [-] test
+ * @property OrderPayment $OrderPayment [-] test
  */
 class Client
 {
@@ -147,6 +149,7 @@ class Client
         $this->registerMethod(new RTU());
         $this->registerMethod(new RTUItem());
         $this->registerMethod(new CompanyDiscount());
+        $this->registerMethod(new OrderPayment());
     }
 
     /**

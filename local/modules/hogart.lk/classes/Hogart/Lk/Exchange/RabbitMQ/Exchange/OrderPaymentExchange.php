@@ -39,7 +39,7 @@ class OrderPaymentExchange extends AbstractExchange
     {
         switch ($envelope->getRoutingKey()) {
             case 'order_payment.get':
-                $count = Client::getInstance()->OrderPayment->updateRTUs();
+                $count = Client::getInstance()->OrderPayment->updateOrderPayments();
                 if (!empty($count)) {
                     $this
                         ->exchange
