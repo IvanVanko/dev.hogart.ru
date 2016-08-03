@@ -32,7 +32,7 @@ class Contact extends AbstractMethod
 
     public function contactAnswer(Response $response)
     {
-        if (count($response->Response)) {
+        if (count($response->Response) && $this->is_answer) {
             return $this->client->getSoapClient()->ContactAnswer($response);
         }
     }

@@ -31,7 +31,7 @@ class HogartCompany extends AbstractMethod
 
     public function organisationAnswer(Response $response)
     {
-        if (count($response->Response)) {
+        if (count($response->Response) && $this->is_answer) {
             return $this->client->getSoapClient()->OrganisationAnswer($response);
         }
     }

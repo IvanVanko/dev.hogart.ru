@@ -36,7 +36,7 @@ class Staff extends AbstractMethod
      */
     public function staffAnswer(Response $response)
     {
-        if (count($response->Response)) {
+        if (count($response->Response) && $this->is_answer) {
             return $this->client->getSoapClient()->StaffAnswer($response);
         }
     }
