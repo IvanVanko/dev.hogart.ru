@@ -38,7 +38,7 @@ class Contract extends AbstractMethod
     public function updateContracts()
     {
         $answer = new Response();
-        $response = $this->getContrcats();
+        $response = $this->getContracts();
         $activities = [];
         
         foreach ($response->return->Contract as $contract) {
