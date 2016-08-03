@@ -102,7 +102,7 @@ class PaymentAccount extends AbstractMethod
                 }
             }
         }
-//        $this->paymentAccountAnswer($answer);
+        $this->paymentAccountAnswer($answer);
         return count($answer->Response);
     }
 
