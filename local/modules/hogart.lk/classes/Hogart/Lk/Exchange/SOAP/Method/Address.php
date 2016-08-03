@@ -35,7 +35,7 @@ class Address extends AbstractMethod
     public function addressAnswer(Response $response)
     {
         if (count($response->Response) && $this->is_answer) {
-            return $this->client->getSoapClient()->AddressesAnswer($response);
+            return $this->client->getSoapClient()->AddressAnswer($response);
         }
     }
 
