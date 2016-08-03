@@ -54,11 +54,13 @@ class FileLogger extends AbstractLogger
 
     function error($message)
     {
+        $this->prepareMessage($message);
         $this->log($message, self::SEVERITY_ERROR);
     }
 
     function warning($message)
     {
+        $this->prepareMessage($message);
         $this->log($message, self::SEVERITY_WARNING);
     }
 
@@ -69,6 +71,7 @@ class FileLogger extends AbstractLogger
 
     function debug($message)
     {
+        $this->prepareMessage($message);
         $this->log($message, self::SEVERITY_DEBUG);
     }
 

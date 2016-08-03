@@ -34,7 +34,6 @@ class hogart_lk extends CModule
         CModule::IncludeModule($this->MODULE_ID);
         \Hogart\Lk\Entity\AddressTypeTable::createTableIfNotExists();
         \Hogart\Lk\Entity\AddressTable::createTableIfNotExists();
-        \Hogart\Lk\Entity\AddressRelationTable::createTableIfNotExists();
         \Hogart\Lk\Entity\HogartCompanyTable::createTableIfNotExists();
         \Hogart\Lk\Entity\CompanyTable::createTableIfNotExists();
         \Hogart\Lk\Entity\ContactTable::createTableIfNotExists();
@@ -61,7 +60,6 @@ class hogart_lk extends CModule
         CModule::IncludeModule($this->MODULE_ID);
         \Hogart\Lk\Entity\AddressTypeTable::dropTableIfExists();
         \Hogart\Lk\Entity\AddressTable::dropTableIfExists();
-        \Hogart\Lk\Entity\AddressRelationTable::dropTableIfExists();
         \Hogart\Lk\Entity\HogartCompanyTable::dropTableIfExists();
         \Hogart\Lk\Entity\CompanyTable::dropTableIfExists();
         \Hogart\Lk\Entity\ContactTable::dropTableIfExists();

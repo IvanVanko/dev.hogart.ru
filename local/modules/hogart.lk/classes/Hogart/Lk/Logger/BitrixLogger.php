@@ -13,6 +13,7 @@ class BitrixLogger extends AbstractLogger
 {
     function error($message)
     {
+        $this->prepareMessage($message);
         return \CEventLog::Add(array(
             "SEVERITY" => "ERROR",
             "MODULE_ID" => "hogart.lk",
@@ -23,6 +24,7 @@ class BitrixLogger extends AbstractLogger
 
     function warning($message)
     {
+        $this->prepareMessage($message);
         return \CEventLog::Add(array(
             "SEVERITY" => "WARNING",
             "MODULE_ID" => "hogart.lk",
@@ -43,6 +45,7 @@ class BitrixLogger extends AbstractLogger
 
     function debug($message)
     {
+        $this->prepareMessage($message);
         return \CEventLog::Add(array(
             "SEVERITY" => "DEBUG",
             "MODULE_ID" => "hogart.lk",

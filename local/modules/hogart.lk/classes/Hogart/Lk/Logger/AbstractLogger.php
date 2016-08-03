@@ -40,4 +40,12 @@ abstract class AbstractLogger implements LoggerInterface
         $this->service = $service;
         return $this;
     }
+
+    protected function prepareMessage(&$message)
+    {
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
+        if (($error = end($backtrace))) {
+            $message .= "\t{$error['file']}:{$error['line']}";
+        }
+    }
 }

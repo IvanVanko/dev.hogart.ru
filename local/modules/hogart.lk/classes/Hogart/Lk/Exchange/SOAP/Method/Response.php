@@ -11,10 +11,10 @@ namespace Hogart\Lk\Exchange\SOAP\Method;
 
 class Response extends Request
 {
-    /** @var  ResponseObject[] */
+    /** @var  AbstractResponseObject[] */
     public $Response = [];
 
-    public function addResponse(ResponseObject $responseObject)
+    public function addResponse(AbstractResponseObject $responseObject)
     {
         $this->Response[] = $responseObject;
 

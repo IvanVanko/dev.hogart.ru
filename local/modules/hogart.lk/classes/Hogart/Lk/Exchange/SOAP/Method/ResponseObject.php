@@ -9,26 +9,17 @@
 namespace Hogart\Lk\Exchange\SOAP\Method;
 
 
-class ResponseObject
+class ResponseObject extends AbstractResponseObject
 {
     /** @var  string|integer */
     public $ID;
-    /** @var string */
-    public $Error;
-    /** @var  string */
-    public $ErrorText;
 
     /**
-     * ResponseObject constructor.
-     * @param string $ID
-     * @param MethodException $Error
+     * @inheritDoc
      */
     public function __construct($ID, MethodException $e = null)
     {
         $this->ID = $ID;
-        if (null !== $e) {
-            $this->Error = $e->getCode();
-            $this->ErrorText = $e->getMessage();
-        }
+        parent::__construct($e);
     }
 }
