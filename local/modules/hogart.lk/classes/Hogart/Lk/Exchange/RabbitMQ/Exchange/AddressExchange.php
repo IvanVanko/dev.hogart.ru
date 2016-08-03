@@ -36,7 +36,7 @@ class AddressExchange extends AbstractExchange
     {
         switch ($envelope->getRoutingKey()) {
             case 'address.get':
-                $count = Client::getInstance()->Address->getAddresses();
+                $count = Client::getInstance()->Address->updateAddresses();
                 if (!empty($count)) {
                     $this
                         ->exchange

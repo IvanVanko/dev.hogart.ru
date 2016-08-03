@@ -19,6 +19,7 @@ use Hogart\Lk\Exchange\SOAP\Method\HogartCompany;
 use Hogart\Lk\Exchange\SOAP\Method\Staff;
 use Hogart\Lk\Exchange\SOAP\Method\Company;
 use Hogart\Lk\Logger\BitrixLogger;
+use Hogart\Lk\Logger\FileLogger;
 use Hogart\Lk\Logger\LoggerCollection;
 use Hogart\Lk\Logger\LoggerInterface;
 

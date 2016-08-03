@@ -28,6 +28,7 @@ class Address extends AbstractMethod
 
     public function getAddresses()
     {
+        $this->client->getLogger()->debug("Запрос методода AddressesGet");
         return $this->client->getSoapClient()->AddressesGet(new Request());
     }
 
@@ -51,6 +52,7 @@ class Address extends AbstractMethod
             $res = AddressTypeTable::createOrUpdateByField($data, 'guid_id');
             $types[$address_type->ID] = $res->getId();
         }
+        $this->client->getLogger()->debug("AddressesGet: получено " . count($result->return->Address) . " записей");
         foreach ($result->return->Address as $address) {
             /** @var AbstractEntity $relTable */
             $relTable = AddressTable::$types[$address->Adr_Owner_Type]['table'];
