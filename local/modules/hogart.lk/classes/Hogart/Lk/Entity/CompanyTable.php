@@ -22,6 +22,7 @@ class CompanyTable extends AbstractEntity
     const TYPE_INDIVIDUAL_ENTREPRENEUR = 2;
     const TYPE_INDIVIDUAL = 3;
 
+    const DOC_EMPTY = 0;
     const DOC_PASSPORT = 1;
     const DOC_NO_PASSPORT = 2;
 
@@ -67,6 +68,7 @@ class CompanyTable extends AbstractEntity
             new DateField("certificate_date"),
             new EnumField("doc_pass", [
                 'values' => [
+                    self::DOC_EMPTY,
                     self::DOC_PASSPORT,
                     self::DOC_NO_PASSPORT,
                 ]
