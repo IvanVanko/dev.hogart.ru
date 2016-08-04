@@ -9,6 +9,7 @@
 namespace Hogart\Lk\Exchange\RabbitMQ;
 
 
+use Hogart\Lk\Creational\Singleton;
 use Hogart\Lk\Exchange\RabbitMQ\Exchange\ExchangeInterface;
 use Hogart\Lk\Logger\BitrixLogger;
 use Hogart\Lk\Logger\LoggerCollection;
@@ -17,6 +18,8 @@ use MJS\TopSort\Implementations\StringSort;
 
 class Consumer
 {
+    use Singleton;
+
     /** @var \AMQPConnection  */
     protected $connection;
     /** @var \AMQPChannel  */
@@ -28,20 +31,15 @@ class Consumer
 
     /**
      * Consumer constructor.
-     *
-     * @param string $host
-     * @param int $port
-     * @param string $login
-     * @param string $password
      */
-    public function __construct($host = 'localhost', $port = 5672, $login = 'guest', $password = 'guest')
+    protected function create()
     {
         $this->connection = new \AMQPConnection([
-            'host' => $host,
-            'port' => $port,
+            'host' => \COption::GetOptionString("hogart.lk", "RABBITMQ_HOST"),
+            'port' => \COption::GetOptionString("hogart.lk", "RABBITMQ_PORT"),
             'vhost' => '/',
-            'login' => $login,
-            'password' => $password
+            'login' => \COption::GetOptionString("hogart.lk", "RABBITMQ_LOGIN"),
+            'password' => \COption::GetOptionString("hogart.lk", "RABBITMQ_PASSWORD")
         ]);
         $this->connection->connect();
         $this->channel = new \AMQPChannel($this->connection);

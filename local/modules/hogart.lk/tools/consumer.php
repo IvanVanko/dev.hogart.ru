@@ -16,19 +16,20 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
 
 CModule::IncludeModule("hogart.lk");
 
-$consumer = new \Hogart\Lk\Exchange\RabbitMQ\Consumer(
-    COption::GetOptionString("hogart.lk", "RABBITMQ_HOST"),
-    COption::GetOptionString("hogart.lk", "RABBITMQ_PORT"),
-    COption::GetOptionString("hogart.lk", "RABBITMQ_LOGIN"),
-    COption::GetOptionString("hogart.lk", "RABBITMQ_PASSWORD")
-);
-
+$consumer = \Hogart\Lk\Exchange\RabbitMQ\Consumer::getInstance();
 $consumer->registerLogger(new \Hogart\Lk\Logger\FileLogger(__DIR__ . "/../logs/rabbitmq.log"));
 
 $consumer->registerExchange([
-    $staff = new \Hogart\Lk\Exchange\RabbitMQ\Exchange\StaffExchange(),
-    $account = new \Hogart\Lk\Exchange\RabbitMQ\Exchange\AccountExchange(),
-    $address = new \Hogart\Lk\Exchange\RabbitMQ\Exchange\AddressExchange(),
+    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\AccountExchange(),
+    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\AddressExchange(),
+    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\CompanyExchange(),
+    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\CompanyDiscountExchange(),
+    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\ContractExchange(),
+    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\HogartCompanyExchange(),
+    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\OrderDocsExchange(),
+    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\OrderExchange(),
+    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\PaymentAccountExchange(),
+    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\StaffExchange(),
 ]);
 
 $consumer->run();
