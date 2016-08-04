@@ -66,6 +66,21 @@ abstract class AbstractEntity extends Entity\DataManager
     }
 
     /**
+     * Получить данные по записи по полю
+     * @param $field_name
+     * @param $field_value
+     * @return array|false
+     */
+    public static function getByField($field_name, $field_value)
+    {
+        return static::getList([
+            'filter'=>[
+                "={$field_name}" => $field_value
+            ]
+        ])->fetch();
+    }
+
+    /**
      * @param $data
      * @return Entity\AddResult
      * @throws \Exception

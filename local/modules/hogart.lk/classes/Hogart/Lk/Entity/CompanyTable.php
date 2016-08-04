@@ -45,8 +45,6 @@ class CompanyTable extends AbstractEntity
                 'primary' => true,
                 "autocomplete" => true
             ]),
-            new IntegerField("user_id"),
-            new ReferenceField("user", "Bitrix\\Main\\UserTable", ["=this.user_id" => "ref.ID"]),
             new GuidField("guid_id"),
             new StringField("name"),
             new EnumField("type", [
@@ -62,8 +60,8 @@ class CompanyTable extends AbstractEntity
             new StringField("inn"),
             new StringField("kpp"),
             new DateField("date_fact_address"),
-            new IntegerField("chief_id"),
-            new ReferenceField("chief", "ContactInfoTable", ["=this.chief_id" => "ref.id"]),
+            new IntegerField("chief_contact_id"),
+            new ReferenceField("chief_contact", "ContactTable", ["=this.chief_contact_id" => "ref.id"]),
             new StringField("certificate_number"),
             new DateField("certificate_date"),
             new EnumField("doc_pass", [

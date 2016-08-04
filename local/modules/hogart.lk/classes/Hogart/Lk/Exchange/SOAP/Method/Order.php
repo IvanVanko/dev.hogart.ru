@@ -1,17 +1,14 @@
 <?php
 /**
- * By: Ivan Kiselev aka shaqito@gmail.com
- * Using: PhpStorm.
- * Date: 02.08.2016 22:24
+ * By: Ivan Kiselev aka shaqito[at]gmail.com
+ * Via: PhpStorm.
+ * At: 04.08.2016 10:01
  */
 
 namespace Hogart\Lk\Exchange\SOAP\Method;
 
-
 use Bitrix\Main\Type\Date;
-use Hogart\Lk\Entity\AccountTable;
 use Hogart\Lk\Entity\CompanyTable;
-use Hogart\Lk\Entity\ContactTable;
 use Hogart\Lk\Entity\KindOfActivityTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
 use Bitrix\Main\UserTable;
@@ -21,29 +18,29 @@ use Bitrix\Main\Entity\UpdateResult;
  * Class Company - добавление Компании и Видов деятельности
  * @package Hogart\Lk\Exchange\SOAP\Method
  */
-class Company extends AbstractMethod
+class Order extends AbstractMethod
 {
     /**
      * @inheritDoc
      */
     function getName()
     {
-        return "Company";
+        return "Order";
     }
 
-    public function getCompanies()
+    public function getOrder()
     {
-        return $this->client->getSoapClient()->CompanyGet(new Request());
+        return $this->client->getSoapClient()->OrderGet(new Request());
     }
 
-    public function companyAnswer(Response $response)
+    public function orderAnswer(Response $response)
     {
         if (count($response->Response) && $this->is_answer) {
-            return $this->client->getSoapClient()->CompanyAnswer($response);
+            return $this->client->getSoapClient()->OrderAnswer($response);
         }
     }
 
-    public function updateCompanies()
+    public function updateOrders()
     {
         $answer = new Response();
         $response = $this->getCompanies();
@@ -66,16 +63,11 @@ class Company extends AbstractMethod
             }
         }
         foreach ($response->return->Company as $company) {
-            $chief = ContactTable::getList([
+            $chief= UserTable::getList([
                 'filter' => [
-                    '=guid_id' => $company->Comp_ID_Chief
+                    '=XML_ID' => $company->Comp_ID_Chief
                 ]
             ])->fetch();
-
-            if(empty($chief['id'])){
-                $answer->addResponse(new ResponseObject($company->Comp_ID, new MethodException('Задан несуществующий Comp_ID_Chief')));
-                continue;
-            }
 
             $result = CompanyTable::createOrUpdateByField([
                 'guid_id' => $company->Comp_ID,
@@ -86,7 +78,7 @@ class Company extends AbstractMethod
                 'inn' => $company->Comp_INN,
                 'kpp' => $company->Comp_KPP,
                 'date_fact_address' => new Date((string)$company->Comp_DataFactAdress, 'Y-m-d'),
-                'chief_contact_id' => $chief['id'] ? : 0,
+                'chief_id' => $chief['ID'] ? : 0,
                 'certificate_number' => $company->Comp_Certificate_Number,
                 'certificate_date' => new Date($company->Comp_Certificate_Date, 'Y-m-d'),
                 'doc_pass' => intval($company->Comp_DocPass),
@@ -100,6 +92,7 @@ class Company extends AbstractMethod
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
                 $answer->addResponse(new ResponseObject($company->Comp_ID, new MethodException($error->getMessage(), intval($error->getCode()))));
+                $this->client->getLogger()->error($error->getMessage() . " (" . $error->getCode() . ")");
             } else {
                 if ($result->getId()) {
                     if ($result instanceof UpdateResult) {
@@ -110,6 +103,7 @@ class Company extends AbstractMethod
                     $answer->addResponse(new ResponseObject($company->Comp_ID));
                 } else {
                     $answer->addResponse(new ResponseObject($company->Comp_ID, new MethodException(self::$default_errors[self::ERROR_UNDEFINED], self::ERROR_UNDEFINED)));
+                    $this->client->getLogger()->error(self::$default_errors[self::ERROR_UNDEFINED] . " (" . self::ERROR_UNDEFINED . ")");
                 }
             }
         }

@@ -17,13 +17,13 @@ CModule::IncludeModule("main");
 CModule::IncludeModule("catalog");
 
 /** @var \Hogart\Lk\Exchange\SOAP\Client $soap */
-$soap = \Hogart\Lk\Exchange\SOAP\Client::getInstance();
+$eml = 'ivan.kiselev@gmail.com';
+var_dump(\CUser::SendPassword($eml, $eml));
 
-$soap->getLogger()->registerLogger(new \Hogart\Lk\Logger\FileLogger(__DIR__ . "/../logs/soap2.log"));
-
-$soap = \Hogart\Lk\Exchange\SOAP\Client::getInstance();
-//print_r($soap->Contract->setIsAnswer(false)->updateContracts());
-print_r($soap->PaymentAccount->setIsAnswer(false)->updatePaymentAccounts());
+//$soap = \Hogart\Lk\Exchange\SOAP\Client::getInstance();
+//$soap->getLogger()->registerLogger(new \Hogart\Lk\Logger\FileLogger(__DIR__ . "/../logs/soap2.log"));
+//$soap = \Hogart\Lk\Exchange\SOAP\Client::getInstance();
+//print_r($soap->Account->setIsAnswer(false)->updateAccounts());
 
 //var_dump($soap->Contract->getContracts());
 

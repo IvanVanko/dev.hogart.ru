@@ -22,6 +22,7 @@ use Hogart\Lk\Exchange\SOAP\Method\OrderDocs\OrderPayment;
 use Hogart\Lk\Exchange\SOAP\Method\Staff;
 use Hogart\Lk\Exchange\SOAP\Method\Company;
 use Hogart\Lk\Exchange\SOAP\Method\PaymentAccount;
+use Hogart\Lk\Exchange\SOAP\Method\Order;
 use Hogart\Lk\Logger\BitrixLogger;
 use Hogart\Lk\Logger\LoggerCollection;
 use Hogart\Lk\Logger\LoggerInterface;
@@ -46,6 +47,7 @@ use Hogart\Lk\Exchange\SOAP\Method\OrderDocs\RTUItem;
  * @property RTUItem $RTUItem [-] test
  * @property OrderPayment $OrderPayment [-] test
  * @property OrderDocs $OrderDocs [-] test
+ * @property Order $Order [-] test
  */
 class Client
 {
@@ -152,6 +154,7 @@ class Client
         $this->registerMethod(new RTU());
         $this->registerMethod(new RTUItem());
         $this->registerMethod(new OrderPayment());
+        $this->registerMethod(new Order());
     }
 
     /**
@@ -163,7 +166,7 @@ class Client
         if (is_object($methods)) $methods = [$methods];
         foreach ($methods as $method) {
             if (isset($this->methods[$method->getName()]) && get_class($method) !== get_class($this->methods[$method->getName()])) {
-                throw new \RuntimeException("Duplicate method name!");
+                throw new \RuntimeException("Duplicate method name '{$method->getName()}' in class '".get_class($method)."'!");
             }
             $this->methods[$method->getName()] = $method->useSoapClient($this);
         }

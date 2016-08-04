@@ -8,6 +8,7 @@
 
 namespace Hogart\Lk\Exchange\SOAP\Method;
 
+use Hogart\Lk\Exchange\SOAP\Client;
 
 abstract class AbstractResponseObject
 {
@@ -35,7 +36,7 @@ abstract class AbstractResponseObject
     {
         $this->Error = $e->getCode();
         $this->ErrorText = $e->getMessage();
-
+        Client::getInstance()->getLogger()->error($this->ErrorText . " (" . $this->Error . ")");
         return $this;
     }
 }
