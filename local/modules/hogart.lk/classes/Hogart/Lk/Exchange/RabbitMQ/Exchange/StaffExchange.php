@@ -11,17 +11,10 @@ namespace Hogart\Lk\Exchange\RabbitMQ\Exchange;
 
 use Hogart\Lk\Exchange\RabbitMQ\EnvelopeException;
 use Hogart\Lk\Exchange\RabbitMQ\Logger\BitrixLogger;
+use Hogart\Lk\Exchange\SOAP\Client;
 
 class StaffExchange extends AbstractExchange
 {
-    /**
-     * @inheritDoc
-     */
-    function getPriority()
-    {
-        return 1000;
-    }
-
     /**
      * @inheritDoc
      */
@@ -35,7 +28,15 @@ class StaffExchange extends AbstractExchange
      */
     function runEnvelope(\AMQPEnvelope $envelope)
     {
-        // some work
-        var_dump($this->getQueueName(), $envelope->getDeliveryTag());
+        switch ($key = $this->getRoutingKey($envelope)) {
+            case 'get':
+                $count = Client::getInstance()->Staff->createOrUpdateStaff();
+                if (!empty($count)) {
+                    $this
+                        ->exchange
+                        ->publish("", $this->getPublishKey($key), AMQP_NOPARAM, ["delivery_mode" => 2]);
+                }
+                break;
+        }
     }
 }

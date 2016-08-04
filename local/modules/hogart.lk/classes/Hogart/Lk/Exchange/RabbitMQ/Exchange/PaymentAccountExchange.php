@@ -14,9 +14,12 @@ class PaymentAccountExchange extends AbstractExchange
     /**
      * @inheritDoc
      */
-    function getPriority()
+    public function getDependencies()
     {
-        return 96;
+        return [
+            __NAMESPACE__ . '\CompanyExchange',
+            __NAMESPACE__ . '\HogartCompanyExchange',
+        ];
     }
 
     /**
@@ -32,13 +35,13 @@ class PaymentAccountExchange extends AbstractExchange
      */
     function runEnvelope(\AMQPEnvelope $envelope)
     {
-        switch ($envelope->getRoutingKey()) {
-            case 'payment_account.get':
+        switch ($key = $this->getRoutingKey($envelope)) {
+            case 'get':
                 $count = Client::getInstance()->PaymentAccount->updatePaymentAccounts();
                 if (!empty($count)) {
                     $this
                         ->exchange
-                        ->publish("", "payment_account.get", AMQP_NOPARAM, ["delivery_mode" => 2]);
+                        ->publish("", $this->getPublishKey($key), AMQP_NOPARAM, ["delivery_mode" => 2]);
                 }
                 break;
         }

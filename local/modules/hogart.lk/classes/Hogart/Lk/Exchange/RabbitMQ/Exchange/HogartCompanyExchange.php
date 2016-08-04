@@ -1,8 +1,9 @@
 <?php
 /**
- * By: Ivan Kiselev aka shaqito@gmail.com
- * Using: PhpStorm.
- * Date: 02.08.2016 19:24
+ * Created by PhpStorm.
+ * User: Ivan Koretskiy aka gillbeits[at]gmail.com
+ * Date: 04/08/16
+ * Time: 01:23
  */
 
 namespace Hogart\Lk\Exchange\RabbitMQ\Exchange;
@@ -10,14 +11,24 @@ namespace Hogart\Lk\Exchange\RabbitMQ\Exchange;
 
 use Hogart\Lk\Exchange\SOAP\Client;
 
-class CompanyExchange extends AbstractExchange
+class HogartCompanyExchange extends AbstractExchange
 {
+    /**
+     * @inheritDoc
+     */
+    public function getDependencies()
+    {
+        return [
+            __NAMESPACE__ . '\StaffExchange'
+        ];
+    }
+
     /**
      * @inheritDoc
      */
     function getQueueName()
     {
-        return "company";
+        return "hogart_company";
     }
 
     /**
@@ -27,7 +38,7 @@ class CompanyExchange extends AbstractExchange
     {
         switch ($key = $this->getRoutingKey($envelope)) {
             case 'get':
-                $count = Client::getInstance()->Company->updateCompanies();
+                $count = Client::getInstance()->HogartCompany->createOrUpdateOrganisations();
                 if (!empty($count)) {
                     $this
                         ->exchange

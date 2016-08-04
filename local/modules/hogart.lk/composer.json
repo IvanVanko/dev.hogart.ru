@@ -1,0 +1,6 @@
+{
+    "name": "oldschool/hogart.lk",
+    "require": {
+        "marcj/topsort": "^1.0"
+    }
+}

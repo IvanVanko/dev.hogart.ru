@@ -5,11 +5,15 @@
  * At: 03.08.2016 22:40
  */
 
-namespace Hogart\Lk\Exchange\SOAP\Method;
+namespace Hogart\Lk\Exchange\SOAP\Method\OrderDocs;
+
 use Hogart\Lk\Entity\OrderPaymentTable;
 use Hogart\Lk\Entity\OrderTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
 use Bitrix\Main\Entity\UpdateResult;
+use Hogart\Lk\Exchange\SOAP\Method\MethodException;
+use Hogart\Lk\Exchange\SOAP\Method\Response;
+use Hogart\Lk\Exchange\SOAP\Method\ResponseObject;
 
 class OrderPayment extends AbstractMethod
 {
@@ -21,24 +25,17 @@ class OrderPayment extends AbstractMethod
         return "OrderPayment";
     }
 
-    public function getOrderPayments()
+    /**
+     * @todo Доработать после появления метода Docs_Order
+     * 
+     * @param $payments
+     * @param Response $answer
+     * @return int
+     * @throws \Bitrix\Main\ArgumentException
+     */
+    public function updateOrderPayments($payments, Response $answer)
     {
-        return $this->client->getSoapClient()->OrderPaymentsGet(new Request());
-    }
-
-    public function orderPaymentAnswer(Response $response)
-    {
-        if (count($response->Response) && $this->is_answer) {
-            return $this->client->getSoapClient()->OrderPaymentAnswer($response);
-        }
-    }
-
-    public function updateOrderPayments()
-    {
-        $answer = new Response();
-        $response = $this->getOrderPayments();
-
-        foreach ($response->return->Payment as $order_payment) {
+        foreach ($payments as $order_payment) {
             $order = OrderTable::getList([
                 'filter'=>[
                     '=guid_id'=>$order_payment->Order_ID
@@ -76,7 +73,6 @@ class OrderPayment extends AbstractMethod
                 }
             }
         }
-        $this->orderPaymentAnswer($answer);
         return count($answer->Response);
     }
 

@@ -16,9 +16,12 @@ class AddressExchange extends AbstractExchange
     /**
      * @inheritDoc
      */
-    function getPriority()
+    public function getDependencies()
     {
-        return "98";
+        return [
+            __NAMESPACE__ . '\CompanyExchange',
+            __NAMESPACE__ . '\HogartCompanyExchange',
+        ];
     }
 
     /**
@@ -34,13 +37,13 @@ class AddressExchange extends AbstractExchange
      */
     function runEnvelope(\AMQPEnvelope $envelope)
     {
-        switch ($envelope->getRoutingKey()) {
-            case 'address.get':
+        switch ($key = $this->getRoutingKey($envelope)) {
+            case 'get':
                 $count = Client::getInstance()->Address->updateAddresses();
                 if (!empty($count)) {
                     $this
                         ->exchange
-                        ->publish("", "address.get", AMQP_NOPARAM, ["delivery_mode" => 2]);
+                        ->publish("", $this->getPublishKey($key), AMQP_NOPARAM, ["delivery_mode" => 2]);
                 }
                 break;
         }

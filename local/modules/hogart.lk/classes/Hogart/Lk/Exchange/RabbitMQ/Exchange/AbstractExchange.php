@@ -20,6 +20,34 @@ abstract class AbstractExchange implements ExchangeInterface
     protected $exchange;
     /** @var \AMQPQueue */
     protected $queue;
+    /** @var array  */
+    protected $dependencies = [];
+
+    /**
+     * @param $key
+     * @return string
+     */
+    public function getPublishKey($key)
+    {
+        return $this->getQueueName() . "." . $key;
+    }
+
+    /**
+     * @param \AMQPEnvelope $envelope
+     * @return mixed
+     */
+    public function getRoutingKey(\AMQPEnvelope $envelope)
+    {
+        return preg_replace("%^" . $this->getQueueName() . "%", "", $envelope->getRoutingKey());
+    }
+
+    /**
+     * @return array
+     */
+    public function getDependencies()
+    {
+        return $this->dependencies;
+    }
 
     /**
      * @inheritDoc

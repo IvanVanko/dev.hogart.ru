@@ -14,9 +14,12 @@ class ContractExchange extends AbstractExchange
     /**
      * @inheritDoc
      */
-    function getPriority()
+    public function getDependencies()
     {
-        return 100;
+        return [
+            __NAMESPACE__ . '\HogartCompanyExchange',
+            __NAMESPACE__ . '\CompanyExchange',
+        ];
     }
 
     /**
@@ -32,13 +35,13 @@ class ContractExchange extends AbstractExchange
      */
     function runEnvelope(\AMQPEnvelope $envelope)
     {
-        switch ($envelope->getRoutingKey()) {
-            case 'contract.get':
+        switch ($key = $this->getRoutingKey($envelope)) {
+            case 'get':
                 $count = Client::getInstance()->Contract->updateContracts();
                 if (!empty($count)) {
                     $this
                         ->exchange
-                        ->publish("", "contract.get", AMQP_NOPARAM, ["delivery_mode" => 2]);
+                        ->publish("", $this->getPublishKey($key), AMQP_NOPARAM, ["delivery_mode" => 2]);
                 }
                 break;
         }

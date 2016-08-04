@@ -15,9 +15,11 @@ class CompanyDiscountExchange extends AbstractExchange
     /**
      * @inheritDoc
      */
-    function getPriority()
+    public function getDependencies()
     {
-        return 100;
+        return [
+            __NAMESPACE__ . '\CompanyExchange'
+        ];
     }
 
     /**
@@ -33,13 +35,13 @@ class CompanyDiscountExchange extends AbstractExchange
      */
     function runEnvelope(\AMQPEnvelope $envelope)
     {
-        switch ($envelope->getRoutingKey()) {
-            case 'company_discount.get':
+        switch ($key = $this->getRoutingKey($envelope)) {
+            case 'get':
                 $count = Client::getInstance()->CompanyDiscount->updateCompanyDiscounts();
                 if (!empty($count)) {
                     $this
                         ->exchange
-                        ->publish("", "company_discount.get", AMQP_NOPARAM, ["delivery_mode" => 2]);
+                        ->publish("", $this->getPublishKey($key), AMQP_NOPARAM, ["delivery_mode" => 2]);
                 }
                 break;
         }

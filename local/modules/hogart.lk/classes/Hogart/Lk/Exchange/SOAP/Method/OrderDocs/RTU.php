@@ -5,12 +5,15 @@
  * At: 03.08.2016 16:36
  */
 
-namespace Hogart\Lk\Exchange\SOAP\Method;
+namespace Hogart\Lk\Exchange\SOAP\Method\OrderDocs;
 use Hogart\Lk\Entity\OrderTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
 use Hogart\Lk\Entity\RTUTable;
 use Bitrix\Main\Type\Date;
 use Bitrix\Main\Entity\UpdateResult;
+use Hogart\Lk\Exchange\SOAP\Method\MethodException;
+use Hogart\Lk\Exchange\SOAP\Method\Response;
+use Hogart\Lk\Exchange\SOAP\Method\ResponseObject;
 
 class RTU extends AbstractMethod
 {
@@ -22,23 +25,17 @@ class RTU extends AbstractMethod
         return "RTU";
     }
 
-    public function getRTUs()
+    /**
+     * @todo Доработать после появления метода Docs_Order
+     * 
+     * @param $rtus
+     * @param Response $answer
+     * @return int
+     * @throws \Bitrix\Main\ArgumentException
+     */
+    public function updateRTUs($rtus, Response $answer)
     {
-        return $this->client->getSoapClient()->RTUsGet(new Request());
-    }
-
-    public function RTUAnswer(Response $response)
-    {
-        if (count($response->Response) && $this->is_answer) {
-            return $this->client->getSoapClient()->RTUAnswer($response);
-        }
-    }
-
-    public function updateRTUs()
-    {
-        $answer = new Response();
-        $response = $this->getRTUs();
-        foreach ($response->return->RTU as $rtu) {
+        foreach ($rtus as $rtu) {
             $order = OrderTable::getList([
                 'filter'=>[
                     '=guid_id'=>$rtu->Order_ID
@@ -73,7 +70,6 @@ class RTU extends AbstractMethod
                 }
             }
         }
-        $this->RTUAnswer($answer);
         return count($answer->Response);
     }
 

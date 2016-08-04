@@ -5,7 +5,7 @@
  * At: 03.08.2016 16:36
  */
 
-namespace Hogart\Lk\Exchange\SOAP\Method;
+namespace Hogart\Lk\Exchange\SOAP\Method\OrderDocs;
 use Bitrix\Iblock\ElementTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
 use Hogart\Lk\Entity\RTUItemTable;
@@ -13,6 +13,9 @@ use Hogart\Lk\Entity\RTUTable;
 use Bitrix\Main\Type\Date;
 use Bitrix\Main\Entity\UpdateResult;
 use Bitrix\Main\DB\SqlExpression;
+use Hogart\Lk\Exchange\SOAP\Method\MethodException;
+use Hogart\Lk\Exchange\SOAP\Method\Response;
+use Hogart\Lk\Exchange\SOAP\Method\ResponseObject;
 
 class RTUItem extends AbstractMethod
 {
@@ -24,25 +27,18 @@ class RTUItem extends AbstractMethod
         return "RTUItem";
     }
 
-    public function getRTUItems()
+    /**
+     * @todo Доработать после появления метода Docs_Order
+     * 
+     * @param $rtu_items
+     * @param Response $answer
+     * @return int
+     * @throws \Bitrix\Main\ArgumentException
+     */
+    public function updateRTUItems($rtu_items, Response $answer)
     {
-        return $this->client->getSoapClient()->RTUItemsGet(new Request());
-    }
-
-    public function RTUItemAnswer(Response $response)
-    {
-        if (count($response->Response) && $this->is_answer) {
-            return $this->client->getSoapClient()->RTUItemAnswer($response);
-        }
-    }
-
-    public function updateRTUItems()
-    {
-        $answer = new Response();
-        $response = $this->getRTUItems();
-        // обвновл
-        foreach ($response->return->RTUItem as $rtu_item) {
-            $rtu = RTUItemTable::getList([
+        foreach ($rtu_items as $rtu_item) {
+            $rtu = RTUTable::getList([
                 'filter'=>[
                     '=guid_id'=>$rtu_item->RTU_ID
                 ]
@@ -55,7 +51,7 @@ class RTUItem extends AbstractMethod
                 ]
             ])->fetch();
             // данные по Элементам Платежных документов на отгрузку
-            $result = RTUTable::createOrUpdateByField([
+            $result = RTUItemTable::createOrUpdateByField([
                 'guid_id' => $rtu_item->RTU_Item_ID, // @todo такого поля с guid'ом нету - проверить что бы добавили - или возможно делать вместе с RTU
                 'rtu_id' => $rtu['id'],
                 'item_id' => $order_item['ID'],
@@ -87,7 +83,6 @@ class RTUItem extends AbstractMethod
                 }
             }
         }
-        $this->RTUItemAnswer($answer);
         return count($answer->Response);
     }
 }

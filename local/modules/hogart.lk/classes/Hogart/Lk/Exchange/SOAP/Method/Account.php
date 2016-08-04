@@ -42,6 +42,12 @@ class Account extends AbstractMethod
         return $response;
     }
 
+    /**
+     * @todo Доработка метода
+     * 
+     * @return int
+     * @throws \Bitrix\Main\ArgumentException
+     */
     public function createOrUpdateAccounts()
     {
         $answer = new Response();
@@ -62,6 +68,13 @@ class Account extends AbstractMethod
                         'is_main' => $accountInfo->Acc_ID_Main_Warehouse == $acc_Warehouse
                     ]);
                     $this->client->getLogger()->notice("Обработан склад клиента {$acc_Warehouse}: добавлена запись");
+                }
+
+                foreach ($accountInfo->Acc_Managers as $acc_Manager) {
+                    
+                }
+                foreach ($accountInfo->Acc_Companies as $acc_Company) {
+
                 }
             } else {
 

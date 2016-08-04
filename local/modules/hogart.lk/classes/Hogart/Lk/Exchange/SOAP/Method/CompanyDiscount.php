@@ -8,6 +8,7 @@
 namespace Hogart\Lk\Exchange\SOAP\Method;
 
 
+use Hogart\Lk\Entity\CompanyDiscountTable;
 use Hogart\Lk\Entity\CompanyTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
 use Bitrix\Main\UserTable;
@@ -26,7 +27,7 @@ class CompanyDiscount extends AbstractMethod
      */
     function getName()
     {
-        return "Company";
+        return "CompanyDiscount";
     }
 
     public function getCompanyDiscounts()
@@ -48,7 +49,7 @@ class CompanyDiscount extends AbstractMethod
 
         foreach ($response->return->Company_Discount as $company_discount) {
             // получаем компанию пользователя
-            $company= UserTable::getList([
+            $company = CompanyTable::getList([
                 'filter' => [
                     '=guid_id' => $company_discount->Discount_ID_Company
                 ]
@@ -62,7 +63,7 @@ class CompanyDiscount extends AbstractMethod
                 ]
             ])->fetch();
 
-            $result = CompanyTable::createOrUpdateByField([
+            $result = CompanyDiscountTable::createOrUpdateByField([
                 'guid_id' => $company_discount->Company_Discount_ID, // @todo нет в структуре, попросить что бы добавили
                 'company_id' => $company['id'],
                 'item_id' => $item['ID'],

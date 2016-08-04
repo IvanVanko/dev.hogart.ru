@@ -16,9 +16,12 @@ class AccountExchange extends AbstractExchange
     /**
      * @inheritDoc
      */
-    function getPriority()
+    public function getDependencies()
     {
-        return 99;
+        return [
+            __NAMESPACE__ . '\StaffExchange',
+            __NAMESPACE__ . '\CompanyExchange',
+        ];
     }
 
     /**
@@ -34,13 +37,13 @@ class AccountExchange extends AbstractExchange
      */
     function runEnvelope(\AMQPEnvelope $envelope)
     {
-        switch ($envelope->getRoutingKey()) {
-            case 'account.get':
+        switch ($key = $this->getRoutingKey($envelope)) {
+            case 'get':
                 $count = Client::getInstance()->Account->createOrUpdateAccounts();
                 if (!empty($count)) {
                     $this
                         ->exchange
-                        ->publish("", "account.get", AMQP_NOPARAM, ["delivery_mode" => 2]);
+                        ->publish("", $this->getPublishKey($key), AMQP_NOPARAM, ["delivery_mode" => 2]);
                 }
                 break;
         }

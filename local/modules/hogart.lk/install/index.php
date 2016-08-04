@@ -90,6 +90,11 @@ class hogart_lk extends CModule
             $APPLICATION->ThrowException("Не загружена библиотека soap");
             return false;
         }
+        
+        if (ini_get("allow_url_fopen") != 1) {
+            $APPLICATION->ThrowException("Директива allow_url_fopen должна быть равно \"On\"");
+            return false;
+        }
 
         $stepTitles = [
             " - Параметры RabbitMQ",
@@ -99,6 +104,12 @@ class hogart_lk extends CModule
 
         $GLOBALS['MODULE_ID'] = $this->MODULE_ID;
         $GLOBALS['MODULE_NAME'] = $this->MODULE_NAME;
+        
+        if ($step == 1) {
+            // Установка необходимых библиотек Composer
+            $command = "/usr/bin/php -f " . realpath(dirname(__FILE__) . "/composerExtractor.php");
+            exec($command, $output);
+        }
         
         if ($step == 3) {
             RegisterModule($this->MODULE_ID);

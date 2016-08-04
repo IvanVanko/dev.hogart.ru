@@ -14,10 +14,9 @@ use Hogart\Lk\Exchange\RabbitMQ\Consumer;
 interface ExchangeInterface
 {
     /**
-     * @return integer
+     * @return array
      */
-    function getPriority();
-
+    function getDependencies();
     /**
      * @param Consumer $consumer
      * @return ExchangeInterface

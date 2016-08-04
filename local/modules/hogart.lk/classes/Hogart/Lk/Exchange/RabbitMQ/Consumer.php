@@ -13,6 +13,7 @@ use Hogart\Lk\Exchange\RabbitMQ\Exchange\ExchangeInterface;
 use Hogart\Lk\Logger\BitrixLogger;
 use Hogart\Lk\Logger\LoggerCollection;
 use Hogart\Lk\Logger\LoggerInterface;
+use MJS\TopSort\Implementations\StringSort;
 
 class Consumer
 {
@@ -104,7 +105,6 @@ class Consumer
     }
 
 
-
     /**
      * @param ExchangeInterface|ExchangeInterface[] $exchangeInterface
      * @return $this
@@ -112,13 +112,25 @@ class Consumer
     public function registerExchange($exchangeInterface)
     {
         if (is_object($exchangeInterface)) $exchangeInterface = [$exchangeInterface];
-
         foreach ($exchangeInterface as $exchange) {
-            $this->exchanges[] = $exchange->useConsumer($this);
+            $this->exchanges[get_class($exchange)] = $exchange->useConsumer($this);
         }
-        usort($this->exchanges, function ($a, $b) { return $a->getPriority() < $b->getPriority(); });
-        
         return $this;
+    }
+
+    /**
+     * @return array|Exchange\ExchangeInterface[]
+     */
+    public function sortExchanges()
+    {
+        $sorter = new StringSort();
+        foreach ($this->exchanges as $exchange) {
+            $sorter->add(get_class($exchange), $exchange->getDependencies());
+        }
+        $dependencies = array_values($sorter->sort());
+        $this->exchanges = array_combine($dependencies, array_values($this->exchanges));
+
+        return $this->exchanges;
     }
 
     /**
@@ -128,7 +140,7 @@ class Consumer
     {
         if (empty($this->exchanges)) throw new Exception("No exchanges registered");
 
-        foreach ($this->exchanges as $exchange) {
+        foreach ($this->sortExchanges() as $exchange) {
             $exchange->run();
         }
     }
