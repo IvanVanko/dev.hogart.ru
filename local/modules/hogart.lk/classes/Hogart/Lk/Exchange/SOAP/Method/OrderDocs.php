@@ -8,7 +8,6 @@
 
 namespace Hogart\Lk\Exchange\SOAP\Method;
 
-
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
 
 class OrderDocs extends AbstractMethod
@@ -40,8 +39,8 @@ class OrderDocs extends AbstractMethod
     {
         $answer = new Response();
         $response = $this->getOrderDocs();
-        $this->client->RTU->updateRTUs($response->return->RTU, $answer);
-        $this->client->RTUItem->updateRTUItems($response->return->RTU_Item, $answer);
+        $this->client->RTU->updateRTUs($response->return->RTU->RTUHeaders, $answer);
+        $this->client->RTUItem->updateRTUItems($response->return->RTU->RTUItems, $answer);
         $this->client->OrderPayment->updateOrderPayments($response->return->Payment, $answer);
 
         return count($answer->Response);
