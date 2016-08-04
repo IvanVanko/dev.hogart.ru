@@ -62,18 +62,10 @@ class PaymentAccount extends AbstractMethod
                 if ($result->getId()) {
                     // связь Расчетного счета и Компании Клиента||Хогарта
                     $owner_type = PaymentAccountRelationTable::OWNER_TYPE_CLIENT_COMPANY;
-                    $company = CompanyTable::getList([
-                        'filter' => [
-                            '=guid_id' => $payment_account->PayAc_ID_Company
-                        ]
-                    ])->fetch();
+                    $company = CompanyTable::getByField('guid_id', $payment_account->PayAc_ID_Company);
                     if(!$company) {
                         $owner_type = PaymentAccountRelationTable::OWNER_TYPE_HOGART_COMPANY;
-                        $company = HogartCompanyTable::getList([
-                            'filter' => [
-                                '=guid_id' => $payment_account->PayAc_ID_Company
-                            ]
-                        ])->fetch();
+                        $company = HogartCompanyTable::getByField('guid_id', $payment_account->PayAc_ID_Company);
                     }
 
                     if (!empty($company['id'])) {

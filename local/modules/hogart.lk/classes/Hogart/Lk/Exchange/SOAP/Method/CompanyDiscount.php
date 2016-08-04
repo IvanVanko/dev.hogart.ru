@@ -49,11 +49,7 @@ class CompanyDiscount extends AbstractMethod
 
         foreach ($response->return->Company_Discount as $company_discount) {
             // получаем компанию пользователя
-            $company = CompanyTable::getList([
-                'filter' => [
-                    '=guid_id' => $company_discount->Discount_ID_Company
-                ]
-            ])->fetch();
+            $company = CompanyTable::getByField('guid_id', $company_discount->Discount_ID_Company);
 
             // получаем товар
             $item = ElementTable::getList([

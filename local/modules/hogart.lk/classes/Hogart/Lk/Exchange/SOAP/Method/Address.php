@@ -57,11 +57,7 @@ class Address extends AbstractMethod
             /** @var AbstractEntity $relTable */
             $relTable = AddressTable::$types[$address->Adr_Owner_Type]['table'];
 
-            $owner = $relTable::getList([
-                'filter' => [
-                    "=" . AddressTable::$types[$address->Adr_Owner_Type]['rel'] => $address->Adr_ID_Owner
-                ]
-            ])->fetch();
+            $owner = $relTable::getByField(AddressTable::$types[$address->Adr_Owner_Type]['rel'], $address->Adr_ID_Owner);
 
             $owner_id = $owner[AddressTable::$types[$address->Adr_Owner_Type]['rel_id']];
             $data = [

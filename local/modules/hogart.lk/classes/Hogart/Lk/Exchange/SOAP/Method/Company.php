@@ -66,11 +66,7 @@ class Company extends AbstractMethod
             }
         }
         foreach ($response->return->Company as $company) {
-            $chief = ContactTable::getList([
-                'filter' => [
-                    '=guid_id' => $company->Comp_ID_Chief
-                ]
-            ])->fetch();
+            $chief = ContactTable::getByField('guid_id', $company->Comp_ID_Chief);
 
             if(empty($chief['id'])){
                 $answer->addResponse(new ResponseObject($company->Comp_ID, new MethodException('Задан несуществующий Comp_ID_Chief')));

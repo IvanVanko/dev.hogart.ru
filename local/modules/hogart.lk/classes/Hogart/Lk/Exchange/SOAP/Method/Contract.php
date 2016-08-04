@@ -46,17 +46,9 @@ class Contract extends AbstractMethod
 
         foreach ($response->return->Contract as $contract) {
 
-            $clientCompany = CompanyTable::getList([
-                'filter' => [
-                    '=guid_id' => $contract->Contr_ID_Company
-                ]
-            ])->fetch();
+            $clientCompany = CompanyTable::getByField('guid_id', $contract->Contr_ID_Company);
 
-            $hogartCompany = HogartCompanyTable::getList([
-                'filter' => [
-                    '=guid_id' => $contract->Contr_ID_Holding
-                ]
-            ])->fetch();
+            $hogartCompany = HogartCompanyTable::getByField('guid_id', $contract->Contr_ID_Holding);
 
             $result = ContractTable::createOrUpdateByField([
                 'company_id' => $clientCompany['id'],

@@ -46,11 +46,7 @@ class Staff extends AbstractMethod
         $answer = new Response();
         $response = $this->getStaff();
         foreach ($response->return->Staff_Line as $staff) {
-            $chief = StaffTable::getList([
-                'filter' => [
-                    '=guid_id' => $staff->Staff_ID_Сhief
-                ]
-            ])->fetch();
+            $chief = StaffTable::getByField('guid_id', $staff->Staff_ID_Сhief);
             $result = StaffTable::createOrUpdateByField([
                 'guid_id' => $staff->Staff_ID,
                 'name' => $staff->Staff_Name,

@@ -41,11 +41,7 @@ class HogartCompany extends AbstractMethod
         $answer = new Response();
         $response = $this->getOrganisations();
         foreach ($response->return->Hogart as $organisation) {
-            $staff = StaffTable::getList([
-                'filter' => [
-                    '=guid_id' => $organisation->Hogart_ID_Chief
-                ]
-            ])->fetch();
+            $staff = StaffTable::getByField('guid_id', $organisation->Hogart_ID_Chief);
             $result = HogartCompanyTable::createOrUpdateByField([
                 "guid_id" => $organisation->Hogart_ID,
                 "name" => $organisation->Hogart_Name,

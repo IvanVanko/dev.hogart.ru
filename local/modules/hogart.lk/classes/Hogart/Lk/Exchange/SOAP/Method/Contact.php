@@ -63,18 +63,10 @@ class Contact extends AbstractMethod
                         $this->client->getLogger()->notice("Добавлена запись Контакта {$result->getId()} ({$contact->Cont_ID})");
                     }
                     $owner_type = ContactRelationTable::OWNER_TYPE_CLIENT_COMPANY;
-                    $company = CompanyTable::getList([
-                        'filter' => [
-                            '=guid_id' => $contact->Cont_ID_Company
-                        ]
-                    ])->fetch();
+                    $company = CompanyTable::getByField('guid_id', $contact->Cont_ID_Company);
                     if(!$company) {
                         $owner_type = ContactRelationTable::OWNER_TYPE_HOGART_COMPANY;
-                        $company = HogartCompanyTable::getList([
-                            'filter' => [
-                                '=guid_id' => $contact->Cont_ID_Company
-                            ]
-                        ])->fetch();
+                        $company = HogartCompanyTable::getByField('guid_id', $contact->Cont_ID_Company);
                     }
 
                     if (!empty($company['id'])) {
