@@ -9,6 +9,8 @@
 namespace Hogart\Lk\Exchange\SOAP\Method;
 
 
+use Hogart\Lk\Exchange\SOAP\Client;
+
 class Response extends Request
 {
     /** @var  AbstractResponseObject[] */
@@ -17,6 +19,9 @@ class Response extends Request
     public function addResponse(AbstractResponseObject $responseObject)
     {
         $this->Response[] = $responseObject;
+
+        if($responseObject->Error !== null) // @TODO: убрать во всех вызовах SOAP/Method логгирование ошибок по аналогии с Company
+            Client::getInstance()->getLogger()->error($responseObject->ErrorText . " (" . $responseObject->Error . ")");
 
         return $this;
     }
