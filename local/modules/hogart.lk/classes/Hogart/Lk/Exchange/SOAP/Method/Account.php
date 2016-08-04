@@ -102,11 +102,11 @@ class Account extends AbstractMethod
             $result = AccountTable::createOrUpdateByField([
                 'user_guid_id' => $accountInfo->Acc_ID,
                 'user_id' => $user['ID'],
-                'contact_id' => ($contact['id'] ?: 0),
-                'main_manager_id' => ($main_manager['id'] ?: 0),
-                'main_store_id' => ($main_store['ID'] ?: 0),
-                'head_account_id' => ($head_account['id'] ?: 0),
-                'main_contract_id' => ($main_contract['id'] ?: 0),
+                'contact_id' => $contact['id'] ?: 0,
+                'main_manager_id' => $main_manager['id'] ?: 0,
+                'main_store_id' => $main_store['ID'] ?: 0,
+                'head_account_id' => $head_account['id'] ?: 0,
+                'main_contract_id' => $main_contract['id'] ?: 0,
                 'is_promo_accesss' => $accountInfo->Acc_PromoAccess,
                 'is_active' => !$accountInfo->deletion_mark
             ], 'user_guid_id');

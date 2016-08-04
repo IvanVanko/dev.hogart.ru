@@ -22,7 +22,8 @@ use Hogart\Lk\Exchange\SOAP\Method\OrderDocs\OrderPayment;
 use Hogart\Lk\Exchange\SOAP\Method\Staff;
 use Hogart\Lk\Exchange\SOAP\Method\Company;
 use Hogart\Lk\Exchange\SOAP\Method\PaymentAccount;
-use Hogart\Lk\Exchange\SOAP\Method\Order;
+use Hogart\Lk\Exchange\SOAP\Method\Orders;
+use Hogart\Lk\Exchange\SOAP\Method\Order\Order;
 use Hogart\Lk\Logger\BitrixLogger;
 use Hogart\Lk\Logger\LoggerCollection;
 use Hogart\Lk\Logger\LoggerInterface;
@@ -155,6 +156,7 @@ class Client
         $this->registerMethod(new RTUItem());
         $this->registerMethod(new OrderPayment());
         $this->registerMethod(new Order());
+        $this->registerMethod(new OrderItem());
     }
 
     /**

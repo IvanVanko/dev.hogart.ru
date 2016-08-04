@@ -17,6 +17,7 @@ use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ReferenceField;
 use Bitrix\Main\Entity\StringField;
 use Doctrine\Common\Annotations\Annotation\Enum;
+use Hogart\Lk\Field\GuidField;
 
 class OrderItemTable extends AbstractEntity
 {
@@ -45,6 +46,8 @@ class OrderItemTable extends AbstractEntity
                 'primary' => true,
                 "autocomplete" => true
             ]),
+            // @todo: запустить пересоздание таблицы
+            new StringField('d_guid_id'), // составной GUID Order_guid_id+'_'+Item_guid_id
             new IntegerField("order_id"),
             new ReferenceField("order", "OrderTable", ["=this.order_id" => "ref.id"]),
             new IntegerField("string_number"),
@@ -68,7 +71,7 @@ class OrderItemTable extends AbstractEntity
                     self::STATUS_SHIPMENT,
                 ]
             ]),
-            new DateField("delivery_time"),
+            new IntegerField("delivery_time"), // Ориентировочный срок поставки если 1 или 2(заказан у поставщика)
             new StringField("group")
         ];
     }

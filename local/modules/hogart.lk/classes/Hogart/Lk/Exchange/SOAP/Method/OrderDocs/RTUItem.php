@@ -52,7 +52,7 @@ class RTUItem extends AbstractMethod
             ])->fetch();
             // данные по Элементам Платежных документов на отгрузку
             $result = RTUItemTable::createOrUpdateByField([
-                'guid_id' => $rtu_item->RTU_Item_ID, // @todo такого поля с guid'ом нету - проверить что бы добавили - или возможно делать вместе с RTU
+                'd_guid_id' => $rtu_item->RTU_Item_ID,
                 'rtu_id' => $rtu['id'],
                 'item_id' => $order_item['ID'],
                 'count' => $rtu_item->Count,
@@ -63,7 +63,7 @@ class RTUItem extends AbstractMethod
                 'total_vat' => $rtu_item->Sum_VAL,
                 'group' => $rtu_item->Group,
                 'shipping_date' => new Date((string)$rtu_item->Ship_Date, 'Y-m-d'),
-            ], 'guid_id');
+            ], 'd_guid_id');
 
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
