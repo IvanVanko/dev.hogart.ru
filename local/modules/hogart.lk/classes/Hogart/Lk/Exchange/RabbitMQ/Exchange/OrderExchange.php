@@ -11,7 +11,7 @@ namespace Hogart\Lk\Exchange\RabbitMQ\Exchange;
 
 use Hogart\Lk\Exchange\SOAP\Client;
 
-class OrdersExchange extends AbstractExchange
+class OrderExchange extends AbstractExchange
 {
     /**
      * @inheritDoc
