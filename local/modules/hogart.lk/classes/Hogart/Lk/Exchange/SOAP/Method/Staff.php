@@ -41,7 +41,7 @@ class Staff extends AbstractMethod
         }
     }
 
-    public function createOrUpdateStaff()
+    public function updateStaff()
     {
         $answer = new Response();
         $response = $this->getStaff();

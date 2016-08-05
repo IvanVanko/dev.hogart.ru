@@ -36,7 +36,6 @@ class RTUItemTable extends AbstractEntity
                 'primary' => true,
                 "autocomplete" => true
             ]),
-            // @todo: запустить пересоздание таблицы
             new StringField('d_guid_id'),  // составной GUID RTU_guid_id+'_'+Item_guid_id
             new IntegerField("rtu_id"),
             new ReferenceField("rtu", "RTUTable", ["=this.order_id" => "ref.id"]),

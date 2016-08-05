@@ -26,5 +26,10 @@ class ContactInfo extends AbstractMethod
         return $this->client->getSoapClient()->ContactInfoGet(new Request());
     }
 
+    public function updateContactInfos()
+    {
+        // @todo: экспорт информации по контактам
+    }
+
     
 }

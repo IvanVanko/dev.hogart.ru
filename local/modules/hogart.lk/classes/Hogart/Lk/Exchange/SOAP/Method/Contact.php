@@ -38,7 +38,7 @@ class Contact extends AbstractMethod
         }
     }
 
-    public function createOrUpdateContacts()
+    public function updateContacts()
     {
         $answer = new Response();
         $response = $this->getContacts();

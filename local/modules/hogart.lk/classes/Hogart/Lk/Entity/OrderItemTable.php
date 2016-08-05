@@ -46,7 +46,6 @@ class OrderItemTable extends AbstractEntity
                 'primary' => true,
                 "autocomplete" => true
             ]),
-            // @todo: запустить пересоздание таблицы
             new StringField('d_guid_id'), // составной GUID Order_guid_id+'_'+Item_guid_id
             new IntegerField("order_id"),
             new ReferenceField("order", "OrderTable", ["=this.order_id" => "ref.id"]),

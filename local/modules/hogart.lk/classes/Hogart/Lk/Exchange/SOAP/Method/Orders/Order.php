@@ -5,7 +5,7 @@
  * At: 04.08.2016 10:01
  */
 
-namespace Hogart\Lk\Exchange\SOAP\Method\Order;
+namespace Hogart\Lk\Exchange\SOAP\Method\Orders;
 
 use Bitrix\Catalog\StoreTable;
 use Hogart\Lk\Entity\OrderTable;
@@ -50,28 +50,18 @@ class Order extends AbstractMethod
             $client_company = CompanyTable::getByField('guid_id', $order->Order_ID_Company);
             $contract = ContractTable::getByField('guid_id', $order->Order_ID_Contract);
             $stock_store = StoreTable::getList(['filter' => ['=XML_ID' => $order->Order_ID_Stock]])->fetch();
-            $account = AccountTable::getByField('guid_id', $order->Order_ID_Account);
             $manager = StaffTable::getByField('guid_id', $order->Order_ID_Staff);
-
+            $account = AccountTable::getByField('user_guid_id', $order->Order_ID_Account);
             // @todo Добавить обработку ошибок
             if (!isset($hogart_company)) {
-
             }
             if (!isset($client_company)) {
-
-            }
-            if (!isset($account)) {
-
             }
             if (!isset($contract)) {
-
-            }
-            if (!isset($manager)) {
-
             }
             if (!isset($stock_store)) {
-
             }
+
 
             $result = OrderTable::createOrUpdateByField([
                 'guid_id' => $order->Order_ID,
@@ -83,11 +73,11 @@ class Order extends AbstractMethod
                 'contract_id' => $contract['id'],
                 'order_status' => $order->Order_Status,
                 'store_id' => $stock_store['ID'],
-                'account_id' => $account['id'],
-                'staff_id' => $manager['id'],
+                'staff_id' => $manager['id'] ?: 0,
+                'account_id' => $account['id'] ?: 0,
                 'note' => $order->Order_Note,
-                'sale_granted' => $order->Order_Sale_granted,
-                'sale_max_money' => $order->Order_Max_Money_Sale,
+                'sale_granted' => $order->Order_Sale_Granted,
+                'sale_max_money' => $order->Order_Max_Monet_Sale,
                 'perm_bill' => $order->Order_Perm_Bill,
                 'perm_reserve' => $order->Order_Perm_Reserve,
                 'currency_code' => $order->Order_ID_Money,

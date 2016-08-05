@@ -5,17 +5,13 @@
  * At: 04.08.2016 10:01
  */
 
-namespace Hogart\Lk\Exchange\SOAP\Method\Order;
+namespace Hogart\Lk\Exchange\SOAP\Method\Orders;
 
 use Bitrix\Iblock\ElementTable;
 use Bitrix\Main\DB\SqlExpression;
 use Hogart\Lk\Entity\OrderItemTable;
 use Hogart\Lk\Entity\OrderTable;
-use Hogart\Lk\Entity\RTUItemTable;
-use Hogart\Lk\Entity\RTUTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
-use Bitrix\Main\Type\Date;
-use Hogart\Lk\Entity\CompanyTable;
 use Bitrix\Main\Entity\UpdateResult;
 use Hogart\Lk\Exchange\SOAP\Method\MethodException;
 use Hogart\Lk\Exchange\SOAP\Method\Response;
@@ -25,7 +21,7 @@ use Hogart\Lk\Exchange\SOAP\Method\ResponseObject;
  * Class Company - добавление Компании и Видов деятельности
  * @package Hogart\Lk\Exchange\SOAP\Method
  */
-class Order extends AbstractMethod
+class OrderItem extends AbstractMethod
 {
     /**
      * @inheritDoc
@@ -41,7 +37,7 @@ class Order extends AbstractMethod
      * @param Response $answer
      * @return int
      */
-    public function updateOrders($orderItems, Response $answer)
+    public function updateOrderItems($orderItems, Response $answer)
     {
         foreach ($orderItems as $orderItem) {
 
@@ -49,7 +45,7 @@ class Order extends AbstractMethod
             $item = ElementTable::getList([
                 'filter'=>[
                     '=XML_ID' => $orderItem->ID_Item,
-                    '=ref.IBLOCK_ID' => new SqlExpression('?i', CATALOG_IBLOCK_ID)
+                    '=IBLOCK_ID' => new SqlExpression('?i', CATALOG_IBLOCK_ID)
                 ]
             ])->fetch();
 
@@ -58,15 +54,13 @@ class Order extends AbstractMethod
 
             }
             if (!isset($item)) {
-
             }
-
-            $result = OrderItemTable::createOrUpdateByField([
+            $data = [
                 'd_guid_id' => $orderItem->Order_Item_ID,
                 'order_id' => $order['id'],
                 'string_number' => $orderItem->Order_Line_Number,
-                'item_id' => $item['id'],
-                'acu' => $orderItem->Item_Article,
+                'item_id' => $item['id'] ?: 0, // @todo: убрать когда будет залитый элемент каталога
+                'acu' => $orderItem->Item_Article ?: '',
                 'name' => $orderItem->Item_Name,
                 'count' => $orderItem->Count,
                 'cost' => $orderItem->Cost,
@@ -74,10 +68,12 @@ class Order extends AbstractMethod
                 'discount_cost' => $orderItem->Cost_Disc,
                 'total' => $orderItem->Summ,
                 'total_vat' => $orderItem->Sum_VAL,
-                'status' => $orderItem->Status_Item,
+                'status' => (int)$orderItem->Status_Item,
                 'delivery_time' => $orderItem->Delivery_Time,
                 'group' => $orderItem->Group,
-            ], 'd_guid_id');
+            ];
+            $result = OrderItemTable::createOrUpdateByField($data, 'd_guid_id');
+
 
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();

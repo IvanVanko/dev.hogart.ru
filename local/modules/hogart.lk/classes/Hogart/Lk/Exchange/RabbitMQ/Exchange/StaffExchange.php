@@ -30,7 +30,7 @@ class StaffExchange extends AbstractExchange
     {
         switch ($key = $this->getRoutingKey($envelope)) {
             case 'get':
-                $count = Client::getInstance()->Staff->createOrUpdateStaff();
+                $count = Client::getInstance()->Staff->updateStaff();
                 if (!empty($count)) {
                     $this
                         ->exchange

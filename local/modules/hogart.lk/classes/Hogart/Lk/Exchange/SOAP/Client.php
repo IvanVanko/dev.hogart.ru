@@ -17,13 +17,14 @@ use Hogart\Lk\Exchange\SOAP\Method\Contact;
 use Hogart\Lk\Exchange\SOAP\Method\Contract;
 use Hogart\Lk\Exchange\SOAP\Method\ContactInfo;
 use Hogart\Lk\Exchange\SOAP\Method\HogartCompany;
+use Hogart\Lk\Exchange\SOAP\Method\Orders\Order;
+use Hogart\Lk\Exchange\SOAP\Method\Orders\OrderItem;
 use Hogart\Lk\Exchange\SOAP\Method\OrderDocs;
 use Hogart\Lk\Exchange\SOAP\Method\OrderDocs\OrderPayment;
 use Hogart\Lk\Exchange\SOAP\Method\Staff;
 use Hogart\Lk\Exchange\SOAP\Method\Company;
 use Hogart\Lk\Exchange\SOAP\Method\PaymentAccount;
 use Hogart\Lk\Exchange\SOAP\Method\Orders;
-use Hogart\Lk\Exchange\SOAP\Method\Order\Order;
 use Hogart\Lk\Logger\BitrixLogger;
 use Hogart\Lk\Logger\LoggerCollection;
 use Hogart\Lk\Logger\LoggerInterface;
@@ -34,12 +35,12 @@ use Hogart\Lk\Exchange\SOAP\Method\OrderDocs\RTUItem;
  * Class Client
  * @package Hogart\Lk\Exchange\SOAP
  *
- * @property Account $Account
+ * @property Account $Account [+] test
  * @property Address $Address
- * @property Company $Company
+ * @property Company $Company [+] test
  * @property HogartCompany $HogartCompany
  * @property Staff $Staff
- * @property Contact $Contact
+ * @property Contact $Contact [+] test
  * @property ContactInfo $ContactInfo
  * @property Contract $Contract
  * @property PaymentAccount $PaymentAccount
@@ -48,7 +49,9 @@ use Hogart\Lk\Exchange\SOAP\Method\OrderDocs\RTUItem;
  * @property RTUItem $RTUItem [-] test
  * @property OrderPayment $OrderPayment [-] test
  * @property OrderDocs $OrderDocs [-] test
- * @property Order $Order [-] test
+ * @property Orders $Orders [+] test
+ * @property Order $Order [+] test
+ * @property OrderItem $OrderItem [+] test
  */
 class Client
 {
@@ -155,6 +158,7 @@ class Client
         $this->registerMethod(new RTU());
         $this->registerMethod(new RTUItem());
         $this->registerMethod(new OrderPayment());
+        $this->registerMethod(new Orders());
         $this->registerMethod(new Order());
         $this->registerMethod(new OrderItem());
     }

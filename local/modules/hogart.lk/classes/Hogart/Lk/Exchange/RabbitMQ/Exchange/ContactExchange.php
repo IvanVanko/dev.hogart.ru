@@ -1,17 +1,15 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Ivan Koretskiy aka gillbeits[at]gmail.com
- * Date: 04/08/16
- * Time: 01:57
+ * By: Ivan Kiselev aka shaqito@gmail.com
+ * Using: PhpStorm.
+ * Date: 05.08.2016 16:24
  */
 
 namespace Hogart\Lk\Exchange\RabbitMQ\Exchange;
 
-
 use Hogart\Lk\Exchange\SOAP\Client;
 
-class OrdersExchange extends AbstractExchange
+class ContactExchange extends AbstractExchange
 {
     /**
      * @inheritDoc
@@ -21,8 +19,6 @@ class OrdersExchange extends AbstractExchange
         return [
             __NAMESPACE__ . '\HogartCompanyExchange',
             __NAMESPACE__ . '\CompanyExchange',
-            __NAMESPACE__ . '\AccountExchange',
-            __NAMESPACE__ . '\StaffExchange'
         ];
     }
 
@@ -31,7 +27,7 @@ class OrdersExchange extends AbstractExchange
      */
     function getQueueName()
     {
-        return "order";
+        return "contact";
     }
 
     /**
@@ -41,7 +37,7 @@ class OrdersExchange extends AbstractExchange
     {
         switch ($key = $this->getRoutingKey($envelope)) {
             case 'get':
-                $count = Client::getInstance()->Orders->updateOrders();
+                $count = Client::getInstance()->Contact->updateContacts();
                 if (!empty($count)) {
                     $this
                         ->exchange

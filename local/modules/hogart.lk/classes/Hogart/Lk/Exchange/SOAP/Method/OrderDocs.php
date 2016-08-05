@@ -22,12 +22,12 @@ class OrderDocs extends AbstractMethod
 
     public function getOrderDocs()
     {
-        return $this->client->getSoapClient()->Docs_OrderGet(new Request());
+        return $this->client->getSoapClient()->DocsOrderGet(new Request());
     }
 
     public function orderDocsAnswer(Response $response)
     {
-        return $this->client->getSoapClient()->Docs_OrderAnswer($response);
+        return $this->client->getSoapClient()->DocsOrderAnswer($response);
     }
 
     /**

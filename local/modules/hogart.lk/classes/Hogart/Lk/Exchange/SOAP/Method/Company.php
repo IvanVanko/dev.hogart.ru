@@ -66,12 +66,16 @@ class Company extends AbstractMethod
             }
         }
         foreach ($response->return->Company as $company) {
-            $chief = ContactTable::getByField('guid_id', $company->Comp_ID_Chief);
-
-            if(empty($chief['id'])){
-                $answer->addResponse(new ResponseObject($company->Comp_ID, new MethodException('Задан несуществующий Comp_ID_Chief')));
-                continue;
+            if ($company->Comp_ID_Chief == '00000000-0000-0000-0000-000000000000')
+                $chief['id'] = 0;
+            else {
+                $chief = ContactTable::getByField('guid_id', $company->Comp_ID_Chief);
+                if (empty($chief['id'])) {
+                    $answer->addResponse(new ResponseObject($company->Comp_ID, new MethodException("Задан несуществующий Comp_ID_Chief}")));
+                    continue;
+                }
             }
+
 
             $result = CompanyTable::createOrUpdateByField([
                 'guid_id' => $company->Comp_ID,

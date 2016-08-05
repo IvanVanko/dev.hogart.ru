@@ -36,7 +36,7 @@ class HogartCompany extends AbstractMethod
         }
     }
 
-    public function createOrUpdateOrganisations()
+    public function updateHogartCompanies()
     {
         $answer = new Response();
         $response = $this->getOrganisations();
