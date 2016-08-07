@@ -39,7 +39,7 @@ class Orders extends AbstractMethod
     {
         $answer = new Response();
         $response = $this->getOrders();
-//        $this->client->Order->updateOrders($response->return->Headers, $answer);
+        $this->client->Order->updateOrders($response->return->Headers, $answer);
         $this->client->OrderItem->updateOrderItems($response->return->Items, $answer);
 
         return count($answer->Response);
