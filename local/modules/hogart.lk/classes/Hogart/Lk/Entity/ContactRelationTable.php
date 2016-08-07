@@ -33,4 +33,15 @@ class ContactRelationTable extends AbstractEntityRelation
         ], parent::getMap());
     }
 
+    /**
+     * @inheritDoc
+     */
+    protected static function getIndexes()
+    {
+        return [
+            new Index('idx_contact_relation', ['contact_id', 'owner_id']),
+            new Index('idx_is_main', ['is_main']),
+            new Index('idx_owner_type', ['owner_type'])
+        ];
+    }
 }

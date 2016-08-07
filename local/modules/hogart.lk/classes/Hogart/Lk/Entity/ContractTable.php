@@ -41,11 +41,11 @@ class ContractTable extends AbstractEntity
                 'primary' => true,
                 "autocomplete" => true
             ]),
+            new GuidField("guid_id"),
             new IntegerField("company_id"),
             new ReferenceField("company", "CompanyTable", ["=this.company_id" => "ref.id"]),
             new IntegerField("hogart_company_id"),
             new ReferenceField("hogart_company", "HogartCompanyTable", ["=this.hogart_company_id" => "ref.id"]),
-            new GuidField("guid_id"),
             new StringField("number"),
             new DateField("start_date"),
             new DateField("end_date"),
@@ -76,4 +76,15 @@ class ContractTable extends AbstractEntity
         ];
     }
 
+    /**
+     * @inheritDoc
+     */
+    protected static function getIndexes()
+    {
+        return [
+            new Index('idx_guid_id', ['guid_id' => 36]),
+            new Index('idx_contract_entity_most', ['company_id', 'hogart_company_id']),
+            new Index('idx_is_active', ['is_active']),
+        ];
+    }
 }

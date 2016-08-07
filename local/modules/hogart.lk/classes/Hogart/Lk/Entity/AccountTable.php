@@ -68,6 +68,9 @@ class AccountTable extends AbstractEntity
     {
         return [
             new Index("idx_user_guid_id", ["user_guid_id" => 36]),
+            new Index("idx_account_entity_most", ['user_id', 'contact_id', 'main_manager_id', 'main_store_id', 'head_account_id', 'main_contract_id']),
+            new Index("idx_is_active", ["is_active"]),
+            new Index("idx_is_promo_accesss", ["is_promo_accesss"]),
         ];
     }
 }

@@ -33,4 +33,14 @@ class AccountCompanyRelationTable extends AbstractEntity
             new ReferenceField("company", "CompanyTable", ["=this.company_id" => "ref.id"]),
         ];
     }
+
+    /**
+     * @inheritDoc
+     */
+    protected static function getIndexes()
+    {
+        return [
+            new Index("idx_account_company_relation", ['account_id', 'company_id']),
+        ];
+    }
 }

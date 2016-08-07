@@ -79,4 +79,17 @@ class CompanyTable extends AbstractEntity
         ];
     }
 
+    /**
+     * @inheritDoc
+     */
+    protected static function getIndexes()
+    {
+        return [
+            new Index("idx_guid_id", ["guid_id" => 36]),
+            new Index("idx_company_entity_most", ['kind_activity_id', 'chief_contact_id']),
+            new Index('idx_type', ['type']),
+            new Index('idx_doc_pass', ['doc_pass']),
+            new Index('idx_is_active', ['is_active'])
+        ];
+    }
 }

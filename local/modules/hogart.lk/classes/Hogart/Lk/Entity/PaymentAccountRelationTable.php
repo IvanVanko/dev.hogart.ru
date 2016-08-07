@@ -33,4 +33,16 @@ class PaymentAccountRelationTable extends AbstractEntityRelation
             new ReferenceField("payment_account", "PaymentAccountTable", ["=this.payment_account_id" => "ref.id"]),
         ], parent::getMap());
     }
+
+    /**
+     * @inheritDoc
+     */
+    protected static function getIndexes()
+    {
+        return [
+            new Index('idx_payment_relation', ['payment_account_id', 'owner_id']),
+            new Index('idx_is_main', ['is_main']),
+            new Index('idx_owner_type', ['owner_type'])
+        ];
+    }
 }

@@ -75,4 +75,15 @@ class OrderItemTable extends AbstractEntity
         ];
     }
 
+    /**
+     * @inheritDoc
+     */
+    protected static function getIndexes()
+    {
+        return [
+            new Index('idx_d_guid_id', ['d_guid_id' => 73]),
+            new Index('idx_order_item_entity_most', ['order_id', 'item_id', 'status']),
+            new Index('idx_is_active', ['is_active']),
+        ];
+    }
 }

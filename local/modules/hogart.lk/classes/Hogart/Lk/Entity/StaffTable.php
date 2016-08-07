@@ -45,4 +45,15 @@ class StaffTable extends AbstractEntity
             new IntegerField("branch")
         ];
     }
+
+    /**
+     * @inheritDoc
+     */
+    protected static function getIndexes()
+    {
+        return [
+            new Index('idx_guid_id', ['guid_id' => 36]),
+            new Index('idx_staff_entity_most', ['guid_id']),
+        ];
+    }
 }

@@ -37,6 +37,7 @@ class PaymentAccountTable extends AbstractEntity
                 "autocomplete" => true
             ]),
             new GuidField("guid_id"),
+
             new StringField("number"),
             new StringField("currency_code"),
             new ReferenceField("currency", "Bitrix\\Currency\\CurrencyTable", ["=this.currency_code" => "ref.CURRENCY"]),
@@ -53,8 +54,8 @@ class PaymentAccountTable extends AbstractEntity
     protected static function getIndexes()
     {
         return [
-            new Index("idx_guid_id", ["guid_id" => 36])
+            new Index("idx_guid_id", ["guid_id" => 36]),
+            new Index("idx_is_active", ["is_active"])
         ];
     }
-
 }

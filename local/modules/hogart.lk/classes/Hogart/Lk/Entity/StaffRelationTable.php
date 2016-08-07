@@ -30,4 +30,16 @@ class StaffRelationTable extends AbstractEntityRelation
             new ReferenceField("staff", "StaffTable", ["=this.staff_id" => "ref.id"]),
         ], parent::getMap());
     }
+
+    /**
+     * @inheritDoc
+     */
+    protected static function getIndexes()
+    {
+        return [
+            new Index('idx_staff_relation', ['staff_id', 'owner_id']),
+            new Index('idx_is_main', ['is_main']),
+            new Index('idx_owner_type', ['owner_type'])
+        ];
+    }
 }

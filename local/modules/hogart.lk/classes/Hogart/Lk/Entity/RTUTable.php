@@ -57,8 +57,18 @@ class RTUTable extends AbstractEntity
                 ]
             ]),
             new BooleanField("is_active")
-
         ];
     }
 
+    /**
+     * @inheritDoc
+     */
+    protected static function getIndexes()
+    {
+        return [
+            new Index('idx_guid_id', ['guid_id' => 36]),
+            new Index('idx_rtu_entity_most', ['order_id', 'store_guid' => 36, 'order_type']),
+            new Index('idx_is_active', ['is_active']),
+        ];
+    }
 }

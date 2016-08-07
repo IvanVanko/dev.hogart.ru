@@ -69,8 +69,9 @@ class ContactInfoTable extends AbstractEntity
     protected static function getIndexes()
     {
         return [
-            new Index("idx_guid_id", ["guid_id" => 36]),
-            new Index("idx_contact_id", ["contact_id"]),
+            new Index("idx_d_guid_id", ["d_guid_id" => 73]),
+            new Index("idx_company", ["company_id"]),
+            new Index('idx_is_active', ['is_active'])
         ];
     }
 }

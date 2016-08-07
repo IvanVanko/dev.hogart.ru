@@ -49,7 +49,8 @@ class HogartCompanyTable extends AbstractEntity
     protected static function getIndexes()
     {
         return [
-            new Index("idx_guid_id", ["guid_id" => 36])
+            new Index("idx_guid_id", ["guid_id" => 36]),
+            new Index('idx_is_active', ['is_active']),
         ];
     }
 }

@@ -89,4 +89,15 @@ class AddressTable extends AbstractEntity
             new BooleanField("is_active")
         ];
     }
+
+    /**
+     * @inheritDoc
+     */
+    protected static function getIndexes()
+    {
+        return [
+            new Index("idx_address_entity_most", ['owner_id', 'type_id']),
+            new Index('idx_is_active', ['is_active'])
+        ];
+    }
 }

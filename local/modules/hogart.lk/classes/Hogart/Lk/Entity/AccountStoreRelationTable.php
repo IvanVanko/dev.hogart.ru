@@ -33,4 +33,14 @@ class AccountStoreRelationTable extends AbstractEntity
             new ReferenceField("store", "Bitrix\\Catalog\\StoreTable", ["=this.store_guid" => "ref.XML_ID"]),
         ];
     }
+
+    /**
+     * @inheritDoc
+     */
+    protected static function getIndexes()
+    {
+        return [
+            new Index("idx_account_relation", ['account_id', 'store_guid' => 36]),
+        ];
+    }
 }

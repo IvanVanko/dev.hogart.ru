@@ -42,4 +42,13 @@ class CompanyDiscountTable extends AbstractEntity
         ];
     }
 
+    /**
+     * @inheritDoc
+     */
+    protected static function getIndexes()
+    {
+        return [
+            new Index("idx_company_discount_entity_most", ['company_id', 'item_id']),
+        ];
+    }
 }

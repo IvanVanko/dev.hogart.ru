@@ -39,4 +39,14 @@ class KindOfActivityTable extends AbstractEntity
             new TextField("description")
         ];
     }
+
+    /**
+     * @inheritDoc
+     */
+    protected static function getIndexes()
+    {
+        return [
+            new Index('idx_guid_id', ['guid_id' => 36]),
+        ];
+    }
 }

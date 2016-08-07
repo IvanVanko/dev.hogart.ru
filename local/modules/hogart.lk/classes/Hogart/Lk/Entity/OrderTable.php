@@ -86,4 +86,15 @@ class OrderTable extends AbstractEntity
         ];
     }
 
+    /**
+     * @inheritDoc
+     */
+    protected static function getIndexes()
+    {
+        return [
+            new Index('idx_guid_id', ['guid_id' => 36]),
+            new Index('idx_order_entity_most', ['company_id', 'hogart_company_id', 'contract_id', 'store_id', 'account_id', 'staff_id']),
+            new Index('idx_is_active', ['is_active']),
+        ];
+    }
 }

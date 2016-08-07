@@ -44,9 +44,9 @@ class OrderPaymentTable extends AbstractEntity
                 'primary' => true,
                 "autocomplete" => true
             ]),
+            new GuidField("guid_id"),
             new IntegerField("order_id"),
             new ReferenceField("order", "OrderTable", ["=this.order_id" => "ref.id"]),
-            new GuidField("guid_id"),
 
             new DateField("payment_date"),
             new StringField("number"),
@@ -70,4 +70,15 @@ class OrderPaymentTable extends AbstractEntity
         ];
     }
 
+    /**
+     * @inheritDoc
+     */
+    protected static function getIndexes()
+    {
+        return [
+            new Index('idx_guid_id', ['guid_id' => 36]),
+            new Index('idx_order_entity_most', ['order_id']),
+            new Index('idx_is_active', ['is_active']),
+        ];
+    }
 }

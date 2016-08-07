@@ -33,8 +33,8 @@ class AddressTypeTable extends AbstractEntity
                 'primary' => true,
                 "autocomplete" => true
             ]),
-            new StringField("name"),
-            new GuidField("guid_id")
+            new GuidField("guid_id"),
+            new StringField("name")
         ];
     }
 
