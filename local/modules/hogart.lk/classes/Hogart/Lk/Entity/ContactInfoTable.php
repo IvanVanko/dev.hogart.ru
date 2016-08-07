@@ -43,9 +43,9 @@ class ContactInfoTable extends AbstractEntity
                 'primary' => true,
                 "autocomplete" => true
             ]),
-            new GuidField("guid_id"),
-            new IntegerField("contact_id"),
-            new ReferenceField("contact", "ContactTable", ["=this.contact_id" => "ref.id"]),
+            new GuidField("d_guid_id"),
+            new IntegerField("company_id"),
+            new ReferenceField("company", "CompanyTable", ["=this.company_id" => "ref.id"]),
             new EnumField("type", [
                 'values' => [
                     self::TYPE_PHONE,
