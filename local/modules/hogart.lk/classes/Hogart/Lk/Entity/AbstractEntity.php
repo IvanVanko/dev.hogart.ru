@@ -6,7 +6,7 @@
  * Time: 21:52
  */
 
-// @todo Пересоздать сущности (т.к. добавлены индексы)
+// @todo Пересоздать индексы
 namespace Hogart\Lk\Entity;
 
 use Bitrix\Main\Entity;
