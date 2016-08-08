@@ -63,7 +63,6 @@ class RTUItemTable extends AbstractEntity
         return [
             new Index('idx_d_guid_id', ['d_guid_id' => 73]),
             new Index('idx_rtu_item_entity_most', ['rtu_id', 'item_id']),
-            new Index('idx_is_active', ['is_active']),
         ];
     }
 

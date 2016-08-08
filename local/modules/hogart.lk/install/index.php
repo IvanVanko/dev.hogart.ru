@@ -32,25 +32,28 @@ class hogart_lk extends CModule
     function InstallDB()
     {
         CModule::IncludeModule($this->MODULE_ID);
-        \Hogart\Lk\Entity\AddressTypeTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\AccountCompanyRelationTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\AccountStoreRelationTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\AccountTable::createTableIfNotExists();
         \Hogart\Lk\Entity\AddressTable::createTableIfNotExists();
-        \Hogart\Lk\Entity\HogartCompanyTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\AddressTypeTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\CompanyDiscountTable::createTableIfNotExists();
         \Hogart\Lk\Entity\CompanyTable::createTableIfNotExists();
-        \Hogart\Lk\Entity\ContactTable::createTableIfNotExists();
         \Hogart\Lk\Entity\ContactInfoTable::createTableIfNotExists();
         \Hogart\Lk\Entity\ContactRelationTable::createTableIfNotExists();
-        \Hogart\Lk\Entity\UserStoreTable::createTableIfNotExists();
-        \Hogart\Lk\Entity\CompanyDiscountTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\ContactTable::createTableIfNotExists();
         \Hogart\Lk\Entity\ContractTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\HogartCompanyTable::createTableIfNotExists();
         \Hogart\Lk\Entity\KindOfActivityTable::createTableIfNotExists();
-        \Hogart\Lk\Entity\RTUTable::createTableIfNotExists();
-        \Hogart\Lk\Entity\RTUItemTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\OrderItemTable::createTableIfNotExists();
         \Hogart\Lk\Entity\OrderPaymentTable::createTableIfNotExists();
         \Hogart\Lk\Entity\OrderTable::createTableIfNotExists();
-        \Hogart\Lk\Entity\OrderItemTable::createTableIfNotExists();
-        \Hogart\Lk\Entity\PaymentAccountTable::createTableIfNotExists();
-        \Hogart\Lk\Entity\StaffTable::createTableIfNotExists();
         \Hogart\Lk\Entity\PaymentAccountRelationTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\PaymentAccountTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\RTUItemTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\RTUTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\StaffRelationTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\StaffTable::createTableIfNotExists();
 
         return true;
     }
@@ -58,27 +61,27 @@ class hogart_lk extends CModule
     function UnInstallDB()
     {
         CModule::IncludeModule($this->MODULE_ID);
-
-        \Hogart\Lk\Entity\AddressTypeTable::dropTableIfExists();
-        \Hogart\Lk\Entity\AccountTable::dropTableIfExists();
-        \Hogart\Lk\Entity\AccountStoreRelationTable::dropTableIfExists();
-        \Hogart\Lk\Entity\AddressTable::dropTableIfExists();
-        \Hogart\Lk\Entity\HogartCompanyTable::dropTableIfExists();
-        \Hogart\Lk\Entity\CompanyTable::dropTableIfExists();
         \Hogart\Lk\Entity\AccountCompanyRelationTable::dropTableIfExists();
-        \Hogart\Lk\Entity\ContactTable::dropTableIfExists();
+        \Hogart\Lk\Entity\AccountStoreRelationTable::dropTableIfExists();
+        \Hogart\Lk\Entity\AccountTable::dropTableIfExists();
+        \Hogart\Lk\Entity\AddressTable::dropTableIfExists();
+        \Hogart\Lk\Entity\AddressTypeTable::dropTableIfExists();
+        \Hogart\Lk\Entity\CompanyDiscountTable::dropTableIfExists();
+        \Hogart\Lk\Entity\CompanyTable::dropTableIfExists();
         \Hogart\Lk\Entity\ContactInfoTable::dropTableIfExists();
         \Hogart\Lk\Entity\ContactRelationTable::dropTableIfExists();
-        \Hogart\Lk\Entity\CompanyDiscountTable::dropTableIfExists();
+        \Hogart\Lk\Entity\ContactTable::dropTableIfExists();
         \Hogart\Lk\Entity\ContractTable::dropTableIfExists();
+        \Hogart\Lk\Entity\HogartCompanyTable::dropTableIfExists();
         \Hogart\Lk\Entity\KindOfActivityTable::dropTableIfExists();
-        \Hogart\Lk\Entity\RTUTable::dropTableIfExists();
-        \Hogart\Lk\Entity\RTUItemTable::dropTableIfExists();
+        \Hogart\Lk\Entity\OrderItemTable::dropTableIfExists();
         \Hogart\Lk\Entity\OrderPaymentTable::dropTableIfExists();
         \Hogart\Lk\Entity\OrderTable::dropTableIfExists();
-        \Hogart\Lk\Entity\OrderItemTable::dropTableIfExists();
-        \Hogart\Lk\Entity\PaymentAccountTable::dropTableIfExists();
         \Hogart\Lk\Entity\PaymentAccountRelationTable::dropTableIfExists();
+        \Hogart\Lk\Entity\PaymentAccountTable::dropTableIfExists();
+        \Hogart\Lk\Entity\RTUItemTable::dropTableIfExists();
+        \Hogart\Lk\Entity\RTUTable::dropTableIfExists();
+        \Hogart\Lk\Entity\StaffRelationTable::dropTableIfExists();
         \Hogart\Lk\Entity\StaffTable::dropTableIfExists();
     }
 

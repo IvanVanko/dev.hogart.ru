@@ -58,11 +58,10 @@ abstract class AbstractEntity extends Entity\DataManager
      */
     public static function createIndexes()
     {
+        $sqlHelper = self::getEntity()->getConnection()->getSqlHelper();
         /** @var Index $index */
         foreach (static::getIndexes() as $index) {
             $columnNames = [];
-            $sqlHelper = self::getEntity()->getConnection()->getSqlHelper();
-
             foreach ($index->getColumns() as $columnName => $columnSize)
             {
                 if (is_int($columnName)) {
@@ -73,6 +72,32 @@ abstract class AbstractEntity extends Entity\DataManager
             }
             $sql = 'CREATE INDEX '.$sqlHelper->quote($index->getName()).' ON '.$sqlHelper->quote(static::getTableName()).' ('.join(', ', $columnNames).')';
             self::getEntity()->getConnection()->query($sql);
+        }
+    }
+
+    /**
+     * Удаление индексов
+     */
+    public static function dropIndexes()
+    {
+        $sqlHelper = self::getEntity()->getConnection()->getSqlHelper();
+        $rs = self::getEntity()->getConnection()->query("SHOW INDEX FROM `" . $sqlHelper->forSql(static::getTableName()) . "`");
+        
+        if (!$rs)
+            return null;
+
+        $indexes = array();
+        while ($ar = $rs->fetch())
+        {
+            $indexes[] = $ar["Key_name"];
+        }
+        
+        /** @var Index $index */
+        foreach (static::getIndexes() as $index) {
+            if (in_array($index->getName(), $indexes)) {
+                $sql = 'DROP INDEX '.$sqlHelper->quote($index->getName()).' ON '.$sqlHelper->quote(static::getTableName());
+                self::getEntity()->getConnection()->query($sql);
+            }
         }
     }
 
