@@ -22,6 +22,12 @@ use Bitrix\Main\DB\SqlExpression;
  */
 class CompanyDiscount extends AbstractMethod
 {
+    const ERROR_NO_CLIENT_COMPANY = 2;
+
+    protected static $errors = [
+        self::ERROR_NO_CLIENT_COMPANY => "Не найдена Компания клиента %s",
+    ];
+
     /**
      * @inheritDoc
      */
@@ -51,9 +57,12 @@ class CompanyDiscount extends AbstractMethod
             // получаем компанию пользователя
             $company = CompanyTable::getByField('guid_id', $discount->Discount_ID_Company);
             if(!isset($company)){
-                $answer->addResponse(new ResponseObject($discount->Discount_ID_Company.'_'.$discount->Discount_ID_Item,
-                    new MethodException(self::$default_errors[self::ERROR_RELATED_ENTITY_UNDEFINED]." (Компания '{$discount->Discount_ID_Company}')",
-                        self::ERROR_RELATED_ENTITY_UNDEFINED)));
+                $answer->addResponse(new ResponseObject(
+                    $discount->Discount_ID_Company . '_' . $discount->Discount_ID_Item, new MethodException(
+                        $this->getError(self::ERROR_NO_CLIENT_COMPANY, [$discount->Discount_ID_Company]
+                        )
+                    )
+                ));
                 continue;
             }
             // получаем товар

@@ -42,17 +42,13 @@ class RTUItem extends AbstractMethod
                     '=guid_id'=>$rtu_item->RTU_ID
                 ]
             ])->fetch();
-
-            if (empty($rtu)) {
-                throw new MethodException("Не найден RTU({$rtu_item->RTU_ID})");
-            }
-
             $order_item = ElementTable::getList([
                 'filter'=>[
                     '=XML_ID' => $rtu_item->ID_Item,
                     '=IBLOCK.ID' => new SqlExpression('?i', CATALOG_IBLOCK_ID)
                 ]
             ])->fetch();
+
             if (empty($order_item['ID'])) {
                 $n = $k + 1;
                 throw new MethodException("Не найдена позиция RTU({$rtu_item->RTU_ID}): порядковый номер - {$n}, ID - {$rtu_item->ID_Item}");

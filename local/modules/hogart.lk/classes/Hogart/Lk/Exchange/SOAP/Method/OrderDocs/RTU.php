@@ -18,6 +18,12 @@ use Hogart\Lk\Exchange\SOAP\Method\ResponseObject;
 
 class RTU extends AbstractMethod
 {
+    const ERROR_NO_ORDER = 1;
+
+    protected static $errors = [
+        self::ERROR_NO_ORDER => "Не найден Заказ %s",
+    ];
+
     /**
      * @inheritDoc
      */
@@ -42,6 +48,11 @@ class RTU extends AbstractMethod
                     '=guid_id'=>$rtu->Order_ID
                 ]
             ])->fetch();
+
+            if (empty($order['id'])) {
+                $answer->addResponse(new ResponseObject($rtu->RTU_ID, new MethodException($this->getError(self::ERROR_NO_ORDER, [$rtu->Order_ID]))));
+                continue;
+            }
             $result = RTUTable::createOrUpdateByField([
                 'guid_id' => $rtu->RTU_ID,
                 'order_id' => $order['id'],

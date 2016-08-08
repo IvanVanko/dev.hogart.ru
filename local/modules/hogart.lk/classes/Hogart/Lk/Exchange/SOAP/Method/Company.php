@@ -23,6 +23,12 @@ use Bitrix\Main\Entity\UpdateResult;
  */
 class Company extends AbstractMethod
 {
+    const ERROR_NO_ORDER = 1;
+
+    protected static $errors = [
+        self::ERROR_NO_ORDER => "Не найден Руководитель (Comp_ID_Chief) %s",
+    ];
+
     /**
      * @inheritDoc
      */
@@ -71,7 +77,7 @@ class Company extends AbstractMethod
             else {
                 $chief = ContactTable::getByField('guid_id', $company->Comp_ID_Chief);
                 if (empty($chief['id'])) {
-                    $answer->addResponse(new ResponseObject($company->Comp_ID, new MethodException("Задан несуществующий Comp_ID_Chief}")));
+                    $answer->addResponse(new ResponseObject($company->Comp_ID, new MethodException($this->getError(self::ERROR_NO_ORDER, [$company->Comp_ID_Chief]))));
                     continue;
                 }
             }

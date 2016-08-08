@@ -16,6 +16,12 @@ use Bitrix\Main\Entity\UpdateResult;
 
 class ContactInfo extends AbstractMethod
 {
+    const ERROR_NO_CLIENT_COMPANY = 2;
+
+    protected static $errors = [
+        self::ERROR_NO_CLIENT_COMPANY => "Не найдена Компания клиента %s",
+    ];
+
     /**
      * @inheritDoc
      */
@@ -42,7 +48,15 @@ class ContactInfo extends AbstractMethod
         $answer = new Response();
         $response = $this->getContactsInfo();
         foreach ($response->Info as $info) {
-            $company = CompanyTable::getByField('d_guid_id', $info->Info_ID);
+            $company = CompanyTable::getByField('guid_id', $info->Info_ID_Company);
+
+            if(!isset($company)){
+                $answer->addResponse(
+                    new ResponseObject($info->Info_ID, new MethodException($this->getError(self::ERROR_NO_CLIENT_COMPANY, [$info->Info_ID_Company])))
+                );
+                continue;
+            }
+
             $result = ContactInfoTable::createOrUpdateByField([
                 'd_guid_id' => $info->Info_ID,
                 'company_id' => $company['id'],

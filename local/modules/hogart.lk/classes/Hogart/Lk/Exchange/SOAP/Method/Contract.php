@@ -19,6 +19,14 @@ use Bitrix\Main\Type\Date;
  */
 class Contract extends AbstractMethod
 {
+    const ERROR_NO_HOGART_COMPANY = 1;
+    const ERROR_NO_CLIENT_COMPANY = 2;
+
+    protected static $errors = [
+        self::ERROR_NO_HOGART_COMPANY => "Не найдена Компания Хогарт %s",
+        self::ERROR_NO_CLIENT_COMPANY => "Не найдена Компания клиента %s",
+    ];
+
     /**
      * @inheritDoc
      */
@@ -46,14 +54,23 @@ class Contract extends AbstractMethod
 
         foreach ($response->return->Contract as $contract) {
 
-            $clientCompany = CompanyTable::getByField('guid_id', $contract->Contr_ID_Company);
+            $client_company = CompanyTable::getByField('guid_id', $contract->Contr_ID_Company);
 
-            $hogartCompany = HogartCompanyTable::getByField('guid_id', $contract->Contr_ID_Holding);
+            $hogart_company = HogartCompanyTable::getByField('guid_id', $contract->Contr_ID_Holding);
+
+            if (empty($hogart_company['id'])) {
+                $answer->addResponse(new ResponseObject($contract->Contr_ID, new MethodException($this->getError(self::ERROR_NO_HOGART_COMPANY, [$contract->Contr_ID_Holding]))));
+                continue;
+            }
+            if (empty($client_company['id'])) {
+                $answer->addResponse(new ResponseObject($contract->Contr_ID, new MethodException($this->getError(self::ERROR_NO_CLIENT_COMPANY, [$contract->Contr_ID_Company]))));
+                continue;
+            }
 
             $result = ContractTable::createOrUpdateByField([
-                'company_id' => $clientCompany['id'],
-                'hogart_company_id' => $hogartCompany['id'],
                 'guid_id' => $contract->Contr_ID,
+                'company_id' => $client_company['id'],
+                'hogart_company_id' => $hogart_company['id'],
                 'number' => $contract->Contr_Number,
                 'start_date' => new Date((string)$contract->Contr_Date, 'Y-m-d'),
                 'end_date' => new Date((string)$contract->Contr_DateTO, 'Y-m-d'),

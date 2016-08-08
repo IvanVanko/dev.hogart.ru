@@ -15,6 +15,11 @@ use Bitrix\Main\Entity\UpdateResult;
 
 class PaymentAccount extends AbstractMethod
 {
+    const ERROR_NO_ANY_COMPANY = 1;
+
+    protected static $errors = [
+        self::ERROR_NO_ANY_COMPANY => "Не найдена Компания Хогарт|Компания клиента %s",
+    ];
     /**
      * @inheritDoc
      */
@@ -41,6 +46,17 @@ class PaymentAccount extends AbstractMethod
         $response = $this->getPaymentAccounts();
 
         foreach ($response->return->Payment_Account as $payment_account) {
+            // забираем компанию и устанавливаем тип связи аккаунта
+            $owner_type = PaymentAccountRelationTable::OWNER_TYPE_CLIENT_COMPANY;
+            $company = CompanyTable::getByField('guid_id', $payment_account->PayAc_ID_Company);
+            if(!$company) {
+                $owner_type = PaymentAccountRelationTable::OWNER_TYPE_HOGART_COMPANY;
+                $company = HogartCompanyTable::getByField('guid_id', $payment_account->PayAc_ID_Company);
+                if (empty($company['id'])) {
+                    $answer->addResponse(new ResponseObject($payment_account->PayAc_ID, new MethodException($this->getError(self::ERROR_NO_ANY_COMPANY, [$payment_account->PayAc_ID_Company]))));
+                    continue;
+                }
+            }
 
             // данные по Расчетному счету
             $result = PaymentAccountTable::createOrUpdateByField([
@@ -60,25 +76,16 @@ class PaymentAccount extends AbstractMethod
             } else {
                 if ($result->getId()) {
                     // связь Расчетного счета и Компании Клиента||Хогарта
-                    $owner_type = PaymentAccountRelationTable::OWNER_TYPE_CLIENT_COMPANY;
-                    $company = CompanyTable::getByField('guid_id', $payment_account->PayAc_ID_Company);
-                    if(!$company) {
-                        $owner_type = PaymentAccountRelationTable::OWNER_TYPE_HOGART_COMPANY;
-                        $company = HogartCompanyTable::getByField('guid_id', $payment_account->PayAc_ID_Company);
-                    }
-
-                    if (!empty($company['id'])) {
-                        $resultRelation = PaymentAccountRelationTable::replace([
-                            'payment_account_id' => $result->getId(),
-                            'owner_id' => $company['id'],
-                            'owner_type' => $owner_type,
-                            'is_main' => $payment_account->PayAc_Main
-                        ]);
-                        if (!empty($resultRelation->getId())) {
-                            $this->client->getLogger()->notice("Обновлена связь Расчетного счета ({$result->getId()}) и Компании ".
-                                ($owner_type == PaymentAccountRelationTable::OWNER_TYPE_CLIENT_COMPANY ? 'Клиента' : 'Хогарт')
-                                ." ({$company['id']})");
-                        }
+                    $resultRelation = PaymentAccountRelationTable::replace([
+                        'payment_account_id' => $result->getId(),
+                        'owner_id' => $company['id'],
+                        'owner_type' => $owner_type,
+                        'is_main' => $payment_account->PayAc_Main
+                    ]);
+                    if (!empty($resultRelation->getId())) {
+                        $this->client->getLogger()->notice("Обновлена связь Расчетного счета ({$result->getId()}) и Компании ".
+                            ($owner_type == PaymentAccountRelationTable::OWNER_TYPE_CLIENT_COMPANY ? 'Клиента' : 'Хогарт')
+                            ." ({$company['id']})");
                     }
 
                     if ($result instanceof UpdateResult) {
