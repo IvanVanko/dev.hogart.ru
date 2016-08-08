@@ -14,22 +14,21 @@ use Exception;
 /**
  * Класс ошибок методов SOAP
  *
- * <b>Ошибки, возвращаемые в ответах</b>:
- * <table border=1 width="100%"><tr><th>Код ошибки</th><th>Текст ошибки</th></tr>
- * <tr><td align=center>0</td><td align=left>Ошибка внутри кода Битрикс: &lt;error&gt; (&lt;error-code&gt;)</td></tr>
- * <tr><td align=center>1</td><td align=left>Неизвестная ошибка</td></tr>
- * <tr><td align=center>2</td><td align=left>Ошибка создания пользователя &lt;login&gt;: &lt;error&gt;</td></tr>
- * <tr><td align=center>3</td><td align=left>Не найден Руководитель &lt;chief-id&gt;</td></tr>
- * <tr><td align=center>4</td><td align=left>Не найдена Компания клиента &lt;company-id&gt;</td></tr>
- * <tr><td align=center>5</td><td align=left>Не найдена позиция &lt;item-id&gt;, порядковый номер записи - &lt;n&gt;</td></tr>
- * <tr><td align=center>6</td><td align=left>Не найден Заказ &lt;order-id&gt;</td></tr>
- * <tr><td align=center>7</td><td align=left>Не найден Договор &lt;contract-id&gt;</td></tr>
- * <tr><td align=center>8</td><td align=left>Не найдена Компания Хогарт &lt;hogart-company-id&gt;</td></tr>
- * <tr><td align=center>9</td><td align=left>Не найден Склад &lt;store-id&gt;</td></tr>
- * <tr><td align=center>10</td><td align=left>Не найден Реализация товаров и услуг (отгрузка) &lt;rtu-id&gt;</td></tr>
- * <tr><td align=center>11</td><td align=left>Не найдена Компания Хогарт или Компания клиента &lt;company-id&gt;</td></tr>
- * </table><br/>
- *
+ * __Ошибки, возвращаемые в ответах:__
+ * | __Код ошибки__	| __Текст ошибки__                                                          	|
+ * |:----------:	|--------------                                                             	|
+ * |    __0__   	| _Ошибка внутри кода Битрикс: &lt;error&gt; (&lt;error-code&gt;)_          	|
+ * |    __1__   	| _Неизвестная ошибка_                                                      	|
+ * |    __2__   	| _Ошибка создания пользователя &lt;login&gt;: &lt;error&gt;_               	|
+ * |    __3__   	| _Не найден Руководитель &lt;chief-id&gt;_                                 	|
+ * |    __4__   	| _Не найдена Компания клиента &lt;company-id&gt;_                          	|
+ * |    __5__   	| _Не найдена позиция &lt;item-id&gt;, порядковый номер записи - &lt;n&gt;_	|
+ * |    __6__   	| _Не найден Заказ &lt;order-id&gt;_                                        	|
+ * |    __7__   	| _Не найден Договор &lt;contract-id&gt;_                                   	|
+ * |    __8__   	| _Не найдена Компания Хогарт &lt;hogart-company-id&gt;_                    	|
+ * |    __9__   	| _Не найден Склад &lt;store-id&gt;_                                        	|
+ * |    __10__   	| _Не найден Реализация товаров и услуг (отгрузка) &lt;rtu-id&gt;_          	|
+ * |    __11__   	| _Не найдена Компания Хогарт или Компания клиента &lt;company-id&gt;_      	|
  * @package Hogart\Lk\Exchange\SOAP
  */
 class MethodException extends \RuntimeException
