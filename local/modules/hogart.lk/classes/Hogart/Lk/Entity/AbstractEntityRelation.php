@@ -15,8 +15,15 @@ use Bitrix\Main\Entity\EnumField;
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ReferenceField;
 
-class AbstractEntityRelation extends AbstractEntity
+/**
+ * Абстрактный класс таблицы связей
+ * @package Hogart\Lk\Entity
+ */
+abstract class AbstractEntityRelation extends AbstractEntity
 {
+    /**
+     * Тип Аккаунт
+     */
     const OWNER_TYPE_ACCOUNT = 1;
     const OWNER_TYPE_CLIENT_COMPANY = 2;
     const OWNER_TYPE_STAFF = 3;

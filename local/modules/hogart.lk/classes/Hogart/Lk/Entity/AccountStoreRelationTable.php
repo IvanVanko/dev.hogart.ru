@@ -11,6 +11,10 @@ use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ReferenceField;
 use Hogart\Lk\Field\GuidField;
 
+/**
+ * Таблица связи Аккаунта и Складов клиента
+ * @package Hogart\Lk\Entity
+ */
 class AccountStoreRelationTable extends AbstractEntity
 {
     /**

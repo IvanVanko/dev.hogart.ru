@@ -12,6 +12,10 @@ namespace Hogart\Lk\Entity;
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ReferenceField;
 
+/**
+ * Таблица связи контактов с друими таблицами
+ * @package Hogart\Lk\Entity
+ */
 class ContactRelationTable extends AbstractEntityRelation
 {
     /**

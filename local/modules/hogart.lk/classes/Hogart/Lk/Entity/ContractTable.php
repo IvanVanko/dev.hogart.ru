@@ -17,10 +17,17 @@ use Bitrix\Main\Entity\ReferenceField;
 use Bitrix\Main\Entity\StringField;
 use Hogart\Lk\Field\GuidField;
 
+/**
+ * Таблица Договоры
+ * @package Hogart\Lk\Entity
+ */
 class ContractTable extends AbstractEntity
 {
+    /** НДС - Без НДС */
     const VAT_0 = 0;
+    /** НДС - 100% */
     const VAT_10 = 10;
+    /** НДС - 18% */
     const VAT_18 = 18;
 
     /**

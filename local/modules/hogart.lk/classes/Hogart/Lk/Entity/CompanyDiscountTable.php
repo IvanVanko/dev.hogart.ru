@@ -14,6 +14,10 @@ use Bitrix\Main\Entity\FloatField;
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ReferenceField;
 
+/**
+ * Таблица Скидок компании на товары
+ * @package Hogart\Lk\Entity
+ */
 class CompanyDiscountTable extends AbstractEntity
 {
     /**

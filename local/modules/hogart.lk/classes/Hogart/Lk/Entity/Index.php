@@ -7,14 +7,19 @@
  */
 
 namespace Hogart\Lk\Entity;
-
+/**
+ * Класс индекса таблицы Бд
+ * @package Hogart\Lk\Entity
+ */
 class Index
 {
+    /** @var string  */
     protected $name;
+    /** @var array  */
     protected $columns;
 
     /**
-     * Index constructor.
+     * Конструктор класса
      * @param string $name
      * @param array $columns
      */
@@ -25,6 +30,7 @@ class Index
     }
 
     /**
+     * Имя индекса
      * @return string
      */
     public function getName()
@@ -33,6 +39,7 @@ class Index
     }
 
     /**
+     * Получить поля индекса
      * @return array
      */
     public function getColumns()

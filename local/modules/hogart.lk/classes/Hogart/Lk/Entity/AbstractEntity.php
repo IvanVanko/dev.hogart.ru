@@ -11,9 +11,14 @@ namespace Hogart\Lk\Entity;
 
 use Bitrix\Main\Entity;
 
+/**
+ * Асбтрактный класс таблицы Бд
+ * @package Hogart\Lk\Entity
+ */
 abstract class AbstractEntity extends Entity\DataManager
 {
     /**
+     * Получение схемы индексов таблицы
      * @return array|Index[]
      */
     protected static function getIndexes()
@@ -22,6 +27,7 @@ abstract class AbstractEntity extends Entity\DataManager
     }
 
     /**
+     * Создание таблицы в Бд, при условии, что таковой еще не существует
      * @return bool
      */
     public static function createTableIfNotExists()
@@ -35,6 +41,7 @@ abstract class AbstractEntity extends Entity\DataManager
     }
 
     /**
+     * Удалить таблицу из Бд, если таковая существует
      * @return bool
      */
     public static function dropTableIfExists()
@@ -46,6 +53,9 @@ abstract class AbstractEntity extends Entity\DataManager
         return false;
     }
 
+    /**
+     * Создание индекса для таблцы в Бд
+     */
     public static function createIndexes()
     {
         /** @var Index $index */
@@ -82,6 +92,7 @@ abstract class AbstractEntity extends Entity\DataManager
     }
 
     /**
+     * Заменить запись в таблице
      * @param $data
      * @return Entity\AddResult
      * @throws \Exception
@@ -98,6 +109,7 @@ abstract class AbstractEntity extends Entity\DataManager
     }
 
     /**
+     * Создание или обновление записи в таблице
      * @param array $data данные которые добавляем|обновляем
      * @param string|array $fields одно или несколько полей для поиска
      * @return Entity\AddResult|Entity\UpdateResult

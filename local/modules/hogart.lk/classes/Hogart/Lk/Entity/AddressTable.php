@@ -17,12 +17,23 @@ use Bitrix\Main\Entity\ReferenceField;
 use Bitrix\Main\Entity\StringField;
 use Hogart\Lk\Field\GuidField;
 
+/**
+ * Таблица Адресса
+ * @package Hogart\Lk\Entity
+ */
 class AddressTable extends AbstractEntity
 {
+    /** Владелец - Компания клиента */
     const OWNER_TYPE_COMPANY = 1;
+    /** Владелец - Компания Хогарт */
     const OWNER_TYPE_HOGART_COMPANY = 2;
+    /** Владелец - Склад */
     const OWNER_TYPE_STORE = 3;
 
+    /**
+     * Связи, используемые при запросах
+     * @var array
+     */
     public static $types = [
         self::OWNER_TYPE_COMPANY => [
             "name" => "company",

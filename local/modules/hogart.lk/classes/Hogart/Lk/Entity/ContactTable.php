@@ -14,6 +14,10 @@ use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\StringField;
 use Hogart\Lk\Field\GuidField;
 
+/**
+ * Таблица Контактов
+ * @package Hogart\Lk\Entity
+ */
 class ContactTable extends AbstractEntity
 {
     /**

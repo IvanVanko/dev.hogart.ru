@@ -17,13 +17,22 @@ use Bitrix\Main\Entity\BooleanField;
 use Hogart\Lk\Field\GuidField;
 use Bitrix\Main\Entity\DateField;
 
+/**
+ * Таблица Платежи Заказа
+ * @package Hogart\Lk\Entity
+ */
 class OrderPaymentTable extends AbstractEntity
 {
+    /** Вид оплаты - Наличные */
     const PAYMENT_FORM_CASH = 0;
+    /** Вид оплаты - Банковский платеж */
     const PAYMENT_FORM_BANK = 1;
+    /** Вид оплаты - По карте */
     const PAYMENT_FORM_CARD = 2;
 
+    /** Направление - Входящий */
     const DIRECTION_INCOME = 0;
+    /** Направление - Исходящий */
     const DIRECTION_OUTCOME = 1;
 
     /**

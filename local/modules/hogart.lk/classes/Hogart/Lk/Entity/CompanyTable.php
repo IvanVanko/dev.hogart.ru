@@ -16,14 +16,24 @@ use Bitrix\Main\Entity\ReferenceField;
 use Bitrix\Main\Entity\StringField;
 use Hogart\Lk\Field\GuidField;
 
+/**
+ * Таблица Компаний клиента
+ * @package Hogart\Lk\Entity
+ */
 class CompanyTable extends AbstractEntity
 {
+    /** Тип - Юр. лицо */
     const TYPE_LEGAL_ENTITY = 1;
+    /** Тип - Индивидуальный предприниматель */
     const TYPE_INDIVIDUAL_ENTREPRENEUR = 2;
+    /** Тип - Физ. лицо */
     const TYPE_INDIVIDUAL = 3;
 
+    /** Документ - отсутствует */
     const DOC_EMPTY = 0;
+    /** Документ - Паспорт РФ */
     const DOC_PASSPORT = 1;
+    /** Документ - Отличный от Паспорта РФ */
     const DOC_NO_PASSPORT = 2;
 
 

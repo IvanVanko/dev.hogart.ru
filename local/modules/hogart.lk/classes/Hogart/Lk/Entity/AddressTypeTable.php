@@ -13,6 +13,10 @@ use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\StringField;
 use Hogart\Lk\Field\GuidField;
 
+/**
+ * Таблица Типов Адресов
+ * @package Hogart\Lk\Entity
+ */
 class AddressTypeTable extends AbstractEntity
 {
     /**

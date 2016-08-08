@@ -12,6 +12,10 @@ namespace Hogart\Lk\Entity;
 use Bitrix\Main\Entity;
 use Hogart\Lk\Field\GuidField;
 
+/**
+ * Таблица Компании Хогарт
+ * @package Hogart\Lk\Entity
+ */
 class HogartCompanyTable extends AbstractEntity
 {
     

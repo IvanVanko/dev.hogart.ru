@@ -16,12 +16,20 @@ use Bitrix\Main\Entity\ReferenceField;
 use Bitrix\Main\Entity\StringField;
 use Hogart\Lk\Field\GuidField;
 
+/**
+ * Таблица Контактной информации
+ * @package Hogart\Lk\Entity
+ */
 class ContactInfoTable extends AbstractEntity
 {
+    /** Тип - Телефон */
     const TYPE_PHONE = 1;
+    /** Тип - Email */
     const TYPE_EMAIL = 2;
 
+    /** Тип телефона - Мобильный */
     const PHONE_KIND_MOBILE = 1;
+    /** Тип телефона - Стационарный */
     const PHONE_KIND_STATIC = 2;
 
 

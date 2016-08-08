@@ -14,6 +14,10 @@ use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ReferenceField;
 use Hogart\Lk\Field\GuidField;
 
+/**
+ * Таблица Аккаунт
+ * @package Hogart\Lk\Entity
+ */
 class AccountTable extends AbstractEntity
 {
     /**

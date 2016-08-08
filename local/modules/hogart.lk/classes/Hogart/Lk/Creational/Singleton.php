@@ -8,7 +8,10 @@
 
 namespace Hogart\Lk\Creational;
 
-
+/**
+ * Class Singleton
+ * @package Hogart\Lk\Creational
+ */
 trait Singleton {
     /**
      * @var static The stored singleton instance

@@ -24,10 +24,10 @@ use Hogart\Lk\Exchange\SOAP\Method\ResponseObject;
 
 /**
  * Class Order - добавление Заказа (в КИС это Заголовок Заказа)
- * @package Hogart\Lk\Exchange\SOAP\Method\Orders
  */
 class Order extends AbstractMethod
 {
+    /** Не найдена компания */
     const ERROR_NO_HOGART_COMPANY = 1;
     const ERROR_NO_CLIENT_COMPANY = 2;
     const ERROR_NO_CONTRACT = 3;

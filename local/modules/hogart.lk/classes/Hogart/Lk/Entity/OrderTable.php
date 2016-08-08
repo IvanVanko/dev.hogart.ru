@@ -19,13 +19,22 @@ use Bitrix\Main\Entity\StringField;
 use Bitrix\Main\Entity\TextField;
 use Hogart\Lk\Field\GuidField;
 
+/**
+ * Таблица Заказы
+ * @package Hogart\Lk\Entity
+ */
 class OrderTable extends AbstractEntity
 {
+    /** Тип - Продажа */
     const TYPE_SALE = 1;
+    /** Тип - Рекламная продукция */
     const TYPE_PROMO = 2;
 
+    /** Статус - Новый */
     const STATUS_NEW = 1;
+    /** Статус - В работе */
     const STATUS_IN_WORK = 2;
+    /** Статус - Закрыт */
     const STATUS_FINISHED = 3;
 
 

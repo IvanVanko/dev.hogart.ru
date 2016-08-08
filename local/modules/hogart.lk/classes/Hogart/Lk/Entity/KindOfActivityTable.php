@@ -14,6 +14,10 @@ use Bitrix\Main\Entity\StringField;
 use Bitrix\Main\Entity\TextField;
 use Hogart\Lk\Field\GuidField;
 
+/**
+ * Таблица видов деятельности компаний
+ * @package Hogart\Lk\Entity
+ */
 class KindOfActivityTable extends AbstractEntity
 {
     /**

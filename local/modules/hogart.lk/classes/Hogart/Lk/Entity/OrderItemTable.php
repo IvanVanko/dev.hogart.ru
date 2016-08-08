@@ -19,13 +19,23 @@ use Bitrix\Main\Entity\StringField;
 use Doctrine\Common\Annotations\Annotation\Enum;
 use Hogart\Lk\Field\GuidField;
 
+/**
+ * Таблица Позиции Заказа
+ * @package Hogart\Lk\Entity
+ */
 class OrderItemTable extends AbstractEntity
 {
+    /** Статус - Не определен */
     const STATUS_NOT_PROVIDED = 0;
+    /** Статус -  */
     const STATUS_SUPPLIER_ORDER = 1;
+    /** Статус -  */
     const STATUS_INTERMEDIATE_STORE = 2;
+    /** Статус -  */
     const STATUS_IN_RESERVE = 3;
+    /** Статус -  */
     const STATUS_SHIPMENT_PROCESS = 4;
+    /** Статус -  */
     const STATUS_SHIPMENT = 5;
 
     /**
@@ -87,6 +97,13 @@ class OrderItemTable extends AbstractEntity
         ];
     }
 
+    /**
+     * Удаление записей таблицы по номеру заказа
+     * @param int $id
+     * @return bool
+     * @throws \Bitrix\Main\ArgumentException
+     * @throws \Exception
+     */
     public static function deleteByOrderId($id)
     {
         $items = self::getList([
