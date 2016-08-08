@@ -11,11 +11,13 @@ namespace Hogart\Lk\Exchange\SOAP\Method;
 
 class ResponseObject extends AbstractResponseObject
 {
-    /** @var  string|integer */
+    /** @var string|integer $ID */
     public $ID;
 
     /**
-     * @inheritDoc
+     * ResponseObject constructor.
+     * @param string|integer $ID
+     * @param MethodException|null $e
      */
     public function __construct($ID, MethodException $e = null)
     {

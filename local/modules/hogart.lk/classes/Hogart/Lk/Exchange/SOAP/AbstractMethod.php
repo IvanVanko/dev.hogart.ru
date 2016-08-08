@@ -12,9 +12,12 @@ namespace Hogart\Lk\Exchange\SOAP;
 abstract class AbstractMethod implements MethodInterface
 {
     const ERROR_UNDEFINED = 1;
+    const ERROR_RELATED_ENTITY_UNDEFINED= 2;
 
     protected static $default_errors = [
-        self::ERROR_UNDEFINED => "Неизвестная ошибка"
+        self::ERROR_UNDEFINED => "Неизвестная ошибка",
+        self::ERROR_RELATED_ENTITY_UNDEFINED => "Отсутсвует связанная сущность",
+
     ];
 
     /** @var  Client */

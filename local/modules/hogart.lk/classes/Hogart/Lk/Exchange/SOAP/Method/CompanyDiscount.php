@@ -32,13 +32,13 @@ class CompanyDiscount extends AbstractMethod
 
     public function getCompanyDiscounts()
     {
-        return $this->client->getSoapClient()->CompanyDiscountGet(new Request());
+        return $this->client->getSoapClient()->DiscountGet(new Request());
     }
 
     public function companyDiscountAnswer(Response $response)
     {
         if (count($response->Response) && $this->is_answer) {
-            return $this->client->getSoapClient()->CompanyDiscountAnswer($response);
+            return $this->client->getSoapClient()->DiscountAnswer($response);
         }
     }
 
@@ -47,39 +47,42 @@ class CompanyDiscount extends AbstractMethod
         $answer = new Response();
         $response = $this->getCompanyDiscounts();
 
-        foreach ($response->return->Company_Discount as $company_discount) {
+        foreach ($response->return->Discount as $discount) {
             // получаем компанию пользователя
-            $company = CompanyTable::getByField('guid_id', $company_discount->Discount_ID_Company);
-
+            $company = CompanyTable::getByField('guid_id', $discount->Discount_ID_Company);
+            if(!isset($company)){
+                $answer->addResponse(new ResponseObject($discount->Discount_ID_Company.'_'.$discount->Discount_ID_Item,
+                    new MethodException(self::$default_errors[self::ERROR_RELATED_ENTITY_UNDEFINED]." (Компания '{$discount->Discount_ID_Company}')",
+                        self::ERROR_RELATED_ENTITY_UNDEFINED)));
+                continue;
+            }
             // получаем товар
             $item = ElementTable::getList([
                 'filter'=>[
-                    '=XML_ID' => $company_discount->Discount_ID_Item,
-                    '=ref.IBLOCK_ID' => new SqlExpression('?i', CATALOG_IBLOCK_ID)
+                    '=XML_ID' => $discount->Discount_ID_Item,
+                    '=IBLOCK_ID' => new SqlExpression('?i', CATALOG_IBLOCK_ID)
                 ]
             ])->fetch();
 
             $result = CompanyDiscountTable::createOrUpdateByField([
-                'guid_id' => $company_discount->Company_Discount_ID, // @todo нет в структуре, попросить что бы добавили
                 'company_id' => $company['id'],
                 'item_id' => $item['ID'],
-                'discount' => $company_discount->Discount,
-            ], 'guid_id');
+                'discount' => $discount->Discount_Value,
+            ], ['company_id','item_id']);
 
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
-                $answer->addResponse(new ResponseObject($company_discount->Company_Discount_ID, new MethodException($error->getMessage(), intval($error->getCode()))));
+                $answer->addResponse(new ResponseObject($discount->Company_Discount_ID, new MethodException($error->getMessage(), intval($error->getCode()))));
             } else {
                 if ($result->getId()) {
                     if ($result instanceof UpdateResult) {
-                        $this->client->getLogger()->notice("Обновлена запись Скидка Компании {$result->getId()} ({$company_discount->Company_Discount_ID})");
+                        $this->client->getLogger()->notice("Обновлена запись Скидка Компании {$result->getId()} ({$discount->Company_Discount_ID})");
                     } else {
-                        $this->client->getLogger()->notice("Добавлена запись Скидка Компании {$result->getId()} ({$company_discount->Company_Discount_ID})");
+                        $this->client->getLogger()->notice("Добавлена запись Скидка Компании {$result->getId()} ({$discount->Company_Discount_ID})");
                     }
-                    $answer->addResponse(new ResponseObject($company_discount->Company_Discount_ID));
+                    $answer->addResponse(new ResponseObject($discount->Company_Discount_ID));
                 } else {
-                    $answer->addResponse(new ResponseObject($company_discount->Company_Discount_ID, new MethodException(self::$default_errors[self::ERROR_UNDEFINED], self::ERROR_UNDEFINED)));
-                    $this->client->getLogger()->error(self::$default_errors[self::ERROR_UNDEFINED] . " (" . self::ERROR_UNDEFINED . ")");
+                    $answer->addResponse(new ResponseObject($discount->Company_Discount_ID, new MethodException(self::$default_errors[self::ERROR_UNDEFINED], self::ERROR_UNDEFINED)));
                 }
             }
         }

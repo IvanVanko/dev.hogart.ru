@@ -41,10 +41,10 @@ use Hogart\Lk\Exchange\SOAP\Method\OrderDocs\RTUItem;
  * @property HogartCompany $HogartCompany
  * @property Staff $Staff
  * @property Contact $Contact [+] test
- * @property ContactInfo $ContactInfo
+ * @property ContactInfo $ContactInfo [-
  * @property Contract $Contract
  * @property PaymentAccount $PaymentAccount
- * @property CompanyDiscount $CompanyDiscount [-] test
+ * @property CompanyDiscount $CompanyDiscount [+ъ test
  * @property RTU $RTU [-] test
  * @property RTUItem $RTUItem [-] test
  * @property OrderPayment $OrderPayment [-] test

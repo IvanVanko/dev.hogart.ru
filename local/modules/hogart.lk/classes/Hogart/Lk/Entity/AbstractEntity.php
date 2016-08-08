@@ -98,18 +98,23 @@ abstract class AbstractEntity extends Entity\DataManager
     }
 
     /**
-     * @param $data
-     * @param $field
+     * @param array $data данные которые добавляем|обновляем
+     * @param string|array $fields одно или несколько полей для поиска
      * @return Entity\AddResult|Entity\UpdateResult
      * @throws \Bitrix\Main\ArgumentException
      * @throws \Exception
      */
-    public static function createOrUpdateByField($data, $field)
+    public static function createOrUpdateByField($data, $fields)
     {
+        $filter_fields = [];
+        if (is_array($fields)) {
+            foreach ($fields as $field) {
+                $filter_fields["={$field}"] = $data[$field];
+            }
+        }
+
         $row = static::getList([
-            'filter' => [
-                "={$field}" => $data[$field]
-            ]
+            'filter' => (is_string($fields) ? $fields : $filter_fields)
         ])->fetch();
         if (!empty($row)) {
             $primary = static::getEntity()->getPrimaryArray();

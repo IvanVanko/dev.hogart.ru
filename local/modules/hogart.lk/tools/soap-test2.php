@@ -33,12 +33,13 @@ CModule::IncludeModule("catalog");
 $soap = \Hogart\Lk\Exchange\SOAP\Client::getInstance();
 $soap->getLogger()->registerLogger(new \Hogart\Lk\Logger\FileLogger(__DIR__ . "/../logs/soap2.log"));
 $soap = \Hogart\Lk\Exchange\SOAP\Client::getInstance();
-//print_r($soap->Contact->setIsAnswer(false)->updateContacts());
 //print_r($soap->Company->setIsAnswer(false)->updateCompanies());
+print_r($soap->CompanyDiscount->setIsAnswer(false)->updateCompanyDiscounts());
+
 //print_r($soap->Account->setIsAnswer(false)->updateAccounts());
-print_r($soap->Staff->setIsAnswer(false)->updateStaff());
+//print_r($soap->Staff->setIsAnswer(false)->updateStaff());
 //print_r($soap->Contract->setIsAnswer(false)->updateContracts());
-print_r($soap->Orders->setIsAnswer(false)->updateOrders());
+//print_r($soap->Orders->setIsAnswer(false)->updateOrders());
 //print_r($soap->Company->setIsAnswer(false)->updateCompanies());
 //print_r($soap->HogartCompany->setIsAnswer(false)->updateHogartCompanies());
 //print_r($soap->Account->setIsAnswer(false)->updateAccounts());

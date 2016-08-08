@@ -47,7 +47,7 @@ class RTUItem extends AbstractMethod
             $order_item = ElementTable::getList([
                 'filter'=>[
                     '=XML_ID' => $rtu_item->ID_Item,
-                    '=ref.IBLOCK_ID' => new SqlExpression('?i', CATALOG_IBLOCK_ID)
+                    '=IBLOCK_ID' => new SqlExpression('?i', CATALOG_IBLOCK_ID)
                 ]
             ])->fetch();
             // данные по Элементам Платежных документов на отгрузку
