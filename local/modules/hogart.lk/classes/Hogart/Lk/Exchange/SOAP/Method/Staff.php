@@ -60,7 +60,6 @@ class Staff extends AbstractMethod
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
                 $answer->addResponse(new ResponseObject($staff->Staff_ID, new MethodException($error->getMessage(), $error->getCode())));
-                $this->client->getLogger()->error($error->getMessage() . " (" . $error->getCode() . ")");
             } else {
                 if ($result->getId()) {
                     if ($result instanceof UpdateResult) {
@@ -71,7 +70,6 @@ class Staff extends AbstractMethod
                     $answer->addResponse(new ResponseObject($staff->Staff_ID));
                 } else {
                     $answer->addResponse(new ResponseObject($staff->Staff_ID, new MethodException(self::$default_errors[self::ERROR_UNDEFINED], self::ERROR_UNDEFINED)));
-                    $this->client->getLogger()->error(self::$default_errors[self::ERROR_UNDEFINED] . " (" . self::ERROR_UNDEFINED . ")");
                 }
             }
         }

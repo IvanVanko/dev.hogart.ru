@@ -58,7 +58,6 @@ class OrderPayment extends AbstractMethod
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
                 $answer->addResponse(new ResponseObject($order_payment->Payment_ID, new MethodException($error->getMessage(), intval($error->getCode()))));
-                $this->client->getLogger()->error($error->getMessage() . " (" . $error->getCode() . ")");
             } else {
                 if ($result->getId()) {
                     if ($result instanceof UpdateResult) {
@@ -69,7 +68,6 @@ class OrderPayment extends AbstractMethod
                     $answer->addResponse(new ResponseObject($order_payment->Payment_ID));
                 } else {
                     $answer->addResponse(new ResponseObject($order_payment->Payment_ID, new MethodException(self::$default_errors[self::ERROR_UNDEFINED], self::ERROR_UNDEFINED)));
-                    $this->client->getLogger()->error(self::$default_errors[self::ERROR_UNDEFINED] . " (" . self::ERROR_UNDEFINED . ")");
                 }
             }
         }

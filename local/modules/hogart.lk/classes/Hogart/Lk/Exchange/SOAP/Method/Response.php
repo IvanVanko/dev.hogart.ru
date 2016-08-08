@@ -20,7 +20,7 @@ class Response extends Request
     {
         $this->Response[] = $responseObject;
 
-        if($responseObject->Error !== null) // @TODO: убрать во всех вызовах SOAP/Method логгирование ошибок по аналогии с Company
+        if($responseObject->Error !== null)
             Client::getInstance()->getLogger()->error($responseObject->ErrorText . " (" . $responseObject->Error . ")");
 
         return $this;
