@@ -106,15 +106,8 @@ abstract class AbstractEntity extends Entity\DataManager
      */
     public static function createOrUpdateByField($data, $fields)
     {
-        $filter_fields = [];
-        if (is_array($fields)) {
-            foreach ($fields as $field) {
-                $filter_fields["={$field}"] = $data[$field];
-            }
-        }
-
         $row = static::getList([
-            'filter' => (is_string($fields) ? $fields : $filter_fields)
+            'filter' => (is_string($fields) ? ["={$fields}" => $data[$fields]] : $fields)
         ])->fetch();
         if (!empty($row)) {
             $primary = static::getEntity()->getPrimaryArray();
@@ -126,7 +119,7 @@ abstract class AbstractEntity extends Entity\DataManager
         } else {
             $result = static::add($data);
         }
-        
+
         return $result;
     }
 }

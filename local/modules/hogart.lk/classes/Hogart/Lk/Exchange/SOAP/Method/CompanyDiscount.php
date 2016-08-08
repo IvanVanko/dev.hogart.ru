@@ -68,7 +68,7 @@ class CompanyDiscount extends AbstractMethod
                 'company_id' => $company['id'],
                 'item_id' => $item['ID'],
                 'discount' => $discount->Discount_Value,
-            ], ['company_id','item_id']);
+            ], ['=company_id' => $company['id'], '=item_id' => $item['ID']]);
 
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
