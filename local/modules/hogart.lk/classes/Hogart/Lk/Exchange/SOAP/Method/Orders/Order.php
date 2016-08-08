@@ -99,7 +99,7 @@ class Order extends AbstractMethod
                 'perm_bill' => $order->Order_Perm_Bill,
                 'perm_reserve' => $order->Order_Perm_Reserve,
                 'currency_code' => $order->Order_ID_Money,
-                'is_active' => $order->deletion_mark,
+                'is_active' => !$order->deletion_mark,
             ], 'guid_id');
 
             if ($result->getErrorCollection()->count()) {
