@@ -55,8 +55,6 @@ class Account extends AbstractMethod
     }
 
     /**
-     * @todo Доработка метода
-     * 
      * @return int
      * @throws \Bitrix\Main\ArgumentException
      */

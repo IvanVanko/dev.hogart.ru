@@ -32,8 +32,6 @@ class RTU extends AbstractMethod
     }
 
     /**
-     * @todo Доработать после появления метода Docs_Order
-     * 
      * @param $rtus
      * @param Response $answer
      * @return int

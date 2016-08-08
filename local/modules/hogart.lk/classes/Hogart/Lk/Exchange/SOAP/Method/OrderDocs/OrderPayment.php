@@ -27,8 +27,6 @@ class OrderPayment extends AbstractMethod
     }
 
     /**
-     * @todo Доработать после появления метода Docs_Order
-     * 
      * @param $payments
      * @param Response $answer
      * @return int

@@ -32,8 +32,6 @@ class OrderDocsExchange extends AbstractExchange
     }
 
     /**
-     * @todo Доработать после появления метода Docs_Order
-     *
      * @inheritDoc
      */
     function runEnvelope(\AMQPEnvelope $envelope)

@@ -32,8 +32,6 @@ class RTUItem extends AbstractMethod
     }
 
     /**
-     * @todo Доработать после появления метода Docs_Order
-     * 
      * @param $rtu_items
      * @return int
      * @throws \Bitrix\Main\ArgumentException

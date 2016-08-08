@@ -35,8 +35,6 @@ class OrderDocs extends AbstractMethod
     }
 
     /**
-     * @todo Доработать после появления метода Docs_Order
-     *
      * @return int
      */
     public function updateOrderDocs()
