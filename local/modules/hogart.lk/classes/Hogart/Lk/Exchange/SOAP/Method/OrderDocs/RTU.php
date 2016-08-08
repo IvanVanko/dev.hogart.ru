@@ -6,6 +6,7 @@
  */
 
 namespace Hogart\Lk\Exchange\SOAP\Method\OrderDocs;
+
 use Hogart\Lk\Entity\OrderTable;
 use Hogart\Lk\Entity\RTUItemTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
@@ -16,6 +17,10 @@ use Hogart\Lk\Exchange\SOAP\MethodException;
 use Hogart\Lk\Exchange\SOAP\Response;
 use Hogart\Lk\Exchange\SOAP\ResponseObject;
 
+/**
+ * Обмен с КИС - Реализация товаров и услуг (Отгрузка)
+ * @package Hogart\Lk\Exchange\SOAP\Method\OrderDocs
+ */
 class RTU extends AbstractMethod
 {
     /**
@@ -60,7 +65,7 @@ class RTU extends AbstractMethod
 
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
-                $answer->addResponse(new ResponseObject($rtu->RTU_ID, new MethodException($error->getMessage())));
+                $answer->addResponse(new ResponseObject($rtu->RTU_ID, new MethodException(MethodException::ERROR_BITRIX, [$error->getMessage(), $error->getCode()], $error)));
             } else {
                 if ($result->getId()) {
                     if ($result instanceof UpdateResult) {

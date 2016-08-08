@@ -17,6 +17,10 @@ use Hogart\Lk\Exchange\SOAP\MethodException;
 use Hogart\Lk\Exchange\SOAP\Response;
 use Hogart\Lk\Exchange\SOAP\ResponseObject;
 
+/**
+ * Обмен с КИС - Позиции реализации товаров и услуг (Отгрузка)
+ * @package Hogart\Lk\Exchange\SOAP\Method\OrderDocs
+ */
 class RTUItem extends AbstractMethod
 {
     /**
@@ -75,7 +79,7 @@ class RTUItem extends AbstractMethod
 
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
-                throw new MethodException($error->getMessage());
+                throw new MethodException(MethodException::ERROR_BITRIX, [$error->getMessage(), $error->getCode()], $error);
             } else {
                 if ($result->getId()) {
                     if ($result instanceof UpdateResult) {

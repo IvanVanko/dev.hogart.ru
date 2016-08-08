@@ -77,7 +77,7 @@ class OrderItem extends AbstractMethod
 
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
-                throw new MethodException($error->getMessage());
+                throw new MethodException(MethodException::ERROR_BITRIX, [$error->getMessage(), $error->getCode()], $error);
             } else {
                 if ($result->getId()) {
                     if ($result instanceof UpdateResult) {

@@ -57,7 +57,7 @@ class Contact extends AbstractMethod
 
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
-                $answer->addResponse(new ResponseObject($contact->Cont_ID, new MethodException($error->getMessage(), $error->getCode())));
+                $answer->addResponse(new ResponseObject($contact->Cont_ID, new MethodException(MethodException::ERROR_BITRIX, [$error->getMessage(), $error->getCode()], $error)));
             } else {
                 if ($result->getId()) {
                     if ($result instanceof UpdateResult) {
@@ -84,7 +84,7 @@ class Contact extends AbstractMethod
                     }
                     $answer->addResponse(new ResponseObject($contact->Cont_ID));
                 } else {
-                    $answer->addResponse(new ResponseObject($contact->Cont_ID, new MethodException(self::$default_errors[MethodException::ERROR_UNDEFINED], MethodException::ERROR_UNDEFINED)));
+                    $answer->addResponse(new ResponseObject($contact->Cont_ID, new MethodException(MethodException::ERROR_UNDEFINED)));
                 }
             }
         }

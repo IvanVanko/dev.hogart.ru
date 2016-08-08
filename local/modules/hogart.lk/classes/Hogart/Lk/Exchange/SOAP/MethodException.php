@@ -11,8 +11,31 @@ namespace Hogart\Lk\Exchange\SOAP;
 
 use Exception;
 
+/**
+ * Класс ошибок методов SOAP
+ *
+ * <b>Ошибки, возвращаемые в ответах</b>:
+ * <table border=1 width="100%"><tr><th>Код ошибки</th><th>Текст ошибки</th></tr>
+ * <tr><td align=center>0</td><td align=left>Ошибка внутри кода Битрикс: &lt;error&gt; (&lt;error-code&gt;)</td></tr>
+ * <tr><td align=center>1</td><td align=left>Неизвестная ошибка</td></tr>
+ * <tr><td align=center>2</td><td align=left>Ошибка создания пользователя &lt;login&gt;: &lt;error&gt;</td></tr>
+ * <tr><td align=center>3</td><td align=left>Не найден Руководитель &lt;chief-id&gt;</td></tr>
+ * <tr><td align=center>4</td><td align=left>Не найдена Компания клиента &lt;company-id&gt;</td></tr>
+ * <tr><td align=center>5</td><td align=left>Не найдена позиция &lt;item-id&gt;, порядковый номер записи - &lt;n&gt;</td></tr>
+ * <tr><td align=center>6</td><td align=left>Не найден Заказ &lt;order-id&gt;</td></tr>
+ * <tr><td align=center>7</td><td align=left>Не найден Договор &lt;contract-id&gt;</td></tr>
+ * <tr><td align=center>8</td><td align=left>Не найдена Компания Хогарт &lt;hogart-company-id&gt;</td></tr>
+ * <tr><td align=center>9</td><td align=left>Не найден Склад &lt;store-id&gt;</td></tr>
+ * <tr><td align=center>10</td><td align=left>Не найден Реализация товаров и услуг (отгрузка) &lt;rtu-id&gt;</td></tr>
+ * <tr><td align=center>11</td><td align=left>Не найдена Компания Хогарт или Компания клиента &lt;company-id&gt;</td></tr>
+ * </table><br/>
+ *
+ * @package Hogart\Lk\Exchange\SOAP
+ */
 class MethodException extends \RuntimeException
 {
+    /** Ошибка внутри кода Битрикс */
+    const ERROR_BITRIX = 0;
     /** Неизвестная ошибка */
     const ERROR_UNDEFINED = 1;
     /** Ошибка создания пользователя */
@@ -37,27 +60,27 @@ class MethodException extends \RuntimeException
     const ERROR_NO_ANY_COMPANY = 11;
 
     protected static $errors = [
+        self::ERROR_BITRIX => "Ошибка внутри кода Битрикс: %s (%s)",
         self::ERROR_UNDEFINED => "Неизвестная ошибка",
         self::ERROR_USER_CREATE => "Ошибка создания пользователя %s: %s",
         self::ERROR_NO_CHIEF => "Не найден Руководитель (Comp_ID_Chief) %s",
         self::ERROR_NO_CLIENT_COMPANY => "Не найдена Компания клиента %s",
         self::ERROR_NO_ITEM => "Не найдена позиция %s, порядковый номер записи - %s",
         self::ERROR_NO_ORDER => "Не найден Заказ %s",
-        self::ERROR_NO_HOGART_COMPANY => "Не найдена Компания Хогарт %s",
         self::ERROR_NO_CONTRACT => "Не найден Договор %s",
+        self::ERROR_NO_HOGART_COMPANY => "Не найдена Компания Хогарт %s",
         self::ERROR_NO_STORE => "Не найден Склад %s",
-        self::ERROR_NO_RTU => "Не найден RTU %s",
+        self::ERROR_NO_RTU => "Не найден Реализация товаров и услуг (отгрузка) %s",
         self::ERROR_NO_ANY_COMPANY => "Не найдена Компания Хогарт или Компания клиента %s"
 
     ];
 
     /**
-     * Construct the exception. Note: The message is NOT binary safe.
-     * @link http://php.net/manual/en/exception.construct.php
-     * @param int $code [optional] The Exception code.
-     * @param array $args
+     * Конструктор ошибки метода
+     *
+     * @param int|string $code Код ошибки из предопределенных или сообщение об ошибке.
+     * @param array|int $args Заменяемые в шаблоне ошибки параметры или код ошибки.
      * @param Exception $previous [optional] The previous exception used for the exception chaining. Since 5.3.0
-     * @since 5.1.0
      */
     public function __construct($code, $args = [], Exception $previous)
     {

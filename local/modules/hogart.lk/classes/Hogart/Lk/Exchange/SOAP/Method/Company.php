@@ -102,7 +102,7 @@ class Company extends AbstractMethod
 
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
-                $answer->addResponse(new ResponseObject($company->Comp_ID, new MethodException($error->getMessage())));
+                $answer->addResponse(new ResponseObject($company->Comp_ID, new MethodException(MethodException::ERROR_BITRIX, [$error->getMessage(), $error->getCode()], $error)));
             } else {
                 if ($result->getId()) {
                     if ($result instanceof UpdateResult) {
