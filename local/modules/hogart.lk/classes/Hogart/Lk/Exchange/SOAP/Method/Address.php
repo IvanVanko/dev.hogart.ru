@@ -15,6 +15,9 @@ use Hogart\Lk\Entity\AddressTable;
 use Hogart\Lk\Entity\AddressTypeTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
 use Hogart\Lk\Exchange\SOAP\Method\Address\ResponseObject;
+use Hogart\Lk\Exchange\SOAP\MethodException;
+use Hogart\Lk\Exchange\SOAP\Request;
+use Hogart\Lk\Exchange\SOAP\Response;
 
 class Address extends AbstractMethod
 {
@@ -28,7 +31,6 @@ class Address extends AbstractMethod
 
     public function getAddresses()
     {
-        $this->client->getLogger()->debug("Запрос методода AddressesGet");
         return $this->client->getSoapClient()->AddressesGet(new Request());
     }
 
@@ -79,7 +81,7 @@ class Address extends AbstractMethod
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
                 $this->client->getLogger()->error($error->getMessage() . " (" . $error->getCode() . ")");
-                $responseObject->setError(new MethodException($error->getMessage(), $error->getCode()));
+                $responseObject->setError(new MethodException($error->getMessage()));
             } else {
                 if ($result instanceof UpdateResult) {
                     $this->client->getLogger()->notice("Обновлена запись Адреса");

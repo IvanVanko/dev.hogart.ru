@@ -18,28 +18,16 @@ use Hogart\Lk\Entity\StaffTable;
 use Hogart\Lk\Entity\ContractTable;
 use Hogart\Lk\Entity\HogartCompanyTable;
 use Bitrix\Main\Entity\UpdateResult;
-use Hogart\Lk\Exchange\SOAP\Method\MethodException;
-use Hogart\Lk\Exchange\SOAP\Method\Response;
-use Hogart\Lk\Exchange\SOAP\Method\ResponseObject;
+use Hogart\Lk\Exchange\SOAP\MethodException;
+use Hogart\Lk\Exchange\SOAP\Response;
+use Hogart\Lk\Exchange\SOAP\ResponseObject;
 
 /**
  * Class Order - добавление Заказа (в КИС это Заголовок Заказа)
+ * @package Hogart\Lk\Exchange\SOAP\Method\Orders
  */
 class Order extends AbstractMethod
 {
-    /** Не найдена компания */
-    const ERROR_NO_HOGART_COMPANY = 1;
-    const ERROR_NO_CLIENT_COMPANY = 2;
-    const ERROR_NO_CONTRACT = 3;
-    const ERROR_NO_STORE = 4;
-    
-    protected static $errors = [
-        self::ERROR_NO_HOGART_COMPANY => "Не найдена Компания Хогарт %s",
-        self::ERROR_NO_CLIENT_COMPANY => "Не найдена Компания клиента %s",
-        self::ERROR_NO_CONTRACT => "Не найден Договор клиента %s",
-        self::ERROR_NO_STORE => "Не найден Склад %s",
-    ];
-
     /**
      * @inheritDoc
      */
@@ -65,19 +53,19 @@ class Order extends AbstractMethod
             $account = AccountTable::getByField('user_guid_id', $order->Order_ID_Account);
 
             if (empty($hogart_company['id'])) {
-                $answer->addResponse(new ResponseObject($order->Order_ID, new MethodException($this->getError(self::ERROR_NO_HOGART_COMPANY, [$order->Order_ID_Hogart]))));
+                $answer->addResponse(new ResponseObject($order->Order_ID, new MethodException(MethodException::ERROR_NO_HOGART_COMPANY, [$order->Order_ID_Hogart])));
                 continue;
             }
             if (empty($client_company['id'])) {
-                $answer->addResponse(new ResponseObject($order->Order_ID, new MethodException($this->getError(self::ERROR_NO_CLIENT_COMPANY, [$order->Order_ID_Company]))));
+                $answer->addResponse(new ResponseObject($order->Order_ID, new MethodException(MethodException::ERROR_NO_CLIENT_COMPANY, [$order->Order_ID_Company])));
                 continue;
             }
             if (empty($contract['id'])) {
-                $answer->addResponse(new ResponseObject($order->Order_ID, new MethodException($this->getError(self::ERROR_NO_CONTRACT, [$order->Order_ID_Contract]))));
+                $answer->addResponse(new ResponseObject($order->Order_ID, new MethodException(MethodException::ERROR_NO_CONTRACT, [$order->Order_ID_Contract])));
                 continue;
             }
             if (empty($stock_store['ID'])) {
-                $answer->addResponse(new ResponseObject($order->Order_ID, new MethodException($this->getError(self::ERROR_NO_STORE, [$order->Order_ID_Stock]))));
+                $answer->addResponse(new ResponseObject($order->Order_ID, new MethodException(MethodException::ERROR_NO_STORE, [$order->Order_ID_Stock])));
                 continue;
             }
 
@@ -104,7 +92,7 @@ class Order extends AbstractMethod
 
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
-                $answer->addResponse(new ResponseObject($order->Order_ID, new MethodException($error->getMessage(), intval($error->getCode()))));
+                $answer->addResponse(new ResponseObject($order->Order_ID, new MethodException($error->getMessage())));
             } else {
                 if ($result->getId()) {
                     if ($result instanceof UpdateResult) {
@@ -122,7 +110,7 @@ class Order extends AbstractMethod
                         OrderTable::delete($result->getId());
                     }
                 } else {
-                    $answer->addResponse(new ResponseObject($order->Order_ID, new MethodException(self::$default_errors[self::ERROR_UNDEFINED], self::ERROR_UNDEFINED)));
+                    $answer->addResponse(new ResponseObject($order->Order_ID, new MethodException(MethodException::ERROR_UNDEFINED)));
                 }
             }
         }

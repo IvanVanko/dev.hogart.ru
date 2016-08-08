@@ -6,7 +6,7 @@
  * Time: 12:33
  */
 
-namespace Hogart\Lk\Exchange\SOAP\Method;
+namespace Hogart\Lk\Exchange\SOAP;
 
 
 class Request

@@ -13,15 +13,13 @@ use Hogart\Lk\Entity\CompanyTable;
 use Hogart\Lk\Entity\ContactInfoTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
 use Bitrix\Main\Entity\UpdateResult;
+use Hogart\Lk\Exchange\SOAP\MethodException;
+use Hogart\Lk\Exchange\SOAP\Request;
+use Hogart\Lk\Exchange\SOAP\Response;
+use Hogart\Lk\Exchange\SOAP\ResponseObject;
 
 class ContactInfo extends AbstractMethod
 {
-    const ERROR_NO_CLIENT_COMPANY = 2;
-
-    protected static $errors = [
-        self::ERROR_NO_CLIENT_COMPANY => "Не найдена Компания клиента %s",
-    ];
-
     /**
      * @inheritDoc
      */
@@ -52,7 +50,7 @@ class ContactInfo extends AbstractMethod
 
             if(!isset($company)){
                 $answer->addResponse(
-                    new ResponseObject($info->Info_ID, new MethodException($this->getError(self::ERROR_NO_CLIENT_COMPANY, [$info->Info_ID_Company])))
+                    new ResponseObject($info->Info_ID, new MethodException(MethodException::ERROR_NO_CLIENT_COMPANY, [$info->Info_ID_Company]))
                 );
                 continue;
             }
@@ -68,7 +66,7 @@ class ContactInfo extends AbstractMethod
 
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
-                $answer->addResponse(new ResponseObject($info->Info_ID, new MethodException($error->getMessage(), $error->getCode())));
+                $answer->addResponse(new ResponseObject($info->Info_ID, new MethodException($error->getMessage())));
             } else {
                 if ($result->getId()) {
                     if ($result instanceof UpdateResult) {
@@ -78,7 +76,7 @@ class ContactInfo extends AbstractMethod
                     }
                     $answer->addResponse(new ResponseObject($info->Info_ID));
                 } else {
-                    $answer->addResponse(new ResponseObject($info->Info_ID, new MethodException(self::$default_errors[self::ERROR_UNDEFINED], self::ERROR_UNDEFINED)));
+                    $answer->addResponse(new ResponseObject($info->Info_ID, new MethodException(MethodException::ERROR_UNDEFINED)));
                 }
             }
 

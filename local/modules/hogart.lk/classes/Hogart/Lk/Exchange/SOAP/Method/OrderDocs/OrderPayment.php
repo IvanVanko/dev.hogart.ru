@@ -12,9 +12,9 @@ use Hogart\Lk\Entity\OrderPaymentTable;
 use Hogart\Lk\Entity\OrderTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
 use Bitrix\Main\Entity\UpdateResult;
-use Hogart\Lk\Exchange\SOAP\Method\MethodException;
-use Hogart\Lk\Exchange\SOAP\Method\Response;
-use Hogart\Lk\Exchange\SOAP\Method\ResponseObject;
+use Hogart\Lk\Exchange\SOAP\MethodException;
+use Hogart\Lk\Exchange\SOAP\Response;
+use Hogart\Lk\Exchange\SOAP\ResponseObject;
 
 class OrderPayment extends AbstractMethod
 {
@@ -58,7 +58,7 @@ class OrderPayment extends AbstractMethod
 
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
-                $answer->addResponse(new ResponseObject($order_payment->Payment_ID, new MethodException($error->getMessage(), intval($error->getCode()))));
+                $answer->addResponse(new ResponseObject($order_payment->Payment_ID, new MethodException($error->getMessage())));
             } else {
                 if ($result->getId()) {
                     if ($result instanceof UpdateResult) {
@@ -68,7 +68,7 @@ class OrderPayment extends AbstractMethod
                     }
                     $answer->addResponse(new ResponseObject($order_payment->Payment_ID));
                 } else {
-                    $answer->addResponse(new ResponseObject($order_payment->Payment_ID, new MethodException(self::$default_errors[self::ERROR_UNDEFINED], self::ERROR_UNDEFINED)));
+                    $answer->addResponse(new ResponseObject($order_payment->Payment_ID, new MethodException(MethodException::ERROR_UNDEFINED)));
                 }
             }
         }

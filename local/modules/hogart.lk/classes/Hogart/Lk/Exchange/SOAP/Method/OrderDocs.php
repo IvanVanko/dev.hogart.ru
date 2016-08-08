@@ -9,6 +9,8 @@
 namespace Hogart\Lk\Exchange\SOAP\Method;
 
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
+use Hogart\Lk\Exchange\SOAP\Request;
+use Hogart\Lk\Exchange\SOAP\Response;
 
 class OrderDocs extends AbstractMethod
 {

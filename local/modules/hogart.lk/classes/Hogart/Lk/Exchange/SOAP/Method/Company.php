@@ -16,6 +16,10 @@ use Hogart\Lk\Entity\KindOfActivityTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
 use Bitrix\Main\UserTable;
 use Bitrix\Main\Entity\UpdateResult;
+use Hogart\Lk\Exchange\SOAP\MethodException;
+use Hogart\Lk\Exchange\SOAP\Request;
+use Hogart\Lk\Exchange\SOAP\Response;
+use Hogart\Lk\Exchange\SOAP\ResponseObject;
 
 /**
  * Class Company - добавление Компании и Видов деятельности
@@ -23,12 +27,6 @@ use Bitrix\Main\Entity\UpdateResult;
  */
 class Company extends AbstractMethod
 {
-    const ERROR_NO_ORDER = 1;
-
-    protected static $errors = [
-        self::ERROR_NO_ORDER => "Не найден Руководитель (Comp_ID_Chief) %s",
-    ];
-
     /**
      * @inheritDoc
      */
@@ -77,11 +75,10 @@ class Company extends AbstractMethod
             else {
                 $chief = ContactTable::getByField('guid_id', $company->Comp_ID_Chief);
                 if (empty($chief['id'])) {
-                    $answer->addResponse(new ResponseObject($company->Comp_ID, new MethodException($this->getError(self::ERROR_NO_ORDER, [$company->Comp_ID_Chief]))));
+                    $answer->addResponse(new ResponseObject($company->Comp_ID, new MethodException(MethodException::ERROR_NO_CHIEF, [$company->Comp_ID_Chief])));
                     continue;
                 }
             }
-
 
             $result = CompanyTable::createOrUpdateByField([
                 'guid_id' => $company->Comp_ID,
@@ -105,7 +102,7 @@ class Company extends AbstractMethod
 
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
-                $answer->addResponse(new ResponseObject($company->Comp_ID, new MethodException($error->getMessage(), intval($error->getCode()))));
+                $answer->addResponse(new ResponseObject($company->Comp_ID, new MethodException($error->getMessage())));
             } else {
                 if ($result->getId()) {
                     if ($result instanceof UpdateResult) {
@@ -115,7 +112,7 @@ class Company extends AbstractMethod
                     }
                     $answer->addResponse(new ResponseObject($company->Comp_ID));
                 } else {
-                    $answer->addResponse(new ResponseObject($company->Comp_ID, new MethodException(self::$default_errors[self::ERROR_UNDEFINED], self::ERROR_UNDEFINED)));
+                    $answer->addResponse(new ResponseObject($company->Comp_ID, new MethodException(MethodException::ERROR_UNDEFINED)));
                 }
             }
         }

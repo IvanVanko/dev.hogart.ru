@@ -13,20 +13,17 @@ use Hogart\Lk\Entity\HogartCompanyTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
 use Bitrix\Main\Entity\UpdateResult;
 use Bitrix\Main\Type\Date;
+use Hogart\Lk\Exchange\SOAP\MethodException;
+use Hogart\Lk\Exchange\SOAP\Request;
+use Hogart\Lk\Exchange\SOAP\Response;
+use Hogart\Lk\Exchange\SOAP\ResponseObject;
+
 /**
  * Class Contract - добавление Договоров (они же Контракты)
  * @package Hogart\Lk\Exchange\SOAP\Method
  */
 class Contract extends AbstractMethod
 {
-    const ERROR_NO_HOGART_COMPANY = 1;
-    const ERROR_NO_CLIENT_COMPANY = 2;
-
-    protected static $errors = [
-        self::ERROR_NO_HOGART_COMPANY => "Не найдена Компания Хогарт %s",
-        self::ERROR_NO_CLIENT_COMPANY => "Не найдена Компания клиента %s",
-    ];
-
     /**
      * @inheritDoc
      */
@@ -59,11 +56,11 @@ class Contract extends AbstractMethod
             $hogart_company = HogartCompanyTable::getByField('guid_id', $contract->Contr_ID_Holding);
 
             if (empty($hogart_company['id'])) {
-                $answer->addResponse(new ResponseObject($contract->Contr_ID, new MethodException($this->getError(self::ERROR_NO_HOGART_COMPANY, [$contract->Contr_ID_Holding]))));
+                $answer->addResponse(new ResponseObject($contract->Contr_ID, new MethodException(MethodException::ERROR_NO_HOGART_COMPANY, [$contract->Contr_ID_Holding])));
                 continue;
             }
             if (empty($client_company['id'])) {
-                $answer->addResponse(new ResponseObject($contract->Contr_ID, new MethodException($this->getError(self::ERROR_NO_CLIENT_COMPANY, [$contract->Contr_ID_Company]))));
+                $answer->addResponse(new ResponseObject($contract->Contr_ID, new MethodException(MethodException::ERROR_NO_CLIENT_COMPANY, [$contract->Contr_ID_Company])));
                 continue;
             }
 
@@ -94,7 +91,7 @@ class Contract extends AbstractMethod
 
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
-                $answer->addResponse(new ResponseObject($contract->Contr_ID, new MethodException($error->getMessage(), intval($error->getCode()))));
+                $answer->addResponse(new ResponseObject($contract->Contr_ID, new MethodException($error->getMessage())));
             } else {
                 if ($result->getId()) {
                     if ($result instanceof UpdateResult) {
@@ -104,7 +101,7 @@ class Contract extends AbstractMethod
                     }
                     $answer->addResponse(new ResponseObject($contract->Contr_ID));
                 } else {
-                    $answer->addResponse(new ResponseObject($contract->Contr_ID, new MethodException(self::$default_errors[self::ERROR_UNDEFINED], self::ERROR_UNDEFINED)));
+                    $answer->addResponse(new ResponseObject($contract->Contr_ID, new MethodException(MethodException::ERROR_UNDEFINED)));
                 }
             }
         }

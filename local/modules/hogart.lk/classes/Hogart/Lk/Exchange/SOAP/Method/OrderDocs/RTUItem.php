@@ -13,9 +13,9 @@ use Hogart\Lk\Entity\RTUTable;
 use Bitrix\Main\Type\Date;
 use Bitrix\Main\Entity\UpdateResult;
 use Bitrix\Main\DB\SqlExpression;
-use Hogart\Lk\Exchange\SOAP\Method\MethodException;
-use Hogart\Lk\Exchange\SOAP\Method\Response;
-use Hogart\Lk\Exchange\SOAP\Method\ResponseObject;
+use Hogart\Lk\Exchange\SOAP\MethodException;
+use Hogart\Lk\Exchange\SOAP\Response;
+use Hogart\Lk\Exchange\SOAP\ResponseObject;
 
 class RTUItem extends AbstractMethod
 {
@@ -42,6 +42,11 @@ class RTUItem extends AbstractMethod
                     '=guid_id'=>$rtu_item->RTU_ID
                 ]
             ])->fetch();
+            
+            if (empty($rtu['id'])) {
+                throw new MethodException(MethodException::ERROR_NO_RTU, [$rtu_item->RTU_ID]);
+            }
+            
             $order_item = ElementTable::getList([
                 'filter'=>[
                     '=XML_ID' => $rtu_item->ID_Item,
@@ -51,7 +56,7 @@ class RTUItem extends AbstractMethod
 
             if (empty($order_item['ID'])) {
                 $n = $k + 1;
-                throw new MethodException("Не найдена позиция RTU({$rtu_item->RTU_ID}): порядковый номер - {$n}, ID - {$rtu_item->ID_Item}");
+                throw new MethodException(MethodException::ERROR_NO_ITEM, [$rtu_item->ID_Item, $n]);
             }
             // данные по Элементам Платежных документов на отгрузку
             $result = RTUItemTable::createOrUpdateByField([
@@ -70,7 +75,7 @@ class RTUItem extends AbstractMethod
 
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
-                throw new MethodException($error->getMessage(), intval($error->getCode()));
+                throw new MethodException($error->getMessage());
             } else {
                 if ($result->getId()) {
                     if ($result instanceof UpdateResult) {
@@ -79,7 +84,7 @@ class RTUItem extends AbstractMethod
                         $this->client->getLogger()->notice("Добавлена запись Элемента отгрузки {$result->getId()} ({$rtu_item->RTU_Item_ID})");
                     }
                 } else {
-                    throw new MethodException(self::$default_errors[self::ERROR_UNDEFINED], self::ERROR_UNDEFINED);
+                    throw new MethodException(MethodException::ERROR_UNDEFINED);
                 }
             }
         }

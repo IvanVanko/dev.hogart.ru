@@ -9,8 +9,8 @@
 namespace Hogart\Lk\Exchange\SOAP\Method\Address;
 
 
-use Hogart\Lk\Exchange\SOAP\Method\AbstractResponseObject;
-use Hogart\Lk\Exchange\SOAP\Method\MethodException;
+use Hogart\Lk\Exchange\SOAP\AbstractResponseObject;
+use Hogart\Lk\Exchange\SOAP\MethodException;
 
 class ResponseObject extends AbstractResponseObject
 {

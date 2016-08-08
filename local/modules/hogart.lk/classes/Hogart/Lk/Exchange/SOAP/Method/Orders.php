@@ -9,6 +9,8 @@
 namespace Hogart\Lk\Exchange\SOAP\Method;
 
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
+use Hogart\Lk\Exchange\SOAP\Request;
+use Hogart\Lk\Exchange\SOAP\Response;
 
 class Orders extends AbstractMethod
 {
@@ -20,11 +22,20 @@ class Orders extends AbstractMethod
         return "Orders";
     }
 
-    public function getOrders()
+    /**
+     * Получение Заказов от КИС
+     * @return mixed
+     */
+    public function ordersGet()
     {
         return $this->client->getSoapClient()->OrdersGet(new Request());
     }
 
+    /**
+     * Ответ в КИС о полученных Заказах
+     * @param Response $response
+     * @return mixed
+     */
     public function ordersAnswer(Response $response)
     {
         if (count($response->Response) && $this->is_answer) {
@@ -33,14 +44,13 @@ class Orders extends AbstractMethod
     }
 
     /**
-     * @todo Доработать после появления метода Docs_Order
-     *
+     * Обработка полученных от КИС Заказов
      * @return int
      */
     public function updateOrders()
     {
         $answer = new Response();
-        $response = $this->getOrders();
+        $response = $this->ordersGet();
         $this->client->Order->updateOrders($response->return->Order, $answer);
         $this->ordersAnswer($answer);
         return count($answer->Response);

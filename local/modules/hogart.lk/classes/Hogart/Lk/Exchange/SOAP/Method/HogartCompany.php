@@ -13,6 +13,10 @@ use Bitrix\Main\Entity\UpdateResult;
 use Hogart\Lk\Entity\HogartCompanyTable;
 use Hogart\Lk\Entity\StaffTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
+use Hogart\Lk\Exchange\SOAP\MethodException;
+use Hogart\Lk\Exchange\SOAP\Request;
+use Hogart\Lk\Exchange\SOAP\Response;
+use Hogart\Lk\Exchange\SOAP\ResponseObject;
 
 class HogartCompany extends AbstractMethod
 {
@@ -53,7 +57,7 @@ class HogartCompany extends AbstractMethod
 
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
-                $answer->addResponse(new ResponseObject($organisation->Hogart_ID, new MethodException($error->getMessage(), $error->getCode())));
+                $answer->addResponse(new ResponseObject($organisation->Hogart_ID, new MethodException($error->getMessage())));
             } else {
                 if ($result->getId()) {
                     if ($result instanceof UpdateResult) {
@@ -63,7 +67,7 @@ class HogartCompany extends AbstractMethod
                     }
                     $answer->addResponse(new ResponseObject($organisation->Hogart_ID));
                 } else {
-                    $answer->addResponse(new ResponseObject($organisation->Hogart_ID, new MethodException(self::$default_errors[self::ERROR_UNDEFINED], self::ERROR_UNDEFINED)));
+                    $answer->addResponse(new ResponseObject($organisation->Hogart_ID, new MethodException(MethodException::ERROR_UNDEFINED)));
                 }
             }
         }

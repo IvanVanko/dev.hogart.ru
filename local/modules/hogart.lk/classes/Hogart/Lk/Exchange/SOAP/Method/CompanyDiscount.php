@@ -15,6 +15,10 @@ use Bitrix\Main\UserTable;
 use Bitrix\Main\Entity\UpdateResult;
 use Bitrix\Iblock\ElementTable;
 use Bitrix\Main\DB\SqlExpression;
+use Hogart\Lk\Exchange\SOAP\MethodException;
+use Hogart\Lk\Exchange\SOAP\Request;
+use Hogart\Lk\Exchange\SOAP\Response;
+use Hogart\Lk\Exchange\SOAP\ResponseObject;
 
 /**
  * Class CompanyDiscount - добавление скидок Компании на товары
@@ -22,12 +26,6 @@ use Bitrix\Main\DB\SqlExpression;
  */
 class CompanyDiscount extends AbstractMethod
 {
-    const ERROR_NO_CLIENT_COMPANY = 2;
-
-    protected static $errors = [
-        self::ERROR_NO_CLIENT_COMPANY => "Не найдена Компания клиента %s",
-    ];
-
     /**
      * @inheritDoc
      */
@@ -53,14 +51,14 @@ class CompanyDiscount extends AbstractMethod
         $answer = new Response();
         $response = $this->getCompanyDiscounts();
 
-        foreach ($response->return->Discount as $discount) {
+        foreach ($response->return->Discount as $k => $discount) {
             // получаем компанию пользователя
             $company = CompanyTable::getByField('guid_id', $discount->Discount_ID_Company);
             if(!isset($company)){
                 $answer->addResponse(new ResponseObject(
                     $discount->Discount_ID_Company . '_' . $discount->Discount_ID_Item, new MethodException(
-                        $this->getError(self::ERROR_NO_CLIENT_COMPANY, [$discount->Discount_ID_Company]
-                        )
+                        MethodException::ERROR_NO_CLIENT_COMPANY,
+                        [$discount->Discount_ID_Company]
                     )
                 ));
                 continue;
@@ -69,9 +67,15 @@ class CompanyDiscount extends AbstractMethod
             $item = ElementTable::getList([
                 'filter'=>[
                     '=XML_ID' => $discount->Discount_ID_Item,
-                    '=IBLOCK_ID' => new SqlExpression('?i', CATALOG_IBLOCK_ID)
+                    '=IBLOCK.ID' => new SqlExpression('?i', CATALOG_IBLOCK_ID)
                 ]
             ])->fetch();
+
+            if (!isset($item)) {
+                $n = $k + 1;
+                $answer->addResponse(new ResponseObject($discount->Company_Discount_ID, new MethodException(MethodException::ERROR_NO_ITEM, [$discount->Discount_ID_Item, $n])));
+                continue;
+            }
 
             $result = CompanyDiscountTable::createOrUpdateByField([
                 'company_id' => $company['id'],
@@ -81,7 +85,7 @@ class CompanyDiscount extends AbstractMethod
 
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
-                $answer->addResponse(new ResponseObject($discount->Company_Discount_ID, new MethodException($error->getMessage(), intval($error->getCode()))));
+                $answer->addResponse(new ResponseObject($discount->Company_Discount_ID, new MethodException($error->getMessage())));
             } else {
                 if ($result->getId()) {
                     if ($result instanceof UpdateResult) {
@@ -91,7 +95,7 @@ class CompanyDiscount extends AbstractMethod
                     }
                     $answer->addResponse(new ResponseObject($discount->Company_Discount_ID));
                 } else {
-                    $answer->addResponse(new ResponseObject($discount->Company_Discount_ID, new MethodException(self::$default_errors[self::ERROR_UNDEFINED], self::ERROR_UNDEFINED)));
+                    $answer->addResponse(new ResponseObject($discount->Company_Discount_ID, new MethodException(MethodException::ERROR_UNDEFINED)));
                 }
             }
         }

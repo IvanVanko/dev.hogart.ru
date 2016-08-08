@@ -20,6 +20,10 @@ use Hogart\Lk\Entity\StaffTable;
 use Hogart\Lk\Exchange\RabbitMQ\Consumer;
 use Hogart\Lk\Exchange\RabbitMQ\Exchange\AccountExchange;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
+use Hogart\Lk\Exchange\SOAP\MethodException;
+use Hogart\Lk\Exchange\SOAP\Request;
+use Hogart\Lk\Exchange\SOAP\Response;
+use Hogart\Lk\Exchange\SOAP\ResponseObject;
 
 class Account extends AbstractMethod
 {
@@ -45,9 +49,9 @@ class Account extends AbstractMethod
      */
     public function accountAnswer(Response $response)
     {
-        $response = $this->client->getSoapClient()->AccountAnswer($response);
-        $this->client->getLogger()->debug("Ответ на метод AccountAnswer: " . ($response->return ? "true" : "false"));
-        return $response;
+        if (count($response->Response) && $this->is_answer) {
+            return $this->client->getSoapClient()->AccountAnswer($response);
+        }
     }
 
     /**
@@ -83,7 +87,7 @@ class Account extends AbstractMethod
                     );
 
                     if (empty($user['ID'])) {
-                        $response_object->setError(new MethodException("Ошибка создания пользователя '{$accountInfo->Acc_Login}': {$user_obj->LAST_ERROR} "));
+                        $response_object->setError(new MethodException(MethodException::ERROR_USER_CREATE, [$accountInfo->Acc_Login, $user_obj->LAST_ERROR]));
                         continue;
                     }
                     $accountExchange = (new AccountExchange())->useConsumer(Consumer::getInstance());

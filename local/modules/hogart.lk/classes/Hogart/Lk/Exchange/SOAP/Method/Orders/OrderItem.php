@@ -13,9 +13,9 @@ use Hogart\Lk\Entity\OrderItemTable;
 use Hogart\Lk\Entity\OrderTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
 use Bitrix\Main\Entity\UpdateResult;
-use Hogart\Lk\Exchange\SOAP\Method\MethodException;
-use Hogart\Lk\Exchange\SOAP\Method\Response;
-use Hogart\Lk\Exchange\SOAP\Method\ResponseObject;
+use Hogart\Lk\Exchange\SOAP\MethodException;
+use Hogart\Lk\Exchange\SOAP\Response;
+use Hogart\Lk\Exchange\SOAP\ResponseObject;
 
 /**
  * Class Company - добавление Компании и Видов деятельности
@@ -43,7 +43,7 @@ class OrderItem extends AbstractMethod
             if (null === $order) {
                 $order = OrderTable::getByField('guid_id', $orderItem->Order_ID);
                 if (!isset($order)) {
-                    throw new MethodException("Не найден Заказ({$orderItem->ID_Item})");
+                    throw new MethodException(MethodException::ERROR_NO_ORDER, [$orderItem->Order_ID]);
                 }
             }
             $item = ElementTable::getList([
@@ -54,7 +54,7 @@ class OrderItem extends AbstractMethod
             ])->fetch();
             if (!isset($item)) {
                 $n = $k + 1;
-                throw new MethodException("Не найдена позиция Заказа({$orderItem->ID_Item}): порядковый номер - {$n}, ID - {$orderItem->ID_Item}");
+                throw new MethodException(MethodException::ERROR_NO_ITEM, [$orderItem->Order_ID, $n]);
             }
             $data = [
                 'd_guid_id' => $orderItem->Order_Item_ID,
@@ -77,7 +77,7 @@ class OrderItem extends AbstractMethod
 
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
-                throw new MethodException($error->getMessage(), intval($error->getCode()));
+                throw new MethodException($error->getMessage());
             } else {
                 if ($result->getId()) {
                     if ($result instanceof UpdateResult) {
@@ -86,7 +86,7 @@ class OrderItem extends AbstractMethod
                         $this->client->getLogger()->notice("Добавлена запись Состава заказа {$result->getId()} ({$orderItem->Order_Item_ID})");
                     }
                 } else {
-                    throw new MethodException(self::$default_errors[self::ERROR_UNDEFINED], self::ERROR_UNDEFINED);
+                    throw new MethodException(MethodException::ERROR_UNDEFINED);
                 }
             }
         }

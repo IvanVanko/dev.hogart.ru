@@ -11,30 +11,10 @@ namespace Hogart\Lk\Exchange\SOAP;
 
 abstract class AbstractMethod implements MethodInterface
 {
-    const ERROR_UNDEFINED = 1;
-
-    protected static $default_errors = [
-        self::ERROR_UNDEFINED => "Неизвестная ошибка",
-    ];
-
     /** @var  Client */
     protected $client;
     /** @var bool  */
     protected $is_answer = true;
-
-    protected static $errors = [
-
-    ];
-
-    /**
-     * @param $code
-     * @param array $args
-     * @return string
-     */
-    public function getError($code, $args = [])
-    {
-        return vsprintf(static::$errors[$code], $args);
-    }
 
     /**
      * @inheritDoc

@@ -12,14 +12,13 @@ use Hogart\Lk\Entity\PaymentAccountRelationTable;
 use Hogart\Lk\Entity\CompanyTable;
 use Hogart\Lk\Entity\HogartCompanyTable;
 use Bitrix\Main\Entity\UpdateResult;
+use Hogart\Lk\Exchange\SOAP\MethodException;
+use Hogart\Lk\Exchange\SOAP\Request;
+use Hogart\Lk\Exchange\SOAP\Response;
+use Hogart\Lk\Exchange\SOAP\ResponseObject;
 
 class PaymentAccount extends AbstractMethod
 {
-    const ERROR_NO_ANY_COMPANY = 1;
-
-    protected static $errors = [
-        self::ERROR_NO_ANY_COMPANY => "Не найдена Компания Хогарт|Компания клиента %s",
-    ];
     /**
      * @inheritDoc
      */
@@ -53,7 +52,7 @@ class PaymentAccount extends AbstractMethod
                 $owner_type = PaymentAccountRelationTable::OWNER_TYPE_HOGART_COMPANY;
                 $company = HogartCompanyTable::getByField('guid_id', $payment_account->PayAc_ID_Company);
                 if (empty($company['id'])) {
-                    $answer->addResponse(new ResponseObject($payment_account->PayAc_ID, new MethodException($this->getError(self::ERROR_NO_ANY_COMPANY, [$payment_account->PayAc_ID_Company]))));
+                    $answer->addResponse(new ResponseObject($payment_account->PayAc_ID, new MethodException(MethodException::ERROR_NO_ANY_COMPANY, [$payment_account->PayAc_ID_Company])));
                     continue;
                 }
             }
@@ -72,7 +71,7 @@ class PaymentAccount extends AbstractMethod
 
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
-                $answer->addResponse(new ResponseObject($payment_account->PayAc_ID, new MethodException($error->getMessage(), intval($error->getCode()))));
+                $answer->addResponse(new ResponseObject($payment_account->PayAc_ID, new MethodException($error->getMessage())));
             } else {
                 if ($result->getId()) {
                     // связь Расчетного счета и Компании Клиента||Хогарта
@@ -95,7 +94,7 @@ class PaymentAccount extends AbstractMethod
                     }
                     $answer->addResponse(new ResponseObject($payment_account->PayAc_ID));
                 } else {
-                    $answer->addResponse(new ResponseObject($payment_account->PayAc_ID, new MethodException(self::$default_errors[self::ERROR_UNDEFINED], self::ERROR_UNDEFINED)));
+                    $answer->addResponse(new ResponseObject($payment_account->PayAc_ID, new MethodException(MethodException::ERROR_UNDEFINED)));
                 }
             }
         }

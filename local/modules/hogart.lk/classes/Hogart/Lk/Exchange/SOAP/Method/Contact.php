@@ -15,6 +15,10 @@ use Hogart\Lk\Entity\ContactRelationTable;
 use Hogart\Lk\Entity\ContactTable;
 use Hogart\Lk\Entity\HogartCompanyTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
+use Hogart\Lk\Exchange\SOAP\MethodException;
+use Hogart\Lk\Exchange\SOAP\Request;
+use Hogart\Lk\Exchange\SOAP\Response;
+use Hogart\Lk\Exchange\SOAP\ResponseObject;
 
 class Contact extends AbstractMethod
 {
@@ -80,7 +84,7 @@ class Contact extends AbstractMethod
                     }
                     $answer->addResponse(new ResponseObject($contact->Cont_ID));
                 } else {
-                    $answer->addResponse(new ResponseObject($contact->Cont_ID, new MethodException(self::$default_errors[self::ERROR_UNDEFINED], self::ERROR_UNDEFINED)));
+                    $answer->addResponse(new ResponseObject($contact->Cont_ID, new MethodException(self::$default_errors[MethodException::ERROR_UNDEFINED], MethodException::ERROR_UNDEFINED)));
                 }
             }
         }

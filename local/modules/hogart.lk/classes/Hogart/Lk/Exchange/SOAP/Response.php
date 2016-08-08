@@ -6,10 +6,8 @@
  * Time: 12:47
  */
 
-namespace Hogart\Lk\Exchange\SOAP\Method;
+namespace Hogart\Lk\Exchange\SOAP;
 
-
-use Hogart\Lk\Exchange\SOAP\Client;
 
 class Response extends Request
 {

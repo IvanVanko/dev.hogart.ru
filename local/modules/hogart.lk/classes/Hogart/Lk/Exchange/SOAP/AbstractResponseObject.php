@@ -6,9 +6,7 @@
  * Time: 15:40
  */
 
-namespace Hogart\Lk\Exchange\SOAP\Method;
-
-use Hogart\Lk\Exchange\SOAP\Client;
+namespace Hogart\Lk\Exchange\SOAP;
 
 abstract class AbstractResponseObject
 {
