@@ -31,25 +31,32 @@ class RTUItem extends AbstractMethod
      * @todo Доработать после появления метода Docs_Order
      * 
      * @param $rtu_items
-     * @param Response $answer
      * @return int
      * @throws \Bitrix\Main\ArgumentException
      */
-    public function updateRTUItems($rtu_items, Response $answer)
+    public function updateRTUItems($rtu_items)
     {
-        foreach ($rtu_items as $rtu_item) {
+        foreach ($rtu_items as $k => $rtu_item) {
             $rtu = RTUTable::getList([
                 'filter'=>[
                     '=guid_id'=>$rtu_item->RTU_ID
                 ]
             ])->fetch();
 
+            if (empty($rtu)) {
+                throw new MethodException("Не найден RTU({$rtu_item->RTU_ID})");
+            }
+
             $order_item = ElementTable::getList([
                 'filter'=>[
                     '=XML_ID' => $rtu_item->ID_Item,
-                    '=IBLOCK_ID' => new SqlExpression('?i', CATALOG_IBLOCK_ID)
+                    '=IBLOCK.ID' => new SqlExpression('?i', CATALOG_IBLOCK_ID)
                 ]
             ])->fetch();
+            if (empty($order_item['ID'])) {
+                $n = $k + 1;
+                throw new MethodException("Не найдена позиция RTU({$rtu_item->RTU_ID}): порядковый номер - {$n}, ID - {$rtu_item->ID_Item}");
+            }
             // данные по Элементам Платежных документов на отгрузку
             $result = RTUItemTable::createOrUpdateByField([
                 'd_guid_id' => $rtu_item->RTU_Item_ID,
@@ -67,7 +74,7 @@ class RTUItem extends AbstractMethod
 
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
-                $answer->addResponse(new ResponseObject($rtu_item->RTU_Item_ID, new MethodException($error->getMessage(), intval($error->getCode()))));
+                throw new MethodException($error->getMessage(), intval($error->getCode()));
             } else {
                 if ($result->getId()) {
                     if ($result instanceof UpdateResult) {
@@ -75,12 +82,11 @@ class RTUItem extends AbstractMethod
                     } else {
                         $this->client->getLogger()->notice("Добавлена запись Элемента отгрузки {$result->getId()} ({$rtu_item->RTU_Item_ID})");
                     }
-                    $answer->addResponse(new ResponseObject($rtu_item->RTU_Item_ID));
                 } else {
-                    $answer->addResponse(new ResponseObject($rtu_item->RTU_Item_ID, new MethodException(self::$default_errors[self::ERROR_UNDEFINED], self::ERROR_UNDEFINED)));
+                    throw new MethodException(self::$default_errors[self::ERROR_UNDEFINED], self::ERROR_UNDEFINED);
                 }
             }
         }
-        return count($answer->Response);
+        return true;
     }
 }

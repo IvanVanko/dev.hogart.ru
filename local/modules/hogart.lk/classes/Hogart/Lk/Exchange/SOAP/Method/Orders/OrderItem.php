@@ -34,32 +34,33 @@ class OrderItem extends AbstractMethod
 
     /**
      * @param $orderItems
-     * @param Response $answer
      * @return int
      */
-    public function updateOrderItems($orderItems, Response $answer)
+    public function updateOrderItems($orderItems)
     {
-        foreach ($orderItems as $orderItem) {
-
-            $order = OrderTable::getByField('guid_id', $orderItem->Order_ID);
+        $order = null;
+        foreach ($orderItems as $k => $orderItem) {
+            if (null === $order) {
+                $order = OrderTable::getByField('guid_id', $orderItem->Order_ID);
+                if (!isset($order)) {
+                    throw new MethodException("Не найден Заказ({$orderItem->ID_Item})");
+                }
+            }
             $item = ElementTable::getList([
                 'filter'=>[
                     '=XML_ID' => $orderItem->ID_Item,
-                    '=IBLOCK_ID' => new SqlExpression('?i', CATALOG_IBLOCK_ID)
+                    '=IBLOCK.ID' => new SqlExpression('?i', CATALOG_IBLOCK_ID)
                 ]
             ])->fetch();
-
-            // @todo Добавить обработку ошибок
-            if (!isset($order)) {
-
-            }
             if (!isset($item)) {
+                $n = $k + 1;
+                throw new MethodException("Не найдена позиция Заказа({$orderItem->ID_Item}): порядковый номер - {$n}, ID - {$orderItem->ID_Item}");
             }
             $data = [
                 'd_guid_id' => $orderItem->Order_Item_ID,
                 'order_id' => $order['id'],
                 'string_number' => $orderItem->Order_Line_Number,
-                'item_id' => $item['id'] ?: 0, // @todo: убрать когда будет залитый элемент каталога
+                'item_id' => $item['id'],
                 'acu' => $orderItem->Item_Article ?: '',
                 'name' => $orderItem->Item_Name,
                 'count' => $orderItem->Count,
@@ -74,10 +75,9 @@ class OrderItem extends AbstractMethod
             ];
             $result = OrderItemTable::createOrUpdateByField($data, 'd_guid_id');
 
-
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
-                $answer->addResponse(new ResponseObject($orderItem->Order_Item_ID, new MethodException($error->getMessage(), intval($error->getCode()))));
+                throw new MethodException($error->getMessage(), intval($error->getCode()));
             } else {
                 if ($result->getId()) {
                     if ($result instanceof UpdateResult) {
@@ -85,13 +85,11 @@ class OrderItem extends AbstractMethod
                     } else {
                         $this->client->getLogger()->notice("Добавлена запись Состава заказа {$result->getId()} ({$orderItem->Order_Item_ID})");
                     }
-                    $answer->addResponse(new ResponseObject($orderItem->Order_Item_ID));
                 } else {
-                    $answer->addResponse(new ResponseObject($orderItem->Order_Item_ID, new MethodException(self::$default_errors[self::ERROR_UNDEFINED], self::ERROR_UNDEFINED)));
+                    throw new MethodException(self::$default_errors[self::ERROR_UNDEFINED], self::ERROR_UNDEFINED);
                 }
             }
         }
-        // @todo Шлем ответ или нет? перепроверить короч
-        return count($answer->Response);
+        return true;
     }
 }

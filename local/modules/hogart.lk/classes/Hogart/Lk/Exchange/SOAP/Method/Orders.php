@@ -27,7 +27,9 @@ class Orders extends AbstractMethod
 
     public function ordersAnswer(Response $response)
     {
-        return $this->client->getSoapClient()->OrderAnswer($response);
+        if (count($response->Response) && $this->is_answer) {
+            return $this->client->getSoapClient()->OrdersAnswer($response);
+        }
     }
 
     /**
@@ -39,9 +41,8 @@ class Orders extends AbstractMethod
     {
         $answer = new Response();
         $response = $this->getOrders();
-        $this->client->Order->updateOrders($response->return->Headers, $answer);
-        $this->client->OrderItem->updateOrderItems($response->return->Items, $answer);
-
+        $this->client->Order->updateOrders($response->return->Order, $answer);
+        $this->ordersAnswer($answer);
         return count($answer->Response);
     }
 }

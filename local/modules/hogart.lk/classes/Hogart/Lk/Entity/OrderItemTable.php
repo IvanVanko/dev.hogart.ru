@@ -51,7 +51,7 @@ class OrderItemTable extends AbstractEntity
             new ReferenceField("order", "OrderTable", ["=this.order_id" => "ref.id"]),
             new IntegerField("string_number"),
             new IntegerField("item_id"),
-            new ReferenceField("item", "Bitrix\\Iblock\\ElementTable", ["=this.item_id" => "ref.ID", "=ref.IBLOCK_ID" => new SqlExpression('?i', CATALOG_IBLOCK_ID)]),
+            new ReferenceField("item", "Bitrix\\Iblock\\ElementTable", ["=this.item_id" => "ref.ID", "=ref.IBLOCK.ID" => new SqlExpression('?i', CATALOG_IBLOCK_ID)]),
             new StringField("acu"),
             new StringField("name"),
             new IntegerField("count"),
@@ -85,5 +85,18 @@ class OrderItemTable extends AbstractEntity
             new Index('idx_order_item_entity_most', ['order_id', 'item_id', 'status']),
             new Index('idx_is_active', ['is_active']),
         ];
+    }
+
+    public static function deleteByOrderId($id)
+    {
+        $items = self::getList([
+            'filter' => [
+                '=order_id' => intval($id)
+            ]
+        ]);
+        while (($orderItem = $items->fetch())) {
+            self::delete($orderItem['id']);
+        }
+        return true;
     }
 }

@@ -25,6 +25,20 @@ abstract class AbstractMethod implements MethodInterface
     /** @var bool  */
     protected $is_answer = true;
 
+    protected static $errors = [
+
+    ];
+
+    /**
+     * @param $code
+     * @param array $args
+     * @return string
+     */
+    public function getError($code, $args = [])
+    {
+        return vsprintf(static::$errors[$code], $args);
+    }
+
     /**
      * @inheritDoc
      */

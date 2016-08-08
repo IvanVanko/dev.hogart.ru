@@ -7,6 +7,7 @@
 
 namespace Hogart\Lk\Exchange\SOAP\Method\OrderDocs;
 
+use Bitrix\Main\Type\Date;
 use Hogart\Lk\Entity\OrderPaymentTable;
 use Hogart\Lk\Entity\OrderTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
@@ -46,10 +47,10 @@ class OrderPayment extends AbstractMethod
             $result = OrderPaymentTable::createOrUpdateByField([
                 'guid_id' => $order_payment->Payment_ID,
                 'order_id' => $order['id'],
-                'payment_date' => $order_payment->Payment_Date,
+                'payment_date' => new Date($order_payment->Payment_Date, 'Y-m-d'),
                 'number' => $order_payment->Payment_Number,
-                'form' => $order_payment->Form,
-                'direction' => $order_payment->Moving_Direction,
+                'form' => intval($order_payment->Form),
+                'direction' => intval($order_payment->Moving_Direction),
                 'total' => $order_payment->Sum,
                 'currency_code' => $order_payment->Payment_ID_Money,
                 'is_active' => !$order_payment->deletion_mark

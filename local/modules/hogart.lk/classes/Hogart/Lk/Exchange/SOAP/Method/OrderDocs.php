@@ -27,7 +27,9 @@ class OrderDocs extends AbstractMethod
 
     public function orderDocsAnswer(Response $response)
     {
-        return $this->client->getSoapClient()->DocsOrderAnswer($response);
+        if (count($response->Response) && $this->is_answer) {
+            return $this->client->getSoapClient()->DocsOrderAnswer($response);
+        }
     }
 
     /**
@@ -39,10 +41,9 @@ class OrderDocs extends AbstractMethod
     {
         $answer = new Response();
         $response = $this->getOrderDocs();
-        $this->client->RTU->updateRTUs($response->return->RTU->RTUHeaders, $answer);
-        $this->client->RTUItem->updateRTUItems($response->return->RTU->RTUItems, $answer);
+        $this->client->RTU->updateRTUs($response->return->RTU, $answer);
         $this->client->OrderPayment->updateOrderPayments($response->return->Payment, $answer);
-
+        $this->orderDocsAnswer($answer);
         return count($answer->Response);
     }
 }

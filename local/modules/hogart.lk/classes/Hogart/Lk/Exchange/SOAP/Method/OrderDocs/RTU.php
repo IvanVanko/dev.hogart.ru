@@ -7,6 +7,7 @@
 
 namespace Hogart\Lk\Exchange\SOAP\Method\OrderDocs;
 use Hogart\Lk\Entity\OrderTable;
+use Hogart\Lk\Entity\RTUItemTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
 use Hogart\Lk\Entity\RTUTable;
 use Bitrix\Main\Type\Date;
@@ -44,7 +45,7 @@ class RTU extends AbstractMethod
             $result = RTUTable::createOrUpdateByField([
                 'guid_id' => $rtu->RTU_ID,
                 'order_id' => $order['id'],
-                'store_guid' => $rtu->Warehouse_ID,
+                'store_guid' => $rtu->warehouse_ID,
                 'number' => $rtu->RTU_Number,
                 'rtu_date' => new Date((string)$rtu->RTU_Date, 'Y-m-d'),
                 'currency_code' => $rtu->RTU_ID_Money,
@@ -62,7 +63,15 @@ class RTU extends AbstractMethod
                     } else {
                         $this->client->getLogger()->notice("Добавлена запись Отгрузки {$result->getId()} ({$rtu->RTU_ID})");
                     }
-                    $answer->addResponse(new ResponseObject($rtu->RTU_ID));
+                    $answer->addResponse($response = new ResponseObject($rtu->RTU_ID));
+
+                    try {
+                        $this->client->RTUItem->updateRTUItems($rtu->RTU_Items);
+                    } catch (MethodException $e) {
+                        $response->setError($e);
+                        RTUItemTable::deleteByRTUId($result->getId());
+                        RTUTable::delete($result->getId());
+                    }
                 } else {
                     $answer->addResponse(new ResponseObject($rtu->RTU_ID, new MethodException(self::$default_errors[self::ERROR_UNDEFINED], self::ERROR_UNDEFINED)));
                 }

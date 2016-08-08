@@ -37,7 +37,7 @@ class CompanyDiscountTable extends AbstractEntity
             new IntegerField("company_id"),
             new ReferenceField("company", "CompanyTable", ["=this.company_id" => "ref.id"]),
             new IntegerField("item_id"),
-            new ReferenceField("item", "Bitrix\\Iblock\\ElementTable", ["=this.item_id" => "ref.ID", "=ref.IBLOCK_ID" => new SqlExpression('?i', CATALOG_IBLOCK_ID)]),
+            new ReferenceField("item", "Bitrix\\Iblock\\ElementTable", ["=this.item_id" => "ref.ID", "=ref.IBLOCK.ID" => new SqlExpression('?i', CATALOG_IBLOCK_ID)]),
             new FloatField("discount")
         ];
     }

@@ -8,6 +8,7 @@
 namespace Hogart\Lk\Exchange\SOAP\Method\Orders;
 
 use Bitrix\Catalog\StoreTable;
+use Hogart\Lk\Entity\OrderItemTable;
 use Hogart\Lk\Entity\OrderTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
 use Bitrix\Main\Type\Date;
@@ -27,6 +28,18 @@ use Hogart\Lk\Exchange\SOAP\Method\ResponseObject;
  */
 class Order extends AbstractMethod
 {
+    const ERROR_NO_HOGART_COMPANY = 1;
+    const ERROR_NO_CLIENT_COMPANY = 2;
+    const ERROR_NO_CONTRACT = 3;
+    const ERROR_NO_STORE = 4;
+    
+    protected static $errors = [
+        self::ERROR_NO_HOGART_COMPANY => "Не найдена Компания Хогарт %s",
+        self::ERROR_NO_CLIENT_COMPANY => "Не найдена Компания клиента %s",
+        self::ERROR_NO_CONTRACT => "Не найден Договор клиента %s",
+        self::ERROR_NO_STORE => "Не найден Склад %s",
+    ];
+
     /**
      * @inheritDoc
      */
@@ -42,8 +55,6 @@ class Order extends AbstractMethod
      */
     public function updateOrders($orders, Response $answer)
     {
-        $answer = new Response();
-
         foreach ($orders as $order) {
 
             $hogart_company = HogartCompanyTable::getByField('guid_id', $order->Order_ID_Hogart);
@@ -52,21 +63,28 @@ class Order extends AbstractMethod
             $stock_store = StoreTable::getList(['filter' => ['=XML_ID' => $order->Order_ID_Stock]])->fetch();
             $manager = StaffTable::getByField('guid_id', $order->Order_ID_Staff);
             $account = AccountTable::getByField('user_guid_id', $order->Order_ID_Account);
-            // @todo Добавить обработку ошибок
-            if (!isset($hogart_company)) {
-            }
-            if (!isset($client_company)) {
-            }
-            if (!isset($contract)) {
-            }
-            if (!isset($stock_store)) {
-            }
 
+            if (empty($hogart_company['id'])) {
+                $answer->addResponse(new ResponseObject($order->Order_ID, new MethodException($this->getError(self::ERROR_NO_HOGART_COMPANY, [$order->Order_ID_Hogart]))));
+                continue;
+            }
+            if (empty($client_company['id'])) {
+                $answer->addResponse(new ResponseObject($order->Order_ID, new MethodException($this->getError(self::ERROR_NO_CLIENT_COMPANY, [$order->Order_ID_Company]))));
+                continue;
+            }
+            if (empty($contract['id'])) {
+                $answer->addResponse(new ResponseObject($order->Order_ID, new MethodException($this->getError(self::ERROR_NO_CONTRACT, [$order->Order_ID_Contract]))));
+                continue;
+            }
+            if (empty($stock_store['ID'])) {
+                $answer->addResponse(new ResponseObject($order->Order_ID, new MethodException($this->getError(self::ERROR_NO_STORE, [$order->Order_ID_Stock]))));
+                continue;
+            }
 
             $result = OrderTable::createOrUpdateByField([
                 'guid_id' => $order->Order_ID,
-                'company_id' => $client_company['id'] ?: 0,
-                'hogart_company_id' => $hogart_company['id'] ?: 0,
+                'company_id' => $client_company['id'],
+                'hogart_company_id' => $hogart_company['id'],
                 'number' => $order->Order_Number,
                 'order_date' =>  new Date((string)$order->Order_Date, 'Y-m-d'),
                 'order_type' => $order->Order_Form_Oper,
@@ -94,13 +112,20 @@ class Order extends AbstractMethod
                     } else {
                         $this->client->getLogger()->notice("Добавлена запись Заказа {$result->getId()} ({$order->Order_ID})");
                     }
-                    $answer->addResponse(new ResponseObject($order->Order_ID));
+                    $answer->addResponse($response = new ResponseObject($order->Order_ID));
+
+                    try {
+                        $this->client->OrderItem->updateOrderItems($order->Order_Items);
+                    } catch (MethodException $e) {
+                        $response->setError($e);
+                        OrderItemTable::deleteByOrderId($result->getId());
+                        OrderTable::delete($result->getId());
+                    }
                 } else {
                     $answer->addResponse(new ResponseObject($order->Order_ID, new MethodException(self::$default_errors[self::ERROR_UNDEFINED], self::ERROR_UNDEFINED)));
                 }
             }
         }
-        // @todo Шлем ответ или нет? перепроверить короч
         return count($answer->Response);
     }
 }
