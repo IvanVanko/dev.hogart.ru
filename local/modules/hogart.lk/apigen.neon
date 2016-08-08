@@ -1,0 +1,7 @@
+source:
+  - ./classes
+destination: ./docs
+download: ~
+templateTheme: default
+todo: ~
+title: API Документация модуля Hogart LK
