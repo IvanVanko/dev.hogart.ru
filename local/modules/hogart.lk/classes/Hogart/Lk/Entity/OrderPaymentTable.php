@@ -36,7 +36,7 @@ class OrderPaymentTable extends AbstractEntity
     const DIRECTION_OUTCOME = 1;
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getTableName()
     {
@@ -44,7 +44,7 @@ class OrderPaymentTable extends AbstractEntity
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getMap()
     {
@@ -80,7 +80,7 @@ class OrderPaymentTable extends AbstractEntity
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected static function getIndexes()
     {

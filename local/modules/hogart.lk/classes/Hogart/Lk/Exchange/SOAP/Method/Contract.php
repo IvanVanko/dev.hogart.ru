@@ -25,7 +25,7 @@ use Hogart\Lk\Exchange\SOAP\ResponseObject;
 class Contract extends AbstractMethod
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     function getName()
     {

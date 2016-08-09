@@ -28,7 +28,7 @@ use Hogart\Lk\Exchange\SOAP\ResponseObject;
 class Account extends AbstractMethod
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     function getName()
     {

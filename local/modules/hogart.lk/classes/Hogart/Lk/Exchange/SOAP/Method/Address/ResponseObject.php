@@ -22,7 +22,7 @@ class ResponseObject extends AbstractResponseObject
     public $ID_Address_Type;
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function __construct($ID_Owner, $Owner_Type, $ID_Address_Type, MethodException $e = null)
     {

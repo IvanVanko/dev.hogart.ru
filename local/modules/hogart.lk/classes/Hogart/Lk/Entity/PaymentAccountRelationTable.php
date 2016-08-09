@@ -16,7 +16,7 @@ use Bitrix\Main\Entity\ReferenceField;
 class PaymentAccountRelationTable extends AbstractEntityRelation
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getTableName()
     {
@@ -24,7 +24,7 @@ class PaymentAccountRelationTable extends AbstractEntityRelation
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getMap()
     {
@@ -35,7 +35,7 @@ class PaymentAccountRelationTable extends AbstractEntityRelation
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected static function getIndexes()
     {

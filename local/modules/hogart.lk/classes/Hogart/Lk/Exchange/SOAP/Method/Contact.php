@@ -23,7 +23,7 @@ use Hogart\Lk\Exchange\SOAP\ResponseObject;
 class Contact extends AbstractMethod
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     function getName()
     {

@@ -21,7 +21,7 @@ class RTUTable extends AbstractEntity
     const DELIVERY_OUR = 1;
     const DELIVERY_SELF = 2;
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getTableName()
     {
@@ -29,7 +29,7 @@ class RTUTable extends AbstractEntity
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getMap()
     {
@@ -61,7 +61,7 @@ class RTUTable extends AbstractEntity
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected static function getIndexes()
     {

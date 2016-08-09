@@ -24,7 +24,7 @@ use Hogart\Lk\Exchange\SOAP\ResponseObject;
 class RTUItem extends AbstractMethod
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     function getName()
     {

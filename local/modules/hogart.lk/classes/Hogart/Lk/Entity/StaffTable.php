@@ -17,7 +17,7 @@ use Hogart\Lk\Field\GuidField;
 class StaffTable extends AbstractEntity
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getTableName()
     {
@@ -25,7 +25,7 @@ class StaffTable extends AbstractEntity
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getMap()
     {
@@ -47,7 +47,7 @@ class StaffTable extends AbstractEntity
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected static function getIndexes()
     {

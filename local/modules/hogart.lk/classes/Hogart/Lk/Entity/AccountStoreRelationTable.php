@@ -18,7 +18,7 @@ use Hogart\Lk\Field\GuidField;
 class AccountStoreRelationTable extends AbstractEntity
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getTableName()
     {
@@ -26,7 +26,7 @@ class AccountStoreRelationTable extends AbstractEntity
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getMap()
     {
@@ -39,7 +39,7 @@ class AccountStoreRelationTable extends AbstractEntity
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected static function getIndexes()
     {

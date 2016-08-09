@@ -20,7 +20,7 @@ use Hogart\Lk\Field\GuidField;
 class AddressTypeTable extends AbstractEntity
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getTableName()
     {
@@ -28,7 +28,7 @@ class AddressTypeTable extends AbstractEntity
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getMap()
     {
@@ -43,7 +43,7 @@ class AddressTypeTable extends AbstractEntity
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected static function getIndexes()
     {

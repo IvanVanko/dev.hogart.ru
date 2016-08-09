@@ -20,7 +20,7 @@ use Hogart\Lk\Exchange\SOAP\ResponseObject;
 class Staff extends AbstractMethod
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     function getName()
     {

@@ -13,7 +13,7 @@ use Bitrix\Main\Entity\ReferenceField;
 class StaffRelationTable extends AbstractEntityRelation
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getTableName()
     {
@@ -21,7 +21,7 @@ class StaffRelationTable extends AbstractEntityRelation
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getMap()
     {
@@ -32,7 +32,7 @@ class StaffRelationTable extends AbstractEntityRelation
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected static function getIndexes()
     {

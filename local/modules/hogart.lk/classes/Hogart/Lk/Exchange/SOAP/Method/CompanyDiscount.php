@@ -27,7 +27,7 @@ use Hogart\Lk\Exchange\SOAP\ResponseObject;
 class CompanyDiscount extends AbstractMethod
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     function getName()
     {

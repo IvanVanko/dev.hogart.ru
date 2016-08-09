@@ -20,7 +20,7 @@ use Hogart\Lk\Exchange\SOAP\ResponseObject;
 class PaymentAccount extends AbstractMethod
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     function getName()
     {

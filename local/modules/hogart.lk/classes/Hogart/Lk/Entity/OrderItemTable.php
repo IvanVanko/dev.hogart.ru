@@ -39,7 +39,7 @@ class OrderItemTable extends AbstractEntity
     const STATUS_SHIPMENT = 5;
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getTableName()
     {
@@ -47,7 +47,7 @@ class OrderItemTable extends AbstractEntity
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getMap()
     {
@@ -86,7 +86,7 @@ class OrderItemTable extends AbstractEntity
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected static function getIndexes()
     {

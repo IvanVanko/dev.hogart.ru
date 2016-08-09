@@ -19,6 +19,9 @@ interface ExchangeInterface
 {
     /**
      * Получение зависимостей задачи
+     * 
+     * Данный метод должен вернуть массив имен классов, от которых зависит данный обмен
+     * 
      * @return array
      */
     function getDependencies();

@@ -24,7 +24,7 @@ use Hogart\Lk\Exchange\SOAP\Client;
 class HogartCompanyExchange extends AbstractExchange
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getDependencies()
     {
@@ -34,7 +34,7 @@ class HogartCompanyExchange extends AbstractExchange
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     function getQueueName()
     {
@@ -42,7 +42,7 @@ class HogartCompanyExchange extends AbstractExchange
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     function runEnvelope(\AMQPEnvelope $envelope)
     {

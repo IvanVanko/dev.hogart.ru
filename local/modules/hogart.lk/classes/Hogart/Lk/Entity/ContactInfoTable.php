@@ -34,7 +34,7 @@ class ContactInfoTable extends AbstractEntity
 
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getTableName()
     {
@@ -42,7 +42,7 @@ class ContactInfoTable extends AbstractEntity
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getMap()
     {
@@ -72,7 +72,7 @@ class ContactInfoTable extends AbstractEntity
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected static function getIndexes()
     {

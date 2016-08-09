@@ -19,7 +19,7 @@ use Bitrix\Main\Entity\ReferenceField;
 class ContactRelationTable extends AbstractEntityRelation
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getTableName()
     {
@@ -27,7 +27,7 @@ class ContactRelationTable extends AbstractEntityRelation
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getMap()
     {
@@ -38,7 +38,7 @@ class ContactRelationTable extends AbstractEntityRelation
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected static function getIndexes()
     {

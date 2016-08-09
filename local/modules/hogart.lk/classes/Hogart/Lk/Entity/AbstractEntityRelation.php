@@ -34,7 +34,7 @@ abstract class AbstractEntityRelation extends AbstractEntity
     
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getMap()
     {

@@ -22,7 +22,7 @@ use Hogart\Lk\Exchange\SOAP\Response;
 class Address extends AbstractMethod
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     function getName()
     {

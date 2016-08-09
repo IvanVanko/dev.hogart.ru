@@ -20,7 +20,7 @@ class HogartCompanyTable extends AbstractEntity
 {
     
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getTableName()
     {
@@ -28,7 +28,7 @@ class HogartCompanyTable extends AbstractEntity
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getMap()
     {
@@ -48,7 +48,7 @@ class HogartCompanyTable extends AbstractEntity
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected static function getIndexes()
     {

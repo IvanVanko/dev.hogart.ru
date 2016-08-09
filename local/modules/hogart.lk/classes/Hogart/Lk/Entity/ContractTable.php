@@ -31,7 +31,7 @@ class ContractTable extends AbstractEntity
     const VAT_18 = 18;
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getTableName()
     {
@@ -39,7 +39,7 @@ class ContractTable extends AbstractEntity
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getMap()
     {
@@ -84,7 +84,7 @@ class ContractTable extends AbstractEntity
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected static function getIndexes()
     {

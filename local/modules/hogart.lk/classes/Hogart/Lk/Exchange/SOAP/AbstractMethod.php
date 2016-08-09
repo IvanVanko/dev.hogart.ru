@@ -17,7 +17,7 @@ abstract class AbstractMethod implements MethodInterface
     protected $is_answer = true;
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     function useSoapClient(Client $client)
     {

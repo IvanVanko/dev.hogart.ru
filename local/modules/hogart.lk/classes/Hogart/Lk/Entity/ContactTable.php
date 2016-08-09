@@ -21,7 +21,7 @@ use Hogart\Lk\Field\GuidField;
 class ContactTable extends AbstractEntity
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getTableName()
     {
@@ -29,7 +29,7 @@ class ContactTable extends AbstractEntity
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getMap()
     {
@@ -47,7 +47,7 @@ class ContactTable extends AbstractEntity
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected static function getIndexes()
     {

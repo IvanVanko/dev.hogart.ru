@@ -19,7 +19,7 @@ use Hogart\Lk\Exchange\SOAP\ResponseObject;
 class OrderPayment extends AbstractMethod
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     function getName()
     {

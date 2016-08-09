@@ -48,7 +48,7 @@ abstract class AbstractExchange implements ExchangeInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritDoc}
      */
     public function getDependencies()
     {
@@ -56,7 +56,7 @@ abstract class AbstractExchange implements ExchangeInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     function useConsumer(Consumer $consumer)
     {
@@ -69,7 +69,7 @@ abstract class AbstractExchange implements ExchangeInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     function getExchangeName()
     {
@@ -107,7 +107,7 @@ abstract class AbstractExchange implements ExchangeInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     function run()
     {

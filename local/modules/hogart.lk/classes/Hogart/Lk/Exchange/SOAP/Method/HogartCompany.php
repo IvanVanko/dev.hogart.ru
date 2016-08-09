@@ -21,7 +21,7 @@ use Hogart\Lk\Exchange\SOAP\ResponseObject;
 class HogartCompany extends AbstractMethod
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     function getName()
     {

@@ -24,7 +24,7 @@ use Hogart\Lk\Exchange\SOAP\ResponseObject;
 class OrderItem extends AbstractMethod
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     function getName()
     {

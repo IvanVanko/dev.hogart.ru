@@ -29,7 +29,7 @@ use Hogart\Lk\Exchange\SOAP\ResponseObject;
 class Order extends AbstractMethod
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     function getName()
     {

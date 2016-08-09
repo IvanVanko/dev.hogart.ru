@@ -21,7 +21,7 @@ use Bitrix\Main\Entity\ReferenceField;
 class CompanyDiscountTable extends AbstractEntity
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getTableName()
     {
@@ -29,7 +29,7 @@ class CompanyDiscountTable extends AbstractEntity
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getMap()
     {
@@ -47,7 +47,7 @@ class CompanyDiscountTable extends AbstractEntity
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected static function getIndexes()
     {
