@@ -1,6 +1,10 @@
 source:
   - ./classes
 destination: ./docs
+annotationGroups:
+  - "rabbitmq.exchange"
+  - "soap.error"
+tree: ~
 download: ~
 templateTheme: default
 todo: ~

@@ -12,6 +12,10 @@ namespace Hogart\Lk\Exchange\RabbitMQ\Exchange;
 use Hogart\Lk\Exchange\RabbitMQ\EnvelopeException;
 use Hogart\Lk\Exchange\RabbitMQ\Consumer;
 
+/**
+ * Абстрактный класс Задачи RabbitMQ
+ * @package Hogart\Lk\Exchange\RabbitMQ\Exchange
+ */
 abstract class AbstractExchange implements ExchangeInterface
 {
     /** @var Consumer */
@@ -24,7 +28,8 @@ abstract class AbstractExchange implements ExchangeInterface
     protected $dependencies = [];
 
     /**
-     * @param $key
+     * Получить ключ для публикации сообщения
+     * @param string $key Сокращенный ключ
      * @return string
      */
     public function getPublishKey($key)
@@ -33,8 +38,9 @@ abstract class AbstractExchange implements ExchangeInterface
     }
 
     /**
+     * Получить обработанный ключ обмена, зависящий от имени очереди
      * @param \AMQPEnvelope $envelope
-     * @return mixed
+     * @return string Сокращенный ключ
      */
     public function getRoutingKey(\AMQPEnvelope $envelope)
     {
@@ -42,7 +48,7 @@ abstract class AbstractExchange implements ExchangeInterface
     }
 
     /**
-     * @return array
+     * @inheritdoc
      */
     public function getDependencies()
     {
@@ -71,6 +77,7 @@ abstract class AbstractExchange implements ExchangeInterface
     }
 
     /**
+     * Объявить точку обмена
      * @return $this
      */
     protected function declareExchange()
@@ -85,6 +92,7 @@ abstract class AbstractExchange implements ExchangeInterface
     }
 
     /**
+     * Объявить очередь и привязать к точке обмена
      * @return $this
      */
     protected function declareQueue()
@@ -119,6 +127,7 @@ abstract class AbstractExchange implements ExchangeInterface
     }
 
     /**
+     * Получить главный класс "Потребителя"
      * @return Consumer
      */
     public function getConsumer()
@@ -127,6 +136,7 @@ abstract class AbstractExchange implements ExchangeInterface
     }
 
     /**
+     * Получить точку обмена AMQP
      * @return \AMQPExchange
      */
     public function getExchange()
@@ -135,6 +145,7 @@ abstract class AbstractExchange implements ExchangeInterface
     }
 
     /**
+     * Получить очередь AMQP
      * @return \AMQPQueue
      */
     public function getQueue()

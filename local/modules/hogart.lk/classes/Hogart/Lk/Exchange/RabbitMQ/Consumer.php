@@ -16,6 +16,10 @@ use Hogart\Lk\Logger\LoggerCollection;
 use Hogart\Lk\Logger\LoggerInterface;
 use MJS\TopSort\Implementations\StringSort;
 
+/**
+ * Класс главного "Потребителя"
+ * @package Hogart\Lk\Exchange\RabbitMQ
+ */
 class Consumer
 {
     use Singleton;
@@ -47,6 +51,7 @@ class Consumer
     }
 
     /**
+     * Зарегистрировать логгер
      * @param LoggerInterface $logger
      * @return $this
      */
@@ -58,6 +63,7 @@ class Consumer
     }
 
     /**
+     * Удалить с регистрации логгер
      * @param LoggerInterface $logger
      * @return $this
      */
@@ -69,6 +75,7 @@ class Consumer
     }
 
     /**
+     * Получить логгеры
      * @return LoggerCollection
      */
     public function getLogger()
@@ -77,6 +84,7 @@ class Consumer
     }
 
     /**
+     * Установить логгер
      * @param LoggerInterface $logger
      * @return $this
      */
@@ -87,6 +95,7 @@ class Consumer
     }
 
     /**
+     * Получить соединение AMQP c RabbitMQ
      * @return \AMQPConnection
      */
     public function getConnection()
@@ -95,6 +104,7 @@ class Consumer
     }
 
     /**
+     * Получить канал AMQP RabbitMQ
      * @return \AMQPChannel
      */
     public function getChannel()
@@ -104,6 +114,7 @@ class Consumer
 
 
     /**
+     * Зарегистрировать обмен (Задача RabbitMQ)
      * @param ExchangeInterface|ExchangeInterface[] $exchangeInterface
      * @return $this
      */
@@ -117,6 +128,7 @@ class Consumer
     }
 
     /**
+     * Топологическая сортировка обменов по зависимостям
      * @return array|Exchange\ExchangeInterface[]
      */
     public function sortExchanges()
@@ -132,6 +144,7 @@ class Consumer
     }
 
     /**
+     * Запуск "Потребителя"
      * @throws Exception
      */
     public function run()
