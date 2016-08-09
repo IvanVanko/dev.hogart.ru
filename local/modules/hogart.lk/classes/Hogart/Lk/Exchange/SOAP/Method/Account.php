@@ -113,7 +113,7 @@ class Account extends AbstractMethod
                 'is_active' => !$accountInfo->deletion_mark
             ], 'user_guid_id');
 
-            if (!empty(!$result->getId())) {
+            if (!empty($result->getId())) {
                 foreach ($accountInfo->Acc_Warehouses as $acc_Warehouse) {
                     AccountStoreRelationTable::replace([
                         'account_id' => $result->getId(),
@@ -124,26 +124,31 @@ class Account extends AbstractMethod
 
                 foreach ($accountInfo->Acc_Managers as $acc_Manager) {
                     $manager = StaffTable::getByField('guid_id', $acc_Manager);
-                    StaffRelationTable::replace([
-                        'staff_id' => $manager['id'],
-                        'owner_id' => $result->getId(),
-                        'owner_type' => StaffRelationTable::OWNER_TYPE_ACCOUNT,
-                        'is_main' => ($acc_Manager == $accountInfo->Acc_ID_Main_Manager),
-                    ]);
-                    $this->client->getLogger()->notice("Обработан менеджер клиента {$acc_Manager}: добавлена запись");
+                    if (!empty($manager['id'])) {
+                        StaffRelationTable::replace([
+                            'staff_id' => $manager['id'],
+                            'owner_id' => $result->getId(),
+                            'owner_type' => StaffRelationTable::OWNER_TYPE_ACCOUNT,
+                            'is_main' => ($acc_Manager == $accountInfo->Acc_ID_Main_Manager),
+                        ]);
+                        $this->client->getLogger()->notice("Обработан менеджер клиента {$acc_Manager}: добавлена запись");
+                    }
                 }
 
                 foreach ($accountInfo->Acc_Companies as $acc_Company) {
                     $company = StaffTable::getByField('guid_id', $acc_Company);
-                    AccountCompanyRelationTable::replace([
-                        'account_id' => $result->getId(),
-                        'company_id' => $company['id'],
-                    ]);
-                    $this->client->getLogger()->notice("Обработана компания клиента {$acc_Company}: добавлена запись");
+                    if (!empty($company['id'])) {
+                        AccountCompanyRelationTable::replace([
+                            'account_id' => $result->getId(),
+                            'company_id' => $company['id'],
+                        ]);
+                        $this->client->getLogger()->notice("Обработана компания клиента {$acc_Company}: добавлена запись");
+                    }
                 }
             }
         }
 
+        $this->accountAnswer($answer);
         return count($answer->Response);
     }
 }
