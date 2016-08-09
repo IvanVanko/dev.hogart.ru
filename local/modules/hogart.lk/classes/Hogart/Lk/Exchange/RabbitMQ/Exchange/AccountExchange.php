@@ -16,9 +16,9 @@ use Hogart\Lk\Exchange\SOAP\Client;
  * 
  * @rabbitmq.exchange
  * | *__Код задачи__*           | *__Тело сообщения__* | *__Описание__*                                         |
- * |:----------:                |:----------:           |--------------                                          |
- * | __account.get__            |                       | _Задача получения Аккаунтов из КИС_                   |
- * | __account.send_password__  | _account_login_       | _Задача отправки ссылки клиенту для смены пароля_     |
+ * |:----------:                |:----------:          |--------------                                          |
+ * | __account.get__            |                      | _Задача получения Аккаунтов из КИС_                   |
+ * | __account.send_password__  | _account_login_      | _Задача отправки ссылки клиенту для смены пароля_     |
  *
  * @package Hogart\Lk\Exchange\RabbitMQ\Exchange
  */
