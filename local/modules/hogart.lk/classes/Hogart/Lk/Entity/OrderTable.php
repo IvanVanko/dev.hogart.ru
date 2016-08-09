@@ -37,6 +37,15 @@ class OrderTable extends AbstractEntity
     /** Статус - Закрыт */
     const STATUS_FINISHED = 3;
 
+    /** Состояние - Нормальное */
+    const STATE_NORMAL = 1;
+
+    /** Состояние - Драфте */
+    const STATE_DRAFT = 2;
+
+    /** Состояние - В архиве */
+    const STATE_ARCHIVE = 3;
+
 
     /**
      * @inheritDoc
@@ -63,20 +72,28 @@ class OrderTable extends AbstractEntity
             new ReferenceField("hogart_company", "HogartCompanyTable", ["=this.hogart_company_id" => "ref.id"]),
             new StringField("number"),
             new DateField("order_date"),
-            new EnumField("order_type", [
+            new IntegerField("contract_id"),
+            new ReferenceField("contract", "ContractTable", ["=this.contract_id" => "ref.id"]),
+            new EnumField("type", [
                 'values' => [
                     self::TYPE_SALE,
                     self::TYPE_PROMO
                 ]
             ]),
-            new IntegerField("contract_id"),
-            new ReferenceField("contract", "ContractTable", ["=this.contract_id" => "ref.id"]),
-            new EnumField("order_status", [
+            new EnumField("status", [
                 'values' => [
                     self::STATUS_NEW,
                     self::STATUS_IN_WORK,
                     self::STATUS_FINISHED,
                 ]
+            ]),
+            new EnumField("state", [
+                'values' => [
+                    self::STATE_NORMAL,
+                    self::STATE_DRAFT,
+                    self::STATE_ARCHIVE,
+                ],
+                'default_value' => self::STATE_NORMAL,
             ]),
             new IntegerField("store_id"),
             new ReferenceField("store", "Bitrix\\Catalog\\StoreTable", ["=this.store_id" => "ref.ID"]),

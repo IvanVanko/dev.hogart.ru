@@ -16,8 +16,10 @@ CModule::IncludeModule("hogart.lk");
 CModule::IncludeModule("main");
 CModule::IncludeModule("catalog");
 
+\Hogart\Lk\Entity\OrderTable::dropTableIfExists();
+\Hogart\Lk\Entity\OrderTable::createTableIfNotExists();
+exit();
 //\Hogart\Lk\Entity\ContactInfoTable::dropTableIfExists();
-//\Hogart\Lk\Entity\OrderTable::dropTableIfExists();
 //\Hogart\Lk\Entity\OrderItemTable::dropTableIfExists();
 //\Hogart\Lk\Entity\RTUItemTable::dropTableIfExists();
 
