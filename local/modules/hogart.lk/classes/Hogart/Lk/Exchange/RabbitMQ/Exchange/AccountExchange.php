@@ -11,6 +11,16 @@ namespace Hogart\Lk\Exchange\RabbitMQ\Exchange;
 
 use Hogart\Lk\Exchange\SOAP\Client;
 
+/**
+ * Задачи RabbitMQ - Аккаунты
+ *
+ * | *__Код задачи__*           | *__Тело сообщения__* | *__Описание__*                                         |
+ * |:----------:                |:----------:           |--------------                                          |
+ * | __account.get__            |                       | _Задача получения Аккаунтов из КИС_                   |
+ * | __account.send_password__  | _account_login_       | _Задача отправки ссылки клиенту для смены пароля_     |
+ *
+ * @package Hogart\Lk\Exchange\RabbitMQ\Exchange
+ */
 class AccountExchange extends AbstractExchange
 {
     /**
