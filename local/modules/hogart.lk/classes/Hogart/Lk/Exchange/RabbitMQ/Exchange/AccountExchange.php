@@ -40,7 +40,7 @@ class AccountExchange extends AbstractExchange
         switch ($key = $this->getRoutingKey($envelope)) {
             case 'get':
                 // синхронизация с 1С
-                $count = Client::getInstance()->Account->createOrUpdateAccounts();
+                $count = Client::getInstance()->Account->updateAccounts();
                 if (!empty($count)) {
                     $this
                         ->exchange

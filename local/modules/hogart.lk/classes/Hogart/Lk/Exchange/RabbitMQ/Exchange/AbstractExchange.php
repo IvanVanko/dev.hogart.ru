@@ -38,7 +38,7 @@ abstract class AbstractExchange implements ExchangeInterface
      */
     public function getRoutingKey(\AMQPEnvelope $envelope)
     {
-        return preg_replace("%^" . $this->getQueueName() . "%", "", $envelope->getRoutingKey());
+        return preg_replace("%^" . $this->getQueueName() . "\.%", "", $envelope->getRoutingKey());
     }
 
     /**
