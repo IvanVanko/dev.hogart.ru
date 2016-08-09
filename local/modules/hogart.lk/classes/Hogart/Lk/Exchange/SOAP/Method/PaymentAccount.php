@@ -6,6 +6,7 @@
  */
 
 namespace Hogart\Lk\Exchange\SOAP\Method;
+
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
 use Hogart\Lk\Entity\PaymentAccountTable;
 use Hogart\Lk\Entity\PaymentAccountRelationTable;

@@ -9,12 +9,10 @@ namespace Hogart\Lk\Exchange\SOAP\Method;
 
 
 use Bitrix\Main\Type\Date;
-use Hogart\Lk\Entity\AccountTable;
 use Hogart\Lk\Entity\CompanyTable;
 use Hogart\Lk\Entity\ContactTable;
 use Hogart\Lk\Entity\KindOfActivityTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
-use Bitrix\Main\UserTable;
 use Bitrix\Main\Entity\UpdateResult;
 use Hogart\Lk\Exchange\SOAP\MethodException;
 use Hogart\Lk\Exchange\SOAP\Request;

@@ -11,7 +11,6 @@ namespace Hogart\Lk\Exchange\SOAP\Method;
 use Hogart\Lk\Entity\CompanyDiscountTable;
 use Hogart\Lk\Entity\CompanyTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
-use Bitrix\Main\UserTable;
 use Bitrix\Main\Entity\UpdateResult;
 use Bitrix\Iblock\ElementTable;
 use Bitrix\Main\DB\SqlExpression;

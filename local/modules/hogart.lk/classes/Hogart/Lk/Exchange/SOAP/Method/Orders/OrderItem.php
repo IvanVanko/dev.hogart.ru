@@ -14,8 +14,6 @@ use Hogart\Lk\Entity\OrderTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
 use Bitrix\Main\Entity\UpdateResult;
 use Hogart\Lk\Exchange\SOAP\MethodException;
-use Hogart\Lk\Exchange\SOAP\Response;
-use Hogart\Lk\Exchange\SOAP\ResponseObject;
 
 /**
  * Class Company - добавление Компании и Видов деятельности

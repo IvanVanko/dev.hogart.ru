@@ -6,6 +6,7 @@
  */
 
 namespace Hogart\Lk\Exchange\SOAP\Method\OrderDocs;
+
 use Bitrix\Iblock\ElementTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
 use Hogart\Lk\Entity\RTUItemTable;
@@ -14,8 +15,6 @@ use Bitrix\Main\Type\Date;
 use Bitrix\Main\Entity\UpdateResult;
 use Bitrix\Main\DB\SqlExpression;
 use Hogart\Lk\Exchange\SOAP\MethodException;
-use Hogart\Lk\Exchange\SOAP\Response;
-use Hogart\Lk\Exchange\SOAP\ResponseObject;
 
 /**
  * Обмен с КИС - Позиции реализации товаров и услуг (Отгрузка)
