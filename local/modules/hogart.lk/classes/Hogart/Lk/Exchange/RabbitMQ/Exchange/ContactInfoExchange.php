@@ -9,6 +9,16 @@ namespace Hogart\Lk\Exchange\RabbitMQ\Exchange;
 
 use Hogart\Lk\Exchange\SOAP\Client;
 
+/**
+ * Задачи RabbitMQ - Информация в контактах
+ *
+ * @rabbitmq.exchange
+ * | *__Код задачи__*           | *__Тело сообщения__* | *__Описание__*                                         |
+ * |:----------:                |:----------:          |--------------                                          |
+ * | __contact_info.get__       |                      | _Задача получения Информации по Контактов из КИС_      |
+ *
+ * @package Hogart\Lk\Exchange\RabbitMQ\Exchange
+ */
 class ContactInfoExchange extends AbstractExchange
 {
     /**
@@ -26,7 +36,7 @@ class ContactInfoExchange extends AbstractExchange
      */
     function getQueueName()
     {
-        return "contact";
+        return "contact_info";
     }
 
     /**

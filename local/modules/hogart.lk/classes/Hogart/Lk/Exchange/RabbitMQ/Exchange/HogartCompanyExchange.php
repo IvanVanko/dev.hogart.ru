@@ -11,6 +11,16 @@ namespace Hogart\Lk\Exchange\RabbitMQ\Exchange;
 
 use Hogart\Lk\Exchange\SOAP\Client;
 
+/**
+ * Задачи RabbitMQ - Компании ГК Хогарт
+ *
+ * @rabbitmq.exchange
+ * | *__Код задачи__*           | *__Тело сообщения__* | *__Описание__*                             |
+ * |:----------:                |:----------:          |--------------                              |
+ * | __hogart_company.get__     |                      | _Задача получения Компаний Хогарта из КИС_ |
+ *
+ * @package Hogart\Lk\Exchange\RabbitMQ\Exchange
+ */
 class HogartCompanyExchange extends AbstractExchange
 {
     /**

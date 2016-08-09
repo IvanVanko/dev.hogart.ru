@@ -9,10 +9,18 @@
 namespace Hogart\Lk\Exchange\RabbitMQ\Exchange;
 
 
-use Hogart\Lk\Exchange\RabbitMQ\EnvelopeException;
-use Hogart\Lk\Exchange\RabbitMQ\Logger\BitrixLogger;
 use Hogart\Lk\Exchange\SOAP\Client;
 
+/**
+ * Задачи RabbitMQ - Сотрудники Хогарта
+ *
+ * @rabbitmq.exchange
+ * | *__Код задачи__*      | *__Тело сообщения__* | *__Описание__*                                 |
+ * |:----------:           |:----------:          |--------------                                  |
+ * | __staff.get__         |                      | _Задача получения Сотрудников Хогарта из КИС_  |
+ *
+ * @package Hogart\Lk\Exchange\RabbitMQ\Exchange
+ */
 class StaffExchange extends AbstractExchange
 {
     /**

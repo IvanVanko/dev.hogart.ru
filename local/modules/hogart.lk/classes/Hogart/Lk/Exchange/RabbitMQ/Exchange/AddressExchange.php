@@ -11,6 +11,16 @@ namespace Hogart\Lk\Exchange\RabbitMQ\Exchange;
 
 use Hogart\Lk\Exchange\SOAP\Client;
 
+/**
+ * Задачи RabbitMQ - Адреса
+ *
+ * @rabbitmq.exchange
+ * | *__Код задачи__*  | *__Тело сообщения__* | *__Описание__*                    |
+ * |:----------:       |:----------:          |--------------                     |
+ * | __address.get__   |                      | _Задача получения Адресов из КИС_ |
+ *
+ * @package Hogart\Lk\Exchange\RabbitMQ\Exchange
+ */
 class AddressExchange extends AbstractExchange
 {
     /**

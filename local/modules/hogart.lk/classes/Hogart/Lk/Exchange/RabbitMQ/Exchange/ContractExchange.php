@@ -9,6 +9,16 @@ namespace Hogart\Lk\Exchange\RabbitMQ\Exchange;
 
 use Hogart\Lk\Exchange\SOAP\Client;
 
+/**
+ * Задачи RabbitMQ - Договора
+ *
+ * @rabbitmq.exchange
+ * | *__Код задачи__*           | *__Тело сообщения__* | *__Описание__*                           |
+ * |:----------:                |:----------:          |--------------                            |
+ * | __contract.get__           |                      | _Задача получения Договоров из КИС_      |
+ *
+ * @package Hogart\Lk\Exchange\RabbitMQ\Exchange
+ */
 class ContractExchange extends AbstractExchange
 {
     /**
