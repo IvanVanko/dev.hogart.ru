@@ -33,7 +33,7 @@ class ContactRelationTable extends AbstractEntityRelation
     {
         return array_merge([
             new IntegerField("contact_id", ['primary' => true]),
-            new ReferenceField("contact", "ContactTable", ["=this.contact_id" => "ref.id"]),
+            new ReferenceField("contact", "Hogart\\Lk\\Entity\\ContactTable", ["=this.contact_id" => "ref.id"]),
         ], parent::getMap());
     }
 
@@ -47,5 +47,28 @@ class ContactRelationTable extends AbstractEntityRelation
             new Index('idx_is_main', ['is_main']),
             new Index('idx_owner_type', ['owner_type'])
         ];
+    }
+
+    public static function getAccountContacts($account_id)
+    {
+        $contacts = self::getList([
+            'filter' => [
+                '=account.id' => $account_id
+            ],
+            'select' => [
+                '' => 'contact',
+            ]
+        ])->fetchAll();
+
+        // @todo Сделать после разговора о Информации Контактов
+//        foreach ($contacts as &$contact) {
+//            $contact['info'] = ContactInfoTable::getList([
+//                'filter' => [
+//                    '=contact.id' => $contact['id']
+//                ]
+//            ])->fetchAll();
+//        }
+
+        return $contacts;
     }
 }

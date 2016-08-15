@@ -45,19 +45,19 @@ class AccountTable extends AbstractEntity
             new ReferenceField("user", "Bitrix\\Main\\UserTable", ["=this.user_id" => "ref.ID"]),
 
             new IntegerField("contact_id"),
-            new ReferenceField("contact", "\\ContactTable", ["=this.contact_id" => "ref.id"]),
+            new ReferenceField("contact", "Hogart\\Lk\\Entity\\ContactTable", ["=this.contact_id" => "ref.id"]),
 
             new IntegerField("main_manager_id"),
-            new ReferenceField("main_manager", "\\StaffTable", ["=this.main_manager_id" => "ref.id"]),
+            new ReferenceField("main_manager", "Hogart\\Lk\\Entity\\StaffTable", ["=this.main_manager_id" => "ref.id"]),
 
             new IntegerField("main_store_id"),
             new ReferenceField("main_store", "Bitrix\\Catalog\\StoreTable", ["=this.main_store_id" => "ref.ID"]),
 
             new IntegerField("head_account_id"),
-            new ReferenceField("head_account", "\\AccountTable", ["=this.head_account_id" => "ref.id"]),
+            new ReferenceField("head_account", "Hogart\\Lk\\Entity\\AccountTable", ["=this.head_account_id" => "ref.id"]),
 
             new IntegerField("main_contract_id"),
-            new ReferenceField("main_contract", "\\ContractTable", ["=this.main_contract_id" => "ref.id"]),
+            new ReferenceField("main_contract", "Hogart\\Lk\\Entity\\ContractTable", ["=this.main_contract_id" => "ref.id"]),
 
             new BooleanField("is_promo_accesss"),
             new BooleanField("is_active")
@@ -76,5 +76,35 @@ class AccountTable extends AbstractEntity
             new Index("idx_is_active", ["is_active"]),
             new Index("idx_is_promo_accesss", ["is_promo_accesss"]),
         ];
+    }
+
+    /**
+     * @param int $ID
+     * @return array|false
+     * @throws \Bitrix\Main\ArgumentException
+     */
+    public static function getAccountByUserID($ID)
+    {
+        return self::getList([
+            'filter' => [
+                '=user_id' => $ID
+            ],
+        ])->fetch();
+    }
+
+    /**
+     * @param $account_id
+     * @return bool
+     * @throws \Bitrix\Main\ArgumentException
+     */
+    public static function isGeneralAccount($account_id)
+    {
+        $account = self::getList([
+            'filter' => [
+                '=id' => $account_id,
+                '=head_account_id' => 0
+            ]
+        ])->fetch();
+        return !empty($account);
     }
 }

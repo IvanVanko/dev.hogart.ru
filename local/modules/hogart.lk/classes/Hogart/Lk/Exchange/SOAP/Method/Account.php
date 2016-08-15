@@ -85,6 +85,13 @@ class Account extends AbstractMethod
                     );
 
                     if (empty($user['ID'])) {
+                        // Группа пользовалей
+                        $group = (new \CGroup())->GetListEx([], ["STRING_ID" => "HOGART_LK"])->Fetch();
+                        if (!empty($group['ID'])) {
+                            $userGroups = \CUser::GetUserGroup($user['ID']);
+                            $userGroups[] = $group['ID'];
+                            \CUser::SetUserGroup($user['ID'], $userGroups);
+                        }
                         $response_object->setError(new MethodException(MethodException::ERROR_USER_CREATE, [$accountInfo->Acc_Login, $user_obj->LAST_ERROR]));
                         continue;
                     }

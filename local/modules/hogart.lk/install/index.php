@@ -9,7 +9,7 @@
 class hogart_lk extends CModule
 {
     public $MODULE_ID = "hogart.lk";
-    public $MODULE_NAME = "Мудуль ЛК";
+    public $MODULE_NAME = "Модуль ЛК";
     public $MODULE_DESCRIPTION = "Модуль личного кабинета компании Хогарт";
     public $PARTNER_NAME = "Oldschool";
     public $PARTNER_URI = "http://oldschool.ru";
@@ -120,7 +120,11 @@ class hogart_lk extends CModule
         if ($step == 3) {
             RegisterModule($this->MODULE_ID);
             CopyDirFiles(__DIR__ . "/admin", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/admin");
+            CopyDirFiles(__DIR__ . "/components", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/components");
             $this->InstallDB();
+
+            $upgradeManager = new \Hogart\Lk\Upgrade\UpgradeManager(true);
+            $upgradeManager->upgradeReload();
         }
         
         $APPLICATION->IncludeAdminFile("Установка модуля \"{$this->MODULE_NAME}\"{$stepTitles[$step - 1]}", __DIR__ . "/step{$step}.php");
@@ -130,6 +134,7 @@ class hogart_lk extends CModule
     {
         $this->UnInstallDB();
         DeleteDirFiles(__DIR__ . "/admin", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/admin");
+        DeleteDirFiles(__DIR__ . "/components", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/components");
         UnRegisterModule($this->MODULE_ID);
     }
 }

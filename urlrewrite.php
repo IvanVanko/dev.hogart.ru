@@ -179,6 +179,12 @@ $arUrlRewrite = array(
 		"RULE" => "",
 		"ID" => "bitrix:news",
 		"PATH" => "/stock/index.php",
+	),
+	array(
+		"CONDITION" => "#^/account/#",
+		"RULE" => "",
+		"ID" => "hogart.lk:account",
+		"PATH" => "/local/modules/hogart.lk/front/account/index.php"
 	)
 );
 

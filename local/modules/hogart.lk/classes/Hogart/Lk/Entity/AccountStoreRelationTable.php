@@ -32,7 +32,7 @@ class AccountStoreRelationTable extends AbstractEntity
     {
         return [
             new IntegerField("account_id", ['primary' => true]),
-            new ReferenceField("account", "AccountTable", ["=this.account_id" => "ref.id"]),
+            new ReferenceField("account", "Hogart\\Lk\\Entity\\AccountTable", ["=this.account_id" => "ref.id"]),
             new GuidField("store_guid", ['primary' => true]),
             new ReferenceField("store", "Bitrix\\Catalog\\StoreTable", ["=this.store_guid" => "ref.XML_ID"]),
         ];
@@ -46,5 +46,22 @@ class AccountStoreRelationTable extends AbstractEntity
         return [
             new Index("idx_account_relation", ['account_id', 'store_guid' => 36]),
         ];
+    }
+
+    /**
+     * @param $account_id
+     * @return array
+     * @throws \Bitrix\Main\ArgumentException
+     */
+    public static function getByAccountId($account_id)
+    {
+        return self::getList([
+            'filter' => [
+                '=account_id' => $account_id
+            ],
+            'select' => [
+                'store_' => 'store'
+            ]
+        ])->fetchAll();
     }
 }

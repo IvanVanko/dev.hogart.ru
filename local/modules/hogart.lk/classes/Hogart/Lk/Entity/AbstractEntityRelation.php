@@ -40,12 +40,12 @@ abstract class AbstractEntityRelation extends AbstractEntity
     {
         return [
             new IntegerField("owner_id", ['primary' => true]),
-            new ReferenceField("account", "AccountTable", ["=this.owner_id" => "ref.id", "=this.owner_type" => new SqlExpression('?i', self::OWNER_TYPE_ACCOUNT)]),
-            new ReferenceField("company", "CompanyTable", ["=this.owner_id" => "ref.id", "=this.owner_type" => new SqlExpression('?i', self::OWNER_TYPE_CLIENT_COMPANY)]),
-            new ReferenceField("staff", "StaffTable", ["=this.owner_id" => "ref.id", "=this.owner_type" => new SqlExpression('?i', self::OWNER_TYPE_STAFF)]),
-            new ReferenceField("hogart_company", "HogartCompanyTable", ["=this.owner_id" => "ref.id", "=this.owner_type" => new SqlExpression('?i', self::OWNER_TYPE_HOGART_COMPANY)]),
+            new ReferenceField("account", "Hogart\\Lk\\Entity\\AccountTable", ["=this.owner_id" => "ref.id", "=this.owner_type" => new SqlExpression('?i', self::OWNER_TYPE_ACCOUNT)]),
+            new ReferenceField("company", "Hogart\\Lk\\Entity\\CompanyTable", ["=this.owner_id" => "ref.id", "=this.owner_type" => new SqlExpression('?i', self::OWNER_TYPE_CLIENT_COMPANY)]),
+            new ReferenceField("staff", "Hogart\\Lk\\Entity\\StaffTable", ["=this.owner_id" => "ref.id", "=this.owner_type" => new SqlExpression('?i', self::OWNER_TYPE_STAFF)]),
+            new ReferenceField("hogart_company", "Hogart\\Lk\\Entity\\HogartCompanyTable", ["=this.owner_id" => "ref.id", "=this.owner_type" => new SqlExpression('?i', self::OWNER_TYPE_HOGART_COMPANY)]),
             new ReferenceField("store", "Bitrix\\Catalog\\StoreTable", ["=this.owner_id" => "ref.ID", "=this.owner_type" => new SqlExpression('?i', self::OWNER_TYPE_STORE)]),
-            new ReferenceField("contact", "ContactTable", ["=this.owner_id" => "ref.id", "=this.owner_type" => new SqlExpression('?i', self::OWNER_TYPE_CONTACT)]),
+            new ReferenceField("contact", "Hogart\\Lk\\Entity\\ContactTable", ["=this.owner_id" => "ref.id", "=this.owner_type" => new SqlExpression('?i', self::OWNER_TYPE_CONTACT)]),
             new BooleanField("is_main", [
                 'default_value' => false
             ]),
