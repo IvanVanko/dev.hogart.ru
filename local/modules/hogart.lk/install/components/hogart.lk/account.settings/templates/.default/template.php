@@ -11,3 +11,5 @@
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
+ini_set("xdebug.var_display_max_depth", -1);
+var_dump($arResult);

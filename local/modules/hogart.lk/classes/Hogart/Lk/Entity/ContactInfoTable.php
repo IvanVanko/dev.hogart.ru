@@ -12,7 +12,6 @@ namespace Hogart\Lk\Entity;
 use Bitrix\Main\Entity\BooleanField;
 use Bitrix\Main\Entity\EnumField;
 use Bitrix\Main\Entity\IntegerField;
-use Bitrix\Main\Entity\ReferenceField;
 use Bitrix\Main\Entity\StringField;
 use Hogart\Lk\Field\GuidField;
 
@@ -20,7 +19,7 @@ use Hogart\Lk\Field\GuidField;
  * Таблица Контактной информации
  * @package Hogart\Lk\Entity
  */
-class ContactInfoTable extends AbstractEntity
+class ContactInfoTable extends AbstractEntityRelation
 {
     /** Тип - Телефон */
     const TYPE_PHONE = 1;
@@ -46,29 +45,29 @@ class ContactInfoTable extends AbstractEntity
      */
     public static function getMap()
     {
-        return [
-            new IntegerField("id", [
-                'primary' => true,
-                "autocomplete" => true
+        return array_merge([
+            new GuidField("d_guid_id", [
+                'format' => '%(^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}[_][0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}$|^$)%',
+                'unique' => false
             ]),
-            new GuidField("d_guid_id"),
-            new IntegerField("company_id"),
-            new ReferenceField("company", "CompanyTable", ["=this.company_id" => "ref.id"]),
-            new EnumField("type", [
+            new EnumField("info_type", [
                 'values' => [
                     self::TYPE_PHONE,
                     self::TYPE_EMAIL
-                ]
+                ],
+                'primary' => true
             ]),
             new EnumField("phone_kind", [
                 'values' => [
-                    self::TYPE_PHONE,
-                    self::TYPE_EMAIL
-                ]
+                    self::PHONE_KIND_MOBILE,
+                    self::PHONE_KIND_STATIC
+                ],
+                'primary' => true,
+                'default_value' => 0
             ]),
             new StringField("value"),
             new BooleanField("is_active")
-        ];
+        ], parent::getMap());
     }
 
     /**
@@ -78,7 +77,6 @@ class ContactInfoTable extends AbstractEntity
     {
         return [
             new Index("idx_d_guid_id", ["d_guid_id" => 73]),
-            new Index("idx_company", ["company_id"]),
             new Index('idx_is_active', ['is_active'])
         ];
     }

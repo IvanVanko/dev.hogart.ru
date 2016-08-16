@@ -60,14 +60,13 @@ class ContactRelationTable extends AbstractEntityRelation
             ]
         ])->fetchAll();
 
-        // @todo Сделать после разговора о Информации Контактов
-//        foreach ($contacts as &$contact) {
-//            $contact['info'] = ContactInfoTable::getList([
-//                'filter' => [
-//                    '=contact.id' => $contact['id']
-//                ]
-//            ])->fetchAll();
-//        }
+        foreach ($contacts as &$contact) {
+            $contact['info'] = ContactInfoTable::getList([
+                'filter' => [
+                    '=contact.id' => $contact['id']
+                ]
+            ])->fetchAll();
+        }
 
         return $contacts;
     }

@@ -14,6 +14,7 @@ use Bitrix\Main\Entity\BooleanField;
 use Bitrix\Main\Entity\EnumField;
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ReferenceField;
+use Hogart\Lk\Exchange\SOAP\MethodException;
 
 /**
  * Абстрактный класс таблицы связей
@@ -21,15 +22,68 @@ use Bitrix\Main\Entity\ReferenceField;
  */
 abstract class AbstractEntityRelation extends AbstractEntity
 {
-    /**
-     * Тип Аккаунт
-     */
+    // @todo Сравнить ID с КИС
+    /** Владелец - Аккаунт клиента */
     const OWNER_TYPE_ACCOUNT = 1;
+    /** Владелец - Компания клиента */
     const OWNER_TYPE_CLIENT_COMPANY = 2;
+    /** Владелец - Сотрудник компании */
     const OWNER_TYPE_STAFF = 3;
+    /** Владелец - Компания Хогарт */
     const OWNER_TYPE_HOGART_COMPANY = 4;
+    /** Владелец - Склад */
     const OWNER_TYPE_STORE = 5;
+    /** Владелец - Контактное лицо */
     const OWNER_TYPE_CONTACT = 6;
+
+    /**
+     * Связи, используемые при запросах
+     * @var array
+     */
+    public static $types = [
+        self::OWNER_TYPE_ACCOUNT => [
+            "name" => "account",
+            "table" => __NAMESPACE__ . "\\AccountTable",
+            "rel" => "user_guid_id",
+            "rel_id" => "id",
+            "error" => MethodException::ERROR_NO_ACCOUNT
+        ],
+        self::OWNER_TYPE_CLIENT_COMPANY => [
+            "name" => "company",
+            "table" => __NAMESPACE__ . "\\CompanyTable",
+            "rel" => "guid_id",
+            "rel_id" => "id",
+            "error" => MethodException::ERROR_NO_CLIENT_COMPANY
+        ],
+        self::OWNER_TYPE_STAFF => [
+            "name" => "staff",
+            "table" => __NAMESPACE__ . "\\StaffTable",
+            "rel" => "guid_id",
+            "rel_id" => "id",
+            "error" => MethodException::ERROR_NO_STAFF
+        ],
+        self::OWNER_TYPE_HOGART_COMPANY => [
+            "name" => "hogart_company",
+            "table" => __NAMESPACE__ . "\\HogartCompanyTable",
+            "rel" => "guid_id",
+            "rel_id" => "id",
+            "error" => MethodException::ERROR_NO_HOGART_COMPANY
+        ],
+        self::OWNER_TYPE_STORE => [
+            "name" => "store",
+            "table" => "Bitrix\\Catalog\\StoreTable",
+            "rel" => "XML_ID",
+            "rel_id" => "ID",
+            "error" => MethodException::ERROR_NO_STORE
+        ],
+        self::OWNER_TYPE_CONTACT => [
+            "name" => "contact",
+            "table" => __NAMESPACE__ . "\\ContactTable",
+            "rel" => "guid_id",
+            "rel_id" => "id",
+            "error" => MethodException::ERROR_NO_CONTACT
+        ],
+    ];
     
     
 
@@ -40,12 +94,12 @@ abstract class AbstractEntityRelation extends AbstractEntity
     {
         return [
             new IntegerField("owner_id", ['primary' => true]),
-            new ReferenceField("account", "Hogart\\Lk\\Entity\\AccountTable", ["=this.owner_id" => "ref.id", "=this.owner_type" => new SqlExpression('?i', self::OWNER_TYPE_ACCOUNT)]),
-            new ReferenceField("company", "Hogart\\Lk\\Entity\\CompanyTable", ["=this.owner_id" => "ref.id", "=this.owner_type" => new SqlExpression('?i', self::OWNER_TYPE_CLIENT_COMPANY)]),
-            new ReferenceField("staff", "Hogart\\Lk\\Entity\\StaffTable", ["=this.owner_id" => "ref.id", "=this.owner_type" => new SqlExpression('?i', self::OWNER_TYPE_STAFF)]),
-            new ReferenceField("hogart_company", "Hogart\\Lk\\Entity\\HogartCompanyTable", ["=this.owner_id" => "ref.id", "=this.owner_type" => new SqlExpression('?i', self::OWNER_TYPE_HOGART_COMPANY)]),
-            new ReferenceField("store", "Bitrix\\Catalog\\StoreTable", ["=this.owner_id" => "ref.ID", "=this.owner_type" => new SqlExpression('?i', self::OWNER_TYPE_STORE)]),
-            new ReferenceField("contact", "Hogart\\Lk\\Entity\\ContactTable", ["=this.owner_id" => "ref.id", "=this.owner_type" => new SqlExpression('?i', self::OWNER_TYPE_CONTACT)]),
+            new ReferenceField(self::$types[self::OWNER_TYPE_CLIENT_COMPANY]['name'], self::$types[self::OWNER_TYPE_CLIENT_COMPANY]['table'], ["=this.owner_id" => "ref.id", "=this.owner_type" => new SqlExpression('?i', self::OWNER_TYPE_CLIENT_COMPANY)]),
+            new ReferenceField(self::$types[self::OWNER_TYPE_HOGART_COMPANY]['name'], self::$types[self::OWNER_TYPE_HOGART_COMPANY]['table'], ["=this.owner_id" => "ref.id", "=this.owner_type" => new SqlExpression('?i', self::OWNER_TYPE_HOGART_COMPANY)]),
+            new ReferenceField(self::$types[self::OWNER_TYPE_STORE]['name'], self::$types[self::OWNER_TYPE_STORE]['table'], ["=this.owner_id" => "ref.ID", "=this.owner_type" => new SqlExpression('?i', self::OWNER_TYPE_STORE)]),
+            new ReferenceField(self::$types[self::OWNER_TYPE_ACCOUNT]['name'], self::$types[self::OWNER_TYPE_ACCOUNT]['table'], ["=this.owner_id" => "ref.id", "=this.owner_type" => new SqlExpression('?i', self::OWNER_TYPE_ACCOUNT)]),
+            new ReferenceField(self::$types[self::OWNER_TYPE_STAFF]['name'], self::$types[self::OWNER_TYPE_STAFF]['table'], ["=this.owner_id" => "ref.id", "=this.owner_type" => new SqlExpression('?i', self::OWNER_TYPE_STAFF)]),
+            new ReferenceField(self::$types[self::OWNER_TYPE_CONTACT]['name'], self::$types[self::OWNER_TYPE_CONTACT]['table'], ["=this.owner_id" => "ref.id", "=this.owner_type" => new SqlExpression('?i', self::OWNER_TYPE_CONTACT)]),
             new BooleanField("is_main", [
                 'default_value' => false
             ]),

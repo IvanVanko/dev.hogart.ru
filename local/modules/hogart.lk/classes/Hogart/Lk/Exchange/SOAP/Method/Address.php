@@ -58,7 +58,6 @@ class Address extends AbstractMethod
         foreach ($result->return->Address as $address) {
             /** @var AbstractEntity $relTable */
             $relTable = AddressTable::$types[$address->Adr_Owner_Type]['table'];
-
             $owner = $relTable::getByField(AddressTable::$types[$address->Adr_Owner_Type]['rel'], $address->Adr_ID_Owner);
 
             $owner_id = $owner[AddressTable::$types[$address->Adr_Owner_Type]['rel_id']];
@@ -81,7 +80,7 @@ class Address extends AbstractMethod
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
                 $this->client->getLogger()->error($error->getMessage() . " (" . $error->getCode() . ")");
-                $responseObject->setError(new MethodException(MethodException::ERROR_BITRIX, [$error->getMessage(), $error->getCode()], $error));
+                $responseObject->setError(new MethodException(MethodException::ERROR_BITRIX, [$error->getMessage(), $error->getCode()]));
             } else {
                 if ($result instanceof UpdateResult) {
                     $this->client->getLogger()->notice("Обновлена запись Адреса");

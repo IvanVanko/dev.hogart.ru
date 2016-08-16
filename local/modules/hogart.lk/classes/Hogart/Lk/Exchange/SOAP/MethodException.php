@@ -30,6 +30,9 @@ use Exception;
  * |    __9__   	| _Не найден Склад &lt;store-id&gt;_                                        	|
  * |    __10__   	| _Не найден Реализация товаров и услуг (отгрузка) &lt;rtu-id&gt;_          	|
  * |    __11__   	| _Не найдена Компания Хогарт или Компания клиента &lt;company-id&gt;_      	|
+ * |    __12__   	| _Не найден Аккаунт &lt;account-id&gt;_                                    	|
+ * |    __13__   	| _Не найден Сотрудник &lt;staff-id&gt;_                                    	|
+ * |    __14__   	| _Не найдено Контактное лицо &lt;contact-id&gt;_                           	|
  * @package Hogart\Lk\Exchange\SOAP
  */
 class MethodException extends \RuntimeException
@@ -58,6 +61,13 @@ class MethodException extends \RuntimeException
     const ERROR_NO_RTU = 10;
     /** Не найдена Компания Хогарт или Компания клиента */
     const ERROR_NO_ANY_COMPANY = 11;
+    /** Не найден Аккаунт */
+    const ERROR_NO_ACCOUNT = 12;
+    /** Не найден сотрудник */
+    const ERROR_NO_STAFF = 13;
+    /** Не найдено контактное лицо */
+    const ERROR_NO_CONTACT = 14;
+
 
     protected static $errors = [
         self::ERROR_BITRIX => "Ошибка внутри кода Битрикс: %s (%s)",
@@ -71,7 +81,10 @@ class MethodException extends \RuntimeException
         self::ERROR_NO_HOGART_COMPANY => "Не найдена Компания Хогарт %s",
         self::ERROR_NO_STORE => "Не найден Склад %s",
         self::ERROR_NO_RTU => "Не найден Реализация товаров и услуг (отгрузка) %s",
-        self::ERROR_NO_ANY_COMPANY => "Не найдена Компания Хогарт или Компания клиента %s"
+        self::ERROR_NO_ANY_COMPANY => "Не найдена Компания Хогарт или Компания клиента %s",
+        self::ERROR_NO_ACCOUNT => "Не найден Аккаунт клиента %s",
+        self::ERROR_NO_STAFF => "Не найден Сотрудник %s",
+        self::ERROR_NO_CONTACT => "Не найдено Контактное лицо %s"
 
     ];
 
@@ -82,7 +95,7 @@ class MethodException extends \RuntimeException
      * @param array|int $args Заменяемые в шаблоне ошибки параметры или код ошибки.
      * @param Exception $previous [optional] The previous exception used for the exception chaining. Since 5.3.0
      */
-    public function __construct($code, $args = [], Exception $previous)
+    public function __construct($code, $args = [], Exception $previous = null)
     {
         if (!is_int($code) || !($message = static::getErrorMessage($code, $args))) {
             $message = $code;

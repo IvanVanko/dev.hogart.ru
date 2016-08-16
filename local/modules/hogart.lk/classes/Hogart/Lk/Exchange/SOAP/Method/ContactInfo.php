@@ -9,7 +9,7 @@
 namespace Hogart\Lk\Exchange\SOAP\Method;
 
 
-use Hogart\Lk\Entity\CompanyTable;
+use Hogart\Lk\Entity\AbstractEntity;
 use Hogart\Lk\Entity\ContactInfoTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
 use Bitrix\Main\Entity\UpdateResult;
@@ -35,6 +35,7 @@ class ContactInfo extends AbstractMethod
 
     public function contactInfoAnswer(Response $response)
     {
+        var_dump($response);
         if (count($response->Response) && $this->is_answer) {
             return $this->client->getSoapClient()->ContactInfoAnswer($response);
         }
@@ -45,20 +46,24 @@ class ContactInfo extends AbstractMethod
     {
         $answer = new Response();
         $response = $this->getContactsInfo();
-        foreach ($response->Info as $info) {
-            $company = CompanyTable::getByField('guid_id', $info->Info_ID_Company);
+        foreach ($response->return->Info as $info) {
 
-            if(!isset($company)){
+            /** @var AbstractEntity $relTable */
+            $relTable = ContactInfoTable::$types[$info->Info_Owner_Type]['table'];
+            $owner = $relTable::getByField(ContactInfoTable::$types[$info->Info_Owner_Type]['rel'], $info->Info_ID_Owner);
+            $owner_id = $owner[ContactInfoTable::$types[$info->Info_Owner_Type]['rel_id']];
+            if(empty($owner_id)){
                 $answer->addResponse(
-                    new ResponseObject($info->Info_ID, new MethodException(MethodException::ERROR_NO_CLIENT_COMPANY, [$info->Info_ID_Company]))
+                    new ResponseObject($info->Info_ID, new MethodException(ContactInfoTable::$types[$info->Info_Owner_Type]["error"], [$info->Info_ID_Owner]))
                 );
                 continue;
             }
 
             $result = ContactInfoTable::createOrUpdateByField([
                 'd_guid_id' => $info->Info_ID,
-                'company_id' => $company['id'],
-                'type' => $info->Info_Type,
+                'owner_id' => $owner_id,
+                'owner_type' => intval($info->Info_Owner_Type),
+                'info_type' => $info->Info_Type,
                 'phone_kind' => $info->Info_PhoneKind,
                 'value' => $info->Info_Value,
                 'is_active' => !$info->deletion_mark,
@@ -66,7 +71,7 @@ class ContactInfo extends AbstractMethod
 
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
-                $answer->addResponse(new ResponseObject($info->Info_ID, new MethodException(MethodException::ERROR_BITRIX, [$error->getMessage(), $error->getCode()], $error)));
+                $answer->addResponse(new ResponseObject($info->Info_ID, new MethodException(MethodException::ERROR_BITRIX, [$error->getMessage(), $error->getCode()])));
             } else {
                 if ($result->getId()) {
                     if ($result instanceof UpdateResult) {
@@ -79,8 +84,9 @@ class ContactInfo extends AbstractMethod
                     $answer->addResponse(new ResponseObject($info->Info_ID, new MethodException(MethodException::ERROR_UNDEFINED)));
                 }
             }
-
-
         }
+        
+        $this->contactInfoAnswer($answer);
+        return count($answer->Response);
     }
 }
