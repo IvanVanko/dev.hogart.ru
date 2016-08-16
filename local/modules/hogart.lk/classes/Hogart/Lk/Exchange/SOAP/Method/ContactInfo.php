@@ -35,7 +35,6 @@ class ContactInfo extends AbstractMethod
 
     public function contactInfoAnswer(Response $response)
     {
-        var_dump($response);
         if (count($response->Response) && $this->is_answer) {
             return $this->client->getSoapClient()->ContactInfoAnswer($response);
         }
