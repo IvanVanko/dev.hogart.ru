@@ -49,7 +49,7 @@ class AccountStoreRelationTable extends AbstractEntity
     }
 
     /**
-     * @param $account_id
+     * @param int $account_id
      * @return array
      * @throws \Bitrix\Main\ArgumentException
      */

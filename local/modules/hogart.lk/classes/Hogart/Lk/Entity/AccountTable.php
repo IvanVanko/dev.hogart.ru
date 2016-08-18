@@ -83,11 +83,12 @@ class AccountTable extends AbstractEntity
      * @return array|false
      * @throws \Bitrix\Main\ArgumentException
      */
-    public static function getAccountByUserID($ID)
+    public static function getAccountByUserID($ID, $is_active = true)
     {
         return self::getList([
             'filter' => [
-                '=user_id' => $ID
+                '=user_id' => $ID,
+                '=is_active' => $is_active,
             ],
         ])->fetch();
     }
