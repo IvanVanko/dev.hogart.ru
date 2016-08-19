@@ -21,6 +21,8 @@ if ($this->startResultCache()) {
     $account = \Hogart\Lk\Entity\AccountTable::getAccountByUserID($USER->GetID());
     $account['stores'] = \Hogart\Lk\Entity\AccountStoreRelationTable::getByAccountId($account['id']);
     $account['contacts'] = \Hogart\Lk\Entity\ContactRelationTable::getAccountContacts($account['id']);
+    $account['managers'] = \Hogart\Lk\Entity\StaffRelationTable::getManagersByAccountId($account['id']);
+    $account['is_general'] = \Hogart\Lk\Entity\AccountTable::isGeneralAccount($account['id']);
 
     $arResult['account'] = $account;
 

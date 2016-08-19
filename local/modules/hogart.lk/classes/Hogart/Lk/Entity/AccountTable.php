@@ -90,6 +90,10 @@ class AccountTable extends AbstractEntity
                 '=user_id' => $ID,
                 '=is_active' => $is_active,
             ],
+            'select' => [
+                '*',
+                'user_' => 'user'
+            ]
         ])->fetch();
     }
 

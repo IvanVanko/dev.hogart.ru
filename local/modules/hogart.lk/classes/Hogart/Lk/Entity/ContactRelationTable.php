@@ -61,11 +61,11 @@ class ContactRelationTable extends AbstractEntityRelation
         ])->fetchAll();
 
         foreach ($contacts as &$contact) {
-            $contact['info'] = ContactInfoTable::getList([
+            $contact['info'] = array_reduce(ContactInfoTable::getList([
                 'filter' => [
                     '=contact.id' => $contact['id']
                 ]
-            ])->fetchAll();
+            ])->fetchAll(), function ($result, $item) { $result[$item['info_type']] = $item; return $result; }, []);
         }
 
         return $contacts;

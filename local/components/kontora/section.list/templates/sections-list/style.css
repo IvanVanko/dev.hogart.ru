@@ -241,6 +241,9 @@ body.loading * {
   display: flex;
   align-items: center;
 }
+.row.spacer + .row {
+  margin-top: 10px;
+}
 .collapse.in + a[data-toggle="collapse"] {
   display: none;
 }

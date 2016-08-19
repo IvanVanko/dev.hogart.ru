@@ -27,7 +27,7 @@ class StaffRelationTable extends AbstractEntityRelation
     {
         return array_merge([
             new IntegerField("staff_id", ['primary' => true]),
-            new ReferenceField("staff", "StaffTable", ["=this.staff_id" => "ref.id"]),
+            new ReferenceField("staff", __NAMESPACE__ . "\\StaffTable", ["=this.staff_id" => "ref.id"]),
         ], parent::getMap());
     }
 
@@ -41,5 +41,29 @@ class StaffRelationTable extends AbstractEntityRelation
             new Index('idx_is_main', ['is_main']),
             new Index('idx_owner_type', ['owner_type'])
         ];
+    }
+
+    /**
+     * @param $account_id
+     * @return array
+     * @throws \Bitrix\Main\ArgumentException
+     */
+    public static function getManagersByAccountId($account_id)
+    {
+        return array_map(function ($manager) {
+            $manager['info'] = array_reduce(ContactInfoTable::getList([
+                'filter' => [
+                    '=staff.id' => $manager['id']
+                ]
+            ])->fetchAll(), function ($result, $item) { $result[$item['info_type']] = $item; return $result; }, []);
+            return $manager;
+        }, self::getList([
+            'filter' => [
+                '=account.id' => $account_id
+            ],
+            'select' => [
+                'manager_' => 'staff'
+            ]
+        ])->fetchAll());
     }
 }
