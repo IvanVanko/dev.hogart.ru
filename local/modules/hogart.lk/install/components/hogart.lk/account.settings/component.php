@@ -11,9 +11,8 @@ if (!$this->initComponentTemplate())
     return;
 
 $logger = (new \Hogart\Lk\Logger\BitrixLogger($this->getName(), \Hogart\Lk\Logger\BitrixLogger::STACK_FULL));
-$account = $_SESSION["LK_ACCOUNT"];
 
-if ($account['id'] && !empty($_POST)) {
+if (!empty($_SESSION["ACCOUNT_ID"]) && !empty($_POST)) {
     switch ($_POST['action']) {
         case 'change-password':
             global $USER;
@@ -42,7 +41,7 @@ if ($account['id'] && !empty($_POST)) {
             if (($contact_id =$result->getId())) {
                 \Hogart\Lk\Entity\ContactRelationTable::add([
                     'contact_id' => $contact_id,
-                    'owner_id' => $account['id'],
+                    'owner_id' => $_SESSION["ACCOUNT_ID"],
                     'owner_type' => \Hogart\Lk\Entity\ContactRelationTable::OWNER_TYPE_ACCOUNT
                 ]);
                 if ($_POST['email']) {
@@ -79,6 +78,7 @@ if ($this->startResultCache()) {
     }
     global $CACHE_MANAGER;
 
+    $account = \Hogart\Lk\Entity\AccountTable::getAccountByUserID($_SESSION["ACCOUNT_ID"]);
     $account['stores'] = \Hogart\Lk\Entity\AccountStoreRelationTable::getByAccountId($account['id']);
     $account['contacts'] = \Hogart\Lk\Entity\ContactRelationTable::getAccountContacts($account['id']);
     $account['managers'] = \Hogart\Lk\Entity\StaffRelationTable::getManagersByAccountId($account['id']);
