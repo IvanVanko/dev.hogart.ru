@@ -11,16 +11,29 @@ namespace Hogart\Lk\Logger;
 
 abstract class AbstractLogger implements LoggerInterface
 {
+    const STACK_FULL = 1;
+    const STACK_LINE = 2;
+    
+    /** @var int  */
+    protected $stackTraceLevel = self::STACK_LINE;
+    /** @var int  */
+    protected $stackTraceLines = 3;
     /** @var  string */
     protected $service;
 
     /**
      * AbstractLogger constructor.
      * @param string $service
+     * @param null $stackTraceLevel
+     * @param null $stackTraceLines
      */
-    public function __construct($service = null)
+    public function __construct($service = null, $stackTraceLevel = null, $stackTraceLines = null)
     {
         $this->service = $service;
+        if (null !== $stackTraceLevel) {
+            $this->stackTraceLevel = $stackTraceLevel;
+            $this->stackTraceLines = $stackTraceLines;
+        }
     }
 
     /**
@@ -43,9 +56,16 @@ abstract class AbstractLogger implements LoggerInterface
 
     protected function prepareMessage(&$message)
     {
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
-        if (($error = end($backtrace))) {
-            $message .= "\t{$error['file']}:{$error['line']}";
+        if ($this->stackTraceLevel == self::STACK_LINE) {
+            $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, $this->stackTraceLines);
+            if (($error = end($backtrace))) {
+                $message .= "\t{$error['file']}:{$error['line']}";
+            }
+        } else {
+            ob_start();
+            debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+            $backtrace = ob_get_clean();
+            $message .= "\n\n" . $backtrace;
         }
     }
 }

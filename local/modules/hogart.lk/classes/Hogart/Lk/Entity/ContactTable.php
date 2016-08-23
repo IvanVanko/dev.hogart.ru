@@ -42,7 +42,9 @@ class ContactTable extends AbstractEntity
             new StringField("name"),
             new StringField("last_name"),
             new StringField("middle_name"),
-            new BooleanField("is_active")
+            new BooleanField("is_active", [
+                'default_value' => true
+            ])
         ];
     }
 

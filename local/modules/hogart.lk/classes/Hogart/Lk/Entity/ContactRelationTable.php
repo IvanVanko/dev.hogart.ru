@@ -65,7 +65,7 @@ class ContactRelationTable extends AbstractEntityRelation
                 'filter' => [
                     '=contact.id' => $contact['id']
                 ]
-            ])->fetchAll(), function ($result, $item) { $result[$item['info_type']] = $item; return $result; }, []);
+            ])->fetchAll(), function ($result, $item) { $result[$item['info_type']][] = $item; return $result; }, []);
         }
 
         return $contacts;

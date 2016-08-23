@@ -22,7 +22,6 @@ use Hogart\Lk\Exchange\SOAP\MethodException;
  */
 abstract class AbstractEntityRelation extends AbstractEntity
 {
-    // @todo Сравнить ID с КИС
     /** Владелец - Аккаунт клиента */
     const OWNER_TYPE_ACCOUNT = 1;
     /** Владелец - Компания клиента */

@@ -123,6 +123,8 @@ class hogart_lk extends CModule
             CopyDirFiles(__DIR__ . "/components", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/components");
             $this->InstallDB();
 
+            RegisterModuleDependences("main", "OnAfterUserLogin", "hogart.lk", "Hogart\\Lk\\Events", "OnAfterUserLogin");
+
             $upgradeManager = new \Hogart\Lk\Upgrade\UpgradeManager(true);
             $upgradeManager->upgradeReload();
         }
@@ -132,6 +134,7 @@ class hogart_lk extends CModule
 
     function DoUninstall()
     {
+        UnRegisterModuleDependences("main", "OnAfterUserLogin", "hogart.lk", "Hogart\\Lk\\Events", "OnAfterUserLogin");
         $this->UnInstallDB();
         DeleteDirFiles(__DIR__ . "/admin", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/admin");
         DeleteDirFiles(__DIR__ . "/components", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/components");
