@@ -19,6 +19,10 @@ use Hogart\Lk\Field\GuidField;
  */
 class AddressTypeTable extends AbstractEntity
 {
+    const TYPE_RESIDENTIAL = 0; // адрес проживание
+    const TYPE_ACTUAL = 1; // фактический адрес
+    const TYPE_LEGAL = 2; // юридический адрес
+    const TYPE_DELIVERY = 3; // адрес доставки
     /**
      * {@inheritDoc}
      */
@@ -38,7 +42,8 @@ class AddressTypeTable extends AbstractEntity
                 "autocomplete" => true
             ]),
             new GuidField("guid_id"),
-            new StringField("name")
+            new StringField("name"),
+            new IntegerField("code")
         ];
     }
 
@@ -51,5 +56,4 @@ class AddressTypeTable extends AbstractEntity
             new Index("idx_guid_id", ["guid_id" => 36])
         ];
     }
-
 }

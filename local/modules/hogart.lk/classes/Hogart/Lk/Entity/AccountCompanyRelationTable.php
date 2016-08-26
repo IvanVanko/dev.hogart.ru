@@ -7,6 +7,7 @@
 
 namespace Hogart\Lk\Entity;
 
+use Bitrix\Main\Entity\BooleanField;
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ReferenceField;
 use Hogart\Lk\Field\GuidField;
@@ -35,6 +36,7 @@ class AccountCompanyRelationTable extends AbstractEntity
             new ReferenceField("account", "Hogart\\Lk\\Entity\\AccountTable", ["=this.account_id" => "ref.id"]),
             new GuidField("company_id", ['primary' => true]),
             new ReferenceField("company", "Hogart\\Lk\\Entity\\CompanyTable", ["=this.company_id" => "ref.id"]),
+            new BooleanField("is_favorite")
         ];
     }
 
@@ -61,7 +63,8 @@ class AccountCompanyRelationTable extends AbstractEntity
                 '=account_id' => $account_id
             ],
             'select' => [
-                'COMPANY_' => 'company'
+                'COMPANY_' => 'company',
+                'is_favorite' => 'is_favorite'
             ]
         ])->fetchAll();
     }
@@ -81,8 +84,49 @@ class AccountCompanyRelationTable extends AbstractEntity
                 '=company.is_active' => true
             ],
             'select' => [
-                'company_' => 'company'
+                'COMPANY_' => 'company',
+                'is_favorite' => 'is_favorite'
             ]
         ])->fetchAll();
+    }
+    /**
+     * Полчить определенную "любимую" компанию пользователя
+     * @param int $account_id
+     * @return array
+     */
+    public static function getFavoriteCompany($account_id)
+    {
+        return self::getList([
+            'filter' => [
+                '=account_id' => $account_id,
+                '=is_favorite' => true,
+                '=company.is_active' => true
+            ],
+            'select' => [
+                'COMPANY_' => 'company'
+            ]
+        ])->fetchAll();
+    }
+
+    public static function toggleFavorite($account_id, $company_id)
+    {
+        $current = self::getList([
+            'filter' => [
+                '=account_id' => $account_id,
+                '=company_id' => $company_id,
+                '=company.is_active' => true
+            ],
+        ])->fetch();
+        if ($current['is_favorite'] == false) {
+            self::createOrUpdateByField(['account_id'=>$account_id, 'is_favorite'=>false], 'account_id');
+            self::createOrUpdateByField(['is_favorite'=>true], ['account_id'=>$account_id, 'company_id'=>$company_id]);
+        }else{
+            self::createOrUpdateByField(['is_favorite'=>false], ['account_id'=>$account_id, 'company_id'=>$company_id]);
+        }
+        // снимаем флаг у всех
+
+
+
+        var_dump($current);
     }
 }
