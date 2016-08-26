@@ -84,7 +84,7 @@ JS;
 
     public static function Link($id, $label, $class = "")
     {
-        return '<a class="' . $class . '" href="#' . $id . '">' . $label . '</a>';
+        return '<a href="javascript:void(0)" class="' . $class . '" data-remodal-target="' . $id . '">' . $label . '</a>';
     }
 
     public static function Button($id, $label, $class = "")
