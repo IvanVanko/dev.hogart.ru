@@ -80,6 +80,7 @@ class AccountTable extends AbstractEntity
 
     /**
      * @param int $ID
+     * @param bool $is_active
      * @return array|false
      * @throws \Bitrix\Main\ArgumentException
      */
@@ -88,6 +89,26 @@ class AccountTable extends AbstractEntity
         return self::getList([
             'filter' => [
                 '=user_id' => $ID,
+                '=is_active' => $is_active,
+            ],
+            'select' => [
+                '*',
+                'user_' => 'user'
+            ]
+        ])->fetch();
+    }
+
+    /**
+     * @param $ID
+     * @param bool $is_active
+     * @return array|false
+     * @throws \Bitrix\Main\ArgumentException
+     */
+    public static function getAccountById($ID, $is_active = true)
+    {
+        return self::getList([
+            'filter' => [
+                '=id' => $ID,
                 '=is_active' => $is_active,
             ],
             'select' => [

@@ -78,7 +78,7 @@ if ($this->startResultCache()) {
     }
     global $CACHE_MANAGER;
 
-    $account = \Hogart\Lk\Entity\AccountTable::getAccountByUserID($_SESSION["ACCOUNT_ID"]);
+    $account = \Hogart\Lk\Entity\AccountTable::getAccountById($_SESSION["ACCOUNT_ID"]);
     $account['stores'] = \Hogart\Lk\Entity\AccountStoreRelationTable::getByAccountId($account['id']);
     $account['contacts'] = \Hogart\Lk\Entity\ContactRelationTable::getAccountContacts($account['id']);
     $account['managers'] = \Hogart\Lk\Entity\StaffRelationTable::getManagersByAccountId($account['id']);
