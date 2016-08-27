@@ -187,7 +187,7 @@ $arUrlRewrite = array(
 		"PATH" => "/local/modules/hogart.lk/front/account/documents/index.php"
 	),
 	array(
-		"CONDITION" => "#^/account/#",
+		"CONDITION" => "#^/account/?#",
 		"RULE" => "",
 		"ID" => "hogart.lk:account",
 		"PATH" => "/local/modules/hogart.lk/front/account/index.php"

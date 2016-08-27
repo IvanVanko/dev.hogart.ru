@@ -56,4 +56,10 @@ class AddressTypeTable extends AbstractEntity
             new Index("idx_guid_id", ["guid_id" => 36])
         ];
     }
+
+    public static function getByCode($code)
+    {
+        return self::getByField('code', $code);
+
+    }
 }
