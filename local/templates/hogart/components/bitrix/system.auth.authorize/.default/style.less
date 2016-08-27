@@ -1,0 +1,18 @@
+@import (reference) "../../../../variables";
+@import (reference) "../../../../styles";
+
+.hogart-auth {
+  &:extend(.container-fluid);
+  color: @brand-black;
+  background: white;
+  min-height: calc(~"100vh - 170px") !important;
+  .auth-form {
+    transform: translateY(50%);
+    a {
+      font-family: @font-family-serif;
+      font-size: @font-size-base;
+      color: @brand-green !important;
+      border-bottom: 1px dashed @brand-green;
+    }
+  }
+}
