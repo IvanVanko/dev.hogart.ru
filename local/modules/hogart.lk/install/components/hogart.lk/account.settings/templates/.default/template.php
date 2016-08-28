@@ -44,7 +44,8 @@ $this->setFrameMode(true);
             <? $ajax_id = \Hogart\Lk\Helper\Template\Ajax::Start($component, ['edit_contact', 'remove_contact']); ?>
             <? foreach ($arResult['account']['contacts'] as $contact): ?>
                 <div class="row vertical-align spacer contact" data-contact-id="<?= $contact['guid_id'] ?>">
-                    <div class="col-lg-3 col-sm-3"><strong class="pull-left visible-xs">Имя:</strong> <?= ($contact['last_name'] . " " . $contact['name'] . " " . $contact['middle_name']) ?></div>
+                    <? $contact_name = ($contact['last_name'] . " " . $contact['name'] . " " . $contact['middle_name']); ?>
+                    <div class="col-lg-3 col-sm-3"><strong class="pull-left visible-xs">Имя:</strong> <?= $contact_name ?></div>
                     <div class="col-lg-3 col-sm-3"><strong class="pull-left visible-xs">Email:</strong> <a
                             href="mailto:<?= ($email = $contact['info'][\Hogart\Lk\Entity\ContactInfoTable::TYPE_EMAIL][0]['value']) ?>"><?= $email ?></a></div>
                     <div class="col-lg-2 col-sm-3"><strong class="pull-left visible-xs">Телефоны:</strong>
@@ -62,7 +63,13 @@ $this->setFrameMode(true);
                             <div class="btn btn-default btn-xs">
                                 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                             </div>
-                            <div <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('contacts-ajax', $ajax_id, ['remove_contact' => $contact['id']]) ?> class="btn btn-danger btn-xs">
+                            <div 
+                                <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('contacts-ajax', $ajax_id, ['remove_contact' => $contact['id']], true, [
+                                    'title' => 'Подтверждение удаления контактной информации',
+                                    'confirmation' => 'Вы действительно хотите удалить контакт "' . $contact_name . '"?'
+                                ]) ?> 
+                                class="btn btn-danger btn-xs">
+                                
                                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                             </div>
                         </div>
@@ -97,7 +104,13 @@ $this->setFrameMode(true);
                     </div>
                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 operations">
                         <div class="btn-toolbar" role="toolbar">
-                            <div <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('stores-ajax', $ajax_id, ['remove_store' => $store['store_XML_ID']]) ?> class="btn btn-danger btn-xs">
+                            <div
+                                <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('stores-ajax', $ajax_id, ['remove_store' => $store['store_XML_ID']], true, [
+                                    'title' => 'Подтверждение удаления склада',
+                                    'confirmation' => 'Вы действительно хотите удалить склад <br/> "' . ($store['store_TITLE'] . (!empty(trim($store['store_ADDRESS'])) ? (" (" . $store['store_ADDRESS'] . ")") : "")) . '"?'
+                                ]) ?>
+                                class="btn btn-danger btn-xs">
+
                                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                             </div>
                         </div>
