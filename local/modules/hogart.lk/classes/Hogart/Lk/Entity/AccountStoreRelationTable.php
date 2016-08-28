@@ -32,9 +32,9 @@ class AccountStoreRelationTable extends AbstractEntity
     {
         return [
             new IntegerField("account_id", ['primary' => true]),
-            new ReferenceField("account", "Hogart\\Lk\\Entity\\AccountTable", ["=this.account_id" => "ref.id"]),
+            new ReferenceField("account", __NAMESPACE__ . "\\AccountTable", ["=this.account_id" => "ref.id"]),
             new GuidField("store_guid", ['primary' => true]),
-            new ReferenceField("store", "Bitrix\\Catalog\\StoreTable", ["=this.store_guid" => "ref.XML_ID"]),
+            new ReferenceField("store", __NAMESPACE__ . "\\StoreTable", ["=this.store_guid" => "ref.XML_ID"]),
         ];
     }
 

@@ -55,14 +55,14 @@ class StaffRelationTable extends AbstractEntityRelation
                 'filter' => [
                     '=staff.id' => $manager['id']
                 ]
-            ])->fetchAll(), function ($result, $item) { $result[$item['info_type']] = $item; return $result; }, []);
+            ])->fetchAll(), function ($result, $item) { $result[$item['info_type']][] = $item; return $result; }, []);
             return $manager;
         }, self::getList([
             'filter' => [
                 '=account.id' => $account_id
             ],
             'select' => [
-                'manager_' => 'staff'
+                '' => 'staff'
             ]
         ])->fetchAll());
     }

@@ -12,7 +12,7 @@
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
 //ini_set("xdebug.var_display_max_depth", -1);
-//var_dump($arResult);
+//var_dump($arResult['stores']);
 ?>
 <div class="row">
     <div class="col-sm-12 col-xs-12">
@@ -34,27 +34,49 @@ $this->setFrameMode(true);
     <? if (count($arResult['account']['contacts']) || $arResult['account']['is_general']): ?>
     <div class="col-sm-12 col-xs-12 contacts">
         <h4>Контактная информация</h4>
-        <div class="row header hidden-xs spacer">
-            <div class="col-sm-3"><strong>Имя</strong></div>
-            <div class="col-sm-3"><strong>Email</strong></div>
-            <div class="col-sm-3"><strong>Телефоны</strong></div>
-            <div class="col-sm-3 operations"></div>
-        </div>
-        <? foreach ($arResult['account']['contacts'] as $contact): ?>
-            <div class="row spacer contact" data-contact-id="<?= $contact['guid_id'] ?>">
-                <div class="col-sm-3"><strong class="pull-left visible-xs">Имя:</strong><?= ($contact['last_name'] . " " . $contact['name'] . " " . $contact['middle_name']) ?></div>
-                <div class="col-sm-3"><strong class="pull-left visible-xs">Email:</strong><?= $contact['info'][\Hogart\Lk\Entity\ContactInfoTable::TYPE_EMAIL][0]['value'] ?></div>
-                <div class="col-sm-3"><strong class="pull-left visible-xs">Телефоны:</strong>
-                    <?= $contact['info'][\Hogart\Lk\Entity\ContactInfoTable::TYPE_PHONE][0]['value'] ?>
-                    <?= $contact['info'][\Hogart\Lk\Entity\ContactInfoTable::TYPE_PHONE][1]['value'] ?>
-                </div>
-                <div class="col-sm-3 operations"></div>
+        <div id="contacts-ajax">
+            <div class="row header hidden-xs spacer">
+                <div class="col-lg-3 col-sm-3"><strong>Имя</strong></div>
+                <div class="col-lg-3 col-sm-3"><strong>Email</strong></div>
+                <div class="col-lg-2 col-sm-3"><strong>Телефоны</strong></div>
+                <div class="col-lg-2 col-sm-3 operations"></div>
             </div>
-        <? endforeach;?>
+            <? $ajax_id = \Hogart\Lk\Helper\Template\Ajax::Start($component, ['edit_contact', 'remove_contact']); ?>
+            <? foreach ($arResult['account']['contacts'] as $contact): ?>
+                <div class="row vertical-align spacer contact" data-contact-id="<?= $contact['guid_id'] ?>">
+                    <div class="col-lg-3 col-sm-3"><strong class="pull-left visible-xs">Имя:</strong> <?= ($contact['last_name'] . " " . $contact['name'] . " " . $contact['middle_name']) ?></div>
+                    <div class="col-lg-3 col-sm-3"><strong class="pull-left visible-xs">Email:</strong> <a
+                            href="mailto:<?= ($email = $contact['info'][\Hogart\Lk\Entity\ContactInfoTable::TYPE_EMAIL][0]['value']) ?>"><?= $email ?></a></div>
+                    <div class="col-lg-2 col-sm-3"><strong class="pull-left visible-xs">Телефоны:</strong>
+                        <div>
+                            <? foreach($contact['info'][\Hogart\Lk\Entity\ContactInfoTable::TYPE_PHONE] as $phone): ?>
+                                <div class="phone-number <?= ("type-" . $phone['phone_kind']) ?>">
+                                    <?= $phone['value']; ?>
+                                </div>
+                            <? endforeach; ?>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-sm-3 operations">
+                        <strong class="pull-left visible-xs">Операции:</strong>
+                        <div class="btn-toolbar" role="toolbar">
+                            <div class="btn btn-default btn-xs">
+                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                            </div>
+                            <div <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('contacts-ajax', $ajax_id, ['remove_contact' => $contact['id']]) ?> class="btn btn-danger btn-xs">
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <? endforeach;?>
+            <? \Hogart\Lk\Helper\Template\Ajax::End($component, $ajax_id); ?>
+        </div>
+        
         <? if ($arResult['account']['is_general']): ?>
+            <div class="row spacer"></div> <!-- feature -->
             <div class="row">
                 <div class="col-sm-12 col-xs-12">
-                    <?= \Hogart\Lk\Helper\Template\Dialog::Button('add-contact-dialog', 'Добавить контактное лицо', 'btn btn-primary')?>
+                    <?= \Hogart\Lk\Helper\Template\Dialog::Button('add-contact-dialog', 'Добавить контакт', 'btn btn-primary')?>
                 </div>
             </div>
         <? endif; ?>
@@ -63,15 +85,29 @@ $this->setFrameMode(true);
     <? if (count($arResult['account']['stores']) || $arResult['account']['is_general']): ?>
     <div class="col-sm-12 col-xs-12 stores">
         <h4>Склады для доставки и самовывоза</h4>
-        <? foreach ($arResult['account']['stores'] as $store): ?>
-            <div class="row spacer store">
-                <div class="col-sm-12 col-xs-12" data-store-id="<?= $store['store_XML_ID'] ?>">
-                    <i class="fa fa-star<?= ($store['store_ID'] == $arResult['account']['main_store_id'] ? ' color-green' : '-o') ?>"></i>
-                    <?= $store['store_ADDRESS'] ?>
+        <div id="stores-ajax">
+            <? $ajax_id = \Hogart\Lk\Helper\Template\Ajax::Start($component, ['fav_store', 'remove_store']); ?>
+            <? foreach ($arResult['account']['stores'] as $store): ?>
+                <div class="row store spacer">
+                    <div class="col-lg-8 col-md-9 col-sm-10 col-xs-10" data-store-id="<?= $store['store_XML_ID'] ?>">
+                        <i
+                            <?= ($store['store_ID'] != $arResult['account']['main_store_id'] ? \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('stores-ajax', $ajax_id, ['fav_store' => $store['store_ID']]) : '') ?>
+                            class="fa fa-star<?= ($store['store_ID'] == $arResult['account']['main_store_id'] ? ' color-green' : '-o') ?>"></i>
+                        <?= $store['store_ADDRESS'] ?>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 operations">
+                        <div class="btn-toolbar" role="toolbar">
+                            <div <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('stores-ajax', $ajax_id, ['remove_store' => $store['store_XML_ID']]) ?> class="btn btn-danger btn-xs">
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        <? endforeach;?>
+            <? endforeach;?>
+            <? \Hogart\Lk\Helper\Template\Ajax::End($component, $ajax_id); ?>
+        </div>
         <? if ($arResult['account']['is_general']): ?>
+            <div class="row spacer"></div> <!-- feature -->
             <div class="row">
                 <div class="col-sm-12 col-xs-12">
                     <?= \Hogart\Lk\Helper\Template\Dialog::Button('add-store-dialog', 'Добавить склад', 'btn btn-primary')?>
@@ -80,12 +116,53 @@ $this->setFrameMode(true);
         <? endif; ?>
     </div>
     <? endif; ?>
-    <div class="col-sm-12 col-xs-12 staff">
+    <? if (count($arResult['account']['managers'])): ?>
+    <div class="col-sm-12 col-xs-12 managers">
         <h4>Ваши менеджеры</h4>
+        <div class="row header hidden-xs spacer">
+            <div class="col-sm-3 col-md-2 col-lg-1 hidden-xs"></div>
+            <div class="col-lg-2 col-sm-3"><strong>Имя</strong></div>
+            <div class="col-lg-2 col-sm-3"><strong>Email</strong></div>
+            <div class="col-lg-2 col-sm-3"><strong>Телефоны</strong></div>
+        </div>
+        <? foreach ($arResult['account']['managers'] as $manager): ?>
+            <? $name = ($manager['last_name'] . " " . $manager['name'] . " " . $manager['middle_name']); ?>
+            <div class="row vertical-align spacer manager" data-manager-id="<?= $manager['guid_id'] ?>">
+                <div class="col-sm-3 col-md-2 col-lg-1 avatar hidden-xs">
+                    <img src="https://secure.gravatar.com/avatar/06ca41201d38c7d60478358f456001ee?s=64" alt="<?= $name ?>">
+                </div>
+                <div class="col-lg-2 col-sm-3"><strong class="pull-left visible-xs">Имя:</strong> <?= $name ?></div>
+                <div class="col-lg-2 col-sm-3"><strong class="pull-left visible-xs">Email:</strong> <a
+                        href="mailto:<?= ($email = $manager['info'][\Hogart\Lk\Entity\ContactInfoTable::TYPE_EMAIL][0]['value']) ?>"><?= $email ?></a></div>
+                <div class="col-lg-2 col-sm-3"><strong class="pull-left visible-xs">Телефоны:</strong>
+                    <div>
+                    <? foreach($manager['info'][\Hogart\Lk\Entity\ContactInfoTable::TYPE_PHONE] as $phone): ?>
+                        <div class="phone-number <?= ("type-" . $phone['phone_kind']) ?>">
+                            <?= $phone['value']; ?>
+                        </div>
+                    <? endforeach; ?>
+                    </div>
+                </div>
+            </div>
+        <? endforeach;?>
     </div>
-    <div class="col-sm-12 col-xs-12 another-accounts">
+    <? endif; ?>
+
+    <? if (count($arResult['account']['sub_accounts'])): ?>
+    <div class="col-sm-12 col-xs-12 sub-accounts">
         <h4>Прочие аккаунты холдинга</h4>
+        <? foreach ($arResult['account']['sub_accounts'] as $sub_account): ?>
+            <div class="col-sm-4 col-md-3 col-lg-2">
+                <div>
+                    <a href="mailto:<?= ($email = $sub_account['user_LOGIN']) ?>"><?= $email ?></a>
+                </div>
+                <div>
+                    <?= ($sub_account['user_NAME'] . $sub_account['user_LAST_NAME']) ?>
+                </div>
+            </div>
+        <? endforeach; ?>
     </div>
+    <? endif; ?>
 </div>
 
 <? \Hogart\Lk\Helper\Template\Dialog::Start('change-password', [
@@ -111,41 +188,64 @@ JS;
 ?>
 
 <? \Hogart\Lk\Helper\Template\Dialog::Start("add-store-dialog", [
-    'title' => 'Добавить склад' 
+    'dialog-options' => 'closeOnConfirm: false',
+    'title' => 'Добавить склад',
 ]) ?>
-<? //@todo сделать форму добавления склада ?>
-<? \Hogart\Lk\Helper\Template\Dialog::End() ?>
+<form action="<?= $APPLICATION->GetCurPage() ?>" name="add-store" method="post">
+    <div class="form-group" style="position: relative">
+        <label>Выберете склады</label>
+        <select name="stores[]" class="form-control selectpicker" multiple>
+            <? foreach ($arResult['av_stores'] as $store): ?>
+                <option value="<?= $store['XML_ID'] ?>"><?= $store['TITLE'] . (!empty(trim($store['ADDRESS'])) ? (" (" . $store['ADDRESS'] . ")") : "") ?></option>
+            <? endforeach; ?>
+        </select>
+    </div>
+    <input type="hidden" name="action" value="add-store">
+</form>
+
+<?
+$id = \Hogart\Lk\Helper\Template\Dialog::$id;
+$handler =<<<JS
+    (function() {
+      $('[data-remodal-id="$id"] form').submit();
+    })
+JS;
+\Hogart\Lk\Helper\Template\Dialog::Event('confirmation', $handler);
+\Hogart\Lk\Helper\Template\Dialog::End()
+?>
 
 <? \Hogart\Lk\Helper\Template\Dialog::Start("add-contact-dialog", [
     'dialog-options' => 'closeOnConfirm: false',
-    'title' => 'Добавить контактное лицо' 
+    'title' => 'Добавить контакт'
 ]) ?>
 <form action="<?= $APPLICATION->GetCurPage() ?>" name="add-contact" method="post">
-    <div class="form-group">
-        <label class="control-label">Фамилия</label>
-        <input name="last_name" required="required" type="text" class="form-control" placeholder="Фамилия" data-error="Поле не должно быть пустым">
-        <div class="help-block with-errors"></div>
+    <label class="control-label">Фамилия Имя Отчество</label>
+    <div class="row">
+        <div class="form-group col-sm-4">
+            <input name="last_name" required="required" type="text" class="col-sm-4 form-control" placeholder="Фамилия" data-error="Поле не должно быть пустым">
+            <div class="help-block with-errors"></div>
+        </div>
+        <div class="form-group col-sm-4">
+            <input name="name" required="required" type="text" class="col-sm-4 form-control" placeholder="Имя" data-error="Поле не должно быть пустым">
+            <div class="help-block with-errors"></div>
+        </div>
+        <div class="form-group col-sm-4">
+            <input name="middle_name" type="text" class="col-sm-4 form-control" placeholder="Отчество">
+        </div>
     </div>
-    <div class="form-group">
-        <label class="control-label">Имя</label>
-        <input name="name" required="required" type="text" class="form-control" placeholder="Имя" data-error="Поле не должно быть пустым">
-        <div class="help-block with-errors"></div>
-    </div>
-    <div class="form-group">
-        <label class="control-label">Отчество</label>
-        <input name="middle_name" type="text" class="form-control" placeholder="Отчество">
-    </div>
-    <div class="form-group">
-        <label class="control-label">Email</label>
-        <input name="email" type="email" class="form-control" placeholder="Email">
-    </div>
-    <div class="form-group">
-        <label class="control-label">Телефон (моб.)</label>
-        <input name="phone[<?= \Hogart\Lk\Entity\ContactInfoTable::PHONE_KIND_MOBILE ?>]" data-mask="+7 (999) 999-99-99" type="text" class="form-control" placeholder="Телефон">
-    </div>
-    <div class="form-group">
-        <label class="control-label">Телефон (гор.)</label>
-        <input name="phone[<?= \Hogart\Lk\Entity\ContactInfoTable::PHONE_KIND_STATIC ?>]" data-mask="+7 (999) 999-99-99" type="text" class="form-control" placeholder="Телефон">
+    <div class="row">
+        <div class="form-group col-sm-4">
+            <label class="control-label">E-mail</label>
+            <input name="email" type="email" class="form-control" placeholder="Email">
+        </div>
+        <div class="form-group col-sm-4">
+            <label class="control-label">Телефон (моб.)</label>
+            <input name="phone[<?= \Hogart\Lk\Entity\ContactInfoTable::PHONE_KIND_MOBILE ?>]" data-mask="+7 (999) 999-99-99" type="text" class="form-control" placeholder="Телефон">
+        </div>
+        <div class="form-group col-sm-4">
+            <label class="control-label">Телефон (гор.)</label>
+            <input name="phone[<?= \Hogart\Lk\Entity\ContactInfoTable::PHONE_KIND_STATIC ?>]" data-mask="+7 (999) 999-99-99" type="text" class="form-control" placeholder="Телефон">
+        </div>
     </div>
     <input type="hidden" name="action" value="add-contact">
 </form>

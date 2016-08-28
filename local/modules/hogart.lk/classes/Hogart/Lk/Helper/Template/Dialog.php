@@ -53,7 +53,7 @@ HTML;
         }
         
         if (false !== $options['confirm']) {
-            $html .= '<button data-remodal-action="confirm" class="btn btn-success remodal-confirm">ОК</button>';
+            $html .= '<button data-remodal-action="confirm" class="btn btn-primary remodal-confirm">ОК</button>';
         }
         
         $html .= '</div>';

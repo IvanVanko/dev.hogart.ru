@@ -45,19 +45,19 @@ class AccountTable extends AbstractEntity
             new ReferenceField("user", "Bitrix\\Main\\UserTable", ["=this.user_id" => "ref.ID"]),
 
             new IntegerField("contact_id"),
-            new ReferenceField("contact", "Hogart\\Lk\\Entity\\ContactTable", ["=this.contact_id" => "ref.id"]),
+            new ReferenceField("contact", __NAMESPACE__ . "\\ContactTable", ["=this.contact_id" => "ref.id"]),
 
             new IntegerField("main_manager_id"),
-            new ReferenceField("main_manager", "Hogart\\Lk\\Entity\\StaffTable", ["=this.main_manager_id" => "ref.id"]),
+            new ReferenceField("main_manager", __NAMESPACE__ . "\\StaffTable", ["=this.main_manager_id" => "ref.id"]),
 
             new IntegerField("main_store_id"),
-            new ReferenceField("main_store", "Bitrix\\Catalog\\StoreTable", ["=this.main_store_id" => "ref.ID"]),
+            new ReferenceField("main_store", __NAMESPACE__ . "\\StoreTable", ["=this.main_store_id" => "ref.ID"]),
 
             new IntegerField("head_account_id"),
-            new ReferenceField("head_account", "Hogart\\Lk\\Entity\\AccountTable", ["=this.head_account_id" => "ref.id"]),
+            new ReferenceField("head_account", __NAMESPACE__ . "\\AccountTable", ["=this.head_account_id" => "ref.id"]),
 
             new IntegerField("main_contract_id"),
-            new ReferenceField("main_contract", "Hogart\\Lk\\Entity\\ContractTable", ["=this.main_contract_id" => "ref.id"]),
+            new ReferenceField("main_contract", __NAMESPACE__ . "\\ContractTable", ["=this.main_contract_id" => "ref.id"]),
 
             new BooleanField("is_promo_accesss"),
             new BooleanField("is_active")
@@ -116,6 +116,28 @@ class AccountTable extends AbstractEntity
                 'user_' => 'user'
             ]
         ])->fetch();
+    }
+
+    /**
+     * Получение подчиненных аккаунтов
+     * 
+     * @param $ID
+     * @param bool $is_active
+     * @return array
+     * @throws \Bitrix\Main\ArgumentException
+     */
+    public static function getSubAccounts($ID, $is_active = true)
+    {
+        return self::getList([
+            'filter' => [
+                '=head_account_id' => $ID,
+                '=is_active' => $is_active,
+            ],
+            'select' => [
+                '*',
+                'user_' => 'user'
+            ]
+        ])->fetchAll();
     }
 
     /**

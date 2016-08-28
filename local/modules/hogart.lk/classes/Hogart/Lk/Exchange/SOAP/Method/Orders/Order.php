@@ -7,9 +7,9 @@
 
 namespace Hogart\Lk\Exchange\SOAP\Method\Orders;
 
-use Bitrix\Catalog\StoreTable;
 use Hogart\Lk\Entity\OrderItemTable;
 use Hogart\Lk\Entity\OrderTable;
+use Hogart\Lk\Entity\StoreTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
 use Bitrix\Main\Type\Date;
 use Hogart\Lk\Entity\AccountTable;

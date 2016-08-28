@@ -10,6 +10,9 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 
 CModule::IncludeModule('hogart.lk');
 
+$APPLICATION->AddChainItem("Аккаунт");
+$APPLICATION->AddChainItem("Настройки");
+
 if (!$APPLICATION->IncludeComponent("hogart.lk:account.settings", "", [])) {
     BXHelper::NotFound();
 }

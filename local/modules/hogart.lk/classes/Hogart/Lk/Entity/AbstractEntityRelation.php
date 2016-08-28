@@ -70,7 +70,7 @@ abstract class AbstractEntityRelation extends AbstractEntity
         ],
         self::OWNER_TYPE_STORE => [
             "name" => "store",
-            "table" => "Bitrix\\Catalog\\StoreTable",
+            "table" => __NAMESPACE__ . "\\StoreTable",
             "rel" => "XML_ID",
             "rel_id" => "ID",
             "error" => MethodException::ERROR_NO_STORE

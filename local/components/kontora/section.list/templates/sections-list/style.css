@@ -123,6 +123,122 @@ select[multiple].input-group-sm > .input-group-btn > .btn-more {
   z-index: 2;
   margin-left: -1px;
 }
+.btn-group > .btn-more,
+.btn-group-vertical > .btn-more {
+  position: relative;
+  float: left;
+}
+.btn-group > .btn-more:hover,
+.btn-group-vertical > .btn-more:hover,
+.btn-group > .btn-more:focus,
+.btn-group-vertical > .btn-more:focus,
+.btn-group > .btn-more:active,
+.btn-group-vertical > .btn-more:active,
+.btn-group > .btn-more.active,
+.btn-group-vertical > .btn-more.active {
+  z-index: 2;
+}
+.btn-group .btn-more + .btn-more,
+.btn-group .btn-more + .btn-group,
+.btn-group .btn-group + .btn-more {
+  margin-left: -1px;
+}
+.btn-toolbar .btn-more {
+  float: left;
+}
+.btn-toolbar > .btn-more {
+  margin-left: 5px;
+}
+.btn-group > .btn-more:not(:first-child):not(:last-child):not(.dropdown-toggle) {
+  border-radius: 0;
+}
+.btn-group > .btn-more:first-child {
+  margin-left: 0;
+}
+.btn-group > .btn-more:first-child:not(:last-child):not(.dropdown-toggle) {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+.btn-group > .btn-more:last-child:not(:first-child) {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+.btn-group > .btn-group:not(:first-child):not(:last-child) > .btn-more {
+  border-radius: 0;
+}
+.btn-group > .btn-group:first-child:not(:last-child) > .btn-more:last-child {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+.btn-group > .btn-group:last-child:not(:first-child) > .btn-more:first-child {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+.btn-group > .btn-more + .dropdown-toggle {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+.btn-more .caret {
+  margin-left: 0;
+}
+.btn-group-vertical > .btn-more,
+.btn-group-vertical > .btn-group > .btn-more {
+  display: block;
+  float: none;
+  width: 100%;
+  max-width: 100%;
+}
+.btn-group-vertical > .btn-group > .btn-more {
+  float: none;
+}
+.btn-group-vertical > .btn-more + .btn-more,
+.btn-group-vertical > .btn-more + .btn-group,
+.btn-group-vertical > .btn-group + .btn-more {
+  margin-top: -1px;
+  margin-left: 0;
+}
+.btn-group-vertical > .btn-more:not(:first-child):not(:last-child) {
+  border-radius: 0;
+}
+.btn-group-vertical > .btn-more:first-child:not(:last-child) {
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.btn-group-vertical > .btn-more:last-child:not(:first-child) {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+.btn-group-vertical > .btn-group:not(:first-child):not(:last-child) > .btn-more {
+  border-radius: 0;
+}
+.btn-group-vertical > .btn-group:first-child:not(:last-child) > .btn-more:last-child {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.btn-group-vertical > .btn-group:last-child:not(:first-child) > .btn-more:first-child {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+.btn-group-justified > .btn-more {
+  float: none;
+  display: table-cell;
+  width: 1%;
+}
+.btn-group-justified > .btn-group .btn-more {
+  width: 100%;
+}
+[data-toggle="buttons"] > .btn-more input[type="radio"],
+[data-toggle="buttons"] > .btn-group > .btn-more input[type="radio"],
+[data-toggle="buttons"] > .btn-more input[type="checkbox"],
+[data-toggle="buttons"] > .btn-group > .btn-more input[type="checkbox"] {
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+  pointer-events: none;
+}
 .btn-more {
   display: inline-block;
   margin-bottom: 0;
@@ -525,6 +641,7 @@ ul.right-menu li [class*=" icon-"]:before {
   font-weight: 300;
 }
 a[href^="mailto:"] {
+  white-space: nowrap;
   display: inline-block;
   margin-left: 5px;
   transition: all .3s linear;

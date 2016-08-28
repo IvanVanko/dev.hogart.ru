@@ -9,7 +9,6 @@
 namespace Hogart\Lk\Exchange\SOAP\Method;
 
 
-use Bitrix\Catalog\StoreTable;
 use Bitrix\Main\UserTable;
 use Hogart\Lk\Entity\AccountCompanyRelationTable;
 use Hogart\Lk\Entity\AccountTable;
@@ -17,6 +16,7 @@ use Hogart\Lk\Entity\AccountStoreRelationTable;
 use Hogart\Lk\Entity\ContactTable;
 use Hogart\Lk\Entity\StaffRelationTable;
 use Hogart\Lk\Entity\StaffTable;
+use Hogart\Lk\Entity\StoreTable;
 use Hogart\Lk\Exchange\RabbitMQ\Consumer;
 use Hogart\Lk\Exchange\RabbitMQ\Exchange\AccountExchange;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;

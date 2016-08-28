@@ -41,10 +41,10 @@ class RTUTable extends AbstractEntity
             new GuidField("guid_id"),
 
             new IntegerField("order_id"),
-            new ReferenceField("order", "OrderTable", ["=this.order_id" => "ref.id"]),
+            new ReferenceField("order", __NAMESPACE__ . "\\OrderTable", ["=this.order_id" => "ref.id"]),
 
             new GuidField("store_guid"),
-            new ReferenceField("store", "Bitrix\\Catalog\\StoreTable", ["=this.store_guid" => "ref.XML_ID"]),
+            new ReferenceField("store", __NAMESPACE__ . "\\StoreTable", ["=this.store_guid" => "ref.XML_ID"]),
 
             new StringField("number"),
             new DateField("rtu_date"),
