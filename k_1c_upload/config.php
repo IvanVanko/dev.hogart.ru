@@ -5,7 +5,8 @@ class SoapLocalConfig {
         array(
             'cache_wsdl' => WSDL_CACHE_NONE,
             'login'      => _1C_LOGIN,
-            'password'   => _1C_PASSWORD
+            'password'   => _1C_PASSWORD,
+            'features' => SOAP_SINGLE_ELEMENT_ARRAYS
         );
 
     public function getUrl () {
