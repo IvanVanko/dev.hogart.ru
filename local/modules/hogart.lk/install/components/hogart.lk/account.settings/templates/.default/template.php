@@ -60,11 +60,24 @@ $this->setFrameMode(true);
                     <div class="col-lg-2 col-sm-3 operations">
                         <strong class="pull-left visible-xs">Операции:</strong>
                         <div class="btn-toolbar" role="toolbar">
-                            <div class="btn btn-default btn-xs">
+                            <div
+                                <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent(
+                                    'contacts-ajax',
+                                    $ajax_id,
+                                    ['edit_contact' => $contact['id']],
+                                    \Hogart\Lk\Helper\Template\Ajax::DIALOG_EDIT,
+                                    [
+                                        'title' => 'Редактирование контакта',
+                                        'edit_action' => 'edit-contact',
+                                        'edit_object' => $contact,
+                                        'edit_form_file' => __DIR__ . "/forms/contact.php"
+                                    ]
+                                ) ?>
+                                class="btn btn-default btn-xs">
                                 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                             </div>
                             <div 
-                                <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('contacts-ajax', $ajax_id, ['remove_contact' => $contact['id']], true, [
+                                <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('contacts-ajax', $ajax_id, ['remove_contact' => $contact['id']], \Hogart\Lk\Helper\Template\Ajax::DIALOG_CONFIRMATION, [
                                     'title' => 'Подтверждение удаления контактной информации',
                                     'confirmation' => 'Вы действительно хотите удалить контакт "' . $contact_name . '"?'
                                 ]) ?> 
@@ -105,7 +118,7 @@ $this->setFrameMode(true);
                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 operations">
                         <div class="btn-toolbar" role="toolbar">
                             <div
-                                <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('stores-ajax', $ajax_id, ['remove_store' => $store['store_XML_ID']], true, [
+                                <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('stores-ajax', $ajax_id, ['remove_store' => $store['store_XML_ID']], \Hogart\Lk\Helper\Template\Ajax::DIALOG_CONFIRMATION, [
                                     'title' => 'Подтверждение удаления склада',
                                     'confirmation' => 'Вы действительно хотите удалить склад <br/> "' . ($store['store_TITLE'] . (!empty(trim($store['store_ADDRESS'])) ? (" (" . $store['store_ADDRESS'] . ")") : "")) . '"?'
                                 ]) ?>
@@ -232,34 +245,7 @@ JS;
     'title' => 'Добавить контакт'
 ]) ?>
 <form action="<?= $APPLICATION->GetCurPage() ?>" name="add-contact" method="post">
-    <label class="control-label">Фамилия Имя Отчество</label>
-    <div class="row">
-        <div class="form-group col-sm-4">
-            <input name="last_name" required="required" type="text" class="col-sm-4 form-control" placeholder="Фамилия" data-error="Поле не должно быть пустым">
-            <div class="help-block with-errors"></div>
-        </div>
-        <div class="form-group col-sm-4">
-            <input name="name" required="required" type="text" class="col-sm-4 form-control" placeholder="Имя" data-error="Поле не должно быть пустым">
-            <div class="help-block with-errors"></div>
-        </div>
-        <div class="form-group col-sm-4">
-            <input name="middle_name" type="text" class="col-sm-4 form-control" placeholder="Отчество">
-        </div>
-    </div>
-    <div class="row">
-        <div class="form-group col-sm-4">
-            <label class="control-label">E-mail</label>
-            <input name="email" type="email" class="form-control" placeholder="Email">
-        </div>
-        <div class="form-group col-sm-4">
-            <label class="control-label">Телефон (моб.)</label>
-            <input name="phone[<?= \Hogart\Lk\Entity\ContactInfoTable::PHONE_KIND_MOBILE ?>]" data-mask="+7 (999) 999-99-99" type="text" class="form-control" placeholder="Телефон">
-        </div>
-        <div class="form-group col-sm-4">
-            <label class="control-label">Телефон (гор.)</label>
-            <input name="phone[<?= \Hogart\Lk\Entity\ContactInfoTable::PHONE_KIND_STATIC ?>]" data-mask="+7 (999) 999-99-99" type="text" class="form-control" placeholder="Телефон">
-        </div>
-    </div>
+    <? include __DIR__ . "/forms/contact.php" ?>
     <input type="hidden" name="action" value="add-contact">
 </form>
 <?

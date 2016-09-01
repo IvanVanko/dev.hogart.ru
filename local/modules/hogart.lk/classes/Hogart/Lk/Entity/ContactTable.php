@@ -10,9 +10,14 @@ namespace Hogart\Lk\Entity;
 
 
 use Bitrix\Main\Entity\BooleanField;
+use Bitrix\Main\Entity\DataManager;
+use Bitrix\Main\Entity\EntityError;
+use Bitrix\Main\Entity\Event;
+use Bitrix\Main\Entity\EventResult;
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\StringField;
 use Hogart\Lk\Field\GuidField;
+use Hogart\Lk\Field\HashSum;
 
 /**
  * Таблица Контактов
@@ -39,6 +44,7 @@ class ContactTable extends AbstractEntity
                 "autocomplete" => true
             ]),
             new GuidField("guid_id"),
+            new HashSum("hash"),
             new StringField("name"),
             new StringField("last_name"),
             new StringField("middle_name"),
@@ -57,5 +63,24 @@ class ContactTable extends AbstractEntity
             new Index("idx_guid_id", ["guid_id" => 36]),
             new Index('idx_is_active', ['is_active']),
         ];
+    }
+
+    public static function onBeforeAdd(Event $event)
+    {
+        $fields = $event->getParameter("fields");
+        $result = new EventResult();
+        $result->modifyFields([
+            'hash' => $hash = sha1(implode("|", [
+                mb_strtolower($fields['name']),
+                mb_strtolower($fields['last_name']),
+                mb_strtolower($fields['middle_name']),
+            ]))
+        ]);
+        return $result;
+    }
+
+    public static function onBeforeUpdate(Event $event)
+    {
+        return self::onBeforeAdd($event);
     }
 }

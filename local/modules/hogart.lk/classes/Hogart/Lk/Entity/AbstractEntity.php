@@ -127,7 +127,8 @@ abstract class AbstractEntity extends Entity\DataManager
         $primary = static::getEntity()->getPrimaryArray();
         $id = [];
         foreach ($primary as $key) {
-            $id[$key] = $data[$key];
+            $field = static::getEntity()->getField($key);
+            $id[$key] = $data[$key] ? : ($field instanceof Entity\ScalarField ? $field->getDefaultValue() : null);
         }
         static::delete($id);
         return static::add($data);

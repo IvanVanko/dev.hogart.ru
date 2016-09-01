@@ -46,6 +46,7 @@ if (!empty($_SESSION["ACCOUNT_ID"]) && !empty($_REQUEST)) {
                 'name' => $_POST['name'],
                 'last_name' => $_POST['last_name'],
                 'middle_name' => $_POST['middle_name'],
+                'is_active' => true
             ]);
             if (($contact_id =$result->getId())) {
                 \Hogart\Lk\Entity\ContactRelationTable::add([
@@ -58,7 +59,8 @@ if (!empty($_SESSION["ACCOUNT_ID"]) && !empty($_REQUEST)) {
                         'owner_id' => $contact_id,
                         'owner_type' => \Hogart\Lk\Entity\ContactInfoTable::OWNER_TYPE_CONTACT,
                         'info_type' => \Hogart\Lk\Entity\ContactInfoTable::TYPE_EMAIL,
-                        'value' => $_POST['email']
+                        'value' => $_POST['email'],
+                        'is_active' => true
                     ]);
                 }
                 if ($_POST['phone']) {
@@ -69,7 +71,65 @@ if (!empty($_SESSION["ACCOUNT_ID"]) && !empty($_REQUEST)) {
                             'owner_type' => \Hogart\Lk\Entity\ContactInfoTable::OWNER_TYPE_CONTACT,
                             'info_type' => \Hogart\Lk\Entity\ContactInfoTable::TYPE_PHONE,
                             'phone_kind' => intval($kind),
-                            'value' => $phone
+                            'value' => $phone,
+                            'is_active' => true
+                        ]);
+                    }
+                }
+            }
+            LocalRedirect($APPLICATION->GetCurPage());
+            break;
+        case 'edit-contact':
+            $result = \Hogart\Lk\Entity\ContactTable::update($_POST['id'], [
+                'name' => $_POST['name'],
+                'last_name' => $_POST['last_name'],
+                'middle_name' => $_POST['middle_name'],
+                'is_active' => true
+            ]);
+            if (($contact_id =$result->getId())) {
+                \Hogart\Lk\Entity\ContactRelationTable::replace([
+                    'contact_id' => $contact_id,
+                    'owner_id' => $_SESSION["ACCOUNT_ID"],
+                    'owner_type' => \Hogart\Lk\Entity\ContactRelationTable::OWNER_TYPE_ACCOUNT
+                ]);
+                \Hogart\Lk\Entity\ContactInfoTable::delete([
+                    'owner_id' => $contact_id,
+                    'owner_type' => \Hogart\Lk\Entity\ContactInfoTable::OWNER_TYPE_CONTACT,
+                    'info_type' => \Hogart\Lk\Entity\ContactInfoTable::TYPE_EMAIL
+                ]);
+                
+                \Hogart\Lk\Entity\ContactInfoTable::delete([
+                    'owner_id' => $contact_id,
+                    'owner_type' => \Hogart\Lk\Entity\ContactInfoTable::OWNER_TYPE_CONTACT,
+                    'info_type' => \Hogart\Lk\Entity\ContactInfoTable::TYPE_PHONE,
+                    'phone_kind' => \Hogart\Lk\Entity\ContactInfoTable::PHONE_KIND_MOBILE
+                ]);
+                \Hogart\Lk\Entity\ContactInfoTable::delete([
+                    'owner_id' => $contact_id,
+                    'owner_type' => \Hogart\Lk\Entity\ContactInfoTable::OWNER_TYPE_CONTACT,
+                    'info_type' => \Hogart\Lk\Entity\ContactInfoTable::TYPE_PHONE,
+                    'phone_kind' => \Hogart\Lk\Entity\ContactInfoTable::PHONE_KIND_STATIC
+                ]);
+                
+                if ($_POST['email']) {
+                    $ciR = \Hogart\Lk\Entity\ContactInfoTable::add([
+                        'owner_id' => $contact_id,
+                        'owner_type' => \Hogart\Lk\Entity\ContactInfoTable::OWNER_TYPE_CONTACT,
+                        'info_type' => \Hogart\Lk\Entity\ContactInfoTable::TYPE_EMAIL,
+                        'value' => $_POST['email'],
+                        'is_active' => true
+                    ]);
+                }
+                if ($_POST['phone']) {
+                    foreach ($_POST['phone'] as $kind => $phone) {
+                        if (empty($phone)) continue;
+                        $ciR = \Hogart\Lk\Entity\ContactInfoTable::add([
+                            'owner_id' => $contact_id,
+                            'owner_type' => \Hogart\Lk\Entity\ContactInfoTable::OWNER_TYPE_CONTACT,
+                            'info_type' => \Hogart\Lk\Entity\ContactInfoTable::TYPE_PHONE,
+                            'phone_kind' => intval($kind),
+                            'value' => $phone,
+                            'is_active' => true
                         ]);
                     }
                 }

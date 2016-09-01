@@ -53,7 +53,8 @@ class ContactRelationTable extends AbstractEntityRelation
     {
         $contacts = self::getList([
             'filter' => [
-                '=account.id' => $account_id
+                '=account.id' => $account_id,
+                '=is_active' => true
             ],
             'select' => [
                 '' => 'contact',
@@ -63,7 +64,8 @@ class ContactRelationTable extends AbstractEntityRelation
         foreach ($contacts as &$contact) {
             $contact['info'] = array_reduce(ContactInfoTable::getList([
                 'filter' => [
-                    '=contact.id' => $contact['id']
+                    '=contact.id' => $contact['id'],
+                    '=is_active' => true
                 ]
             ])->fetchAll(), function ($result, $item) { $result[$item['info_type']][] = $item; return $result; }, []);
         }

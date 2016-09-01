@@ -9,12 +9,19 @@
 namespace Hogart\Lk\Helper\Template;
 
 
+use Bitrix\Main\Page\Asset;
+
 class Ajax
 {
+    const DIALOG_CONFIRMATION = 1;
+    const DIALOG_EDIT = 2;
+
     /** @var array|\CBitrixComponent[]  */
     private static $components = [];
     /** @var array|string[][] */
     private static $confirmations = [];
+    /** @var array|string[][] */
+    private static $edit = [];
 
     private static function Init()
     {
@@ -50,6 +57,9 @@ class Ajax
         while (($confirmation = array_shift(self::$confirmations[$ajax_id]))) {
             echo $confirmation;
         }
+        while (($edit = array_shift(self::$edit[$ajax_id]))) {
+            echo $edit;
+        }
 
         if (self::isAjax($ajax_id)) {
             die();
@@ -70,47 +80,67 @@ class Ajax
      * @param string $container ID обновляемого контейнера
      * @param string $ajax_id Сгенерированный ранее AjaxID в методе Ajax::Start
      * @param array $params Параметры для GET запроса
-     * @param bool $confirm_dialog Нужен ли диалог с предупреждением
+     * @param bool $dialog Нужен ли диалог с предупреждением
      * @param array $dialog_options Свойства диалога
      * @return string
      */
-    public static function OnClickEvent($container, $ajax_id, $params = [], $confirm_dialog = false, $dialog_options = [])
+    public static function OnClickEvent($container, $ajax_id, $params = [], $dialog = false, $dialog_options = [])
     {
         global $APPLICATION;
         $url = $APPLICATION->GetCurUri(http_build_query(array_merge([BX_AJAX_PARAM_ID => $ajax_id], $params)));
         $html = "";
         $function = self::__load($url, $container);
-        if (!$confirm_dialog) {
+        if (!empty($dialog)) {
+            Asset::getInstance()->addJs('/local/modules/hogart.lk/assets/hogart.lk/js/remodal.ext.js');
+            switch ($dialog) {
+                case self::DIALOG_CONFIRMATION:
+                    $confirmation_id = implode("-", [$ajax_id, md5(serialize(array_keys($params)))]);
+                    $title = htmlspecialchars($dialog_options['title']);
+                    $confirm_message = htmlspecialchars($dialog_options['confirmation']);
+                    if (empty(self::$confirmations[$ajax_id][$confirmation_id])) {
+                        ob_start();
+                        Dialog::Start($confirmation_id, [
+                            'dialog-options' => 'hashTracking: false, closeOnConfirm: false'
+                        ]);
+                        echo '<div data-confirmation-wrapper></div>';
+                        Dialog::End();
+                        self::$confirmations[$ajax_id][$confirmation_id] = ob_get_clean();
+                    }
+                    $html .= '
+                        data-confirmation-message="' . $confirm_message . '" 
+                        data-confirmation-title="' . $title . '"
+                        data-confirmation-function="' . $function . '"
+                        onclick="openConfirmationDialog(\'' . $confirmation_id . '\', this)" 
+                    ';
+                    break;
+                case self::DIALOG_EDIT:
+                    $edit_id = implode("-", [$ajax_id, md5(serialize(array_keys($params)))]);
+                    if (empty(self::$confirmations[$ajax_id][$edit_id])) {
+                        ob_start();
+                        Dialog::Start($edit_id, [
+                            'dialog-options' => 'hashTracking: false, closeOnConfirm: false'
+                        ]);
+                        echo '<h3>' . htmlspecialchars($dialog_options['title']) . '</h3>';
+                        echo '<form action="' . $APPLICATION->GetCurPage() . '" name="' . $dialog_options['edit_action'] . '" method="post">';
+                        if (!empty($dialog_options['edit_form_file']) && file_exists($dialog_options['edit_form_file'])) {
+                            include ($dialog_options['edit_form_file']);
+                        }
+                        echo '<input data-bind="__action" type="hidden" name="action">';
+                        echo '<input type="hidden" name="id" value="">';
+                        echo '</form>';
+                        Dialog::End();
+                        self::$confirmations[$ajax_id][$edit_id] = ob_get_clean();
+                    }
+                    $html .= '
+                        data-edit="' . \CUtil::PhpToJSObject(array_merge($dialog_options['edit_object'], ['__action' => $dialog_options['edit_action']])) . '"
+                        onclick="openEditDialog(\'' . $edit_id . '\', this)"
+                    ';
+                    break;
+            }
+        } else {
             $html .=<<<HTML
 onclick="$function"
 HTML;
-        } else {
-            $confirmation = implode("-", [$ajax_id, md5(serialize($params))]);
-
-            ob_start();
-
-            Dialog::Start($confirmation, $dialog_options['remodal_options']);
-            $title = $dialog_options['title'];
-            $confirm_message = $dialog_options['confirmation'];
-            echo <<<HTML
-<h3>$title</h3>   
-<p>
-    $confirm_message
-</p> 
-HTML;
-            $id = Dialog::$id;
-            $handler =<<<JS
-(function() {
-  var inst = $('[data-remodal-id="$id"]').remodal();
-  $function
-  inst.close();
-})
-JS;
-            Dialog::Event('confirmation', $handler);
-            Dialog::End();
-
-            self::$confirmations[$ajax_id][$confirmation] = ob_get_clean();
-            $html .= ' data-remodal-target="' . $confirmation . '"';
         }
         return $html;
     }
