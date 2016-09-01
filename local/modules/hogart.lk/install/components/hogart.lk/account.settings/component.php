@@ -155,6 +155,14 @@ if (!empty($_SESSION["ACCOUNT_ID"]) && !empty($_REQUEST)) {
             "owner_type" => \Hogart\Lk\Entity\ContactRelationTable::OWNER_TYPE_ACCOUNT
         ]);
     }
+
+    // Постановка задачи на отправку аккаунта в КИС
+    try {
+        $accountExchange = (new \Hogart\Lk\Exchange\RabbitMQ\Exchange\AccountExchange())->useConsumer(\Hogart\Lk\Exchange\RabbitMQ\Consumer::getInstance());
+        $accountExchange->getExchange()->publish("", $accountExchange->getPublishKey('set'), AMQP_NOPARAM, ['delivery_mode' => 2]);
+    } catch (Exception $e) {
+        $logger->error(get_class($e) . ": ". $e->getMessage());
+    }
 }
 
 if ($this->startResultCache()) {
