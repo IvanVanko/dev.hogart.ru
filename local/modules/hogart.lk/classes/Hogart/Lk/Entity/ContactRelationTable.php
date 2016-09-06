@@ -49,27 +49,34 @@ class ContactRelationTable extends AbstractEntityRelation
         ];
     }
 
-    public static function getAccountContacts($account_id)
+    /**
+     * @param int $owner_id
+     * @param int $owner_type
+     * @return array
+     */
+    public static function getContactsByOwner($owner_id, $owner_type)
     {
-        $contacts = self::getList([
-            'filter' => [
-                '=account.id' => $account_id,
-                '=is_active' => true
-            ],
-            'select' => [
-                '' => 'contact',
-            ]
-        ])->fetchAll();
+        $contacts = self::getByOwner($owner_id, $owner_type, [], [
+            '' => 'contact',
+        ]);
 
         foreach ($contacts as &$contact) {
             $contact['info'] = array_reduce(ContactInfoTable::getList([
                 'filter' => [
                     '=contact.id' => $contact['id'],
-                    '=is_active' => true
                 ]
             ])->fetchAll(), function ($result, $item) { $result[$item['info_type']][] = $item; return $result; }, []);
         }
 
         return $contacts;
+    }
+
+    /**
+     * @param $account_id
+     * @return array
+     */
+    public static function getAccountContacts($account_id)
+    {
+        return self::getContactsByOwner($account_id, self::OWNER_TYPE_ACCOUNT);
     }
 }

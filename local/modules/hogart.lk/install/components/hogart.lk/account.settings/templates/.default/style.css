@@ -1,0 +1,95 @@
+form {
+  text-align: left;
+}
+.help-block {
+  font-size: 12px;
+  font-family: "Roboto Condensed", sans-serif;
+}
+.authinfo {
+  margin-bottom: 20px;
+}
+.contacts {
+  margin-bottom: 20px;
+}
+.contacts strong {
+  border-bottom: 1px dashed #95c600;
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 14px;
+}
+.contacts strong.visible-xs {
+  margin-right: 20px;
+}
+.contacts a[href^="mailto:"] {
+  margin-left: 0;
+}
+.contacts .phone-number {
+  white-space: nowrap;
+  transition: all .3s linear;
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 1.1em;
+}
+.contacts .phone-number.type-1:before {
+  content: "\f10b";
+  font-size: 1.5em;
+}
+.contacts .phone-number.type-2:before {
+  content: "\f095";
+}
+.contacts .phone-number:before {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  margin-right: 5px;
+}
+.managers {
+  margin-bottom: 20px;
+}
+.managers strong {
+  border-bottom: 1px dashed #95c600;
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 14px;
+}
+.managers strong.visible-xs {
+  margin-right: 20px;
+}
+.managers a[href^="mailto:"] {
+  margin-left: 0;
+}
+.managers .phone-number {
+  white-space: nowrap;
+  transition: all .3s linear;
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 1.1em;
+}
+.managers .phone-number.type-1:before {
+  content: "\f10b";
+  font-size: 1.5em;
+}
+.managers .phone-number.type-2:before {
+  content: "\f095";
+}
+.managers .phone-number:before {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  margin-right: 5px;
+}
+.managers .manager .avatar img {
+  width: 64px;
+  height: 64px;
+  border-radius: 64px;
+}
+.stores {
+  margin-bottom: 20px;
+}
+.stores .store .fa {
+  padding-right: 20px;
+  font-size: 14px;
+}
+.stores .store .fa.fa-star-o {
+  cursor: pointer;
+}

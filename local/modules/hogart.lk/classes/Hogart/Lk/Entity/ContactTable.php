@@ -60,6 +60,7 @@ class ContactTable extends AbstractEntity
     protected static function getIndexes()
     {
         return [
+            new Index("idx_hash", ["hash" => 40]),
             new Index("idx_guid_id", ["guid_id" => 36]),
             new Index('idx_is_active', ['is_active']),
         ];
@@ -77,10 +78,5 @@ class ContactTable extends AbstractEntity
             ]))
         ]);
         return $result;
-    }
-
-    public static function onBeforeUpdate(Event $event)
-    {
-        return self::onBeforeAdd($event);
     }
 }

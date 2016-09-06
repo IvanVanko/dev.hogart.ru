@@ -6,6 +6,23 @@ h1, h2, h3, h4, h5, h6,
   font-family: @font-family-serif;
   margin-top: (@line-height-computed / 2);
 }
+
+.placeholder() {
+  color:#eeeeee;
+  font-style: italic;
+  font-size: @font-size-h6;
+  text-indent: 0;
+  transition: text-indent 0.3s ease;
+  :focus& {
+    text-indent: 100%;
+    transition: text-indent 0.3s ease;
+  }
+}
+
+::-webkit-input-placeholder {
+  .placeholder();
+}
+
 body {
   &.loading {
     cursor: wait;

@@ -16,4 +16,6 @@ $hogart_lk_default_option = array(
     "SOAP_SERVICE_ENDPOINT" => "/",
     "SOAP_SERVICE_LOGIN" => "root",
     "SOAP_SERVICE_PASSWORD" => "password",
+    "DADATA_SERVICE_URL" => "",
+    "DADATA_API_KEY" => ""
 );

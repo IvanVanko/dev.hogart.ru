@@ -1,0 +1,95 @@
+@import (reference) "../../../../../../../../templates/hogart/variables";
+
+.header() {
+  strong {
+    border-bottom: 1px dashed @brand-green;
+    font-family: @font-family-serif;
+    font-size: @font-size-base;
+  }
+  strong.visible-xs {
+    margin-right: 20px;
+  }
+  a[href^="mailto:"] {
+    margin-left: 0;
+  }
+  .phone-number {
+    white-space: nowrap;
+    transition: all .3s linear;
+    font-family: @font-family-serif;
+    font-size: 1.1em;
+    &.type {
+      &-1 {
+        &:before {
+          content: "\f10b";
+          font-size: 1.5em;
+        }
+      }
+      &-2 {
+        &:before {
+          content: "\f095";
+        }
+      }
+    }
+    &:before {
+      display: inline-block;
+      font: normal normal normal 14px/1 FontAwesome;
+      font-size: inherit;
+      text-rendering: auto;
+      -webkit-font-smoothing: antialiased;
+      margin-right: 5px;
+    }
+  }
+}
+
+
+form {
+  text-align: left;
+  fieldset {
+    margin-top: 20px;
+  }
+
+  .spacer .form-group {
+    margin-bottom: 0;
+  }
+
+  .help-block {
+    font-size: @font-size-h6;
+    font-family: @font-family-serif;
+    margin-bottom: 0;
+    ul {
+      margin-bottom: 0;
+    }
+  }
+  .suggestions-wrapper {
+    display: block;
+  }
+}
+.companies {
+  margin-bottom: 20px;
+}
+
+.contacts {
+  margin-bottom: 20px;
+  .header();
+  .contact {
+  }
+}
+.contracts {
+  margin-bottom: 20px;
+  .header();
+  .contract {
+  }
+}
+.addresses {
+  margin-bottom: 20px;
+  .header();
+  .address {
+  }
+}
+
+[data-contact-email]:first-of-type a[data-remover] {
+  display: none;
+}
+[data-contact-phone]:first-of-type a[data-remover] {
+  display: none;
+}

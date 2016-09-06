@@ -144,6 +144,9 @@ abstract class AbstractEntity extends Entity\DataManager
      */
     public static function createOrUpdateByField($data, $fields)
     {
+        $event = new Entity\Event(static::getEntity(), self::EVENT_ON_BEFORE_ADD, array("fields" => $data), true);
+        $event->send();
+        $data = $event->mergeFields($data);
         $row = static::getList([
             'filter' => (is_string($fields) ? ["={$fields}" => $data[$fields]] : $fields)
         ])->fetch();

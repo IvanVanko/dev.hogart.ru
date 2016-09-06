@@ -34,7 +34,7 @@ class AccountCompanyRelationTable extends AbstractEntity
         return [
             new IntegerField("account_id", ['primary' => true]),
             new ReferenceField("account", "Hogart\\Lk\\Entity\\AccountTable", ["=this.account_id" => "ref.id"]),
-            new GuidField("company_id", ['primary' => true]),
+            new IntegerField("company_id", ['primary' => true]),
             new ReferenceField("company", "Hogart\\Lk\\Entity\\CompanyTable", ["=this.company_id" => "ref.id"]),
             new BooleanField("is_favorite")
         ];
@@ -58,15 +58,15 @@ class AccountCompanyRelationTable extends AbstractEntity
      */
     public static function getByAccountId($account_id)
     {
-        return self::getList([
+        return array_reduce(self::getList([
             'filter' => [
                 '=account_id' => $account_id
             ],
             'select' => [
-                'COMPANY_' => 'company',
+                '' => 'company',
                 'is_favorite' => 'is_favorite'
             ]
-        ])->fetchAll();
+        ])->fetchAll(), function ($result, $item) { $result[$item['id']] = $item; return $result; }, []);
     }
 
     /**
@@ -84,10 +84,10 @@ class AccountCompanyRelationTable extends AbstractEntity
                 '=company.is_active' => true
             ],
             'select' => [
-                'COMPANY_' => 'company',
+                '' => 'company',
                 'is_favorite' => 'is_favorite'
             ]
-        ])->fetchAll();
+        ])->fetch();
     }
     /**
      * Полчить определенную "любимую" компанию пользователя
@@ -123,10 +123,5 @@ class AccountCompanyRelationTable extends AbstractEntity
         }else{
             self::createOrUpdateByField(['is_favorite'=>false], ['account_id'=>$account_id, 'company_id'=>$company_id]);
         }
-        // снимаем флаг у всех
-
-
-
-        var_dump($current);
     }
 }

@@ -83,8 +83,25 @@ abstract class AbstractEntityRelation extends AbstractEntity
             "error" => MethodException::ERROR_NO_CONTACT
         ],
     ];
-    
-    
+
+    /**
+     * @param $owner_id
+     * @param $owner_type
+     * @param array $filter
+     * @param array $select
+     * @return array
+     */
+    public static function getByOwner($owner_id, $owner_type, $filter = [], $select = ['*'])
+    {
+        $rows = self::getList([
+            'filter' => array_merge([
+                '=' . (self::$types[$owner_type]['name'] . "." . self::$types[$owner_type]['rel_id']) => $owner_id,
+            ], $filter),
+            'select' => $select
+        ])->fetchAll();
+
+        return $rows;
+    }
 
     /**
      * {@inheritDoc}

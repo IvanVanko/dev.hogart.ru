@@ -60,7 +60,7 @@ class ContractTable extends AbstractEntity
             new StringField("currency_code"),
             new ReferenceField("currency", "Bitrix\\Currency\\CurrencyTable", ["=this.currency_code" => "ref.CURRENCY"]),
             new BooleanField("perm_item"),
-            new BooleanField("prem_promo"),
+            new BooleanField("perm_promo"),
             new BooleanField("perm_clearing"),
             new BooleanField("perm_card"),
             new BooleanField("perm_cash"),
@@ -81,6 +81,25 @@ class ContractTable extends AbstractEntity
             new BooleanField("vat_include"),
             new BooleanField("is_active")
         ];
+    }
+
+    public static function showName($contract = [])
+    {
+        return "Договор №" . $contract["number"] . " от " . $contract["start_date"];
+    }
+
+    /**
+     * @param $id
+     * @return array
+     */
+    public static function getByCompanyId($id)
+    {
+        return self::getList([
+            'filter' => [
+                '=company_id' => $id,
+                '=is_active' => true
+            ]
+        ])->fetchAll();
     }
 
     /**

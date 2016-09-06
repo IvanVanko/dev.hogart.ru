@@ -91,6 +91,7 @@ class Ajax
         $html = "";
         $function = self::__load($url, $container);
         if (!empty($dialog)) {
+            Asset::getInstance()->addJs('/local/modules/hogart.lk/assets/hogart.lk/js/hogart.js');
             Asset::getInstance()->addJs('/local/modules/hogart.lk/assets/hogart.lk/js/remodal.ext.js');
             switch ($dialog) {
                 case self::DIALOG_CONFIRMATION:
@@ -131,6 +132,18 @@ class Ajax
                         Dialog::End();
                         self::$confirmations[$ajax_id][$edit_id] = ob_get_clean();
                     }
+
+                    $events = array_reduce(array_keys($dialog_options), function ($result, $item) use($dialog_options) {
+                        if (preg_match("%^dialog_event_(?P<event>.*)%", $item, $m)) {
+                            $result[$m['event']] = $dialog_options["dialog_event_" . $m['event']];
+                        }
+                        return $result;
+                    }, []);
+
+                    if (!empty($events)) {
+                        $html .= 'data-dialog-events="' . \CUtil::PhpToJSObject($events) . '"' ;
+                    }
+
                     $html .= '
                         data-edit="' . \CUtil::PhpToJSObject(array_merge($dialog_options['edit_object'], ['__action' => $dialog_options['edit_action']])) . '"
                         onclick="openEditDialog(\'' . $edit_id . '\', this)"

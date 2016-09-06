@@ -1,0 +1,134 @@
+form {
+  text-align: left;
+}
+form fieldset {
+  margin-top: 20px;
+}
+form .spacer .form-group {
+  margin-bottom: 0;
+}
+form .help-block {
+  font-size: 12px;
+  font-family: "Roboto Condensed", sans-serif;
+  margin-bottom: 0;
+}
+form .help-block ul {
+  margin-bottom: 0;
+}
+form .suggestions-wrapper {
+  display: block;
+}
+.companies {
+  margin-bottom: 20px;
+}
+.contacts {
+  margin-bottom: 20px;
+}
+.contacts strong {
+  border-bottom: 1px dashed #95c600;
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 14px;
+}
+.contacts strong.visible-xs {
+  margin-right: 20px;
+}
+.contacts a[href^="mailto:"] {
+  margin-left: 0;
+}
+.contacts .phone-number {
+  white-space: nowrap;
+  transition: all .3s linear;
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 1.1em;
+}
+.contacts .phone-number.type-1:before {
+  content: "\f10b";
+  font-size: 1.5em;
+}
+.contacts .phone-number.type-2:before {
+  content: "\f095";
+}
+.contacts .phone-number:before {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  margin-right: 5px;
+}
+.contracts {
+  margin-bottom: 20px;
+}
+.contracts strong {
+  border-bottom: 1px dashed #95c600;
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 14px;
+}
+.contracts strong.visible-xs {
+  margin-right: 20px;
+}
+.contracts a[href^="mailto:"] {
+  margin-left: 0;
+}
+.contracts .phone-number {
+  white-space: nowrap;
+  transition: all .3s linear;
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 1.1em;
+}
+.contracts .phone-number.type-1:before {
+  content: "\f10b";
+  font-size: 1.5em;
+}
+.contracts .phone-number.type-2:before {
+  content: "\f095";
+}
+.contracts .phone-number:before {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  margin-right: 5px;
+}
+.addresses {
+  margin-bottom: 20px;
+}
+.addresses strong {
+  border-bottom: 1px dashed #95c600;
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 14px;
+}
+.addresses strong.visible-xs {
+  margin-right: 20px;
+}
+.addresses a[href^="mailto:"] {
+  margin-left: 0;
+}
+.addresses .phone-number {
+  white-space: nowrap;
+  transition: all .3s linear;
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 1.1em;
+}
+.addresses .phone-number.type-1:before {
+  content: "\f10b";
+  font-size: 1.5em;
+}
+.addresses .phone-number.type-2:before {
+  content: "\f095";
+}
+.addresses .phone-number:before {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  margin-right: 5px;
+}
+[data-contact-email]:first-of-type a[data-remover] {
+  display: none;
+}
+[data-contact-phone]:first-of-type a[data-remover] {
+  display: none;
+}

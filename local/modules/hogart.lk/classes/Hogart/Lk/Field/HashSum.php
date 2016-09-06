@@ -16,7 +16,7 @@ class HashSum extends StringField
     public function __construct($name, $parameters = array())
     {
         parent::__construct($name, array_merge([
-            'size' => 20,
+            'size' => 40,
             'unique' => true
         ], $parameters));
     }

@@ -11,10 +11,13 @@ namespace Hogart\Lk\Entity;
 use Bitrix\Main\Entity\BooleanField;
 use Bitrix\Main\Entity\DateField;
 use Bitrix\Main\Entity\EnumField;
+use Bitrix\Main\Entity\Event;
+use Bitrix\Main\Entity\EventResult;
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ReferenceField;
 use Bitrix\Main\Entity\StringField;
 use Hogart\Lk\Field\GuidField;
+use Hogart\Lk\Field\HashSum;
 
 /**
  * Таблица Компаний клиента
@@ -56,13 +59,14 @@ class CompanyTable extends AbstractEntity
                 "autocomplete" => true
             ]),
             new GuidField("guid_id"),
+            new HashSum("hash"),
             new StringField("name"),
             new EnumField("type", [
                 'values' => [
                     self::TYPE_LEGAL_ENTITY,
                     self::TYPE_INDIVIDUAL_ENTREPRENEUR,
                     self::TYPE_INDIVIDUAL
-                ]
+                ],
             ]),
             new StringField("type_form"),
             new IntegerField("kind_activity_id"),
@@ -89,12 +93,27 @@ class CompanyTable extends AbstractEntity
         ];
     }
 
+    public static function onBeforeAdd(Event $event)
+    {
+        $fields = $event->getParameter("fields");
+        $result = new EventResult();
+        $result->modifyFields([
+            'hash' => $hash = sha1(implode("|", [
+                mb_strtolower($fields['type']),
+                mb_strtolower($fields['name']),
+                mb_strtolower($fields['inn']),
+            ]))
+        ]);
+        return $result;
+    }
+
     /**
      * {@inheritDoc}
      */
     protected static function getIndexes()
     {
         return [
+            new Index("idx_hash", ["hash" => 40]),
             new Index("idx_guid_id", ["guid_id" => 36]),
             new Index("idx_company_entity_most", ['kind_activity_id', 'chief_contact_id']),
             new Index('idx_type', ['type']),

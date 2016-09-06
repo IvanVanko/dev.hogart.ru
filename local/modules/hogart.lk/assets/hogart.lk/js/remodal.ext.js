@@ -35,9 +35,10 @@ function openEditDialog(id, el) {
       }
       $(input).val(value);
     });
+    $(el).data('dialogEvents', eval('(function () { return ' + $(el).data('dialogEvents') + '})()'));
   } catch (e) {
   }
-  inst.open();
+
   $(document)
     .off('opening', '[data-remodal-id="' + id + '"]')
     .on('opening', '[data-remodal-id="' + id + '"]', function() {
@@ -49,4 +50,9 @@ function openEditDialog(id, el) {
       $('[data-remodal-id="' + id + '"] form').submit();
       inst.close();
     });
+
+  $.each($(el).data('dialogEvents') || {}, function (event, callback) {
+    $(document).on(event, '[data-remodal-id="' + id + '"]', window[callback]);
+  });
+  inst.open();
 }

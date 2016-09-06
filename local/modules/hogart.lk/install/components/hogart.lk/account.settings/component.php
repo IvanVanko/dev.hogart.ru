@@ -11,6 +11,7 @@ if (!$this->initComponentTemplate())
     return;
 
 $logger = (new \Hogart\Lk\Logger\BitrixLogger($this->getName(), \Hogart\Lk\Logger\BitrixLogger::STACK_FULL));
+global $APPLICATION;
 
 if (!empty($_SESSION["ACCOUNT_ID"]) && !empty($_REQUEST)) {
     switch ($_REQUEST['action']) {
@@ -42,12 +43,12 @@ if (!empty($_SESSION["ACCOUNT_ID"]) && !empty($_REQUEST)) {
             LocalRedirect($APPLICATION->GetCurPage());
             break;
         case 'add-contact':
-            $result = \Hogart\Lk\Entity\ContactTable::add([
+            $result = \Hogart\Lk\Entity\ContactTable::createOrUpdateByField([
                 'name' => $_POST['name'],
                 'last_name' => $_POST['last_name'],
                 'middle_name' => $_POST['middle_name'],
                 'is_active' => true
-            ]);
+            ], 'hash');
             if (($contact_id =$result->getId())) {
                 \Hogart\Lk\Entity\ContactRelationTable::add([
                     'contact_id' => $contact_id,

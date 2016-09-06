@@ -41,6 +41,7 @@ class AddressTable extends AbstractEntityRelation
                 'primary' => true
             ]),
             new ReferenceField("type", __NAMESPACE__ . "\\AddressTypeTable", ["=this.type_id" => "ref.id"]),
+            new StringField("value"),
             new StringField("postal_code"),
             new StringField("region"),
             new StringField("city"),
@@ -48,11 +49,30 @@ class AddressTable extends AbstractEntityRelation
             new StringField("house"),
             new StringField("building"),
             new StringField("flat"),
-            new GuidField("fias_code"),
+            new GuidField("fias_code", [
+                'primary' => true
+            ]),
             new StringField("kladr_code"),
             new BooleanField("is_active")
         ], parent::getMap());
     }
+
+    /**
+     * @param $owner_id
+     * @param $owner_type
+     * @param array $filter
+     * @param array $select
+     * @return array
+     */
+    public static function getByOwner($owner_id, $owner_type, $filter = [], $select = ['*'])
+    {
+        return array_reduce(
+            parent::getByOwner($owner_id, $owner_type, $filter, $select),
+            function ($result, $item) { $result[$item['type_id']][] = $item; return $result; },
+            []
+        );
+    }
+
 
     /**
      * {@inheritDoc}
