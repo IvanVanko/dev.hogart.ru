@@ -85,7 +85,23 @@ class ContractTable extends AbstractEntity
 
     public static function showName($contract = [])
     {
-        return "Договор №" . $contract["number"] . " от " . $contract["start_date"];
+        if ($contract['accept'])
+            return "Договор №" . $contract["number"] . " от " . $contract["start_date"];
+        else
+            return "Договор №<sup>получение</sup> от " . $contract["start_date"];
+    }
+
+    public static function showStatus($contract = [])
+    {
+        $status = "Обрабатывается";
+
+        if ($contract['accept'])
+            $status = "Подтвержден";
+
+        if ($contract['have_original'])
+            $status = "Получены оригиналы";
+
+        return $status;
     }
 
     /**

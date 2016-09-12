@@ -1,4 +1,5 @@
 @import (reference) "../../../../../../../../templates/hogart/variables";
+@import "../../../../../../assets/hogart.lk/less/styles";
 
 .header() {
   strong {
@@ -87,6 +88,9 @@ form {
   }
 }
 
+[data-payment-account]:first-of-type a[data-remover] {
+  display: none;
+}
 [data-contact-email]:first-of-type a[data-remover] {
   display: none;
 }

@@ -18,7 +18,7 @@ class Events
         if (!empty($arParams['USER_ID'])) {
             $account = AccountTable::getAccountByUserID($arParams['USER_ID']);
             if (!empty($account['id'])) {
-                $_SESSION["ACCOUNT_ID"] = $account['id'];
+                $_SESSION["SESS_AUTH"]["ACCOUNT_ID"] = $account['id'];
             }
         }
     }

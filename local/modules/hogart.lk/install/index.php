@@ -121,6 +121,7 @@ class hogart_lk extends CModule
             RegisterModule($this->MODULE_ID);
             CopyDirFiles(__DIR__ . "/admin", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/admin");
             CopyDirFiles(__DIR__ . "/components", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/components");
+            CopyDirFiles(__DIR__ . "/templates", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/templates");
             $this->InstallDB();
 
             RegisterModuleDependences("main", "OnAfterUserLogin", "hogart.lk", "Hogart\\Lk\\Events", "OnAfterUserLogin");
@@ -141,6 +142,7 @@ class hogart_lk extends CModule
         $this->UnInstallDB();
         DeleteDirFiles(__DIR__ . "/admin", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/admin");
         DeleteDirFiles(__DIR__ . "/components", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/components");
+        DeleteDirFiles(__DIR__ . "/templates", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/templates");
         UnRegisterModule($this->MODULE_ID);
     }
 

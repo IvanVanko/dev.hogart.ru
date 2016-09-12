@@ -1,3 +1,15 @@
+.center-between {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.bottom-between {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+}
 form {
   text-align: left;
 }
@@ -125,6 +137,9 @@ form .suggestions-wrapper {
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
   margin-right: 5px;
+}
+[data-payment-account]:first-of-type a[data-remover] {
+  display: none;
 }
 [data-contact-email]:first-of-type a[data-remover] {
   display: none;

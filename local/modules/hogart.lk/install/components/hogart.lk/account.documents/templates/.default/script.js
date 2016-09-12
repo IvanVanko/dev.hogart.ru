@@ -3,6 +3,14 @@
  */
 
 $(function () {
+  $.fn.bootstrapSwitch.defaults.size = 'small';
+  $.fn.bootstrapSwitch.defaults.onColor = 'primary';
+  $.fn.bootstrapSwitch.defaults.offColor = 'danger';
+  $.fn.bootstrapSwitch.defaults.onText = 'Вкл';
+  $.fn.bootstrapSwitch.defaults.offText = 'Выкл';
+
+  $('[data-switch]:input').bootstrapSwitch();
+
   setTimeout(function () {
     window.DaData.init_fio(
       $('fieldset[name="company_type_3"] input[name="last_name"]'),
@@ -28,9 +36,11 @@ $(function () {
       $(this).val(this.defaultValue);
     });
     form.find('fieldset').find($.fn.validator.Constructor.INPUT_SELECTOR).attr('data-validate', 'false');
+    form.find('fieldset [data-switch]:input').bootstrapSwitch('destroy');
     form.find('fieldset').attr('hidden', 'hidden').attr('disabled', 'disabled');
     form.find('fieldset[name="company_type_' + $(this).val() + '"]').find($.fn.validator.Constructor.INPUT_SELECTOR).attr('data-validate', 'true');
     form.find('fieldset[name="company_type_' + $(this).val() + '"]').removeAttr('hidden').removeAttr('disabled');
+    form.find('fieldset[name="company_type_' + $(this).val() + '"] [data-switch]:input').bootstrapSwitch();
     form.validator('update');
   });
   $('select[name="company_type"]').change();
@@ -43,26 +53,29 @@ $(function () {
 
   window.DaData.addToObserver('fieldset[name="company_type_1"]');
 
-  $(document).on('change', 'fieldset[name="company_type_1"] [name^="payment_account[is_main]"]', function () {
-    var index = $(this).index('fieldset[name="company_type_1"] [name^="payment_account[is_main]"]');
-    $('fieldset[name="company_type_1"] [name^="payment_account[is_main]"]').each(function (_, el) {
-      if (index != _) {
-        $(el).removeAttr("checked");
-      }
-    });
+  $(document).on('switchChange.bootstrapSwitch', '[name^="payment_account[is_main]"]', function (e, state) {
+    if (state) {
+      var parent = $(this).parents('fieldset');
+      var index = $('[name^="payment_account[is_main]"]', parent).index($(this));
+      console.log(index);
+      $('[name^="payment_account[is_main]"]', parent).each(function (_, el) {
+        if (index != _) {
+          $(el).bootstrapSwitch('state', false);
+        }
+      });
+    }
   });
 
   // клонирование реквизитов счета
   $(document).on('click', '[data-payment-account] a[data-cloner]', function () {
-    Hogart_Lk.clone('[data-payment-account]', '[data-payment-account]:last', function (clone) {
+    Hogart_Lk.clone('[data-payment-account]', '[data-payment-account]:last', this, function (clone) {
       $(':input', clone).each(function() {
         $(this).val(this.defaultValue);
       });
-      $(':checked', clone).removeAttr("checked");
-      $('a', clone).after('\
-        <a role="button" class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="$(this).parents(\'[data-payment-account]\').remove()" title="Удалить счет"> \
-          <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> \
-        </a>');
+      var is_main_checkbox = $('[data-switch]:input', clone).detach();
+      $('.bootstrap-switch', clone).after(is_main_checkbox);
+      $('.bootstrap-switch', clone).remove();
+      $(':checked', clone).removeAttr("checked").bootstrapSwitch();
     });
   });
 
@@ -88,6 +101,7 @@ $(function () {
       $('.selectpicker', record.target).selectpicker();
     });
   });
+
 });
 
 function partySelect (event, suggestion) {

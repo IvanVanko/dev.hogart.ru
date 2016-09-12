@@ -219,7 +219,7 @@ JS;
 ]) ?>
 <form action="<?= $APPLICATION->GetCurPage() ?>" name="add-store" method="post">
     <div class="form-group" style="position: relative">
-        <label>Выберете склады</label>
+        <label>Выберите склады</label>
         <select name="stores[]" class="form-control selectpicker" multiple>
             <? foreach ($arResult['av_stores'] as $store): ?>
                 <option value="<?= $store['XML_ID'] ?>"><?= $store['TITLE'] . (!empty(trim($store['ADDRESS'])) ? (" (" . $store['ADDRESS'] . ")") : "") ?></option>

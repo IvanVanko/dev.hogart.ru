@@ -43,14 +43,14 @@ use Hogart\Lk\Entity\CompanyTable;
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-sm-6">
+    <div class="row spacer">
+        <div class="col-sm-12 center-between">
             <label class="control-label">Фактический адрес</label>
-        </div>
-        <div class="col-sm-6 pull-right text-right">
-            <label class="checkbox-inline">
-                <input checked="checked" onclick="document.getElementById('actual_address').disabled=this.checked;" type="checkbox" name="actual_address_as_legal" value="1"> Совпадает с юридическим адресом
-            </label>
+            <div class="pull-right text-right">
+                <label class="checkbox-inline">
+                    Совпадает с юридическим адресом <input data-switch checked="checked" onchange="document.getElementById('actual_address').disabled=this.checked;" type="checkbox" name="actual_address_as_legal" value="1">
+                </label>
+            </div>
         </div>
     </div>
     <div class="row spacer">
@@ -59,43 +59,7 @@ use Hogart\Lk\Entity\CompanyTable;
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-sm-6">
-            <label class="control-label">Контактные данные</label>
-        </div>
-    </div>
-    <div class="row spacer">
-        <div class="col-sm-6">
-            <div class="row spacer vertical-align" data-contact-email>
-                <div class="col-sm-8">
-                    <input name="email[]" type="email" class="form-control" placeholder="Email">
-                </div>
-                <div class="col-sm-4">
-                    <a role="button" class="btn btn-primary btn-xs" data-cloner href="javascript:void(0)" title="Добавить e-mail">
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                    </a>
-                    <a role="button" class="btn btn-danger btn-xs" data-remover href="javascript:void(0)" onclick="$(this).parents('[data-contact-email]').remove()" title="Удалить e-mail">
-                        <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6">
-            <div class="row spacer vertical-align" data-contact-phone>
-                <div class="col-sm-8">
-                    <input name="phone[<?= ContactInfoTable::PHONE_KIND_STATIC ?>][]" type="text" data-mask="+7 (999) 999-99-99" class="form-control" placeholder="Телефон">
-                </div>
-                <div class="col-sm-4">
-                    <a role="button" class="btn btn-primary btn-xs" data-cloner href="javascript:void(0)" title="Добавить телефон">
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                    </a>
-                    <a role="button" class="btn btn-danger btn-xs" data-remover href="javascript:void(0)" onclick="$(this).parents('[data-contact-phone]').remove()" title="Удалить телефон">
-                        <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+    <? include __DIR__ . "/company_contacts.php"; ?>
 
     <div class="row">
         <div class="col-sm-12">
@@ -115,36 +79,5 @@ use Hogart\Lk\Entity\CompanyTable;
             <input name="director_middle_name" type="text" class="col-sm-4 form-control" placeholder="Отчество">
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <label class="control-label">Реквизиты счета</label>
-        </div>
-    </div>
-    <div class="row spacer" data-payment-account>
-        <div class="col-sm-12">
-            <div class="row spacer vertical-align">
-                <div class="col-sm-8 form-group">
-                    <input required data-suggest="bank" name="payment_account[bik][]" type="text" class="form-control" placeholder="Название банка, БИК или SWIFT" data-error="Поле не должно быть пустым">
-                    <div class="help-block with-errors"></div>
-                </div>
-                <div class="col-sm-4 pull-right text-right">
-                    <label class="checkbox-inline">
-                        <input checked="checked" type="checkbox" name="payment_account[is_main][]" value="1"> Сделать основным
-                    </label>
-                </div>
-            </div>
-            <div class="row vertical-align">
-                <div class="col-sm-8 form-group">
-                    <input required data-mask="99999 999 9999 9999 9999" name="payment_account[number][]" type="text" class="form-control" placeholder="Расчетный счет" data-error="Поле не должно быть пустым">
-                    <div class="help-block with-errors"></div>
-                </div>
-                <div class="col-sm-4">
-                    <a role="button" class="btn btn-primary btn-xs" data-cloner href="javascript:void(0)" title="Добавить счет">
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <? include __DIR__ . "/payment_account.php"; ?>
 </fieldset>

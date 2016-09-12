@@ -59,7 +59,7 @@ use Hogart\Lk\Entity\ContractTable;
     <? if (count($arResult['current_company']['contracts']) || $arResult['account']['is_general']): ?>
         <div class="col-sm-12 col-xs-12 contracts">
             <div id="contracts-ajax">
-                <? $ajax_id = \Hogart\Lk\Helper\Template\Ajax::Start($component, ['edit_contract', 'remove_contract']); ?>
+                <? $ajax_id = \Hogart\Lk\Helper\Template\Ajax::Start($component, ['remove_contract']); ?>
                 <div class="row header hidden-xs spacer">
                     <div class="col-lg-3 col-sm-3"><strong>Договор</strong></div>
                     <div class="col-lg-3 col-sm-3"><strong>Статус</strong></div>
@@ -69,7 +69,7 @@ use Hogart\Lk\Entity\ContractTable;
                 <? foreach ($arResult['current_company']['contracts'] as $contract): ?>
                     <div class="row vertical-align spacer contact" data-contract-id="<?= $contract['guid_id'] ?>">
                         <div class="col-lg-3 col-sm-3"><strong class="pull-left visible-xs">Договор:</strong> <?= ContractTable::showName($contract); ?></div>
-                        <div class="col-lg-3 col-sm-3"><strong class="pull-left visible-xs">Статус:</strong></div>
+                        <div class="col-lg-3 col-sm-3"><strong class="pull-left visible-xs">Статус:</strong> <?= ContractTable::showStatus($contract); ?></div>
                         <div class="col-lg-2 col-sm-3"><strong class="pull-left visible-xs">Запрос:</strong></div>
                         <div class="col-lg-2 col-sm-3 operations"></div>
                     </div>
@@ -81,7 +81,7 @@ use Hogart\Lk\Entity\ContractTable;
                 <div class="row spacer"></div> <!-- feature -->
                 <div class="row">
                     <div class="col-sm-12 col-xs-12">
-                        <?= \Hogart\Lk\Helper\Template\Dialog::Button('add-contract-dialog', 'Добавить договор', 'btn btn-primary')?>
+                        <?= \Hogart\Lk\Helper\Template\Dialog::Button('add-contract-dialog', 'Создать договор', 'btn btn-primary')?>
                     </div>
                 </div>
             <? endif; ?>
@@ -222,16 +222,16 @@ use Hogart\Lk\Entity\ContractTable;
 ]) ?>
 <form action="<?= $APPLICATION->GetCurPage() ?>" name="add-company" method="post">
     <div class="row vertical-align">
-        <div class="col-sm-9">
+        <div class="col-sm-8">
             <select name="company_type" class="form-control selectpicker">
                 <option value="<?= CompanyTable::TYPE_LEGAL_ENTITY ?>">Юридическое лицо</option>
                 <option value="<?= CompanyTable::TYPE_INDIVIDUAL_ENTREPRENEUR ?>">Индивидуальный предприниматель</option>
                 <option value="<?= CompanyTable::TYPE_INDIVIDUAL ?>">Физическое лицо</option>
             </select>
         </div>
-        <div class="col-sm-3 pull-right text-right">
+        <div class="col-sm-4 pull-right text-right">
             <label class="checkbox-inline">
-                <input checked="checked" type="checkbox" name="is_active" value="1"> Активно
+                Активно&nbsp;<input data-switch checked="checked" type="checkbox" name="is_active" value="1">
             </label>
         </div>
     </div>
@@ -289,6 +289,31 @@ JS;
 <form action="<?= $APPLICATION->GetCurPage() ?>" name="add-address" method="post">
     <? include __DIR__ . "/forms/address.php" ?>
     <input type="hidden" name="action" value="add-address">
+</form>
+<?
+$id = \Hogart\Lk\Helper\Template\Dialog::$id;
+$handler =<<<JS
+    (function() {
+      $('[data-remodal-id="$id"] form').validator();
+    })
+JS;
+\Hogart\Lk\Helper\Template\Dialog::Event('opening', $handler);
+$handler =<<<JS
+    (function() {
+      $('[data-remodal-id="$id"] form').submit();
+    })
+JS;
+\Hogart\Lk\Helper\Template\Dialog::Event('confirmation', $handler);
+\Hogart\Lk\Helper\Template\Dialog::End()
+?>
+
+<? \Hogart\Lk\Helper\Template\Dialog::Start("add-contract-dialog", [
+    'dialog-options' => 'closeOnConfirm: false',
+    'title' => 'Создать договор'
+]) ?>
+<form action="<?= $APPLICATION->GetCurPage() ?>" name="add-contract" method="post">
+    <? include __DIR__ . "/forms/contract.php" ?>
+    <input type="hidden" name="action" value="add-contract">
 </form>
 <?
 $id = \Hogart\Lk\Helper\Template\Dialog::$id;

@@ -22,6 +22,7 @@ $soap = \Hogart\Lk\Exchange\SOAP\Client::getInstance();
 
 $soap->getLogger()->registerLogger(new \Hogart\Lk\Logger\FileLogger(__DIR__ . "/../logs/soap.log"));
 
+ini_set("xdebug.var_display_max_depth", -1);
 var_dump($soap->Contract->getContract());
 
 //$response = new \Hogart\Lk\Exchange\SOAP\Method\Response();

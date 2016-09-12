@@ -25,3 +25,6 @@ CModule::IncludeModule("catalog");
 
 \Bitrix\Main\Page\Asset::getInstance()->addJs('//cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js', true);
 \Bitrix\Main\Page\Asset::getInstance()->addJs('//cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/locale/ru.js', true);
+
+\Bitrix\Main\Page\Asset::getInstance()->addCss('/local/modules/hogart.lk/assets/bootstrap-switch/build.css', true);
+\Bitrix\Main\Page\Asset::getInstance()->addJs('//cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/js/bootstrap-switch.min.js', true);
