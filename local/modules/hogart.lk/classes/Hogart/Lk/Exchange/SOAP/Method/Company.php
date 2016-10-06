@@ -14,6 +14,7 @@ use Hogart\Lk\Entity\ContactTable;
 use Hogart\Lk\Entity\KindOfActivityTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
 use Bitrix\Main\Entity\UpdateResult;
+use Hogart\Lk\Exchange\SOAP\AbstractPutRequest;
 use Hogart\Lk\Exchange\SOAP\MethodException;
 use Hogart\Lk\Exchange\SOAP\Request;
 use Hogart\Lk\Exchange\SOAP\Response;
@@ -31,6 +32,17 @@ class Company extends AbstractMethod
     function getName()
     {
         return "Company";
+    }
+
+    public function companyPut(AbstractPutRequest $request)
+    {
+        $response = $this->client->getSoapClient()->CompanyPut($request->__toRequest());
+        foreach ($response->return->Response as $company) {
+            CompanyTable::update($company->ID_Site, [
+                'guid_id' => $company->ID
+            ]);
+        }
+        return $response;
     }
 
     public function getCompanies()
@@ -54,7 +66,7 @@ class Company extends AbstractMethod
             $data = [
                 'guid_id' => $kind_of_activity->ID,
                 'name' => $kind_of_activity->Name,
-                'description' => $kind_of_activity->Description,
+                'description' => (string)$kind_of_activity->Description,
             ];
             $result = KindOfActivityTable::createOrUpdateByField($data, 'guid_id');
             $activities[$kind_of_activity->ID] = $result->getId();

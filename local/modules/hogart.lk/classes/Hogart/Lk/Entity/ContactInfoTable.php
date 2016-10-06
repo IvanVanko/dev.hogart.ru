@@ -11,9 +11,13 @@ namespace Hogart\Lk\Entity;
 
 use Bitrix\Main\Entity\BooleanField;
 use Bitrix\Main\Entity\EnumField;
+use Bitrix\Main\Entity\Event;
+use Bitrix\Main\Entity\EventResult;
 use Bitrix\Main\Entity\IntegerField;
+use Bitrix\Main\Entity\ScalarField;
 use Bitrix\Main\Entity\StringField;
 use Hogart\Lk\Field\GuidField;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Таблица Контактной информации
@@ -46,10 +50,8 @@ class ContactInfoTable extends AbstractEntityRelation
     public static function getMap()
     {
         return array_merge([
-            new GuidField("d_guid_id", [
-                'format' => '%(^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}[_][0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}$|^$)%',
-                'unique' => false
-            ]),
+            new GuidField("guid_id"),
+            new StringField("d_guid_id"),
             new EnumField("info_type", [
                 'values' => [
                     self::TYPE_PHONE,
@@ -65,7 +67,9 @@ class ContactInfoTable extends AbstractEntityRelation
                 'primary' => true,
                 'default_value' => 0
             ]),
-            new StringField("value"),
+            new StringField("value", [
+                'primary' => true
+            ]),
             new BooleanField("is_active")
         ], parent::getMap());
     }
@@ -76,8 +80,54 @@ class ContactInfoTable extends AbstractEntityRelation
     protected static function getIndexes()
     {
         return [
+            new Index("idx_guid_id", ["guid_id" => 36]),
             new Index("idx_d_guid_id", ["d_guid_id" => 73]),
             new Index('idx_is_active', ['is_active'])
         ];
+    }
+
+    public static function clearPhone($phone)
+    {
+        return preg_replace("%[^\\d]%", "", $phone);
+    }
+
+    public static function formatPhone($phone)
+    {
+        return preg_replace("%(\d{1})(\d{3})(\d{3})(\d{2})(\d{2})(\d*)%", "+\\1 (\\2) \\3-\\4-\\5 \\6", $phone);
+    }
+
+    public static function getUUID($owner_id, $owner_type, $info_type, $phone_kind, $value)
+    {
+        return Uuid::uuid5(Uuid::NAMESPACE_OID, implode('|', [
+            $owner_id, $owner_type, $info_type, $phone_kind, $value
+        ]))->toString();
+    }
+
+    public static function onBeforeAdd(Event $event)
+    {
+        $result = new EventResult();
+        $fields = $event->getParameter('fields');
+        // set fields with default values
+        foreach (static::getEntity()->getFields() as $field) {
+            if ($field instanceof ScalarField && !array_key_exists($field->getName(), $fields)) {
+                $defaultValue = $field->getDefaultValue();
+
+                if ($defaultValue !== null) {
+                    $fields[$field->getName()] = $field->getDefaultValue();
+                }
+            }
+        }
+
+        $value = ($fields['info_type'] == self::TYPE_PHONE ? self::clearPhone($fields['value']) : $fields['value']);
+        $result->modifyFields([
+            'guid_id' => self::getUUID($fields['owner_id'],
+                $fields['owner_type'],
+                $fields['info_type'],
+                $fields['phone_kind'],
+                $value
+            ),
+            'value' => $value
+        ]);
+        return $result;
     }
 }

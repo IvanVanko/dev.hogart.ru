@@ -1,0 +1,148 @@
+@media screen and (max-width: 767px) {
+}
+@media (min-width: 768px) {
+}
+.order-line .money:after {
+  padding-left: 5px;
+  content: "\20bd";
+}
+.order-line .money-rub:after {
+  padding-left: 5px;
+  content: "\20bd";
+}
+.order-line .money-eur:before {
+  padding-right: 5px;
+  content: "€";
+}
+.order-line .order-item-list-wrapper [data-item-group] {
+  padding-left: 40px;
+}
+.order-line .order-item-list-wrapper [data-item-group] .header-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+.order-line .order-item-list-wrapper [data-item-group] .pre-table-header {
+  position: relative;
+  padding: 10px 0;
+  background-color: #f9f9f9;
+}
+.order-line .order-item-list-wrapper [data-item-group] .pre-table-header .category-name {
+  padding-left: 20px;
+  width: 100%;
+}
+.order-line .order-item-list-wrapper [data-item-group] .pre-table-header .category-name [name="item_group"] {
+  border: none;
+}
+.order-line .order-item-list-wrapper [data-item-group] .pre-table-header:before {
+  content: "";
+  position: absolute;
+  float: left;
+  height: 0;
+  width: 35px;
+  left: -35px;
+  top: 50%;
+  border-bottom: 1px solid rgba(44, 36, 50, 0.7);
+}
+.order-line .order-item-list-wrapper [data-item-group] .pre-table-header:after {
+  content: "\f10c";
+  position: absolute;
+  float: left;
+  left: -40px;
+  font: normal normal normal 14px/1 FontAwesome;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(149, 198, 0, 0.7);
+  background-color: white;
+  z-index: 1;
+}
+.order-line .order-item-list-wrapper [data-item-group] [data-table] {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  font-size: 12px;
+}
+.order-line .order-item-list-wrapper [data-item-group] [data-table] tr th {
+  font-size: .9em;
+}
+.order-line .order-item-list-wrapper [data-item-group] [data-table] tr td {
+  vertical-align: middle;
+}
+.order-line .order-item-list-wrapper [data-item-group] [data-table] tr td.select-checkbox:before,
+.order-line .order-item-list-wrapper [data-item-group] [data-table] tr td.select-checkbox:after {
+  top: 50%;
+  transform: translateY(-50%);
+  margin-top: 0;
+}
+.order-line .order-item-list-wrapper [data-item-group] [data-table] tr td.select-checkbox:after {
+  margin-top: -3px;
+  margin-left: -5px;
+}
+.order-line .order-item-list-wrapper [data-item-group] [data-table] tr td.order-icon {
+  font-size: .9rem;
+  cursor: pointer;
+}
+.order-line .order-item-list-wrapper [data-item-group] [data-table] tr td sup.prev_pos_amount {
+  color: #95c600;
+  top: -0.7em;
+}
+.order-line .order-item-list-wrapper [data-item-group] [data-table] tr td sup.prev_pos_amount:before {
+  content: "+";
+}
+.order-line .order-item-list-wrapper [data-item-group] [data-table] tr td sup.prev_pos_amount + sub {
+  left: -1.55em;
+  bottom: -0.45em;
+}
+.order-line .order-item-list-wrapper [data-item-group] [data-table] tr td sub.negative_amount {
+  color: #d9534f;
+}
+.order-line .order-item-list-wrapper [data-item-group] [data-table] tr td sub.negative_amount:before {
+  content: "\2013";
+}
+.order-line .order-item-list-wrapper [data-item-group] [data-table] tr.selected {
+  background-color: #eeeeee;
+  color: #2c2432;
+}
+.order-line .order-item-list-wrapper [data-item-group] [data-table] tr a {
+  color: #95c600;
+}
+.order-line .order-item-list-wrapper [data-item-group]:before {
+  content: "";
+  display: inline-block;
+  float: left;
+  position: absolute;
+  height: 100%;
+  width: 0;
+  border-left: 1px solid rgba(44, 36, 50, 0.7);
+  top: -15px;
+  left: 20px;
+}
+.menu {
+  border-left: 1px solid #2c2432;
+}
+.menu ul {
+  padding-left: 5px;
+}
+.menu ul li {
+  display: block;
+}
+.menu ul li i {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+.menu ul li:hover i {
+  -webkit-animation-name: headShake;
+  animation-name: headShake;
+}
+.menu ul li a {
+  font-family: "Roboto Condensed", sans-serif;
+}
+.menu ul li a:hover,
+.menu ul li a:active {
+  border-bottom: 1px solid #95c600;
+}
+.menu ul li + li {
+  margin-top: 5px;
+}

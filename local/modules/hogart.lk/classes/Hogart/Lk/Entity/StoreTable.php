@@ -17,4 +17,13 @@ class StoreTable extends BaseClass
         return "CAT_STORE";
     }
 
+    public static function getByXmlId($id)
+    {
+        return self::getList([
+            'filter' => [
+                '=XML_ID' => $id
+            ]
+        ])->fetchAll();
+    }
+
 }

@@ -4,6 +4,56 @@
 
 window.Hogart_Lk = new (function ($) { this.$ = $; })(jQuery);
 
+Hogart_Lk.__proto__.stickMenu = function (node) {
+  var stick = $('[data-stick-block]', node);
+  var parent = stick.parents('[data-stick-parent]');
+  stick.stick_in_parent({
+    offset_top: $('#header-block').outerHeight() + 20,
+    parent: parent
+  });
+  return node;
+};
+
+Hogart_Lk.__proto__.makeLoader = function (node) {
+  var id = "loader_" + Math.random().toString().substr(2);
+  var loader = $('<div class="ajax-loader-wrapper"><div id="' + id + '" data-ajax-loader>' +
+    '<div class="blob blob-0"></div>' +
+    '<div class="blob blob-1"></div>' +
+    '<div class="blob blob-2"></div>' +
+    '<div class="blob blob-3"></div>' +
+    '<div class="blob blob-4"></div>' +
+    '<div class="blob blob-5"></div>' +
+    '</div></div>');
+  if ($(node).data('loader-wrapper')) {
+    node = $(node).data('loader-wrapper');
+  }
+  $(node).addClass('ajax-loading').append(loader);
+
+  return loader;
+};
+
+Hogart_Lk.__proto__.insertToNode = function (url, node) {
+  node = $("#" + node);
+  if (node.length)
+  {
+    var loader = this.makeLoader(node);
+    return BX.ajax.get(url, function(data) {
+      var loader_parent = loader.parent();
+      $(node).empty().append(data);
+      $(node).trigger("hogart.lk.ajaxDataAppend", [node]);
+      loader_parent.removeClass('ajax-loading');
+      loader.remove();
+    });
+  }
+};
+
+Hogart_Lk.__proto__.getAjaxUrl = function (element, ajaxid, url) {
+  var a = document.createElement('a');
+  a.href = url;
+  $(element).trigger('hogart.lk.ajaxurlchange', [a]);
+  return a.href;
+};
+
 Hogart_Lk.__proto__.clone = function (selector, after, context, callback) {
   if (typeof context == "function") {
     callback = context;
@@ -28,13 +78,48 @@ Hogart_Lk.__proto__.clone = function (selector, after, context, callback) {
   }
 };
 
-Hogart_Lk.__proto__.createAjaxObserver = function (selector, callback) {
+Hogart_Lk.__proto__.createAjaxObserver = function (selector, callback, options) {
+  options = $.extend( { childList: true, characterData: true, attributes: true, subtree: true }, options );
   var MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
   var obServer = new MutationObserver(callback);
 
-  $(selector).each ( function () {
-    obServer.observe (this, { childList: true, characterData: true, attributes: true, subtree: true });
+  $(function(){
+    $(selector).each ( function () {
+      obServer.observe (this, options);
+    });
   });
-
   return obServer;
 };
+
+$(function () {
+  $(document).on('hogart.lk.ajaxurlchange', '[data-onchangeurl]', function (e, a) {
+    e.stopPropagation();
+    var _ = {};
+    (new Function('_', $(e.target).data('onchangeurl'))).call(this, _);
+    for (var i in _) {
+      _[i] = _[i].call(this, this);
+      if ($.type(_[i]) == 'object' || $.type(_[i]) == 'array') {
+        $.each(_[i], function (k, v) {
+          a.search += "&" + i + "[" + k + "]=" + v;
+        });
+      } else {
+        a.search += "&" + i + "=" + _[i];
+      }
+    }
+  });
+
+  if (typeof $.notifyDefaults == "function") {
+    $.notifyDefaults({
+      newest_on_top: true,
+      offset: {
+        y: 105,
+        x: 10
+      },
+      animate: {
+        enter: 'animated zoomInRight',
+        exit: 'animated zoomOutUp'
+      }
+    });
+  }
+
+});

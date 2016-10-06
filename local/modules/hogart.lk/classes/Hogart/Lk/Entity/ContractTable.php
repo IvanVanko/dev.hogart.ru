@@ -12,9 +12,13 @@ namespace Hogart\Lk\Entity;
 use Bitrix\Main\Entity\BooleanField;
 use Bitrix\Main\Entity\DateField;
 use Bitrix\Main\Entity\EnumField;
+use Bitrix\Main\Entity\Event;
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ReferenceField;
 use Bitrix\Main\Entity\StringField;
+use Hogart\Lk\Exchange\RabbitMQ\Consumer;
+use Hogart\Lk\Exchange\RabbitMQ\Exchange\ContractExchange;
+use Hogart\Lk\Exchange\SOAP\Request\Contract;
 use Hogart\Lk\Field\GuidField;
 
 /**
@@ -50,9 +54,9 @@ class ContractTable extends AbstractEntity
             ]),
             new GuidField("guid_id"),
             new IntegerField("company_id"),
-            new ReferenceField("company", "CompanyTable", ["=this.company_id" => "ref.id"]),
+            new ReferenceField("company", __NAMESPACE__ . "\\CompanyTable", ["=this.company_id" => "ref.id"]),
             new IntegerField("hogart_company_id"),
-            new ReferenceField("hogart_company", "HogartCompanyTable", ["=this.hogart_company_id" => "ref.id"]),
+            new ReferenceField("hogart_company", __NAMESPACE__ . "\\HogartCompanyTable", ["=this.hogart_company_id" => "ref.id"]),
             new StringField("number"),
             new DateField("start_date"),
             new DateField("end_date"),
@@ -78,30 +82,88 @@ class ContractTable extends AbstractEntity
                 ],
                 'default_value' => self::VAT_18
             ]),
-            new BooleanField("vat_include"),
+            new BooleanField("vat_include", [
+                'default_value' => true
+            ]),
             new BooleanField("is_active")
         ];
     }
 
-    public static function showName($contract = [])
+    /**
+     * @param array $contract
+     * @param bool $with_company_name
+     * @param string $prefix
+     * @return string
+     */
+    public static function showName($contract = [], $with_company_name = false, $prefix = '')
     {
-        if ($contract['accept'])
-            return "Договор №" . $contract["number"] . " от " . $contract["start_date"];
+        if ($contract[$prefix . 'accept'])
+            $name = "Договор №" . $contract[$prefix . "number"] . " от " . $contract[$prefix . "start_date"];
         else
-            return "Договор №<sup>получение</sup> от " . $contract["start_date"];
+            $name = "Договор №<sup>получение</sup> от " . $contract[$prefix . "start_date"];
+
+//        $name .= ", НДС " . ($contract[$prefix . 'vat_include'] ? "включен" : "сверху");
+        $name .= " ({$contract[$prefix . 'currency_code']})";
+        if ($with_company_name) {
+            $company = CompanyTable::getById($contract[$prefix . 'company_id'])->fetch();
+            $company_name = $company[$prefix . 'name'];
+            $name .=<<<HTML
+<span class="footer-text">$company_name</span>
+HTML;
+        }
+
+        return $name;
     }
 
-    public static function showStatus($contract = [])
+    /**
+     * @param array $contract
+     * @param string $prefix
+     * @return string
+     */
+    public static function showStatus($contract = [], $prefix = '')
     {
         $status = "Обрабатывается";
 
-        if ($contract['accept'])
+        if ($contract[$prefix . 'accept'])
             $status = "Подтвержден";
 
-        if ($contract['have_original'])
+        if ($contract[$prefix . 'have_original'])
             $status = "Получены оригиналы";
 
         return $status;
+    }
+
+    /**
+     * @param $account_id
+     * @param $contract_id
+     * @return bool
+     */
+    public static function isAccountContract($account_id, $contract_id)
+    {
+        $relation = ContractTable::getRow([
+            'filter' => [
+                '=id' => $contract_id,
+                '=company.Hogart\Lk\Entity\AccountCompanyRelationTable:company.account.id' => $account_id
+            ]
+        ]);
+        return !empty($relation);
+    }
+
+    /**
+     * @param $account_id
+     * @return array
+     */
+    public static function getByAccountId($account_id)
+    {
+        return self::getList([
+            'filter' => [
+                'company.Hogart\Lk\Entity\AccountCompanyRelationTable:company.account.id' => $account_id
+            ],
+            'select' => [
+                '*',
+                'c_' => 'company'
+            ]
+        ])->fetchAll();
     }
 
     /**
@@ -128,5 +190,29 @@ class ContractTable extends AbstractEntity
             new Index('idx_contract_entity_most', ['company_id', 'hogart_company_id']),
             new Index('idx_is_active', ['is_active']),
         ];
+    }
+
+    public static function getContractForExchange($id)
+    {
+        return self::getList([
+            'filter' => [
+                '=id' => $id
+            ],
+            'select' => [
+                '*',
+                'account_id' => 'company.Hogart\Lk\Entity\AccountCompanyRelationTable:company.account.id',
+                'co_' => 'company',
+                'hco_' => 'hogart_company',
+            ]
+        ])->fetchAll();
+    }
+
+    public static function onAfterAdd(Event $event)
+    {
+        $id = $event->getParameter('id');
+        $fields = $event->getParameter('fields');
+        if (!empty($id) && empty($fields['guid_id'])) {
+            self::publishToRabbit(new ContractExchange(), new Contract(self::getContractForExchange($id)));
+        }
     }
 }

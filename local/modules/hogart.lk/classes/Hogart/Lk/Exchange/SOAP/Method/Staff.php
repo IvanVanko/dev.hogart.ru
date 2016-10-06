@@ -16,6 +16,7 @@ use Hogart\Lk\Exchange\SOAP\MethodException;
 use Hogart\Lk\Exchange\SOAP\Request;
 use Hogart\Lk\Exchange\SOAP\Response;
 use Hogart\Lk\Exchange\SOAP\ResponseObject;
+use Intervention\Image\ImageManagerStatic;
 
 class Staff extends AbstractMethod
 {
@@ -51,14 +52,19 @@ class Staff extends AbstractMethod
         $response = $this->getStaff();
         foreach ($response->return->Staff_Line as $staff) {
             $chief = StaffTable::getByField('guid_id', $staff->Staff_ID_Сhief);
+            if (!empty($staff->Staff_Foto)) {
+                $data = base64_decode($staff->Staff_Foto);
+                $image = ImageManagerStatic::make($data);
+                $staff->Staff_Foto = $image->resize(64, 64)->encode('data-url', 100);
+            }
             $result = StaffTable::createOrUpdateByField([
                 'guid_id' => $staff->Staff_ID,
                 'name' => $staff->Staff_Name,
                 'last_name' => $staff->Staff_Surname,
                 'middle_name' => $staff->Staff_Middle_Name,
                 'chief_id' => $chief['id'] ? : 0,
-                'photo_guid' => $staff->Staff_Foto,
-                'branch' => $staff->Staff_Branch
+                'photo' => (string)$staff->Staff_Foto,
+                'branch' => (int)$staff->Staff_Branch
             ], "guid_id");
             
             if ($result->getErrorCollection()->count()) {
@@ -80,5 +86,4 @@ class Staff extends AbstractMethod
         $this->staffAnswer($answer);
         return count($answer->Response);
     }
-
 }

@@ -28,6 +28,18 @@ abstract class AbstractExchange implements ExchangeInterface
     protected $dependencies = [];
 
     /**
+     * AbstractExchange constructor.
+     * @param Consumer $consumer
+     */
+    public function __construct(Consumer $consumer = null)
+    {
+        if (null !== $consumer) {
+            $this->useConsumer($consumer);
+        }
+    }
+
+
+    /**
      * Получить ключ для публикации сообщения
      * @param string $key Сокращенный ключ
      * @return string
@@ -116,14 +128,32 @@ abstract class AbstractExchange implements ExchangeInterface
                 continue;
             }
             try {
+                $this->consumer->getLogger()->notice("Старт задачи {$message->getRoutingKey()}");
                 $this->runEnvelope($message);
                 $this->queue->ack($message->getDeliveryTag());
                 $this->consumer->getLogger()->notice("Задача {$message->getRoutingKey()} обработана");
             } catch (\Exception $e) {
                 $this->queue->nack($message->getDeliveryTag());
-                $this->consumer->getLogger()->error("Ошибка обработки задачи {$message->getRoutingKey()}: {$e->getMessage()}");
+                $error = "Ошибка обработки задачи {$message->getRoutingKey()}: {$e->getMessage()}\n" . $e->getTraceAsString();
+                $this->consumer->getLogger()->error($error);
             }
         }
+    }
+
+    /**
+     * @param $message
+     * @param $key
+     * @param int $flags
+     * @param array $attributes
+     * @return bool
+     */
+    public function publish($message, $key, $flags = AMQP_NOPARAM, $attributes = [])
+    {
+        $attributes = array_merge([
+            "delivery_mode" => 2,
+            "timestamp" => time()
+        ], $attributes);
+        return $this->exchange->publish($message, $this->getPublishKey($key), $flags, $attributes);
     }
 
     /**

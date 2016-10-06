@@ -1,6 +1,10 @@
 {
     "name": "oldschool/hogart.lk",
     "require": {
-        "marcj/topsort": "^1.0"
+        "marcj/topsort": "^1.0",
+        "ramsey/uuid": "^3.5",
+        "phpoffice/phpexcel": "^1.8",
+        "intervention/image": "^2.3",
+        "liip/process-manager": "^1.0"
     }
 }

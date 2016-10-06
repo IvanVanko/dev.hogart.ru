@@ -8,7 +8,9 @@
 
 namespace Hogart\Lk\Exchange\SOAP\Method;
 
+use Hogart\Lk\Entity\OrderTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
+use Hogart\Lk\Exchange\SOAP\AbstractPutRequest;
 use Hogart\Lk\Exchange\SOAP\Request;
 use Hogart\Lk\Exchange\SOAP\Response;
 
@@ -20,6 +22,17 @@ class Orders extends AbstractMethod
     function getName()
     {
         return "Orders";
+    }
+
+    public function ordersPut(AbstractPutRequest $request)
+    {
+        $response = $this->client->getSoapClient()->OrdersPut($request->__toRequest());
+        foreach ($response->return->Response as $order) {
+            OrderTable::update($order->ID_Site, [
+                'guid_id' => $order->ID
+            ]);
+        }
+        return $response;
     }
 
     /**

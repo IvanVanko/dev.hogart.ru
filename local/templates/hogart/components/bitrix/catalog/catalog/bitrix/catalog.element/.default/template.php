@@ -149,11 +149,11 @@ $collectionComponentId = CAjax::GetComponentID("bitrix:catalog.element", "", "co
                                     $attr_pop = 'data-popup="#popup-msg-product"';
                                 }
                                 ?>
-                                <a id="<?= $arProduct['BUY_URL'] ?>"
-                                   class="buy-btn btn btn-primary <?= $class_pop ?>" <?= $attr_pop ?>
-                                   href="javascript:void(0)" rel="nofollow">
-                                    <i class="fa fa-shopping-cart" aria-hidden="true"></i> Купить
-                                </a>
+                                <?= \Hogart\Lk\Helper\Template\Cart::Link(
+                                    '<i class="fa fa-cart-plus" aria-hidden="true"></i> Купить',
+                                    ['item_id' => $arProduct['ID']],
+                                    'class="buy-btn btn btn-primary ' . $class_pop . ' ' . $attr_pop . '"'
+                                ) ?>
                             </div>
                         </div>
                     <? endif; ?>
@@ -350,11 +350,11 @@ $collectionComponentId = CAjax::GetComponentID("bitrix:catalog.element", "", "co
                                             $attr_pop = 'data-popup="#popup-msg-product"';
                                         }
                                         ?>
-                                        <a id="<?= $arResult['BUY_URL'] ?>"
-                                           class="buy-btn btn btn-primary <?= $class_pop ?>" <?= $attr_pop ?>
-                                           href="javascript:void(0)" rel="nofollow">
-                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i> Купить
-                                        </a>
+                                        <?= \Hogart\Lk\Helper\Template\Cart::Link(
+                                            '<i class="fa fa-cart-plus" aria-hidden="true"></i> Купить',
+                                            ['item_id' => $arResult['ID']],
+                                            'class="buy-btn btn btn-primary ' . $class_pop . ' ' . $attr_pop . '"'
+                                        ) ?>
                                     </div>
                                 <? endif; ?>
                             </div>

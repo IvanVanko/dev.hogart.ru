@@ -34,6 +34,8 @@ abstract class AbstractEntityRelation extends AbstractEntity
     const OWNER_TYPE_STORE = 5;
     /** Владелец - Контактное лицо */
     const OWNER_TYPE_CONTACT = 6;
+    /** Владелец - Заявка на отгрузку */
+    const OWNER_TYPE_ORDER_RTU = 7;
 
     /**
      * Связи, используемые при запросах

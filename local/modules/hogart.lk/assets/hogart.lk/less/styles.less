@@ -1,3 +1,23 @@
+@import (reference) "../../../../../templates/hogart/styles";
+@import "animations";
+
+.money() {
+  .money {
+    &:after {
+      padding-left: 5px;
+      content: "\20bd";
+    }
+    &-rub:after {
+      padding-left: 5px;
+      content: "\20bd";
+    }
+    &-eur:before {
+      padding-right: 5px;
+      content: "€";
+    }
+  }
+}
+
 .center-between {
   display: flex;
   flex-direction: row;
@@ -10,3 +30,62 @@
   align-items: flex-end;
   justify-content: space-between;
 }
+
+.ajax-loading {
+  .ajax-loader-wrapper {
+    content: " ";
+    position: absolute;
+    display: block;
+    top: -10px;
+    bottom: -10px;
+    background-color: rgba(0,0,0,.6);
+    z-index: 100;
+    left:0;
+    right:0;
+    min-height: 100%;
+
+    .row& {
+      margin-left: (@grid-gutter-width / 2);
+      margin-right: (@grid-gutter-width / 2);
+    }
+
+    [data-ajax-loader] {
+      .blob {
+        z-index: 1000;
+        width: 2rem;
+        height: 2rem;
+        background-color: fade(@brand-green, 70%);
+        border-radius: 50%;
+        position: absolute;
+        left: ~"calc(50% - 1rem)";
+        top: ~"calc(50% - 1rem)";
+        box-shadow: 0 0 1rem rgba(255, 255, 255, 0.15);
+      }
+
+      .blob-2 {
+        .animation(animate-to-2 1.5s infinite);
+      }
+
+      .blob-3 {
+        .animation(animate-to-3 1.5s infinite);
+      }
+
+      .blob-1 {
+        .animation(animate-to-1 1.5s infinite);
+      }
+
+      .blob-4 {
+        .animation(animate-to-4 1.5s infinite);
+      }
+
+      .blob-0 {
+        .animation(animate-to-0 1.5s infinite);
+      }
+
+      .blob-5 {
+        .animation(animate-to-5 1.5s infinite);
+      }
+    }
+  }
+}
+

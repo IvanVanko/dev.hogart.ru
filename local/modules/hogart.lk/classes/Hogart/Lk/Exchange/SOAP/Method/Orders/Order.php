@@ -7,6 +7,7 @@
 
 namespace Hogart\Lk\Exchange\SOAP\Method\Orders;
 
+use Bitrix\Main\Type\DateTime;
 use Hogart\Lk\Entity\OrderItemTable;
 use Hogart\Lk\Entity\OrderTable;
 use Hogart\Lk\Entity\StoreTable;
@@ -52,6 +53,10 @@ class Order extends AbstractMethod
             $manager = StaffTable::getByField('guid_id', $order->Order_ID_Staff);
             $account = AccountTable::getByField('user_guid_id', $order->Order_ID_Account);
 
+            if (empty($account['id'])) {
+                $answer->addResponse(new ResponseObject($order->Order_ID, new MethodException(MethodException::ERROR_NO_ACCOUNT, [$order->Order_ID_Account])));
+                continue;
+            }
             if (empty($hogart_company['id'])) {
                 $answer->addResponse(new ResponseObject($order->Order_ID, new MethodException(MethodException::ERROR_NO_HOGART_COMPANY, [$order->Order_ID_Hogart])));
                 continue;
@@ -71,12 +76,10 @@ class Order extends AbstractMethod
 
             $result = OrderTable::createOrUpdateByField([
                 'guid_id' => $order->Order_ID,
-                'company_id' => $client_company['id'],
-                'hogart_company_id' => $hogart_company['id'],
                 'number' => $order->Order_Number,
-                'order_date' =>  new Date((string)$order->Order_Date, 'Y-m-d'),
+                'order_date' =>  new DateTime((string)$order->Order_Date, 'Y-m-d H:i:s'),
                 'contract_id' => $contract['id'],
-                'store_id' => $stock_store['ID'],
+                'store_guid' => $order->Order_ID_Stock,
                 'staff_id' => $manager['id'] ?: 0,
                 'account_id' => $account['id'] ?: 0,
                 'note' => $order->Order_Note,
@@ -86,7 +89,6 @@ class Order extends AbstractMethod
                 'sale_max_money' => $order->Order_Max_Monet_Sale,
                 'perm_bill' => $order->Order_Perm_Bill,
                 'perm_reserve' => $order->Order_Perm_Reserve,
-                'currency_code' => $order->Order_ID_Money,
                 'is_active' => !$order->deletion_mark,
             ], 'guid_id');
 
@@ -103,7 +105,7 @@ class Order extends AbstractMethod
                     $answer->addResponse($response = new ResponseObject($order->Order_ID));
 
                     try {
-                        $this->client->OrderItem->updateOrderItems($order->Order_Items);
+                        $this->client->OrderItem->updateOrderItems($order->Order_Items, $order->Order_ID);
                     } catch (MethodException $e) {
                         $response->setError($e);
                         OrderItemTable::deleteByOrderId($result->getId());

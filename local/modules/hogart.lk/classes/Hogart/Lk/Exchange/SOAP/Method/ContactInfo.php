@@ -58,29 +58,33 @@ class ContactInfo extends AbstractMethod
                 continue;
             }
 
-            $result = ContactInfoTable::createOrUpdateByField([
-                'd_guid_id' => $info->Info_ID,
-                'owner_id' => $owner_id,
-                'owner_type' => intval($info->Info_Owner_Type),
-                'info_type' => $info->Info_Type,
-                'phone_kind' => $info->Info_PhoneKind,
-                'value' => $info->Info_Value,
-                'is_active' => !$info->deletion_mark,
-            ], "d_guid_id");
-
-            if ($result->getErrorCollection()->count()) {
-                $error = $result->getErrorCollection()->current();
-                $answer->addResponse(new ResponseObject($info->Info_ID, new MethodException(MethodException::ERROR_BITRIX, [$error->getMessage(), $error->getCode()])));
-            } else {
-                if ($result->getId()) {
-                    if ($result instanceof UpdateResult) {
-                        $this->client->getLogger()->notice("Обновлена запись Контакта {$result->getId()} ({$info->Info_ID})");
-                    } else {
-                        $this->client->getLogger()->notice("Добавлена запись Контакта {$result->getId()} ({$info->Info_ID})");
-                    }
-                    $answer->addResponse(new ResponseObject($info->Info_ID));
+            $values = explode(',', $info->Info_Value);
+            foreach ($values as $value) {
+                $result = ContactInfoTable::createOrUpdateByField([
+                    'd_guid_id' => $info->Info_ID,
+                    'owner_id' => $owner_id,
+                    'owner_type' => intval($info->Info_Owner_Type),
+                    'info_type' => intval($info->Info_Type),
+                    'phone_kind' => intval($info->Info_PhoneKind),
+                    'value' => (string)trim($value),
+                    'is_active' => !$info->deletion_mark,
+                ], "d_guid_id");
+                if ($result->getErrorCollection()->count()) {
+                    $error = $result->getErrorCollection()->current();
+                    $answer->addResponse(new ResponseObject($info->Info_ID, new MethodException(MethodException::ERROR_BITRIX, [$error->getMessage(), $error->getCode()])));
+                    continue 2;
                 } else {
-                    $answer->addResponse(new ResponseObject($info->Info_ID, new MethodException(MethodException::ERROR_UNDEFINED)));
+                    if ($result->getId()) {
+                        if ($result instanceof UpdateResult) {
+                            $this->client->getLogger()->notice("Обновлена запись Контакта {$result->getId()} ({$info->Info_ID})");
+                        } else {
+                            $this->client->getLogger()->notice("Добавлена запись Контакта {$result->getId()} ({$info->Info_ID})");
+                        }
+                        $answer->addResponse(new ResponseObject($info->Info_ID));
+                    } else {
+                        $answer->addResponse(new ResponseObject($info->Info_ID, new MethodException(MethodException::ERROR_UNDEFINED)));
+                        continue 2;
+                    }
                 }
             }
         }

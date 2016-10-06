@@ -57,7 +57,6 @@ $(function () {
     if (state) {
       var parent = $(this).parents('fieldset');
       var index = $('[name^="payment_account[is_main]"]', parent).index($(this));
-      console.log(index);
       $('[name^="payment_account[is_main]"]', parent).each(function (_, el) {
         if (index != _) {
           $(el).bootstrapSwitch('state', false);

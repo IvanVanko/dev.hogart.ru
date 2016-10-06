@@ -11,6 +11,7 @@ namespace Hogart\Lk\Entity;
 
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ReferenceField;
+use Bitrix\Main\Entity\StringField;
 
 /**
  * Таблица связи контактов с друими таблицами
@@ -33,7 +34,8 @@ class ContactRelationTable extends AbstractEntityRelation
     {
         return array_merge([
             new IntegerField("contact_id", ['primary' => true]),
-            new ReferenceField("contact", "Hogart\\Lk\\Entity\\ContactTable", ["=this.contact_id" => "ref.id"]),
+            new ReferenceField("contact", __NAMESPACE__ . "\\ContactTable", ["=this.contact_id" => "ref.id"]),
+            new StringField("post")
         ], parent::getMap());
     }
 
@@ -57,6 +59,8 @@ class ContactRelationTable extends AbstractEntityRelation
     public static function getContactsByOwner($owner_id, $owner_type)
     {
         $contacts = self::getByOwner($owner_id, $owner_type, [], [
+            '*',
+            'post',
             '' => 'contact',
         ]);
 

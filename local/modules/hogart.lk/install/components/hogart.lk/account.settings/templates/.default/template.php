@@ -11,8 +11,7 @@
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
-//ini_set("xdebug.var_display_max_depth", -1);
-//var_dump($arResult['stores']);
+\Hogart\Lk\Helper\Template\Suggestions::init();
 ?>
 <div class="row">
     <div class="col-sm-12 col-xs-12">
@@ -41,7 +40,7 @@ $this->setFrameMode(true);
                 <div class="col-lg-2 col-sm-3"><strong>Телефоны</strong></div>
                 <div class="col-lg-2 col-sm-3 operations"></div>
             </div>
-            <? $ajax_id = \Hogart\Lk\Helper\Template\Ajax::Start($component, ['edit_contact', 'remove_contact']); ?>
+            <? $contacts_node = \Hogart\Lk\Helper\Template\Ajax::Start($component, ['edit_contact', 'remove_contact']); ?>
             <? foreach ($arResult['account']['contacts'] as $contact): ?>
                 <div class="row vertical-align spacer contact" data-contact-id="<?= $contact['guid_id'] ?>">
                     <? $contact_name = ($contact['last_name'] . " " . $contact['name'] . " " . $contact['middle_name']); ?>
@@ -52,7 +51,7 @@ $this->setFrameMode(true);
                         <div>
                             <? foreach($contact['info'][\Hogart\Lk\Entity\ContactInfoTable::TYPE_PHONE] as $phone): ?>
                                 <div class="phone-number <?= ("type-" . $phone['phone_kind']) ?>">
-                                    <?= $phone['value']; ?>
+                                    <?= \Hogart\Lk\Entity\ContactInfoTable::formatPhone($phone['value']) ?>
                                 </div>
                             <? endforeach; ?>
                         </div>
@@ -63,21 +62,21 @@ $this->setFrameMode(true);
                             <div
                                 <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent(
                                     'contacts-ajax',
-                                    $ajax_id,
+                                    $contacts_node->getId(),
                                     ['edit_contact' => $contact['id']],
                                     \Hogart\Lk\Helper\Template\Ajax::DIALOG_EDIT,
                                     [
                                         'title' => 'Редактирование контакта',
                                         'edit_action' => 'edit-contact',
                                         'edit_object' => $contact,
-                                        'edit_form_file' => __DIR__ . "/forms/contact.php"
+                                        'template_file' => __DIR__ . "/forms/contact.php"
                                     ]
                                 ) ?>
                                 class="btn btn-default btn-xs">
                                 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                             </div>
                             <div 
-                                <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('contacts-ajax', $ajax_id, ['remove_contact' => $contact['id']], \Hogart\Lk\Helper\Template\Ajax::DIALOG_CONFIRMATION, [
+                                <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('contacts-ajax', $contacts_node->getId(), ['remove_contact' => $contact['id']], \Hogart\Lk\Helper\Template\Ajax::DIALOG_CONFIRMATION, [
                                     'title' => 'Подтверждение удаления контактной информации',
                                     'confirmation' => 'Вы действительно хотите удалить контакт "' . $contact_name . '"?'
                                 ]) ?> 
@@ -89,7 +88,7 @@ $this->setFrameMode(true);
                     </div>
                 </div>
             <? endforeach;?>
-            <? \Hogart\Lk\Helper\Template\Ajax::End($component, $ajax_id); ?>
+            <? \Hogart\Lk\Helper\Template\Ajax::End($contacts_node->getId()); ?>
         </div>
         
         <? if ($arResult['account']['is_general']): ?>
@@ -106,21 +105,21 @@ $this->setFrameMode(true);
     <div class="col-sm-12 col-xs-12 stores">
         <h4>Склады для доставки и самовывоза</h4>
         <div id="stores-ajax">
-            <? $ajax_id = \Hogart\Lk\Helper\Template\Ajax::Start($component, ['fav_store', 'remove_store']); ?>
+            <? $stores_node = \Hogart\Lk\Helper\Template\Ajax::Start($component, ['fav_store', 'remove_store']); ?>
             <? foreach ($arResult['account']['stores'] as $store): ?>
                 <div class="row store spacer">
-                    <div class="col-lg-8 col-md-9 col-sm-10 col-xs-10" data-store-id="<?= $store['store_XML_ID'] ?>">
+                    <div class="col-lg-8 col-md-9 col-sm-10 col-xs-10" data-store-id="<?= $store['XML_ID'] ?>">
                         <i
-                            <?= ($store['store_ID'] != $arResult['account']['main_store_id'] ? \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('stores-ajax', $ajax_id, ['fav_store' => $store['store_ID']]) : '') ?>
-                            class="fa fa-star<?= ($store['store_ID'] == $arResult['account']['main_store_id'] ? ' color-green' : '-o') ?>"></i>
-                        <?= $store['store_ADDRESS'] ?>
+                            <?= ($store['store_ID'] != $arResult['account']['main_store_id'] ? \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('stores-ajax', $ajax_id, ['fav_store' => $store['ID']]) : '') ?>
+                            class="fa fa-star<?= ($store['ID'] == $arResult['account']['main_store_id'] ? ' color-green' : '-o') ?>"></i>
+                        <?= $store['ADDRESS'] ?>
                     </div>
                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 operations">
                         <div class="btn-toolbar" role="toolbar">
                             <div
-                                <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('stores-ajax', $ajax_id, ['remove_store' => $store['store_XML_ID']], \Hogart\Lk\Helper\Template\Ajax::DIALOG_CONFIRMATION, [
+                                <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('stores-ajax', $stores_node->getId(), ['remove_store' => $store['XML_ID']], \Hogart\Lk\Helper\Template\Ajax::DIALOG_CONFIRMATION, [
                                     'title' => 'Подтверждение удаления склада',
-                                    'confirmation' => 'Вы действительно хотите удалить склад <br/> "' . ($store['store_TITLE'] . (!empty(trim($store['store_ADDRESS'])) ? (" (" . $store['store_ADDRESS'] . ")") : "")) . '"?'
+                                    'confirmation' => 'Вы действительно хотите удалить склад <br/> "' . ($store['TITLE'] . (!empty(trim($store['ADDRESS'])) ? (" (" . $store['ADDRESS'] . ")") : "")) . '"?'
                                 ]) ?>
                                 class="btn btn-danger btn-xs">
 
@@ -130,7 +129,7 @@ $this->setFrameMode(true);
                     </div>
                 </div>
             <? endforeach;?>
-            <? \Hogart\Lk\Helper\Template\Ajax::End($component, $ajax_id); ?>
+            <? \Hogart\Lk\Helper\Template\Ajax::End($stores_node->getId()); ?>
         </div>
         <? if ($arResult['account']['is_general']): ?>
             <div class="row spacer"></div> <!-- feature -->
@@ -155,16 +154,24 @@ $this->setFrameMode(true);
             <? $name = ($manager['last_name'] . " " . $manager['name'] . " " . $manager['middle_name']); ?>
             <div class="row vertical-align spacer manager" data-manager-id="<?= $manager['guid_id'] ?>">
                 <div class="col-sm-3 col-md-2 col-lg-1 avatar hidden-xs">
-                    <img src="https://secure.gravatar.com/avatar/06ca41201d38c7d60478358f456001ee?s=64" alt="<?= $name ?>">
+                    <? if (!empty($manager['photo'])): ?>
+                    <img src="<?= $manager['photo'] ?>" alt="<?= $name ?>">
+                    <? endif; ?>
                 </div>
                 <div class="col-lg-2 col-sm-3"><strong class="pull-left visible-xs">Имя:</strong> <?= $name ?></div>
-                <div class="col-lg-2 col-sm-3"><strong class="pull-left visible-xs">Email:</strong> <a
-                        href="mailto:<?= ($email = $manager['info'][\Hogart\Lk\Entity\ContactInfoTable::TYPE_EMAIL][0]['value']) ?>"><?= $email ?></a></div>
+                <div class="col-lg-2 col-sm-3"><strong class="pull-left visible-xs">Email:</strong>
+                    <? ($email = $manager['info'][\Hogart\Lk\Entity\ContactInfoTable::TYPE_EMAIL][0]['value']) ?>
+                    <? if (!empty($email)): ?>
+                    <a
+                        href="mailto:<?= ($email = $manager['info'][\Hogart\Lk\Entity\ContactInfoTable::TYPE_EMAIL][0]['value']) ?>"><?= $email ?></a>
+                    <? endif; ?>
+                </div>
+
                 <div class="col-lg-2 col-sm-3"><strong class="pull-left visible-xs">Телефоны:</strong>
                     <div>
                     <? foreach($manager['info'][\Hogart\Lk\Entity\ContactInfoTable::TYPE_PHONE] as $phone): ?>
                         <div class="phone-number <?= ("type-" . $phone['phone_kind']) ?>">
-                            <?= $phone['value']; ?>
+                            <?= \Hogart\Lk\Entity\ContactInfoTable::formatPhone($phone['value']) ?>
                         </div>
                     <? endforeach; ?>
                     </div>

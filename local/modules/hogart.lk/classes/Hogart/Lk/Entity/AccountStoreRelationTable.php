@@ -49,6 +49,23 @@ class AccountStoreRelationTable extends AbstractEntity
     }
 
     /**
+     * @param $account_id
+     * @param $store_guid
+     * @return bool
+     */
+    public static function isAccountStore($account_id, $store_guid)
+    {
+        $row = self::getRow([
+            'filter' => [
+                '=account_id' => $account_id,
+                '=store_guid' => $store_guid
+            ]
+        ]);
+
+        return !empty($row);
+    }
+
+    /**
      * @param int $account_id
      * @return array
      * @throws \Bitrix\Main\ArgumentException
@@ -60,7 +77,7 @@ class AccountStoreRelationTable extends AbstractEntity
                 '=account_id' => $account_id
             ],
             'select' => [
-                'store_' => 'store'
+                '' => 'store'
             ]
         ])->fetchAll();
     }

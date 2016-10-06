@@ -5,7 +5,7 @@
  * At: 03.08.2016 16:36
  */
 
-namespace Hogart\Lk\Exchange\SOAP\Method\OrderDocs;
+namespace Hogart\Lk\Exchange\SOAP\Method;
 
 use Hogart\Lk\Entity\OrderTable;
 use Hogart\Lk\Entity\RTUItemTable;
@@ -14,6 +14,7 @@ use Hogart\Lk\Entity\RTUTable;
 use Bitrix\Main\Type\Date;
 use Bitrix\Main\Entity\UpdateResult;
 use Hogart\Lk\Exchange\SOAP\MethodException;
+use Hogart\Lk\Exchange\SOAP\Request;
 use Hogart\Lk\Exchange\SOAP\Response;
 use Hogart\Lk\Exchange\SOAP\ResponseObject;
 
@@ -31,15 +32,28 @@ class RTU extends AbstractMethod
         return "RTU";
     }
 
+    public function rtuGet()
+    {
+        return $this->client->getSoapClient()->RTUGet(new Request());
+    }
+
+    public function rtuAnswer(Response $response)
+    {
+        if (count($response->Response) && $this->is_answer) {
+            return $this->client->getSoapClient()->RTUAnswer($response);
+        }
+    }
+
     /**
-     * @param $rtus
-     * @param Response $answer
      * @return int
      * @throws \Bitrix\Main\ArgumentException
      */
-    public function updateRTUs($rtus, Response $answer)
+    public function updateRTUs()
     {
-        foreach ($rtus as $rtu) {
+        $answer = new Response();
+        $response = $this->rtuGet();
+
+        foreach ($response->return->RTU as $rtu) {
             $order = OrderTable::getList([
                 'filter'=>[
                     '=guid_id'=>$rtu->Order_ID
@@ -53,11 +67,9 @@ class RTU extends AbstractMethod
             $result = RTUTable::createOrUpdateByField([
                 'guid_id' => $rtu->RTU_ID,
                 'order_id' => $order['id'],
-                'store_guid' => $rtu->warehouse_ID,
                 'number' => $rtu->RTU_Number,
                 'rtu_date' => new Date((string)$rtu->RTU_Date, 'Y-m-d'),
                 'currency_code' => $rtu->RTU_ID_Money,
-                'order_type' => $rtu->Delivery,
                 'is_active' => !$rtu->deletion_mark,
             ], 'guid_id');
 
@@ -85,6 +97,8 @@ class RTU extends AbstractMethod
                 }
             }
         }
+        var_dump($answer);
+//        $this->rtuAnswer($answer);
         return count($answer->Response);
     }
 

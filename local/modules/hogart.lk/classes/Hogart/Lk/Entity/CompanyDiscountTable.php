@@ -39,11 +39,41 @@ class CompanyDiscountTable extends AbstractEntity
                 "autocomplete" => true
             ]),
             new IntegerField("company_id"),
-            new ReferenceField("company", "CompanyTable", ["=this.company_id" => "ref.id"]),
+            new ReferenceField("company", __NAMESPACE__ . "\\CompanyTable", ["=this.company_id" => "ref.id"]),
             new IntegerField("item_id"),
-            new ReferenceField("item", "Bitrix\\Iblock\\ElementTable", ["=this.item_id" => "ref.ID", "=ref.IBLOCK.ID" => new SqlExpression('?i', CATALOG_IBLOCK_ID)]),
+            new ReferenceField("item", "Bitrix\\Iblock\\ElementTable", ["=this.item_id" => "ref.ID", "=ref.IBLOCK_ID" => new SqlExpression('?i', CATALOG_IBLOCK_ID)]),
             new FloatField("discount")
         ];
+    }
+
+    /**
+     * @param $contract_id
+     * @param array $prices
+     * @return array
+     */
+    public static function preparePricesByContract($contract_id, $prices = [])
+    {
+        // ID номенклатуры
+        $id = array_keys($prices);
+        $discounts = array_reduce(self::getList([
+            'filter' => [
+                '=item_id' => $id,
+                '=company.Hogart\Lk\Entity\ContractTable:company.id' => $contract_id
+            ],
+            'select' => [
+                'item_id',
+                'discount'
+            ]
+        ])->fetchAll(), function ($result, $item) { $result[$item['item_id']]['discount'] = $item['discount']; return $result; }, []);
+        foreach ($prices as $id => &$price) {
+            $new_price = round($price * (100 - $discounts[$id]['discount']) / 100, 2);
+            $price = [
+                'discount' => $discounts[$id]['discount'],
+                'price' => $new_price,
+                'discount_amount' => $price - $new_price
+            ];
+        }
+        return $prices;
     }
 
     /**

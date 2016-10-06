@@ -25,6 +25,16 @@ class CompanyExchange extends AbstractExchange
     /**
      * {@inheritDoc}
      */
+    public function getDependencies()
+    {
+        return [
+            __NAMESPACE__ . '\ContactExchange',
+            __NAMESPACE__ . '\HogartCompanyExchange',
+        ];
+    }
+    /**
+     * {@inheritDoc}
+     */
     function getQueueName()
     {
         return "company";

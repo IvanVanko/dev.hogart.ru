@@ -4,12 +4,12 @@
 /** @global CMain $APPLICATION */
 /** @global CUser $USER */
 /** @global CDatabase $DB */
-/** @var CBitrixComponentTemplate $this */
+/** @var \CBitrixComponentTemplate $this */
 /** @var string $templateName */
 /** @var string $templateFile */
 /** @var string $templateFolder */
 /** @var string $componentPath */
-/** @var CBitrixComponent $component */
+/** @var \CBitrixComponent $component */
 /** @ver array $companies */
 $this->setFrameMode(true);
 
@@ -29,7 +29,7 @@ use Hogart\Lk\Entity\ContractTable;
         <form method="post">
             <input type="hidden" name="action" value="change_company">
             <div id="companies-ajax" class="row spacer form-group">
-                <? $ajax_id = \Hogart\Lk\Helper\Template\Ajax::Start($component, ['fav_company']); ?>
+                <? $companies_node = \Hogart\Lk\Helper\Template\Ajax::Start($component, ['fav_company']); ?>
                 <div class="col-sm-10 col-xs-10">
                     <select onchange="this.form.submit();" class="form-control selectpicker" name="cc_id" id="current_company">
                         <? foreach($arResult['companies'] as $company): ?>
@@ -41,13 +41,13 @@ use Hogart\Lk\Entity\ContractTable;
                     <?= Dialog::Link('edit-company-dialog', '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>', 'btn btn-default')?>
 
                     <div
-                        <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('companies-ajax', $ajax_id, ['fav_company' => $arResult['current_company']['id']]) ?>
+                        <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('companies-ajax', $companies_node->getId(), ['fav_company' => $arResult['current_company']['id']]) ?>
                         class="btn btn-<?= ($arResult['current_company']['is_favorite'] ? 'primary' : 'default' ) ?>">
 
                         <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
                     </div>
                 </div>
-                <? \Hogart\Lk\Helper\Template\Ajax::End($component, $ajax_id); ?>
+                <? \Hogart\Lk\Helper\Template\Ajax::End($companies_node->getId()); ?>
             </div>
         </form>
         <div class="row spacer">
@@ -59,7 +59,7 @@ use Hogart\Lk\Entity\ContractTable;
     <? if (count($arResult['current_company']['contracts']) || $arResult['account']['is_general']): ?>
         <div class="col-sm-12 col-xs-12 contracts">
             <div id="contracts-ajax">
-                <? $ajax_id = \Hogart\Lk\Helper\Template\Ajax::Start($component, ['remove_contract']); ?>
+                <? $contracts_node = \Hogart\Lk\Helper\Template\Ajax::Start($component, ['remove_contract']); ?>
                 <div class="row header hidden-xs spacer">
                     <div class="col-lg-3 col-sm-3"><strong>Договор</strong></div>
                     <div class="col-lg-3 col-sm-3"><strong>Статус</strong></div>
@@ -74,7 +74,7 @@ use Hogart\Lk\Entity\ContractTable;
                         <div class="col-lg-2 col-sm-3 operations"></div>
                     </div>
                 <? endforeach;?>
-                <? \Hogart\Lk\Helper\Template\Ajax::End($component, $ajax_id); ?>
+                <? \Hogart\Lk\Helper\Template\Ajax::End($contracts_node->getId()); ?>
             </div>
 
             <? if ($arResult['account']['is_general']): ?>
@@ -90,7 +90,7 @@ use Hogart\Lk\Entity\ContractTable;
     <? if (count($arResult['current_company']['contacts']) || $arResult['account']['is_general']): ?>
         <div class="col-sm-12 col-xs-12 contacts">
             <div id="contacts-ajax">
-                <? $ajax_id = \Hogart\Lk\Helper\Template\Ajax::Start($component, ['edit_contact', 'remove_contact']); ?>
+                <? $contacts_node = \Hogart\Lk\Helper\Template\Ajax::Start($component, ['edit_contact', 'remove_contact']); ?>
                 <div class="row header hidden-xs spacer">
                     <div class="col-lg-3 col-sm-3"><strong>Контактное лицо</strong></div>
                     <div class="col-lg-3 col-sm-3"><strong>Email</strong></div>
@@ -107,7 +107,7 @@ use Hogart\Lk\Entity\ContractTable;
                             <div>
                                 <? foreach($contact['info'][\Hogart\Lk\Entity\ContactInfoTable::TYPE_PHONE] as $phone): ?>
                                     <div class="phone-number <?= ("type-" . $phone['phone_kind']) ?>">
-                                        <?= $phone['value']; ?>
+                                        <?= \Hogart\Lk\Entity\ContactInfoTable::formatPhone($phone['value']) ?>
                                     </div>
                                 <? endforeach; ?>
                             </div>
@@ -118,21 +118,21 @@ use Hogart\Lk\Entity\ContractTable;
                                 <div
                                     <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent(
                                         'contacts-ajax',
-                                        $ajax_id,
+                                        $contacts_node->getId(),
                                         ['edit_contact' => $contact['id']],
                                         \Hogart\Lk\Helper\Template\Ajax::DIALOG_EDIT,
                                         [
                                             'title' => 'Редактирование контакта',
                                             'edit_action' => 'edit-contact',
                                             'edit_object' => $contact,
-                                            'edit_form_file' => __DIR__ . "/forms/contact.php"
+                                            'template_file' => __DIR__ . "/forms/contact.php"
                                         ]
                                     ) ?>
                                     class="btn btn-default btn-xs">
                                     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                 </div>
                                 <div
-                                    <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('contacts-ajax', $ajax_id, ['remove_contact' => $contact['id']], \Hogart\Lk\Helper\Template\Ajax::DIALOG_CONFIRMATION, [
+                                    <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('contacts-ajax', $contacts_node->getId(), ['remove_contact' => $contact['id']], \Hogart\Lk\Helper\Template\Ajax::DIALOG_CONFIRMATION, [
                                         'title' => 'Подтверждение удаления контактного лица',
                                         'confirmation' => 'Вы действительно хотите удалить контакт "' . $contact_name . '"?'
                                     ]) ?>
@@ -144,7 +144,7 @@ use Hogart\Lk\Entity\ContractTable;
                         </div>
                     </div>
                 <? endforeach;?>
-                <? \Hogart\Lk\Helper\Template\Ajax::End($component, $ajax_id); ?>
+                <? \Hogart\Lk\Helper\Template\Ajax::End($contacts_node->getId()); ?>
             </div>
 
             <? if ($arResult['account']['is_general']): ?>
@@ -161,7 +161,7 @@ use Hogart\Lk\Entity\ContractTable;
     <? if (count($delivery_addresses) || $arResult['account']['is_general']): ?>
         <div class="col-sm-12 col-xs-12 addresses">
             <div id="address-ajax">
-                <? $ajax_id = \Hogart\Lk\Helper\Template\Ajax::Start($component, ['edit_address', 'remove_address']); ?>
+                <? $address_node = \Hogart\Lk\Helper\Template\Ajax::Start($component, ['edit_address', 'remove_address']); ?>
                 <div class="row header hidden-xs spacer">
                     <div class="col-lg-8 col-sm-9"><strong>Адрес</strong></div>
                     <div class="col-lg-2 col-sm-3 operations"></div>
@@ -175,14 +175,14 @@ use Hogart\Lk\Entity\ContractTable;
                                 <div
                                     <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent(
                                         'contacts-ajax',
-                                        $ajax_id,
+                                        $address_node->getId(),
                                         ['edit_contact' => $address['id']],
                                         \Hogart\Lk\Helper\Template\Ajax::DIALOG_EDIT,
                                         [
                                             'title' => 'Редактирование адреса',
                                             'edit_action' => 'edit-address',
                                             'edit_object' => $address,
-                                            'edit_form_file' => __DIR__ . "/forms/address.php",
+                                            'template_vars' => __DIR__ . "/forms/address.php",
                                             'dialog_event_opening' => 'openingAddressEdit'
                                         ]
                                     ) ?>
@@ -190,7 +190,7 @@ use Hogart\Lk\Entity\ContractTable;
                                     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                 </div>
                                 <div
-                                    <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('address-ajax', $ajax_id, ['remove_address' => $address['fias_code']], \Hogart\Lk\Helper\Template\Ajax::DIALOG_CONFIRMATION, [
+                                    <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('address-ajax', $address_node->getId(), ['remove_address' => $address['fias_code']], \Hogart\Lk\Helper\Template\Ajax::DIALOG_CONFIRMATION, [
                                         'title' => 'Подтверждение удаления адреса доставки',
                                         'confirmation' => 'Вы действительно хотите удалить адрес "' . $address['value'] . '"?'
                                     ]) ?>
@@ -202,7 +202,7 @@ use Hogart\Lk\Entity\ContractTable;
                         </div>
                     </div>
                 <? endforeach;?>
-                <? \Hogart\Lk\Helper\Template\Ajax::End($component, $ajax_id); ?>
+                <? \Hogart\Lk\Helper\Template\Ajax::End($address_node->getId()); ?>
             </div>
 
             <? if ($arResult['account']['is_general']): ?>

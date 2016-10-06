@@ -31,19 +31,32 @@ class OrderItem extends AbstractMethod
 
 
     /**
-     * @param $orderItems
+     * @param array $orderItems
+     * @param string $orderGuid
      * @return int
      */
-    public function updateOrderItems($orderItems)
+    public function updateOrderItems($orderItems, $orderGuid)
     {
-        $order = null;
-        foreach ($orderItems as $k => $orderItem) {
-            if (null === $order) {
-                $order = OrderTable::getByField('guid_id', $orderItem->Order_ID);
-                if (!isset($order)) {
-                    throw new MethodException(MethodException::ERROR_NO_ORDER, [$orderItem->Order_ID]);
-                }
+        $order = OrderTable::getByField('guid_id', $orderGuid);
+
+        if (null === $order) {
+            if (!isset($order)) {
+                throw new MethodException(MethodException::ERROR_NO_ORDER, [$orderGuid]);
             }
+        }
+        // Выбираем текущие записи заказа, чтобы их по порядку заменить,
+        // т.к. нет уникального общего ID в двух системах
+        $existing_items = OrderItemTable::getList([
+            'filter' => [
+                '=order_id' => $order['id']
+            ],
+            'order' => [
+                'string_number' => 'ASC'
+            ]
+        ])->fetchAll();
+
+        foreach ($orderItems as $k => $orderItem) {
+
             $item = ElementTable::getList([
                 'filter'=>[
                     '=XML_ID' => $orderItem->ID_Item,
@@ -51,27 +64,27 @@ class OrderItem extends AbstractMethod
                 ]
             ])->fetch();
             if (!isset($item)) {
-                $n = $k + 1;
-                throw new MethodException(MethodException::ERROR_NO_ITEM, [$orderItem->Order_ID, $n]);
+                throw new MethodException(MethodException::ERROR_NO_ITEM, [$orderItem->Order_ID, $orderItem->Order_Line_Number]);
             }
             $data = [
-                'd_guid_id' => $orderItem->Order_Item_ID,
+//                'd_guid_id' => $orderItem->Order_Item_ID,
                 'order_id' => $order['id'],
                 'string_number' => $orderItem->Order_Line_Number,
-                'item_id' => $item['id'],
-                'acu' => $orderItem->Item_Article ?: '',
-                'name' => $orderItem->Item_Name,
+                'item_id' => $item['ID'],
                 'count' => $orderItem->Count,
-                'cost' => $orderItem->Cost,
-                'discount' => $orderItem->Discount,
-                'discount_cost' => $orderItem->Cost_Disc,
-                'total' => $orderItem->Summ,
-                'total_vat' => $orderItem->Sum_VAL,
+                'price' => $orderItem->Cost,
+                'discount' => floatval($orderItem->Discount),
+                'discount_price' => floatval($orderItem->Cost_Disc),
+                'total' => floatval($orderItem->Summ),
+                'total_vat' => floatval($orderItem->Sum_VAL),
                 'status' => (int)$orderItem->Status_Item,
-                'delivery_time' => $orderItem->Delivery_Time,
-                'group' => $orderItem->Group,
+                'delivery_time' => intval($orderItem->Delivery_Time),
+                'item_group' => $orderItem->Group,
             ];
-            $result = OrderItemTable::createOrUpdateByField($data, 'd_guid_id');
+            if (($existing_item = array_shift($existing_items))) {
+                $data['id'] = $existing_item['id'];
+            }
+            $result = OrderItemTable::createOrUpdateByField($data, 'id');
 
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
@@ -86,6 +99,12 @@ class OrderItem extends AbstractMethod
                 } else {
                     throw new MethodException(MethodException::ERROR_UNDEFINED);
                 }
+            }
+        }
+        // Удаляем лишние записи в обновленном заказе
+        if (!empty($existing_items)) {
+            foreach ($existing_items as $existing_item) {
+                OrderItemTable::delete($existing_item['id']);
             }
         }
         return true;

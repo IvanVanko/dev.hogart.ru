@@ -16,6 +16,9 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
 
 CModule::IncludeModule("hogart.lk");
 
+$lock = new \Liip\ProcessManager\PidFile(new \Liip\ProcessManager\ProcessManager(), __DIR__ . "/consumer.pid");
+$lock->acquireLock();
+
 $consumer = \Hogart\Lk\Exchange\RabbitMQ\Consumer::getInstance();
 $consumer->registerLogger(new \Hogart\Lk\Logger\FileLogger(__DIR__ . "/../logs/rabbitmq.log"));
 
@@ -24,15 +27,20 @@ $consumer->registerExchange([
     new \Hogart\Lk\Exchange\RabbitMQ\Exchange\AddressExchange(),
     new \Hogart\Lk\Exchange\RabbitMQ\Exchange\CompanyExchange(),
     new \Hogart\Lk\Exchange\RabbitMQ\Exchange\CompanyDiscountExchange(),
+    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\ContactExchange(),
+    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\ContactInfoExchange(),
     new \Hogart\Lk\Exchange\RabbitMQ\Exchange\ContractExchange(),
     new \Hogart\Lk\Exchange\RabbitMQ\Exchange\HogartCompanyExchange(),
     new \Hogart\Lk\Exchange\RabbitMQ\Exchange\OrderDocsExchange(),
     new \Hogart\Lk\Exchange\RabbitMQ\Exchange\OrderExchange(),
     new \Hogart\Lk\Exchange\RabbitMQ\Exchange\PaymentAccountExchange(),
     new \Hogart\Lk\Exchange\RabbitMQ\Exchange\StaffExchange(),
+    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\CurrencyRateExchange(),
 ]);
 
-$consumer->run();
+while (true) {
+    $consumer->setIsCliContext(true)->run();
+}
 
+$lock->releaseLock();
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/epilog_after.php");
-

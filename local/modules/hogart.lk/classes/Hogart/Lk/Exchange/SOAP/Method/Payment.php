@@ -5,51 +5,70 @@
  * At: 03.08.2016 22:40
  */
 
-namespace Hogart\Lk\Exchange\SOAP\Method\OrderDocs;
+namespace Hogart\Lk\Exchange\SOAP\Method;
 
 use Bitrix\Main\Type\Date;
+use Bitrix\Main\Type\DateTime;
 use Hogart\Lk\Entity\OrderPaymentTable;
 use Hogart\Lk\Entity\OrderTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
 use Bitrix\Main\Entity\UpdateResult;
 use Hogart\Lk\Exchange\SOAP\MethodException;
+use Hogart\Lk\Exchange\SOAP\Request;
 use Hogart\Lk\Exchange\SOAP\Response;
 use Hogart\Lk\Exchange\SOAP\ResponseObject;
 
-class OrderPayment extends AbstractMethod
+class Payment extends AbstractMethod
 {
     /**
      * {@inheritDoc}
      */
     function getName()
     {
-        return "OrderPayment";
+        return "Payment";
+    }
+
+    public function paymentsGet()
+    {
+        return $this->client->getSoapClient()->PaymentsGet(new Request());
+    }
+
+    public function paymentsAnswer(Response $response)
+    {
+        if (count($response->Response) && $this->is_answer) {
+            return $this->client->getSoapClient()->PaymentsAnswer($response);
+        }
     }
 
     /**
-     * @param $payments
-     * @param Response $answer
      * @return int
      * @throws \Bitrix\Main\ArgumentException
      */
-    public function updateOrderPayments($payments, Response $answer)
+    public function updatePayments()
     {
-        foreach ($payments as $order_payment) {
+        $answer = new Response();
+        $response = $this->paymentsGet();
+        foreach ($response->return->Payment as $order_payment) {
             $order = OrderTable::getList([
                 'filter'=>[
                     '=guid_id'=>$order_payment->Order_ID
                 ]
             ])->fetch();
 
+            if (empty($order['id'])) {
+                $answer->addResponse(new ResponseObject($order_payment->Payment_ID, new MethodException(MethodException::ERROR_NO_ORDER, [$order_payment->Order_ID])));
+                continue;
+            }
+
             // данные по Расчетному счету
             $result = OrderPaymentTable::createOrUpdateByField([
                 'guid_id' => $order_payment->Payment_ID,
                 'order_id' => $order['id'],
-                'payment_date' => new Date($order_payment->Payment_Date, 'Y-m-d'),
-                'number' => $order_payment->Payment_Number,
+                'payment_date' => new DateTime($order_payment->Payment_Date, 'Y-m-d H:i:s'),
+                'number' => (string)$order_payment->Payment_Number,
                 'form' => intval($order_payment->Form),
                 'direction' => intval($order_payment->Moving_Direction),
-                'total' => $order_payment->Sum,
+                'total' => floatval($order_payment->Sum),
                 'currency_code' => $order_payment->Payment_ID_Money,
                 'is_active' => !$order_payment->deletion_mark
             ], 'guid_id');
@@ -70,6 +89,7 @@ class OrderPayment extends AbstractMethod
                 }
             }
         }
+//        $this->paymentsAnswer($answer);
         return count($answer->Response);
     }
 

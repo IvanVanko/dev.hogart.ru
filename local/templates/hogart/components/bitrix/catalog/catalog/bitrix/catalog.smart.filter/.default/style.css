@@ -242,6 +242,10 @@ a.bx-filter .btn-more.disabled,
 fieldset[disabled] a.bx-filter .btn-more {
   pointer-events: none;
 }
+.bx-filter .btn-more .label {
+  position: relative;
+  top: -1px;
+}
 .bx-filter-parameters-box-container[data-code]:before,
 .bx-filter-parameters-box-container[data-code]:after {
   content: " ";

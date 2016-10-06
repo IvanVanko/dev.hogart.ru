@@ -41,7 +41,7 @@ class RTUItemTable extends AbstractEntity
             new ReferenceField("rtu", "RTUTable", ["=this.order_id" => "ref.id"]),
 
             new IntegerField("item_id"),
-            new ReferenceField("item", "Bitrix\\Iblock\\ElementTable", ["=this.item_id" => "ref.ID", "=ref.IBLOCK.ID" => new SqlExpression('?i', CATALOG_IBLOCK_ID)]),
+            new ReferenceField("item", "Bitrix\\Iblock\\ElementTable", ["=this.item_id" => "ref.ID", "=ref.IBLOCK_ID" => new SqlExpression('?i', CATALOG_IBLOCK_ID)]),
 
             new IntegerField("count"),
             new FloatField("cost"),
@@ -49,9 +49,7 @@ class RTUItemTable extends AbstractEntity
             new FloatField("discount_cost"),
             new FloatField("total"),
             new FloatField("total_vat"),
-
-            new DateField("shipping_date"),
-            new StringField("group")
+            new StringField("item_group")
         ];
     }
 
@@ -64,6 +62,15 @@ class RTUItemTable extends AbstractEntity
             new Index('idx_d_guid_id', ['d_guid_id' => 73]),
             new Index('idx_rtu_item_entity_most', ['rtu_id', 'item_id']),
         ];
+    }
+
+    public static function getByRtu($rtu_id)
+    {
+        return self::getList([
+            'filter' => [
+                '=rtu_id' => $rtu_id
+            ]
+        ])->fetchAll();
     }
 
     public static function deleteByRTUId($id)

@@ -12,6 +12,7 @@ namespace Hogart\Lk\Entity;
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ReferenceField;
 use Bitrix\Main\Entity\StringField;
+use Bitrix\Main\Entity\TextField;
 use Hogart\Lk\Field\GuidField;
 
 class StaffTable extends AbstractEntity
@@ -40,7 +41,7 @@ class StaffTable extends AbstractEntity
             new StringField("middle_name"),
             new IntegerField("chief_id"),
             new ReferenceField("chief", "StaffTable", ["=this.chief_id" => "ref.id"]),
-            new GuidField("photo_guid"),
+            new TextField("photo"),
             new ReferenceField("photo", "Bitrix\\Iblock\\ElementTable", ["=this.photo_guid" => "ref.XML_ID"]),
             new IntegerField("branch")
         ];

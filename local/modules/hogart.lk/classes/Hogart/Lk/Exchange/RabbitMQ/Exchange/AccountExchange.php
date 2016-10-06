@@ -30,8 +30,9 @@ class AccountExchange extends AbstractExchange
     public function getDependencies()
     {
         return [
-            __NAMESPACE__ . '\StaffExchange',
+            __NAMESPACE__ . '\ContactExchange',
             __NAMESPACE__ . '\CompanyExchange',
+            __NAMESPACE__ . '\StaffExchange',
         ];
     }
 

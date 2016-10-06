@@ -16,11 +16,13 @@ use Hogart\Lk\Exchange\SOAP\Method\CompanyDiscount;
 use Hogart\Lk\Exchange\SOAP\Method\Contact;
 use Hogart\Lk\Exchange\SOAP\Method\Contract;
 use Hogart\Lk\Exchange\SOAP\Method\ContactInfo;
+use Hogart\Lk\Exchange\SOAP\Method\CurrencyRate;
 use Hogart\Lk\Exchange\SOAP\Method\HogartCompany;
+use Hogart\Lk\Exchange\SOAP\Method\OrderRTU;
 use Hogart\Lk\Exchange\SOAP\Method\Orders\Order;
 use Hogart\Lk\Exchange\SOAP\Method\Orders\OrderItem;
 use Hogart\Lk\Exchange\SOAP\Method\OrderDocs;
-use Hogart\Lk\Exchange\SOAP\Method\OrderDocs\OrderPayment;
+use Hogart\Lk\Exchange\SOAP\Method\Payment;
 use Hogart\Lk\Exchange\SOAP\Method\Staff;
 use Hogart\Lk\Exchange\SOAP\Method\Company;
 use Hogart\Lk\Exchange\SOAP\Method\PaymentAccount;
@@ -28,8 +30,8 @@ use Hogart\Lk\Exchange\SOAP\Method\Orders;
 use Hogart\Lk\Logger\BitrixLogger;
 use Hogart\Lk\Logger\LoggerCollection;
 use Hogart\Lk\Logger\LoggerInterface;
-use Hogart\Lk\Exchange\SOAP\Method\OrderDocs\RTU;
-use Hogart\Lk\Exchange\SOAP\Method\OrderDocs\RTUItem;
+use Hogart\Lk\Exchange\SOAP\Method\RTU;
+use Hogart\Lk\Exchange\SOAP\Method\RTUItem;
 
 /**
  * Class Client
@@ -47,11 +49,12 @@ use Hogart\Lk\Exchange\SOAP\Method\OrderDocs\RTUItem;
  * @property CompanyDiscount $CompanyDiscount [+ъ test
  * @property RTU $RTU [-] test
  * @property RTUItem $RTUItem [-] test
- * @property OrderPayment $OrderPayment [-] test
- * @property OrderDocs $OrderDocs [-] test
+ * @property Payment $Payment [-] test
  * @property Orders $Orders [+] test
+ * @property OrderRTU $OrderRTU
  * @property Order $Order [+] test
  * @property OrderItem $OrderItem [+] test
+ * @property CurrencyRate $CurrencyRate
  */
 class Client
 {
@@ -154,13 +157,14 @@ class Client
         $this->registerMethod(new Contract());
         $this->registerMethod(new PaymentAccount());
         $this->registerMethod(new CompanyDiscount());
-        $this->registerMethod(new OrderDocs());
         $this->registerMethod(new RTU());
         $this->registerMethod(new RTUItem());
-        $this->registerMethod(new OrderPayment());
+        $this->registerMethod(new Payment());
         $this->registerMethod(new Orders());
         $this->registerMethod(new Order());
+        $this->registerMethod(new OrderRTU());
         $this->registerMethod(new OrderItem());
+        $this->registerMethod(new CurrencyRate());
     }
 
     /**

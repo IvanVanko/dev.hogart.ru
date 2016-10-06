@@ -1,0 +1,33 @@
+@import (reference) "../../../../../../assets/hogart.lk/less/styles";
+
+.order-list {
+  .pagination {
+    padding: 0;
+  }
+  .delimiter {
+    border-bottom: 1px solid;
+  }
+  .order-line {
+    display: block;
+    a {
+      .title {
+        border-bottom: 1px dashed @brand-green;
+      }
+    }
+    //.animation-duration(1s);
+    //.animation-fill-mode(both);
+    &:hover {
+      //.animation-name(headShake);
+    }
+    .money {
+      &:after {
+        padding-left: 5px;
+        content: "\20bd";
+      }
+      &-eur:before {
+        padding-right: 5px;
+        content: "€";
+      }
+    }
+  }
+}

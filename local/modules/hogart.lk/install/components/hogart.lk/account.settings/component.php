@@ -9,6 +9,13 @@
  * @global CMain $APPLICATION
  * @global CUser $USER
  */
+if (!CModule::IncludeModule("hogart.lk")) {
+    $this->abortResultCache();
+    ShowError("Не установлен модуль \"Модуль личного кабинета компании Хогарт\"");
+    return;
+}
+
+use Hogart\Lk\Helper\Template\FlashError;
 use Hogart\Lk\Logger\BitrixLogger;
 use Hogart\Lk\Entity\AccountTable;
 use Hogart\Lk\Entity\AccountStoreRelationTable;
@@ -21,17 +28,11 @@ if (!$this->initComponentTemplate())
 
 global $USER, $CACHE_MANAGER;
 $account = AccountTable::getAccountByUserID($USER->GetID());
-$logger = (new BitrixLogger($this->getName(), BitrixLogger::STACK_FULL));
+$logger = (new BitrixLogger($this->getName()));
 
 include (__DIR__ . "/proceed_request.php");
 
-if ($this->startResultCache()) {
-    if (!CModule::IncludeModule("hogart.lk")) {
-        $this->abortResultCache();
-        ShowError("Не установлен модуль \"Модуль личного кабинета компании Хогарт\"");
-        return;
-    }
-
+if ($account['id']) {
     $account['stores'] = AccountStoreRelationTable::getByAccountId($account['id']);
     $account['contacts'] = ContactRelationTable::getAccountContacts($account['id']);
     $account['managers'] = StaffRelationTable::getManagersByAccountId($account['id']);
@@ -51,14 +52,8 @@ if ($this->startResultCache()) {
         unset($arResult['av_stores'][$store['store_ID']]);
     }
     
-    if (defined("BX_COMP_MANAGED_CACHE"))
-    {
-        $CACHE_MANAGER->StartTagCache($this->getCachePath());
-        $CACHE_MANAGER->RegisterTag("hogart_lk_account_" . $account['id']);
-        $CACHE_MANAGER->EndTagCache();
-    }
-    
     $this->includeComponentTemplate();
-
-    return $account['id'];
+} else {
+    new FlashError("У Вас нет доступа в данный раздел");
+    LocalRedirect("/");
 }

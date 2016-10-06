@@ -13,6 +13,7 @@ use Bitrix\Main\UserTable;
 use Hogart\Lk\Entity\AccountCompanyRelationTable;
 use Hogart\Lk\Entity\AccountTable;
 use Hogart\Lk\Entity\AccountStoreRelationTable;
+use Hogart\Lk\Entity\CompanyTable;
 use Hogart\Lk\Entity\ContactTable;
 use Hogart\Lk\Entity\StaffRelationTable;
 use Hogart\Lk\Entity\StaffTable;
@@ -143,7 +144,7 @@ class Account extends AbstractMethod
                 }
 
                 foreach ($accountInfo->Acc_Companies as $acc_Company) {
-                    $company = StaffTable::getByField('guid_id', $acc_Company);
+                    $company = CompanyTable::getByField('guid_id', $acc_Company);
                     if (!empty($company['id'])) {
                         AccountCompanyRelationTable::replace([
                             'account_id' => $result->getId(),

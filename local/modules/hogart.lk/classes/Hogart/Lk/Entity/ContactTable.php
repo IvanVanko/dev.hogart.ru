@@ -16,6 +16,8 @@ use Bitrix\Main\Entity\Event;
 use Bitrix\Main\Entity\EventResult;
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\StringField;
+use Hogart\Lk\Exchange\RabbitMQ\Exchange\ContactExchange;
+use Hogart\Lk\Exchange\SOAP\Request\Contact;
 use Hogart\Lk\Field\GuidField;
 use Hogart\Lk\Field\HashSum;
 
@@ -23,7 +25,7 @@ use Hogart\Lk\Field\HashSum;
  * Таблица Контактов
  * @package Hogart\Lk\Entity
  */
-class ContactTable extends AbstractEntity
+class ContactTable extends AbstractEntity implements IExchangeable
 {
     /**
      * {@inheritDoc}
@@ -66,6 +68,30 @@ class ContactTable extends AbstractEntity
         ];
     }
 
+    public static function getFio($contact, $prefix = '')
+    {
+        return implode(' ', [
+            $contact[$prefix . 'last_name'],
+            $contact[$prefix . 'name'],
+            $contact[$prefix . 'middle_name']
+        ]);
+    }
+
+
+    public static function putTo1c($primary)
+    {
+        $contacts = self::getList([
+            'filter' => [
+                '=id' => $primary
+            ],
+            'select' => [
+                '*',
+                'a_' => __NAMESPACE__ . '\ContactRelationTable:contact.account'
+            ]
+        ])->fetchAll();
+        self::publishToRabbit(new ContactExchange(), new Contact($contacts));
+    }
+
     public static function onBeforeAdd(Event $event)
     {
         $fields = $event->getParameter("fields");
@@ -78,5 +104,15 @@ class ContactTable extends AbstractEntity
             ]))
         ]);
         return $result;
+    }
+
+    public static function onAfterAdd(Event $event)
+    {
+        self::putTo1c($event->getParameter('id'));
+    }
+
+    public static function onAfterUpdate(Event $event)
+    {
+        self::putTo1c($event->getParameter('id')['id']);
     }
 }

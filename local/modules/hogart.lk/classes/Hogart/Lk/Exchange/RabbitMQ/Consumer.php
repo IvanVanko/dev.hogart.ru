@@ -32,6 +32,8 @@ class Consumer
     protected $exchanges = [];
     /** @var LoggerCollection  */
     protected $logger;
+    /** @var bool  */
+    protected $is_cli_context = false;
 
     /**
      * Consumer constructor.
@@ -138,9 +140,31 @@ class Consumer
             $sorter->add(get_class($exchange), $exchange->getDependencies());
         }
         $dependencies = array_values($sorter->sort());
-        $this->exchanges = array_combine($dependencies, array_values($this->exchanges));
+        $sort = [];
+        foreach ($dependencies as $dependency) {
+            $sort[$dependency] = $this->exchanges[$dependency];
+        }
+        $this->exchanges = $sort;
 
         return $this->exchanges;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isIsCliContext()
+    {
+        return $this->is_cli_context;
+    }
+
+    /**
+     * @param boolean $is_cli_context
+     * @return $this
+     */
+    public function setIsCliContext($is_cli_context)
+    {
+        $this->is_cli_context = $is_cli_context;
+        return $this;
     }
 
     /**

@@ -14,6 +14,7 @@ use Hogart\Lk\Entity\AbstractEntity;
 use Hogart\Lk\Entity\AddressTable;
 use Hogart\Lk\Entity\AddressTypeTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
+use Hogart\Lk\Exchange\SOAP\AbstractPutRequest;
 use Hogart\Lk\Exchange\SOAP\Method\Address\ResponseObject;
 use Hogart\Lk\Exchange\SOAP\MethodException;
 use Hogart\Lk\Exchange\SOAP\Request;
@@ -37,8 +38,16 @@ class Address extends AbstractMethod
     public function addressAnswer(Response $response)
     {
         if (count($response->Response) && $this->is_answer) {
-            return $this->client->getSoapClient()->AddressAnswer($response);
+            return $this->client->getSoapClient()->AddressesAnswer($response);
         }
+    }
+
+    public function addressPut(AbstractPutRequest $request)
+    {
+        var_dump($request->__toRequest());
+        exit;
+        $response = $this->client->getSoapClient()->AddressesPut($request->__toRequest());
+        return $response;
     }
 
     public function updateAddresses()
@@ -52,7 +61,7 @@ class Address extends AbstractMethod
                 'name' => $address_type->Name
             ];
             $res = AddressTypeTable::createOrUpdateByField($data, 'guid_id');
-            $types[$address_type->ID] = $res->getId();
+            $types[$address_type->ID] = $res->getPrimary()['guid_id'];
         }
         $this->client->getLogger()->debug("AddressesGet: получено " . count($result->return->Address) . " записей");
         foreach ($result->return->Address as $address) {
@@ -65,14 +74,14 @@ class Address extends AbstractMethod
                 'owner_id' => $owner_id,
                 'owner_type' => $address->Adr_Owner_Type,
                 'type_id' => $types[$address->Adr_ID_Address_Type],
-                'postal_code' => $address->Adr_ID_Index,
-                'region' => $address->Adr_Region,
-                'city' => $address->Adr_City,
-                'street' => $address->Adr_Street,
-                'house' => $address->Adr_House,
-                'building' => $address->Adr_Building,
-                'flat' => $address->Adr_Flat,
-                'kladr_code' => $address->Adr_Kod_KLADR,
+                'postal_code' => (string)$address->Adr_ID_Index,
+                'region' => (string)$address->Adr_Region,
+                'city' => (string)$address->Adr_City,
+                'street' => (string)$address->Adr_Street,
+                'house' => (string)$address->Adr_House,
+                'building' => (string)$address->Adr_Building,
+                'flat' => (string)$address->Adr_Flat,
+                'kladr_code' => (string)$address->Adr_Kod_KLADR,
                 'is_active' => !$address->deletion_mark
             ];
             $result = AddressTable::replace($data);

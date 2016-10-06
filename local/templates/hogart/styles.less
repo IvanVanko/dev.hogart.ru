@@ -7,6 +7,10 @@ h1, h2, h3, h4, h5, h6,
   margin-top: (@line-height-computed / 2);
 }
 
+[data-notify="container"] {
+  z-index: 3001 !important;
+}
+
 .placeholder() {
   color:#eeeeee;
   font-style: italic;
@@ -144,9 +148,19 @@ body {
       align-items: center;
     }
   }
-  &.spacer {
+  &:not(.hidden).spacer {
     + .row {
       margin-top: 10px;
+    }
+    &-20 {
+      + .row {
+        margin-top: 20px;
+      }
+    }
+    &-40 {
+      + .row {
+        margin-top: 40px;
+      }
     }
   }
 }
@@ -256,6 +270,10 @@ a[data-toggle="collapse"] {
       text-align: center;
     }
   }
+}
+
+.full-height {
+  min-height: calc(~"100vh - 215px") !important;
 }
 
 .aside {

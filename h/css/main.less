@@ -810,6 +810,17 @@ textarea {
   }
 }
 
+.header-cnt .header-nav .cart {
+  text-align: center;
+  height: 55px;
+  float: right;
+  width: 55px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
 .header-cnt .header-nav ul {
   width: 90%;
   display: table;
@@ -2333,11 +2344,11 @@ blockquote:before {
     background-size: 15px 13px;
   }
 }
-.date * {
+.date:not(.input-group) * {
   font-family: 'Roboto Condensed', sans-serif !important;
   font-weight: normal !important;
 }
-.date span {
+.date:not(.input-group) span {
   font-size: 40px !important;
   position: relative !important;
   top: 4px !important;
@@ -2348,11 +2359,11 @@ blockquote:before {
   -o-transform: rotate(2deg) !important;
   transform: rotate(2deg) !important;
 }
-.date sup {
+.date:not(.input-group) sup {
   font-size: 25px !important;
   line-height: 17px !important;
 }
-.date sub {
+.date:not(.input-group) sub {
   font-size: 12px !important;
   line-height: 17px !important;
 }

@@ -295,6 +295,10 @@ a.btn-more.disabled,
 fieldset[disabled] a.btn-more {
   pointer-events: none;
 }
+.btn-more .label {
+  position: relative;
+  top: -1px;
+}
 h1,
 h2,
 h3,
@@ -313,6 +317,9 @@ h6,
 .sections-list a {
   font-family: "Roboto Condensed", sans-serif;
   margin-top: 10px;
+}
+[data-notify="container"] {
+  z-index: 3001 !important;
 }
 ::-webkit-input-placeholder {
   color: #eeeeee;
@@ -440,8 +447,14 @@ body.loading * {
   display: flex;
   align-items: center;
 }
-.row.spacer + .row {
+.row:not(.hidden).spacer + .row {
   margin-top: 10px;
+}
+.row:not(.hidden).spacer-20 + .row {
+  margin-top: 20px;
+}
+.row:not(.hidden).spacer-40 + .row {
+  margin-top: 40px;
 }
 .collapse.in + a[data-toggle="collapse"] {
   display: none;
@@ -592,6 +605,9 @@ fieldset[disabled] .btn-more.focus {
   margin-right: 10px;
   width: 18px;
   text-align: center;
+}
+.full-height {
+  min-height: calc(100vh - 215px) !important;
 }
 .aside {
   background: white;

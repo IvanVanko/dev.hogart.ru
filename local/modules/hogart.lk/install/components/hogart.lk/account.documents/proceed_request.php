@@ -36,11 +36,11 @@ if (!empty($account['id']) && !empty($_REQUEST)) {
             $end_date->setDate($start_date->format('Y'), '12', '31');
             $diff = $start_date->diff(new DateTime($start_date->format('Y') . "-10-01"));
             if ($diff->format('%R%a') < 0) {
-                $end_date->add(new DateInterval('+1 year'));
+                $end_date->add(new DateInterval('P1Y'));
             }
             $contract = [
                 'company_id' => $_SESSION['current_company_id'],
-                'hogart_company_id' => $_POST['hogart_company'],
+                'hogart_company_id' => (string)$_POST['hogart_company'],
                 'start_date' => Date::createFromPhp($start_date),
                 'end_date' => Date::createFromPhp($end_date),
                 'currency_code' => $_POST['currency'],
@@ -115,7 +115,6 @@ if (!empty($account['id']) && !empty($_REQUEST)) {
                 }
             }
             LocalRedirect($APPLICATION->GetCurPage(false));
-            die();
             break;
         case 'edit-contact':
             $result = ContactTable::update($_POST['id'], [

@@ -9,7 +9,13 @@
  * @var $USER CUser
  * @global CMain $APPLICATION
  */
+if (!CModule::IncludeModule("hogart.lk")) {
+    $this->abortResultCache();
+    ShowError("Не установлен модуль \"Модуль личного кабинета компании Хогарт\"");
+    return;
+}
 
+use Hogart\Lk\Helper\Template\FlashError;
 use Hogart\Lk\Entity\AccountTable;
 use Hogart\Lk\Entity\ContactRelationTable;
 use Hogart\Lk\Entity\ContractTable;
@@ -26,19 +32,14 @@ $account = AccountTable::getAccountByUserID($USER->GetID());
 
 include (__DIR__ . "/proceed_request.php");
 
-if ($this->startResultCache()) {
-    if (!CModule::IncludeModule("hogart.lk")) {
-        $this->abortResultCache();
-        ShowError("Не установлен модуль \"Модуль личного кабинета компании Хогарт\"");
-        return;
-    }
+// Юридические лица (они же компании)
+$account = AccountTable::getAccountById($account['id']);
 
-    // Юридические лица (они же компании)
-    $account = AccountTable::getAccountById($account['id']);
+if ($account['id']) {
     $account['is_general'] = AccountTable::isGeneralAccount($account['id']);
     $companies = AccountCompanyRelationTable::getByAccountId($account['id']);
     if (count($companies) == 1) {
-        $current_company = &$companies[0];
+        $current_company = &reset($companies);
     } else {
         if (empty($_SESSION['current_company_id'])) {
             foreach ($companies as &$company) {
@@ -68,28 +69,17 @@ if ($this->startResultCache()) {
 
     $arResult['account'] = $account;
     $arResult['companies'] = $companies;
-    $arResult['current_company'] = $current_company;
+    $arResult['current_company'] = $arResult['companies'][$current_company['id']];
     $arResult['hogart_companies'] = HogartCompanyTable::getList([
         'filter' => [
             '=is_active' => true
         ]
     ])->fetchAll();
 
-    $arResult['currency'] = \Bitrix\Currency\CurrencyTable::getList([
-        'select' => [
-            '*',
-            'LANG_' => 'CURRENT_LANG_FORMAT'
-        ]
-    ])->fetchAll();
+    $arResult['currency'] = CStorage::getVar('HOGART.CURRENCIES');
 
-    if (defined("BX_COMP_MANAGED_CACHE"))
-    {
-        $CACHE_MANAGER->StartTagCache($this->getCachePath());
-        $CACHE_MANAGER->RegisterTag("hogart_lk_account_" . $account['id']);
-        $CACHE_MANAGER->EndTagCache();
-    }
-    
     $this->includeComponentTemplate();
-
-    return $account['id'];
+} else {
+    new FlashError("У Вас нет доступа в данный раздел");
+    LocalRedirect("/");
 }

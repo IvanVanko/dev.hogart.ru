@@ -16,22 +16,42 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
 
 CModule::IncludeModule("hogart.lk");
 
-$consumer = new \Hogart\Lk\Exchange\RabbitMQ\Consumer(
-    COption::GetOptionString("hogart.lk", "RABBITMQ_HOST"),
-    COption::GetOptionString("hogart.lk", "RABBITMQ_PORT"),
-    COption::GetOptionString("hogart.lk", "RABBITMQ_LOGIN"),
-    COption::GetOptionString("hogart.lk", "RABBITMQ_PASSWORD")
-);
+$consumer = \Hogart\Lk\Exchange\RabbitMQ\Consumer::getInstance();
+//$accountExchange = new \Hogart\Lk\Exchange\RabbitMQ\Exchange\AccountExchange($consumer);
 
-$staff = new \Hogart\Lk\Exchange\RabbitMQ\Exchange\StaffExchange();
-$account = new \Hogart\Lk\Exchange\RabbitMQ\Exchange\AccountExchange();
+$currencyExchange = new \Hogart\Lk\Exchange\RabbitMQ\Exchange\CurrencyRateExchange($consumer);
+$currencyExchange
+    ->publish("", "get")
+;
 
-$staff
-    ->useConsumer($consumer)
-    ->getExchange()
-    ->publish("", "staff.update", AMQP_NOPARAM, ["delivery_mode" => 2]);
+//var_dump($currencyExchange->getQueue()->get());
 
-$account
-    ->useConsumer($consumer)
-    ->getExchange()
-    ->publish("", "account.get", AMQP_NOPARAM, ["delivery_mode" => 2]);
+//$consumer->registerExchange([
+//    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\AccountExchange(),
+//    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\AddressExchange(),
+//    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\CompanyExchange(),
+//    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\CompanyDiscountExchange(),
+//    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\ContactExchange(),
+//    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\ContactInfoExchange(),
+//    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\ContractExchange(),
+//    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\HogartCompanyExchange(),
+//    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\OrderDocsExchange(),
+//    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\OrderExchange(),
+//    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\PaymentAccountExchange(),
+//    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\StaffExchange(),
+//    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\CurrencyRateExchange(),
+//]);
+//
+//var_dump(array_keys($consumer->sortExchanges()));
+
+//$accountExchange
+//    ->getExchange()
+//    ->publish("gillbeits@gmail.com", $accountExchange->getPublishKey("send_password"), AMQP_NOPARAM, ["delivery_mode" => 2])
+//;
+
+//$contract = new \Hogart\Lk\Exchange\RabbitMQ\Exchange\ContractExchange();
+//
+//$contract
+//    ->useConsumer($consumer)
+//    ->getExchange()
+//    ->publish("", $contract->getPublishKey("get"), AMQP_NOPARAM, ["delivery_mode" => 2]);

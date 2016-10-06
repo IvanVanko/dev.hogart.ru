@@ -13,6 +13,7 @@ use Hogart\Lk\Entity\HogartCompanyTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
 use Bitrix\Main\Entity\UpdateResult;
 use Bitrix\Main\Type\Date;
+use Hogart\Lk\Exchange\SOAP\AbstractPutRequest;
 use Hogart\Lk\Exchange\SOAP\MethodException;
 use Hogart\Lk\Exchange\SOAP\Request;
 use Hogart\Lk\Exchange\SOAP\Response;
@@ -30,6 +31,24 @@ class Contract extends AbstractMethod
     function getName()
     {
         return "Contract";
+    }
+
+    public function contractPut(AbstractPutRequest $request)
+    {
+        $response = $this->client->getSoapClient()->ContractPut($request->__toRequest());
+        foreach ($response->return->Response as $contract) {
+            $c = [
+                'guid_id' => $contract->ID,
+            ];
+            if (!empty($contract->Contr_ID_Hogart)) {
+                $hogart_company = HogartCompanyTable::getByField("guid_id", $contract->Contr_ID_Hogart);
+                if (!empty($hogart_company)) {
+                    $c['hogart_company_id'] = $hogart_company['id'];
+                }
+            }
+            ContractTable::update($contract->ID_Site, $c);
+        }
+        return $response;
     }
 
     public function getContract()
@@ -52,9 +71,7 @@ class Contract extends AbstractMethod
         foreach ($response->return->Contract as $contract) {
 
             $client_company = CompanyTable::getByField('guid_id', $contract->Contr_ID_Company);
-
-            $hogart_company = HogartCompanyTable::getByField('guid_id', $contract->Contr_ID_Holding);
-
+            $hogart_company = HogartCompanyTable::getByField('guid_id', $contract->Contr_ID_Hogart);
             if (empty($hogart_company['id'])) {
                 $answer->addResponse(new ResponseObject($contract->Contr_ID, new MethodException(MethodException::ERROR_NO_HOGART_COMPANY, [$contract->Contr_ID_Holding])));
                 continue;
@@ -74,17 +91,17 @@ class Contract extends AbstractMethod
                 'extension' => $contract->Contr_Prolon,
                 'currency_code' => $contract->Contr_ID_Money,
                 'perm_item' => (bool)$contract->Contr_Perm_Item,
-                'prem_promo' => (bool)$contract->Contr_Perm_Promo,
+                'perm_promo' => (bool)$contract->Contr_Perm_Promo,
                 'perm_clearing' => (bool)$contract->Contr_Perm_Clearing,
                 'perm_card' => (bool)$contract->Contr_Perm_Card,
                 'perm_cash' => (bool)$contract->Contr_Perm_Cash,
                 'cash_control' => (bool)$contract->Contr_Cash_Control,
-                'cash_limit' => $contract->Contr_Limit_Cash,
-                'deferral' => $contract->Contr_Defferal,
-                'credit_limit' => $contract->Contr_Credit_Limit,
+                'cash_limit' => intval($contract->Contr_Limit_Cash),
+                'deferral' => intval($contract->Contr_Defferal),
+                'credit_limit' => intval($contract->Contr_Credit_Limit),
                 'have_original' => (bool)$contract->Contr_IHaveDocs,
                 'accept' => (bool)$contract->Contr_Accept,
-                'vat_rate' => $contract->Contr_Accept,
+                'vat_rate' => intval($contract->Contr_VAT_Rate),
                 'vat_include' => (bool)$contract->Contr_VAT_Include,
                 'is_active' => !(bool)$contract->deletion_mark,
             ], 'guid_id');

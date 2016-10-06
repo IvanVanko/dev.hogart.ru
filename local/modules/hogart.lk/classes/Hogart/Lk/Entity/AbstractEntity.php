@@ -10,6 +10,10 @@
 namespace Hogart\Lk\Entity;
 
 use Bitrix\Main\Entity;
+use Hogart\Lk\Exchange\RabbitMQ\Consumer;
+use Hogart\Lk\Exchange\RabbitMQ\Exchange\AbstractExchange;
+use Hogart\Lk\Exchange\SOAP\AbstractPutRequest;
+use Hogart\Lk\Field\GuidField;
 
 /**
  * Асбтрактный класс таблицы Бд
@@ -17,6 +21,13 @@ use Bitrix\Main\Entity;
  */
 abstract class AbstractEntity extends Entity\DataManager
 {
+    public static function publishToRabbit(AbstractExchange $exchange, AbstractPutRequest $request)
+    {
+        if (!Consumer::getInstance()->isIsCliContext()) {
+            $exchange->useConsumer(Consumer::getInstance());
+            $exchange->publish(serialize($request), 'put');
+        }
+    }
     /**
      * Получение схемы индексов таблицы
      * @return array|Index[]
@@ -124,6 +135,9 @@ abstract class AbstractEntity extends Entity\DataManager
      */
     public static function replace($data)
     {
+        $event = new Entity\Event(static::getEntity(), self::EVENT_ON_BEFORE_ADD, array("fields" => $data), true);
+        $event->send();
+        $data = $event->mergeFields($data);
         $primary = static::getEntity()->getPrimaryArray();
         $id = [];
         foreach ($primary as $key) {
@@ -159,6 +173,15 @@ abstract class AbstractEntity extends Entity\DataManager
             $result = static::update($id, $data);
         } else {
             $result = static::add($data);
+        }
+
+        if (
+            !$result->getId()
+            && empty($result->getErrors())
+            && is_string($primary = static::getEntity()->getPrimary())
+            && static::getEntity()->getField($primary) instanceof GuidField
+        ) {
+            $result->setId($result->getData()[$primary]);
         }
 
         return $result;

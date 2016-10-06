@@ -23,6 +23,7 @@ class AddressTypeTable extends AbstractEntity
     const TYPE_ACTUAL = 1; // фактический адрес
     const TYPE_LEGAL = 2; // юридический адрес
     const TYPE_DELIVERY = 3; // адрес доставки
+    const TYPE_TK = 4; // адрес транспортной компании
     /**
      * {@inheritDoc}
      */
@@ -41,7 +42,7 @@ class AddressTypeTable extends AbstractEntity
                 'primary' => true,
                 "autocomplete" => true
             ]),
-            new GuidField("guid_id"),
+            new StringField("guid_id"),
             new StringField("name"),
             new IntegerField("code")
         ];
@@ -53,7 +54,7 @@ class AddressTypeTable extends AbstractEntity
     protected static function getIndexes()
     {
         return [
-            new Index("idx_guid_id", ["guid_id" => 36])
+            new Index("idx_guid_id", ["guid_id" => 255])
         ];
     }
 

@@ -9,6 +9,7 @@
 namespace Hogart\Lk\Exchange\RabbitMQ\Exchange;
 
 
+use Hogart\Lk\Exchange\SOAP\AbstractPutRequest;
 use Hogart\Lk\Exchange\SOAP\Client;
 
 /**
@@ -56,6 +57,12 @@ class OrderExchange extends AbstractExchange
                     $this
                         ->exchange
                         ->publish("", $this->getPublishKey($key), AMQP_NOPARAM, ["delivery_mode" => 2]);
+                }
+                break;
+            case 'put':
+                $request = unserialize($envelope->getBody());
+                if ($request instanceof AbstractPutRequest) {
+                    Client::getInstance()->Orders->ordersPut($request);
                 }
                 break;
         }

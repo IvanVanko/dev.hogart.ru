@@ -4,6 +4,8 @@
  */
 ?>
 <input type="hidden" name="type" value="<?= $arResult['current_company']['type'] ?>">
+
+<? /*
 <div class="row spacer">
     <div class="col-sm-12 form-group" style="position: relative">
         <label class="control-label">Выберите компанию Хогарт</label>
@@ -14,10 +16,16 @@
         </select>
     </div>
 </div>
+*/ ?>
+
 <div class="row spacer">
     <div class="col-sm-12 form-group" style="position: relative">
         <label class="control-label">Выберите валюту договора</label>
-        <?= CCurrency::SelectBox('currency', 'RUB', '', true, '', 'class="form-control selectpicker"') ?>
+        <select name="currency" class="form-control selectpicker">
+        <? foreach ($arResult['currency'] as $currency): ?>
+            <option <?= ($currency['BASE'] == 'Y' ? 'selected' : '') ?> value="<?= $currency['CURRENCY'] ?>"><?= ($currency['CURRENCY'] . ($currency['LANG_FULL_NAME'] != '' ? " ({$currency['LANG_FULL_NAME']})" : "")) ?></option>
+        <? endforeach; ?>
+        </select>
     </div>
 </div>
 <div class="row spacer bottom-between">

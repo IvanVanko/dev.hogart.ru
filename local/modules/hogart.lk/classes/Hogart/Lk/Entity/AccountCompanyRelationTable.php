@@ -33,9 +33,9 @@ class AccountCompanyRelationTable extends AbstractEntity
     {
         return [
             new IntegerField("account_id", ['primary' => true]),
-            new ReferenceField("account", "Hogart\\Lk\\Entity\\AccountTable", ["=this.account_id" => "ref.id"]),
+            new ReferenceField("account", __NAMESPACE__ . "\\AccountTable", ["=this.account_id" => "ref.id"]),
             new IntegerField("company_id", ['primary' => true]),
-            new ReferenceField("company", "Hogart\\Lk\\Entity\\CompanyTable", ["=this.company_id" => "ref.id"]),
+            new ReferenceField("company", __NAMESPACE__ . "\\CompanyTable", ["=this.company_id" => "ref.id"]),
             new BooleanField("is_favorite")
         ];
     }

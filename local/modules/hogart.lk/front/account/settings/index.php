@@ -14,8 +14,6 @@ CModule::IncludeModule('hogart.lk');
 $APPLICATION->AddChainItem("Аккаунт");
 $APPLICATION->AddChainItem("Настройки");
 
-if (!$APPLICATION->IncludeComponent("hogart.lk:account.settings", "", [])) {
-    BXHelper::NotFound();
-}
+$APPLICATION->IncludeComponent("hogart.lk:account.settings", "", []);
 
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php"); 

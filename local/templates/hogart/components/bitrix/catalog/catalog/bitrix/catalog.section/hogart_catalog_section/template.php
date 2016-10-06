@@ -229,11 +229,14 @@ $this->setFrameMode(true);
                         $attr_pop = 'data-popup="#popup-msg-product"';
                     }
                     ?>
-                <a id="<?= $arItem['BUY_URL'] ?>"
-                   class="black grid-hide <?= $class_pop ?>" <?= $attr_pop ?>
-                   href="javascript:void(0)" rel="nofollow">
-                    <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                </a>
+                    <?= \Hogart\Lk\Helper\Template\Cart::Link(
+                        '<i class="fa fa-cart-plus" aria-hidden="true"></i>',
+                        [
+                            'item_id' => $arItem['ID'],
+                            'count' => 'javascript:function (element) { return Math.max(1, $(element).parents("li:eq(0)").find("[name=\'quantity\']:input").val()); }'
+                        ],
+                        'class="black grid-hide ' . $class_pop . ' ' . $attr_pop . '"'
+                    ) ?>
             </span>
         </li>
 
@@ -415,11 +418,13 @@ $this->setFrameMode(true);
                                 $attr_pop = 'data-popup="#popup-msg-product"';
                             }
                             ?>
-                            <a id="<?= $arItem['BUY_URL'] ?>"
-                               class="buy-btn btn btn-primary <?= $class_pop ?>" <?= $attr_pop ?>
-                               href="javascript:void(0)" rel="nofollow">
-                                <i class="fa fa-shopping-cart" aria-hidden="true"></i> Купить
-                            </a>
+                            <?= \Hogart\Lk\Helper\Template\Cart::Link(
+                                '<i class="fa fa-cart-plus" aria-hidden="true"></i> Купить',
+                                [
+                                    'item_id' => $arItem['ID'],
+                                ],
+                                'class="black grid-hide ' . $class_pop . ' ' . $attr_pop . '"'
+                            ) ?>
                         </div>
                     </div>
                     <? endif; ?>

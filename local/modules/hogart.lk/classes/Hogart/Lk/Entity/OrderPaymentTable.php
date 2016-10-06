@@ -8,6 +8,8 @@
 
 namespace Hogart\Lk\Entity;
 
+use Bitrix\Main\Entity\DatetimeField;
+use Bitrix\Main\Entity\Event;
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ReferenceField;
 use Bitrix\Main\Entity\StringField;
@@ -16,24 +18,26 @@ use Bitrix\Main\Entity\FloatField;
 use Bitrix\Main\Entity\BooleanField;
 use Hogart\Lk\Field\GuidField;
 use Bitrix\Main\Entity\DateField;
+use Hogart\Lk\Helper\Template\Money;
+use Hogart\Lk\Helper\Template\OrderEventNote;
 
 /**
  * Таблица Платежи Заказа
  * @package Hogart\Lk\Entity
  */
-class OrderPaymentTable extends AbstractEntity
+class OrderPaymentTable extends AbstractEntity implements IOrderEventNote
 {
     /** Вид оплаты - Наличные */
-    const PAYMENT_FORM_CASH = 0;
+    const PAYMENT_FORM_CASH = 1;
     /** Вид оплаты - Банковский платеж */
-    const PAYMENT_FORM_BANK = 1;
+    const PAYMENT_FORM_BANK = 2;
     /** Вид оплаты - По карте */
-    const PAYMENT_FORM_CARD = 2;
+    const PAYMENT_FORM_CARD = 3;
 
     /** Направление - Входящий */
-    const DIRECTION_INCOME = 0;
+    const DIRECTION_INCOME = 1;
     /** Направление - Исходящий */
-    const DIRECTION_OUTCOME = 1;
+    const DIRECTION_OUTCOME = 2;
 
     /**
      * {@inheritDoc}
@@ -55,9 +59,9 @@ class OrderPaymentTable extends AbstractEntity
             ]),
             new GuidField("guid_id"),
             new IntegerField("order_id"),
-            new ReferenceField("order", "OrderTable", ["=this.order_id" => "ref.id"]),
+            new ReferenceField("order", __NAMESPACE__ . "\\OrderTable", ["=this.order_id" => "ref.id"]),
 
-            new DateField("payment_date"),
+            new DatetimeField("payment_date"),
             new StringField("number"),
             new EnumField("form", [
                 'values' => [
@@ -89,5 +93,49 @@ class OrderPaymentTable extends AbstractEntity
             new Index('idx_order_entity_most', ['order_id']),
             new Index('idx_is_active', ['is_active']),
         ];
+    }
+
+    public static function showFormText($form)
+    {
+        return [
+            self::PAYMENT_FORM_CASH => "наличные",
+            self::PAYMENT_FORM_BANK => "банковский платеж",
+            self::PAYMENT_FORM_CARD => "пластиковая карта",
+        ][$form];
+    }
+
+    public static function getOrderEventNote($entity_id, $event)
+    {
+        $note = new OrderEventNote();
+        $payment = self::getRowById($entity_id);
+        $note->setTitle(vsprintf(
+            "Платеж №%s от %s на сумму <span class='money-" . strtolower($payment['currency_code']) . "'>%s</span>",
+            [
+                $payment['number'],
+                $payment['payment_date']->format(HOGART_DATE_FORMAT),
+                Money::show($payment['total'])
+            ]
+        ));
+
+        $note
+            ->setTemplateFile($event["event"] . ".php")
+            ->setTemplateData(['payment' => $payment, 'event' => $event])
+            ->setBadgeIcon('<i class="fa fa-' . strtolower($payment['currency_code']) . '" aria-hidden="true"></i>')
+            ->setBadgeClass('danger')
+            ->setDate($payment['payment_date'])
+        ;
+
+        return $note;
+    }
+
+    public static function onAfterAdd(Event $event)
+    {
+        $id = $event->getParameter('id');
+        $fields = $event->getParameter('fields');
+        OrderEventTable::add([
+            'entity_id' => $id,
+            'event' => OrderEventTable::ORDER_EVENT_ORDER_PAYMENT_SUCCESS,
+            'order_id' => $fields['order_id'],
+        ]);
     }
 }

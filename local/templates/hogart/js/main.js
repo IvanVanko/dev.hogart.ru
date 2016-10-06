@@ -61,30 +61,38 @@ HogartApp.prototype.setHandlers = function () {
     });
 
     $(".fixed-block").each(function (i, el) {
-        var top = $(el).offset().top;
-        $(this).css({ width: $(this).outerWidth() });
-        var extTop;
-        if ($(el).data('rel-fixed-block') && $($(el).data('rel-fixed-block')).length) {
-            extTop = $($(el).data('rel-fixed-block')).outerHeight();
-            $(el).data("init-margin-top", $(el).css("margin-top"));
-            top -= extTop;
-            top = Math.max(0, top);
-        }
-        var checkScroll = function () {
-            if ($(window).scrollTop() > top - (extTop ? 20 : 0) ) {
-                $(el).addClass('sticky');
-                if (extTop) {
-                    $(el).css({ "margin-top": extTop + 20 });
-                }
-            } else {
-                if (extTop) {
-                    $(el).css({ "margin-top": $(el).data("init-margin-top") });
-                }
-                $(el).removeClass('sticky');
+        setTimeout(function () {
+            var top = $(el).offset().top;
+            $(this).css({ width: $(this).outerWidth() });
+            var extTop;
+            if ($(el).data('relFixedBlock') && $($(el).data('relFixedBlock')).length) {
+                extTop = $($(el).data('relFixedBlock')).outerHeight();
+                $(el).data("initMarginTop", $(el).css("margin-top"));
+                top -= (extTop ? (extTop + 20) : 0);
+                top = Math.max(0, top);
             }
-        };
-        $(window).scroll(checkScroll);
-        checkScroll();
+            if ($(el).data('restrictParentFixedBlock') && $(el).parents($(el).data('restrictParentFixedBlock')).length) {
+                var restrictionParent = $(el).parents($(el).data('restrictParentFixedBlock'));
+                var bottomPos = restrictionParent.offset().top + restrictionParent.outerHeight();
+                bottomPos -= (extTop ? (extTop + 20) : 0);
+            }
+            var blockHeight = $(el).outerHeight();
+            $(window).scroll(function () {
+                var scrollTop = $(window).scrollTop();
+                if (scrollTop > top && (bottomPos ? (scrollTop < (bottomPos - blockHeight)) : true)) {
+                    $(el).addClass('sticky');
+                    if (extTop) {
+                        $(el).css({ "margin-top": extTop + 20 });
+                    }
+                } else {
+                    if (extTop) {
+                        $(el).css({ "margin-top": $(el).data("initMarginTop") });
+                    }
+                    $(el).removeClass('sticky');
+                }
+            });
+            $(window).trigger('scroll');
+        }, 0)
     });
 
     $('#scroll-up').click(function () {
