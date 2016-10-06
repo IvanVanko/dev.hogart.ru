@@ -1,5 +1,5 @@
 <?
-$MESS ['navigation_records'] = "Íà ñòðàíèöå:";
-$MESS ['navigation_records_all'] = "âñå";
-$MESS ['navigation_records_of'] = "èç";
+$MESS ['navigation_records'] = "ÐÐ° ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ†Ðµ:";
+$MESS ['navigation_records_all'] = "Ð²ÑÐµ";
+$MESS ['navigation_records_of'] = "Ð¸Ð·";
 ?>
