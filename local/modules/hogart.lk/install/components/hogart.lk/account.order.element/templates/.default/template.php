@@ -66,7 +66,6 @@ $order = $arResult['order'];
                     </div>
                     <div class="col-sm-2 text-right pull-right">
                         <? if ($order['state'] == OrderTable::STATE_NORMAL): ?>
-                            <div class="h5"><span class="label label-default"><?= OrderTable::getStatusText($order['status']) ?></span></div>
                             <div class="h5"><?= OrderTable::getShipmentByFlag($order['shipment_flag']) ?></div>
                         <? endif; ?>
                     </div>

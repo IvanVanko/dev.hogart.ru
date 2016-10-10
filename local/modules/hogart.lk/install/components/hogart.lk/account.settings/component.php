@@ -48,8 +48,9 @@ if ($account['id']) {
     ])->fetchAll(), function ($result, $item) { $result[$item['ID']] = $item; return $result; }, []);
 
     $arResult['av_stores'] = $arResult['stores'];
+
     foreach ($account['stores'] as $store) {
-        unset($arResult['av_stores'][$store['store_ID']]);
+        unset($arResult['av_stores'][$store['ID']]);
     }
     
     $this->includeComponentTemplate();

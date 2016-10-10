@@ -54,20 +54,15 @@ $order = $arResult['order'];
                             ?>
                                 <li id="<?= $note->getGuid() ?>" class="<?= ($k % 2 == 1 ? "timeline-inverted" : "") ?>">
                                     <? if(($icon = $note->getBadgeIcon())): ?>
-                                    <div class="timeline-badge <?= $note->getBadgeClass() ?>"><?= $icon ?></div>
+                                    <div class="timeline-badge <?= $note->getBadgeClass() ?>">
+                                        <?= $icon ?>
+                                    </div>
                                     <? endif; ?>
                                     <div class="timeline-panel">
                                         <div class="timeline-heading">
-                                            <? if (!empty($note->getLink())): ?>
-                                            <a href="<?= $note->getLink() ?>">
-                                            <? endif; ?>
-
+                                            <? if (!empty($note->getLink())): ?><a href="<?= $note->getLink() ?>"><? endif; ?>
                                                 <h4 class="timeline-title"><?= $note->getTitle() ?></h4>
-
-                                            <? if (!empty($note->getLink())): ?>
-                                            </a>
-                                            <? endif; ?>
-
+                                            <? if (!empty($note->getLink())): ?></a><? endif; ?>
                                             <? if(!empty($note->getDate())): ?>
                                                 <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> <?= $note->getDate()->format(HOGART_DATE_TIME_FORMAT)?></small></p>
                                             <? endif; ?>

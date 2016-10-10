@@ -100,9 +100,13 @@ use Hogart\Lk\Entity\ContractTable;
                 <? foreach ($arResult['current_company']['contacts'] as $contact): ?>
                     <div class="row vertical-align spacer contact" data-contact-id="<?= $contact['guid_id'] ?>">
                         <? $contact_name = ($contact['last_name'] . " " . $contact['name'] . " " . $contact['middle_name']); ?>
+                        <?= ($email = $contact['info'][\Hogart\Lk\Entity\ContactInfoTable::TYPE_EMAIL][0]['value']) ?>
                         <div class="col-lg-3 col-sm-3"><strong class="pull-left visible-xs">Контактное лицо:</strong> <?= $contact_name ?></div>
-                        <div class="col-lg-3 col-sm-3"><strong class="pull-left visible-xs">Email:</strong> <a
-                                href="mailto:<?= ($email = $contact['info'][\Hogart\Lk\Entity\ContactInfoTable::TYPE_EMAIL][0]['value']) ?>"><?= $email ?></a></div>
+                        <div class="col-lg-3 col-sm-3"><strong class="pull-left visible-xs">Email:</strong>
+                            <? if (!empty($email)): ?>
+                            <a href="mailto:<?= $email ?>"><?= $email ?></a>
+                            <? endif; ?>
+                        </div>
                         <div class="col-lg-2 col-sm-3"><strong class="pull-left visible-xs">Телефоны:</strong>
                             <div>
                                 <? foreach($contact['info'][\Hogart\Lk\Entity\ContactInfoTable::TYPE_PHONE] as $phone): ?>
