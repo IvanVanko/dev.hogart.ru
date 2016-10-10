@@ -148,8 +148,8 @@ class PdfTable extends AbstractEntity implements IOrderEventNote
                 $note = new OrderEventNote($title, $event['created_at']);
                 $note
                     ->setLink("/account/orders/pdf/" . $event['order_id'] . "/" . $entity_id)
-                    ->setBadgeIcon('<i class="fa fa-file-text-o" aria-hidden="true"></i>')
-                    ->setBadgeClass('warning')
+                    ->setBadgeIcon('<i class="fa fa-file-pdf-o" aria-hidden="true"></i>')
+                    ->setBadgeClass('info')
                 ;
                 return $note;
                 break;

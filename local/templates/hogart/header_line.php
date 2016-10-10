@@ -15,15 +15,38 @@ use \Bitrix\Main\Localization\Loc;
             )
         ); ?>
         <? if (LANGUAGE_ID != 'en'): ?>
-            <a class="profile-url<? if ($USER->IsAuthorized()): ?> authorized<? endif; ?>"
-               href="/account/">
-                <i class="icon-profile icon-full"></i>
-                <? if ($USER->IsAuthorized()): ?>
-                    <span class="hide-text"><?= $USER->GetLogin() ?></span>
-                <? else: ?>
+            <? if ($USER->IsAuthorized()): ?>
+                <ul data-depth="1" class="profile-url authorized">
+                    <li class="item" data-depth="1">
+                        <a href="/account/">
+                            <span class="hide-text"><?= $USER->GetLogin() ?></span>
+                            <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                        </a>
+                        <ul data-depth="2">
+                            <li class="item" data-depth="2">
+                                <a href="/account/orders/"><i class="fa fa-list" aria-hidden="true"></i> Заказы</a>
+                            </li>
+                            <li class="item" data-depth="2">
+                                <a href="javascript:void(0)"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Отчеты</a>
+                            </li>
+                            <li class="item" data-depth="2">
+                                <a href="/account/documents/"><i class="fa fa-users" aria-hidden="true"></i> Юр. лица</a>
+                            </li>
+                            <li class="item" data-depth="2">
+                                <a href="/account/settings/"><i class="fa fa-cogs" aria-hidden="true"></i> Настройки</a>
+                            </li>
+                            <li class="item" data-depth="2">
+                                <a href="?logout=yes"><i class="fa fa-sign-out" aria-hidden="true"></i> Выход</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            <? else: ?>
+                <a class="profile-url" href="/account/">
+                    <i class="icon-profile icon-full"></i>
                     <span class="hide-text"><?= Loc::getMessage("Личный кабинет") ?></span>
-                <? endif; ?>
-            </a>
+                </a>
+            <? endif; ?>
         <? endif; ?>
         <nav class="header-nav">
             <ul>
