@@ -10,6 +10,8 @@ namespace Hogart\Lk\Helper\Template;
 
 
 use Bitrix\Main\EventManager;
+use Hogart\Lk\Entity\AccountTable;
+use Hogart\Lk\Entity\FlashMessagesTable;
 
 class Notification
 {
@@ -28,6 +30,13 @@ class Notification
     public function OnEndBufferContent (&$content)
     {
         if ((!defined('ADMIN_SECTION') || !ADMIN_SECTION) && !preg_match('%application/json%', $_SERVER['HTTP_ACCEPT'])) {
+
+            global $USER;
+            $account = AccountTable::getAccountByUserID($USER->GetID());
+            if (!empty($account['id'])) {
+                FlashMessagesTable::getMessages($account['id']);
+            }
+
             $messages = MessageFactory::getInstance()->getAllMessages();
             if ($messages->count()) {
                 $content .= '<script language="JavaScript" type="text/javascript">';

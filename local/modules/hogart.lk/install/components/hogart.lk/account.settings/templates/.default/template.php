@@ -15,7 +15,7 @@ $this->setFrameMode(true);
 ?>
 <div class="row">
     <div class="col-sm-12 col-xs-12">
-        <h3>Настройки аккаунта &laquo;<?= ($arResult['account']['user_NAME'] . $arResult['account']['user_LAST_NAME'] ? : $arResult['account']['user_LOGIN']) ?>&raquo;</h3>
+        <h3>Настройки аккаунта &laquo;<?= $arResult['account']['user_LOGIN'] ?>&raquo;</h3>
     </div>
     <div class="col-sm-12 col-xs-12 authinfo">
         <h4>Данные авторизации</h4>

@@ -21,10 +21,12 @@ use Bitrix\Main\Entity\ReferenceField;
 use Bitrix\Main\Entity\StringField;
 use Bitrix\Main\Type\Date;
 use Bitrix\Main\Type\DateTime;
+use Hogart\Lk\Exchange\RabbitMQ\Exchange\OrderRTUExchange;
+use Hogart\Lk\Exchange\SOAP\Request\OrderRTU;
 use Hogart\Lk\Field\GuidField;
 use Hogart\Lk\Helper\Template\OrderEventNote;
 
-class OrderRTUTable extends AbstractEntity implements IOrderEventNote
+class OrderRTUTable extends AbstractEntity implements IOrderEventNote, IExchangeable
 {
     const DELIVERY_OUR = 1;
     const DELIVERY_SELF = 2;
@@ -95,11 +97,19 @@ class OrderRTUTable extends AbstractEntity implements IOrderEventNote
         ];
     }
 
+    public static function getDeliveryTypeText($delivery)
+    {
+        return [
+            self::DELIVERY_OUR => "Доставка",
+            self::DELIVERY_SELF => "Самовывоз",
+        ][$delivery];
+    }
+
     public static function getDateIntevalText($interval)
     {
         return [
-            self::DATE_INTERVAL_09_15 => "c 09:00 до 15:00",
-            self::DATE_INTERVAL_15_21 => "c 15:00 до 21:00",
+            self::DATE_INTERVAL_09_15 => "с 09:00 до 15:00",
+            self::DATE_INTERVAL_15_21 => "с 15:00 до 21:00",
         ][$interval];
     }
 
@@ -111,17 +121,12 @@ class OrderRTUTable extends AbstractEntity implements IOrderEventNote
         ];
     }
 
-    public static function getOrderEventNote($entity_id, $event)
+    public static function getRTUOrder($id)
     {
-        $order_rtu = self::getRowById($entity_id);
-        $note = new OrderEventNote(
-            "Создание заказа на отгрузку №{$entity_id}"
-        );
-
+        $order_rtu = self::getRowById($id);
         $__items = OrderRTUItemTable::getList([
             'filter' => [
-                '=order_rtu_id' => $entity_id,
-                '=order_id' => $event['order_id']
+                '=order_rtu_id' => $id
             ],
             'select' => [
                 '*',
@@ -167,9 +172,33 @@ class OrderRTUTable extends AbstractEntity implements IOrderEventNote
             $measures[$measure['ID']] = $measure['SYMBOL_RUS'];
         }
 
+        $order_rtu['measures'] = $measures;
+        $order_rtu['items'] = $__items;
+        return $order_rtu;
+    }
+
+    public static function showName($rtu_order = [], $prefix = '')
+    {
+        $name = "Заявка на отгрузку №" . ($rtu_order[$prefix . 'number'] ? : "<sup>получение</sup>");
+        $date = $rtu_order[$prefix . 'rtu_date'];
+        if (!empty($date) && $date instanceof DateTime) {
+            $name .= " от " . $date->format("d-m-Y");
+        }
+
+        return $name;
+    }
+
+    public static function getOrderEventNote($entity_id, $event)
+    {
+        $order_rtu = self::getRTUOrder($entity_id);
+        $order_rtu['address'] = (string)AddressTable::getByField('guid_id', $order_rtu['address_guid'])['value'];
+        $note = new OrderEventNote(
+            self::showName($order_rtu)
+        );
+
         $note
             ->setTemplateFile($event["event"] . ".php")
-            ->setTemplateData(['items' => $__items, 'measures' => $measures])
+            ->setTemplateData(['order_rtu' => $order_rtu, 'items' => $order_rtu['items'], 'measures' => $order_rtu['measures']])
             ->setBadgeIcon('<i class="fa fa-truck" aria-hidden="true"></i>')
             ->setBadgeClass('primary')
             ->setDate($order_rtu['rtu_date'])
@@ -186,5 +215,10 @@ class OrderRTUTable extends AbstractEntity implements IOrderEventNote
         ]);
 
         return $result;
+    }
+
+    static function putTo1c($primary)
+    {
+        self::publishToRabbit(new OrderRTUExchange(), new OrderRTU([self::getRTUOrder($primary)]));
     }
 }

@@ -24,8 +24,8 @@ abstract class AbstractPutRequest
     protected function proceedFields($object)
     {
         foreach ($object as &$value) {
-            if (is_callable($value)) {
-                $value = call_user_func($value);
+            if ($value instanceof LazyRequest) {
+                $value = $value->execute();
             }
             if (is_array($value) || is_object($value)) {
                 $value = $this->proceedFields($value);

@@ -7,8 +7,8 @@
  */
 
 /** @var Composer\Autoload\ClassLoader $classloader */
-$classloader = require_once "vendor/autoload.php";
-$classloader->add("Hogart\\Lk", __DIR__ . '/classes');
+$classloader = require_once dirname(__FILE__) . "/vendor/autoload.php";
+$classloader->add("Hogart\\Lk", dirname(__FILE__) . '/classes');
 
 CModule::IncludeModule("main");
 CModule::IncludeModule("catalog");
@@ -29,9 +29,14 @@ $currencies = \Bitrix\Currency\CurrencyTable::getList([
 CStorage::setVar($currencies, 'HOGART.CURRENCIES');
 
 $tmp = $_SERVER['DOCUMENT_ROOT'] . "/local/modules/hogart.lk/tmp";
+$pdf = $_SERVER['DOCUMENT_ROOT'] . "/local/modules/hogart.lk/pdf";
 if (!file_exists($tmp)) {
     mkdir($tmp, 0777, true);
 }
+if (!file_exists($pdf)) {
+    mkdir($pdf, 0777, true);
+}
+define("HOGART_PDF_DIR", $pdf);
 define("HOGART_TMP_DIR", $tmp);
 define("HOGART_DATE_FORMAT", "d.m.Y");
 define("HOGART_DATE_TIME_FORMAT", "d.m.Y H:i");

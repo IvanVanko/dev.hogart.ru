@@ -71,7 +71,7 @@ class RTUItem extends AbstractMethod
                 'discount_cost' => floatval($rtu_item->Cost_Disc),
                 'total' => floatval($rtu_item->Summ),
                 'total_vat' => floatval($rtu_item->Sum_VAL),
-                'item_group' => $rtu_item->Group
+                'item_group' => (string)$rtu_item->Group
             ], 'd_guid_id');
 
             if ($result->getErrorCollection()->count()) {

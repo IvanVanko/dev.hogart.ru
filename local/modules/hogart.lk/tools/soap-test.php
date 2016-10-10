@@ -17,6 +17,8 @@ CModule::IncludeModule("hogart.lk");
 CModule::IncludeModule("main");
 CModule::IncludeModule("catalog");
 
+
+
 /** @var \Hogart\Lk\Exchange\SOAP\Client $soap */
 $soap = \Hogart\Lk\Exchange\SOAP\Client::getInstance();
 
@@ -26,13 +28,22 @@ ini_set("xdebug.var_display_max_depth", -1);
 
 //var_dump($soap->Contract->getContract());
 
+
+
 //var_dump($soap->Payment->updatePayments());
 //var_dump($soap->Contract->contractPut(new \Hogart\Lk\Exchange\SOAP\Request\Contract(\Hogart\Lk\Entity\ContractTable::getContractForExchange(2))));
-//var_dump($soap->Orders->ordersPut(new \Hogart\Lk\Exchange\SOAP\Request\Order([\Hogart\Lk\Entity\OrderTable::getOrder(14)])));
-//var_dump($soap->OrderRTU->orderRTUPut(new \Hogart\Lk\Exchange\SOAP\Request\OrderRTU([\Hogart\Lk\Entity\OrderRTUTable::getRowById(1)])));
-//var_dump($soap->Address->addressPut(new \Hogart\Lk\Exchange\SOAP\Request\Address([\Hogart\Lk\Entity\AddressTable::getRowById(["guid_id" => "8d907286-fc4c-5b8b-a602-e2620102661b", "owner_id" => 1, "owner_type" => 2])])));
+//var_dump($soap->Orders->ordersPut(new \Hogart\Lk\Exchange\SOAP\Request\Order([\Hogart\Lk\Entity\OrderTable::getOrder(5)])));
 
-var_dump($soap->Address->updateAddresses());
+//$request = new \Hogart\Lk\Exchange\SOAP\Request\OrderRTU([\Hogart\Lk\Entity\OrderRTUTable::getRTUOrder(7)]);
+//var_dump($request->__toRequest());
+
+//var_dump($soap->OrderRTU->orderRTUPut(new \Hogart\Lk\Exchange\SOAP\Request\OrderRTU([\Hogart\Lk\Entity\OrderRTUTable::getRTUOrder(7)])));
+
+//var_dump($soap->Address->addressPut(new \Hogart\Lk\Exchange\SOAP\Request\Address([\Hogart\Lk\Entity\AddressTable::getRowById(["guid_id" => "8d907286-fc4c-5b8b-a602-e2620102661b", "owner_id" => 1, "owner_type" => 2])])));
+//var_dump($soap->AddressType->updateAddressTypes());
+//var_dump($soap->Address->updateAddresses());
+
+var_dump($soap->Orders->updateOrders());
 
 //var_dump(new \Bitrix\Main\Type\DateTime("2016-10-03T13:26:23", 'Y-m-d H:i:s'));
 

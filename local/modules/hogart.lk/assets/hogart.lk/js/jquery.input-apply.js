@@ -61,12 +61,21 @@
         self.data("changeApply", {
           initVal: self.val(),
           apply: apply || null,
-          discard: discard || null
+          discard: discard || null,
+          changed: false
+        });
+
+        self.on('blur', function (e) {
+          var data = self.data('changeApply');
+          if (data.changed)
+            self.trigger('changeapply');
+          return true;
         });
 
         self.on('keyup', function (e) {
           if (e.keyCode == 13) {
-            self.trigger('changeapply');
+            if (data.changed)
+              self.trigger('changeapply');
             return true;
           }
           if (e.keyCode == 27) {
@@ -75,8 +84,10 @@
           var data = self.data('changeApply');
           if (e.target.value != data.initVal) {
             apply.css('visibility', 'visible');
+            data.changed = true;
           } else if (apply.is(':visible')) {
             apply.css('visibility', 'hidden');
+            data.changed = false;
           }
           if (!!data.discard && e.target.value != data.initVal) {
             discard.css('visibility', 'visible');

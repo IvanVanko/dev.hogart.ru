@@ -17,12 +17,14 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
 CModule::IncludeModule("hogart.lk");
 
 $consumer = \Hogart\Lk\Exchange\RabbitMQ\Consumer::getInstance();
-//$accountExchange = new \Hogart\Lk\Exchange\RabbitMQ\Exchange\AccountExchange($consumer);
 
-$currencyExchange = new \Hogart\Lk\Exchange\RabbitMQ\Exchange\CurrencyRateExchange($consumer);
-$currencyExchange
-    ->publish("", "get")
-;
+(new \Hogart\Lk\Exchange\RabbitMQ\Exchange\OrderRTUExchange($consumer))->publish("", "get");
+
+//$accountExchange = new \Hogart\Lk\Exchange\RabbitMQ\Exchange\AccountExchange($consumer);
+//$currencyExchange = new \Hogart\Lk\Exchange\RabbitMQ\Exchange\CurrencyRateExchange($consumer);
+//$currencyExchange
+//    ->publish("", "get")
+//;
 
 //var_dump($currencyExchange->getQueue()->get());
 

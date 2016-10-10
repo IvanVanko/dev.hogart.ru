@@ -231,7 +231,23 @@ while ($res = $arColls ->GetNext())
 //echo '</pre>';
 $section_ids = array_unique($section_ids);
 
-$stores = BXHelper::getStores(array(), array('UF_TRANSIT' => '0'), false, false, array('ID', 'TITLE', 'ADDRESS'), 'ID');
+global $USER;
+$account = \Hogart\Lk\Entity\AccountTable::getAccountByUserID($USER->GetID());
+$storeFilter = [
+    'UF_TRANSIT' => '0'
+];
+
+if ($account['id']) {
+    $accountStores = array_reduce(\Hogart\Lk\Entity\AccountStoreRelationTable::getByAccountId($account['id']), function ($result, $store) {
+        $result[] = $store['ID'];
+        return $result;
+    }, []);
+
+    if (!empty($accountStores)) {
+        $storeFilter['ID'] = $accountStores;
+    }
+}
+$stores = BXHelper::getStores(array(), $storeFilter, false, false, array('ID', 'TITLE', 'ADDRESS'), 'ID');
 $arResult["STORES"] = $stores;
 
 if ($arParams['STORES_FILTERED'] != 'Y') {

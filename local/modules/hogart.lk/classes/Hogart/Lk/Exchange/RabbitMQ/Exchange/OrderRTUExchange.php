@@ -12,6 +12,16 @@ namespace Hogart\Lk\Exchange\RabbitMQ\Exchange;
 use Hogart\Lk\Exchange\SOAP\AbstractPutRequest;
 use Hogart\Lk\Exchange\SOAP\Client;
 
+/**
+ * Задачи RabbitMQ - Заявки на отгрузку
+ *
+ * @rabbitmq.exchange
+ * | *__Код задачи__*           | *__Тело сообщения__* | *__Описание__*                           |
+ * |:----------:                |:----------:          |--------------                            |
+ * | __order_rtu.get__           |                      | _Задача получения Заявок на отгрузку из КИС_      |
+ *
+ * @package Hogart\Lk\Exchange\RabbitMQ\Exchange
+ */
 class OrderRTUExchange extends AbstractExchange
 {
     /**
@@ -39,6 +49,13 @@ class OrderRTUExchange extends AbstractExchange
     function runEnvelope(\AMQPEnvelope $envelope)
     {
         switch ($key = $this->getRoutingKey($envelope)) {
+            case 'get':
+                $count = Client::getInstance()->OrderRTU->updateOrdersRTU();
+                if (!empty($count)) {
+                    $this
+                        ->publish("", $key);
+                }
+                break;
             case 'put':
                 $request = unserialize($envelope->getBody());
                 if ($request instanceof AbstractPutRequest) {

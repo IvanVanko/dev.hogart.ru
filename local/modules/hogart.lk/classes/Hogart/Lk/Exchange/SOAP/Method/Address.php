@@ -44,8 +44,6 @@ class Address extends AbstractMethod
 
     public function addressPut(AbstractPutRequest $request)
     {
-        var_dump($request->__toRequest());
-        exit;
         $response = $this->client->getSoapClient()->AddressesPut($request->__toRequest());
         return $response;
     }
@@ -54,26 +52,17 @@ class Address extends AbstractMethod
     {
         $answer = new Response();
         $result = $this->getAddresses();
-        $types = [];
-        foreach ($result->return->Address_Types as $address_type) {
-            $data = [
-                'guid_id' => $address_type->ID,
-                'name' => $address_type->Name
-            ];
-            $res = AddressTypeTable::createOrUpdateByField($data, 'guid_id');
-            $types[$address_type->ID] = $res->getPrimary()['guid_id'];
-        }
-        $this->client->getLogger()->debug("AddressesGet: получено " . count($result->return->Address) . " записей");
         foreach ($result->return->Address as $address) {
             /** @var AbstractEntity $relTable */
             $relTable = AddressTable::$types[$address->Adr_Owner_Type]['table'];
             $owner = $relTable::getByField(AddressTable::$types[$address->Adr_Owner_Type]['rel'], $address->Adr_ID_Owner);
 
             $owner_id = $owner[AddressTable::$types[$address->Adr_Owner_Type]['rel_id']];
+            $address_type = AddressTypeTable::getByField("guid_id", $address->Adr_ID_Address_Type);
             $data = [
                 'owner_id' => $owner_id,
                 'owner_type' => $address->Adr_Owner_Type,
-                'type_id' => $types[$address->Adr_ID_Address_Type],
+                'type_id' => $address_type['id'],
                 'postal_code' => (string)$address->Adr_ID_Index,
                 'region' => (string)$address->Adr_Region,
                 'city' => (string)$address->Adr_City,

@@ -14,6 +14,8 @@ use Bitrix\Main\Type\Date;
 class OrderEventNote
 {
     /** @var  string */
+    protected $guid;
+    /** @var  string */
     protected $title;
     /** @var Date  */
     protected $date;
@@ -42,6 +44,24 @@ class OrderEventNote
     }
 
     /**
+     * @return string
+     */
+    public function getGuid()
+    {
+        return $this->guid;
+    }
+
+    /**
+     * @param string $guid
+     * @return $this
+     */
+    public function setGuid($guid)
+    {
+        $this->guid = $guid;
+        return $this;
+    }
+
+    /**
      * @return mixed
      */
     public function getTitle()
@@ -51,7 +71,7 @@ class OrderEventNote
 
     /**
      * @param mixed $title
-     *
+     * @return $this
      */
     public function setTitle($title)
     {

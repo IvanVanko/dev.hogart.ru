@@ -9,6 +9,7 @@
 namespace Hogart\Lk\Entity;
 
 
+use Bitrix\Main\DB\SqlExpression;
 use Bitrix\Main\Entity;
 use Hogart\Lk\Field\GuidField;
 
@@ -43,7 +44,8 @@ class HogartCompanyTable extends AbstractEntity
             new Entity\StringField("kpp"),
             new Entity\IntegerField("chief_id"),
             new Entity\ReferenceField("chief", "StaffTable", ["=this.chief_id" => "ref.id"]),
-            new Entity\BooleanField("is_active")
+            new Entity\BooleanField("is_active"),
+            new Entity\ReferenceField("main_payment_account", __NAMESPACE__ . "\\PaymentAccountRelationTable", ["=this.id" => "ref.owner_id", "=ref.is_main" => new SqlExpression('?i', true), "=ref.owner_type" => new SqlExpression('?i', PaymentAccountRelationTable::OWNER_TYPE_CLIENT_COMPANY)]),
         ];
     }
 
@@ -56,5 +58,10 @@ class HogartCompanyTable extends AbstractEntity
             new Index("idx_guid_id", ["guid_id" => 36]),
             new Index('idx_is_active', ['is_active']),
         ];
+    }
+
+    public static function showFullName($company, $prefix = '')
+    {
+        return vsprintf("%s, ИНН %s, КПП %s", [$company[$prefix . "name"], $company[$prefix . "inn"], $company[$prefix . "kpp"]]);
     }
 }

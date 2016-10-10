@@ -199,6 +199,12 @@ $arUrlRewrite = array(
         "PATH" => "/local/modules/hogart.lk/front/account/cart/index.php"
     ),
     array(
+        "CONDITION" => "#^/account/orders/pdf/([^/?]*)/([^/?]*).?#",
+        "RULE" => "order=\$1&pdf=\$2",
+        "ID" => "hogart.lk:account.order.pdf",
+        "PATH" => "/local/modules/hogart.lk/front/account/orders/pdf.php"
+    ),
+    array(
         "CONDITION" => "#^/account/orders/shipment/([^/?]*).?#",
         "RULE" => "store=\$1",
         "ID" => "hogart.lk:account.order.shipment",
@@ -211,7 +217,7 @@ $arUrlRewrite = array(
         "PATH" => "/local/modules/hogart.lk/front/account/orders/history.php"
     ),
     array(
-        "CONDITION" => "#^/account/order/([0-9]+)/?#",
+        "CONDITION" => "#^/account/order/([^/?]*)[?/]?(.*)#",
         "RULE" => "order=\$1",
         "ID" => "hogart.lk:account.order",
         "PATH" => "/local/modules/hogart.lk/front/account/orders/order.php"

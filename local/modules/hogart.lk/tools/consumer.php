@@ -21,25 +21,31 @@ $lock->acquireLock();
 
 $consumer = \Hogart\Lk\Exchange\RabbitMQ\Consumer::getInstance();
 $consumer->registerLogger(new \Hogart\Lk\Logger\FileLogger(__DIR__ . "/../logs/rabbitmq.log"));
+$consumer->setIsCliContext(true);
 
 $consumer->registerExchange([
     new \Hogart\Lk\Exchange\RabbitMQ\Exchange\AccountExchange(),
     new \Hogart\Lk\Exchange\RabbitMQ\Exchange\AddressExchange(),
+    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\AddressTypeExchange(),
     new \Hogart\Lk\Exchange\RabbitMQ\Exchange\CompanyExchange(),
     new \Hogart\Lk\Exchange\RabbitMQ\Exchange\CompanyDiscountExchange(),
     new \Hogart\Lk\Exchange\RabbitMQ\Exchange\ContactExchange(),
     new \Hogart\Lk\Exchange\RabbitMQ\Exchange\ContactInfoExchange(),
     new \Hogart\Lk\Exchange\RabbitMQ\Exchange\ContractExchange(),
     new \Hogart\Lk\Exchange\RabbitMQ\Exchange\HogartCompanyExchange(),
-    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\OrderDocsExchange(),
     new \Hogart\Lk\Exchange\RabbitMQ\Exchange\OrderExchange(),
+    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\OrderRTUExchange(),
+    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\PdfExchange(),
+    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\PaymentExchange(),
     new \Hogart\Lk\Exchange\RabbitMQ\Exchange\PaymentAccountExchange(),
+    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\RTUExchange(),
     new \Hogart\Lk\Exchange\RabbitMQ\Exchange\StaffExchange(),
     new \Hogart\Lk\Exchange\RabbitMQ\Exchange\CurrencyRateExchange(),
 ]);
 
 while (true) {
-    $consumer->setIsCliContext(true)->run();
+    $consumer->run();
+    sleep(5);
 }
 
 $lock->releaseLock();

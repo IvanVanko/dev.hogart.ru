@@ -29,7 +29,7 @@ if (
 
     switch ($_REQUEST['action']) {
         case 'create_order':
-            $orderId = OrderTable::createByCart($_REQUEST['cart_id']);
+            $orderId = OrderTable::createByCart($_REQUEST['cart_id'], $_REQUEST['perm_reserve'], (string)$_REQUEST['note']);
             if ($orderId) {
                 CartTable::delete($_REQUEST['cart_id']);
             }

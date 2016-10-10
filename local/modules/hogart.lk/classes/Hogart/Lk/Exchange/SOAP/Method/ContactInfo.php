@@ -60,6 +60,7 @@ class ContactInfo extends AbstractMethod
 
             $values = explode(',', $info->Info_Value);
             foreach ($values as $value) {
+                if (empty($value)) continue;
                 $result = ContactInfoTable::createOrUpdateByField([
                     'd_guid_id' => $info->Info_ID,
                     'owner_id' => $owner_id,

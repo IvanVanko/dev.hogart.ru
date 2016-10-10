@@ -8,6 +8,7 @@
 
 namespace Hogart\Lk\Entity;
 
+use Bitrix\Main\DB\SqlExpression;
 use Bitrix\Main\Entity\BooleanField;
 use Bitrix\Main\Entity\DateField;
 use Bitrix\Main\Entity\EnumField;
@@ -89,7 +90,8 @@ class CompanyTable extends AbstractEntity
             new StringField("doc_number"),
             new StringField("doc_ufms"),
             new DateField("doc_date"),
-            new BooleanField("is_active")
+            new BooleanField("is_active"),
+            new ReferenceField("main_payment_account", __NAMESPACE__ . "\\PaymentAccountRelationTable", ["=this.id" => "ref.owner_id", "=ref.is_main" => new SqlExpression('?i', true), "=ref.owner_type" => new SqlExpression('?i', PaymentAccountRelationTable::OWNER_TYPE_CLIENT_COMPANY)]),
         ];
     }
 
@@ -120,5 +122,10 @@ class CompanyTable extends AbstractEntity
             new Index('idx_doc_pass', ['doc_pass']),
             new Index('idx_is_active', ['is_active'])
         ];
+    }
+
+    public static function showFullName($company, $prefix = '')
+    {
+        return vsprintf("%s, ИНН %s, КПП %s", [$company[$prefix . "name"], $company[$prefix . "inn"], $company[$prefix . "kpp"]]);
     }
 }

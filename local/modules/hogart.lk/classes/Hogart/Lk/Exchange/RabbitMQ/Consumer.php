@@ -34,6 +34,8 @@ class Consumer
     protected $logger;
     /** @var bool  */
     protected $is_cli_context = false;
+    /** @var bool  */
+    protected $is_sorted = false;
 
     /**
      * Consumer constructor.
@@ -135,17 +137,18 @@ class Consumer
      */
     public function sortExchanges()
     {
-        $sorter = new StringSort();
-        foreach ($this->exchanges as $exchange) {
-            $sorter->add(get_class($exchange), $exchange->getDependencies());
+        if (!$this->is_sorted) {
+            $sorter = new StringSort();
+            foreach ($this->exchanges as $exchange) {
+                $sorter->add(get_class($exchange), $exchange->getDependencies());
+            }
+            $dependencies = array_values($sorter->sort());
+            $sort = [];
+            foreach ($dependencies as $dependency) {
+                $sort[$dependency] = $this->exchanges[$dependency];
+            }
+            $this->exchanges = $sort;
         }
-        $dependencies = array_values($sorter->sort());
-        $sort = [];
-        foreach ($dependencies as $dependency) {
-            $sort[$dependency] = $this->exchanges[$dependency];
-        }
-        $this->exchanges = $sort;
-
         return $this->exchanges;
     }
 
@@ -177,6 +180,7 @@ class Consumer
 
         foreach ($this->sortExchanges() as $exchange) {
             $exchange->run();
+
         }
     }
 }

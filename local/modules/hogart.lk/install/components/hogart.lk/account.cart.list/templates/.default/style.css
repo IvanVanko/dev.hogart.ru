@@ -87,7 +87,10 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-around;
+  justify-content: flex-end;
+}
+.cart-wrapper [data-cart] .cart-item-list-wrapper [data-item-group] .header-info div {
+  padding-right: 15px;
 }
 .cart-wrapper [data-cart] .cart-item-list-wrapper [data-item-group] .pre-table-header,
 .cart-wrapper [data-cart] .cart-item-list-wrapper [data-item-group] .post-table-footer {

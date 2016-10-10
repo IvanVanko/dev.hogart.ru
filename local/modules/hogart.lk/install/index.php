@@ -51,14 +51,16 @@ class hogart_lk extends CModule
         \Hogart\Lk\Entity\OrderItemTable::createTableIfNotExists();
         \Hogart\Lk\Entity\OrderPaymentTable::createTableIfNotExists();
         \Hogart\Lk\Entity\OrderTable::createTableIfNotExists();
-        \Hogart\Lk\Entity\IOrderRTUTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\OrderRTUTable::createTableIfNotExists();
         \Hogart\Lk\Entity\OrderRTUItemTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\PdfTable::createTableIfNotExists();
         \Hogart\Lk\Entity\PaymentAccountRelationTable::createTableIfNotExists();
         \Hogart\Lk\Entity\PaymentAccountTable::createTableIfNotExists();
         \Hogart\Lk\Entity\RTUItemTable::createTableIfNotExists();
         \Hogart\Lk\Entity\RTUTable::createTableIfNotExists();
         \Hogart\Lk\Entity\StaffRelationTable::createTableIfNotExists();
         \Hogart\Lk\Entity\StaffTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\FlashMessagesTable::createTableIfNotExists();
 
         return true;
     }
@@ -85,14 +87,16 @@ class hogart_lk extends CModule
         \Hogart\Lk\Entity\OrderItemTable::dropTableIfExists();
         \Hogart\Lk\Entity\OrderPaymentTable::dropTableIfExists();
         \Hogart\Lk\Entity\OrderTable::dropTableIfExists();
-        \Hogart\Lk\Entity\IOrderRTUTable::dropTableIfExists();
+        \Hogart\Lk\Entity\OrderRTUTable::dropTableIfExists();
         \Hogart\Lk\Entity\OrderRTUItemTable::dropTableIfExists();
+        \Hogart\Lk\Entity\PdfTable::dropTableIfExists();
         \Hogart\Lk\Entity\PaymentAccountRelationTable::dropTableIfExists();
         \Hogart\Lk\Entity\PaymentAccountTable::dropTableIfExists();
         \Hogart\Lk\Entity\RTUItemTable::dropTableIfExists();
         \Hogart\Lk\Entity\RTUTable::dropTableIfExists();
         \Hogart\Lk\Entity\StaffRelationTable::dropTableIfExists();
         \Hogart\Lk\Entity\StaffTable::dropTableIfExists();
+        \Hogart\Lk\Entity\FlashMessagesTable::dropTableIfExists();
     }
 
     function DoInstall()

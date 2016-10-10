@@ -20,6 +20,7 @@ define("NO_SPECIAL_CHARS_CHAIN", true);
 use Bitrix\Main\Localization\Loc;
 use Hogart\Lk\Entity\AccountTable;
 use Hogart\Lk\Entity\OrderTable;
+use Hogart\Lk\Entity\PdfTable;
 use Hogart\Lk\Helper\Template\FlashError;
 
 Loc::loadMessages(__FILE__);
@@ -38,8 +39,11 @@ if ($account['id']) {
 
     $arResult['order'] = OrderTable::getOrder(intval($_REQUEST['order']));
     if (!empty($arResult['order'])) {
+        $arResult['order']['pdf'] = PdfTable::getByEntityClass(PdfTable::ENTITY_ORDER, intval($_REQUEST['order']));
+        include __DIR__ . "/proceed_request.php";
         $APPLICATION->AddChainItem(OrderTable::showName($arResult['order']), "", false);
     }
+
     $this->includeComponentTemplate();
 } else {
     new FlashError("У Вас нет доступа в данный раздел");

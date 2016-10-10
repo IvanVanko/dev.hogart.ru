@@ -30,7 +30,7 @@ class PaymentAccountRelationTable extends AbstractEntityRelation
     {
         return array_merge([
             new IntegerField("payment_account_id", ['primary' => true]),
-            new ReferenceField("payment_account", "PaymentAccountTable", ["=this.payment_account_id" => "ref.id"]),
+            new ReferenceField("payment_account", __NAMESPACE__ . "\\PaymentAccountTable", ["=this.payment_account_id" => "ref.id"]),
         ], parent::getMap());
     }
 

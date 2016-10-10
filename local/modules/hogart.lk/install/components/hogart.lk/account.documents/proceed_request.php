@@ -226,15 +226,11 @@ if (!empty($account['id']) && !empty($_REQUEST)) {
                     'account_id' => $account['id']
                 ]);
 
-                if (!empty($_POST['residential_address_as_actual'])) {
-                    $_POST['__address'][AddressTypeTable::TYPE_RESIDENTIAL] = $_POST['__address'][AddressTypeTable::TYPE_ACTUAL];
-                }
-
-                if (!empty($_POST['actual_address_as_legal'])) {
+                if (!empty($_POST['residential_address_as_actual']) || !empty($_POST['actual_address_as_legal'])) {
                     $_POST['__address'][AddressTypeTable::TYPE_ACTUAL] = $_POST['__address'][AddressTypeTable::TYPE_LEGAL];
                 }
 
-                foreach([AddressTypeTable::TYPE_ACTUAL, AddressTypeTable::TYPE_RESIDENTIAL, AddressTypeTable::TYPE_LEGAL] as $adrTypeCode){
+                foreach([AddressTypeTable::TYPE_ACTUAL, AddressTypeTable::TYPE_LEGAL] as $adrTypeCode){
                     $address_type = AddressTypeTable::getByField('code',$adrTypeCode);
                     if (!empty($_POST['__address'][$adrTypeCode])) {
                         $address = json_decode($_POST['__address'][$adrTypeCode]);

@@ -77,7 +77,7 @@ class Message implements IMessage
      */
     function getUnique()
     {
-        return md5(implode('|', [$this->message, $this->severity, $this->line, $this->file]));
+        return md5(implode('|', [$this->message, $this->severity, $this->icon, $this->url, $this->line, $this->file]));
     }
 
     /**

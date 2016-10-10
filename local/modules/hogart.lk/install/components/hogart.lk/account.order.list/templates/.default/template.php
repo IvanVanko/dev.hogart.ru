@@ -94,12 +94,12 @@ use Hogart\Lk\Helper\Template\Ajax;
                         <? endif; ?>
                     </div>
                     <div class="col-sm-3">
-                        <? if ($order['state'] == OrderTable::STATE_NORMAL && $order['totals']['release']): ?>
-                        <button class="btn btn-primary"><i class="fa fa-money" aria-hidden="true"></i> Оплатить</button>
+                        <? if ($order['guid_id'] && $order['state'] == OrderTable::STATE_NORMAL && $order['totals']['release']): ?>
+                        <a href="/account/order/<?= $order['id'] ?>/#order-payment" class="btn btn-primary"><i class="fa fa-money" aria-hidden="true"></i> Оплатить</a>
                         <? endif; ?>
                     </div>
                     <div class="col-sm-3 text-right pull-right">
-                        <? if ($order['state'] == OrderTable::STATE_NORMAL && OrderTable::isProvideShipmentFlag($order['shipment_flag'], OrderItemTable::STATUS_IN_RESERVE)): ?>
+                        <? if ($order['totals']['release'] <= 0 && $order['state'] == OrderTable::STATE_NORMAL && OrderTable::isProvideShipmentFlag($order['shipment_flag'], OrderItemTable::STATUS_IN_RESERVE)): ?>
                         <a href="/account/orders/shipment/<?= $order['s_XML_ID'] ?>/" class="btn btn-primary">Отгрузить</a>
                         <? endif; ?>
                     </div>

@@ -89,7 +89,7 @@ class Payment extends AbstractMethod
                 }
             }
         }
-//        $this->paymentsAnswer($answer);
+        $this->paymentsAnswer($answer);
         return count($answer->Response);
     }
 

@@ -373,6 +373,18 @@ body.loading * {
 .color-black {
   color: #2c2432 !important;
 }
+.color-primary {
+  color: #95c600 !important;
+}
+.color-warning {
+  color: #f0ad4e !important;
+}
+.color-danger {
+  color: #d9534f !important;
+}
+.color-info {
+  color: #5bc0de !important;
+}
 .quantity {
   font-size: 12px;
 }

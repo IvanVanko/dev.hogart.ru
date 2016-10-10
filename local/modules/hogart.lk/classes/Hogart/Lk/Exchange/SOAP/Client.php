@@ -12,6 +12,7 @@ namespace Hogart\Lk\Exchange\SOAP;
 use Hogart\Lk\Creational\Singleton;
 use Hogart\Lk\Exchange\SOAP\Method\Account;
 use Hogart\Lk\Exchange\SOAP\Method\Address;
+use Hogart\Lk\Exchange\SOAP\Method\AddressType;
 use Hogart\Lk\Exchange\SOAP\Method\CompanyDiscount;
 use Hogart\Lk\Exchange\SOAP\Method\Contact;
 use Hogart\Lk\Exchange\SOAP\Method\Contract;
@@ -23,6 +24,7 @@ use Hogart\Lk\Exchange\SOAP\Method\Orders\Order;
 use Hogart\Lk\Exchange\SOAP\Method\Orders\OrderItem;
 use Hogart\Lk\Exchange\SOAP\Method\OrderDocs;
 use Hogart\Lk\Exchange\SOAP\Method\Payment;
+use Hogart\Lk\Exchange\SOAP\Method\Pdf;
 use Hogart\Lk\Exchange\SOAP\Method\Staff;
 use Hogart\Lk\Exchange\SOAP\Method\Company;
 use Hogart\Lk\Exchange\SOAP\Method\PaymentAccount;
@@ -39,6 +41,7 @@ use Hogart\Lk\Exchange\SOAP\Method\RTUItem;
  *
  * @property Account $Account [+] test
  * @property Address $Address
+ * @property AddressType $AddressType
  * @property Company $Company [+] test
  * @property HogartCompany $HogartCompany
  * @property Staff $Staff
@@ -55,6 +58,7 @@ use Hogart\Lk\Exchange\SOAP\Method\RTUItem;
  * @property Order $Order [+] test
  * @property OrderItem $OrderItem [+] test
  * @property CurrencyRate $CurrencyRate
+ * @property Pdf $Pdf
  */
 class Client
 {
@@ -149,6 +153,7 @@ class Client
     {
         $this->registerMethod(new Account());
         $this->registerMethod(new Address());
+        $this->registerMethod(new AddressType());
         $this->registerMethod(new Company());
         $this->registerMethod(new HogartCompany());
         $this->registerMethod(new Staff());
@@ -156,6 +161,7 @@ class Client
         $this->registerMethod(new ContactInfo());
         $this->registerMethod(new Contract());
         $this->registerMethod(new PaymentAccount());
+        $this->registerMethod(new Pdf());
         $this->registerMethod(new CompanyDiscount());
         $this->registerMethod(new RTU());
         $this->registerMethod(new RTUItem());

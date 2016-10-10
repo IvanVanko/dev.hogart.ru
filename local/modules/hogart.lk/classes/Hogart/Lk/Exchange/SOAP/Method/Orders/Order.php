@@ -82,13 +82,12 @@ class Order extends AbstractMethod
                 'store_guid' => $order->Order_ID_Stock,
                 'staff_id' => $manager['id'] ?: 0,
                 'account_id' => $account['id'] ?: 0,
-                'note' => $order->Order_Note,
+                'note' => (string)$order->Order_Note,
                 'type' => $order->Order_Form_Oper,
                 'status' => $order->Order_Status,
-                'sale_granted' => $order->Order_Sale_Granted,
-                'sale_max_money' => $order->Order_Max_Monet_Sale,
-                'perm_bill' => $order->Order_Perm_Bill,
-                'perm_reserve' => $order->Order_Perm_Reserve,
+                'sale_granted' => (bool)$order->Order_Sale_Granted,
+                'sale_max_money' => (float)$order->Order_Max_Monet_Sale,
+                'perm_reserve' => $order->Order_Reserve,
                 'is_active' => !$order->deletion_mark,
             ], 'guid_id');
 

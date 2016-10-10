@@ -110,7 +110,25 @@ class CartTable extends AbstractEntity
             return $result;
         }, []);
 
-        $carts = array_map(function ($cart) use($group_id, $currencies) {
+        $stores = array_reduce(StoreTable::getList([
+            'select' => [
+                "*",
+                "UF_TRANSIT"
+            ],
+            'filter' => [
+                '=ACTIVE' => true
+            ],
+        ])->fetchAll(), function ($result, $store) {
+            $result[boolval($store["UF_TRANSIT"])][] = $store['ID'];
+            return $result;
+        }, []);
+
+        $accountStores = array_reduce(AccountStoreRelationTable::getByAccountId($account_id), function ($result, $store) {
+            $result[$store['ID']] = $store;
+            return $result;
+        }, []);
+
+        $carts = array_map(function ($cart) use($group_id, $currencies, $stores, $accountStores) {
             $cart['currency'] = $currencies[$cart['c_currency_code']];
             $cart['items'] = CartItemTable::getList([
                 'select' => [
@@ -148,16 +166,21 @@ class CartTable extends AbstractEntity
             }
 
             if (!empty($cart['store_guid'])) {
-                $storeProductResult = \CCatalogStoreProduct::GetList([], ['PRODUCT_ID' => $itemsId, 'STORE_ID' => $cart['s_ID']]);
+                $storeProductResult = \CCatalogStoreProduct::GetList([], ['PRODUCT_ID' => $itemsId]);
                 $storeAmount = [];
                 while (($storeProduct = $storeProductResult->Fetch())) {
-                    $storeAmount[$storeProduct['PRODUCT_ID']]['AMOUNT'] = $storeProduct['AMOUNT'];
+                    if (in_array($storeProduct['STORE_ID'], array_keys($accountStores)) && !in_array($storeProduct['STORE_ID'], $stores[1])) {
+                        $storeAmount[$storeProduct['PRODUCT_ID']][$storeProduct['STORE_ID']]['AMOUNT'] = $storeProduct['AMOUNT'];
+                        $storeAmount[$storeProduct['PRODUCT_ID']]['__AMOUNT'] += $storeProduct['AMOUNT'];
+                    } elseif (in_array($storeProduct['STORE_ID'], $stores[1])) {
+                        $storeAmount[$storeProduct['PRODUCT_ID']]['__TRANSIT'] += $storeProduct['AMOUNT'];
+                    }
                 }
             }
 
             if (!empty($cart['items'])) {
                 $items = array_reduce($cart['items'], function ($result, $item) { $result[$item['ID']] = $item; return $result; }, []);
-                \CIBlockElement::GetPropertyValuesArray($items, CATALOG_IBLOCK_ID, ['ID' => array_keys($items)], ['CODE' => ['sku']]);
+                \CIBlockElement::GetPropertyValuesArray($items, CATALOG_IBLOCK_ID, ['ID' => array_keys($items)], ['CODE' => ['sku', 'days_till_receive']]);
 
                 $products = ProductTable::getList([
                     'filter' => [
@@ -177,11 +200,16 @@ class CartTable extends AbstractEntity
                     $item['product'] = $products[$item['item_id']];
                     $cart['measures'][] = $item['product']['MEASURE'];
                     if (!empty($storeAmount[$item['item_id']])) {
-                        $item['STORE_AMOUNT'] = $storeAmount[$item['item_id']]['AMOUNT'];
-                        $item['PREV_POS_AMOUNT'] = $storeAmount[$item['item_id']]['PREV_AMOUNT'];
-                        $item['NEGATIVE_AMOUNT'] = max(0, $item['count'] - $storeAmount[$item['item_id']]['AMOUNT']);
-                        $storeAmount[$item['item_id']]['PREV_AMOUNT'] += min($item['count'], $storeAmount[$item['item_id']]['AMOUNT']);
-                        $storeAmount[$item['item_id']]['AMOUNT'] = max(0, $storeAmount[$item['item_id']]['AMOUNT'] - $item['count']);
+                        $item['STORE_AMOUNT'] = $storeAmount[$item['item_id']][$cart['s_ID']]['AMOUNT'];
+                        $item['PREV_POS_AMOUNT'] = $storeAmount[$item['item_id']][$cart['s_ID']]['PREV_AMOUNT'];
+                        $item['NEGATIVE_AMOUNT'] = max(0, $item['count'] - $storeAmount[$item['item_id']][$cart['s_ID']]['AMOUNT']);
+
+                        $plus_prev_amount = min($item['count'], $storeAmount[$item['item_id']][$cart['s_ID']]['AMOUNT']);
+                        $storeAmount[$item['item_id']]['__AMOUNT'] -= $plus_prev_amount;
+                        $storeAmount[$item['item_id']][$cart['s_ID']]['PREV_AMOUNT'] += $plus_prev_amount;
+                        $storeAmount[$item['item_id']][$cart['s_ID']]['AMOUNT'] = max(0, $storeAmount[$item['item_id']][$cart['s_ID']]['AMOUNT'] - $item['count']);
+                        $item['STORE_TRANSIT'] = $storeAmount[$item['item_id']]['__TRANSIT'];
+                        $item['STORE_ALL_AMOUNT'] = $storeAmount[$item['item_id']]['__AMOUNT'];
                     }
 
                     if (isset($discount_prices[$item['item_id']])) {

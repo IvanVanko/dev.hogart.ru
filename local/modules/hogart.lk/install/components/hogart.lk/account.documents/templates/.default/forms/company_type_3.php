@@ -30,7 +30,7 @@ use Hogart\Lk\Entity\CompanyTable;
     </div>
     <div class="row spacer">
         <div class="col-sm-12">
-            <input data-suggest="address" name="address[<?= AddressTypeTable::TYPE_ACTUAL?>]" type="text" class="form-control" placeholder="Введите адрес в свободной форме">
+            <input data-suggest="address" name="address[<?= AddressTypeTable::TYPE_LEGAL?>]" type="text" class="form-control" placeholder="Введите адрес в свободной форме">
         </div>
     </div>
     <div class="row spacer">
@@ -45,7 +45,7 @@ use Hogart\Lk\Entity\CompanyTable;
     </div>
     <div class="row spacer">
         <div class="col-sm-12">
-            <input data-suggest="address" disabled="disabled" id="residential_address_<?= CompanyTable::TYPE_INDIVIDUAL ?>" name="address[<?= AddressTypeTable::TYPE_RESIDENTIAL?>]" type="text" class="form-control" placeholder="Введите адрес в свободной форме">
+            <input data-suggest="address" disabled="disabled" id="residential_address_<?= CompanyTable::TYPE_INDIVIDUAL ?>" name="address[<?= AddressTypeTable::TYPE_ACTUAL?>]" type="text" class="form-control" placeholder="Введите адрес в свободной форме">
         </div>
     </div>
     <div class="row">

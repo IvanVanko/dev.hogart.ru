@@ -7,6 +7,7 @@
 
 namespace Hogart\Lk\Exchange\SOAP\Method;
 
+use Bitrix\Main\Type\DateTime;
 use Hogart\Lk\Entity\OrderTable;
 use Hogart\Lk\Entity\RTUItemTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
@@ -68,7 +69,7 @@ class RTU extends AbstractMethod
                 'guid_id' => $rtu->RTU_ID,
                 'order_id' => $order['id'],
                 'number' => $rtu->RTU_Number,
-                'rtu_date' => new Date((string)$rtu->RTU_Date, 'Y-m-d'),
+                'rtu_date' => new DateTime((string)$rtu->RTU_Date, 'Y-m-d H:i:s'),
                 'currency_code' => $rtu->RTU_ID_Money,
                 'is_active' => !$rtu->deletion_mark,
             ], 'guid_id');
@@ -97,8 +98,7 @@ class RTU extends AbstractMethod
                 }
             }
         }
-        var_dump($answer);
-//        $this->rtuAnswer($answer);
+        $this->rtuAnswer($answer);
         return count($answer->Response);
     }
 

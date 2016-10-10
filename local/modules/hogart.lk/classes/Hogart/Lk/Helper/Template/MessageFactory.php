@@ -10,6 +10,8 @@ namespace Hogart\Lk\Helper\Template;
 
 
 use Hogart\Lk\Creational\Singleton;
+use Hogart\Lk\Entity\AccountTable;
+use Hogart\Lk\Entity\FlashMessagesTable;
 
 class MessageFactory
 {

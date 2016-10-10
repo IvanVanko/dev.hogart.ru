@@ -11,8 +11,28 @@ namespace Hogart\Lk\Exchange\RabbitMQ\Exchange;
 
 use Hogart\Lk\Exchange\SOAP\Client;
 
+/**
+ * Задачи RabbitMQ - Отгрузки
+ *
+ * @rabbitmq.exchange
+ * | *__Код задачи__*           | *__Тело сообщения__* | *__Описание__*                           |
+ * |:----------:                |:----------:          |--------------                            |
+ * | __rtu.get__           |                      | _Задача получения Отгрузки из КИС_      |
+ *
+ * @package Hogart\Lk\Exchange\RabbitMQ\Exchange
+ */
 class RTUExchange extends AbstractExchange
 {
+    /**
+     * {@inheritDoc}
+     */
+    public function getDependencies()
+    {
+        return [
+            __NAMESPACE__ . '\OrderExchange',
+        ];
+    }
+
     /**
      * Получить имя очереди
      * @return string
@@ -31,11 +51,10 @@ class RTUExchange extends AbstractExchange
     {
         switch ($key = $this->getRoutingKey($envelope)) {
             case 'get':
-                $count = Client::getInstance()->OrderDocs->updateOrderDocs();
+                $count = Client::getInstance()->RTU->updateRTUs();
                 if (!empty($count)) {
                     $this
-                        ->exchange
-                        ->publish("", $this->getPublishKey($key), AMQP_NOPARAM, ["delivery_mode" => 2]);
+                        ->publish("", $key);
                 }
                 break;
         }

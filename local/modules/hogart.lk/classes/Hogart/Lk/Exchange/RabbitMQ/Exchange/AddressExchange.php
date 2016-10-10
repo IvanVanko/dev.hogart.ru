@@ -30,6 +30,7 @@ class AddressExchange extends AbstractExchange
     public function getDependencies()
     {
         return [
+            __NAMESPACE__ . '\AddressTypeExchange',
             __NAMESPACE__ . '\CompanyExchange',
             __NAMESPACE__ . '\HogartCompanyExchange',
         ];

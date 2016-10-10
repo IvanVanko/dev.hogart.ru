@@ -54,16 +54,6 @@ if ($account['id']) {
 
     if ($counter == 0) {
         $arParams['isEmpty'] = true;
-//        \Bitrix\Main\EventManager::getInstance()->addEventHandler('main', 'OnEndBufferContent', function (&$content) {
-//            if ((!defined('ADMIN_SECTION') || !ADMIN_SECTION) && !preg_match('%application/json%', $_SERVER['HTTP_ACCEPT'])) {
-//                $content .= '<script language="JavaScript" type="text/javascript">';
-//                $content .=<<<JS
-//document.location = '/account/orders/';
-//JS;
-//
-//                $content .= '</script>';
-//            }
-//        });
     }
 
     $measuresList = [];

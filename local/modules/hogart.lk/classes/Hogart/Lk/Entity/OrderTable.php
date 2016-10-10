@@ -107,7 +107,6 @@ class OrderTable extends AbstractEntity
             new TextField("note"),
             new BooleanField("sale_granted"),
             new FloatField("sale_max_money"),
-            new BooleanField("perm_bill"),
             new BooleanField("perm_reserve"),
             new BooleanField("is_active")
         ];
@@ -127,7 +126,8 @@ class OrderTable extends AbstractEntity
 
     public static function isHaveAccess($account_id, $order_id)
     {
-        return self::getById($order_id)->fetch()['account_id'] == $account_id;
+        global $USER;
+        return self::getById($order_id)->fetch()['account_id'] == $account_id || $USER->IsAdmin();
     }
 
     public static function showName($order = [], $prefix = '')
@@ -229,7 +229,10 @@ class OrderTable extends AbstractEntity
                 'c_' => 'contract',
                 's_' => 'store',
                 'co_' => 'contract.company',
+                'co_chief_' => 'contract.company.chief_contact',
+                'cop_' => 'contract.company.main_payment_account.payment_account',
                 'hco_' => 'contract.hogart_company',
+                'hcop_' => 'contract.hogart_company.main_payment_account.payment_account',
             ]
         ]);
 
@@ -288,6 +291,10 @@ class OrderTable extends AbstractEntity
             $measures = [];
             foreach ($order['items'] as &$item) {
                 $order['totals']['items'] += $item['total'] + (!$order['c_vat_include'] ? $item['total_vat'] : 0);
+                $order['totals']['vat'] += $item['total_vat'];
+                $order['totals']['discount_price'] += ($item['discount_price'] * $item['count']);
+                $order['totals']['price'] += ($item['price'] * $item['count']);
+
                 $order['shipment_flag'] |= (1<<$item['status']);
 
                 $item['url'] = \CIBlock::ReplaceDetailUrl($item['url'], $item, false, 'E');
@@ -332,6 +339,30 @@ class OrderTable extends AbstractEntity
         }
 
         return $order;
+    }
+
+    public function getByAccountCount($account_id, $state = self::STATE_NORMAL)
+    {
+        $filter = [
+            '=state' => $state,
+            '=account_id' => $account_id
+        ];
+        $ordersResult = self::getList([
+            'filter' => $filter,
+            'select' => [
+                '*',
+                'a_' => 'account',
+                'c_' => 'contract',
+                's_' => 'store',
+                'co_' => 'contract.company',
+                'hco_' => 'contract.hogart_company'
+            ],
+            'order' => [
+                'order_date' => 'DESC'
+            ],
+            "count_total" => true,
+        ]);
+        return $ordersResult->getCount();
     }
 
     public static function getByAccount($account_id, PageNavigation $nav = null, $state = self::STATE_NORMAL, $filter = [], $item_filter = [])
@@ -468,14 +499,16 @@ HTML;
                 $order['store_guid']
             );
         }
-        new FlashSuccess(vsprintf("Заказ %s скопирован в корзину", [self::showName($order)]));
+        new FlashSuccess(vsprintf("%s скопирован в корзину", [self::showName($order)]));
     }
 
     /**
      * @param string $cart_id
+     * @param $perm_reserve
+     * @param $note
      * @return bool|int
      */
-    public static function createByCart($cart_id)
+    public static function createByCart($cart_id, $perm_reserve, $note)
     {
         $cart = CartTable::getByPrimary($cart_id)->fetch();
         $cart = CartTable::getAccountCartList($cart['account_id'], $cart_id);
@@ -485,6 +518,8 @@ HTML;
             'account_id' => $cart['account_id'],
             'order_date' => ($date = new DateTime()),
             'type' => ($cart['item_type'] == CartTable::ITEM_TYPE_GOODS ? self::TYPE_SALE : self::TYPE_PROMO),
+            'perm_reserve' => boolval($perm_reserve),
+            'note' => $note,
             'is_active' => true
         ]);
 
@@ -530,7 +565,7 @@ HTML;
             }
         }
         self::publishToRabbit(new OrderExchange(), new Order([self::getOrder($order_id)]));
-        new FlashSuccess("Создан новый заказ от " . $date->format("d/m/Y") . " (перейти к заказу)", '/account/order/' . $order_id);
+        new FlashSuccess("Создан новый заказ от " . $date->format("d/m/Y") . " <b>(перейти к заказу)</b>", '/account/order/' . $order_id);
         return $result->getId();
     }
 

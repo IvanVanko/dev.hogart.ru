@@ -173,10 +173,7 @@ class IBlockHandlers {
                             "ID" => $arParams['ID']
                         ));
                         $pdf = ob_get_clean();
-                        define('DOMPDF_ENABLE_AUTOLOAD', false);
-                        define('DOMPDF_ENABLE_REMOTE', true);
-                        require_once $_SERVER['DOCUMENT_ROOT'].'/local/php_interface/include/vendor/dompdf/dompdf/dompdf_config.inc.php';
-                        $dompdf = new \DOMPDF();
+                        $dompdf = new \Dompdf\Dompdf();
                         $dompdf->load_html($pdf);
                         $dompdf->set_paper('A4', 'portrait');
                         $dompdf->render();

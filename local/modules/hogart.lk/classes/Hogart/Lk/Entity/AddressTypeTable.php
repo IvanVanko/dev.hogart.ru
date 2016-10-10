@@ -19,11 +19,11 @@ use Hogart\Lk\Field\GuidField;
  */
 class AddressTypeTable extends AbstractEntity
 {
-    const TYPE_RESIDENTIAL = 0; // адрес проживание
     const TYPE_ACTUAL = 1; // фактический адрес
     const TYPE_LEGAL = 2; // юридический адрес
     const TYPE_DELIVERY = 3; // адрес доставки
     const TYPE_TK = 4; // адрес транспортной компании
+
     /**
      * {@inheritDoc}
      */
@@ -60,7 +60,15 @@ class AddressTypeTable extends AbstractEntity
 
     public static function getByCode($code)
     {
-        return self::getByField('code', $code);
-
+        $row = self::getByField('code', $code);
+        if (empty($row) && $code == self::TYPE_TK) {
+            AddressTypeTable::add([
+                'guid_id' => '',
+                'name' => 'Адрес транспортной компании',
+                'code' => AddressTypeTable::TYPE_TK
+            ]);
+            return self::getByCode($code);
+        }
+        return $row;
     }
 }

@@ -33,7 +33,7 @@ $_items = $items;
                                 <th>№</th>
                                 <th class="reorder">Арт.</th>
                                 <th width="100%">Наименование</th>
-                                <th class="text-center">Кол-во</th>
+                                <th class="text-center text-nowrap">Кол-во</th>
                                 <th>Ед.</th>
                             </tr>
                             </thead>

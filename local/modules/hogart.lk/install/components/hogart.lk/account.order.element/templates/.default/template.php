@@ -21,12 +21,13 @@
 use Hogart\Lk\Entity\OrderTable;
 use Hogart\Lk\Entity\OrderItemTable;
 use Hogart\Lk\Entity\ContractTable;
+use Hogart\Lk\Entity\PdfTable;
 use Hogart\Lk\Helper\Template\Money;
 
 $order = $arResult['order'];
 ?>
 
-<div class="row" data-stick-parent>
+<div class="row full-height" data-stick-parent>
     <div class="col-sm-9">
         <div class="row spacer-20 order-line">
             <div class="col-sm-12">
@@ -80,12 +81,12 @@ $order = $arResult['order'];
                         <? endif; ?>
                     </div>
                     <div class="col-sm-3">
-                        <? if ($order['state'] == OrderTable::STATE_NORMAL && $order['totals']['release']): ?>
-                            <button class="btn btn-primary"><i class="fa fa-money" aria-hidden="true"></i> Оплатить</button>
+                        <? if ($order['guid_id'] && $order['state'] == OrderTable::STATE_NORMAL && $order['totals']['release']): ?>
+                            <?= \Hogart\Lk\Helper\Template\Dialog::Button("order-payment", '<i class="fa fa-money" aria-hidden="true"></i> Оплатить', "btn btn-primary")?>
                         <? endif; ?>
                     </div>
                     <div class="col-sm-3 text-right pull-right">
-                        <? if ($order['state'] == OrderTable::STATE_NORMAL && OrderTable::isProvideShipmentFlag($order['shipment_flag'], OrderItemTable::STATUS_IN_RESERVE)): ?>
+                        <? if ($order['totals']['release'] <= 0 && $order['state'] == OrderTable::STATE_NORMAL && OrderTable::isProvideShipmentFlag($order['shipment_flag'], OrderItemTable::STATUS_IN_RESERVE)): ?>
                             <a href="/account/orders/shipment/<?= $order['s_XML_ID'] ?>/" class="btn btn-primary">Отгрузить</a>
                         <? endif; ?>
                     </div>
@@ -167,11 +168,19 @@ $order = $arResult['order'];
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="<?= $APPLICATION->GetCurPage(false) . "?action=order-kp" ?>">
                             <i class="fa fa-li fa-print fa-lg text-warning" aria-hidden="true"></i>
-                            Печать КП
+                            <?= ($order['pdf'][PdfTable::TYPE_KP] ? "Печать" : "Запросить") ?> КП
                         </a>
                     </li>
+                    <? if (!empty($order['pdf'][PdfTable::TYPE_BILL])) :?>
+                    <li>
+                        <a href="/account/orders/pdf/<?= $order['id'] ?>/<?= $order['pdf'][PdfTable::TYPE_BILL]['guid_id'] ?>">
+                            <i class="fa fa-li fa-lg fa-print text-warning" aria-hidden="true"></i>
+                            Печать счета на оплату
+                        </a>
+                    </li>
+                    <? endif; ?>
                     <li>
                         <a data-confirmation="copy-to-cart" href="/account/orders/?copy_to_cart=<?= $order['id'] ?>&state=active">
                             <i class="fa fa-li fa-shopping-cart fa-lg text-primary" aria-hidden="true"></i>
@@ -220,4 +229,27 @@ $order = $arResult['order'];
 </p>
 <?
 \Hogart\Lk\Helper\Template\Dialog::End()
+?>
+
+<? \Hogart\Lk\Helper\Template\Dialog::Start('order-payment', [
+    'dialog-options' => 'closeOnOutsideClick: false, closeOnEscape: false, closeOnConfirm: false',
+    'title' => 'Подтверждение оплаты'
+])?>
+<form action="<?= $APPLICATION->GetCurPage() ?>" name="order-payment" method="post">
+    <? include __DIR__ . "/forms/payment.php" ?>
+    <input type="hidden" name="action" value="order-payment">
+</form>
+<?
+
+$id = \Hogart\Lk\Helper\Template\Dialog::$id;
+$handler =<<<JS
+    (function() {
+      var form = $('[data-remodal-id="$id"] form');
+      var inst = $('[data-remodal-id="$id"]').remodal();
+      form.validator();
+    })
+JS;
+\Hogart\Lk\Helper\Template\Dialog::Event('opening', $handler);
+
+\Hogart\Lk\Helper\Template\Dialog::End(['confirm' => false])
 ?>

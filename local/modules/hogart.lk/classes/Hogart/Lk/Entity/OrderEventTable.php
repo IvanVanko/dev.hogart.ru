@@ -26,15 +26,20 @@ class OrderEventTable extends AbstractEntity
     const ORDER_EVENT_ORDER_PAYMENT_SUCCESS = "payment_success";
     const ORDER_EVENT_RTU_SUCCESS = "rtu_success";
     const ORDER_EVENT_ORDER_RTU_CREATE = "order_rtu_create";
+    const ORDER_EVENT_PDF_BILL_SUCCESS = "order_pdf_bill_success";
+    const ORDER_EVENT_PDF_KP_SUCCESS = "order_pdf_kp_success";
 
     const ENTITY_ORDER_RTU = __NAMESPACE__ . "\\OrderRTUTable";
     const ENTITY_RTU = __NAMESPACE__ . "\\RTUTable";
     const ENTITY_ORDER_PAYMENT = __NAMESPACE__ . "\\OrderPaymentTable";
+    const ENTITY_PDF = __NAMESPACE__ . "\\PdfTable";
 
     private static $events = [
         self::ORDER_EVENT_ORDER_PAYMENT_SUCCESS => self::ENTITY_ORDER_PAYMENT,
         self::ORDER_EVENT_RTU_SUCCESS => self::ENTITY_RTU,
-        self::ORDER_EVENT_ORDER_RTU_CREATE => self::ENTITY_ORDER_RTU
+        self::ORDER_EVENT_ORDER_RTU_CREATE => self::ENTITY_ORDER_RTU,
+        self::ORDER_EVENT_PDF_BILL_SUCCESS => self::ENTITY_PDF,
+        self::ORDER_EVENT_PDF_KP_SUCCESS => self::ENTITY_PDF,
     ];
 
     /**
@@ -96,7 +101,8 @@ class OrderEventTable extends AbstractEntity
                 'created_at' => 'DESC'
             ]
         ])->fetchAll(), function ($result, $event) {
-            if (($event_note = self::getEntityNote($event)) instanceof OrderEventNote) {
+            if (($event_note = self::getEntityNote($event)) && $event_note instanceof OrderEventNote) {
+                $event_note->setGuid($event['guid_id']);
                 $result[] = $event_note;
             }
             return $result;

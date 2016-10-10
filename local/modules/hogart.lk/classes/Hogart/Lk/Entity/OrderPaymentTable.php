@@ -16,8 +16,12 @@ use Bitrix\Main\Entity\StringField;
 use Bitrix\Main\Entity\EnumField;
 use Bitrix\Main\Entity\FloatField;
 use Bitrix\Main\Entity\BooleanField;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Hogart\Lk\Field\GuidField;
 use Bitrix\Main\Entity\DateField;
+use Hogart\Lk\Helper\Template\FlashInfo;
+use Hogart\Lk\Helper\Template\FlashSuccess;
 use Hogart\Lk\Helper\Template\Money;
 use Hogart\Lk\Helper\Template\OrderEventNote;
 
@@ -126,6 +130,17 @@ class OrderPaymentTable extends AbstractEntity implements IOrderEventNote
         ;
 
         return $note;
+    }
+
+    public static function createPaymentByUser($order_id, $form, $sum, \CBitrixComponent $component = null)
+    {
+        $order = OrderTable::getOrder($order_id);
+        switch ($form) {
+            case self::PAYMENT_FORM_BANK:
+                PdfTable::pdfRequest($order['guid_id'], PdfTable::TYPE_BILL);
+                new FlashSuccess("Вы будете уведомлены по готовности счета!");
+                break;
+        }
     }
 
     public static function onAfterAdd(Event $event)

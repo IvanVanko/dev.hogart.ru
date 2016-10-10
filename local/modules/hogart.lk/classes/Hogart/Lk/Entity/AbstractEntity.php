@@ -21,11 +21,16 @@ use Hogart\Lk\Field\GuidField;
  */
 abstract class AbstractEntity extends Entity\DataManager
 {
-    public static function publishToRabbit(AbstractExchange $exchange, AbstractPutRequest $request)
+    /**
+     * @param AbstractExchange $exchange
+     * @param AbstractPutRequest $request
+     * @param string $key
+     */
+    public static function publishToRabbit(AbstractExchange $exchange, AbstractPutRequest $request, $key = 'put')
     {
         if (!Consumer::getInstance()->isIsCliContext()) {
             $exchange->useConsumer(Consumer::getInstance());
-            $exchange->publish(serialize($request), 'put');
+            $exchange->publish(serialize($request), $key);
         }
     }
     /**

@@ -79,7 +79,7 @@ class OrderItem extends AbstractMethod
                 'total_vat' => floatval($orderItem->Sum_VAL),
                 'status' => (int)$orderItem->Status_Item,
                 'delivery_time' => intval($orderItem->Delivery_Time),
-                'item_group' => $orderItem->Group,
+                'item_group' => (string)$orderItem->Group,
             ];
             if (($existing_item = array_shift($existing_items))) {
                 $data['id'] = $existing_item['id'];

@@ -55,7 +55,7 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
 ?>
 
 <div class="cart-wrapper row">
-    <div id="carts" class="col-sm-12">
+    <div id="carts" class="full-height col-sm-12">
         <? $carts_node = Ajax::Start($component, ['step1']) ?>
         <div class="row spacer">
             <div class="col-sm-9">
@@ -123,6 +123,7 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                                                         $store_name = htmlspecialchars($store_name);
                                                         ?>
                                                         <option <?= ($cart['store_guid'] == $store['XML_ID'] ? "selected" : "") ?> data-content="<?= $store_name ?>" value="<?= $store['XML_ID'] ?>"><?= $store_name ?></option>
+                                                        <? if ($cart['store_guid'] == $store['XML_ID']) $selected_store = $store; ?>
                                                     <? endforeach; ?>
                                                 </select>
                                             </div>
@@ -180,9 +181,7 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                                                             </div>
                                                         </div>
                                                         <div class="header-info col-sm-8 pull-right">
-                                                            <div class="pull-right text-right">Вес: <?= $cart['item_group_totals']['weight'][$item_group] ?> кг.</div>
-                                                            <div class="pull-right text-right">Объем: <?= $cart['item_group_totals']['volume'][$item_group] ?> м<sup>3</sup></div>
-                                                            <div class="pull-right text-right">Итого: <span class="money-<?= strtolower($cart['currency']['CURRENCY']) ?>"><?= Money::show($cart['item_group_totals']['money'][$item_group]) ?></span></div>
+                                                            <div class="text-right">Итого: <span class="money-<?= strtolower($cart['currency']['CURRENCY']) ?>"><?= Money::show($cart['item_group_totals']['money'][$item_group]) ?></span></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -215,9 +214,6 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                                                         <? if (!empty($cart['store_guid'])) :?>
                                                             <th>Наличие</th>
                                                         <? endif; ?>
-
-                                                        <th>Вес</th>
-                                                        <th>Объем</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -252,20 +248,45 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                                                             <td class="text-nowrap money-<?= strtolower($cart['currency']['CURRENCY']) ?>"><?= $item['discount']['price'] ?></td>
                                                             <td class="text-nowrap money-<?= strtolower($cart['currency']['CURRENCY']) ?>"><?= ($item['discount']['price'] * $item['count']) ?></td>
 
-                                                            <? if (!empty($cart['store_guid'])) :?>
-                                                                <td>
-                                                                    <?= $item['STORE_AMOUNT'] ?>
-                                                                    <? if($item['PREV_POS_AMOUNT']): ?>
-                                                                        <sup class="prev_pos_amount"><?= $item['PREV_POS_AMOUNT'] ?></sup>
-                                                                    <? endif; ?>
-                                                                    <? if($item['NEGATIVE_AMOUNT']): ?>
-                                                                        <sub class="negative_amount"><?= $item['NEGATIVE_AMOUNT'] ?></sub>
-                                                                    <? endif; ?>
+                                                            <? if (!empty($selected_store)) :?>
+                                                                <td class="text-center">
+                                                                    <div class="quantity-wrapper center-between">
+                                                                        <div>
+                                                                            <?
+                                                                            $class = "color-primary";
+                                                                            if ($item['NEGATIVE_AMOUNT'] > 0) {
+                                                                                $class = "color-warning";
+                                                                            }
+                                                                            if ($item['STORE_AMOUNT'] <= 0) {
+                                                                                $class = "color-danger";
+                                                                            }
+                                                                            ?>
+                                                                            <i class="fa fa-circle <?= $class ?>"></i>
+                                                                        </div>
+                                                                        <div class="h6 text-nowrap text-right" style="margin-left: 5px">
+                                                                            <div>
+                                                                                <b><?= $selected_store["TITLE"] ?></b>
+                                                                                <?= $item['STORE_AMOUNT'] ?>
+                                                                                <?= $arResult['measures'][$item['product']['MEASURE']] ?>
+                                                                            </div>
+                                                                            <? if ($item['STORE_ALL_AMOUNT'] - $item['STORE_AMOUNT'] > 0): ?>
+                                                                            <div>
+                                                                                <b>На других</b>
+                                                                                <?= ($item['STORE_ALL_AMOUNT'] - $item['STORE_AMOUNT'])?>
+                                                                                <?= $arResult['measures'][$item['product']['MEASURE']] ?>
+                                                                            </div>
+                                                                            <? endif; ?>
+                                                                            <? if (!empty($item['STORE_TRANSIT'])): ?>
+                                                                            <div>
+                                                                                <b>В пути</b>
+                                                                                <?= $item['STORE_TRANSIT'] ?>
+                                                                                <?= $arResult['measures'][$item['product']['MEASURE']] ?>
+                                                                            </div>
+                                                                            <? endif; ?>
+                                                                        </div>
+                                                                    </div>
                                                                 </td>
                                                             <? endif; ?>
-
-                                                            <td><?= round($item['product']['WEIGHT'] * $item['count'], 2) ?> кг. </td>
-                                                            <td><?= (round($item['product']['WIDTH'] * $item['product']['LENGTH'] * $item['product']['HEIGHT'] / pow(1000, 3) * $item['count'], 2)) ?> м<sup>3</sup></sup></td>
                                                         </tr>
                                                     <? endforeach; ?>
                                                     </tbody>
@@ -338,7 +359,14 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                                                         'new_item_group' => null,
                                                         'copy' => null
                                                     ],
-                                                    'class="btn btn-primary"'
+                                                    'class="btn btn-primary"',
+                                                    Ajax::DIALOG_AJAX_LINK,
+                                                    [
+                                                        'title' => 'Создание заказа',
+                                                        'template_file' => __DIR__ . "/forms/add-order.php",
+                                                        'template_vars' => ['cart' => $cart],
+                                                        'dialog_event_hogart.lk.openajaxlinkdialog' => 'openLinkAddOrderDialog',
+                                                    ]
                                                 ) ?>
                                             </li>
                                             <? if (!empty($cart['store_guid'])): ?>

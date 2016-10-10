@@ -14,7 +14,7 @@ use Hogart\Lk\Entity\AddressTypeTable;
 use Hogart\Lk\Entity\ContactInfoTable;
 use Hogart\Lk\Entity\ContactTable;
 use Hogart\Lk\Entity\ContactRelationTable;
-use Hogart\Lk\Entity\IOrderRTUTable;
+use Hogart\Lk\Entity\OrderRTUTable;
 use Hogart\Lk\Entity\OrderTable;
 use Hogart\Lk\Entity\OrderRTUItemTable;
 use Hogart\Lk\Entity\OrderEventTable;
@@ -29,7 +29,7 @@ if (!empty($_POST['action'])) {
                 'account_id' => $arParams['account']['id'],
                 'delivery_type' => intval($_POST['delivery_type']),
                 'plan_date' => new Date($_POST['plan_date'], 'd.m.Y'),
-                'plan_time' => (string)IOrderRTUTable::getDateIntevalText($_POST['plan_time']),
+                'plan_time' => (string)OrderRTUTable::getDateIntevalText($_POST['plan_time']),
                 'email' => (string)$_POST['email'],
                 'phone' => ContactInfoTable::clearPhone($_POST['phone']),
                 'is_sms_notify' => (bool)$_POST['is_sms_notify'],
@@ -59,7 +59,7 @@ if (!empty($_POST['action'])) {
             }
             if (!empty($_POST['tk_address'])) {
                 $address = json_decode($_POST['__tk_address']);
-                $address_type = AddressTypeTable::getByField('code', AddressTypeTable::TYPE_TK);
+                $address_type = AddressTypeTable::getByCode(AddressTypeTable::TYPE_TK);
                 $addressRes = AddressTable::replace([
                     'owner_id' => $arParams['account']['id'],
                     'owner_type' => AddressTable::OWNER_TYPE_ACCOUNT,
@@ -125,7 +125,7 @@ if (!empty($_POST['action'])) {
                 ]);
             }
 
-            $orderRTUResult = IOrderRTUTable::add($orderRtu);
+            $orderRTUResult = OrderRTUTable::add($orderRtu);
             if ($orderRTUResult->getId()) {
                 $order_rtu_id = $orderRTUResult->getId();
                 $rows = json_decode($_POST['rows'], true);
@@ -160,6 +160,8 @@ if (!empty($_POST['action'])) {
                     OrderTable::resort($item['order_id']);
                     $orders[] = $item['order_id'];
                 }
+
+                OrderRTUTable::putTo1c($order_rtu_id);
 
                 foreach (array_unique($orders) as $order_id) {
                     OrderEventTable::add([

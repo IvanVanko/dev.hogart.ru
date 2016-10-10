@@ -98,6 +98,25 @@ function openLinkAddItemsDialog (e, dialogInstance, link) {
     });
 }
 
+function openLinkAddOrderDialog (e, dialogInstance, link) {
+
+  $(':input', dialogInstance.$modal).each(function (i, el) {
+    $(el).val($(el).defaultValue);
+  });
+
+  dialogInstance.$modal
+    .off('hogart.lk.ajaxurlchange')
+    .on('hogart.lk.ajaxurlchange', function (e, a) {
+      e.stopPropagation();
+      $('input[data-switch]:checked', dialogInstance.$modal).each(function (i, el) {
+        a.search += "&" + $(el).attr('name') + "=" + (+$(el).is(':checked'));
+      });
+      $('textarea', dialogInstance.$modal).each(function (i, el) {
+        a.search += "&" + $(el).attr('name') + "=" + $(el).val();
+      });
+    });
+}
+
 function openLinkEditItemGroupDialog (e, dialogInstance, link) {
   $('input', dialogInstance.$modal).each(function (i, el) {
     $(el).val($(el).defaultValue);

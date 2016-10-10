@@ -85,7 +85,7 @@ class Contract extends AbstractMethod
                 'guid_id' => $contract->Contr_ID,
                 'company_id' => $client_company['id'],
                 'hogart_company_id' => $hogart_company['id'],
-                'number' => $contract->Contr_Number,
+                'number' => (string)$contract->Contr_Number,
                 'start_date' => new Date((string)$contract->Contr_Date, 'Y-m-d'),
                 'end_date' => new Date((string)$contract->Contr_DateTO, 'Y-m-d'),
                 'extension' => $contract->Contr_Prolon,

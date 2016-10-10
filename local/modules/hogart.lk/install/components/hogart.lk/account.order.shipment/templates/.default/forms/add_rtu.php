@@ -1,5 +1,5 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
-use Hogart\Lk\Entity\IOrderRTUTable;
+use Hogart\Lk\Entity\OrderRTUTable;
 use Hogart\Lk\Entity\ContactTable;
 ?>
 <div class="row spacer">
@@ -8,20 +8,20 @@ use Hogart\Lk\Entity\ContactTable;
             <div class="row spacer text-center">
                 <div class="col-sm-6">
                     <label class="">
-                        Самовывоз <input data-switch checked="checked" type="radio" name="delivery_type" value="<?= IOrderRTUTable::DELIVERY_SELF ?>">
+                        Самовывоз <input data-switch checked="checked" type="radio" name="delivery_type" value="<?= OrderRTUTable::DELIVERY_SELF ?>">
                     </label>
                 </div>
                 <div class="col-sm-6">
                     <label class="">
-                        Доставка <input data-switch type="radio" name="delivery_type" value="<?= IOrderRTUTable::DELIVERY_OUR ?>">
+                        Доставка <input data-switch type="radio" name="delivery_type" value="<?= OrderRTUTable::DELIVERY_OUR ?>">
                     </label>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-sm-12">
-                    <label data-delivery-type="<?= IOrderRTUTable::DELIVERY_SELF ?>" class="active control-label">Планируемое время отгрузки</label>
-                    <label data-delivery-type="<?= IOrderRTUTable::DELIVERY_OUR ?>" class="control-label">Планируемое время доставки</label>
+                    <label data-delivery-type="<?= OrderRTUTable::DELIVERY_SELF ?>" class="active control-label">Планируемое время отгрузки</label>
+                    <label data-delivery-type="<?= OrderRTUTable::DELIVERY_OUR ?>" class="control-label">Планируемое время доставки</label>
                 </div>
             </div>
             <div class="row spacer">
@@ -31,8 +31,8 @@ use Hogart\Lk\Entity\ContactTable;
                 </div>
                 <div class="col-sm-4">
                     <select name="plan_time" class="form-control selectpicker" title="Выберите один из интервалов">
-                        <? foreach (IOrderRTUTable::getIntervals() as $interval): ?>
-                            <option value="<?= $interval ?>"><?= IOrderRTUTable::getDateIntevalText($interval) ?></option>
+                        <? foreach (OrderRTUTable::getIntervals() as $interval): ?>
+                            <option value="<?= $interval ?>"><?= OrderRTUTable::getDateIntevalText($interval) ?></option>
                         <? endforeach; ?>
                     </select>
                 </div>
@@ -43,7 +43,7 @@ use Hogart\Lk\Entity\ContactTable;
 
 <div class="row spacer">
     <div class="col-sm-12">
-        <div class="active" data-delivery-type="<?= IOrderRTUTable::DELIVERY_SELF ?>">
+        <div class="active" data-delivery-type="<?= OrderRTUTable::DELIVERY_SELF ?>">
             <div class="row">
                 <div class="col-sm-12">
                     <label class="control-label">Место отгрузки</label>
@@ -62,7 +62,7 @@ use Hogart\Lk\Entity\ContactTable;
             </div>
         </div>
 
-        <div disabled="disabled" class="" data-delivery-type="<?= IOrderRTUTable::DELIVERY_OUR ?>">
+        <div disabled="disabled" class="" data-delivery-type="<?= OrderRTUTable::DELIVERY_OUR ?>">
             <div class="row">
                 <div class="col-sm-12">
                     <label class="control-label">Контактное лицо</label>
