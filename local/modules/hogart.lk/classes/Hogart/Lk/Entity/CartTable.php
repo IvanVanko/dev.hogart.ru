@@ -156,7 +156,7 @@ class CartTable extends AbstractEntity
                 $is_valid_cart_price = (bool)max(0, $price_ttl->getTimestamp() - (new \Bitrix\Main\Type\DateTime())->getTimestamp());
                 $price = GetCatalogProductPrice($item['item_id'], $group_id);
                 $item['price'] = $is_valid_cart_price ? $item['price'] : $price['PRICE'];
-                if ($cart['currency']['BASE'] == 'N') {
+                if (!empty($cart['currency']) && $cart['currency']['BASE'] == 'N') {
                     $item['price'] /= $cart['currency']['CURRENT_BASE_RATE'];
                     $item['price'] = round($item['price'], 2);
                 }
@@ -190,10 +190,7 @@ class CartTable extends AbstractEntity
 
 
                 $products = array_reduce($products, function ($result, $item) { $result[$item['ID']] = $item; return $result; }, []);
-
-                if ($cart['contract_id'] > 0) {
-                    $discount_prices = CompanyDiscountTable::preparePricesByContract($cart['contract_id'], $discount_prices);
-                }
+                $discount_prices = CompanyDiscountTable::preparePricesByContract($cart['contract_id'], $discount_prices);
 
                 foreach ($cart['items'] as &$item) {
                     $item['props'] = $items[$item['item_id']];

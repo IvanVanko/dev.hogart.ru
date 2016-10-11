@@ -73,6 +73,7 @@
         });
 
         self.on('keyup', function (e) {
+          var data = self.data('changeApply');
           if (e.keyCode == 13) {
             if (data.changed)
               self.trigger('changeapply');
@@ -81,7 +82,6 @@
           if (e.keyCode == 27) {
             self.trigger('changediscard');
           }
-          var data = self.data('changeApply');
           if (e.target.value != data.initVal) {
             apply.css('visibility', 'visible');
             data.changed = true;

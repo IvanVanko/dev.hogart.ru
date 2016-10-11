@@ -51,20 +51,23 @@ class CompanyDiscountTable extends AbstractEntity
      * @param array $prices
      * @return array
      */
-    public static function preparePricesByContract($contract_id, $prices = [])
+    public static function preparePricesByContract($contract_id = 0, $prices = [])
     {
         // ID номенклатуры
         $id = array_keys($prices);
-        $discounts = array_reduce(self::getList([
-            'filter' => [
-                '=item_id' => $id,
-                '=company.Hogart\Lk\Entity\ContractTable:company.id' => $contract_id
-            ],
-            'select' => [
-                'item_id',
-                'discount'
-            ]
-        ])->fetchAll(), function ($result, $item) { $result[$item['item_id']]['discount'] = $item['discount']; return $result; }, []);
+        $discounts = [];
+        if ($contract_id > 0) {
+            $discounts = array_reduce(self::getList([
+                'filter' => [
+                    '=item_id' => $id,
+                    '=company.Hogart\Lk\Entity\ContractTable:company.id' => $contract_id
+                ],
+                'select' => [
+                    'item_id',
+                    'discount'
+                ]
+            ])->fetchAll(), function ($result, $item) { $result[$item['item_id']]['discount'] = $item['discount']; return $result; }, []);
+        }
         foreach ($prices as $id => &$price) {
             $new_price = round($price * (100 - $discounts[$id]['discount']) / 100, 2);
             $price = [
