@@ -11,8 +11,6 @@
 define("NEED_AUTH", true);
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 
-CModule::IncludeModule('hogart.lk');
-
 $APPLICATION->AddChainItem("Аккаунт");
 $APPLICATION->AddChainItem("Корзина");
 

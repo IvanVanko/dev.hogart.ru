@@ -43,6 +43,8 @@ define("HOGART_DATE_TIME_FORMAT", "d.m.Y H:i");
 
 \Hogart\Lk\Helper\Template\Notification::init();
 
+\Bitrix\Main\Page\Asset::getInstance()->addJs('//cdnjs.cloudflare.com/ajax/libs/event-source-polyfill/0.0.7/eventsource.min.js', true);
+
 \Bitrix\Main\Page\Asset::getInstance()->addJs('//cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js', true);
 
 \Bitrix\Main\Page\Asset::getInstance()->addCss('//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css', true);
@@ -61,9 +63,6 @@ define("HOGART_DATE_TIME_FORMAT", "d.m.Y H:i");
 \Bitrix\Main\Page\Asset::getInstance()->addJs('//cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js', true);
 \Bitrix\Main\Page\Asset::getInstance()->addJs('//cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/locale/ru.js', true);
 
-\Bitrix\Main\Page\Asset::getInstance()->addCss('/local/modules/hogart.lk/assets/bootstrap-switch/build.css', true);
-\Bitrix\Main\Page\Asset::getInstance()->addJs('//cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/js/bootstrap-switch.min.js', true);
-
 \Bitrix\Main\Page\Asset::getInstance()->addCss('/local/modules/hogart.lk/assets/datatables/datatables.min.css', true);
 \Bitrix\Main\Page\Asset::getInstance()->addJs('/local/modules/hogart.lk/assets/datatables/datatables.min.js', true);
 
@@ -78,6 +77,10 @@ define("HOGART_DATE_TIME_FORMAT", "d.m.Y H:i");
 \Bitrix\Main\Page\Asset::getInstance()->addJs('//cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.5/themes/fa/theme.min.js', true);
 
 \Bitrix\Main\Page\Asset::getInstance()->addJs('//bootstrap-notify.remabledesigns.com/js/bootstrap-notify.min.js', true);
+
+\Bitrix\Main\Page\Asset::getInstance()->addJs('//cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/0.11.1/typeahead.jquery.min.js', true);
+
+\Bitrix\Main\Page\Asset::getInstance()->addJs('//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js', true);
 
 \Bitrix\Main\Page\Asset::getInstance()->addCss('//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.42/css/bootstrap-datetimepicker.min.css', true);
 \Bitrix\Main\Page\Asset::getInstance()->addJs('//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.42/js/bootstrap-datetimepicker.min.js', true);

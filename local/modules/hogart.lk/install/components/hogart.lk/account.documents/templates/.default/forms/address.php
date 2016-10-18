@@ -3,9 +3,12 @@
         <label class="control-label">Адрес доставки</label>
     </div>
     <div class="col-sm-6 pull-right text-right">
-        <label class="checkbox-inline">
-            <input checked="checked" type="checkbox" name="is_active" value="1"> Активен
-        </label>
+        <div class="checkbox checkbox-primary checkbox-inline">
+            <input checked="checked" type="checkbox" name="is_active" value="1">
+            <label>
+                Активен
+            </label>
+        </div>
     </div>
 </div>
 <div class="row spacer">

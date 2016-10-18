@@ -37,13 +37,16 @@ use Hogart\Lk\Helper\Template\ViewNode;
                 <div class="col-sm-12 center-between">
                     <label class="control-label">Имя группы</label>
                     <div class="pull-right text-right">
-                        <label class="checkbox-inline">
-                             Копировать выбранные строки <input data-on-text="Да" data-off-text="Нет" data-switch type="checkbox" name="copy" value="1">
-                        </label>
+                        <div class="checkbox checkbox-primary">
+                            <input data-switch type="checkbox" name="copy" value="1">
+                            <label for="">
+                                Копировать выбранные строки
+                            </label>
+                        </div>
                     </div>
                 </div>
                 <div class="col-sm-12 form-group">
-                    <input data-source="<?= htmlspecialchars(json_encode($this->getComponent()->arResult['item_groups'])) ?>" data-provide="typeahead" class="form-control" type="text" name="new_item_group" value=""/>
+                    <input class="form-control" type="text" name="new_item_group" value=""/>
                 </div>
             </div>
         </div>

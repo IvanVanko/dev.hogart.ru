@@ -33,9 +33,9 @@ $account = AccountTable::getAccountByUserID($USER->GetID());
 
 if ($account['id']) {
     if ($_REQUEST['item_id'] && Ajax::isAjax(Cart::init($this))) {
-        if (($result = CartItemTable::addItem($account['id'], $_REQUEST['item_id'], ((int)$_REQUEST['count']) ? : 1))) {
+        if (($result = CartItemTable::addItem($account['id'], $_REQUEST['item_id'], ((int)$_REQUEST['count']) ? : 1)) && $result->getId()) {
             $data = $result->getData();
-            new FlashSuccess(vsprintf("Позиция <strong><u>%s</u></strong> добавлена!<br>Перейти в корзину", [$data['element']['NAME']]), '/account/cart/');
+            new FlashSuccess(vsprintf("Позиция <b><u>%s</u></b> добавлена!<br>Перейти в корзину", [$data['element']['NAME']]), '/account/cart/');
         }
     }
     $arResult['count'] = CartItemTable::getAccountCartCount($account['id']);

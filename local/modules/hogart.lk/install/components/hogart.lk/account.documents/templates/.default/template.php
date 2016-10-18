@@ -234,9 +234,12 @@ use Hogart\Lk\Entity\ContractTable;
             </select>
         </div>
         <div class="col-sm-4 pull-right text-right">
-            <label class="checkbox-inline">
-                Активно&nbsp;<input data-switch checked="checked" type="checkbox" name="is_active" value="1">
-            </label>
+            <div class="checkbox checkbox-primary checkbox-inline">
+                <input data-switch checked="checked" type="checkbox" name="is_active" value="1">
+                <label>
+                    Активно
+                </label>
+            </div>
         </div>
     </div>
     <? include (__DIR__ . "/forms/company_type_" . CompanyTable::TYPE_LEGAL_ENTITY . ".php"); ?>

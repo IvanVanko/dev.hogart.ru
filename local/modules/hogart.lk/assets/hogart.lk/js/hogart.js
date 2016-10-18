@@ -91,6 +91,28 @@ Hogart_Lk.__proto__.createAjaxObserver = function (selector, callback, options) 
   return obServer;
 };
 
+Hogart_Lk.__proto__.EventSource = new EventSource("/account/_sse/");
+Hogart_Lk.__proto__.EventSource.addEventListener("message", function (event) {
+  var type = event.type;
+  if (type === "message") {
+    var message;
+    try {
+      message = JSON.parse(event.data);
+    } catch (exception) {
+    }
+    if ($.isPlainObject(message)) {
+      switch (message.type) {
+        case 'notify':
+          $.notify(message.data[0], message.data[1]);
+          break;
+        case 'cart_counter':
+
+          break;
+      }
+    }
+  }
+});
+
 $(function () {
   $(document).on('hogart.lk.ajaxurlchange', '[data-onchangeurl]', function (e, a) {
     e.stopPropagation();
@@ -111,6 +133,8 @@ $(function () {
   if (typeof $.notifyDefaults == "function") {
     $.notifyDefaults({
       newest_on_top: true,
+      showProgressbar: true,
+      mouse_over: "pause",
       offset: {
         y: 105,
         x: 10
@@ -121,5 +145,4 @@ $(function () {
       }
     });
   }
-
 });

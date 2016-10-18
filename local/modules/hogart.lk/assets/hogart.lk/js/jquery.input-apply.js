@@ -8,13 +8,15 @@
     this.each(function () {
       var self = $(this);
       var initData = {
-        discard: $.type(self.data('changeDiscard')) !== "undefined" ? self.data('changeDiscard') : true
+        discard: $.type(self.data('changeDiscard')) !== "undefined" ? self.data('changeDiscard') : true,
+        onBlurTrigger: $.type(self.data('changeOnBlurTrigger')) !== "undefined" ? self.data('changeOnBlurTrigger') : 'changeapply'
       };
 
       var settings = $.extend({
         applyTemplate: '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>',
         discardTemplate: '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>',
-        onDiscard: $.noop
+        onDiscard: $.noop,
+        onBlurTrigger: 'changeapply'
       }, initData, options);
 
       if (self.is(':input') && (['text']).indexOf(self.attr('type')) != -1) {
@@ -68,7 +70,7 @@
         self.on('blur', function (e) {
           var data = self.data('changeApply');
           if (data.changed)
-            self.trigger('changeapply');
+            self.trigger(settings.onBlurTrigger);
           return true;
         });
 

@@ -106,18 +106,18 @@ class Ajax
     {
         global $APPLICATION;
         $html = "";
-        $killParams = array_merge(array_keys($params), [BX_AJAX_PARAM_ID]);
         $__html = "";
+        $killParams = array_merge(array_keys($params), [BX_AJAX_PARAM_ID]);
         foreach ($params as $key => $param) {
             if (preg_match("%^javascript:(?P<function>.*?)$%", $param, $m)) {
                 $__html .= '_[\'' . $key . '\'] = ' . htmlspecialchars($m['function']) . '';
                 unset($params[$key]);
             }
         }
+        $url = $APPLICATION->GetCurPageParam(http_build_query(array_merge([BX_AJAX_PARAM_ID => $ajax_id], $params)), $killParams, false);
         if (!empty($__html)) {
             $html .= 'data-onchangeurl=" ' . $__html .  ' "';
         }
-        $url = $APPLICATION->GetCurPageParam(http_build_query(array_merge([BX_AJAX_PARAM_ID => $ajax_id], $params)), $killParams, false);
         $function = self::__load($ajax_id, $url, $container);
         if (!empty($dialog)) {
             switch ($dialog) {

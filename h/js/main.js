@@ -37,7 +37,7 @@ app.initFullHeight = function () {
 
         var window_height = $(window).outerHeight() - 55;
 
-        
+
         $(".index-page .blur-main").height($(window).outerHeight());
         $(".index-page .wrapper").height($(window).outerHeight());
 
@@ -1175,7 +1175,7 @@ app.validationForm = function () {
         }
     };
     self.messages = this.messages[$('html').data('lang')];
-    
+
     var isEmail = function (email) {
             var re = /\S+@\S+\.\S+/;
             return re.test(email);

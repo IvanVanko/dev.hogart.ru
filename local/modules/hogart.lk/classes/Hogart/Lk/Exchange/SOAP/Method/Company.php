@@ -80,7 +80,7 @@ class Company extends AbstractMethod
             }
         }
         foreach ($response->return->Company as $company) {
-            if ($company->Comp_ID_Chief == '00000000-0000-0000-0000-000000000000')
+            if ($company->Comp_ID_Chief == '00000000-0000-0000-0000-000000000000' || null === $company->Comp_ID_Chief)
                 $chief['id'] = 0;
             else {
                 $chief = ContactTable::getByField('guid_id', $company->Comp_ID_Chief);

@@ -47,9 +47,12 @@ use Hogart\Lk\Entity\CompanyTable;
         <div class="col-sm-12 center-between">
             <label class="control-label">Фактический адрес</label>
             <div class="pull-right text-right">
-                <label class="checkbox-inline">
-                    Совпадает с юридическим адресом <input data-switch checked="checked" onchange="document.getElementById('actual_address').disabled=this.checked;" type="checkbox" name="actual_address_as_legal" value="1">
-                </label>
+                <div class="checkbox checkbox-primary checkbox-inline">
+                    <input data-switch checked="checked" onchange="document.getElementById('actual_address').disabled=this.checked;" type="checkbox" name="actual_address_as_legal" value="1">
+                    <label>
+                        Совпадает с юридическим адресом
+                    </label>
+                </div>
             </div>
         </div>
     </div>

@@ -13,9 +13,12 @@
                         <div class="help-block with-errors"></div>
                     </div>
                     <div class="col-sm-6 pull-right text-right">
-                        <label class="checkbox-inline">
-                            Основной <input tabindex="-1" data-switch checked="checked" type="checkbox" name="payment_account[is_main]" value="1">
-                        </label>
+                        <div class="checkbox checkbox-primary checkbox-inline">
+                            <input tabindex="-1" data-switch checked="checked" type="checkbox" name="payment_account[is_main]" value="1">
+                            <label>
+                                Основной
+                            </label>
+                        </div>
                     </div>
                 </div>
                 <div class="row vertical-align">

@@ -10,6 +10,7 @@ namespace Hogart\Lk\Entity;
 
 
 use Bitrix\Main\Entity\BooleanField;
+use Bitrix\Main\Entity\Event;
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ReferenceField;
 use Hogart\Lk\Field\GuidField;
@@ -93,7 +94,8 @@ class AccountTable extends AbstractEntity
             ],
             'select' => [
                 '*',
-                'user_' => 'user'
+                'user_' => 'user',
+                'manager_' => 'main_manager'
             ]
         ])->fetch();
     }
@@ -138,6 +140,25 @@ class AccountTable extends AbstractEntity
                 'user_' => 'user'
             ]
         ])->fetchAll();
+    }
+
+    /**
+     * @param $email
+     */
+    public static function sendNewAccountPassword($email)
+    {
+        /** @global \CMain $APPLICATION */
+        global $DB;
+        $strSql =
+            "SELECT ID, LID, ACTIVE, CONFIRM_CODE, LOGIN, EMAIL, NAME, LAST_NAME ".
+            "FROM b_user u ".
+            "WHERE EMAIL='".$DB->ForSQL($email)."' ".
+            "	AND (ACTIVE='Y' OR NOT(CONFIRM_CODE IS NULL OR CONFIRM_CODE='')) ".
+            "	AND (EXTERNAL_AUTH_ID IS NULL OR EXTERNAL_AUTH_ID='') ";
+        $res = $DB->Query($strSql);
+        $arUser = $res->Fetch();
+        $site_id = \CSite::GetDefSite($arUser["LID"]);
+        \CUser::SendUserInfo($arUser["ID"], $site_id, '', true, 'ACCOUNT_NEW_USER');
     }
 
     /**

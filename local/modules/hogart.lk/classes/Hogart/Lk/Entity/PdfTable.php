@@ -180,6 +180,7 @@ class PdfTable extends AbstractEntity implements IOrderEventNote
             $message
                 ->setIcon('fa fa-file-text-o')
                 ->setUrl("/account/orders/pdf/" . $fields['entity_id'] . "/" . $id)
+                ->setDelay(0)
             ;
             FlashMessagesTable::addNewMessage($order['account_id'], $message);
         }

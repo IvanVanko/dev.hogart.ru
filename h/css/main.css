@@ -909,6 +909,7 @@ textarea {
   line-height: 55px;
   vertical-align: middle;
   padding-left: 0;
+  margin-bottom: 0;
 }
 .header-cnt .profile-url[data-depth] a {
   display: inline-block;

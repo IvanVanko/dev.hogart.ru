@@ -109,7 +109,7 @@ class OrderEventTable extends AbstractEntity
         }, []);
 
         usort($history, function (OrderEventNote $a, OrderEventNote $b) {
-            return $a->getDate()->getTimestamp() < $b->getDate()->getTimestamp();
+            return $a->getDate()->getTimestamp() > $b->getDate()->getTimestamp();
         });
 
         return $history;

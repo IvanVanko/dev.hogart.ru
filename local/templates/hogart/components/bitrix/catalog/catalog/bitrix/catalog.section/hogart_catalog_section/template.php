@@ -386,10 +386,10 @@ $this->setFrameMode(true);
                         </div>
                         <div class="col-md-6 text-right text-nowrap">
                         <? if ($arItem["CATALOG_QUANTITY"] > 0): ?>
-                            <div class="quantity quantity-success line <? if ($USER->IsAuthorized()): ?> line2<? endif; ?>">В
-                                наличии<? if ($USER->IsAuthorized()): ?> <span><?= $arItem["CATALOG_QUANTITY"]; ?>
+                            <div class="quantity quantity-success line <? if ($USER->IsAuthorized()): ?> line2<? endif; ?>">
+                            <? if ($USER->IsAuthorized()): ?> <span><?= $arItem["CATALOG_QUANTITY"]; ?>
                                     <?=$arItem['CATALOG_MEASURE_NAME']?>.</span><? endif; ?></div>
-                        <? else: ?>
+                            <? else: ?>
                             <div class="quantity quantity-fail text-nowrap">
                                 <i class="fa fa-truck" aria-hidden="true"></i> Под заказ
                             </div>

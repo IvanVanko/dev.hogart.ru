@@ -43,12 +43,14 @@ class FlashMessagesTable extends AbstractEntity
             new DatetimeField("created_at", [
                 'default_value' => new DateTime()
             ]),
+            new DatetimeField("received_at"),
             new IntegerField("account_id"),
             new ReferenceField("account", __NAMESPACE__ . "\\AccountTable", ["=this.account_id" => "ref.id"]),
             new StringField("severity"),
             new StringField("message"),
             new StringField("url"),
             new StringField("icon"),
+            new IntegerField("delay"),
         ];
     }
 
@@ -59,11 +61,17 @@ class FlashMessagesTable extends AbstractEntity
             'severity' => $message->getSeverity(),
             'message' => $message->getMessage(),
             'url' => (string)$message->getUrl(),
-            'icon' => (string)$message->getIcon()
+            'icon' => (string)$message->getIcon(),
+            'delay' => (int)$message->getDelay()
         ]);
     }
 
-    public static function getMessages($account_id)
+    /**
+     * @param $account_id
+     * @param int $timeout seconds
+     * @return Message[]
+     */
+    public static function getMessages($account_id, $timeout = 0)
     {
         return array_reduce(self::getList([
             'filter' => [
@@ -72,14 +80,25 @@ class FlashMessagesTable extends AbstractEntity
             'order' => [
                 'created_at' => 'ASC'
             ]
-        ])->fetchAll(), function ($result, $message) {
+        ])->fetchAll(), function ($result, $message) use ($timeout) {
+            if (!empty($message['received_at']) && $message['received_at']->getTimestamp() <= (new DateTime())->getTimestamp() - $timeout) {
+                self::delete($message['guid_id']);
+                return $result;
+            }
             $m = new Message($message['message'], $message['severity']);
             $m
                 ->setIcon($message['icon'])
                 ->setUrl($message['url'])
+                ->setDelay($message['delay'])
             ;
             $result[] = MessageFactory::getInstance()->addMessage($m);
-            self::delete($message['guid_id']);
+            if (!$timeout) {
+                self::delete($message['guid_id']);
+            } elseif (empty($message['received_at'])) {
+                self::update($message['guid_id'], [
+                    'received_at' => new DateTime()
+                ]);
+            }
             return $result;
         }, []);
     }

@@ -11,25 +11,57 @@ define("NO_KEEP_STATISTIC", true);
 define("NOT_CHECK_PERMISSIONS", true);
 define("ADMIN_SECTION", true);
 set_time_limit(0);
+ini_set("xdebug.var_display_max_depth", -1);
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
 
 CModule::IncludeModule("hogart.lk");
 CModule::IncludeModule("main");
 CModule::IncludeModule("catalog");
 
+//\Hogart\Lk\Entity\AccountTable::sendNewAccountPassword('test.lk2016@yandex.ru');
+//exit;
+//
+//require($_SERVER["DOCUMENT_ROOT"]."/k_1c_upload/ParsingModel.php");
+//$parse = new ParsingModel(false);
+
+//$answer = [
+//    "ID_Portal" => "HG",
+//    "StringStock" => "9e851ffa-3976-11e4-b439-003048b99ee9"
+//    "StringBrands" => "9e851ffa-3976-11e4-b439-003048b99ee9"
+//];
+
+//try {
+//    $parse->client->__soapCall("StockAnswer", array('parameters' => $answer));
+//    $parse->client->__soapCall("BrandAnswer", array('parameters' => $answer));
+//} catch (Exception $e) {
+//    var_dump($e);
+//}
 
 
+//$parse->answer = true;
+//while (true) {
+//    $parse->initCategory();
+//    $parse->initProduct();
+//    ob_end_flush();
+//    flush();
+//    sleep(1);
+//}
+//$parse->initBranch();
+//exit;
 /** @var \Hogart\Lk\Exchange\SOAP\Client $soap */
 $soap = \Hogart\Lk\Exchange\SOAP\Client::getInstance();
 
 $soap->getLogger()->registerLogger(new \Hogart\Lk\Logger\FileLogger(__DIR__ . "/../logs/soap.log"));
 
-ini_set("xdebug.var_display_max_depth", -1);
-
+//$c = new \Hogart\Lk\Exchange\SOAP\Request\Contact([\Hogart\Lk\Entity\ContactTable::getRowById(7)]);
+//var_dump($c->__toRequest());
+//var_dump($soap->Contact->contactsPut($c));
+//exit;
 //var_dump($soap->Contract->getContract());
 
-
-
+$o = new \Hogart\Lk\Exchange\SOAP\Request\OrderRTU([\Hogart\Lk\Entity\OrderRTUTable::getRTUOrder(1)]);
+//var_dump($o->__toRequest());
+var_dump($soap->OrderRTU->orderRTUPut($o));
 //var_dump($soap->Payment->updatePayments());
 //var_dump($soap->Contract->contractPut(new \Hogart\Lk\Exchange\SOAP\Request\Contract(\Hogart\Lk\Entity\ContractTable::getContractForExchange(2))));
 //var_dump($soap->Orders->ordersPut(new \Hogart\Lk\Exchange\SOAP\Request\Order([\Hogart\Lk\Entity\OrderTable::getOrder(5)])));
@@ -43,7 +75,7 @@ ini_set("xdebug.var_display_max_depth", -1);
 //var_dump($soap->AddressType->updateAddressTypes());
 //var_dump($soap->Address->updateAddresses());
 
-var_dump($soap->Orders->updateOrders());
+//var_dump($soap->Orders->updateOrders());
 
 //var_dump(new \Bitrix\Main\Type\DateTime("2016-10-03T13:26:23", 'Y-m-d H:i:s'));
 

@@ -1,3 +1,4 @@
+@import (reference) "../../../../../../../../templates/hogart/bootstrap";
 @import "../../../../../../../../templates/hogart/variables";
 
 .cart-counter {
@@ -6,19 +7,24 @@
   height: 100%;
   a {
     display: block;
-    transform: translateY(50%);
+    top: 50%;
+    transform: translateY(-50%);
+    position: relative;
     color: @brand-black;
+    .transition(color .2s linear);
     &:hover, &:active {
       color: @brand-green;
     }
     i {
-      font-size: @font-size-h3;
+      font-size: @font-size-h2;
+      padding-right: (@font-size-h2 - @font-size-h6 + 3);
     }
     .counter {
-      font-size: @font-size-h6;
-      width: 14px;
-      height: 14px;
-      border-radius: 14px;
+      font-size: (@font-size-h6 * .95);
+      width: floor((@font-size-h5 * @line-height-base));
+      height: floor((@font-size-h5 * @line-height-base));
+      border-radius: floor((@font-size-h5 * @line-height-base));
+      line-height: floor(@font-size-h5 * @line-height-base);
       color: white;
       background-color: @brand-green;
       display: block;

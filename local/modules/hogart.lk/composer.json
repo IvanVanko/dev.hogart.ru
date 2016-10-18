@@ -6,6 +6,7 @@
         "phpoffice/phpexcel": "^1.8",
         "intervention/image": "^2.3",
         "liip/process-manager": "^1.0",
-        "jeremeamia/superclosure": "^2.2"
+        "jeremeamia/superclosure": "^2.2",
+        "elasticsearch/elasticsearch": "^2.2"
     }
 }

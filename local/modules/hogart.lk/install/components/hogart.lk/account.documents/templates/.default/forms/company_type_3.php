@@ -37,9 +37,12 @@ use Hogart\Lk\Entity\CompanyTable;
         <div class="col-sm-12 center-between">
             <label class="control-label">Адрес проживания</label>
             <div class="pull-right text-right">
-                <label class="checkbox-inline">
-                    Совпадает с адресом прописки <input data-switch checked="checked" onchange="document.getElementById('residential_address_<?= CompanyTable::TYPE_INDIVIDUAL ?>').disabled=this.checked;" type="checkbox" name="residential_address_as_actual" value="1">
-                </label>
+                <div class="checkbox checkbox-primary checkbox-inline">
+                    <input data-switch checked="checked" onchange="document.getElementById('residential_address_<?= CompanyTable::TYPE_INDIVIDUAL ?>').disabled=this.checked;" type="checkbox" name="residential_address_as_actual" value="1">
+                    <label>
+                        Совпадает с адресом прописки
+                    </label>
+                </div>
             </div>
         </div>
     </div>

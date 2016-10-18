@@ -39,12 +39,18 @@
         </div>
         <div class="row">
             <div class="col-sm-12 text-center">
-                <input
-                    <?= (($arResult['current_company']['type'] == \Hogart\Lk\Entity\CompanyTable::TYPE_INDIVIDUAL) ? "checked readonly" : "") ?>
-                    name="perm_clearing"
-                    type="checkbox"
-                    value="1"
-                    data-switch>
+                <div class="checkbox checkbox-primary">
+                    <input
+                        <?= (($arResult['current_company']['type'] == \Hogart\Lk\Entity\CompanyTable::TYPE_INDIVIDUAL) ? "checked disabled" : "") ?>
+                            name="perm_clearing"
+                            type="checkbox"
+                            value="1"
+                            data-switch>
+                    <label></label>
+                    <? if ($arResult['current_company']['type'] == \Hogart\Lk\Entity\CompanyTable::TYPE_INDIVIDUAL): ?>
+                        <input type="hidden" name="perm_clearing" value="1">
+                    <? endif; ?>
+                </div>
             </div>
         </div>
     </div>
@@ -58,12 +64,18 @@
         </div>
         <div class="row">
             <div class="col-sm-12 text-center">
-                <input
-                    <?= (($arResult['current_company']['type'] == \Hogart\Lk\Entity\CompanyTable::TYPE_INDIVIDUAL) ? "checked readonly" : "") ?>
-                    name="perm_cash"
-                    type="checkbox"
-                    value="1"
-                    data-switch>
+                <div class="checkbox checkbox-primary">
+                    <input
+                        <?= (($arResult['current_company']['type'] == \Hogart\Lk\Entity\CompanyTable::TYPE_INDIVIDUAL) ? "checked disabled" : "") ?>
+                            name="perm_cash"
+                            type="checkbox"
+                            value="1"
+                            data-switch>
+                    <label for=""></label>
+                    <? if ($arResult['current_company']['type'] == \Hogart\Lk\Entity\CompanyTable::TYPE_INDIVIDUAL): ?>
+                        <input type="hidden" name="perm_cash" value="1">
+                    <? endif; ?>
+                </div>
             </div>
         </div>
     </div>
@@ -77,13 +89,16 @@
         </div>
         <div class="row">
             <div class="col-sm-12 text-center">
-                <input
-                    <?= (($arResult['current_company']['type'] == \Hogart\Lk\Entity\CompanyTable::TYPE_LEGAL_ENTITY) ? "" : "checked") ?>
-                    readonly
-                    name="perm_card"
-                    type="checkbox"
-                    value="1"
-                    data-switch>
+                <div class="checkbox checkbox-primary">
+                    <input
+                        <?= (($arResult['current_company']['type'] == \Hogart\Lk\Entity\CompanyTable::TYPE_LEGAL_ENTITY) ? "" : "checked") ?>
+                            disabled
+                            type="checkbox"
+                            value="1"
+                            >
+                    <label for=""></label>
+                    <input type="hidden" name="perm_card" value="<?= (($arResult['current_company']['type'] == \Hogart\Lk\Entity\CompanyTable::TYPE_LEGAL_ENTITY) ? "0" : "1") ?>">
+                </div>
             </div>
         </div>
     </div>
@@ -99,12 +114,15 @@
         </div>
         <div class="row">
             <div class="col-sm-12 text-center">
-                <input
-                    checked
-                    name="perm_item"
-                    type="checkbox"
-                    value="1"
-                    data-switch>
+                <div class="checkbox checkbox-primary">
+                    <input
+                            checked
+                            name="perm_item"
+                            type="checkbox"
+                            value="1"
+                            data-switch>
+                    <label for=""></label>
+                </div>
             </div>
         </div>
     </div>
@@ -118,12 +136,15 @@
         </div>
         <div class="row">
             <div class="col-sm-12 text-center">
-                <input
-                    <?= ($arResult['account']['is_promo_accesss'] ? "" : "readonly") ?>
-                    name="perm_promo"
-                    type="checkbox"
-                    value="1"
-                    data-switch>
+                <div class="checkbox checkbox-primary">
+                    <input
+                        <?= ($arResult['account']['is_promo_accesss'] ? "" : "disabled") ?>
+                        name="perm_promo"
+                        type="checkbox"
+                        value="1"
+                        data-switch>
+                    <label></label>
+                </div>
             </div>
         </div>
     </div>

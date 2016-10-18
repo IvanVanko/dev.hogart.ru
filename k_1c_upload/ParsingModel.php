@@ -1561,7 +1561,7 @@ class ParsingModel {
         }
 
         echo "</div>";
-        $this->initProp();
+        $this->initProp($ost);
 
         if(($ost->return == true)) {
             echo "<div class='suc'>Свойства загружены</div>";
@@ -1746,9 +1746,8 @@ class ParsingModel {
         }
     }
 
-    function initProp() {
+    function initProp($ost) {
 
-        $ost = $this->GetResultFunction('CategoryGet');
         $answer = array();
         $answer['ID_Portal'] = 'HG';
         //Объект элемента в модели битрикса

@@ -9,6 +9,7 @@
 namespace Hogart\Lk\Exchange\RabbitMQ\Exchange;
 
 
+use Hogart\Lk\Entity\AccountTable;
 use Hogart\Lk\Exchange\SOAP\Client;
 
 /**
@@ -31,6 +32,7 @@ class AccountExchange extends AbstractExchange
     {
         return [
             __NAMESPACE__ . '\ContactExchange',
+            __NAMESPACE__ . '\ContactInfoExchange',
             __NAMESPACE__ . '\CompanyExchange',
             __NAMESPACE__ . '\StaffExchange',
         ];
@@ -60,8 +62,8 @@ class AccountExchange extends AbstractExchange
                 }
                 break;
             case 'send_password':
-                // смена пароля для нового пользователя ЛК
-                \CUser::SendPassword($envelope->getBody(), $envelope->getBody());
+                // отсылка письма для нового пользователя ЛК
+                AccountTable::sendNewAccountPassword($envelope->getBody());
                 break;
         }
     }

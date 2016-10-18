@@ -88,6 +88,11 @@ $order = $arResult['order'];
                         <? if ($order['totals']['release'] <= 0 && $order['state'] == OrderTable::STATE_NORMAL && OrderTable::isProvideShipmentFlag($order['shipment_flag'], OrderItemTable::STATUS_IN_RESERVE)): ?>
                             <a href="/account/orders/shipment/<?= $order['s_XML_ID'] ?>/" class="btn btn-primary">Отгрузить</a>
                         <? endif; ?>
+                        <? if ($order['history'] > 0 && in_array($order['state'], [OrderTable::STATE_ARCHIVE, OrderTable::STATE_NORMAL])): ?>
+                            <a class="btn btn-warning btn-xs" href="/account/order/<?= $order['id'] ?>/history/">
+                                <i class="fa fa-history"></i> История
+                            </a>
+                        <? endif; ?>
                     </div>
                 </div>
                 <div class="row">
@@ -116,7 +121,9 @@ $order = $arResult['order'];
                                                 <th>№</th>
                                                 <th class="reorder">Арт.</th>
                                                 <th width="100%">Наименование</th>
+                                                <? if (in_array($order['state'], [OrderTable::STATE_NORMAL])): ?>
                                                 <th>Статус</th>
+                                                <? endif; ?>
                                                 <th class="text-center">Кол-во</th>
                                                 <th>Ед.</th>
                                                 <th>Цена</th>
@@ -133,7 +140,9 @@ $order = $arResult['order'];
                                                     <td><?= ($k + 1) ?></td>
                                                     <td class="text-nowrap"><?= $item['props']['sku']['VALUE'] ?></td>
                                                     <td><a target="_blank" href="<?= $item['url'] ?>"><?= $item['NAME'] ?></a></td>
+                                                    <? if (in_array($order['state'], [OrderTable::STATE_NORMAL])): ?>
                                                     <td><span class="label label-<?= OrderItemTable::getStatusColor($item['status']) ?>"><?= OrderItemTable::showStatusText($item['status']) ?></span></td>
+                                                    <? endif; ?>
                                                     <td class="text-nowrap"><?= $item['count'] ?></td>
                                                     <td><?= $order['measures'][$item['product']['MEASURE']] ?></td>
                                                     <td class="text-nowrap money-<?= strtolower($order['currency']['CURRENCY']) ?>"><?= $item['price'] ?></td>

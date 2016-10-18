@@ -2,8 +2,14 @@
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 $APPLICATION->SetPageProperty("NOT_SHOW_NAV_CHAIN", "Y");
 
-ShowMessage($arParams["~AUTH_RESULT"]);
-ShowMessage($arResult['ERROR_MESSAGE']);
+if (!empty($arResult['ERROR_MESSAGE']) && !is_array($arResult['ERROR_MESSAGE'])) {
+	new \Hogart\Lk\Helper\Template\FlashError($arResult['ERROR_MESSAGE']);
+}
+if (!empty($arParams["~AUTH_RESULT"]) && $arParams["~AUTH_RESULT"]['TYPE'] == 'ERROR') {
+	new \Hogart\Lk\Helper\Template\FlashError($arParams["~AUTH_RESULT"]['MESSAGE']);
+}
+
+if (!empty($arParams["~AUTH_RESULT"]))
 \Bitrix\Main\Page\Asset::getInstance()->addJs('//cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js', true);
 \Bitrix\Main\Page\Asset::getInstance()->addCss('//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css', true);
 \Bitrix\Main\Page\Asset::getInstance()->addJs('//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js', true);

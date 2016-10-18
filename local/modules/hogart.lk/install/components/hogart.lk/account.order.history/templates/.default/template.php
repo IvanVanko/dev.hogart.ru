@@ -32,9 +32,11 @@ $order = $arResult['order'];
                 <div class="row">
                     <div class="col-sm-12">
                         <h4>
-                            <span class="title">
-                                <?= OrderTable::showName($order) ?>
-                            </span>
+                            <a href="/account/order/<?= $order['id'] ?>">
+                                <span class="title">
+                                    <?= OrderTable::showName($order) ?>
+                                </span>
+                            </a>
                             <sup><span class="label label-primary"><?= OrderTable::getTypeText($order['type']) ?></span></sup>
                             <sup><span class="label label-warning"><?= OrderTable::getStateText($order['state']) ?></span></sup>
                         </h4>
@@ -52,7 +54,7 @@ $order = $arResult['order'];
                             /** @var OrderEventNote $note */
                             foreach ($arResult['history'] as $k => $note):
                             ?>
-                                <li id="<?= $note->getGuid() ?>" class="<?= ($k % 2 == 1 ? "timeline-inverted" : "") ?>">
+                                <li id="<?= $note->getGuid() ?>" class="">
                                     <? if(($icon = $note->getBadgeIcon())): ?>
                                     <div class="timeline-badge <?= $note->getBadgeClass() ?>">
                                         <?= $icon ?>

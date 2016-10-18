@@ -102,7 +102,13 @@ use Hogart\Lk\Helper\Template\Ajax;
                         <? if ($order['totals']['release'] <= 0 && $order['state'] == OrderTable::STATE_NORMAL && OrderTable::isProvideShipmentFlag($order['shipment_flag'], OrderItemTable::STATUS_IN_RESERVE)): ?>
                         <a href="/account/orders/shipment/<?= $order['s_XML_ID'] ?>/" class="btn btn-primary">Отгрузить</a>
                         <? endif; ?>
+                        <? if ($order['history'] > 0 && in_array($order['state'], [OrderTable::STATE_ARCHIVE, OrderTable::STATE_NORMAL])): ?>
+                            <a class="btn btn-warning btn-xs" href="/account/order/<?= $order['id'] ?>/history/">
+                                <i class="fa fa-history"></i> История
+                            </a>
+                        <? endif; ?>
                     </div>
+
                 </div>
             </div>
         </div>

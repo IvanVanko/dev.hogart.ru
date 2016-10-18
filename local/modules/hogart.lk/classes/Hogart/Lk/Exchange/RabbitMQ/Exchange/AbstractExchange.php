@@ -129,6 +129,10 @@ abstract class AbstractExchange implements ExchangeInterface
             }
             try {
                 $this->consumer->getLogger()->notice("Старт задачи {$message->getRoutingKey()}");
+                foreach ($this->getDependencies() as $dependency) {
+                    sleep(1);
+                    $this->consumer->sortExchanges()[$dependency]->run();
+                }
                 $this->runEnvelope($message);
                 $this->queue->ack($message->getDeliveryTag());
                 $this->consumer->getLogger()->notice("Задача {$message->getRoutingKey()} обработана");

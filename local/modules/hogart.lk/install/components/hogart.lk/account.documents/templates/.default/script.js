@@ -3,14 +3,6 @@
  */
 
 $(function () {
-  $.fn.bootstrapSwitch.defaults.size = 'small';
-  $.fn.bootstrapSwitch.defaults.onColor = 'primary';
-  $.fn.bootstrapSwitch.defaults.offColor = 'danger';
-  $.fn.bootstrapSwitch.defaults.onText = 'Вкл';
-  $.fn.bootstrapSwitch.defaults.offText = 'Выкл';
-
-  $('[data-switch]:input').bootstrapSwitch();
-
   setTimeout(function () {
     window.DaData.init_fio(
       $('fieldset[name="company_type_3"] input[name="last_name"]'),
@@ -36,11 +28,9 @@ $(function () {
       $(this).val(this.defaultValue);
     });
     form.find('fieldset').find($.fn.validator.Constructor.INPUT_SELECTOR).attr('data-validate', 'false');
-    form.find('fieldset [data-switch]:input').bootstrapSwitch('destroy');
     form.find('fieldset').attr('hidden', 'hidden').attr('disabled', 'disabled');
     form.find('fieldset[name="company_type_' + $(this).val() + '"]').find($.fn.validator.Constructor.INPUT_SELECTOR).attr('data-validate', 'true');
     form.find('fieldset[name="company_type_' + $(this).val() + '"]').removeAttr('hidden').removeAttr('disabled');
-    form.find('fieldset[name="company_type_' + $(this).val() + '"] [data-switch]:input').bootstrapSwitch();
     form.validator('update');
   });
   $('select[name="company_type"]').change();
@@ -53,15 +43,19 @@ $(function () {
 
   window.DaData.addToObserver('fieldset[name="company_type_1"]');
 
-  $(document).on('switchChange.bootstrapSwitch', '[name^="payment_account[is_main]"]', function (e, state) {
-    if (state) {
+  $(document).on('change', '[name^="payment_account[is_main]"]', function (e) {
+    if ($(this).is(':checked')) {
       var parent = $(this).parents('fieldset');
       var index = $('[name^="payment_account[is_main]"]', parent).index($(this));
       $('[name^="payment_account[is_main]"]', parent).each(function (_, el) {
         if (index != _) {
-          $(el).bootstrapSwitch('state', false);
+          $(el).removeAttr("checked");
         }
       });
+    } else {
+      e.preventDefault();
+      $(this).prop('checked', 'checked');
+      return false;
     }
   });
 
@@ -71,10 +65,7 @@ $(function () {
       $(':input', clone).each(function() {
         $(this).val(this.defaultValue);
       });
-      var is_main_checkbox = $('[data-switch]:input', clone).detach();
-      $('.bootstrap-switch', clone).after(is_main_checkbox);
-      $('.bootstrap-switch', clone).remove();
-      $(':checked', clone).removeAttr("checked").bootstrapSwitch();
+      $(':checked', clone).removeAttr("checked");
     });
   });
 

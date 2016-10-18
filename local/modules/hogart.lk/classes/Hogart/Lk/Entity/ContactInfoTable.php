@@ -50,7 +50,7 @@ class ContactInfoTable extends AbstractEntityRelation
     public static function getMap()
     {
         return array_merge([
-            new GuidField("guid_id"),
+            new GuidField("guid_id", ['primary' => true]),
             new StringField("d_guid_id"),
             new EnumField("info_type", [
                 'values' => [
@@ -93,7 +93,7 @@ class ContactInfoTable extends AbstractEntityRelation
 
     public static function formatPhone($phone)
     {
-        return preg_replace("%(\d{1})(\d{3})(\d{3})(\d{2})(\d{2})(\d*)%", "+\\1 (\\2) \\3-\\4-\\5 \\6", $phone);
+        return trim(preg_replace("%(\d{1})(\d{3})(\d{3})(\d{2})(\d{2})(\d*)%", "+\\1 (\\2) \\3-\\4-\\5 \\6", trim($phone)));
     }
 
     public static function getUUID($owner_id, $owner_type, $info_type, $phone_kind, $value)

@@ -148,6 +148,7 @@ class Consumer
                 $sort[$dependency] = $this->exchanges[$dependency];
             }
             $this->exchanges = $sort;
+            $this->is_sorted = true;
         }
         return $this->exchanges;
     }
@@ -179,8 +180,8 @@ class Consumer
         if (empty($this->exchanges)) throw new Exception("No exchanges registered");
 
         foreach ($this->sortExchanges() as $exchange) {
+            sleep(1);
             $exchange->run();
-
         }
     }
 }

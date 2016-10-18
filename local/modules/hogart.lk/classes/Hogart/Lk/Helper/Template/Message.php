@@ -23,6 +23,8 @@ class Message implements IMessage
     protected $url;
     /** @var  string */
     protected $icon;
+    /** @var  integer */
+    protected $delay = 5;
     /** @var string  */
     protected $file;
     /** @var int  */
@@ -63,6 +65,23 @@ class Message implements IMessage
         return $this->message;
     }
 
+    /**
+     * @return int
+     */
+    public function getDelay()
+    {
+        return $this->delay;
+    }
+
+    /**
+     * @param int $delay
+     * @return $this
+     */
+    public function setDelay($delay)
+    {
+        $this->delay = $delay;
+        return $this;
+    }
 
     /**
      * @return string
@@ -114,5 +133,27 @@ class Message implements IMessage
     {
         $this->icon = $icon;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function toJSON()
+    {
+        return json_encode([
+            'type' => 'notify',
+            'data' => [
+                [
+                    'url' => $this->url,
+                    'message' => $this->message,
+                    'icon' => $this->icon
+                ],
+                [
+                    'type' => $this->severity,
+                    'delay' => $this->delay * 1000,
+                    'allow_dismiss' => !$this->delay ? : false
+                ]
+            ]
+        ]);
     }
 }

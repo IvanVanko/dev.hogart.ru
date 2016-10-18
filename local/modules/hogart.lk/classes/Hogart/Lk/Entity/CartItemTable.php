@@ -131,7 +131,7 @@ class CartItemTable extends AbstractEntity
      * @param string $item_group Группировка разрезе одной корзины
      * @param int $contract_id ID Договора
      * @param string $store_guid GUID Склада
-     * @return bool|\Bitrix\Main\Entity\AddResult|\Bitrix\Main\Entity\UpdateResult
+     * @return \Bitrix\Main\Entity\AddResult|\Bitrix\Main\Entity\UpdateResult
      */
     public static function addItem($account_id, $item_id, $count = 1, $item_group = '', $contract_id = 0, $store_guid = '')
     {
@@ -206,7 +206,7 @@ class CartItemTable extends AbstractEntity
 
         if (null === $price['PRICE']) {
             new FlashError(vsprintf("В каталоге не указана цена на позицию: <strong><u>%s</u></strong>", [$element['NAME']]));
-            return false;
+            return new AddResult();
         }
 
         $result = self::createOrUpdateByField([

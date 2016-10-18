@@ -16,14 +16,18 @@ class FlashSuccess
      * FlashSuccess constructor.
      * @param string $message
      * @param null|string $url
+     * @param null|int $delay seconds
      */
-    public function __construct($message, $url = null)
+    public function __construct($message, $url = null, $delay = null)
     {
         $message = new Message($message, Message::SEVERITY_SUCCESS);
         $message->setIcon('fa fa-check');
         $message->setUrl($url);
         if (null !== $url) {
             $message->setIcon('fa fa-external-link');
+        }
+        if (null !== $delay) {
+            $message->setDelay($delay);
         }
         MessageFactory::getInstance()->addFlashMessage($message);
     }

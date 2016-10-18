@@ -45,6 +45,7 @@ class FileLogger extends AbstractLogger
     protected function _write($string){
         if (!empty($this->fileResource)) {
             fwrite($this->fileResource, $string);
+            flush();
         }
     }
 

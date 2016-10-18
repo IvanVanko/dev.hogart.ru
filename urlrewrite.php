@@ -229,6 +229,12 @@ $arUrlRewrite = array(
         "PATH" => ""
     ),
 	array(
+		"CONDITION" => "#^/account/_sse/?#",
+		"RULE" => "",
+		"ID" => "hogart.lk:account.server.events",
+		"PATH" => "/local/modules/hogart.lk/front/account/_sse.php"
+	),
+	array(
 		"CONDITION" => "#^/account/?#",
 		"RULE" => "",
 		"ID" => "hogart.lk:account",

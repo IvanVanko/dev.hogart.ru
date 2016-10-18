@@ -33,12 +33,6 @@ var DataTableOptions = {
 
 $.fn.validator.Constructor.INPUT_SELECTOR = 'fieldset:not(:disabled) :input:not([type="hidden"], [type="submit"], [type="reset"], button)'
 
-$.fn.bootstrapSwitch.defaults.size = 'small';
-$.fn.bootstrapSwitch.defaults.onColor = 'primary';
-$.fn.bootstrapSwitch.defaults.offColor = 'danger';
-$.fn.bootstrapSwitch.defaults.onText = 'Вкл';
-$.fn.bootstrapSwitch.defaults.offText = 'Выкл';
-
 window.Hogart_Lk.createAjaxObserver('form[name="add-rtu"] fieldset', function (MutationRecords) {
   MutationRecords.forEach(function (record) {
     if ($(record.target).is('fieldset') && record.type == 'attributes' && record.attributeName == 'disabled') {
@@ -65,12 +59,12 @@ $(function () {
     locale: 'ru',
     format: 'L',
     useCurrent: false,
-    useStrict: true
+    useStrict: true,
+    daysOfWeekDisabled: [0, 5],
+    minDate: moment().add(1, 'days')
   });
 
-  $('[data-switch]').bootstrapSwitch();
-
-  $(document).on('switchChange.bootstrapSwitch', '[data-switch][name="new_address"]', function (e) {
+  $(document).on('change', '[data-switch][name="new_address"]', function (e) {
     $('fieldset[data-new-address]')
       .attr('disabled', 'disabled')
       .hide();
@@ -80,7 +74,7 @@ $(function () {
       .show();
   });
 
-  $(document).on('switchChange.bootstrapSwitch', '[data-switch][name="new_contact"]', function (e) {
+  $(document).on('change', '[data-switch][name="new_contact"]', function (e) {
     $('fieldset[data-new-contact]')
       .attr('disabled', 'disabled')
       .hide();
@@ -90,22 +84,17 @@ $(function () {
       .show();
   });
 
-  $(document).on('switchChange.bootstrapSwitch', '[data-switch][name="is_tk"]', function (e) {
+  $(document).on('change', '[data-switch][name="is_tk"]', function (e) {
     $('fieldset[data-tk]')
       .attr('disabled', !this.checked ? "disabled" : null)
       .toggle(this.checked);
   });
 
-  $('[data-switch][name="delivery_type"]').on('switchChange.bootstrapSwitch', function (e) {
+  $('[data-switch][name="delivery_type"]').on('change', function (e) {
     $('[data-delivery-type]').removeAttr('disabled').removeClass('active');
     $('[data-delivery-type]:not([data-delivery-type="' +  $(this).val() + '"])').attr('disabled', 'disabled');
     $('[data-delivery-type="' + $(this).val() + '"]').addClass('active');
-    var switches = $('[data-delivery-type="' + $(this).val() + '"] [data-switch]');
-    switches.bootstrapSwitch('destroy');
-    switches.bootstrapSwitch();
   });
-
-
 
   $('[data-table]').each(function (i, t) {
     $(t).DataTable(DataTableOptions);

@@ -14,10 +14,17 @@
 
 use Hogart\Lk\PhpExcel\SkuReadFilter;
 use Hogart\Lk\Helper\Template\Ajax;
-use Hogart\Lk\Helper\Template\FlashError;
 use Hogart\Lk\Helper\Template\FlashInfo;
 use Hogart\Lk\Entity\CartTable;
 use Hogart\Lk\Entity\OrderTable;
+use Hogart\Lk\Search\CartSuggest;
+
+if (!empty($_REQUEST['search'])) {
+    $APPLICATION->RestartBuffer();
+    header("Content-Type: application/json");
+    echo json_encode(CartSuggest::getInstance()->search($_REQUEST['search'], 20));
+    exit;
+}
 
 if (
     !empty($_REQUEST['cart_id'])
@@ -38,7 +45,10 @@ if (
             $APPLICATION->RestartBuffer();
             $initialPreviewConfig = [];
             foreach ($_FILES['sku']['name'] as $k => $name) {
-                $tempName = tempnam(HOGART_TMP_DIR, "sku_") . "_" . $name;
+                $extension = pathinfo($name, PATHINFO_EXTENSION);
+                $tmpname = tempnam(HOGART_TMP_DIR, "sku_");
+                $tempName = $tmpname . "_" . md5($name) . "." . $extension;
+                unlink($tmpname);
                 move_uploaded_file($_FILES['sku']['tmp_name'][$k], $tempName);
                 $initialPreviewConfig[] = [
                     'caption' => $name,
@@ -54,7 +64,6 @@ if (
             exit;
             break;
         case 'add_items_file':
-            ini_set("mbstring.func_overload", 0);
             $items = [];
             foreach ($_REQUEST['file'] as $fileName) {
                 /** @var PHPExcel_Reader_Abstract $reader */
@@ -74,18 +83,19 @@ if (
                     }
                     $items[$sku] += $count;
                 }
+                unlink($fileName);
             }
             foreach ($items as $sku => $count) {
-                $result = CartTable::addItemToCartBySku($_REQUEST['cart_id'], $sku, $count, $_REQUEST['item_group']);
-                if ($result) {
-                    new FlashInfo(vsprintf("Товар с артикулом %s добавлен", [$sku]));
+                $item = CartTable::addItemToCartBySku($_REQUEST['cart_id'], $sku, $count, $_REQUEST['item_group']);
+                if ($item['ID']) {
+                    new FlashInfo(vsprintf("Позиция <b><u>%s</u></b> добавлена!", [$item['NAME']]));
                 }
             }
             break;
         case 'add_item_simple':
-            $result = CartTable::addItemToCartBySku($_REQUEST['cart_id'], $_REQUEST['sku'], 1, $_REQUEST['item_group']);
-            if ($result) {
-                new FlashInfo(vsprintf("Товар с артикулом %s добавлен", [$_REQUEST['sku']]));
+            $item = CartTable::addItemToCartBySku($_REQUEST['cart_id'], $_REQUEST['sku'], 1, $_REQUEST['item_group']);
+            if ($item['ID']) {
+                new FlashInfo(vsprintf("Позиция <b><u>%s</u></b> добавлена!", [$item['NAME']]));
             }
             break;
         case 'change_contract':

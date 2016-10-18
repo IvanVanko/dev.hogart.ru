@@ -105,40 +105,17 @@ $this->setFrameMode(true);
     <div class="col-sm-12 col-xs-12 stores">
         <h4>Склады для доставки и самовывоза</h4>
         <div id="stores-ajax">
-            <? $stores_node = \Hogart\Lk\Helper\Template\Ajax::Start($component, ['fav_store', 'remove_store']); ?>
-            <? foreach ($arResult['account']['stores'] as $store): ?>
-                <div class="row store spacer">
-                    <div class="col-lg-8 col-md-9 col-sm-10 col-xs-10" data-store-id="<?= $store['XML_ID'] ?>">
-                        <i
-                            <?= ($store['store_ID'] != $arResult['account']['main_store_id'] ? \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('stores-ajax', $ajax_id, ['fav_store' => $store['ID']]) : '') ?>
-                            class="fa fa-star<?= ($store['ID'] == $arResult['account']['main_store_id'] ? ' color-green' : '-o') ?>"></i>
-                        <?= $store['ADDRESS'] ?>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 operations">
-                        <div class="btn-toolbar" role="toolbar">
-                            <div
-                                <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('stores-ajax', $stores_node->getId(), ['remove_store' => $store['XML_ID']], \Hogart\Lk\Helper\Template\Ajax::DIALOG_CONFIRMATION, [
-                                    'title' => 'Подтверждение удаления склада',
-                                    'confirmation' => 'Вы действительно хотите удалить склад <br/> "' . ($store['TITLE'] . (!empty(trim($store['ADDRESS'])) ? (" (" . $store['ADDRESS'] . ")") : "")) . '"?'
-                                ]) ?>
-                                class="btn btn-danger btn-xs">
-
-                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <? endforeach;?>
-            <? \Hogart\Lk\Helper\Template\Ajax::End($stores_node->getId()); ?>
-        </div>
-        <? if ($arResult['account']['is_general']): ?>
-            <div class="row spacer"></div> <!-- feature -->
-            <div class="row">
-                <div class="col-sm-12 col-xs-12">
-                    <?= \Hogart\Lk\Helper\Template\Dialog::Button('add-store-dialog', 'Добавить склад', 'btn btn-primary')?>
+        <? foreach ($arResult['account']['stores'] as $store): ?>
+            <div class="row store spacer">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" data-store-id="<?= $store['XML_ID'] ?>">
+                    <i
+                        <?= ($store['store_ID'] != $arResult['account']['main_store_id'] ? \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('stores-ajax', $ajax_id, ['fav_store' => $store['ID']]) : '') ?>
+                        class="fa fa-star<?= ($store['ID'] == $arResult['account']['main_store_id'] ? ' color-green' : '-o') ?>"></i>
+                    <?= $store['ADDRESS'] ?>
                 </div>
             </div>
-        <? endif; ?>
+        <? endforeach;?>
+        </div>
     </div>
     <? endif; ?>
     <? if (count($arResult['account']['managers'])): ?>

@@ -237,7 +237,7 @@ class CartTable extends AbstractEntity
         }
         $item = \CIBlockElement::GetList([], ['IBLOCK_ID' => CATALOG_IBLOCK_ID, 'PROPERTY_sku' => $sku])->Fetch();
         if (empty($item)) {
-            new Error(vsprintf("Товар с артикулом %s не найден", [$sku]));
+            new Error(vsprintf("Товар с артикулом <b>%s</b> не найден", [$sku]));
             return false;
         }
 
@@ -256,7 +256,7 @@ class CartTable extends AbstractEntity
             }
             return false;
         }
-        return $result;
+        return $item;
     }
 
     /**
@@ -318,8 +318,12 @@ class CartTable extends AbstractEntity
 
     public static function deleteNoStockItems($cart_id)
     {
-        $cart = self::getAccountCartList(null, $cart_id);
+        global $APPLICATION;
+        $cart = CartTable::getByPrimary(['guid_id' => $cart_id])->fetch();
+        $cart = self::getAccountCartList($cart['account_id'], $cart_id);
+
         foreach ($cart['items'] as $item_group => $items) {
+            $APPLICATION->RestartBuffer();
             foreach ($items as $item) {
                 if ($item['NEGATIVE_AMOUNT'] > 0) {
                     $res_count = $item['count'] - $item['NEGATIVE_AMOUNT'];

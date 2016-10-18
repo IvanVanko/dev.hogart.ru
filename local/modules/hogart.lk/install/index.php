@@ -139,8 +139,10 @@ class hogart_lk extends CModule
             $this->InstallDB();
 
             RegisterModuleDependences("main", "OnAfterUserLogin", "hogart.lk", "Hogart\\Lk\\Events", "OnAfterUserLogin");
+            RegisterModuleDependences("main", "OnSendUserInfo", "hogart.lk", "Hogart\\Lk\\Events", "OnSendUserInfo");
 
             $this->InstallTasks();
+            $this->InstallEvents();
 
             $upgradeManager = new \Hogart\Lk\Upgrade\UpgradeManager(true);
             $upgradeManager->upgradeReload();
@@ -149,10 +151,44 @@ class hogart_lk extends CModule
         $APPLICATION->IncludeAdminFile("Установка модуля \"{$this->MODULE_NAME}\"{$stepTitles[$step - 1]}", __DIR__ . "/step{$step}.php");
     }
 
+    function InstallEvents()
+    {
+        $eventHelper = new \Hogart\Lk\Helper\Admin\EventHelper();
+        if (($eventId = $eventHelper->addEventTypeIfNotExists("ACCOUNT_NEW_USER", [
+            'LID' => 'ru',
+            'NAME' => 'Отсылка данных по новому аккаунту',
+        ]))) {
+            $message =<<<TEXT
+Здравствуйте, #LOGIN#!
+
+На ваш почтовый адрес зарегистрирован аккаунт для работы в личном кабинете на сайте #SITE_NAME#
+
+Для начала работы вам необходимо установить пароль. Перейдите, пожалуйста, по следующей ссылке:
+http://#SERVER_NAME#/auth/index.php?change_password=yes&lang=ru&USER_CHECKWORD=#CHECKWORD#&USER_LOGIN=#URL_LOGIN#
+
+При возникновении любых вопросов по работе в личном кабинете, на Ваши вопросы ответит менеджер #MANAGER# 
+или обратитесь в отдел программного обеспечения компании «Хогарт», телефон +7 (495) 788-11-12 (доб 304), email: 1c@hogart.ru.
+
+Мы благодарим вас за регистрацию и рады нашему сотрудничеству!
+
+Сообщение сгенерировано автоматически.
+TEXT;
+
+            $eventHelper->addEventMessageIfNotExists('ACCOUNT_NEW_USER', [
+                'SUBJECT' => 'Информационное сообщение сайта #SITE_NAME#',
+                'EMAIL_FROM' => '#DEFAULT_EMAIL_FROM#',
+                'EMAIL_TO' => '#EMAIL#',
+                'BODY_TYPE' => 'text',
+                'MESSAGE' => $message
+            ]);
+        }
+    }
+
     function DoUninstall()
     {
         $this->UnInstallTasks();
         UnRegisterModuleDependences("main", "OnAfterUserLogin", "hogart.lk", "Hogart\\Lk\\Events", "OnAfterUserLogin");
+        UnRegisterModuleDependences("main", "OnSendUserInfo", "hogart.lk", "Hogart\\Lk\\Events", "OnSendUserInfo");
         $this->UnInstallDB();
         DeleteDirFiles(__DIR__ . "/admin", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/admin");
         DeleteDirFiles(__DIR__ . "/components", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/components");

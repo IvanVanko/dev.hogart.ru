@@ -410,6 +410,7 @@ class OrderTable extends AbstractEntity
         $type_id = AddressTypeTable::getByField('code', AddressTypeTable::TYPE_DELIVERY)['id'];
         return array_reduce($orders, function ($result, $order) use($type_id) {
             if(!empty($order)) {
+                if ($order['totals']['release'] > 0) return $result;
                 $order['addresses'] = array_reduce(AddressTable::getByOwner($order['co_id'], AddressTable::OWNER_TYPE_CLIENT_COMPANY, [
                     '=type_id' => $type_id
                 ])[$type_id], function ($result, $address) {
@@ -469,8 +470,9 @@ HTML;
             ])->fetchAll();
             foreach ($items as $item) {
                 $item['order_id'] = $new_order_id;
+                $item['status'] = OrderItemTable::STATUS_NOT_PROVIDED;
                 unset($item['id']);
-                $r = OrderItemTable::add($item);
+                OrderItemTable::add($item);
             }
             new FlashSuccess(vsprintf("%s скопирован в черновики", [self::showName($order)]));
         }
@@ -565,8 +567,10 @@ HTML;
             }
         }
         self::publishToRabbit(new OrderExchange(), new Order([self::getOrder($order_id)]));
-        new FlashSuccess("Создан новый заказ от " . $date->format("d/m/Y") . " <b>(перейти к заказу)</b>", '/account/order/' . $order_id);
-        return $result->getId();
+        if ($order_id) {
+            new FlashSuccess("Создан новый " . OrderTable::showName(OrderTable::getRowById($order_id)) . " <b>(перейти к заказу)</b>", '/account/order/' . $order_id, 0);
+        }
+        return $order_id;
     }
 
     public static function resort($order_id)
@@ -594,7 +598,8 @@ HTML;
         $result->modifyFields([
             'type' => intval($fields['type']),
             'status' => intval($fields['status']),
-            'is_active' => boolval($fields['is_active'])
+            'is_active' => boolval($fields['is_active']),
+            'perm_reserve' => boolval($fields['perm_reserve'])
         ]);
         return $result;
     }

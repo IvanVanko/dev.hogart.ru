@@ -75,11 +75,11 @@ class ContactInfo extends AbstractMethod
                     $answer->addResponse(new ResponseObject($info->Info_ID, new MethodException(MethodException::ERROR_BITRIX, [$error->getMessage(), $error->getCode()])));
                     continue 2;
                 } else {
-                    if ($result->getId()) {
+                    if ($result->getData()['guid_id']) {
                         if ($result instanceof UpdateResult) {
-                            $this->client->getLogger()->notice("Обновлена запись Контакта {$result->getId()} ({$info->Info_ID})");
+                            $this->client->getLogger()->notice("Обновлена запись Контакта {$result->getData()['guid_id']} ({$info->Info_ID})");
                         } else {
-                            $this->client->getLogger()->notice("Добавлена запись Контакта {$result->getId()} ({$info->Info_ID})");
+                            $this->client->getLogger()->notice("Добавлена запись Контакта {$result->getData()['guid_id']} ({$info->Info_ID})");
                         }
                         $answer->addResponse(new ResponseObject($info->Info_ID));
                     } else {

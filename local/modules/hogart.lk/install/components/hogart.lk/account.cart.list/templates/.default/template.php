@@ -155,7 +155,7 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                         <!-- основная зона корзины-->
 
                         <div class="row" data-stick-parent>
-                            <div class="col-sm-9">
+                            <div class="col-sm-10">
                                 <? foreach ($cart['items'] as $item_group => $items): ?>
                                     <div class="row" data-cart-group-wrapper>
                                         <div class="col-sm-12 cart-item-list-wrapper">
@@ -199,17 +199,19 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                                                     cellspacing="0" width="100%" class="table table-hover table-bordered table-condensed" id="cart-table-<?= $cart['guid_id'] ?>" data-table>
                                                     <thead>
                                                     <tr>
-                                                        <th>№</th>
+                                                        <th class="t-number">№</th>
                                                         <th></th>
                                                         <th></th>
                                                         <th class="reorder">Арт.</th>
-                                                        <th width="100%">Наименование</th>
-                                                        <th class="text-center">Кол-во</th>
-                                                        <th>Ед.</th>
-                                                        <th>Цена</th>
-                                                        <th>Тек. скидка</th>
-                                                        <th class="text-center">Цена&nbsp;с&nbsp;уч. скидки</th>
-                                                        <th>Сумма</th>
+                                                        <th class="t-name" width="100%">Наименование</th>
+                                                        <th class="t-count text-center">Кол-во</th>
+                                                        <th >Ед.</th>
+                                                        <th class="t-money">Цена</th>
+                                                        <? if (!empty($cart['contract_id'])) :?>
+                                                        <th class="t-percent">Тек. скидка</th>
+                                                        <th class="t-money text-center">Цена&nbsp;с&nbsp;уч. скидки</th>
+                                                        <? endif; ?>
+                                                        <th class="t-money">Сумма</th>
 
                                                         <? if (!empty($cart['store_guid'])) :?>
                                                             <th>Наличие</th>
@@ -217,7 +219,7 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <? foreach ($items as $item): ?>
+                                                    <? foreach ($items as $ii => $item): ?>
                                                         <tr id="<?= $item['guid_id'] ?>" data-guid="<?= $item['guid_id'] ?>">
                                                             <td><?= $item['item_group_position']?></td>
                                                             <td><span class="glyphicon glyphicon-move" aria-hidden="true"></span></td>
@@ -225,7 +227,7 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                                                             <td class="text-nowrap"><?= $item['props']['sku']['VALUE'] ?></td>
                                                             <td><a target="_blank" href="<?= $item['url'] ?>"><?= $item['NAME'] ?></a></td>
                                                             <td class="text-nowrap">
-                                                                <input class="form-control input-sm"
+                                                                <input tabindex="<?= $ii + 1 ?>" class="form-control input-sm"
                                                                        id="quantity-<?= $item['guid_id'] ?>"
                                                                     <?= Ajax::OnEvent(
                                                                         'changeapply',
@@ -244,10 +246,11 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                                                             </td>
                                                             <td><?= $arResult['measures'][$item['product']['MEASURE']] ?></td>
                                                             <td class="text-nowrap money-<?= strtolower($cart['currency']['CURRENCY']) ?>"><?= $item['price'] ?></td>
+                                                            <? if (!empty($cart['contract_id'])) :?>
                                                             <td><?= $item['discount']['discount'] ?></td>
                                                             <td class="text-nowrap money-<?= strtolower($cart['currency']['CURRENCY']) ?>"><?= $item['discount']['price'] ?></td>
+                                                            <? endif; ?>
                                                             <td class="text-nowrap money-<?= strtolower($cart['currency']['CURRENCY']) ?>"><?= ($item['discount']['price'] * $item['count']) ?></td>
-
                                                             <? if (!empty($selected_store)) :?>
                                                                 <td class="text-center">
                                                                     <div class="quantity-wrapper center-between">
@@ -266,7 +269,7 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                                                                         <div class="h6 text-nowrap text-right" style="margin-left: 5px">
                                                                             <div>
                                                                                 <b><?= $selected_store["TITLE"] ?></b>
-                                                                                <?= $item['STORE_AMOUNT'] ?>
+                                                                                <?= (int)$item['STORE_AMOUNT'] ?>
                                                                                 <?= $arResult['measures'][$item['product']['MEASURE']] ?>
                                                                             </div>
                                                                             <? if ($item['STORE_ALL_AMOUNT'] - $item['STORE_AMOUNT'] > 0): ?>
@@ -279,7 +282,7 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                                                                             <? if (!empty($item['STORE_TRANSIT'])): ?>
                                                                             <div>
                                                                                 <b>В пути</b>
-                                                                                <?= $item['STORE_TRANSIT'] ?>
+                                                                                <?= (int)$item['STORE_TRANSIT'] ?>
                                                                                 <?= $arResult['measures'][$item['product']['MEASURE']] ?>
                                                                             </div>
                                                                             <? endif; ?>
@@ -293,27 +296,25 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                                                 </table>
                                                 <div class="post-table-footer">
                                                     <div class="row vertical-align">
-                                                        <div class="col-sm-6">
+                                                        <div class="col-sm-8">
                                                             <div class="add-item-simple center-between">
                                                                 <div class="add-item-label text-nowrap">Быстрое добавление</div>
                                                                 <input required
                                                                     <?= Ajax::OnEvent(
-                                                                        'changeapply',
+                                                                        'typeaheadselect',
                                                                         $cart['guid_id'],
                                                                         $cart['ajax_node']->getId(),
                                                                         [
                                                                             'cart_id' => $cart['guid_id'],
                                                                             'item_group' => $item_group,
                                                                             'action' => 'add_item_simple',
-                                                                            'sku' => 'javascript:function (element) { return $(element).val(); }',
+                                                                            'sku' => 'javascript:function (element) { return $(element).data("sku"); }',
                                                                         ]
                                                                     ) ?>
-                                                                       data-change-apply
-                                                                       data-change-discard="false"
-                                                                       type="text" class="form-control" placeholder="Введите артикул">
+                                                                       type="text" class="quick-cart-add form-control" placeholder="Введите артикул/наименование">
                                                             </div>
                                                         </div>
-                                                        <div class="col-sm-6">
+                                                        <div class="col-sm-4">
                                                             <?= Ajax::Link(
                                                                 '<i class="fa fa-plus fa-lg text-primary" aria-hidden="true"></i> Добавить из файла',
                                                                 'carts',
@@ -343,7 +344,7 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                                     </div>
                                 <? endforeach; ?>
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-2">
                                 <div class="cart-group-menu" data-stick-block>
                                     <div class="menu">
                                         <ul class="fa-ul">
@@ -386,22 +387,22 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                                                         ]
                                                     ) ?>
                                                 </li>
-                                                <li data-reload>
-                                                    <i class="fa fa-li fa-refresh fa-lg text-primary" aria-hidden="true"></i>
-                                                    <?= Ajax::Link(
-                                                        'Контроль наличия',
-                                                        'carts',
-                                                        $carts_node->getId(),
-                                                        [
-                                                            'cart_id' => $cart['guid_id'],
-                                                            'action' => 'reload',
-                                                            'item' => null,
-                                                            'new_item_group' => null,
-                                                            'copy' => null
-                                                        ]
-                                                    ) ?>
-                                                </li>
                                             <? endif; ?>
+                                            <li data-reload>
+                                                <i class="fa fa-li fa-refresh fa-lg text-primary" aria-hidden="true"></i>
+                                                <?= Ajax::Link(
+                                                    'Контроль наличия',
+                                                    'carts',
+                                                    $carts_node->getId(),
+                                                    [
+                                                        'cart_id' => $cart['guid_id'],
+                                                        'action' => 'reload',
+                                                        'item' => null,
+                                                        'new_item_group' => null,
+                                                        'copy' => null
+                                                    ]
+                                                ) ?>
+                                            </li>
                                             <li data-copy-move-button>
                                                 <i class="fa fa-li fa-copy fa-lg text-primary" aria-hidden="true"></i>
                                                 <?= Ajax::Link(
