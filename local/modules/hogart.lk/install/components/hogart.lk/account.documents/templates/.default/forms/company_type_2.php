@@ -27,7 +27,7 @@ use Hogart\Lk\Entity\CompanyTable;
         <div class="col-sm-6 form-group">
             <input required="required"
                    data-error="Поле не должно быть пустым"
-                   name="registration_date" type="text" class="form-control" data-mask="99/99/9999" placeholder="ДД/ММ/ГГГГ">
+                   name="registration_date" type="text" class="form-control" data-mask="99.99.9999" placeholder="ДД.ММ.ГГГГ">
             <div class="help-block with-errors"></div>
         </div>
     </div>
@@ -38,7 +38,7 @@ use Hogart\Lk\Entity\CompanyTable;
     </div>
     <div class="row spacer">
         <div class="col-sm-12">
-            <input data-suggest="address" name="address[<?= AddressTypeTable::TYPE_LEGAL?>]" type="text" class="form-control" placeholder="Введите адрес в свободной форме">
+            <input data-suggest="address" data-bind="addresses[<?= AddressTypeTable::TYPE_LEGAL?>][0].value" name="address[<?= AddressTypeTable::TYPE_LEGAL?>]" type="text" class="form-control" placeholder="Введите адрес в свободной форме">
         </div>
     </div>
     <div class="row spacer">
@@ -56,11 +56,12 @@ use Hogart\Lk\Entity\CompanyTable;
     </div>
     <div class="row spacer">
         <div class="col-sm-12">
-            <input data-suggest="address" disabled="disabled" id="residential_address_<?= CompanyTable::TYPE_INDIVIDUAL_ENTREPRENEUR ?>" name="address[<?= AddressTypeTable::TYPE_ACTUAL?>]" type="text" class="form-control" placeholder="Введите адрес в свободной форме">
+            <input data-suggest="address" data-bind="addresses[<?= AddressTypeTable::TYPE_ACTUAL?>][0].value" disabled="disabled" id="residential_address_<?= CompanyTable::TYPE_INDIVIDUAL_ENTREPRENEUR ?>" name="address[<?= AddressTypeTable::TYPE_ACTUAL?>]" type="text" class="form-control" placeholder="Введите адрес в свободной форме">
         </div>
     </div>
-
+    <? if (empty($edit_company['id'])): ?>
     <? include __DIR__ . "/company_contacts.php"; ?>
     <? include __DIR__ . "/doc_pass.php"; ?>
+    <? endif; ?>
     <? include __DIR__ . "/payment_account.php"; ?>
 </fieldset>

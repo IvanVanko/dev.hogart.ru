@@ -1,6 +1,7 @@
 /**
  * Created by gillbeits on 05/09/16.
  */
+$.fn.validator.Constructor.INPUT_SELECTOR = 'fieldset:not(:disabled) :input:not([type="hidden"], [type="submit"], [type="reset"], button)';
 
 $(function () {
   setTimeout(function () {
@@ -24,9 +25,11 @@ $(function () {
 
   $(document).on('change', 'select[name="company_type"]', function () {
     var form = $(this).parents('form');
-    $('> fieldset :input', form).each(function() {
-      $(this).val(this.defaultValue);
-    });
+    if ($('input[name="action"]', form).val() != 'edit-company') {
+      $('> fieldset :input', form).each(function() {
+        $(this).val(this.defaultValue);
+      });
+    }
     form.find('fieldset').find($.fn.validator.Constructor.INPUT_SELECTOR).attr('data-validate', 'false');
     form.find('fieldset').attr('hidden', 'hidden').attr('disabled', 'disabled');
     form.find('fieldset[name="company_type_' + $(this).val() + '"]').find($.fn.validator.Constructor.INPUT_SELECTOR).attr('data-validate', 'true');
@@ -42,6 +45,8 @@ $(function () {
   $('select[name="doc_pass"]').change();
 
   window.DaData.addToObserver('fieldset[name="company_type_1"]');
+  window.DaData.addToObserver('fieldset[name="company_type_2"]');
+  window.DaData.addToObserver('fieldset[name="company_type_3"]');
 
   $(document).on('change', '[name^="payment_account[is_main]"]', function (e) {
     if ($(this).is(':checked')) {
@@ -63,7 +68,8 @@ $(function () {
   $(document).on('click', '[data-payment-account] a[data-cloner]', function () {
     Hogart_Lk.clone('[data-payment-account]', '[data-payment-account]:last', this, function (clone) {
       $(':input', clone).each(function() {
-        $(this).val(this.defaultValue);
+        $(this).val("");
+        $('[name="^__"][type="hidden"]', clone).remove();
       });
       $(':checked', clone).removeAttr("checked");
     });
@@ -110,7 +116,7 @@ function partySelect (event, suggestion) {
 function partyIndividualSelect (event, suggestion) {
   var fieldset = $(event.currentTarget).parents('fieldset');
   $('input[name="inn"]', fieldset).val(suggestion.data.inn);
-  $('input[name="registration_date"]', fieldset).val(moment(suggestion.data.state.registration_date, 'x').format('DD/MM/YYYY'));
+  $('input[name="registration_date"]', fieldset).val(moment(suggestion.data.state.registration_date, 'x').format('DD.MM.YYYY'));
 }
 
 function openingAddressEdit (event) {
@@ -120,3 +126,63 @@ function openingAddressEdit (event) {
     suggest.selectCurrentValue();
   });
 }
+
+function openingCompanyEdit (event) {
+  var object = $(event.target).data('edit_data');
+  var form = $('form', event.target);
+  var fieldset = $('fieldset[name="company_type_' + object.type + '"]', event.target);
+
+  $('select[name="company_type"]', event.target).val(object.type).change().attr("disabled", true).attr('data-validate', 'false');
+  $('[name="is_active"]', event.target).attr("disabled", true).hide();
+
+  if (object.addresses) {
+    $.each(object.addresses, (function (type, addressList) {
+      addressList.forEach(function (address) {
+        if (!address.value) {
+          address.value = [
+            address.postal_code,
+            address.region,
+            address.city,
+            address.street,
+            address.house,
+            address.building,
+            address.flat
+          ].join(" ");
+
+          if ($('[name="address[' + type + ']"]', fieldset).length) {
+            $('[name="address[' + type + ']"]', fieldset).val(address.value);
+          }
+        }
+      });
+    }));
+  }
+
+  if (object.type == 1) {
+    $('[name="name"], [name="inn"], [name="kpp"]', fieldset).attr("disabled", true).attr('data-validate', 'false');
+  } else if (object.type == 2) {
+    $('[name="name"], [name="inn"]', fieldset).attr("disabled", true).attr('data-validate', 'false');
+  } else if (object.type == 3) {
+    var name = object.name.split(' ');
+    $('[name="last_name"]', fieldset).val(name[0]);
+    $('[name="name"]', fieldset).val(name[1]);
+    $('[name="middle_name"]', fieldset).val(name[2]);
+    $('select[name="doc_pass"]', fieldset).val(object.doc_pass).change();
+  }
+
+  $('[data-suggest="address"], [data-suggest="bank"]', fieldset).each(function (i, el) {
+    var suggest = $(el).data('suggestions');
+    if (suggest) {
+      try {
+        suggest.options.autoSelectFirst = true;
+        suggest.proceedChangedValue();
+        suggest.inputPhase.then(function () {
+          suggest.selectCurrentValue();
+        });
+      } catch (e) {}
+    }
+  });
+
+  $('[data-mask]:not(:disabled)', fieldset).trigger('focus.bs.inputmask.data-api');
+  form.validator('update');
+}
+

@@ -63,21 +63,29 @@ function openEditDialog(id, el) {
 
   try {
     eval('var edit_data = ' + $(el).data('edit'));
+
+    $(inst.$modal).data('edit_data', edit_data || {});
+
     $('[data-remodal-id="' + id + '"] form input').each(function (i, input) {
-      var value = "";
-      $(input).val(value);
+      var value;
       if ($(input).data('bind')) {
         try {
           value = eval('(function () { return edit_data.' + $(input).data('bind') + '})()');
         } catch (ee) {}
       } else {
-        value = edit_data[$(input).attr("name")];
+        value = edit_data[$(input).attr("name")] ? edit_data[$(input).attr("name")] : $(input).val();
       }
       $(input).val(value);
     });
     $(el).data('dialogEvents', eval('(function () { return ' + $(el).data('dialogEvents') + '})()'));
   } catch (e) {
   }
+
+  $('[data-remodal-id="' + id + '"] form').on('submit', function (e) {
+    if (!e.isDefaultPrevented()) {
+      inst.close();
+    }
+  });
 
   $(document)
     .off('opening', '[data-remodal-id="' + id + '"]')
@@ -88,7 +96,6 @@ function openEditDialog(id, el) {
     .off('confirmation', '[data-remodal-id="' + id + '"]')
     .on('confirmation', '[data-remodal-id="' + id + '"]', function() {
       $('[data-remodal-id="' + id + '"] form').submit();
-      inst.close();
     });
 
   $.each($(el).data('dialogEvents') || {}, function (event, callback) {

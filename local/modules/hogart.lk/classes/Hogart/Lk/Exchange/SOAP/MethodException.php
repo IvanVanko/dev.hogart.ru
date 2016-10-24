@@ -34,6 +34,7 @@ use Exception;
  * |    __13__   	| _Не найден Сотрудник &lt;staff-id&gt;_                                    	|
  * |    __14__   	| _Не найдено Контактное лицо &lt;contact-id&gt;_                           	|
  * |    __15__   	| _Не найдена Заявка на отгрузку &lt;order-rtu-id&gt;_                          |
+ * |    __16__   	| _Не найден тип Адреса &lt;address-type-id&gt;_                                |
  * @package Hogart\Lk\Exchange\SOAP
  */
 class MethodException extends \RuntimeException
@@ -70,6 +71,8 @@ class MethodException extends \RuntimeException
     const ERROR_NO_CONTACT = 14;
     /** Не найдена Заявка на отгрузку */
     const ERROR_NO_ORDER_RTU = 15;
+    /** Не найден тип Адреса */
+    const ERROR_NO_ADDRESS_TYPE = 16;
 
 
     protected static $errors = [
@@ -88,7 +91,8 @@ class MethodException extends \RuntimeException
         self::ERROR_NO_ACCOUNT => "Не найден Аккаунт клиента %s",
         self::ERROR_NO_STAFF => "Не найден Сотрудник %s",
         self::ERROR_NO_CONTACT => "Не найдено Контактное лицо %s",
-        self::ERROR_NO_ORDER_RTU => "Не найдена Заявка на отгрузку %s"
+        self::ERROR_NO_ORDER_RTU => "Не найдена Заявка на отгрузку %s",
+        self::ERROR_NO_ADDRESS_TYPE => "Не найден тип Адреса %s"
 
     ];
 

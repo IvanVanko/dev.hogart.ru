@@ -2,6 +2,9 @@
 }
 @media (min-width: 768px) {
 }
+.order-line {
+  display: block;
+}
 .order-line .money-:after {
   padding-left: 5px;
   content: "\20bd";
@@ -13,6 +16,14 @@
 .order-line .money-eur:before {
   padding-right: 5px;
   content: "€";
+}
+.order-line .order-line__header {
+  display: flex;
+  flex-direction: row;
+}
+.order-line .order-line__header .shipment-info {
+  display: flex;
+  align-items: flex-end;
 }
 .order-line .order-item-list-wrapper [data-item-group] {
   padding-left: 40px;
@@ -125,6 +136,9 @@
 }
 .menu ul li {
   display: block;
+}
+.menu ul li.delimiter {
+  height: 10px;
 }
 .menu ul li i {
   -webkit-animation-duration: 1s;

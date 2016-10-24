@@ -14,6 +14,7 @@ use Bitrix\Main\Entity\Event;
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ReferenceField;
 use Hogart\Lk\Field\GuidField;
+use Hogart\Lk\Helper\Template\FlashError;
 
 /**
  * Таблица Аккаунт
@@ -82,22 +83,31 @@ class AccountTable extends AbstractEntity
     /**
      * @param int $ID
      * @param bool $is_active
+     * @param bool $is_notify
      * @return array|false
-     * @throws \Bitrix\Main\ArgumentException
      */
-    public static function getAccountByUserID($ID, $is_active = true)
+    public static function getAccountByUserID($ID, $is_active = true, $is_notify = true)
     {
-        return self::getList([
+        $account = self::getList([
             'filter' => [
                 '=user_id' => $ID,
-                '=is_active' => $is_active,
+//                '=is_active' => $is_active,
             ],
             'select' => [
                 '*',
                 'user_' => 'user',
-                'manager_' => 'main_manager'
+                'manager_' => 'main_manager',
+                'c_' => 'contact'
             ]
         ])->fetch();
+
+	    if (!empty($account['id']) && $is_active == true && $account['is_active'] != $is_active) {
+	        if ($is_notify)
+	    	    new FlashError("Учетная запись заблокирована, пожалуйста, обратитесь к менеджеру компании Хогарт");
+		    return null;
+	    }
+
+	    return $account;
     }
 
     /**

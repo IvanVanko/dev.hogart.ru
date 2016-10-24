@@ -54,7 +54,7 @@ $order = $arResult['order'];
                             /** @var OrderEventNote $note */
                             foreach ($arResult['history'] as $k => $note):
                             ?>
-                                <li id="<?= $note->getGuid() ?>" class="">
+                                <li id="<?= $note->getGuid() ?>" class="timeline-inverted">
                                     <? if(($icon = $note->getBadgeIcon())): ?>
                                     <div class="timeline-badge <?= $note->getBadgeClass() ?>">
                                         <?= $icon ?>

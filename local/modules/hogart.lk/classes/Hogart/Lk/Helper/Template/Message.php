@@ -13,6 +13,7 @@ class Message implements IMessage
 {
     const SEVERITY_INFO = 'info';
     const SEVERITY_DANGER = 'danger';
+    const SEVERITY_WARNING = 'warning';
     const SEVERITY_SUCCESS = 'success';
 
     /** @var string  */
@@ -25,6 +26,8 @@ class Message implements IMessage
     protected $icon;
     /** @var  integer */
     protected $delay = 5;
+    /** @var bool  */
+    protected $redirect = false;
     /** @var string  */
     protected $file;
     /** @var int  */
@@ -63,6 +66,24 @@ class Message implements IMessage
     function getMessage()
     {
         return $this->message;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isRedirect()
+    {
+        return !empty($this->url) && $this->redirect;
+    }
+
+    /**
+     * @param boolean $redirect
+     * @return $this
+     */
+    public function setRedirect($redirect)
+    {
+        $this->redirect = $redirect;
+        return $this;
     }
 
     /**
@@ -151,7 +172,8 @@ class Message implements IMessage
                 [
                     'type' => $this->severity,
                     'delay' => $this->delay * 1000,
-                    'allow_dismiss' => !$this->delay ? : false
+                    'allow_dismiss' => !$this->delay ? : false,
+                    '__redirect' => $this->isRedirect()
                 ]
             ]
         ]);

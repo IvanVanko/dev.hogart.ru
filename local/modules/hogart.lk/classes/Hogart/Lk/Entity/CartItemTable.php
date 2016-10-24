@@ -71,15 +71,25 @@ class CartItemTable extends AbstractEntity
 
     public static function getAccountCartCount($account_id)
     {
-        return (int)self::getList([
+        $items = self::getList([
             'filter' => [
                 '=cart.account.id' => $account_id,
             ],
-            'select' => ['CNT'],
-            'runtime' => [
-                new ExpressionField('CNT', 'SUM(%s)', ['count'])
-            ]
-        ])->fetch()['CNT'];
+            'select' => [
+                'count',
+                '' => 'item'
+            ],
+        ])->fetchAll();
+
+        $props = array_reduce($items, function ($result, $item) { $result[$item['ID']] = $item; return $result; }, []);
+        \CIBlockElement::GetPropertyValuesArray($props, CATALOG_IBLOCK_ID, ['ID' => array_keys($props)], ['CODE' => ['default_count']]);
+
+        $count = 0;
+        foreach ($items as $item) {
+            $count += $item['count'] / (intval($props[$item['ID']]['default_count']['VALUE']) ? : 1);
+        }
+
+        return $count;
     }
 
     /**
@@ -205,7 +215,7 @@ class CartItemTable extends AbstractEntity
         $price = GetCatalogProductPrice($item_id, $group_id);
 
         if (null === $price['PRICE']) {
-            new FlashError(vsprintf("В каталоге не указана цена на позицию: <strong><u>%s</u></strong>", [$element['NAME']]));
+            new FlashError(vsprintf("Товар <strong><u>%s</u></strong> не может быть добавлен в корзину, т.к не установлена цена", [$element['NAME']]), 0);
             return new AddResult();
         }
 
@@ -221,6 +231,16 @@ class CartItemTable extends AbstractEntity
         $data['element'] = $element;
         $result->setData($data);
         return $result;
+    }
+
+    public static function getDefaultCount($item_id, $count)
+    {
+        $props = array_reduce([$element = ElementTable::getById($item_id)->fetch()], function ($result, $item) { $result[$item['ID']] = $item; return $result; }, []);
+        \CIBlockElement::GetPropertyValuesArray($props, CATALOG_IBLOCK_ID, ['ID' => array_keys($props)], ['CODE' => ['default_count', 'sku']]);
+        $default_count = intval($props[$item_id]['default_count']['VALUE']) ? : 1;
+        $count = ceil($count / $default_count) * $default_count;
+
+        return [$count, $default_count];
     }
 
     public static function onBeforeAdd(Event $event)

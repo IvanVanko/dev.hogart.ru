@@ -348,6 +348,7 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                                 <div class="cart-group-menu" data-stick-block>
                                     <div class="menu">
                                         <ul class="fa-ul">
+                                            <? if (!empty($cart['contract_id'])): ?>
                                             <li data-create-order-button>
                                                 <?= Ajax::Link(
                                                     'Создать заказ',
@@ -370,6 +371,7 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                                                     ]
                                                 ) ?>
                                             </li>
+                                            <? endif; ?>
                                             <? if (!empty($cart['store_guid'])): ?>
                                                 <li data-store-check>
                                                     <i class="fa fa-li fa-remove fa-lg text-danger" aria-hidden="true"></i>
@@ -406,7 +408,7 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                                             <li data-copy-move-button>
                                                 <i class="fa fa-li fa-copy fa-lg text-primary" aria-hidden="true"></i>
                                                 <?= Ajax::Link(
-                                                    'Перенести/Копировать строки',
+                                                    'Группировать товары',
                                                     'carts',
                                                     $carts_node->getId(),
                                                     [

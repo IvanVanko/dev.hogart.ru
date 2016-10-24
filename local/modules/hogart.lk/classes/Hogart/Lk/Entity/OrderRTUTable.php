@@ -66,7 +66,7 @@ class OrderRTUTable extends AbstractEntity implements IOrderEventNote, IExchange
             ]),
             new GuidField("store_guid"),
             new GuidField("address_guid"),
-            new ReferenceField("address", __NAMESPACE__ . "\\AddressTable", ["=this.address_guid" => "ref.gui_id"]),
+            new ReferenceField("address", __NAMESPACE__ . "\\AddressTable", ["=this.address_guid" => "ref.guid_id"]),
             new DateField("plan_date"),
             new StringField("plan_time"),
             new IntegerField("contact_id"),
@@ -80,6 +80,7 @@ class OrderRTUTable extends AbstractEntity implements IOrderEventNote, IExchange
             ]),
             new StringField("tk_name"),
             new GuidField("tk_address"),
+            new ReferenceField("tk_address_ref", __NAMESPACE__ . "\\AddressTable", ["=this.tk_address" => "ref.guid_id"]),
             new StringField("driver_name"),
             new StringField("driver_phone"),
             new BooleanField("is_active"),
@@ -123,7 +124,17 @@ class OrderRTUTable extends AbstractEntity implements IOrderEventNote, IExchange
 
     public static function getRTUOrder($id)
     {
-        $order_rtu = self::getRowById($id);
+        $order_rtu = self::getRow([
+            'filter' => [
+                '=id' => $id
+            ],
+            'select' => [
+                '*',
+                'address_' => 'address',
+                'tk_address_' => 'tk_address_ref',
+                'c_' => 'contact'
+            ]
+        ]);
         $__items = OrderRTUItemTable::getList([
             'filter' => [
                 '=order_rtu_id' => $id
@@ -191,7 +202,6 @@ class OrderRTUTable extends AbstractEntity implements IOrderEventNote, IExchange
     public static function getOrderEventNote($entity_id, $event)
     {
         $order_rtu = self::getRTUOrder($entity_id);
-        $order_rtu['address'] = (string)AddressTable::getByField('guid_id', $order_rtu['address_guid'])['value'];
         $note = new OrderEventNote(
             self::showName($order_rtu)
         );

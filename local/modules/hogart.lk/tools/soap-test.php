@@ -17,12 +17,21 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
 CModule::IncludeModule("hogart.lk");
 CModule::IncludeModule("main");
 CModule::IncludeModule("catalog");
+CModule::IncludeModule("sprint.migration");
 
-//\Hogart\Lk\Entity\AccountTable::sendNewAccountPassword('test.lk2016@yandex.ru');
+//$helper = new \Sprint\Migration\Helpers\IblockHelper();
+//$helper->addPropertyIfNotExists(CATALOG_IBLOCK_ID, [
+//    'NAME' => 'Кратность отгрузки',
+//    'CODE' => 'default_count',
+//    'FILTRABLE' => 'N',
+//]);
+//exit;
+
+//\Hogart\Lk\Entity\AccountTable::sendNewAccountPassword('v.sokolov@hogart.ru');
 //exit;
 //
-//require($_SERVER["DOCUMENT_ROOT"]."/k_1c_upload/ParsingModel.php");
-//$parse = new ParsingModel(false);
+require($_SERVER["DOCUMENT_ROOT"]."/k_1c_upload/ParsingModel.php");
+$parse = new ParsingModel(false);
 
 //$answer = [
 //    "ID_Portal" => "HG",
@@ -41,13 +50,13 @@ CModule::IncludeModule("catalog");
 //$parse->answer = true;
 //while (true) {
 //    $parse->initCategory();
-//    $parse->initProduct();
+    $parse->initProduct();
 //    ob_end_flush();
 //    flush();
 //    sleep(1);
 //}
 //$parse->initBranch();
-//exit;
+exit;
 /** @var \Hogart\Lk\Exchange\SOAP\Client $soap */
 $soap = \Hogart\Lk\Exchange\SOAP\Client::getInstance();
 
@@ -59,12 +68,12 @@ $soap->getLogger()->registerLogger(new \Hogart\Lk\Logger\FileLogger(__DIR__ . "/
 //exit;
 //var_dump($soap->Contract->getContract());
 
-$o = new \Hogart\Lk\Exchange\SOAP\Request\OrderRTU([\Hogart\Lk\Entity\OrderRTUTable::getRTUOrder(1)]);
+//$o = new \Hogart\Lk\Exchange\SOAP\Request\OrderRTU([\Hogart\Lk\Entity\OrderRTUTable::getRTUOrder(1)]);
 //var_dump($o->__toRequest());
-var_dump($soap->OrderRTU->orderRTUPut($o));
+//var_dump($soap->OrderRTU->orderRTUPut($o));
 //var_dump($soap->Payment->updatePayments());
 //var_dump($soap->Contract->contractPut(new \Hogart\Lk\Exchange\SOAP\Request\Contract(\Hogart\Lk\Entity\ContractTable::getContractForExchange(2))));
-//var_dump($soap->Orders->ordersPut(new \Hogart\Lk\Exchange\SOAP\Request\Order([\Hogart\Lk\Entity\OrderTable::getOrder(5)])));
+var_dump($soap->Orders->ordersPut(new \Hogart\Lk\Exchange\SOAP\Request\Order([\Hogart\Lk\Entity\OrderTable::getOrder(2)])));
 
 //$request = new \Hogart\Lk\Exchange\SOAP\Request\OrderRTU([\Hogart\Lk\Entity\OrderRTUTable::getRTUOrder(7)]);
 //var_dump($request->__toRequest());

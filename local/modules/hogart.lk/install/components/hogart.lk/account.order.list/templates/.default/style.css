@@ -312,6 +312,14 @@ input[type="radio"] .styled:checked + label::after {
 .order-list .order-line {
   display: block;
 }
+.order-list .order-line .order-line__header {
+  display: flex;
+  flex-direction: row;
+}
+.order-list .order-line .order-line__header .shipment-info {
+  display: flex;
+  align-items: flex-end;
+}
 .order-list .order-line a .title {
   border-bottom: 1px dashed #95c600;
 }

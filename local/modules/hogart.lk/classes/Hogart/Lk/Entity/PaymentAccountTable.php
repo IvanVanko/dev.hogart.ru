@@ -60,9 +60,10 @@ class PaymentAccountTable extends AbstractEntity
         $result = new EventResult();
         $result->modifyFields([
             'hash' => $hash = sha1(implode("|", [
-                mb_strtolower($fields['number']),
+                $number = preg_replace("%[^\\d]%", "", $fields['number']),
                 mb_strtolower($fields['bik']),
-            ]))
+            ])),
+            'number' => $number
         ]);
         return $result;
     }

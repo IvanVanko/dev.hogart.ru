@@ -35,7 +35,7 @@ $this->setFrameMode(true);
         <h4>Контактная информация</h4>
         <div id="contacts-ajax">
             <div class="row header hidden-xs spacer">
-                <div class="col-lg-3 col-sm-3"><strong>Имя</strong></div>
+                <div class="col-lg-4 col-sm-3"><strong>Имя</strong></div>
                 <div class="col-lg-3 col-sm-3"><strong>Email</strong></div>
                 <div class="col-lg-2 col-sm-3"><strong>Телефоны</strong></div>
                 <div class="col-lg-2 col-sm-3 operations"></div>
@@ -44,7 +44,7 @@ $this->setFrameMode(true);
             <? foreach ($arResult['account']['contacts'] as $contact): ?>
                 <div class="row vertical-align spacer contact" data-contact-id="<?= $contact['guid_id'] ?>">
                     <? $contact_name = ($contact['last_name'] . " " . $contact['name'] . " " . $contact['middle_name']); ?>
-                    <div class="col-lg-3 col-sm-3"><strong class="pull-left visible-xs">Имя:</strong> <?= $contact_name ?></div>
+                    <div class="col-lg-4 col-sm-3"><strong class="pull-left visible-xs">Имя:</strong> <?= $contact_name ?></div>
                     <div class="col-lg-3 col-sm-3"><strong class="pull-left visible-xs">Email:</strong> <a
                             href="mailto:<?= ($email = $contact['info'][\Hogart\Lk\Entity\ContactInfoTable::TYPE_EMAIL][0]['value']) ?>"><?= $email ?></a></div>
                     <div class="col-lg-2 col-sm-3"><strong class="pull-left visible-xs">Телефоны:</strong>
@@ -57,7 +57,6 @@ $this->setFrameMode(true);
                         </div>
                     </div>
                     <div class="col-lg-2 col-sm-3 operations">
-                        <strong class="pull-left visible-xs">Операции:</strong>
                         <div class="btn-toolbar" role="toolbar">
                             <div
                                 <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent(
@@ -122,21 +121,29 @@ $this->setFrameMode(true);
     <div class="col-sm-12 col-xs-12 managers">
         <h4>Ваши менеджеры</h4>
         <div class="row header hidden-xs spacer">
-            <div class="col-sm-3 col-md-2 col-lg-1 hidden-xs"></div>
-            <div class="col-lg-2 col-sm-3"><strong>Имя</strong></div>
-            <div class="col-lg-2 col-sm-3"><strong>Email</strong></div>
+            <div class="col-lg-4 col-sm-3"><strong>Имя</strong></div>
+            <div class="col-lg-3 col-sm-3"><strong>Email</strong></div>
             <div class="col-lg-2 col-sm-3"><strong>Телефоны</strong></div>
+            <div class="col-lg-2 col-sm-3"></div>
         </div>
         <? foreach ($arResult['account']['managers'] as $manager): ?>
             <? $name = ($manager['last_name'] . " " . $manager['name'] . " " . $manager['middle_name']); ?>
             <div class="row vertical-align spacer manager" data-manager-id="<?= $manager['guid_id'] ?>">
-                <div class="col-sm-3 col-md-2 col-lg-1 avatar hidden-xs">
-                    <? if (!empty($manager['photo'])): ?>
-                    <img src="<?= $manager['photo'] ?>" alt="<?= $name ?>">
-                    <? endif; ?>
+                <div class="col-lg-4 col-sm-3">
+                    <div class="avatar hidden-xs">
+                        <? if (!empty($manager['photo'])): ?>
+                            <img src="<?= $manager['photo'] ?>" alt="<?= $name ?>">
+                        <? endif; ?>
+                    </div>
+                    <strong class="pull-left visible-xs">Имя:</strong>
+                    <span>
+                        <?= $name ?>
+                        <? if ($manager['id'] == $arResult['account']['main_manager_id']): ?>
+                            <sup><span class="label label-primary label-xs">основной</span></sup>
+                        <? endif; ?>
+                    </span>
                 </div>
-                <div class="col-lg-2 col-sm-3"><strong class="pull-left visible-xs">Имя:</strong> <?= $name ?></div>
-                <div class="col-lg-2 col-sm-3"><strong class="pull-left visible-xs">Email:</strong>
+                <div class="col-lg-3 col-sm-3"><strong class="pull-left visible-xs">Email:</strong>
                     <? ($email = $manager['info'][\Hogart\Lk\Entity\ContactInfoTable::TYPE_EMAIL][0]['value']) ?>
                     <? if (!empty($email)): ?>
                     <a
@@ -152,6 +159,12 @@ $this->setFrameMode(true);
                         </div>
                     <? endforeach; ?>
                     </div>
+                </div>
+                <div class="col-lg-2 col-sm-3">
+                    <a href="#">
+                        <i class="fa fa-question fa-lg text-warning" aria-hidden="true"></i>
+                        Задать вопрос менеджеру
+                    </a>
                 </div>
             </div>
         <? endforeach;?>

@@ -103,10 +103,12 @@ Hogart_Lk.__proto__.EventSource.addEventListener("message", function (event) {
     if ($.isPlainObject(message)) {
       switch (message.type) {
         case 'notify':
+          if (message.data[1].__redirect) {
+            message.data[1].onClose(function () {
+              document.location=message.data[0].url;
+            });
+          }
           $.notify(message.data[0], message.data[1]);
-          break;
-        case 'cart_counter':
-
           break;
       }
     }

@@ -38,7 +38,7 @@ use Hogart\Lk\Entity\CompanyTable;
     </div>
     <div class="row spacer">
         <div class="col-sm-12 form-group">
-            <input required="required" data-suggest="address" name="address[<?= AddressTypeTable::TYPE_LEGAL ?>]" type="text" class="form-control" placeholder="Введите адрес в свободной форме" data-error="Поле не должно быть пустым">
+            <input required="required" data-bind="addresses[<?= AddressTypeTable::TYPE_LEGAL?>][0].value" data-suggest="address" name="address[<?= AddressTypeTable::TYPE_LEGAL ?>]" type="text" class="form-control" placeholder="Введите адрес в свободной форме" data-error="Поле не должно быть пустым">
             <div class="help-block with-errors"></div>
         </div>
     </div>
@@ -58,12 +58,12 @@ use Hogart\Lk\Entity\CompanyTable;
     </div>
     <div class="row spacer">
         <div class="col-sm-12">
-            <input data-suggest="address" disabled="disabled" id="actual_address" name="address[<?= AddressTypeTable::TYPE_ACTUAL ?>]" type="text" class="form-control" placeholder="Введите адрес в свободной форме">
+            <input data-suggest="address" data-bind="addresses[<?= AddressTypeTable::TYPE_ACTUAL?>][0].value" disabled="disabled" id="actual_address" name="address[<?= AddressTypeTable::TYPE_ACTUAL ?>]" type="text" class="form-control" placeholder="Введите адрес в свободной форме">
         </div>
     </div>
-
+    <? if (empty($edit_company['id'])): ?>
     <? include __DIR__ . "/company_contacts.php"; ?>
-
+    <? endif; ?>
     <div class="row">
         <div class="col-sm-12">
             <label class="control-label">Генеральный директор</label>
@@ -71,15 +71,15 @@ use Hogart\Lk\Entity\CompanyTable;
     </div>
     <div class="row spacer">
         <div class="form-group col-sm-4">
-            <input name="director_last_name" required="required" type="text" class="col-sm-4 form-control" placeholder="Фамилия" data-error="Поле не должно быть пустым">
+            <input data-bind="chief_last_name" name="director_last_name" required="required" type="text" class="col-sm-4 form-control" placeholder="Фамилия" data-error="Поле не должно быть пустым">
             <div class="help-block with-errors"></div>
         </div>
         <div class="form-group col-sm-4">
-            <input name="director_name" required="required" type="text" class="col-sm-4 form-control" placeholder="Имя" data-error="Поле не должно быть пустым">
+            <input data-bind="chief_name" name="director_name" required="required" type="text" class="col-sm-4 form-control" placeholder="Имя" data-error="Поле не должно быть пустым">
             <div class="help-block with-errors"></div>
         </div>
         <div class="form-group col-sm-4">
-            <input name="director_middle_name" type="text" class="col-sm-4 form-control" placeholder="Отчество">
+            <input data-bind="chief_middle_name" name="director_middle_name" type="text" class="col-sm-4 form-control" placeholder="Отчество">
         </div>
     </div>
     <? include __DIR__ . "/payment_account.php"; ?>

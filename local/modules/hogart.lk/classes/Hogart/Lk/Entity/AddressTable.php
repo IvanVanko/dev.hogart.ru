@@ -72,13 +72,26 @@ class AddressTable extends AbstractEntityRelation implements IExchangeable
     public static function getByOwner($owner_id, $owner_type, $filter = [], $select = ['*'])
     {
         return array_reduce(
-            parent::getByOwner($owner_id, $owner_type, $filter, $select),
-            function ($result, $item) { $result[$item['type_id']][] = $item; return $result; },
+            parent::getByOwner($owner_id, $owner_type, $filter, array_merge($select, ['t_' => 'type'])),
+            function ($result, $item) { $result[$item['t_code']][] = $item; return $result; },
             []
         );
     }
 
-
+    public static function getValue($address)
+    {
+        return $address['value'] ? : (
+            join(" ", [
+                $address['postal_code'],
+                $address['region'],
+                $address['city'],
+                $address['street'],
+                $address['house'],
+                $address['building'],
+                $address['flat']
+            ])
+        );
+    }
     /**
      * {@inheritDoc}
      */

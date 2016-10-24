@@ -198,11 +198,11 @@ class Ajax
                     }, []);
 
                     if (!empty($events)) {
-                        $html .= 'data-dialog-events="' . \CUtil::PhpToJSObject($events) . '"' ;
+                        $html .= 'data-dialog-events="' . htmlentities(\CUtil::PhpToJSObject($events), ENT_COMPAT) . '"' ;
                     }
 
                     $html .= '
-                        data-edit="' . \CUtil::PhpToJSObject(array_merge($dialog_options['edit_object'], ['__action' => $dialog_options['edit_action']])) . '"
+                        data-edit="' . htmlentities(\CUtil::PhpToJSObject(array_merge($dialog_options['edit_object'], ['__action' => $dialog_options['edit_action']])), ENT_COMPAT) . '"
                         on' . $event . '="openEditDialog(\'' . $edit_id . '\', this)"
                     ';
                     break;
@@ -230,7 +230,13 @@ HTML;
      */
     protected static function __load($ajax_id, $url, $container)
     {
-        return "Hogart_Lk.insertToNode(Hogart_Lk.getAjaxUrl(this, '{$ajax_id}', '{$url}'), '{$container}');return false;";
+        global $USER, $APPLICATION;
+        if ($USER->IsAuthorized()) {
+            return "Hogart_Lk.insertToNode(Hogart_Lk.getAjaxUrl(this, '{$ajax_id}', '{$url}'), '{$container}');return false;";
+        } else {
+            $url = "'/auth/?backurl=" . $APPLICATION->GetCurPage(false) . "'";
+            return "document.location={$url}";
+        }
     }
 
     /**

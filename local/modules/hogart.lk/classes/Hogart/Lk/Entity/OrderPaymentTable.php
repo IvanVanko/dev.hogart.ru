@@ -125,7 +125,7 @@ class OrderPaymentTable extends AbstractEntity implements IOrderEventNote
             ->setTemplateFile($event["event"] . ".php")
             ->setTemplateData(['payment' => $payment, 'event' => $event])
             ->setBadgeIcon('<i class="fa fa-' . strtolower($payment['currency_code']) . '" aria-hidden="true"></i>')
-            ->setBadgeClass('danger')
+            ->setBadgeClass('warning')
             ->setDate($payment['payment_date'])
         ;
 

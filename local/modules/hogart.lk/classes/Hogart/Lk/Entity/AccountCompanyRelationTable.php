@@ -11,6 +11,7 @@ use Bitrix\Main\Entity\BooleanField;
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ReferenceField;
 use Hogart\Lk\Field\GuidField;
+use Hogart\Lk\Helper\Template\FlashError;
 
 /**
  * Таблица связи Аккаунта и Компаний клиента
@@ -50,6 +51,16 @@ class AccountCompanyRelationTable extends AbstractEntity
         ];
     }
 
+    public static function isHaveAccess($account_id, $company_id, $flash_error = false)
+    {
+        global $USER;
+        $is_access = (self::getByField('company_id', $company_id)['account_id'] == $account_id || $USER->IsAdmin());
+        if (!$is_access && $flash_error) {
+            new FlashError("У Вас нет доступа до управления компанией");
+        }
+        return $is_access;
+    }
+
     /**
      * Получить все компании пользователя
      * @param int $account_id
@@ -60,10 +71,12 @@ class AccountCompanyRelationTable extends AbstractEntity
     {
         return array_reduce(self::getList([
             'filter' => [
-                '=account_id' => $account_id
+                '=account_id' => $account_id,
+                'is_active' => true
             ],
             'select' => [
                 '' => 'company',
+                'chief_' => 'company.chief_contact',
                 'is_favorite' => 'is_favorite'
             ]
         ])->fetchAll(), function ($result, $item) { $result[$item['id']] = $item; return $result; }, []);

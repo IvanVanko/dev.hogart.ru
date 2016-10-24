@@ -59,6 +59,10 @@ class Address extends AbstractMethod
 
             $owner_id = $owner[AddressTable::$types[$address->Adr_Owner_Type]['rel_id']];
             $address_type = AddressTypeTable::getByField("guid_id", $address->Adr_ID_Address_Type);
+            if (empty($address_type['id'])) {
+                $answer->addResponse(new ResponseObject($address->Adr_ID_Owner, $address->Adr_Owner_Type, $address->Adr_ID_Address_Type, new MethodException(MethodException::ERROR_NO_ADDRESS_TYPE, [$address->Adr_ID_Address_Type])));
+                continue;
+            }
             $data = [
                 'owner_id' => $owner_id,
                 'owner_type' => $address->Adr_Owner_Type,

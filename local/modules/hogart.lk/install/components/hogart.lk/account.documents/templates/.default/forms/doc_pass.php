@@ -18,7 +18,7 @@ use Hogart\Lk\Entity\CompanyTable;
         <input data-mask="9999" name="doc_serial" type="text" class="form-control" placeholder="Серия">
     </div>
     <div class="col-sm-3" data-doc-type="<?= CompanyTable::DOC_PASSPORT?>">
-        <input data-mask="999999" name="doc_number" type="text" class="form-control" placeholder="Номер">
+        <input data-mask="999 999" name="doc_number" type="text" class="form-control" placeholder="Номер">
     </div>
 </div>
 <div class="row spacer" data-doc-type="<?= CompanyTable::DOC_PASSPORT?>">
@@ -26,6 +26,6 @@ use Hogart\Lk\Entity\CompanyTable;
         <input name="doc_ufms" type="text" class="form-control" placeholder="Кем выдан">
     </div>
     <div class="col-sm-4">
-        <input name="doc_date" type="text" class="form-control" data-mask="99/99/9999" placeholder="ДД/ММ/ГГГГ">
+        <input name="doc_date" type="text" class="form-control" data-mask="99.99.9999" placeholder="ДД.ММ.ГГГГ">
     </div>
 </div>

@@ -192,30 +192,6 @@ use Hogart\Lk\Entity\ContactTable;
                                 <div class="help-block with-errors"></div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <label class="control-label">ФИО Водителя</label>
-                            </div>
-                        </div>
-                        <div class="row spacer">
-                            <div class="form-group col-sm-4">
-                                <input name="driver_last_name" required="required" type="text" class="col-sm-4 form-control" placeholder="Фамилия" data-error="Поле не должно быть пустым">
-                                <div class="help-block with-errors"></div>
-                            </div>
-                            <div class="form-group col-sm-4">
-                                <input name="driver_name" required="required" type="text" class="col-sm-4 form-control" placeholder="Имя" data-error="Поле не должно быть пустым">
-                                <div class="help-block with-errors"></div>
-                            </div>
-                            <div class="form-group col-sm-4">
-                                <input name="driver_middle_name" type="text" class="col-sm-4 form-control" placeholder="Отчество">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <label class="control-label">Телефон водителя</label>
-                                <input name="driver_phone" data-mask="+7 (999) 999-99-99" type="text" class="form-control" placeholder="Телефон">
-                            </div>
-                        </div>
                     </fieldset>
                 </div>
             </div>

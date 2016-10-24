@@ -10,6 +10,14 @@
   }
   .order-line {
     display: block;
+    .order-line__header {
+      display: flex;
+      flex-direction: row;
+      .shipment-info {
+        display: flex;
+        align-items: flex-end;
+      }
+    }
     a {
       .title {
         border-bottom: 1px dashed @brand-green;

@@ -2,6 +2,15 @@
 
 .order-line {
   .money();
+  display: block;
+  .order-line__header {
+    display: flex;
+    flex-direction: row;
+    .shipment-info {
+      display: flex;
+      align-items: flex-end;
+    }
+  }
   .order-item-list-wrapper {
     [data-item-group] {
       padding-left: 40px;
@@ -120,6 +129,9 @@
     padding-left: 5px;
     li {
       display: block;
+      &.delimiter {
+        height: 10px;
+      }
       i {
         .animation-duration(1s);
         .animation-fill-mode(both);

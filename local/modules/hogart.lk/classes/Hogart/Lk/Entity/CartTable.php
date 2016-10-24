@@ -20,6 +20,8 @@ use Bitrix\Main\Entity\ScalarField;
 use Bitrix\Main\Type\DateTime;
 use Hogart\Lk\Field\GuidField;
 use Hogart\Lk\Helper\Template\Error;
+use Hogart\Lk\Helper\Template\FlashError;
+use Hogart\Lk\Helper\Template\FlashWarning;
 use Hogart\Lk\Helper\Template\MessageFactory;
 use Ramsey\Uuid\Uuid;
 
@@ -196,18 +198,19 @@ class CartTable extends AbstractEntity
                     $item['props'] = $items[$item['item_id']];
                     $item['product'] = $products[$item['item_id']];
                     $cart['measures'][] = $item['product']['MEASURE'];
-                    if (!empty($storeAmount[$item['item_id']])) {
-                        $item['STORE_AMOUNT'] = $storeAmount[$item['item_id']][$cart['s_ID']]['AMOUNT'];
-                        $item['PREV_POS_AMOUNT'] = $storeAmount[$item['item_id']][$cart['s_ID']]['PREV_AMOUNT'];
-                        $item['NEGATIVE_AMOUNT'] = max(0, $item['count'] - $storeAmount[$item['item_id']][$cart['s_ID']]['AMOUNT']);
 
-                        $plus_prev_amount = min($item['count'], $storeAmount[$item['item_id']][$cart['s_ID']]['AMOUNT']);
-                        $storeAmount[$item['item_id']]['__AMOUNT'] -= $plus_prev_amount;
-                        $storeAmount[$item['item_id']][$cart['s_ID']]['PREV_AMOUNT'] += $plus_prev_amount;
-                        $storeAmount[$item['item_id']][$cart['s_ID']]['AMOUNT'] = max(0, $storeAmount[$item['item_id']][$cart['s_ID']]['AMOUNT'] - $item['count']);
-                        $item['STORE_TRANSIT'] = $storeAmount[$item['item_id']]['__TRANSIT'];
-                        $item['STORE_ALL_AMOUNT'] = $storeAmount[$item['item_id']]['__AMOUNT'];
-                    }
+                    $storeAmount[$item['item_id']][$cart['s_ID']] = !empty($storeAmount[$item['item_id']][$cart['s_ID']]) ? $storeAmount[$item['item_id']][$cart['s_ID']] : [];
+
+                    $item['STORE_AMOUNT'] = (int)$storeAmount[$item['item_id']][$cart['s_ID']]['AMOUNT'];
+                    $item['PREV_POS_AMOUNT'] = (int)$storeAmount[$item['item_id']][$cart['s_ID']]['PREV_AMOUNT'];
+                    $item['NEGATIVE_AMOUNT'] = (int)max(0, $item['count'] - $storeAmount[$item['item_id']][$cart['s_ID']]['AMOUNT']);
+
+                    $plus_prev_amount = (int)min($item['count'], $storeAmount[$item['item_id']][$cart['s_ID']]['AMOUNT']);
+                    $storeAmount[$item['item_id']]['__AMOUNT'] -= $plus_prev_amount;
+                    $storeAmount[$item['item_id']][$cart['s_ID']]['PREV_AMOUNT'] += $plus_prev_amount;
+                    $storeAmount[$item['item_id']][$cart['s_ID']]['AMOUNT'] = (int)max(0, $storeAmount[$item['item_id']][$cart['s_ID']]['AMOUNT'] - $item['count']);
+                    $item['STORE_TRANSIT'] = (int)$storeAmount[$item['item_id']]['__TRANSIT'];
+                    $item['STORE_ALL_AMOUNT'] = (int)$storeAmount[$item['item_id']]['__AMOUNT'];
 
                     if (isset($discount_prices[$item['item_id']])) {
                         $item['discount'] = $discount_prices[$item['item_id']];
@@ -446,9 +449,14 @@ class CartTable extends AbstractEntity
 
     public static function changeCount($cart_id, $item_id, $count)
     {
+        $item = CartItemTable::getByPrimary($item_id)->fetch();
+        list($new_count, $default_count) = CartItemTable::getDefaultCount($item['item_id'], $count);
+        if ($new_count != $count) {
+            new FlashWarning(vsprintf("Количество товара должно быть кратно <b>%s</b>", $default_count));
+        }
         CartItemTable::update($item_id, [
             'cart_id' => $cart_id,
-            'count' => $count
+            'count' => $new_count
         ]);
     }
 

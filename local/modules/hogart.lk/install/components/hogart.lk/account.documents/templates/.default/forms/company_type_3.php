@@ -1,6 +1,8 @@
 <?php
+/**
+ * @var array $company
+ */
 use Hogart\Lk\Entity\AddressTypeTable;
-use Hogart\Lk\Entity\ContactInfoTable;
 use Hogart\Lk\Entity\CompanyTable;
 ?>
 <fieldset name="company_type_<?= CompanyTable::TYPE_INDIVIDUAL ?>">
@@ -30,7 +32,7 @@ use Hogart\Lk\Entity\CompanyTable;
     </div>
     <div class="row spacer">
         <div class="col-sm-12">
-            <input data-suggest="address" name="address[<?= AddressTypeTable::TYPE_LEGAL?>]" type="text" class="form-control" placeholder="Введите адрес в свободной форме">
+            <input data-bind="addresses[<?= AddressTypeTable::TYPE_LEGAL?>][0].value" data-suggest="address" name="address[<?= AddressTypeTable::TYPE_LEGAL?>]" type="text" class="form-control" placeholder="Введите адрес в свободной форме">
         </div>
     </div>
     <div class="row spacer">
@@ -48,15 +50,17 @@ use Hogart\Lk\Entity\CompanyTable;
     </div>
     <div class="row spacer">
         <div class="col-sm-12">
-            <input data-suggest="address" disabled="disabled" id="residential_address_<?= CompanyTable::TYPE_INDIVIDUAL ?>" name="address[<?= AddressTypeTable::TYPE_ACTUAL?>]" type="text" class="form-control" placeholder="Введите адрес в свободной форме">
+            <input data-suggest="address" data-bind="addresses[<?= AddressTypeTable::TYPE_ACTUAL?>][0].value" disabled="disabled" id="residential_address_<?= CompanyTable::TYPE_INDIVIDUAL ?>" name="address[<?= AddressTypeTable::TYPE_ACTUAL?>]" type="text" class="form-control" placeholder="Введите адрес в свободной форме">
         </div>
     </div>
     <div class="row">
         <div class="col-sm-12 form-group">
             <label class="control-label">Дата регистрации по месту жительства</label>
-            <input name="date_fact_address" type="text" class="form-control" data-mask="99/99/9999" placeholder="ДД/ММ/ГГГГ">
+            <input name="date_fact_address" type="text" class="form-control" data-mask="99.99.9999" placeholder="ДД.ММ.ГГГГ">
         </div>
     </div>
+    <? if (empty($edit_company['id'])): ?>
     <? include __DIR__ . "/company_contacts.php"; ?>
+    <? endif; ?>
     <? include __DIR__ . "/doc_pass.php"; ?>
 </fieldset>

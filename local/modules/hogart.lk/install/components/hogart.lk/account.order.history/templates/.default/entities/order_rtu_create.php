@@ -15,20 +15,42 @@ use Hogart\Lk\Entity\OrderRTUTable;
 $_items = $items;
 ?>
 <div class="row spacer"></div>
-<div class="row spacer">
+<div class="row">
     <div class="col-sm-12 h5">
         <b>Тип доставки:</b>
         <?= OrderRTUTable::getDeliveryTypeText($order_rtu['delivery_type'])?>
     </div>
 </div>
-<? if ($order_rtu['delivery_type'] == OrderRTUTable::DELIVERY_OUR): ?>
-<div class="row spacer">
+<div class="row">
     <div class="col-sm-12 h5">
-        <b>Адрес доставки:</b>
-        <?= $order_rtu['address'] ?>
+        <b>Планируемая дата отгрузки:</b>
+        <?= $order_rtu['plan_date']->format(HOGART_DATE_FORMAT) . " " . $order_rtu['plan_time'] ?>
     </div>
 </div>
+
+<? if ($order_rtu['delivery_type'] == OrderRTUTable::DELIVERY_OUR): ?>
+<div class="row">
+    <div class="col-sm-12 h5">
+        <b>Адрес доставки:</b>
+        <?= $order_rtu['address_value'] ?>
+    </div>
+</div>
+    <? if ($order_rtu['is_tk']): ?>
+        <div class="row">
+            <div class="col-sm-12 h5">
+                <b>Транспортная компания:</b>
+                <?= $order_rtu['tk_name'] ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 h5">
+                <b>Адрес транспортной компании:</b>
+                <?= $order_rtu['tk_address_value'] ?>
+            </div>
+        </div>
+    <? endif; ?>
 <? endif; ?>
+
 <div class="row">
     <div class="col-sm-12">
         <? foreach ($_items as $item_group => $items): ?>

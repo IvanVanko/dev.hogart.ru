@@ -8,7 +8,19 @@
 <div class="bx-auth">
 
 <?
-ShowMessage($arParams["~AUTH_RESULT"]);
+
+if (!empty($arParams["~AUTH_RESULT"])) {
+	switch ($arParams["~AUTH_RESULT"]['TYPE']) {
+		case 'ERROR':
+			new \Hogart\Lk\Helper\Template\FlashError($arParams["~AUTH_RESULT"]['MESSAGE']);
+			break;
+		case 'OK':
+			new \Hogart\Lk\Helper\Template\FlashSuccess($arParams["~AUTH_RESULT"]['MESSAGE']);
+			LocalRedirect("/account/");
+			break;
+	}
+}
+
 \Bitrix\Main\Page\Asset::getInstance()->addJs('//cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js', true);
 \Bitrix\Main\Page\Asset::getInstance()->addCss('//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css', true);
 \Bitrix\Main\Page\Asset::getInstance()->addJs('//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js', true);

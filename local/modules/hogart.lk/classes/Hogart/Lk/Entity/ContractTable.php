@@ -60,6 +60,9 @@ class ContractTable extends AbstractEntity
             new StringField("number"),
             new DateField("start_date"),
             new DateField("end_date"),
+            new BooleanField("prolongation", [
+                'default_value' => false
+            ]),
             new BooleanField("extension"),
             new StringField("currency_code"),
             new ReferenceField("currency", "Bitrix\\Currency\\CurrencyTable", ["=this.currency_code" => "ref.CURRENCY"]),

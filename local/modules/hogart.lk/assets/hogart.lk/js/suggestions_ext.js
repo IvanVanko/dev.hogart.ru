@@ -16,7 +16,7 @@ function suggest (context) {
         $('input[name="__' + $(this).attr('name') + '"]').val(JSON.stringify(suggestion));
       }
     });
-    $(el).after('<input type="hidden" name="__' + $(el).attr('name') + '">');
+    $(el).after('<input default-name="__' + $(el).attr('default-name') + '" type="hidden" name="__' + $(el).attr('name') + '">');
     var params = $(el).data('suggest-params');
     if (params) {
       $(el).data("suggestions").setOptions({

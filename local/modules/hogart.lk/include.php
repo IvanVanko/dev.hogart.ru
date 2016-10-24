@@ -82,5 +82,5 @@ define("HOGART_DATE_TIME_FORMAT", "d.m.Y H:i");
 
 \Bitrix\Main\Page\Asset::getInstance()->addJs('//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js', true);
 
-\Bitrix\Main\Page\Asset::getInstance()->addCss('//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.42/css/bootstrap-datetimepicker.min.css', true);
+\Bitrix\Main\Page\Asset::getInstance()->addCss('/local/modules/hogart.lk/assets/hogart.lk/less/bootstrap-datetimepicker.css', true);
 \Bitrix\Main\Page\Asset::getInstance()->addJs('//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.42/js/bootstrap-datetimepicker.min.js', true);

@@ -5,6 +5,7 @@
  * Date: 06/09/16
  * Time: 22:11
  */
+
 use Hogart\Lk\Entity\ContactRelationTable;
 use Hogart\Lk\Entity\PaymentAccountTable;
 use Hogart\Lk\Entity\PaymentAccountRelationTable;
@@ -15,6 +16,7 @@ use Hogart\Lk\Entity\AddressTypeTable;
 use Hogart\Lk\Entity\AddressTable;
 use Hogart\Lk\Entity\CompanyTable;
 use Bitrix\Main\Type\Date;
+use Hogart\Lk\Helper\Template\FlashError;
 
 global $APPLICATION;
 
@@ -26,34 +28,7 @@ if (!empty($account['id']) && !empty($_REQUEST)) {
             LocalRedirect($APPLICATION->GetCurPage(false));
             die();
             break;
-
         case 'edit_company':
-            die();
-            break;
-        case 'add-contract':
-            $start_date = new DateTime();
-            $end_date = new DateTime();
-            $end_date->setDate($start_date->format('Y'), '12', '31');
-            $diff = $start_date->diff(new DateTime($start_date->format('Y') . "-10-01"));
-            if ($diff->format('%R%a') < 0) {
-                $end_date->add(new DateInterval('P1Y'));
-            }
-            $contract = [
-                'company_id' => $_SESSION['current_company_id'],
-                'hogart_company_id' => (string)$_POST['hogart_company'],
-                'start_date' => Date::createFromPhp($start_date),
-                'end_date' => Date::createFromPhp($end_date),
-                'currency_code' => $_POST['currency'],
-                'perm_item' => (bool)$_POST['perm_item'],
-                'perm_promo' => (bool)$_POST['perm_promo'],
-                'perm_clearing' => (bool)$_POST['perm_clearing'],
-                'perm_card' => (bool)$_POST['perm_card'],
-                'perm_cash' => (bool)$_POST['perm_cash'],
-                'is_active' => true
-            ];
-
-            \Hogart\Lk\Entity\ContractTable::add($contract);
-            LocalRedirect($APPLICATION->GetCurPage(false));
             die();
             break;
         case 'add-address':
@@ -203,18 +178,18 @@ if (!empty($account['id']) && !empty($_REQUEST)) {
                         'doc_serial' => $_POST['doc_serial'],
                         'doc_number' => $_POST['doc_number'],
                         'doc_ufms' => $_POST['doc_ufms'],
-                        'doc_date' => !empty($_POST['doc_date']) ? new Date($_POST['doc_date'], 'd/m/Y') : "",
+                        'doc_date' => !empty($_POST['doc_date']) ? new Date($_POST['doc_date'], 'd.m.Y') : "",
                     ]);
                     break;
                 case 3:
                     $new_company = array_merge($new_company, [
                         'name' => $_POST['last_name'] . ' ' . $_POST['name'] . ' ' . $_POST['middle_name'],
-                        'date_fact_address' => new Date($_POST['date_fact_address'], 'd/m/Y'),
+                        'date_fact_address' => new Date($_POST['date_fact_address'], 'd.m.Y'),
                         'doc_pass' => intval($_POST['doc_pass']),
                         'doc_serial' => $_POST['doc_serial'],
                         'doc_number' => $_POST['doc_number'],
                         'doc_ufms' => $_POST['doc_ufms'],
-                        'doc_date' => !empty($_POST['doc_date']) ? new Date($_POST['doc_date'], 'd/m/Y') : "",
+                        'doc_date' => !empty($_POST['doc_date']) ? new Date($_POST['doc_date'], 'd.m.Y') : "",
                     ]);
                     break;
             }
@@ -320,9 +295,135 @@ if (!empty($account['id']) && !empty($_REQUEST)) {
             LocalRedirect($APPLICATION->GetCurPage(false));
             die();
             break;
+        case 'edit-company':
+            $company = CompanyTable::getRowById((int)$_REQUEST['id']);
+            
+            if (empty($company['id']) || !AccountCompanyRelationTable::isHaveAccess($account['id'], $company['id'])) {
+                new FlashError("У Вас нет доступа до управления компанией");
+                break;
+            }
+
+            $new_company = [];
+
+            switch (intval($company['type'])) {
+                case 1:
+                    $chiefResult = ContactTable::update($company['chief_contact_id'], [
+                        'name' => $_POST['director_name'],
+                        'last_name' => $_POST['director_last_name'],
+                        'middle_name' => $_POST['director_middle_name'],
+                    ]);
+                    break;
+                case 2:
+                    $new_company = array_merge($new_company, [
+                        'doc_pass' => intval($_POST['doc_pass']),
+                        'doc_serial' => $_POST['doc_serial'],
+                        'doc_number' => $_POST['doc_number'],
+                        'doc_ufms' => $_POST['doc_ufms'],
+                        'doc_date' => !empty($_POST['doc_date']) ? new Date($_POST['doc_date'], 'd.m.Y') : "",
+                    ]);
+                    break;
+                case 3:
+                    $new_company = array_merge($new_company, [
+                        'date_fact_address' => new Date($_POST['date_fact_address'], 'd.m.Y'),
+                        'doc_pass' => intval($_POST['doc_pass']),
+                        'doc_serial' => $_POST['doc_serial'],
+                        'doc_number' => $_POST['doc_number'],
+                        'doc_ufms' => $_POST['doc_ufms'],
+                        'doc_date' => !empty($_POST['doc_date']) ? new Date($_POST['doc_date'], 'd.m.Y') : "",
+                    ]);
+                    break;
+            }
+
+            if (!empty($new_company))
+                $company_result = CompanyTable::update($company['id'], $new_company);
+            if (!empty($company['id'])) {
+                if (!empty($_POST['residential_address_as_actual']) || !empty($_POST['actual_address_as_legal'])) {
+                    $_POST['__address'][AddressTypeTable::TYPE_ACTUAL] = $_POST['__address'][AddressTypeTable::TYPE_LEGAL];
+                }
+
+                foreach([AddressTypeTable::TYPE_ACTUAL, AddressTypeTable::TYPE_LEGAL] as $adrTypeCode){
+                    $address_type = AddressTypeTable::getByField('code',$adrTypeCode);
+                    if (!empty($_POST['__address'][$adrTypeCode])) {
+                        $address = json_decode($_POST['__address'][$adrTypeCode]);
+                        $addressRes = AddressTable::replace([
+                            'owner_id' => $company['id'],
+                            'owner_type' => AddressTable::OWNER_TYPE_CLIENT_COMPANY,
+                            'type_id' => $address_type['id'],
+                            'postal_code' => $address->data->postal_code,
+                            'region' => $address->data->region_with_type,
+                            'city' => $address->data->city_with_type,
+                            'street' => $address->data->street_with_type,
+                            'house' => "" . $address->data->house,
+                            'building' => "" . $address->block,
+                            'flat' => "" . $address->data->flat,
+                            'value' => $address->unrestricted_value,
+                            'fias_code' => $address->data->fias_id,
+                            'kladr_code' => $address->data->kladr_id,
+                            'is_active' => true
+                        ]);
+                    }
+                }
+
+                $payment_accounts = PaymentAccountRelationTable::getByOwner(
+                    $company['id'],
+                    PaymentAccountRelationTable::OWNER_TYPE_CLIENT_COMPANY
+                );
+                foreach ($payment_accounts as $payment_account) {
+                    PaymentAccountTable::update($payment_account['payment_account_id'], [
+                        'is_active' => false
+                    ]);
+                }
+
+                switch (intval($company['type'])) {
+                    case 1:
+                    case 2:
+
+                        if (!is_array($_POST['payment_account']['number'])) {
+                            $_POST['payment_account']['number'] = [$_POST['payment_account']['number']];
+                            $_POST['payment_account']['is_main'] = [$_POST['payment_account']['is_main']];
+                            $_POST['__payment_account']['bik'] = [$_POST['__payment_account']['bik']];
+                        }
+
+                        foreach ($_POST['payment_account']['number'] as $index => $payment_number) {
+                            $bikData = json_decode($_POST['__payment_account']['bik'][$index]);
+                            $paymentRes = PaymentAccountTable::createOrUpdateByField([
+                                'number' => $payment_number,
+                                'bik' => $bikData->data->bic,
+                                'bank_name' => $bikData->data->name->payment,
+                                'corr_number' => $bikData->data->correspondent_account,
+                                'is_active' => true
+                            ], 'hash');
+                            if ($paymentRes->getId()) {
+                                PaymentAccountRelationTable::replace([
+                                    'payment_account_id' => $paymentRes->getId(),
+                                    'owner_id' => $company['id'],
+                                    'owner_type' => PaymentAccountRelationTable::OWNER_TYPE_CLIENT_COMPANY,
+                                    'is_main' => (bool)$_POST['payment_account']['is_main'][$index]
+                                ]);
+                            }
+                        }
+                        break;
+                }
+
+            }
+            LocalRedirect($APPLICATION->GetCurPage(false));
+            die();
+            break;
     }
     if (!empty($_REQUEST['fav_company'])) {
         AccountCompanyRelationTable::toggleFavorite($account['id'], $_REQUEST['fav_company']);
+    }
+    if (!empty($_REQUEST['remove_company'])) {
+        if (AccountCompanyRelationTable::isHaveAccess($account['id'], $_REQUEST['remove_company'], true)) {
+            if ($account['is_general']) {
+                CompanyTable::update($_REQUEST['remove_company'], [
+                    "is_active" => false,
+                ]);
+                new \Hogart\Lk\Helper\Template\FlashSuccess("Компания удалена");
+            } else {
+                new \Hogart\Lk\Helper\Template\FlashError("У Вас нет доступа до управления компанией");
+            }
+        }
     }
     if (!empty($_REQUEST['remove_contact'])) {
         ContactRelationTable::delete([

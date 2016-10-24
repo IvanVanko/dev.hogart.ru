@@ -31,70 +31,7 @@ $order = $arResult['order'];
     <div class="col-sm-9">
         <div class="row spacer-20 order-line">
             <div class="col-sm-12">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <h4>
-                            <span class="title">
-                                <?= OrderTable::showName($order) ?>
-                            </span>
-                            <sup><span class="label label-primary"><?= OrderTable::getTypeText($order['type']) ?></span></sup>
-                            <sup><span class="label label-info"><?= OrderTable::getStateText($order['state']) ?></span></sup>
-                            <? if ($order['history'] > 0 && in_array($order['state'], [OrderTable::STATE_ARCHIVE, OrderTable::STATE_NORMAL])): ?>
-                                <sup>
-                                    <a href="/account/order/<?= $order['id'] ?>/history/">
-                                    <span class="label label-warning">
-                                        <i class="fa fa-history"></i>
-                                    </span>
-                                    </a>
-                                </sup>
-                            <? endif; ?>
-                        </h4>
-                        <div><?= $order['co_name'] ?></div>
-                        <div><?= ContractTable::showName($order, false, 'c_') ?></div>
-                        <div>Отгрузка со склада: <u><?= $order['s_TITLE'] ?></u> </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="h5">Общая сумма: <abbr title="Общая сумма по заказу"><span class="money-<?= strtolower($order['currency']['CURRENCY']) ?>"><?= Money::show((float)$order['totals']['items']) ?></span></abbr></div>
-                        <? if ($order['state'] == OrderTable::STATE_NORMAL): ?>
-                            <? if ($order['totals']['release'] != 0): ?>
-                                <div class="h5">Оплачено: <span class="money<?= ($order['c_currency_code'] == "RUB" ? "" : "-eur") ?>"><?= Money::show((float)$order['totals']['payments']) ?></span> (<?= (round($order['totals']['payments'] / $order['totals']['items'] * 100, 0)) ?>%)</div>
-                                <div class="h5">К оплате: <span class="money<?= ($order['c_currency_code'] == "RUB" ? "" : "-eur") ?>"><?= Money::show((float)$order['totals']['release']) ?></span></div>
-                            <? else : ?>
-                                <div class="h5 color-green">Заказ оплачен полностью</div>
-                            <? endif; ?>
-                        <? endif; ?>
-                    </div>
-                    <div class="col-sm-2 text-right pull-right">
-                        <? if ($order['state'] == OrderTable::STATE_NORMAL): ?>
-                            <div class="h5"><?= OrderTable::getShipmentByFlag($order['shipment_flag']) ?></div>
-                        <? endif; ?>
-                    </div>
-                </div>
-                <div class="row spacer-20">
-                    <div class="col-sm-6 comment">
-                        <? if (!empty($order['note'])): ?>
-                            <p class="h6">
-                                <i class="fa fa-comment" aria-hidden="true"></i>
-                                <i><?= $order['note'] ?></i>
-                            </p>
-                        <? endif; ?>
-                    </div>
-                    <div class="col-sm-3">
-                        <? if ($order['guid_id'] && $order['state'] == OrderTable::STATE_NORMAL && $order['totals']['release']): ?>
-                            <?= \Hogart\Lk\Helper\Template\Dialog::Button("order-payment", '<i class="fa fa-money" aria-hidden="true"></i> Оплатить', "btn btn-primary")?>
-                        <? endif; ?>
-                    </div>
-                    <div class="col-sm-3 text-right pull-right">
-                        <? if ($order['totals']['release'] <= 0 && $order['state'] == OrderTable::STATE_NORMAL && OrderTable::isProvideShipmentFlag($order['shipment_flag'], OrderItemTable::STATUS_IN_RESERVE)): ?>
-                            <a href="/account/orders/shipment/<?= $order['s_XML_ID'] ?>/" class="btn btn-primary">Отгрузить</a>
-                        <? endif; ?>
-                        <? if ($order['history'] > 0 && in_array($order['state'], [OrderTable::STATE_ARCHIVE, OrderTable::STATE_NORMAL])): ?>
-                            <a class="btn btn-warning btn-xs" href="/account/order/<?= $order['id'] ?>/history/">
-                                <i class="fa fa-history"></i> История
-                            </a>
-                        <? endif; ?>
-                    </div>
-                </div>
+                <? include dirname(__FILE__) . "/../../../account.order.list/templates/.default/order-header.php" ?>
                 <div class="row">
                     <div class="col-sm-12">
                         <? foreach ($order['items'] as $item_group => $items): ?>
@@ -175,6 +112,7 @@ $order = $arResult['order'];
                             Задать вопрос менеджеру
                         </a>
                     </li>
+                    <li class="delimiter"></li>
                     <li>
                         <a href="<?= $APPLICATION->GetCurPage(false) . "?action=order-kp" ?>">
                             <i class="fa fa-li fa-print fa-lg text-warning" aria-hidden="true"></i>
@@ -189,13 +127,13 @@ $order = $arResult['order'];
                         </a>
                     </li>
                     <? endif; ?>
+                    <li class="delimiter"></li>
                     <li>
                         <a data-confirmation="copy-to-cart" href="/account/orders/?copy_to_cart=<?= $order['id'] ?>&state=active">
                             <i class="fa fa-li fa-shopping-cart fa-lg text-primary" aria-hidden="true"></i>
                             Копировать в корзину
                         </a>
                     </li>
-
                     <? if ($order['state'] == OrderTable::STATE_DRAFT): ?>
                         <li>
                             <a data-confirmation="delete" href="/account/orders/?delete=<?= $order['id'] ?>&state=active">
@@ -206,7 +144,7 @@ $order = $arResult['order'];
                     <? else: ?>
                         <li>
                             <a href="/account/orders/active/index.php?copy_to_draft=<?= $order['id'] ?>">
-                                <i class="fa fa-li fa-edit fa-lg text-primary" aria-hidden="true"></i>
+                                <i class="fa fa-li fa-edit fa-lg text-warning" aria-hidden="true"></i>
                                 Копировать в черновики
                             </a>
                         </li>

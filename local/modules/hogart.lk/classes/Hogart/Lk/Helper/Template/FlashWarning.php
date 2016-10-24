@@ -11,12 +11,12 @@ namespace Hogart\Lk\Helper\Template;
 
 use Hogart\Lk\Exception;
 
-class FlashError extends Exception
+class FlashWarning extends Exception
 {
     public function __construct($message, $delay = null, $redirect = null)
     {
         parent::__construct($message);
-        $message = new Message($message, Message::SEVERITY_DANGER, $this);
+        $message = new Message($message, Message::SEVERITY_WARNING, $this);
         $message->setIcon('fa fa-exclamation-triangle');
         if (null !== $delay) {
             $message->setDelay($delay);

@@ -22,6 +22,7 @@ use Hogart\Lk\Entity\ContractTable;
 use Hogart\Lk\Entity\AccountCompanyRelationTable;
 use Hogart\Lk\Entity\AddressTable;
 use Hogart\Lk\Entity\HogartCompanyTable;
+use Hogart\Lk\Entity\PaymentAccountRelationTable;
 
 
 if (!$this->initComponentTemplate())
@@ -30,13 +31,14 @@ if (!$this->initComponentTemplate())
 global $USER, $APPLICATION, $CACHE_MANAGER;
 $account = AccountTable::getAccountByUserID($USER->GetID());
 
-include (__DIR__ . "/proceed_request.php");
-
 // Юридические лица (они же компании)
 $account = AccountTable::getAccountById($account['id']);
 
 if ($account['id']) {
     $account['is_general'] = AccountTable::isGeneralAccount($account['id']);
+
+    include (__DIR__ . "/proceed_request.php");
+
     $companies = AccountCompanyRelationTable::getByAccountId($account['id']);
     if (count($companies) == 1) {
         $current_company = &reset($companies);
@@ -65,6 +67,17 @@ if ($account['id']) {
         $company['contracts'] = ContractTable::getByCompanyId($company['id']);
         $company['contacts'] = ContactRelationTable::getContactsByOwner($company['id'], ContactRelationTable::OWNER_TYPE_CLIENT_COMPANY);
         $company['addresses'] = AddressTable::getByOwner($company['id'], AddressTable::OWNER_TYPE_CLIENT_COMPANY);
+        $company['payment_account'] = PaymentAccountRelationTable::getByOwner(
+            $company['id'],
+            PaymentAccountRelationTable::OWNER_TYPE_CLIENT_COMPANY,
+            [
+                '=payment_account.is_active' => true
+            ],
+            [
+                '*',
+                '_' => 'payment_account'
+            ]
+        );
     }
 
     $arResult['account'] = $account;

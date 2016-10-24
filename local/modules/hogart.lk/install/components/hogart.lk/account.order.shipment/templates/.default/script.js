@@ -60,7 +60,7 @@ $(function () {
     format: 'L',
     useCurrent: false,
     useStrict: true,
-    daysOfWeekDisabled: [0, 5],
+    daysOfWeekDisabled: [0, 6],
     minDate: moment().add(1, 'days')
   });
 
