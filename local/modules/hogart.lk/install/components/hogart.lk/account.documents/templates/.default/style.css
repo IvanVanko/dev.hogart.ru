@@ -814,6 +814,9 @@ input[type="checkbox"] .styled:checked + label::after,
 input[type="radio"] .styled:checked + label::after {
   color: #fff;
 }
+.delimiter {
+  border-bottom: 1px solid;
+}
 form {
   text-align: left;
 }

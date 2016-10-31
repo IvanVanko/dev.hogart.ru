@@ -27,10 +27,6 @@ class Address extends AbstractPutRequest
     {
         foreach ($addresses as $address) {
             $type = AddressTypeTable::getRowById($address['type_id']);
-            $this->types[] = (object)[
-                "ID" => $type['guid_id'],
-                "Name" => $type['name']
-            ];
             $this->addresses[] = (object)[
                 "Adr_ID_Owner" => $address['owner_id'],
                 "Adr_Owner_Type" => $address['owner_type'],
@@ -52,6 +48,6 @@ class Address extends AbstractPutRequest
 
     protected function request()
     {
-        return ['Address' => $this->addresses, 'Address_Types' => $this->types];
+        return ['Address' => $this->addresses];
     }
 }

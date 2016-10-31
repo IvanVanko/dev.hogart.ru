@@ -53,6 +53,11 @@ if ($account['id']) {
         return $result;
     }, []);
 
+    $arResult['contacts'] += array_reduce([AccountTable::getContact($account['id'])], function ($result, $contact) {
+        $result[$contact['id']] = $contact;
+        return $result;
+    }, []);
+
     foreach ($arResult['orders'] as $store => $orders) {
         foreach ($orders as $order) {
             $arResult['addresses'] = array_merge($arResult['addresses'] ? : [], $order['addresses']);

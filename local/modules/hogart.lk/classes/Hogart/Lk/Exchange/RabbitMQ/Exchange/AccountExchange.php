@@ -54,12 +54,7 @@ class AccountExchange extends AbstractExchange
         switch ($key = $this->getRoutingKey($envelope)) {
             case 'get':
                 // синхронизация с 1С
-                $count = Client::getInstance()->Account->updateAccounts();
-                if (!empty($count)) {
-                    $this
-                        ->exchange
-                        ->publish("", $this->getPublishKey($key), AMQP_NOPARAM, ["delivery_mode" => 2]);
-                }
+                Client::getInstance()->Account->updateAccounts();
                 break;
             case 'send_password':
                 // отсылка письма для нового пользователя ЛК

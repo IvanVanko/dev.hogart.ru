@@ -28,6 +28,9 @@ class ContactInfoExchange extends AbstractExchange
     {
         return [
             __NAMESPACE__ . '\ContactExchange',
+            __NAMESPACE__ . '\CompanyExchange',
+            __NAMESPACE__ . '\HogartCompanyExchange',
+            __NAMESPACE__ . '\StaffExchange',
         ];
     }
 
@@ -46,12 +49,7 @@ class ContactInfoExchange extends AbstractExchange
     {
         switch ($key = $this->getRoutingKey($envelope)) {
             case 'get':
-                $count = Client::getInstance()->ContactInfo->updateContactsInfo();
-                if (!empty($count)) {
-                    $this
-                        ->exchange
-                        ->publish("", $this->getPublishKey($key), AMQP_NOPARAM, ["delivery_mode" => 2]);
-                }
+                Client::getInstance()->ContactInfo->updateContactsInfo();
                 break;
         }
     }

@@ -435,36 +435,36 @@ class OrderTable extends AbstractEntity
     public static function getShipmentByFlag($flag)
     {
         $text =<<<HTML
-<span class="label label-warning">Заказ не отгружался</span> 
+<span class="color-warning">Заказ не отгружался</span> 
 HTML;
         if (($flag & (1<<OrderItemTable::STATUS_SHIPMENT)) > 0) {
             $text =<<<HTML
-<span class="label label-primary">Отгружен частично</span>
+<span class="color-primary">Отгружен частично</span>
 HTML;
         }
 
         if (($flag & (1<<OrderItemTable::STATUS_SHIPMENT_PROCESS)) > 0) {
             $text =<<<HTML
-<span class="label label-warning">В процессе отгрузки</span>
+<span class="color-primary">В процессе отгрузки</span>
 HTML;
         }
 
         if (($flag ^ (1<<OrderItemTable::STATUS_IN_RESERVE)) == 0) {
             $text .=<<<HTML
-<br><span class="label label-primary">часть товаров доступна для отгрузки</span>
+<br><span class="color-primary">часть товаров доступна для отгрузки</span>
 HTML;
         }
 
         if ($flag == (1<<OrderItemTable::STATUS_IN_RESERVE)) {
             $text =<<<HTML
-<span class="label label-primary">Заказ полностью готов к отгрузке</span>
+<span class="color-primary">Заказ полностью готов к отгрузке</span>
 HTML;
         }
 
         if (($flag ^ (1<<OrderItemTable::STATUS_SHIPMENT)) == 0) {
 
             $text =<<<HTML
-<span class="label label-primary">Отгружен полностью</span> 
+<span class="color-primary">Отгружен полностью</span> 
 HTML;
         }
 

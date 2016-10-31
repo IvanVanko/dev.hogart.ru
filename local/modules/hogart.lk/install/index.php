@@ -215,6 +215,52 @@ TEXT;
 			    'MESSAGE' => $message
 		    ]);
 	    }
+
+        if (($eventId = $eventHelper->addEventTypeIfNotExists(\Hogart\Lk\Helper\Mail\Event::COMPANY_DOC_REQUEST, [
+            'LID' => 'ru',
+            'NAME' => 'Запрос на получения оригиналов договора',
+        ]))) {
+            $message =<<<TEXT
+Здравствуйте, #MANAGER#!
+
+Клиент #COMPANY_NAME# запросил оригиналы договора #CONTRACT_NAME#.
+
+Запрос оформил(-а) #ACCOUNT_NAME#.
+
+Сообщение сгенерировано автоматически.
+TEXT;
+
+            $eventHelper->addEventMessageIfNotExists(\Hogart\Lk\Helper\Mail\Event::COMPANY_DOC_REQUEST, [
+                'SUBJECT' => 'Клиент #COMPANY_NAME# запросил оригиналы договора',
+                'EMAIL_FROM' => '#DEFAULT_EMAIL_FROM#',
+                'EMAIL_TO' => '#MANAGER_EMAIL#',
+                'BODY_TYPE' => 'text',
+                'MESSAGE' => $message
+            ]);
+        }
+
+        if (($eventId = $eventHelper->addEventTypeIfNotExists(\Hogart\Lk\Helper\Mail\Event::HOGART_FEEDBACK, [
+            'LID' => 'ru',
+            'NAME' => 'Запрос от клиента',
+        ]))) {
+            $message =<<<TEXT
+Здравствуйте, #MANAGER#!
+
+Клиент #COMPANY_NAME# задает вопрос:
+
+#MESSAGE#
+
+Сообщение сгенерировано автоматически.
+TEXT;
+
+            $eventHelper->addEventMessageIfNotExists(\Hogart\Lk\Helper\Mail\Event::HOGART_FEEDBACK, [
+                'SUBJECT' => '#SUBJECT#',
+                'EMAIL_FROM' => '#DEFAULT_EMAIL_FROM#',
+                'EMAIL_TO' => '#MANAGER_EMAIL#',
+                'BODY_TYPE' => 'text',
+                'MESSAGE' => $message
+            ]);
+        }
     }
 
     function DoUninstall()

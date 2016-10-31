@@ -60,7 +60,7 @@ class Message implements IMessage
      */
     function __toString()
     {
-        return $this->message;
+        return (string)$this->message;
     }
 
     function getMessage()

@@ -78,17 +78,17 @@ class AddressTable extends AbstractEntityRelation implements IExchangeable
         );
     }
 
-    public static function getValue($address)
+    public static function getValue($address, $prefix = '')
     {
-        return $address['value'] ? : (
+        return $address[$prefix . 'value'] ? : (
             join(" ", [
-                $address['postal_code'],
-                $address['region'],
-                $address['city'],
-                $address['street'],
-                $address['house'],
-                $address['building'],
-                $address['flat']
+                $address[$prefix . 'postal_code'],
+                $address[$prefix . 'region'],
+                $address[$prefix . 'city'],
+                $address[$prefix . 'street'],
+                $address[$prefix . 'house'],
+                $address[$prefix . 'building'],
+                $address[$prefix . 'flat']
             ])
         );
     }

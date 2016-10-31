@@ -12,10 +12,11 @@
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
 \Hogart\Lk\Helper\Template\Suggestions::init();
+$account_name = trim(implode(' ', [$arResult['account']['c_last_name'], $arResult['account']['c_name'], $arResult['account']['c_middle_name']]));
 ?>
 <div class="row">
     <div class="col-sm-12 col-xs-12">
-        <h3>Настройки аккаунта &laquo;<?= $arResult['account']['user_LOGIN'] ?>&raquo;</h3>
+        <h3>Настройки аккаунта &laquo;<?= $account_name ?>&raquo;</h3>
     </div>
     <div class="col-sm-12 col-xs-12 authinfo">
         <h4>Данные авторизации</h4>
@@ -24,9 +25,14 @@ $this->setFrameMode(true);
                 <strong style="margin-right: 20px;">Логин:</strong><?= $arResult['account']['user_LOGIN'] ?>
             </div>
         </div>
-        <div class="row spacer">
+        <div class="row spacer-20">
             <div class="col-sm-12 col-xs-12">
                 <?= \Hogart\Lk\Helper\Template\Dialog::Button('change-password', 'Изменить пароль', 'btn btn-primary')?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="delimiter color-green"></div>
             </div>
         </div>
     </div>
@@ -92,33 +98,47 @@ $this->setFrameMode(true);
         
         <? if ($arResult['account']['is_general']): ?>
             <div class="row spacer"></div> <!-- feature -->
-            <div class="row">
+            <div class="row spacer-20">
                 <div class="col-sm-12 col-xs-12">
                     <?= \Hogart\Lk\Helper\Template\Dialog::Button('add-contact-dialog', 'Добавить контакт', 'btn btn-primary')?>
                 </div>
             </div>
         <? endif; ?>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="delimiter color-green"></div>
+            </div>
+        </div>
     </div>
     <? endif; ?>
     <? if (count($arResult['account']['stores']) || $arResult['account']['is_general']): ?>
-    <div class="col-sm-12 col-xs-12 stores">
+    <div id="stores" class="col-sm-12 col-xs-12 stores">
+        <? $stores_node = \Hogart\Lk\Helper\Template\Ajax::Start($component, ['fav_store']); ?>
         <h4>Склады для доставки и самовывоза</h4>
         <div id="stores-ajax">
         <? foreach ($arResult['account']['stores'] as $store): ?>
             <div class="row store spacer">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" data-store-id="<?= $store['XML_ID'] ?>">
                     <i
-                        <?= ($store['store_ID'] != $arResult['account']['main_store_id'] ? \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('stores-ajax', $ajax_id, ['fav_store' => $store['ID']]) : '') ?>
+                        <?= ($store['store_ID'] != $arResult['account']['main_store_id'] ? \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('stores', $stores_node->getId(), ['fav_store' => $store['ID']]) : '') ?>
                         class="fa fa-star<?= ($store['ID'] == $arResult['account']['main_store_id'] ? ' color-green' : '-o') ?>"></i>
-                    <?= $store['ADDRESS'] ?>
+                    <?= $store['TITLE'] . " " . $store['ADDRESS'] ?>
                 </div>
             </div>
         <? endforeach;?>
+            <div class="row spacer-20"></div> <!-- feature -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="delimiter color-green"></div>
+                </div>
+            </div>
         </div>
+        <? \Hogart\Lk\Helper\Template\Ajax::End($stores_node->getId()) ?>
     </div>
     <? endif; ?>
     <? if (count($arResult['account']['managers'])): ?>
-    <div class="col-sm-12 col-xs-12 managers">
+    <div id="managers" class="col-sm-12 col-xs-12 managers">
+        <? $managers_node = \Hogart\Lk\Helper\Template\Ajax::Start($component, ['fav_manager']); ?>
         <h4>Ваши менеджеры</h4>
         <div class="row header hidden-xs spacer">
             <div class="col-lg-4 col-sm-3"><strong>Имя</strong></div>
@@ -136,12 +156,11 @@ $this->setFrameMode(true);
                         <? endif; ?>
                     </div>
                     <strong class="pull-left visible-xs">Имя:</strong>
-                    <span>
-                        <?= $name ?>
-                        <? if ($manager['id'] == $arResult['account']['main_manager_id']): ?>
-                            <sup><span class="label label-primary label-xs">основной</span></sup>
-                        <? endif; ?>
-                    </span>
+
+                    <i
+                        <?= ($manager['id'] != $arResult['account']['main_manager_id'] ? \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('managers', $managers_node->getId(), ['fav_manager' => $manager['id']]) : '') ?>
+                        class="fa fa-star<?= ($manager['id'] == $arResult['account']['main_manager_id'] ? ' color-green' : '-o') ?>"></i>
+                    &nbsp;<?= $name ?>
                 </div>
                 <div class="col-lg-3 col-sm-3"><strong class="pull-left visible-xs">Email:</strong>
                     <? ($email = $manager['info'][\Hogart\Lk\Entity\ContactInfoTable::TYPE_EMAIL][0]['value']) ?>
@@ -161,13 +180,19 @@ $this->setFrameMode(true);
                     </div>
                 </div>
                 <div class="col-lg-2 col-sm-3">
-                    <a href="#">
+                    <? $manager_feedback_params = $APPLICATION->IncludeComponent("hogart.lk:account.manager.feedback", "", [
+                        "SUBJECT" => "Запрос от {$account_name} ({$arResult['account']['user_LOGIN']})"
+                    ]); ?>
+                    <? if (!empty($manager_feedback_params['manager']['email'])): ?>
+                    <a data-remodal-target="<?= $manager_feedback_params['dialog'] ?>" href="javascript:void(0)">
                         <i class="fa fa-question fa-lg text-warning" aria-hidden="true"></i>
                         Задать вопрос менеджеру
                     </a>
+                    <? endif; ?>
                 </div>
             </div>
         <? endforeach;?>
+        <? \Hogart\Lk\Helper\Template\Ajax::End($managers_node->getId()) ?>
     </div>
     <? endif; ?>
 

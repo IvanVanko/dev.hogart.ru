@@ -48,7 +48,7 @@ $consumer->registerExchange([
 
 while (true) {
     $consumer->run();
-    sleep(20);
+    sleep(10);
 }
 
 $lock->releaseLock();

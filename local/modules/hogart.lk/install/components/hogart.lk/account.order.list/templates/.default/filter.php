@@ -51,9 +51,10 @@ use Hogart\Lk\Helper\Template\ViewNode;
             <div class="form-group">
 
                 <? foreach ([OrderTable::STATUS_NEW, OrderTable::STATUS_IN_WORK] as $status): ?>
-                <div class="checkbox">
+                <div class="checkbox checkbox-primary">
+                    <input <?= (in_array($status, $_REQUEST['status']) ? 'checked="checked"' : '') ?> type="checkbox" name="status[]" value="<?= $status ?>">
                     <label>
-                        <input <?= (in_array($status, $_REQUEST['status']) ? 'checked="checked"' : '') ?> type="checkbox" name="status[]" value="<?= $status ?>"> <?= OrderTable::getStatusText($status) ?>
+                        <?= OrderTable::getStatusText($status) ?>
                     </label>
                 </div>
                 <? endforeach; ?>
@@ -67,9 +68,10 @@ use Hogart\Lk\Helper\Template\ViewNode;
             <label>Контрагент</label>
             <div class="form-group">
                 <? foreach ($arResult['companies'] as $company): ?>
-                    <div class="checkbox">
+                    <div class="checkbox checkbox-primary">
+                        <input <?= (in_array($company['co_id'], $_REQUEST['company']) ? 'checked="checked"' : '') ?> type="checkbox" name="company[]" value="<?= $company['co_id'] ?>">
                         <label>
-                            <input <?= (in_array($company['co_id'], $_REQUEST['company']) ? 'checked="checked"' : '') ?> type="checkbox" name="company[]" value="<?= $company['co_id'] ?>"> <?= $company['co_name'] ?>
+                            <?= $company['co_name'] ?>
                         </label>
                     </div>
                 <? endforeach; ?>
@@ -83,9 +85,10 @@ use Hogart\Lk\Helper\Template\ViewNode;
             <label>Склад</label>
             <div class="form-group">
                 <? foreach ($arResult['stores'] as $store): ?>
-                    <div class="checkbox">
+                    <div class="checkbox checkbox-primary">
+                        <input <?= (in_array($store['s_XML_ID'], $_REQUEST['store']) ? 'checked="checked"' : '') ?> type="checkbox" name="store[]" value="<?= $store['s_XML_ID'] ?>">
                         <label>
-                            <input <?= (in_array($store['s_XML_ID'], $_REQUEST['store']) ? 'checked="checked"' : '') ?> type="checkbox" name="store[]" value="<?= $store['s_XML_ID'] ?>"> <?= $store['s_TITLE'] ?>
+                            <?= $store['s_TITLE'] ?>
                         </label>
                     </div>
                 <? endforeach; ?>
@@ -98,9 +101,10 @@ use Hogart\Lk\Helper\Template\ViewNode;
             <label>Тип заказа</label>
             <div class="form-group">
             <? foreach ([OrderTable::TYPE_SALE, OrderTable::TYPE_PROMO] as $type): ?>
-                <div class="checkbox">
+                <div class="checkbox checkbox-primary">
+                    <input <?= (in_array($type, $_REQUEST['type']) ? 'checked="checked"' : '') ?> type="checkbox" name="type[]" value="<?= $type ?>">
                     <label>
-                        <input <?= (in_array($type, $_REQUEST['type']) ? 'checked="checked"' : '') ?> type="checkbox" name="type[]" value="<?= $type ?>"> <?= OrderTable::getTypeText($type) ?>
+                        <?= OrderTable::getTypeText($type) ?>
                     </label>
                 </div>
             <? endforeach; ?>

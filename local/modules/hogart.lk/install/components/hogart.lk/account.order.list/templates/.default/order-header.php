@@ -19,7 +19,7 @@ use Hogart\Lk\Entity\OrderItemTable;
                                 </span>
             </a>
             <? if ($order['history'] > 0 && in_array($order['state'], [OrderTable::STATE_ARCHIVE, OrderTable::STATE_NORMAL])): ?>
-                <a href="/account/order/<?= $order['id'] ?>/history/" class="btn btn-warning btn-xs"><i class="fa fa-history"></i> История</a>
+                <span style="padding-left: 5px;"><a href="/account/order/<?= $order['id'] ?>/history/" class="btn btn-warning btn-xs"><i class="fa fa-history"></i> История</a></span>
             <? endif; ?>
         </h4>
         <div><?= $order['co_name'] ?></div>
@@ -64,18 +64,13 @@ use Hogart\Lk\Entity\OrderItemTable;
     </div>
 </div>
 <div class="row spacer-20">
-    <div class="col-sm-6 comment">
-        <? if (!empty($order['note'])): ?>
-            <p class="h6">
-                <i class="fa fa-comment" aria-hidden="true"></i>
-                <i><?= $order['note'] ?></i>
-            </p>
-        <? endif; ?>
+    <div class="col-sm-6">
+        <? $APPLICATION->ShowViewContent('shipment-view-part') ?>
     </div>
     <div class="col-sm-3">
         <? if ($order['guid_id'] && $order['state'] == OrderTable::STATE_NORMAL && $order['totals']['release']): ?>
             <a href="/account/order/<?= $order['id'] ?>/#order-payment" class="btn btn-primary"><i class="fa fa-money" aria-hidden="true"></i> Оплатить</a>
-        <? else: ?>
+        <? elseif($order['totals']['release']): ?>
             <div class="h5 color-danger">
                 Не выполнено условие по оплате
             </div>

@@ -48,12 +48,7 @@ class HogartCompanyExchange extends AbstractExchange
     {
         switch ($key = $this->getRoutingKey($envelope)) {
             case 'get':
-                $count = Client::getInstance()->HogartCompany->updateHogartCompanies();
-                if (!empty($count)) {
-                    $this
-                        ->exchange
-                        ->publish("", $this->getPublishKey($key), AMQP_NOPARAM, ["delivery_mode" => 2]);
-                }
+                Client::getInstance()->HogartCompany->updateHogartCompanies();
                 break;
         }
     }

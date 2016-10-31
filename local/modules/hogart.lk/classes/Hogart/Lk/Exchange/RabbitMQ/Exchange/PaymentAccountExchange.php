@@ -47,12 +47,7 @@ class PaymentAccountExchange extends AbstractExchange
     {
         switch ($key = $this->getRoutingKey($envelope)) {
             case 'get':
-                $count = Client::getInstance()->PaymentAccount->updatePaymentAccounts();
-                if (!empty($count)) {
-                    $this
-                        ->exchange
-                        ->publish("", $this->getPublishKey($key), AMQP_NOPARAM, ["delivery_mode" => 2]);
-                }
+                Client::getInstance()->PaymentAccount->updatePaymentAccounts();
                 break;
         }
     }

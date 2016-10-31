@@ -147,44 +147,47 @@ class OrderRTUTable extends AbstractEntity implements IOrderEventNote, IExchange
             ],
         ])->fetchAll();
 
-        $items = array_reduce($__items, function ($result, $item) { $result[$item['ID']] = $item; return $result; }, []);
-        \CIBlockElement::GetPropertyValuesArray($items, CATALOG_IBLOCK_ID, ['ID' => array_keys($items)], ['CODE' => ['sku']]);
+	    if (!empty($__items)) {
+		    $items = array_reduce($__items, function ($result, $item) { $result[$item['ID']] = $item; return $result; }, []);
+		    \CIBlockElement::GetPropertyValuesArray($items, CATALOG_IBLOCK_ID, ['ID' => array_keys($items)], ['CODE' => ['sku']]);
 
-        $products = ProductTable::getList([
-            'filter' => [
-                '@ID' => array_keys($items)
-            ]
-        ])->fetchAll();
+		    $products = ProductTable::getList([
+			    'filter' => [
+				    '@ID' => array_keys($items)
+			    ]
+		    ])->fetchAll();
 
-        $products = array_reduce($products, function ($result, $item) { $result[$item['ID']] = $item; return $result; }, []);
+		    $products = array_reduce($products, function ($result, $item) { $result[$item['ID']] = $item; return $result; }, []);
 
-        $measures = [];
-        foreach ($__items as &$item) {
-            $item['url'] = \CIBlock::ReplaceDetailUrl($item['url'], $item, false, 'E');
-            $item['props'] = $items[$item['item_id']];
-            $item['product'] = $products[$item['item_id']];
-            $measures[] = $item['product']['MEASURE'];
-        }
+		    $measures = [];
+		    foreach ($__items as &$item) {
+			    $item['url'] = \CIBlock::ReplaceDetailUrl($item['url'], $item, false, 'E');
+			    $item['props'] = $items[$item['item_id']];
+			    $item['product'] = $products[$item['item_id']];
+			    $measures[] = $item['product']['MEASURE'];
+		    }
 
-        $__items = array_reduce($__items, function ($result, $item) {
-            $result[$item['item_group']][] = $item;
-            return $result;
-        }, []);
+		    $__items = array_reduce($__items, function ($result, $item) {
+			    $result[$item['item_group']][] = $item;
+			    return $result;
+		    }, []);
 
-        $measuresRes = \CCatalogMeasure::getList(
-            array(),
-            array('@ID' => array_unique($measures)),
-            false,
-            false,
-            array('ID', 'SYMBOL_RUS')
-        );
-        $measures = [];
-        while ($measure = $measuresRes->GetNext()) {
-            $measures[$measure['ID']] = $measure['SYMBOL_RUS'];
-        }
+		    $measuresRes = \CCatalogMeasure::getList(
+			    array(),
+			    array('@ID' => array_unique($measures)),
+			    false,
+			    false,
+			    array('ID', 'SYMBOL_RUS')
+		    );
+		    $measures = [];
+		    while ($measure = $measuresRes->GetNext()) {
+			    $measures[$measure['ID']] = $measure['SYMBOL_RUS'];
+		    }
 
-        $order_rtu['measures'] = $measures;
-        $order_rtu['items'] = $__items;
+		    $order_rtu['measures'] = $measures;
+		    $order_rtu['items'] = $__items;
+	    }
+
         return $order_rtu;
     }
 

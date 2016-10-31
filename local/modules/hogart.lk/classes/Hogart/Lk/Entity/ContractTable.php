@@ -101,11 +101,10 @@ class ContractTable extends AbstractEntity
     public static function showName($contract = [], $with_company_name = false, $prefix = '')
     {
         if ($contract[$prefix . 'accept'])
-            $name = "Договор №" . $contract[$prefix . "number"] . " от " . $contract[$prefix . "start_date"];
+            $name = "Договор " . ($contract[$prefix . "number"] ? "№" . $contract[$prefix . "number"] : "") . " от " . $contract[$prefix . "start_date"];
         else
             $name = "Договор №<sup>получение</sup> от " . $contract[$prefix . "start_date"];
 
-//        $name .= ", НДС " . ($contract[$prefix . 'vat_include'] ? "включен" : "сверху");
         $name .= " ({$contract[$prefix . 'currency_code']})";
         if ($with_company_name) {
             $company = CompanyTable::getById($contract[$prefix . 'company_id'])->fetch();

@@ -161,18 +161,35 @@ body {
       align-items: center;
     }
   }
-  &:not(.hidden).spacer {
-    + .row {
-      margin-top: 10px;
-    }
-    &-20 {
+  &:not(.hidden) {
+    &.spacer {
       + .row {
-        margin-top: 20px;
+        margin-top: 10px;
+      }
+      &-20 {
+        + .row {
+          margin-top: 20px;
+        }
+      }
+      &-40 {
+        + .row {
+          margin-top: 40px;
+        }
       }
     }
-    &-40 {
-      + .row {
-        margin-top: 40px;
+    &.spacer-all {
+      ~ .row {
+        margin-top: 10px;
+      }
+      &-20 {
+        ~ .row {
+          margin-top: 20px;
+        }
+      }
+      &-40 {
+        ~ .row {
+          margin-top: 40px;
+        }
       }
     }
   }

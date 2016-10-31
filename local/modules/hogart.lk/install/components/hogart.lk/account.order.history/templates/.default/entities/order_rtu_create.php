@@ -11,6 +11,7 @@
  */
 
 use Hogart\Lk\Entity\OrderRTUTable;
+use Hogart\Lk\Entity\AddressTable;
 
 $_items = $items;
 ?>
@@ -32,7 +33,7 @@ $_items = $items;
 <div class="row">
     <div class="col-sm-12 h5">
         <b>Адрес доставки:</b>
-        <?= $order_rtu['address_value'] ?>
+        <?= AddressTable::getValue($order_rtu, 'address_') ?>
     </div>
 </div>
     <? if ($order_rtu['is_tk']): ?>
@@ -45,7 +46,7 @@ $_items = $items;
         <div class="row">
             <div class="col-sm-12 h5">
                 <b>Адрес транспортной компании:</b>
-                <?= $order_rtu['tk_address_value'] ?>
+                <?= AddressTable::getValue($order_rtu, 'tk_address_') ?>
             </div>
         </div>
     <? endif; ?>

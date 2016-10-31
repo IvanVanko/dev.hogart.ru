@@ -110,6 +110,11 @@ Hogart_Lk.__proto__.EventSource.addEventListener("message", function (event) {
           }
           $.notify(message.data[0], message.data[1]);
           break;
+        case 'heartbeat':
+          if (!message.account) {
+            document.location = "/auth/";
+          }
+          break;
       }
     }
   }

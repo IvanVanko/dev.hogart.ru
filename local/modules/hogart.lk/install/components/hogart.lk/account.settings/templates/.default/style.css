@@ -1,6 +1,9 @@
 form {
   text-align: left;
 }
+.delimiter {
+  border-bottom: 1px solid;
+}
 .help-block {
   font-size: 12px;
   font-family: "Roboto Condensed", sans-serif;
@@ -77,6 +80,13 @@ form {
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
   margin-right: 5px;
+}
+.managers .manager .fa {
+  padding-right: 5px;
+  font-size: 14px;
+}
+.managers .manager .fa.fa-star-o {
+  cursor: pointer;
 }
 .managers .manager .avatar img {
   width: 64px;

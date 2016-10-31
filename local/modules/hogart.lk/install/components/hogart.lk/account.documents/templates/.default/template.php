@@ -83,7 +83,7 @@ use Hogart\Lk\Entity\AddressTable;
                                     <div
                                         <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('companies-ajax', $companies_node->getId(), ['remove_company' => $arResult['current_company']['id']], \Hogart\Lk\Helper\Template\Ajax::DIALOG_CONFIRMATION, [
                                             'title' => 'Подтверждение удаления компании',
-                                            'confirmation' => 'Вы действительно хотите удалить компании "' . $arResult['current_company']['name'] . '"?'
+                                            'confirmation' => 'Вы действительно хотите удалить компанию "' . $arResult['current_company']['name'] . '"?<br><br> После удаления на данную компанию нельзя будет сформировать новый счет.<br> История по работе и существующие счета сохранятся.'
                                         ]) ?>
                                         class="btn btn-danger">
                                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
@@ -100,24 +100,32 @@ use Hogart\Lk\Entity\AddressTable;
                 </div>
             </div>
         </div>
-        <? if ($arResult['current_company']['id'] && (count($arResult['current_company']['contracts']) || $arResult['account']['is_general'])): ?>
+        <? if ($arResult['current_company']['id'] && (count($arResult['current_company']['contracts']))): ?>
             <div class="col-sm-12 col-xs-12 contracts">
                 <div id="contracts-ajax">
                     <? $contracts_node = \Hogart\Lk\Helper\Template\Ajax::Start($component, ['remove_contract'], $companies_node); ?>
+                    <div class="row spacer-20">
+                        <div class="col-sm-12">
+                            <div class="delimiter color-green"></div>
+                        </div>
+                    </div>
+                    <h4>Договоры компании</h4>
                     <div class="row header hidden-xs spacer">
                         <div class="col-lg-3 col-sm-3"><strong>Договор</strong></div>
+                        <div class="col-lg-2 col-sm-2"><strong>Пролонгация</strong></div>
                         <div class="col-lg-2 col-sm-2"><strong>Срок действия</strong></div>
                         <div class="col-lg-2 col-sm-2"><strong>Статус</strong></div>
-                        <div class="col-lg-3 col-sm-3"><strong>Запрос</strong></div>
-                        <div class="col-lg-2 col-sm-2 operations"></div>
+                        <div class="col-lg-3 col-sm-3"></div>
                     </div>
                     <? foreach ($arResult['current_company']['contracts'] as $contract): ?>
                         <div class="row vertical-align spacer contact" data-contract-id="<?= $contract['guid_id'] ?>">
                             <div class="col-lg-3 col-sm-3"><strong class="pull-left visible-xs">Договор:</strong>
                                 <span>
-                                <?= ContractTable::showName($contract); ?>
+                                    <?= ContractTable::showName($contract); ?>
                                 </span>
-                                <sup><span class="label label-<?= ($contract['prolongation'] ? "primary" : "danger") ?> label-xs"><?= ($contract['prolongation'] ? "пролонгация" : "без пролонгации") ?></span></sup>
+                            </div>
+                            <div class="col-lg-2 col-sm-2"><strong class="pull-left visible-xs">Пролонгация:</strong>
+                                <span class="glyphicon glyphicon-<?= ($contract['prolongation'] ? "ok" : "remove") ?> color-<?= ($contract['prolongation'] ? "primary" : "danger") ?>" aria-hidden="true"></span>
                             </div>
                             <div class="col-lg-2 col-sm-2"><strong class="pull-left visible-xs">Срок действия:</strong>
                                 <span>
@@ -128,8 +136,22 @@ use Hogart\Lk\Entity\AddressTable;
                                 </span>
                             </div>
                             <div class="col-lg-2 col-sm-2"><strong class="pull-left visible-xs">Статус:</strong> <?= ContractTable::showStatus($contract); ?></div>
-                            <div class="col-lg-3 col-sm-3"><strong class="pull-left visible-xs">Запрос:</strong></div>
-                            <div class="col-lg-2 col-sm-2 operations"></div>
+                            <div class="col-lg-3 col-sm-3">
+                                <? if (!$contract['have_original']): ?>
+                                <?= \Hogart\Lk\Helper\Template\Ajax::Link(
+                                    '<i class="fa fa-file-o"></i> Запросить оригиналы',
+                                    'contracts-ajax',
+                                    $contracts_node->getId(),
+                                    ['get_docs' => $contract['id']],
+                                    '',
+                                    \Hogart\Lk\Helper\Template\Ajax::DIALOG_CONFIRMATION,
+                                    [
+                                        'title' => 'Запрос оригиналов документов',
+                                        'confirmation' => 'Вы действительно хотите сделать запрос на получения оригиналов документов до договору "' . ContractTable::showName($contract) . '"?'
+                                    ]
+                                ) ?>
+                                <? endif; ?>
+                            </div>
                         </div>
                     <? endforeach;?>
                     <? \Hogart\Lk\Helper\Template\Ajax::End($contracts_node->getId()); ?>
@@ -140,23 +162,29 @@ use Hogart\Lk\Entity\AddressTable;
             <div class="col-sm-12 col-xs-12 contacts">
                 <div id="contacts-ajax">
                     <? $contacts_node = \Hogart\Lk\Helper\Template\Ajax::Start($component, ['edit_contact', 'remove_contact'], $companies_node); ?>
+                    <div class="row spacer-20">
+                        <div class="col-sm-12">
+                            <div class="delimiter color-green"></div>
+                        </div>
+                    </div>
+                    <h4>Контакты компании</h4>
                     <div class="row header hidden-xs spacer">
-                        <div class="col-lg-3 col-sm-3"><strong>Контактное лицо</strong></div>
+                        <div class="col-lg-4 col-sm-3"><strong>Контактное лицо</strong></div>
                         <div class="col-lg-3 col-sm-3"><strong>Email</strong></div>
-                        <div class="col-lg-2 col-sm-3"><strong>Телефоны</strong></div>
+                        <div class="col-lg-3 col-sm-3"><strong>Телефоны</strong></div>
                         <div class="col-lg-2 col-sm-3 operations"></div>
                     </div>
                     <? foreach ($arResult['current_company']['contacts'] as $contact): ?>
                         <div class="row vertical-align spacer contact" data-contact-id="<?= $contact['guid_id'] ?>">
                             <? $contact_name = ($contact['last_name'] . " " . $contact['name'] . " " . $contact['middle_name']); ?>
-                            <?= ($email = $contact['info'][\Hogart\Lk\Entity\ContactInfoTable::TYPE_EMAIL][0]['value']) ?>
-                            <div class="col-lg-3 col-sm-3"><strong class="pull-left visible-xs">Контактное лицо:</strong> <?= $contact_name ?></div>
+                            <? ($email = $contact['info'][\Hogart\Lk\Entity\ContactInfoTable::TYPE_EMAIL][0]['value']) ?>
+                            <div class="col-lg-4 col-sm-3"><strong class="pull-left visible-xs">Контактное лицо:</strong> <?= $contact_name ?></div>
                             <div class="col-lg-3 col-sm-3"><strong class="pull-left visible-xs">Email:</strong>
                                 <? if (!empty($email)): ?>
                                     <a href="mailto:<?= $email ?>"><?= $email ?></a>
                                 <? endif; ?>
                             </div>
-                            <div class="col-lg-2 col-sm-3"><strong class="pull-left visible-xs">Телефоны:</strong>
+                            <div class="col-lg-3 col-sm-3"><strong class="pull-left visible-xs">Телефоны:</strong>
                                 <div>
                                     <? foreach($contact['info'][\Hogart\Lk\Entity\ContactInfoTable::TYPE_PHONE] as $phone): ?>
                                         <div class="phone-number <?= ("type-" . $phone['phone_kind']) ?>">
@@ -215,13 +243,19 @@ use Hogart\Lk\Entity\AddressTable;
             <div class="col-sm-12 col-xs-12 addresses">
                 <div id="address-ajax">
                     <? $address_node = \Hogart\Lk\Helper\Template\Ajax::Start($component, ['edit_address', 'remove_address'], $companies_node); ?>
+                    <div class="row spacer-20">
+                        <div class="col-sm-12">
+                            <div class="delimiter color-green"></div>
+                        </div>
+                    </div>
+                    <h4>Адреса доставки компании</h4>
                     <div class="row header hidden-xs spacer">
-                        <div class="col-lg-8 col-sm-9"><strong>Адрес</strong></div>
+                        <div class="col-lg-10 col-sm-9"><strong>Адрес</strong></div>
                         <div class="col-lg-2 col-sm-3 operations"></div>
                     </div>
                     <? foreach ($delivery_addresses as $address): ?>
                         <div class="row vertical-align spacer contact" data-contract-id="<?= $address['fias_code'] ?>">
-                            <div class="col-lg-8 col-sm-9"><strong class="pull-left visible-xs">Адрес:</strong> <?= AddressTable::getValue($address) ?></div>
+                            <div class="col-lg-10 col-sm-9"><strong class="pull-left visible-xs">Адрес:</strong> <?= AddressTable::getValue($address) ?></div>
                             <div class="col-lg-2 col-sm-3 operations">
                                 <strong class="pull-left visible-xs">Операции:</strong>
                                 <div class="btn-toolbar" role="toolbar">

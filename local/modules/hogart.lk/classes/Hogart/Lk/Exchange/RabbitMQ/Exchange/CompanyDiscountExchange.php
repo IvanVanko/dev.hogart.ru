@@ -47,12 +47,7 @@ class CompanyDiscountExchange extends AbstractExchange
     {
         switch ($key = $this->getRoutingKey($envelope)) {
             case 'get':
-                $count = Client::getInstance()->CompanyDiscount->updateCompanyDiscounts();
-                if (!empty($count)) {
-                    $this
-                        ->exchange
-                        ->publish("", $this->getPublishKey($key), AMQP_NOPARAM, ["delivery_mode" => 2]);
-                }
+                Client::getInstance()->CompanyDiscount->updateCompanyDiscounts();
                 break;
         }
     }

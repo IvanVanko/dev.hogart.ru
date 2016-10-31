@@ -145,14 +145,15 @@ if (!empty($account['id']) && !empty($_REQUEST)) {
     }
     if (!empty($_REQUEST['fav_store'])) {
         AccountTable::update($account['id'], [
-            "main_store_id" => $_REQUEST['fav_store']
+            "main_store_id" => intval($_REQUEST['fav_store'])
         ]);
+        $account = AccountTable::getAccountByUserID($USER->GetID());
     }
-    if (!empty($_REQUEST['remove_store'])) {
-        AccountStoreRelationTable::delete([
-            "account_id" => $account['id'],
-            "store_guid" => $_REQUEST['remove_store']
+    if (!empty($_REQUEST['fav_manager'])) {
+        AccountTable::update($account['id'], [
+            "main_manager_id" => intval($_REQUEST['fav_manager'])
         ]);
+        $account = AccountTable::getAccountByUserID($USER->GetID());
     }
     if (!empty($_REQUEST['remove_contact'])) {
         ContactRelationTable::delete([

@@ -17,6 +17,8 @@ use Bitrix\Main\Entity\EventResult;
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ReferenceField;
 use Bitrix\Main\Entity\StringField;
+use Hogart\Lk\Exchange\RabbitMQ\Exchange\CompanyExchange;
+use Hogart\Lk\Exchange\SOAP\Request\Company;
 use Hogart\Lk\Field\GuidField;
 use Hogart\Lk\Field\HashSum;
 
@@ -95,20 +97,6 @@ class CompanyTable extends AbstractEntity
         ];
     }
 
-    public static function onBeforeAdd(Event $event)
-    {
-        $fields = $event->getParameter("fields");
-        $result = new EventResult();
-        $result->modifyFields([
-            'hash' => $hash = sha1(implode("|", [
-                mb_strtolower($fields['type']),
-                mb_strtolower($fields['name']),
-                mb_strtolower($fields['inn']),
-            ]))
-        ]);
-        return $result;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -128,4 +116,33 @@ class CompanyTable extends AbstractEntity
     {
         return vsprintf("%s, ИНН %s, КПП %s", [$company[$prefix . "name"], $company[$prefix . "inn"], $company[$prefix . "kpp"]]);
     }
+
+    public static function showName($company, $prefix = '')
+    {
+        return vsprintf("%s", [$company[$prefix . "name"]]);
+    }
+
+	static function putTo1c($primary)
+	{
+		self::publishToRabbit(new CompanyExchange(), new Company([self::getRowById($primary)]));
+	}
+
+    public static function onBeforeAdd(Event $event)
+    {
+        $fields = $event->getParameter("fields");
+        $result = new EventResult();
+        $result->modifyFields([
+            'hash' => $hash = sha1(implode("|", [
+                mb_strtolower($fields['type']),
+                mb_strtolower($fields['name']),
+                mb_strtolower($fields['inn']),
+            ]))
+        ]);
+        return $result;
+    }
+
+    public static function onAfterAdd(Event $event)
+    {
+        self::putTo1c($event->getParameter("id"));
+	}
 }

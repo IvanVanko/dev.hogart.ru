@@ -50,11 +50,7 @@ class OrderRTUExchange extends AbstractExchange
     {
         switch ($key = $this->getRoutingKey($envelope)) {
             case 'get':
-                $count = Client::getInstance()->OrderRTU->updateOrdersRTU();
-                if (!empty($count)) {
-                    $this
-                        ->publish("", $key);
-                }
+                Client::getInstance()->OrderRTU->updateOrdersRTU();
                 break;
             case 'put':
                 $request = unserialize($envelope->getBody());

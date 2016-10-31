@@ -15,8 +15,11 @@ use Hogart\Lk\Entity\AccountCompanyRelationTable;
 use Hogart\Lk\Entity\AddressTypeTable;
 use Hogart\Lk\Entity\AddressTable;
 use Hogart\Lk\Entity\CompanyTable;
+use Hogart\Lk\Entity\ContractTable;
 use Bitrix\Main\Type\Date;
 use Hogart\Lk\Helper\Template\FlashError;
+use Hogart\Lk\Helper\Template\FlashSuccess;
+use Hogart\Lk\Helper\Mail\Event;
 
 global $APPLICATION;
 
@@ -440,5 +443,12 @@ if (!empty($account['id']) && !empty($_REQUEST)) {
             "owner_type" => ContactRelationTable::OWNER_TYPE_CLIENT_COMPANY,
             "fias_code" => $_REQUEST['remove_address']
         ]);
+    }
+
+    if (!empty($_REQUEST['get_docs'])) {
+        $contract = ContractTable::getRowById(intval($_REQUEST['get_docs']));
+        if (Event::CompanyDocRequest(intval($_REQUEST['get_docs']))) {
+            new FlashSuccess(vsprintf("Запрос на получение оригиналов по договору <u><b>%s</b></u> отправлен", [ContractTable::showName($contract)]));
+        }
     }
 }

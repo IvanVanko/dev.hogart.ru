@@ -47,12 +47,7 @@ class ContactExchange extends AbstractExchange
     {
         switch ($key = $this->getRoutingKey($envelope)) {
             case 'get':
-                $count = Client::getInstance()->Contact->updateContacts();
-                if (!empty($count)) {
-                    $this
-                        ->exchange
-                        ->publish("", $this->getPublishKey($key), AMQP_NOPARAM, ["delivery_mode" => 2]);
-                }
+                Client::getInstance()->Contact->updateContacts();
                 break;
             case 'put':
                 $request = unserialize($envelope->getBody());

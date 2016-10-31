@@ -435,6 +435,10 @@ form {
 form .spacer .form-group {
   margin-bottom: 0;
 }
+form fieldset {
+  width: 100%;
+  position: relative;
+}
 form .help-block {
   font-size: 12px;
   font-family: "Roboto Condensed", sans-serif;

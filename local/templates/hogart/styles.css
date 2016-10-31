@@ -505,6 +505,15 @@ body.loading * {
 .row:not(.hidden).spacer-40 + .row {
   margin-top: 40px;
 }
+.row:not(.hidden).spacer-all ~ .row {
+  margin-top: 10px;
+}
+.row:not(.hidden).spacer-all-20 ~ .row {
+  margin-top: 20px;
+}
+.row:not(.hidden).spacer-all-40 ~ .row {
+  margin-top: 40px;
+}
 .collapse.in + a[data-toggle="collapse"] {
   display: none;
 }

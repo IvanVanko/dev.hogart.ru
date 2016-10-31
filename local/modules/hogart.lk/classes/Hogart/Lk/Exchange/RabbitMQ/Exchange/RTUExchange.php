@@ -51,11 +51,7 @@ class RTUExchange extends AbstractExchange
     {
         switch ($key = $this->getRoutingKey($envelope)) {
             case 'get':
-                $count = Client::getInstance()->RTU->updateRTUs();
-                if (!empty($count)) {
-                    $this
-                        ->publish("", $key);
-                }
+                Client::getInstance()->RTU->updateRTUs();
                 break;
         }
     }

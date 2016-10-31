@@ -49,7 +49,7 @@ class Ajax
             $ajax_id = self::GetAjaxId($component, $params);
         }
         if (!isset(self::$nodes[$ajax_id])) {
-            echo "<!-- " . $ajax_id . " -->";
+            echo "<!-- начало AJAX блока {$ajax_id} -->";
             self::$nodes[$ajax_id] = new ViewNode($ajax_id, $component, $parentViewNode);
         }
         return self::$nodes[$ajax_id];
@@ -63,14 +63,16 @@ class Ajax
         self::$nodes[$ajax_id]->view();
 
         if (!self::isAjax($ajax_id)) {
+            echo "<!-- Вывод диалогов подтверждения -->";
             while (($confirmation = array_shift(self::$confirmations[$ajax_id]))) {
                 echo $confirmation;
             }
+            echo "<!-- Вывод диалогов редактирования -->";
             while (($edit = array_shift(self::$edit[$ajax_id]))) {
                 echo $edit;
             }
         }
-
+        echo "<!-- Конец AJAX блока {$ajax_id} -->";
         if (self::isAjax($ajax_id)) {
             die();
         }

@@ -52,12 +52,7 @@ class OrderExchange extends AbstractExchange
     {
         switch ($key = $this->getRoutingKey($envelope)) {
             case 'get':
-                $count = Client::getInstance()->Orders->updateOrders();
-                if (!empty($count)) {
-                    $this
-                        ->exchange
-                        ->publish("", $this->getPublishKey($key), AMQP_NOPARAM, ["delivery_mode" => 2]);
-                }
+                Client::getInstance()->Orders->updateOrders();
                 break;
             case 'put':
                 $request = unserialize($envelope->getBody());

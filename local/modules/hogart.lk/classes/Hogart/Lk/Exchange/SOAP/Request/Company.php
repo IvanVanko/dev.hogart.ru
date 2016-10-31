@@ -9,6 +9,7 @@
 namespace Hogart\Lk\Exchange\SOAP\Request;
 
 
+use Hogart\Lk\Entity\AccountCompanyRelationTable;
 use Hogart\Lk\Exchange\SOAP\AbstractPutRequest;
 
 class Company extends AbstractPutRequest
@@ -32,6 +33,14 @@ class Company extends AbstractPutRequest
         $companies = [];
         $kinds_of_activities = [];
         foreach ($this->companies as $company) {
+        	$rel = AccountCompanyRelationTable::getRow([
+        		'filter' => [
+        			'=company_id' => $company['id']
+		        ],
+		        'select' => [
+		        	'account_guid' => 'account.user_guid_id'
+		        ]
+	        ]);
             if (!empty($company['k_guid_id'])) {
                 $kinds_of_activities[] = (object)[
                     'ID' => $company['k_guid_id'],
@@ -40,7 +49,7 @@ class Company extends AbstractPutRequest
                 ];
             }
             $companies[] = (object)[
-                'Comp_ID_Account' => $company['account_guid'],
+                'Comp_ID_Account' => $rel['account_guid'],
                 'Comp_ID' => $company['guid_id'],
                 'Comp_ID_Site' => $company['id'],
                 'Comp_Name' => $company['name'],

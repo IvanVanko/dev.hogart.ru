@@ -8,6 +8,7 @@
 namespace Hogart\Lk\Exchange\SOAP\Method\Orders;
 
 use Bitrix\Main\Type\DateTime;
+use Hogart\Lk\Entity\FlashMessagesTable;
 use Hogart\Lk\Entity\OrderItemTable;
 use Hogart\Lk\Entity\OrderTable;
 use Hogart\Lk\Entity\StoreTable;
@@ -22,6 +23,7 @@ use Bitrix\Main\Entity\UpdateResult;
 use Hogart\Lk\Exchange\SOAP\MethodException;
 use Hogart\Lk\Exchange\SOAP\Response;
 use Hogart\Lk\Exchange\SOAP\ResponseObject;
+use Hogart\Lk\Helper\Template\Message;
 
 /**
  * Class Order - добавление Заказа (в КИС это Заголовок Заказа)
@@ -109,7 +111,20 @@ class Order extends AbstractMethod
                         $response->setError($e);
                         OrderItemTable::deleteByOrderId($result->getId());
                         OrderTable::delete($result->getId());
+	                    continue;
                     }
+
+	                $message = new Message(
+		                OrderTable::showName($result->getData()) . " обновлен!",
+		                Message::SEVERITY_INFO
+	                );
+	                $message
+		                ->setIcon('fa fa-file-text-o')
+		                ->setUrl("/account/order/" . $result->getId())
+		                ->setDelay(0)
+	                ;
+	                FlashMessagesTable::addNewMessage($result->getData()['account_id'], $message);
+
                 } else {
                     $answer->addResponse(new ResponseObject($order->Order_ID, new MethodException(MethodException::ERROR_UNDEFINED)));
                 }

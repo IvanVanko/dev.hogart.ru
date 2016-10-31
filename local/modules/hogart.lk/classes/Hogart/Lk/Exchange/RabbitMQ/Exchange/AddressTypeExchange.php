@@ -38,11 +38,7 @@ class AddressTypeExchange extends AbstractExchange
     {
         switch ($key = $this->getRoutingKey($envelope)) {
             case 'get':
-                $count = Client::getInstance()->AddressType->updateAddressTypes();
-                if (!empty($count)) {
-                    $this
-                        ->publish("", $key);
-                }
+                Client::getInstance()->AddressType->updateAddressTypes();
                 break;
         }
     }

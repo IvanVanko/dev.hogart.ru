@@ -31,7 +31,7 @@ var DataTableOptions = {
   ]
 };
 
-$.fn.validator.Constructor.INPUT_SELECTOR = 'fieldset:not(:disabled) :input:not([type="hidden"], [type="submit"], [type="reset"], button)'
+$.fn.validator.Constructor.INPUT_SELECTOR = 'fieldset:not(:disabled):not(:hidden) :input:not([type="hidden"], [type="submit"], [type="reset"], button)';
 
 window.Hogart_Lk.createAjaxObserver('form[name="add-rtu"] fieldset', function (MutationRecords) {
   MutationRecords.forEach(function (record) {
@@ -43,12 +43,6 @@ window.Hogart_Lk.createAjaxObserver('form[name="add-rtu"] fieldset', function (M
 }, { childList: false, characterData: false, attributes: true, subtree: false });
 
 $(function () {
-
-  window.DaData.init_fio(
-    $('input[name="driver_last_name"]'),
-    $('input[name="driver_name"]'),
-    $('input[name="driver_middle_name"]')
-  );
   window.DaData.init_fio(
     $('input[name="new_last_name"]'),
     $('input[name="new_name"]'),
@@ -77,11 +71,22 @@ $(function () {
   $(document).on('change', '[data-switch][name="new_contact"]', function (e) {
     $('fieldset[data-new-contact]')
       .attr('disabled', 'disabled')
-      .hide();
-
+    ;
+    $('fieldset[data-new-contact="true"]').hide();
     $('fieldset[data-new-contact="' + (this.checked ? 'true' : 'false') + '"]')
       .attr('disabled', null)
       .show();
+    if (this.checked) {
+      $(this).parents('[data-delivery-type]').css({
+        backgroundColor: 'rgba(149,198,0,.1)',
+        padding: '10px 0'
+      })
+    } else {
+      $(this).parents('[data-delivery-type]').css({
+        backgroundColor: 'transparent',
+        padding: '0'
+      })
+    }
   });
 
   $(document).on('change', '[data-switch][name="is_tk"]', function (e) {
@@ -92,7 +97,9 @@ $(function () {
 
   $('[data-switch][name="delivery_type"]').on('change', function (e) {
     $('[data-delivery-type]').removeAttr('disabled').removeClass('active');
+    $('[data-delivery-type] fieldset').removeAttr('disabled');
     $('[data-delivery-type]:not([data-delivery-type="' +  $(this).val() + '"])').attr('disabled', 'disabled');
+    $('[data-delivery-type]:not([data-delivery-type="' +  $(this).val() + '"]) fieldset').attr('disabled', 'disabled');
     $('[data-delivery-type="' + $(this).val() + '"]').addClass('active');
   });
 

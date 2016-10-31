@@ -4,6 +4,10 @@ form {
   text-align: left;
 }
 
+.delimiter {
+  border-bottom: 1px solid;
+}
+
 .header() {
   strong {
     border-bottom: 1px dashed @brand-green;
@@ -65,6 +69,13 @@ form {
   margin-bottom: 20px;
   .header();
   .manager {
+    .fa {
+      padding-right: 5px;
+      font-size: @font-size-h5;
+      &.fa-star-o {
+        cursor: pointer;
+      }
+    }
     .avatar {
       img {
         width: 64px;

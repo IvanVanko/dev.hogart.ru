@@ -19,6 +19,7 @@ define("NO_SPECIAL_CHARS_CHAIN", true);
 use Hogart\Lk\Entity\AccountTable;
 use Hogart\Lk\Entity\FlashMessagesTable;
 use Hogart\Lk\Entity\CartItemTable;
+use Hogart\Lk\Helper\Template\FlashError;
 
 
 global $USER, $CACHE_MANAGER;
@@ -51,13 +52,19 @@ if ($account['id']) {
             }
         }
 
+        if ($timer % 5 == 0) {
+            session_start(session_id());
+            $account = AccountTable::getAccountByUserID($USER->GetID());
+            echo "data: " . json_encode(['type' => 'heartbeat', 'account' => (int)$account['id']]) . PHP_EOL . PHP_EOL;
+            session_write_close();
+        }
+
         if ($cart_count != ($new_cart_count = CartItemTable::getAccountCartCount($account['id']))) {
             echo "data: " . json_encode(['type' => 'cart_counter', 'count'=> $new_cart_count]) . PHP_EOL . PHP_EOL;
             $cart_count = $new_cart_count;
         }
-        echo "data: status: " . connection_status() . PHP_EOL . PHP_EOL;
 
-        ob_end_flush();
+        ob_flush();
         flush();
         sleep(1);
         $timer++;

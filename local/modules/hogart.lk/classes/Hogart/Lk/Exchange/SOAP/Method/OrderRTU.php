@@ -10,6 +10,10 @@ namespace Hogart\Lk\Exchange\SOAP\Method;
 
 
 use Bitrix\Main\Entity\UpdateResult;
+use Bitrix\Main\Type\Date;
+use Bitrix\Main\Type\DateTime;
+use Hogart\Lk\Entity\AccountTable;
+use Hogart\Lk\Entity\ContactTable;
 use Hogart\Lk\Entity\OrderRTUTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
 use Hogart\Lk\Exchange\SOAP\AbstractPutRequest;
@@ -56,15 +60,29 @@ class OrderRTU extends AbstractMethod
         $answer = new Response();
         $response = $this->ordersRTUGet();
         foreach ($response->return->Order_RTU as $order_rtu) {
-            $id = OrderRTUTable::getByField("guid_id", $order_rtu->Ord_RTU_ID)['id'];
-            if ($id != $order_rtu->Ord_RTU_ID_Site) {
-                $answer->addResponse(new ResponseObject($order_rtu->Ord_RTU_ID, new MethodException(MethodException::ERROR_NO_ORDER_RTU, [$order_rtu->Ord_RTU_ID])));
-                continue;
-            }
+	        $account = AccountTable::getByField('guid_id', $order_rtu->Ord_RTU_ID_Account);
+	        $contact = ContactTable::getByField('guid_id', $order_rtu->Ord_RTU_ID_Contact);
 
-            $result = OrderRTUTable::update($id, [
-                'number' => $order_rtu->Ord_RTU_Number
-            ]);
+            $result = OrderRTUTable::createOrUpdateByField([
+                "guid_id" => $order_rtu->Ord_RTU_ID,
+                "number" => $order_rtu->Ord_RTU_Number,
+                "rtu_date" => new DateTime((string)$order_rtu->Ord_RTU_Date, 'Y-m-d H:i:s'),
+                "delivery_type" => intval($order_rtu->Ord_RTU_Delivery),
+                "store_guid" => $order_rtu->Ord_RTU_Warehouse_ID,
+                "address_guid" => $order_rtu->Ord_RTU_Address,
+                "plan_date" => new Date($order_rtu->Ord_RTU_PlanDate, 'Y-m-d'),
+                "plan_time" => (string)$order_rtu->Ord_RTU_PlanTime,
+                "contact_id" => intval($contact['id']),
+                "email" => (string)$order_rtu->Ord_RTU_Email,
+                "phone" => (string)$order_rtu->Ord_RTU_Phone_Contact,
+                "is_sms_notify" => (bool)$order_rtu->Ord_RTU_SendSMS,
+                "is_email_notify" => (bool)$order_rtu->Ord_RTU_SendEmail,
+                "is_tk" => (bool)$order_rtu->Ord_RTU_TK,
+                "tk_name" => (string)$order_rtu->Ord_RTU_TK_Name,
+                "tk_address" => $order_rtu->Ord_RTU_TK_Address,
+                "is_active" => !$order_rtu->deletion_mark,
+                "account_id" => intval($account['id'])
+            ], 'guid_id');
 
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
@@ -74,6 +92,9 @@ class OrderRTU extends AbstractMethod
                     if ($result instanceof UpdateResult) {
                         $this->client->getLogger()->notice("Обновлена запись Заявка на отгрузку {$result->getId()} ({$order_rtu->Ord_RTU_ID})");
                     }
+
+	                //@todo сделать добавление строк
+
                     $answer->addResponse(new ResponseObject($order_rtu->Ord_RTU_ID));
                 } else {
                     $answer->addResponse(new ResponseObject($order_rtu->Ord_RTU_ID, new MethodException(MethodException::ERROR_UNDEFINED)));

@@ -80,6 +80,14 @@ class AccountTable extends AbstractEntity
         ];
     }
 
+    public static function getContact($account_id)
+    {
+        $account = self::getRowById($account_id);
+        if (!empty($account['contact_id'])) {
+            return ContactTable::getRowById($account['contact_id']);
+        }
+    }
+
     /**
      * @param int $ID
      * @param bool $is_active

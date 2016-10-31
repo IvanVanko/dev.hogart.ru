@@ -51,12 +51,7 @@ class AddressExchange extends AbstractExchange
     {
         switch ($key = $this->getRoutingKey($envelope)) {
             case 'get':
-                $count = Client::getInstance()->Address->updateAddresses();
-                if (!empty($count)) {
-                    $this
-                        ->exchange
-                        ->publish("", $this->getPublishKey($key), AMQP_NOPARAM, ["delivery_mode" => 2]);
-                }
+                Client::getInstance()->Address->updateAddresses();
                 break;
             case 'put':
                 $request = unserialize($envelope->getBody());

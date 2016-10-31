@@ -21,6 +21,7 @@
 use Hogart\Lk\Entity\OrderTable;
 use Hogart\Lk\Entity\OrderItemTable;
 use Hogart\Lk\Entity\ContractTable;
+use Hogart\Lk\Entity\CompanyTable;
 use Hogart\Lk\Entity\PdfTable;
 use Hogart\Lk\Helper\Template\Money;
 
@@ -31,6 +32,16 @@ $order = $arResult['order'];
     <div class="col-sm-9">
         <div class="row spacer-20 order-line">
             <div class="col-sm-12">
+
+                <? $this->SetViewTarget('shipment-view-part') ?>
+                <div class="checkbox checkbox-primary">
+                    <input onchange="$('[data-shipment=\'0\']').toggle(this.checked)" type="checkbox" name="all_items">
+                    <label>
+                        <b>Отобразить полный состав</b>
+                    </label>
+                </div>
+                <? $this->EndViewTarget() ?>
+
                 <? include dirname(__FILE__) . "/../../../account.order.list/templates/.default/order-header.php" ?>
                 <div class="row">
                     <div class="col-sm-12">
@@ -73,7 +84,7 @@ $order = $arResult['order'];
                                             </thead>
                                             <tbody>
                                             <? foreach ($items as $k => $item): ?>
-                                                <tr id="<?= $item['id'] ?>" data-guid="<?= $item['id'] ?>">
+                                                <tr data-shipment="<?= ($item['status'] > 4 ? 0 : 1) ?>" id="<?= $item['id'] ?>" data-guid="<?= $item['id'] ?>">
                                                     <td><?= ($k + 1) ?></td>
                                                     <td class="text-nowrap"><?= $item['props']['sku']['VALUE'] ?></td>
                                                     <td><a target="_blank" href="<?= $item['url'] ?>"><?= $item['NAME'] ?></a></td>
@@ -98,6 +109,16 @@ $order = $arResult['order'];
                         <? endforeach; ?>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-sm-6 comment">
+                        <? if (!empty($order['note'])): ?>
+                            <p class="h6">
+                                <i class="fa fa-comment" aria-hidden="true"></i>
+                                <i><?= $order['note'] ?></i>
+                            </p>
+                        <? endif; ?>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -106,12 +127,17 @@ $order = $arResult['order'];
         <div data-stick-block>
             <div class="menu">
                 <ul class="fa-ul">
+                    <? $manager_feedback_params = $APPLICATION->IncludeComponent("hogart.lk:account.manager.feedback", "", [
+                        "SUBJECT" => "Запрос от " . CompanyTable::showName($order, 'co_') . " по " . OrderTable::showName($order)
+                    ]); ?>
+                    <? if (!empty($manager_feedback_params['manager']['email'])): ?>
                     <li>
-                        <a href="#">
+                        <a data-remodal-target="<?= $manager_feedback_params['dialog'] ?>" href="javascript:void(0)">
                             <i class="fa fa-li fa-question fa-lg text-warning" aria-hidden="true"></i>
                             Задать вопрос менеджеру
                         </a>
                     </li>
+                    <? endif; ?>
                     <li class="delimiter"></li>
                     <li>
                         <a href="<?= $APPLICATION->GetCurPage(false) . "?action=order-kp" ?>">

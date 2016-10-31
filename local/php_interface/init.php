@@ -85,13 +85,13 @@ if (CModule::IncludeModule("subscribe"))
 	$cPosting->AutoSend();
 }
 
+$loader = require dirname(__FILE__) . "/include/vendor/autoload.php";
+
 $obInit = new CCustomInit();
 $obInit->addFolder('classes');
 $obInit->addFolder('entities');
 $obInit->addFolder('forks');
-$obInit->addFolder('vendor');
 $obInit->addFolder('');
-//$obInit->addFolder('scripts');
 
 $obInit->Init();
 

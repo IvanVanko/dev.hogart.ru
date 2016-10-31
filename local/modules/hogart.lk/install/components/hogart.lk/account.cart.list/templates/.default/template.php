@@ -54,6 +54,7 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
 });
 ?>
 
+<? if (!$arParams['isEmpty']): ?>
 <div class="cart-wrapper row">
     <div id="carts" class="full-height col-sm-12">
         <? $carts_node = Ajax::Start($component, ['step1']) ?>
@@ -64,7 +65,7 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
         </div>
 
         <? foreach ($arResult['carts'] as &$cart): ?>
-            <div id="<?= $cart['guid_id'] ?>" data-cart="<?= $cart['guid_id'] ?>" class="row spacer-20 <?= (empty($cart['items']) ? "hidden" : "") ?>">
+            <div id="<?= $cart['guid_id'] ?>" data-cart="<?= $cart['guid_id'] ?>" class="row spacer-all-20 <?= (empty($cart['items']) ? "hidden" : "") ?>">
                 <?
                 $cart['ajax_node'] = Ajax::Start($component, ['cart_id' => $cart['guid_id']], $carts_node);
                 ?>
@@ -348,28 +349,31 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                                 <div class="cart-group-menu" data-stick-block>
                                     <div class="menu">
                                         <ul class="fa-ul">
-                                            <? if (!empty($cart['contract_id'])): ?>
+
+                                            <? $create_order_button = Ajax::Link(
+                                                'Создать заказ',
+                                                'carts',
+                                                $carts_node->getId(),
+                                                [
+                                                    'cart_id' => $cart['guid_id'],
+                                                    'action' => 'create_order',
+                                                    'item' => null,
+                                                    'new_item_group' => null,
+                                                    'copy' => null
+                                                ],
+                                                'class="btn btn-primary"',
+                                                Ajax::DIALOG_AJAX_LINK,
+                                                [
+                                                    'title' => 'Создание заказа',
+                                                    'template_file' => __DIR__ . "/forms/add-order.php",
+                                                    'template_vars' => ['cart' => $cart],
+                                                    'dialog_event_hogart.lk.openajaxlinkdialog' => 'openLinkAddOrderDialog',
+                                                ]
+                                            ) ?>
+
+                                            <? if (!empty($cart['contract_id']) && !empty($cart['store_guid'])): ?>
                                             <li data-create-order-button>
-                                                <?= Ajax::Link(
-                                                    'Создать заказ',
-                                                    'carts',
-                                                    $carts_node->getId(),
-                                                    [
-                                                        'cart_id' => $cart['guid_id'],
-                                                        'action' => 'create_order',
-                                                        'item' => null,
-                                                        'new_item_group' => null,
-                                                        'copy' => null
-                                                    ],
-                                                    'class="btn btn-primary"',
-                                                    Ajax::DIALOG_AJAX_LINK,
-                                                    [
-                                                        'title' => 'Создание заказа',
-                                                        'template_file' => __DIR__ . "/forms/add-order.php",
-                                                        'template_vars' => ['cart' => $cart],
-                                                        'dialog_event_hogart.lk.openajaxlinkdialog' => 'openLinkAddOrderDialog',
-                                                    ]
-                                                ) ?>
+                                                <?= $create_order_button ?>
                                             </li>
                                             <? endif; ?>
                                             <? if (!empty($cart['store_guid'])): ?>
@@ -460,4 +464,5 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
         <? Ajax::End($carts_node->getId()) ?>
     </div>
 </div>
+<? endif; ?>
 <? $APPLICATION->ShowViewContent('empty_cart'); ?>

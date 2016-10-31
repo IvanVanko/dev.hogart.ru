@@ -46,7 +46,7 @@ use Hogart\Lk\Entity\CompanyTable;
             <label class="control-label">Адрес проживания</label>
             <div class="pull-right text-right">
                 <div class="checkbox checkbox-primary checkbox-inline">
-                    <input data-switch checked="checked" onchange="document.getElementById('residential_address_<?= CompanyTable::TYPE_INDIVIDUAL_ENTREPRENEUR ?>').disabled=this.checked;" type="checkbox" name="residential_address_as_actual" value="1">
+                    <input data-switch checked="checked" onchange="document.getElementById('residential_address_<?= CompanyTable::TYPE_INDIVIDUAL_ENTREPRENEUR ?><?= (!empty($edit_company['id']) ? "_" . $edit_company['id'] : "") ?>').disabled=this.checked;" type="checkbox" name="residential_address_as_actual" value="1">
                     <label>
                         Совпадает с адресом прописки
                     </label>
@@ -56,7 +56,7 @@ use Hogart\Lk\Entity\CompanyTable;
     </div>
     <div class="row spacer">
         <div class="col-sm-12">
-            <input data-suggest="address" data-bind="addresses[<?= AddressTypeTable::TYPE_ACTUAL?>][0].value" disabled="disabled" id="residential_address_<?= CompanyTable::TYPE_INDIVIDUAL_ENTREPRENEUR ?>" name="address[<?= AddressTypeTable::TYPE_ACTUAL?>]" type="text" class="form-control" placeholder="Введите адрес в свободной форме">
+            <input data-suggest="address" data-bind="addresses[<?= AddressTypeTable::TYPE_ACTUAL?>][0].value" disabled="disabled" id="residential_address_<?= CompanyTable::TYPE_INDIVIDUAL_ENTREPRENEUR ?><?= (!empty($edit_company['id']) ? "_" . $edit_company['id'] : "") ?>" name="address[<?= AddressTypeTable::TYPE_ACTUAL?>]" type="text" class="form-control" placeholder="Введите адрес в свободной форме">
         </div>
     </div>
     <? if (empty($edit_company['id'])): ?>

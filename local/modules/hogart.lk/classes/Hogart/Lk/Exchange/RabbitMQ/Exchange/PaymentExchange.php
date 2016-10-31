@@ -48,11 +48,7 @@ class PaymentExchange extends AbstractExchange
     {
         switch ($key = $this->getRoutingKey($envelope)) {
             case 'get':
-                $count = Client::getInstance()->Payment->updatePayments();
-                if (!empty($count)) {
-                    $this
-                        ->publish("", $key);
-                }
+                Client::getInstance()->Payment->updatePayments();
                 break;
         }
     }

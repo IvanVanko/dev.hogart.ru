@@ -56,6 +56,8 @@ if (!empty($_POST['action'])) {
                     'is_active' => true
                 ]);
                 $orderRtu['address_guid'] = $addressRes->getData()['guid_id'];
+            } elseif (!empty($_POST['delivery_address'])) {
+                $orderRtu['address_guid'] = (string)$_POST['delivery_address'];
             }
             if (!empty($_POST['tk_address'])) {
                 $address = json_decode($_POST['__tk_address']);

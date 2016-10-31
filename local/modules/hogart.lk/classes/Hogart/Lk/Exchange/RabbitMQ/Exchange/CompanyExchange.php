@@ -8,6 +8,7 @@
 namespace Hogart\Lk\Exchange\RabbitMQ\Exchange;
 
 
+use Hogart\Lk\Exchange\SOAP\AbstractPutRequest;
 use Hogart\Lk\Exchange\SOAP\Client;
 
 /**
@@ -47,11 +48,12 @@ class CompanyExchange extends AbstractExchange
     {
         switch ($key = $this->getRoutingKey($envelope)) {
             case 'get':
-                $count = Client::getInstance()->Company->updateCompanies();
-                if (!empty($count)) {
-                    $this
-                        ->exchange
-                        ->publish("", $this->getPublishKey($key), AMQP_NOPARAM, ["delivery_mode" => 2]);
+                Client::getInstance()->Company->updateCompanies();
+                break;
+            case 'put':
+                $request = unserialize($envelope->getBody());
+                if ($request instanceof AbstractPutRequest) {
+                    Client::getInstance()->Company->companyPut($request);
                 }
                 break;
         }

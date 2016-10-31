@@ -1,6 +1,9 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
+
 use Hogart\Lk\Entity\OrderRTUTable;
 use Hogart\Lk\Entity\ContactTable;
+use Hogart\Lk\Entity\AddressTable;
+
 ?>
 <div class="row spacer">
     <div class="col-sm-12">
@@ -35,7 +38,7 @@ use Hogart\Lk\Entity\ContactTable;
                     <input required type="text" name="plan_date" class="col-sm-3 form-control" placeholder="Дата" data-error="Дата должна быть заполнена">
                     <div class="help-block with-errors"></div>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-5">
                     <div class="form-group">
                         <select required name="plan_time" class="form-control selectpicker" title="Выберите один из интервалов">
                             <? foreach (OrderRTUTable::getIntervals() as $interval): ?>
@@ -77,25 +80,33 @@ use Hogart\Lk\Entity\ContactTable;
             <div class="row">
                 <div class="col-sm-12">
                     <label class="control-label">Контактное лицо</label>
-                    <label class="pull-right">
-                        <div class="checkbox checkbox-primary checkbox-inline">
-                            <input data-switch type="checkbox" name="new_contact" value="1">
-                            <label for="">
-                                Новый контакт
-                            </label>
-                        </div>
-                    </label>
                 </div>
             </div>
             <div class="row spacer">
                 <div class="col-sm-12">
-                    <fieldset data-new-contact="false">
-                        <select name="contact" class="form-control selectpicker">
-                        <? foreach ($arResult['contacts'] as $contact): ?>
-                            <option data-owner-type="<?= $contact['owner_type'] ?>" data-owner="<?= $contact['owner_id'] ?>" value="<?= $contact['id'] ?>"><?= ContactTable::getFio($contact) ?></option>
-                        <? endforeach; ?>
-                        </select>
-                    </fieldset>
+                    <div class="row spacer vertical-align">
+                        <div class="col-sm-8">
+                            <fieldset data-new-contact="false">
+                                <select required name="contact" class="form-control selectpicker" title="Выберите одно из контактных лиц">
+                                    <? foreach ($arResult['contacts'] as $contact): ?>
+                                        <option data-owner-type="<?= $contact['owner_type'] ?>" data-owner="<?= $contact['owner_id'] ?>" value="<?= $contact['id'] ?>"><?= ContactTable::getFio($contact) ?></option>
+                                    <? endforeach; ?>
+                                </select>
+                            </fieldset>
+                        </div>
+                        <div class="col-sm-4">
+                            <fieldset>
+                                <div class="checkbox checkbox-primary checkbox-inline">
+                                    <input data-switch type="checkbox" name="new_contact" value="1">
+                                    <label for="">
+                                        Новый контакт
+                                    </label>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="row"></div>
+
                     <fieldset disabled="disabled" style="display: none" data-new-contact="true" class="form-group">
                         <div class="row">
                             <div class="col-sm-12">
@@ -120,7 +131,7 @@ use Hogart\Lk\Entity\ContactTable;
                                     </div>
                                     <div class="form-group col-sm-4">
                                         <label class="control-label">Телефон (моб.)</label>
-                                        <input name="new_phone[<?= \Hogart\Lk\Entity\ContactInfoTable::PHONE_KIND_MOBILE ?>]" data-mask="+7 (999) 999-99-99" type="text" class="form-control" placeholder="Телефон">
+                                        <input required name="new_phone[<?= \Hogart\Lk\Entity\ContactInfoTable::PHONE_KIND_MOBILE ?>]" data-mask="+7 (999) 999-99-99" type="text" class="form-control" placeholder="Телефон">
                                     </div>
                                     <div class="form-group col-sm-4">
                                         <label class="control-label">Телефон (гор.)</label>
@@ -132,34 +143,91 @@ use Hogart\Lk\Entity\ContactTable;
                     </fieldset>
                 </div>
             </div>
+        </div>
+        <div class="row spacer"></div>
+        <div class="row spacer">
+            <div class="col-sm-12">
+                <fieldset>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label class="control-label">Телефон</label>
+                                </div>
+                            </div>
+                            <div class="row spacer vertical-align">
+                                <div class="col-sm-6">
+                                    <input name="phone" data-mask="+7 (999) 999-99-99" type="text" class="form-control" placeholder="Телефон">
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="checkbox checkbox-primary checkbox-inline">
+                                        <input data-switch type="checkbox" name="is_sms_notify" value="1">
+                                        <label for="">
+                                            Оповещать по смс
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label class="control-label">E-mail</label>
+                                </div>
+                            </div>
+                            <div class="row spacer vertical-align">
+                                <div class="col-sm-6">
+                                    <input name="email" type="email" class="form-control" placeholder="Email">
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="checkbox checkbox-primary checkbox-inline">
+                                        <input data-switch type="checkbox" name="is_email_notify" value="1">
+                                        <label for="">
+                                            Оповещать по E-mail
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="row"></div>
+
+        <div disabled="disabled" class="" data-delivery-type="<?= OrderRTUTable::DELIVERY_OUR ?>">
             <div class="row vertical-align">
                 <div class="col-sm-12 center-between">
                     <label class="control-label">Адрес доставки</label>
-                    <label class="pull-right">
-                        <div class="checkbox checkbox-primary checkbox-inline">
-                            <input data-switch type="checkbox" name="new_address" value="1">
-                            <label for="">
-                                Новый адрес
-                            </label>
-                        </div>
-                    </label>
                 </div>
             </div>
             <div class="row spacer center-between">
-                <div class="col-sm-6">
-                    <fieldset data-new-address="false">
-                        <select name="delivery_address" class="form-control selectpicker">
-                            <? foreach ($arResult['addresses'] as $fias_code => $address): ?>
-                                <option data-owner-type="<?= $address['owner_type'] ?>" data-owner="<?= $address['owner_id'] ?>" value="<?= $address['guid_id'] ?>"><?= $address['value'] ?></option>
-                            <? endforeach; ?>
-                        </select>
-                    </fieldset>
-                    <fieldset disabled="disabled" style="display: none" data-new-address="true" class="form-group">
-                        <input required data-suggest="address" name="address" type="text" class="form-control" placeholder="Введите адрес в свободной форме" data-error="Поле не должно быть пустым">
-                        <div class="help-block with-errors"></div>
-                    </fieldset>
+                <div class="col-sm-12">
+                    <div class="row vertical-align">
+                        <div class="col-sm-8">
+                            <fieldset data-new-address="false">
+                                <select required name="delivery_address" class="form-control selectpicker" title="Выберите один из адресов">
+                                    <? foreach ($arResult['addresses'] as $fias_code => $address): ?>
+                                        <option data-owner-type="<?= $address['owner_type'] ?>" data-owner="<?= $address['owner_id'] ?>" value="<?= $address['guid_id'] ?>"><?= AddressTable::getValue($address) ?></option>
+                                    <? endforeach; ?>
+                                </select>
+                            </fieldset>
+                            <fieldset disabled="disabled" style="display: none" data-new-address="true" class="form-group">
+                                <input required data-suggest="address" name="address" type="text" class="form-control" placeholder="Введите адрес в свободной форме" data-error="Поле не должно быть пустым">
+                                <div class="help-block with-errors"></div>
+                            </fieldset>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="checkbox checkbox-primary checkbox-inline">
+                                <input data-switch type="checkbox" name="new_address" value="1">
+                                <label for="">
+                                    Новый адрес
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-sm-6 text-right">
+            </div>
+            <div class="row spacer">
+                <div class="col-sm-12">
                     <div class="checkbox checkbox-primary checkbox-inline">
                         <input data-switch type="checkbox" name="is_tk" value="1">
                         <label for="">
@@ -196,52 +264,14 @@ use Hogart\Lk\Entity\ContactTable;
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-sm-12">
-        <fieldset>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <label class="control-label">Телефон</label>
-                        </div>
-                    </div>
-                    <div class="row spacer vertical-align">
-                        <div class="col-sm-6">
-                            <input name="phone" data-mask="+7 (999) 999-99-99" type="text" class="form-control" placeholder="Телефон">
-                        </div>
-                        <div class="col-sm-6 text-right">
-                            <div class="checkbox checkbox-primary checkbox-inline">
-                                <input data-switch type="checkbox" name="is_sms_notify" value="1">
-                                <label for="">
-                                    Оповещать по смс
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <label class="control-label">E-mail</label>
-                        </div>
-                    </div>
-                    <div class="row spacer vertical-align">
-                        <div class="col-sm-6">
-                            <input name="email" type="email" class="form-control" placeholder="Email">
-                        </div>
-                        <div class="col-sm-6 text-right">
-                            <div class="checkbox checkbox-primary checkbox-inline">
-                                <input data-switch type="checkbox" name="is_email_notify" value="1">
-                                <label for="">
-                                    Оповещать по E-mail
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <label class="control-label">Комментарий</label>
             </div>
-        </fieldset>
+            <div class="col-sm-12 form-group">
+                <textarea class="form-control" name="comment" rows="3"></textarea>
+            </div>
+        </div>
     </div>
 </div>
 <input type="hidden" name="rows" value="">
