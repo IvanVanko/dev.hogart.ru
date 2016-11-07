@@ -14,7 +14,6 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
-//$arResult['PARENT_PARENT_SECTION']
 ?>
 
 <? if(!empty($arResult['PARENT_PARENT_SECTION']["UF_PRICE"])): ?>
@@ -171,28 +170,59 @@ $this->setFrameMode(true);
                 <? if ($USER->IsAuthorized() && $arItem["CATALOG_QUANTITY"] > 0): ?>
                     <span style="white-space: nowrap"><?= $arItem["CATALOG_QUANTITY"]; ?></span>
                     <div class="stocks-wrapper">
+                        <div class="triangle-with-shadow"></div>
                         <div class="stock-header">
                             <?= $arItem["NAME"]?>, <?= $arResult["ALL_BRANDS"][$arItem["PROPERTIES"]["brand"]["VALUE"]]['NAME'] ?> <?= $arItem["PROPERTIES"]["sku"]["VALUE"] ?>
                         </div>
                         <div class="stock-items">
                             <div class="stock-items-table">
-                            <? $store_keys = preg_grep("/^CATALOG_STORE_AMOUNT_/", array_keys($arItem)); ?>
-                            <? foreach ($store_keys as $store_key): ?>
-                                <?
-                                if (!$arItem[$store_key]) continue;
-                                $storeId = intval(str_replace("CATALOG_STORE_AMOUNT_", "", $store_key));
-                                ?>
+                            <? foreach ($arResult['STORES'] as $store_id => $store): ?>
+                                <? if (!$arItem['STORE_AMOUNTS'][$store_id]['is_visible']) continue; ?>
                                 <div class="stock-item">
-                                    <span class="stock-name text-left">
-                                        <?= $arResult["STORES"][$storeId]["TITLE"]?>
-                                        <div style="font-size: smaller"><?= $arResult["STORES"][$storeId]["ADDRESS"]?></div>
+                                    <span class="stock-name h4 text-left">
+                                        <?= $store["TITLE"]?>
                                     </span>
-                                    <span class="quantity"><?= $arItem[$store_key] ?> <?=$arItem['CATALOG_MEASURE_NAME']?>.</span>
+                                    <span class="quantity">
+                                        <div>
+                                            <div class="amount h4">
+                                                <?= (int)$arItem['STORE_AMOUNTS'][$store_id]['stock'] ?> <?=$arItem['CATALOG_MEASURE_NAME']?>.
+                                            </div>
+                                            <div class="desc h6">
+                                                Остаток
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="amount h4">
+                                                <?= (int)$arItem['STORE_AMOUNTS'][$store_id]['in_reserve'] ?> <?=$arItem['CATALOG_MEASURE_NAME']?>.
+                                            </div>
+                                            <div class="desc h6">
+                                                Резерв
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="amount h4">
+                                                <?= (int)$arItem['STORE_AMOUNTS'][$store_id]['in_transit'] ?> <?=$arItem['CATALOG_MEASURE_NAME']?>.
+                                            </div>
+                                            <div class="desc h6">
+                                                Ожидается
+                                            </div>
+                                        </div>
+                                        <? if (!empty($arItem["PROPERTIES"]["days_till_receive"]["VALUE"])): ?>
+                                        <div>
+                                            <div class="amount h4">
+                                                <i class="glyphicon glyphicon-time"></i>
+                                                <?= (int)$arItem["PROPERTIES"]["days_till_receive"]["VALUE"] ?> дн.
+                                            </div>
+                                            <div class="desc h6">
+                                                Время ожид.
+                                            </div>
+                                        </div>
+                                        <? endif; ?>
+                                    </span>
                                 </div>
                             <? endforeach; ?>
                             </div>
                         </div>
-                        <i class="fa fa-caret-up" aria-hidden="true"></i>
                     </div>
                 <? endif; ?>
                 </div>
@@ -200,9 +230,9 @@ $this->setFrameMode(true);
             <span class="cell text-center"><?=$arItem['CATALOG_MEASURE_NAME']?>.</span>
             <span class="cell text-center price currency-<?= strtolower($arItem["PRICES"]["BASE"]["CURRENCY"]) ?>">
                 <? if ($USER->IsAuthorized() && !empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
-                    <?= HogartHelpers::woPrice($arItem["PRICES"]["BASE"]["PRINT_DISCOUNT_VALUE"]) ?>
+                    <?= \Hogart\Lk\Helper\Template\Money::show($arItem["PRICES"]["BASE"]["DISCOUNT_VALUE"]) ?>
                 <? else: ?>
-                    <?= HogartHelpers::woPrice($arItem["PRICES"]["BASE"]["PRINT_VALUE"]) ?>
+                    <?= \Hogart\Lk\Helper\Template\Money::show($arItem["PRICES"]["BASE"]["VALUE"]) ?>
                 <? endif; ?>
             </span>
             <? if ($USER->IsAuthorized()): ?>
@@ -214,8 +244,8 @@ $this->setFrameMode(true);
                 <? endif; ?>
             </span>
             <span class="cell text-center buy-quantity noselect" style="white-space: nowrap">
-                <i class="fa fa-minus" onclick="Math.max(0, this.nextElementSibling.value--)"></i>
-                <input type="text" name="quantity" value="0" />
+                <i class="fa fa-minus" onclick="Math.max(1, this.nextElementSibling.value--)"></i>
+                <input type="text" name="quantity" value="1" />
                 <i class="fa fa-plus" onclick="this.previousElementSibling.value++"></i>
             </span>
             <? endif; ?>
@@ -229,11 +259,14 @@ $this->setFrameMode(true);
                         $attr_pop = 'data-popup="#popup-msg-product"';
                     }
                     ?>
-                <a id="<?= $arItem['BUY_URL'] ?>"
-                   class="black grid-hide <?= $class_pop ?>" <?= $attr_pop ?>
-                   href="javascript:void(0)" rel="nofollow">
-                    <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                </a>
+                    <?= \Hogart\Lk\Helper\Template\Cart::Link(
+                        '<i class="fa fa-cart-plus" aria-hidden="true"></i>',
+                        [
+                            'item_id' => $arItem['ID'],
+                            'count' => 'javascript:function (element) { return Math.max(1, $(element).parents("li:eq(0)").find("[name=\'quantity\']:input").val()); }'
+                        ],
+                        'class="black grid-hide ' . $class_pop . ' ' . $attr_pop . '"'
+                    ) ?>
             </span>
         </li>
 
@@ -268,7 +301,7 @@ $this->setFrameMode(true);
         </li>
         <? endif; ?>
         
-        <li class="col-lg-3 col-md-4 col-sm-6">
+        <li class="col-lg-3 col-md-4 col-sm-6" data-item-id="<?= $i ?>">
             <div>
                 <span class="perechen-img">
                     <a href="<?= $arItem["DETAIL_PAGE_URL"] ?>">
@@ -367,9 +400,9 @@ $this->setFrameMode(true);
                         <div class="col-md-6">
                             <div class="price currency-<?= strtolower($arItem["PRICES"]["BASE"]["CURRENCY"]) ?> text-nowrap">
                                 <? if ($USER->IsAuthorized() && !empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
-                                    <?= HogartHelpers::woPrice($arItem["PRICES"]["BASE"]["PRINT_DISCOUNT_VALUE"]); ?>
+                                    <?= \Hogart\Lk\Helper\Template\Money::show($arItem["PRICES"]["BASE"]["DISCOUNT_VALUE"]) ?>
                                 <? else: ?>
-                                    <?= HogartHelpers::woPrice($arItem["PRICES"]["BASE"]["PRINT_VALUE"]); ?>
+                                    <?= \Hogart\Lk\Helper\Template\Money::show($arItem["PRICES"]["BASE"]["VALUE"]) ?>
                                 <? endif; ?>
                                 <i class="fa fa-<?=strtolower($arItem["PRICES"]["BASE"]["CURRENCY"])?>" aria-hidden="true"></i>
                             </div>
@@ -383,10 +416,10 @@ $this->setFrameMode(true);
                         </div>
                         <div class="col-md-6 text-right text-nowrap">
                         <? if ($arItem["CATALOG_QUANTITY"] > 0): ?>
-                            <div class="quantity quantity-success line <? if ($USER->IsAuthorized()): ?> line2<? endif; ?>">В
-                                наличии<? if ($USER->IsAuthorized()): ?> <span><?= $arItem["CATALOG_QUANTITY"]; ?>
+                            <div class="quantity quantity-success line <? if ($USER->IsAuthorized()): ?> line2<? endif; ?>">
+                            <? if ($USER->IsAuthorized()): ?> <span><?= $arItem["CATALOG_QUANTITY"]; ?>
                                     <?=$arItem['CATALOG_MEASURE_NAME']?>.</span><? endif; ?></div>
-                        <? else: ?>
+                            <? else: ?>
                             <div class="quantity quantity-fail text-nowrap">
                                 <i class="fa fa-truck" aria-hidden="true"></i> Под заказ
                             </div>
@@ -394,11 +427,27 @@ $this->setFrameMode(true);
                         </div>
                     </div>
                     <!--Только для авторизованных-->
-                    <? if ($USER->IsAuthorized() && !empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
-                    <div class="info-block">
-                        <div class="old currency">
-                            <?= HogartHelpers::woPrice($arItem["PRICES"]["BASE"]["PRINT_VALUE"]); ?>
-                            <i class="fa fa-<?=strtolower($arItem["PRICES"]["BASE"]["CURRENCY"])?>" aria-hidden="true"></i>
+                    <? if ($USER->IsAuthorized()): ?>
+                    <div class="row">
+                        <? if (!empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
+                        <div class="col-sm-6">
+                            <div class="info-block text-nowrap">
+                                <div class="old currency">
+                                    <?= HogartHelpers::woPrice($arItem["PRICES"]["BASE"]["PRINT_VALUE"]); ?>
+                                    <i class="fa fa-<?=strtolower($arItem["PRICES"]["BASE"]["CURRENCY"])?>" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <? endif; ?>
+                        <div class="col-sm-6 text-right pull-right">
+                            <?= \Hogart\Lk\Helper\Template\Cart::Link(
+                                '<i class="fa fa-cart-plus" aria-hidden="true"></i>',
+                                [
+                                    'item_id' => $arItem['ID'],
+                                    'count' => '1'
+                                ],
+                                'class="black buy"'
+                            ) ?>
                         </div>
                     </div>
                     <? endif; ?>
@@ -415,11 +464,13 @@ $this->setFrameMode(true);
                                 $attr_pop = 'data-popup="#popup-msg-product"';
                             }
                             ?>
-                            <a id="<?= $arItem['BUY_URL'] ?>"
-                               class="buy-btn btn btn-primary <?= $class_pop ?>" <?= $attr_pop ?>
-                               href="javascript:void(0)" rel="nofollow">
-                                <i class="fa fa-shopping-cart" aria-hidden="true"></i> Купить
-                            </a>
+                            <?= \Hogart\Lk\Helper\Template\Cart::Link(
+                                '<i class="fa fa-cart-plus" aria-hidden="true"></i> Купить',
+                                [
+                                    'item_id' => $arItem['ID'],
+                                ],
+                                'class="black grid-hide ' . $class_pop . ' ' . $attr_pop . '"'
+                            ) ?>
                         </div>
                     </div>
                     <? endif; ?>

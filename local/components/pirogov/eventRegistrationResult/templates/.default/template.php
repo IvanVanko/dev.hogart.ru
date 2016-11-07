@@ -88,10 +88,7 @@ ob_start();
 <?
 $html = ob_get_clean();
 if(isset($_GET['pdf'])) {
-    define('DOMPDF_ENABLE_AUTOLOAD', false);
-    define('DOMPDF_ENABLE_REMOTE', true);
-    require $_SERVER['DOCUMENT_ROOT'].'/local/php_interface/include/vendor/dompdf/dompdf/dompdf_config.inc.php';
-    $dompdf = new \DOMPDF();
+    $dompdf = new \Dompdf\Dompdf();
     $dompdf->load_html($html);
     $dompdf->render();
     $dompdf->stream("ticket.pdf", array("Attachment" => 0));

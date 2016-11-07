@@ -1,0 +1,93 @@
+@import (reference) "../../../../../../assets/hogart.lk/less/styles";
+@import "_timeline";
+
+#svg {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+.link {
+  text-decoration: underline !important;
+  &:hover {
+    color: @brand-green !important;
+  }
+}
+.history {
+  .money();
+  .order-item-list-wrapper {
+    [data-item-group] {
+      .header-info {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+      }
+      .pre-table-header {
+        position: relative;
+        padding: 10px 0;
+        background-color: #f9f9f9;
+        .category-name {
+          padding-left: 20px;
+          width: 100%;
+          [name="item_group"] {
+            border: none;
+          }
+        }
+      }
+      [data-table] {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        font-size: @font-size-h6;
+        tr {
+          th {
+            font-size: .9em;
+          }
+          td {
+            vertical-align: middle;
+            &.select-checkbox {
+              &:before,
+              &:after {
+                top: 50%;
+                transform: translateY(-50%);
+                margin-top: 0;
+              }
+              &:after {
+                margin-top: -3px;
+                margin-left: -5px;
+              }
+            }
+            &.order-icon {
+              font-size: .9rem;
+              cursor: pointer;
+            }
+            sup.prev_pos_amount {
+              color: @brand-green;
+              top: -.7em;
+              &:before {
+                content: "+";
+              }
+              + sub {
+                left: -1.55em;
+                bottom: -.45em;
+              }
+            }
+            sub.negative_amount {
+              color: @brand-danger;
+              &:before {
+                content: "\2013";
+              }
+            }
+          }
+          &.selected {
+            background-color: @gray-lighter;
+            color: @brand-black;
+          }
+          a {
+            color: @brand-green;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,11 +1,33 @@
 @import (reference) "variables";
 @import (reference) "bootstrap";
+@import "less/topmenu";
 
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
   font-family: @font-family-serif;
   margin-top: (@line-height-computed / 2);
 }
+
+[data-notify="container"] {
+  z-index: 3001 !important;
+}
+
+.placeholder() {
+  color:#eeeeee;
+  font-style: italic;
+  font-size: @font-size-h6;
+  text-indent: 0;
+  transition: text-indent 0.3s ease;
+  :focus& {
+    text-indent: 100%;
+    transition: text-indent 0.3s ease;
+  }
+}
+
+::-webkit-input-placeholder {
+  .placeholder();
+}
+
 body {
   &.loading {
     cursor: wait;
@@ -41,6 +63,18 @@ body {
   }
   &-black {
     color: @brand-black !important;
+  }
+  &-primary {
+    color: @brand-primary !important;
+  }
+  &-warning {
+    color: @brand-warning !important;
+  }
+  &-danger {
+    color: @brand-danger !important;
+  }
+  &-info {
+    color: @brand-info !important;
   }
 }
 
@@ -125,6 +159,38 @@ body {
     > [class*=" col-"] {
       display: flex;
       align-items: center;
+    }
+  }
+  &:not(.hidden) {
+    &.spacer {
+      + .row {
+        margin-top: 10px;
+      }
+      &-20 {
+        + .row {
+          margin-top: 20px;
+        }
+      }
+      &-40 {
+        + .row {
+          margin-top: 40px;
+        }
+      }
+    }
+    &.spacer-all {
+      ~ .row {
+        margin-top: 10px;
+      }
+      &-20 {
+        ~ .row {
+          margin-top: 20px;
+        }
+      }
+      &-40 {
+        ~ .row {
+          margin-top: 40px;
+        }
+      }
     }
   }
 }
@@ -236,6 +302,10 @@ a[data-toggle="collapse"] {
   }
 }
 
+.full-height {
+  min-height: calc(~"100vh - 215px") !important;
+}
+
 .aside {
   &:extend(.container-fluid);
   background: white;
@@ -311,6 +381,7 @@ ul.right-menu {
 }
 
 a[href^="mailto:"] {
+  white-space: nowrap;
   display: inline-block;
   margin-left: 5px;
   transition: all .3s linear;
@@ -339,4 +410,10 @@ a[href^="mailto:"] {
 
 footer {
   margin-top: 20px;
+  .p_logo {
+    width: 65px;
+    height: 28px;
+    background-image: url(/images/oldschool-logo.svg);
+    background-size: auto;
+  }
 }

@@ -9,7 +9,9 @@ $strReturn = '<ul class="breadcrumbs">';
 $num_items = count($arResult);
 for($index = 0, $itemSize = $num_items; $index < $itemSize; $index++)
 {
-	$title = htmlspecialcharsex($arResult[$index]["TITLE"]);
+    $title = $arResult[$index]["TITLE"];
+    if (!defined("NO_SPECIAL_CHARS_CHAIN"))
+	    $title = htmlspecialcharsEx($title);
 
 	if($arResult[$index]["LINK"] <> "" && $index != $itemSize-1)
 		$strReturn .= '<li><a href="'.$arResult[$index]["LINK"].'" title="'.$title.'">'.$title.'</a></li>';

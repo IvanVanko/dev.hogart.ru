@@ -2,10 +2,15 @@
 
 require_once('csv.php');
 require_once('config.php');
+
+\CModule::IncludeModule("hogart.lk");
+
 use CUSTOM\Entity\ProductItemMeasureTable;
 
 ini_set('max_execution_time', 0);
 ini_set('memory_limit', '512M');
+
+use Hogart\Lk\Entity\StoreAmountTable;
 
 class ParsingModel {
     //Приватные переменные для хранения ссылки на подключение
@@ -47,7 +52,7 @@ class ParsingModel {
         global $DB;
         try {
             //Подключаемся к soap-серверу
-            ini_set("soap.wsdl_cache_enabled", 0);
+            ini_set("soap.wsdl_cache_enabled", WSDL_CACHE_NONE);
             $this->arr_params['type_id'] = '';
             $obConfig = new SoapLocalConfig();
             $this->client = new SoapClient(
@@ -929,8 +934,6 @@ class ParsingModel {
         }
 
         foreach($ost->return->warehouse as $key => $stock) {
-            //            mb_convert_variables('utf-8', 'windows-1251', $stock->warehouse_name);
-            //            mb_convert_variables('utf-8', 'windows-1251', $stock->warehouse_address);
             $arFields = Array(
                 "TITLE" => $stock->warehouse_name,
                 "ACTIVE" => "Y",
@@ -943,19 +946,10 @@ class ParsingModel {
                 "SCHEDULE" => "",
                 "XML_ID" => $stock->warehouse_id
             );
-            $answer['StringStock'][] = $stock->warehouse_id;
-            $stockInBitrix = $st->GetList(array(), array('XML_ID' => $stock->warehouse_id));
-            $stockInBitrix_t = $st->GetList(array(), array('XML_ID' => $stock->warehouse_id.'_t'));
+//            $answer['StringStock'][] = $stock->warehouse_id;
+            $stockInBitrix = $st->GetList(array(), array('XML_ID' => $stock->warehouse_id), false, false, ['ID', 'XML_ID']);
             if($stockInBitrix = $stockInBitrix->GetNext()) {
-                $stockInBitrix_t = $stockInBitrix_t->GetNext();
                 if($st->Update($stockInBitrix['ID'], $arFields)) {
-                    $arFields['XML_ID'] .= '_t';
-                    $arFields['TITLE'] .= ' Stock in transit';
-                    $st->Update($stockInBitrix_t['ID'], $arFields);
-                    global $USER_FIELD_MANAGER;
-                    $USER_FIELD_MANAGER->Update('CAT_STORE', $stockInBitrix_t['ID'], array(
-                        'UF_TRANSIT' => 1
-                    ));
                     echo "Склад обновлен: [".$stockInBitrix['ID']."]<br>";
                 }
                 else {
@@ -967,14 +961,6 @@ class ParsingModel {
             }
             else {
                 if($stockInBitrix = $st->Add($arFields)) {
-                    $arFields['XML_ID'] .= '_t';
-                    $arFields['TITLE'] .= ' Stock in transit';
-                    $arFields['UF_TRANSIT'] = '1';
-                    $new_id_reans = $st->Add($arFields);
-                    global $USER_FIELD_MANAGER;
-                    $USER_FIELD_MANAGER->Update('CAT_STORE', $new_id_reans, array(
-                        'UF_TRANSIT' => 1
-                    ));
                     echo "Склад добавлен: [".$stockInBitrix."]<br>";
                 }
                 else {
@@ -986,10 +972,9 @@ class ParsingModel {
             }
         }
 
-        $st2pr = new CCatalogStoreProduct;
         foreach($ost->return->item_amount as $product_s) {
             $answer['StringStock'][] = $product_s->item_id;
-            $productInBitrix = $el->GetList(array(), array('IBLOCK_ID' => 1, 'XML_ID' => $product_s->item_id));
+            $productInBitrix = $el->GetList(array(), array('IBLOCK_ID' => 1, 'XML_ID' => $product_s->item_id), false, false, ['ID', 'XML_ID']);
             if($productInBitrix = $productInBitrix->GetNext()) {
                 $fil = array(
                     'warehouse' => array("VALUE" => $product_s->warehouse ? '1' : '0'),
@@ -1001,57 +986,16 @@ class ParsingModel {
                     $product_s->item_amount_line = array($product_s->item_amount_line);
                 }
                 foreach($product_s->item_amount_line as $skey => $stock) {
-                    $stockInBitrix = $st->GetList(array(), array('XML_ID' => $stock->warehouse_id));
-                    $stockInBitrix_t = $st->GetList(array(), array('XML_ID' => $stock->warehouse_id.'_t'));
+                    $stockInBitrix = $st->GetList(array(), array('XML_ID' => $stock->warehouse_id), false, false, ['ID', 'XML_ID']);
                     if($stockInBitrix = $stockInBitrix->GetNext()) {
-                        $stockInBitrix_t = $stockInBitrix_t->GetNext();
-                        $id_p = $productInBitrix['ID'];
-                        $id_s = $stockInBitrix['ID'];
-                        $id_st = $stockInBitrix_t['ID'];
-
-                        $items = $st2pr->GetList(array(), array('PRODUCT_ID' => $id_p, 'STORE_ID' => $id_s));
-                        $items_t = $st2pr->GetList(array(), array('PRODUCT_ID' => $id_p, 'STORE_ID' => $id_st));
-
-                        $arFields = Array(
-                            "PRODUCT_ID" => $id_p,
-                            "STORE_ID" => $id_s,
-                            "AMOUNT" => $stock->stock,
-                        );
-                        $arFields_t = Array(
-                            "PRODUCT_ID" => $id_p,
-                            "STORE_ID" => $id_st,
-                            "AMOUNT" => $stock->in_transit,
-                        );
-
-                        if($items = $items->GetNext()) {
-                            $items_t = $items_t->GetNext();
-                            if($st2pr->Update($items['ID'], $arFields)) {
-                                $st2pr->Update($items_t['ID'], $arFields_t);
-
-                                echo "Количество товара на складе обновлено [".$product_s->item_id."] [".$stock->warehouse_id."]: [".$items['ID']."]<br>";
-                            }
-                            else {
-                                $this->csv->saveLog(array(
-                                    'Количество товара на складе не обновлено',
-                                    $items['ID'],
-                                    $st2pr->LAST_ERROR." ".__LINE__." ".__FUNCTION__
-                                ));
-                                echo 'Количество товара на складе не обновлено : ['.$items['ID'].'] ['.$product_s->item_id.'] ['.$stock->warehouse_id.']'.$st2pr->LAST_ERROR." ".__LINE__." ".__FUNCTION__.'<br>';
-                            }
-                        }
-                        else {
-                            if($id_sps = $st2pr->Add($arFields)) {
-                                $st2pr->Add($arFields_t);
-                                echo "Количество товара на складе добавлено [".$product_s->item_id."] [".$stock->warehouse_id."]: [".$id_sps."]<br>";
-                            }
-                            else {
-                                $this->csv->saveLog(array(
-                                    'Количество товара на складе не добавлено',
-                                    $st2pr->LAST_ERROR." ".__LINE__." ".__FUNCTION__
-                                ));
-                                echo "Количество товара на складе не добавлено : [".$product_s->item_id."] [".$stock->warehouse_id."] ".$st2pr->LAST_ERROR." ".__LINE__." ".__FUNCTION__.'<br>';
-                            }
-                        }
+                        StoreAmountTable::createOrUpdateByField([
+                            'item_id' => $productInBitrix['ID'],
+                            'item_guid' => $productInBitrix['XML_ID'],
+                            'store_guid' => $stockInBitrix['XML_ID'],
+                            'stock' => intval($stock->stock),
+                            'in_reserve' => intval($stock->in_reserve),
+                            'in_transit' => intval($stock->in_transit),
+                        ], 'guid_id');
                     }
                     else {
                         $this->csv->saveLog(array('Склад не найден',
@@ -1071,7 +1015,7 @@ class ParsingModel {
 
         if($this->answer) {
             $answer['StringStock'] = implode(";", $answer['StringStock']);
-            $ost = $this->client->__soapCall("StockAnswer", array('parameters' => $answer));
+            $this->client->__soapCall("StockAnswer", array('parameters' => $answer));
         }
 
         echo "<div class='suc'>Склады загружены</div>";
@@ -1561,7 +1505,7 @@ class ParsingModel {
         }
 
         echo "</div>";
-        $this->initProp();
+        $this->initProp($ost);
 
         if(($ost->return == true)) {
             echo "<div class='suc'>Свойства загружены</div>";
@@ -1746,9 +1690,8 @@ class ParsingModel {
         }
     }
 
-    function initProp() {
+    function initProp($ost) {
 
-        $ost = $this->GetResultFunction('CategoryGet');
         $answer = array();
         $answer['ID_Portal'] = 'HG';
         //Объект элемента в модели битрикса

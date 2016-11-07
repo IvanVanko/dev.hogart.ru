@@ -8,6 +8,184 @@
 }
 @media (min-width: 768px) {
 }
+.input-group-lg > .input-group-btn > .bx-filter .btn-more {
+  height: 46px;
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.3333333;
+  border-radius: 4px;
+}
+select.input-group-lg > .input-group-btn > .bx-filter .btn-more {
+  height: 46px;
+  line-height: 46px;
+}
+textarea.input-group-lg > .input-group-btn > .bx-filter .btn-more,
+select[multiple].input-group-lg > .input-group-btn > .bx-filter .btn-more {
+  height: auto;
+}
+.input-group-sm > .input-group-btn > .bx-filter .btn-more {
+  height: 30px;
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 1px;
+}
+select.input-group-sm > .input-group-btn > .bx-filter .btn-more {
+  height: 30px;
+  line-height: 30px;
+}
+textarea.input-group-sm > .input-group-btn > .bx-filter .btn-more,
+select[multiple].input-group-sm > .input-group-btn > .bx-filter .btn-more {
+  height: auto;
+}
+.input-group-btn:first-child > .bx-filter .btn-more,
+.input-group-btn:first-child > .btn-group > .bx-filter .btn-more,
+.input-group-btn:last-child > .bx-filter .btn-more:not(:last-child):not(.dropdown-toggle),
+.input-group-btn:last-child > .btn-group:not(:last-child) > .bx-filter .btn-more {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+.input-group-btn:last-child > .bx-filter .btn-more,
+.input-group-btn:last-child > .btn-group > .bx-filter .btn-more,
+.input-group-btn:first-child > .bx-filter .btn-more:not(:first-child),
+.input-group-btn:first-child > .btn-group:not(:first-child) > .bx-filter .btn-more {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+.input-group-btn > .bx-filter .btn-more {
+  position: relative;
+}
+.input-group-btn > .bx-filter .btn-more + .bx-filter .btn-more {
+  margin-left: -1px;
+}
+.input-group-btn > .bx-filter .btn-more:hover,
+.input-group-btn > .bx-filter .btn-more:focus,
+.input-group-btn > .bx-filter .btn-more:active {
+  z-index: 2;
+}
+.input-group-btn:first-child > .bx-filter .btn-more {
+  margin-right: -1px;
+}
+.input-group-btn:last-child > .bx-filter .btn-more {
+  z-index: 2;
+  margin-left: -1px;
+}
+.btn-group > .bx-filter .btn-more,
+.btn-group-vertical > .bx-filter .btn-more {
+  position: relative;
+  float: left;
+}
+.btn-group > .bx-filter .btn-more:hover,
+.btn-group-vertical > .bx-filter .btn-more:hover,
+.btn-group > .bx-filter .btn-more:focus,
+.btn-group-vertical > .bx-filter .btn-more:focus,
+.btn-group > .bx-filter .btn-more:active,
+.btn-group-vertical > .bx-filter .btn-more:active,
+.btn-group > .bx-filter .btn-more.active,
+.btn-group-vertical > .bx-filter .btn-more.active {
+  z-index: 2;
+}
+.btn-group .bx-filter .btn-more + .bx-filter .btn-more,
+.btn-group .bx-filter .btn-more + .btn-group,
+.btn-group .btn-group + .bx-filter .btn-more {
+  margin-left: -1px;
+}
+.btn-toolbar .bx-filter .btn-more {
+  float: left;
+}
+.btn-toolbar > .bx-filter .btn-more {
+  margin-left: 5px;
+}
+.btn-group > .bx-filter .btn-more:not(:first-child):not(:last-child):not(.dropdown-toggle) {
+  border-radius: 0;
+}
+.btn-group > .bx-filter .btn-more:first-child {
+  margin-left: 0;
+}
+.btn-group > .bx-filter .btn-more:first-child:not(:last-child):not(.dropdown-toggle) {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+.btn-group > .bx-filter .btn-more:last-child:not(:first-child) {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+.btn-group > .btn-group:not(:first-child):not(:last-child) > .bx-filter .btn-more {
+  border-radius: 0;
+}
+.btn-group > .btn-group:first-child:not(:last-child) > .bx-filter .btn-more:last-child {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+.btn-group > .btn-group:last-child:not(:first-child) > .bx-filter .btn-more:first-child {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+.btn-group > .bx-filter .btn-more + .dropdown-toggle {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+.bx-filter .btn-more .caret {
+  margin-left: 0;
+}
+.btn-group-vertical > .bx-filter .btn-more,
+.btn-group-vertical > .btn-group > .bx-filter .btn-more {
+  display: block;
+  float: none;
+  width: 100%;
+  max-width: 100%;
+}
+.btn-group-vertical > .btn-group > .bx-filter .btn-more {
+  float: none;
+}
+.btn-group-vertical > .bx-filter .btn-more + .bx-filter .btn-more,
+.btn-group-vertical > .bx-filter .btn-more + .btn-group,
+.btn-group-vertical > .btn-group + .bx-filter .btn-more {
+  margin-top: -1px;
+  margin-left: 0;
+}
+.btn-group-vertical > .bx-filter .btn-more:not(:first-child):not(:last-child) {
+  border-radius: 0;
+}
+.btn-group-vertical > .bx-filter .btn-more:first-child:not(:last-child) {
+  border-top-right-radius: 2px;
+  border-top-left-radius: 2px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.btn-group-vertical > .bx-filter .btn-more:last-child:not(:first-child) {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+.btn-group-vertical > .btn-group:not(:first-child):not(:last-child) > .bx-filter .btn-more {
+  border-radius: 0;
+}
+.btn-group-vertical > .btn-group:first-child:not(:last-child) > .bx-filter .btn-more:last-child {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.btn-group-vertical > .btn-group:last-child:not(:first-child) > .bx-filter .btn-more:first-child {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+.btn-group-justified > .bx-filter .btn-more {
+  float: none;
+  display: table-cell;
+  width: 1%;
+}
+.btn-group-justified > .btn-group .bx-filter .btn-more {
+  width: 100%;
+}
+[data-toggle="buttons"] > .bx-filter .btn-more input[type="radio"],
+[data-toggle="buttons"] > .btn-group > .bx-filter .btn-more input[type="radio"],
+[data-toggle="buttons"] > .bx-filter .btn-more input[type="checkbox"],
+[data-toggle="buttons"] > .btn-group > .bx-filter .btn-more input[type="checkbox"] {
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+  pointer-events: none;
+}
 .bx-filter .btn-more {
   display: inline-block;
   margin-bottom: 0;
@@ -22,7 +200,7 @@
   padding: 6px 12px;
   font-size: 14px;
   line-height: 1.42857143;
-  border-radius: 4px;
+  border-radius: 2px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -63,6 +241,10 @@ fieldset[disabled] .bx-filter .btn-more {
 a.bx-filter .btn-more.disabled,
 fieldset[disabled] a.bx-filter .btn-more {
   pointer-events: none;
+}
+.bx-filter .btn-more .label {
+  position: relative;
+  top: -1px;
 }
 .bx-filter-parameters-box-container[data-code]:before,
 .bx-filter-parameters-box-container[data-code]:after {
@@ -623,7 +805,7 @@ COLOR
   padding: 1px 5px;
   font-size: 12px;
   line-height: 1.5;
-  border-radius: 3px;
+  border-radius: 1px;
   color: #333;
   background-color: #fff;
   border-color: #ccc;
