@@ -70,7 +70,7 @@ class CompanyDiscount extends AbstractMethod
                 ]
             ])->fetch();
 
-            if (!isset($item)) {
+            if (empty($item)) {
                 $n = $k + 1;
                 $answer->addResponse(new ResponseObject($discount->Company_Discount_ID, new MethodException(MethodException::ERROR_NO_ITEM, [$discount->Discount_ID_Item, $n])));
                 continue;

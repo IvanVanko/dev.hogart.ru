@@ -45,7 +45,7 @@ class Consumer
         $this->connection = new \AMQPConnection([
             'host' => \COption::GetOptionString("hogart.lk", "RABBITMQ_HOST"),
             'port' => \COption::GetOptionString("hogart.lk", "RABBITMQ_PORT"),
-            'vhost' => '/',
+            'vhost' => \COption::GetOptionString("hogart.lk", "RABBITMQ_VHOST"),
             'login' => \COption::GetOptionString("hogart.lk", "RABBITMQ_LOGIN"),
             'password' => \COption::GetOptionString("hogart.lk", "RABBITMQ_PASSWORD")
         ]);

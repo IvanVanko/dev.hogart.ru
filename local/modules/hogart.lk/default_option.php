@@ -8,6 +8,7 @@
 $hogart_lk_default_option = array(
     "RABBITMQ_HOST" => "localhost",
     "RABBITMQ_PORT" => 5672,
+    "RABBITMQ_VHOST" => "/",
     "RABBITMQ_LOGIN" => "guest",
     "RABBITMQ_PASSWORD" => "guest",
     "SOAP_SERVICE_SCHEME" => "https",

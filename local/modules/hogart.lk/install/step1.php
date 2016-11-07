@@ -15,6 +15,10 @@
             <td><input type="text" name="RABBITMQ_PORT" id="rabbitmq_port" value="<?= COption::GetOptionString($MODULE_ID, "RABBITMQ_PORT")?>"></td>
         </tr>
         <tr>
+            <td><p><label for="rabbitmq_vhost">Виртуальный хост сервера RabbitMQ</label></p></td>
+            <td><input type="text" name="RABBITMQ_VHOST" id="rabbitmq_vhost" value="<?= COption::GetOptionString($MODULE_ID, "RABBITMQ_VHOST")?>"></td>
+        </tr>
+        <tr>
             <td><p><label for="rabbitmq_login">Логин сервера RabbitMQ</label></p></td>
             <td><input type="text" name="RABBITMQ_LOGIN" id="rabbitmq_login" value="<?= COption::GetOptionString($MODULE_ID, "RABBITMQ_LOGIN")?>"></td>
         </tr>
