@@ -8,6 +8,8 @@
 namespace Hogart\Lk\Exchange\SOAP\Method;
 
 use Bitrix\Main\Type\DateTime;
+use Hogart\Lk\Entity\FlashMessagesTable;
+use Hogart\Lk\Entity\OrderRTUTable;
 use Hogart\Lk\Entity\OrderTable;
 use Hogart\Lk\Entity\RTUItemTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
@@ -18,6 +20,7 @@ use Hogart\Lk\Exchange\SOAP\MethodException;
 use Hogart\Lk\Exchange\SOAP\Request;
 use Hogart\Lk\Exchange\SOAP\Response;
 use Hogart\Lk\Exchange\SOAP\ResponseObject;
+use Hogart\Lk\Helper\Template\Message;
 
 /**
  * Обмен с КИС - Реализация товаров и услуг (Отгрузка)
@@ -55,19 +58,22 @@ class RTU extends AbstractMethod
         $response = $this->rtuGet();
 
         foreach ($response->return->RTU as $rtu) {
-            $order = OrderTable::getList([
-                'filter'=>[
-                    '=guid_id'=>$rtu->Order_ID
-                ]
-            ])->fetch();
+            $order = OrderTable::getByField("guid_id", $rtu->Order_ID);
+            $order_rtu = OrderRTUTable::getByField("guid_id", $rtu->RTU_Order_RTU_ID);
 
             if (empty($order['id'])) {
                 $answer->addResponse(new ResponseObject($rtu->RTU_ID, new MethodException(MethodException::ERROR_NO_ORDER, [$rtu->Order_ID])));
                 continue;
             }
+
+            if (empty($order_rtu['id'])) {
+                $answer->addResponse(new ResponseObject($rtu->RTU_ID, new MethodException(MethodException::ERROR_NO_ORDER_RTU, [$rtu->RTU_Order_RTU_ID])));
+                continue;
+            }
             $result = RTUTable::createOrUpdateByField([
                 'guid_id' => $rtu->RTU_ID,
                 'order_id' => $order['id'],
+                'order_rtu_id' => $order_rtu['id'],
                 'number' => $rtu->RTU_Number,
                 'rtu_date' => new DateTime((string)$rtu->RTU_Date, 'Y-m-d H:i:s'),
                 'currency_code' => $rtu->RTU_ID_Money,
@@ -93,6 +99,25 @@ class RTU extends AbstractMethod
                         RTUItemTable::deleteByRTUId($result->getId());
                         RTUTable::delete($result->getId());
                     }
+
+                    $accounts = OrderTable::getAccountsByOrder($order['id']);
+                    $message = new Message(
+                        OrderTable::showName($order) . " обновлен! Получен расходный ордер",
+                        Message::SEVERITY_INFO
+                    );
+                    $message
+                        ->setIcon('fa fa-file-text-o')
+                        ->setUrl("/account/order/" . $order['id'])
+                        ->setDelay(0)
+                    ;
+
+                    foreach ($accounts as $account) {
+                        $flash_result = FlashMessagesTable::addNewMessage($account['a_id'], $message);
+                        if ($flash_result->getId()) {
+                            $this->client->getLogger()->notice("Добавлено оповещение по заказу ({$order['id']})");
+                        }
+                    }
+
                 } else {
                     $answer->addResponse(new ResponseObject($rtu->RTU_ID, new MethodException(MethodException::ERROR_UNDEFINED)));
                 }

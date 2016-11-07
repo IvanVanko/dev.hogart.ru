@@ -46,19 +46,15 @@ class Order extends AbstractMethod
      */
     public function updateOrders($orders, Response $answer)
     {
+        global $DB;
         foreach ($orders as $order) {
-
             $hogart_company = HogartCompanyTable::getByField('guid_id', $order->Order_ID_Hogart);
             $client_company = CompanyTable::getByField('guid_id', $order->Order_ID_Company);
             $contract = ContractTable::getByField('guid_id', $order->Order_ID_Contract);
-            $stock_store = StoreTable::getList(['filter' => ['=XML_ID' => $order->Order_ID_Stock]])->fetch();
+            $stock_store = StoreTable::getByXmlId($order->Order_ID_Stock)[0];
             $manager = StaffTable::getByField('guid_id', $order->Order_ID_Staff);
             $account = AccountTable::getByField('user_guid_id', $order->Order_ID_Account);
 
-            if (empty($account['id'])) {
-                $answer->addResponse(new ResponseObject($order->Order_ID, new MethodException(MethodException::ERROR_NO_ACCOUNT, [$order->Order_ID_Account])));
-                continue;
-            }
             if (empty($hogart_company['id'])) {
                 $answer->addResponse(new ResponseObject($order->Order_ID, new MethodException(MethodException::ERROR_NO_HOGART_COMPANY, [$order->Order_ID_Hogart])));
                 continue;
@@ -75,7 +71,7 @@ class Order extends AbstractMethod
                 $answer->addResponse(new ResponseObject($order->Order_ID, new MethodException(MethodException::ERROR_NO_STORE, [$order->Order_ID_Stock])));
                 continue;
             }
-
+            $DB->StartTransaction();
             $result = OrderTable::createOrUpdateByField([
                 'guid_id' => $order->Order_ID,
                 'number' => $order->Order_Number,
@@ -96,6 +92,7 @@ class Order extends AbstractMethod
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
                 $answer->addResponse(new ResponseObject($order->Order_ID, new MethodException(MethodException::ERROR_BITRIX, [$error->getMessage(), $error->getCode()])));
+                $DB->Rollback();
             } else {
                 if ($result->getId()) {
                     if ($result instanceof UpdateResult) {
@@ -109,10 +106,11 @@ class Order extends AbstractMethod
                         $this->client->OrderItem->updateOrderItems($order->Order_Items, $order->Order_ID);
                     } catch (MethodException $e) {
                         $response->setError($e);
-                        OrderItemTable::deleteByOrderId($result->getId());
-                        OrderTable::delete($result->getId());
+                        $DB->Rollback();
 	                    continue;
                     }
+
+                    $DB->Commit();
 
 	                $message = new Message(
 		                OrderTable::showName($result->getData()) . " обновлен!",
@@ -127,6 +125,7 @@ class Order extends AbstractMethod
 
                 } else {
                     $answer->addResponse(new ResponseObject($order->Order_ID, new MethodException(MethodException::ERROR_UNDEFINED)));
+                    $DB->Rollback();
                 }
             }
         }

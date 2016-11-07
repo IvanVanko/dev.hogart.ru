@@ -138,9 +138,6 @@ if ($section['RESULT'][0]['DEPTH_LEVEL'] < 3 && $arResult['SECTION']['RIGHT_MARG
 
 //формируем дополнительный массив в $arResult['ITEMS'] для вывода в виде чебоксов
 
-//чекбос номер 1 представляет из себя фильтрацию по складам без флага UF_TRANSIT
-//чекбокс номер 2 предствляет из себя фильтрацию по складам с флагом UF_TRANSIT
-
 $arStoreItem = array();
 $arTransitStores = array();
 $arActiveStores = array();
@@ -149,11 +146,7 @@ foreach ($arParams["STORES"] as $arStore) {
     if ($arStore['SELECTED']) {
         $selected_stores[] = $arStore['ID'];
     }
-    if ($arStore['UF_TRANSIT']) {
-        //$arTransitStores[] = $arStore['ID'];
-    } else  {
-        $arActiveStores[] = $arStore['ID'];
-    }
+    $arActiveStores[] = $arStore['ID'];
 }
 
 $selected_active = count(array_intersect($selected_stores, $arActiveStores)) > 0;

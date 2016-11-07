@@ -119,7 +119,7 @@ class OrderTable extends AbstractEntity
     {
         return [
             new Index('idx_guid_id', ['guid_id' => 36]),
-            new Index('idx_order_entity_most', ['contract_id', 'store_guid', 'account_id', 'staff_id']),
+            new Index('idx_order_entity_most', ['contract_id', 'store_guid']),
             new Index('idx_is_active', ['is_active']),
         ];
     }
@@ -127,7 +127,13 @@ class OrderTable extends AbstractEntity
     public static function isHaveAccess($account_id, $order_id)
     {
         global $USER;
-        return self::getById($order_id)->fetch()['account_id'] == $account_id || $USER->IsAdmin();
+        $order = self::getRow([
+            'filter' => [
+                '=id' => $order_id,
+                '=contract.company.Hogart\Lk\Entity\AccountCompanyRelationTable:company.account.id' => $account_id
+            ]
+        ]);
+        return !empty($order) || $USER->IsAdmin();
     }
 
     public static function showName($order = [], $prefix = '')
@@ -179,11 +185,23 @@ class OrderTable extends AbstractEntity
         ][$type];
     }
 
+    public static function getAccountsByOrder($order_id)
+    {
+        return self::getList([
+            'filter' => [
+                '=id' => $order_id
+            ],
+            'select' => [
+                'a_' => 'contract.company.Hogart\Lk\Entity\AccountCompanyRelationTable:company.account'
+            ]
+        ])->fetchAll();
+    }
+
     public static function getCompaniesByAccount($account_id, $state = self::STATE_NORMAL, $filter = [])
     {
         $filter = array_merge([
             '=state' => $state,
-            '=account_id' => $account_id
+            '=contract.company.Hogart\Lk\Entity\AccountCompanyRelationTable:company.account.id' => $account_id
         ], $filter);
         $companies = self::getList([
             'filter' => $filter,
@@ -200,7 +218,7 @@ class OrderTable extends AbstractEntity
     {
         $filter = array_merge([
             '=state' => $state,
-            '=account_id' => $account_id
+            '=contract.company.Hogart\Lk\Entity\AccountCompanyRelationTable:company.account.id' => $account_id
         ], $filter);
         $companies = self::getList([
             'filter' => $filter,
@@ -214,27 +232,45 @@ class OrderTable extends AbstractEntity
         return $companies;
     }
 
-    public static function getOrder($order_id, $filter = [], $item_filter = [])
+    public static function getOrder($order_id, $filter = [], $item_filter = [], $account_id = null)
     {
-        $filter = array_merge([
-            '=id' => $order_id
-        ], $filter);
+        if (is_int($order_id)) {
 
-        $order = self::getRow([
-            'filter' => $filter,
-            'select' => [
-                '*',
-                'm_' => 'account.main_manager',
-                'a_' => 'account',
-                'c_' => 'contract',
-                's_' => 'store',
-                'co_' => 'contract.company',
-                'co_chief_' => 'contract.company.chief_contact',
-                'cop_' => 'contract.company.main_payment_account.payment_account',
-                'hco_' => 'contract.hogart_company',
-                'hcop_' => 'contract.hogart_company.main_payment_account.payment_account',
-            ]
-        ]);
+            $filter = array_merge([
+                '=id' => $order_id
+            ], $filter);
+
+            $order = self::getRow([
+                'filter' => $filter,
+                'select' => [
+                    '*',
+                    'c_' => 'contract',
+                    's_' => 'store',
+                    'co_' => 'contract.company',
+                    'co_chief_' => 'contract.company.chief_contact',
+                    'cop_' => 'contract.company.main_payment_account.payment_account',
+                    'hco_' => 'contract.hogart_company',
+                    'hcop_' => 'contract.hogart_company.main_payment_account.payment_account',
+                ]
+            ]);
+        } else {
+            $order = $order_id;
+        }
+
+        $account_id = $account_id ? : $order['account_id'];
+
+        if (null !== $account_id) {
+            $account = AccountTable::getRow([
+                'filter' => [
+                    '=id' => $account_id
+                ],
+                'select' => [
+                    'a_' => '*',
+                    'm_' => 'main_manager'
+                ]
+            ]);
+            $order = array_merge($order, $account);
+        }
 
         $currencies = array_reduce(\CStorage::getVar('HOGART.CURRENCIES'), function ($result, $item) {
             $result[$item['CURRENCY']] = $item;
@@ -278,7 +314,7 @@ class OrderTable extends AbstractEntity
             }
 
             $items = array_reduce($order['items'], function ($result, $item) { $result[$item['ID']] = $item; return $result; }, []);
-            \CIBlockElement::GetPropertyValuesArray($items, CATALOG_IBLOCK_ID, ['ID' => array_keys($items)], ['CODE' => ['sku']]);
+            \CIBlockElement::GetPropertyValuesArray($items, CATALOG_IBLOCK_ID, ['ID' => array_keys($items)], ['CODE' => ['sku', 'default_count']]);
 
             $products = ProductTable::getList([
                 'filter' => [
@@ -345,7 +381,7 @@ class OrderTable extends AbstractEntity
     {
         $filter = [
             '=state' => $state,
-            '=account_id' => $account_id
+            '=contract.company.Hogart\Lk\Entity\AccountCompanyRelationTable:company.account.id' => $account_id
         ];
         $ordersResult = self::getList([
             'filter' => $filter,
@@ -369,17 +405,19 @@ class OrderTable extends AbstractEntity
     {
         $filter = array_merge([
             '=state' => $state,
-            '=account_id' => $account_id
+            '=contract.company.Hogart\Lk\Entity\AccountCompanyRelationTable:company.account.id' => $account_id
         ], $filter);
         $ordersResult = self::getList([
             'filter' => $filter,
             'select' => [
                 '*',
-                'a_' => 'account',
                 'c_' => 'contract',
                 's_' => 'store',
                 'co_' => 'contract.company',
-                'hco_' => 'contract.hogart_company'
+                'co_chief_' => 'contract.company.chief_contact',
+                'cop_' => 'contract.company.main_payment_account.payment_account',
+                'hco_' => 'contract.hogart_company',
+                'hcop_' => 'contract.hogart_company.main_payment_account.payment_account',
             ],
             'order' => [
                 'order_date' => 'DESC'
@@ -395,7 +433,7 @@ class OrderTable extends AbstractEntity
         $orders = $ordersResult->fetchAll();
 
         foreach ($orders as &$order) {
-            $order = self::getOrder($order['id'], $filter, $item_filter);
+            $order = self::getOrder($order, $filter, $item_filter, $account_id);
         }
         return $orders;
     }
@@ -410,7 +448,7 @@ class OrderTable extends AbstractEntity
         $type_id = AddressTypeTable::getByField('code', AddressTypeTable::TYPE_DELIVERY)['id'];
         return array_reduce($orders, function ($result, $order) use($type_id) {
             if(!empty($order)) {
-                if ($order['totals']['release'] > 0) return $result;
+                if (!$order['sale_granted'] && $order['totals']['release'] > 0) return $result;
                 $order['addresses'] = array_reduce(AddressTable::getByOwner($order['co_id'], AddressTable::OWNER_TYPE_CLIENT_COMPANY, [
                     '=type_id' => $type_id
                 ])[$type_id], function ($result, $address) {
@@ -471,13 +509,16 @@ HTML;
         return $text;
     }
 
-    public static function copyToDraft($order_id)
+    public static function copyToDraft($order_id, $account_id = null)
     {
         $order = self::getById($order_id)->fetch();
         unset($order['id']);
         unset($order['guid_id']);
         $order['state'] = self::STATE_DRAFT;
         $order['order_date'] = new DateTime();
+        if (null !== $account_id) {
+            $order['account_id'] = $account_id;
+        }
         $result = self::add($order);
 
         if ($result->getId()) {
@@ -497,10 +538,11 @@ HTML;
         }
     }
 
-    public static function copyToCart($order_id)
+    public static function copyToCart($order_id, $account_id = null)
     {
         $order = self::getById($order_id)->fetch();
-        $carts = CartTable::getAccountCarts($order['account_id']);
+        $account_id = null !== $account_id ? $account_id : $order['account_id'];
+        $carts = CartTable::getAccountCarts($account_id);
         foreach ($carts as $cart) {
             CartTable::delete($cart['guid_id']);
         }
@@ -512,7 +554,7 @@ HTML;
         ])->fetchAll();
         foreach ($items as $item) {
             CartItemTable::addItem(
-                $order['account_id'],
+                $account_id,
                 $item['item_id'],
                 $item['count'],
                 $item['item_group'],
@@ -528,19 +570,25 @@ HTML;
      * @param $perm_reserve
      * @param $note
      * @return bool|int
+     * @throws \Exception
      */
     public static function createByCart($cart_id, $perm_reserve, $note)
     {
+        global $DB;
+        $DB->StartTransaction();
+
         $cart = CartTable::getByPrimary($cart_id)->fetch();
         if (empty($cart['contract_id'])) {
             new FlashError("Не указан договор для создания заказа");
             return false;
         }
+        $account = AccountTable::getAccountById($cart['account_id']);
         $cart = CartTable::getAccountCartList($cart['account_id'], $cart_id);
         $result = self::add([
             'contract_id' => $cart['contract_id'],
             'store_guid' => $cart['store_guid'],
             'account_id' => $cart['account_id'],
+            'staff_id' => $account['main_manager_id'],
             'order_date' => ($date = new DateTime()),
             'type' => ($cart['item_type'] == CartTable::ITEM_TYPE_GOODS ? self::TYPE_SALE : self::TYPE_PROMO),
             'perm_reserve' => boolval($perm_reserve),
@@ -550,6 +598,7 @@ HTML;
 
         if (!$result->getId()) {
             new FlashError("Не удалось создать заказ");
+            $DB->Rollback();
             return false;
         }
 
@@ -585,10 +634,17 @@ HTML;
                     $new_item['total'] = ($new_item['discount_price'] ? : $new_item['price']) * $new_item['count'];
                     $new_item['total_vat'] = round($new_item['total'] * $cart['c_vat_rate'] / 100, 2);
                 }
-
-                OrderItemTable::add($new_item);
+                try {
+                    OrderItemTable::add($new_item);
+                } catch (\Exception $e) {
+                    new FlashError("Не удалось создать заказ");
+                    $DB->Rollback();
+                    return false;
+                }
             }
         }
+
+        $DB->Commit();
         self::publishToRabbit(new OrderExchange(), new Order([self::getOrder($order_id)]));
         if ($order_id) {
             new FlashSuccess("Создан новый " . OrderTable::showName(OrderTable::getRowById($order_id)) . " <b>(перейти к заказу)</b>", '/account/order/' . $order_id, 0);
@@ -624,6 +680,19 @@ HTML;
             'is_active' => boolval($fields['is_active']),
             'perm_reserve' => boolval($fields['perm_reserve'])
         ]);
+        return $result;
+    }
+
+    public static function onBeforeUpdate(Event $event)
+    {
+        $fields = $event->getParameter('fields');
+        $result = new EventResult();
+
+        if ($fields['status'] == self::STATUS_FINISHED) {
+            $result->modifyFields([
+                'state' => self::STATE_ARCHIVE
+            ]);
+        }
         return $result;
     }
 

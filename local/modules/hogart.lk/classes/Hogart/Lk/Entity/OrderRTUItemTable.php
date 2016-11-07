@@ -41,7 +41,7 @@ class OrderRTUItemTable extends AbstractEntity
             ]),
             new IntegerField("order_rtu_id"),
             new IntegerField("order_id"),
-            new GuidField("guid_id"),
+            new StringField("guid_id"),
             new IntegerField("item_id"),
             new ReferenceField("item", "Bitrix\\Iblock\\ElementTable", ["=this.item_id" => "ref.ID", "=ref.IBLOCK_ID" => new SqlExpression('?i', CATALOG_IBLOCK_ID)]),
             new StringField("item_group"),
@@ -60,9 +60,22 @@ class OrderRTUItemTable extends AbstractEntity
     protected static function getIndexes()
     {
         return [
-            new Index('idx_guid_id', ['guid_id' => 36]),
+            new Index('idx_guid_id', ['guid_id' => 77]),
             new Index('idx_order_id', ['order_id']),
         ];
+    }
+
+    public static function clearItems($order_rtu_id)
+    {
+        $items = self::getList([
+            'filter' => [
+                '=order_rtu_id' => $order_rtu_id
+            ]
+        ])->fetchAll();
+        foreach ($items as $item) {
+            self::delete($item['id']);
+        }
+        return true;
     }
 
     public static function addItem($item, $item_id)
@@ -91,5 +104,6 @@ class OrderRTUItemTable extends AbstractEntity
             }
             OrderItemTable::update($item_id, $item_state);
         }
+        return $result;
     }
 }

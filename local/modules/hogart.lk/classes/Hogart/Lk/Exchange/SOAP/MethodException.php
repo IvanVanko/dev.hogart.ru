@@ -35,6 +35,7 @@ use Exception;
  * |    __14__   	| _Не найдено Контактное лицо &lt;contact-id&gt;_                           	|
  * |    __15__   	| _Не найдена Заявка на отгрузку &lt;order-rtu-id&gt;_                          |
  * |    __16__   	| _Не найден тип Адреса &lt;address-type-id&gt;_                                |
+ * |    __17__   	| _Ошибка при обмене SOAP &lt;ошибка&gt;(&lt;код ошибки&gt;)_                   |
  * @package Hogart\Lk\Exchange\SOAP
  */
 class MethodException extends \RuntimeException
@@ -73,6 +74,8 @@ class MethodException extends \RuntimeException
     const ERROR_NO_ORDER_RTU = 15;
     /** Не найден тип Адреса */
     const ERROR_NO_ADDRESS_TYPE = 16;
+    /** Ошибка обмена */
+    const ERROR_SOAP = 17;
 
 
     protected static $errors = [
@@ -92,7 +95,8 @@ class MethodException extends \RuntimeException
         self::ERROR_NO_STAFF => "Не найден Сотрудник %s",
         self::ERROR_NO_CONTACT => "Не найдено Контактное лицо %s",
         self::ERROR_NO_ORDER_RTU => "Не найдена Заявка на отгрузку %s",
-        self::ERROR_NO_ADDRESS_TYPE => "Не найден тип Адреса %s"
+        self::ERROR_NO_ADDRESS_TYPE => "Не найден тип Адреса %s",
+        self::ERROR_SOAP => "Ошибка при обмене SOAP %s (%s)"
 
     ];
 
@@ -118,7 +122,7 @@ class MethodException extends \RuntimeException
      * @param array $args
      * @return string
      */
-    protected static function getErrorMessage($code, $args = [])
+    public static function getErrorMessage($code, $args = [])
     {
         return vsprintf(static::$errors[$code], $args);
     }

@@ -12,11 +12,6 @@ use Bitrix\Catalog\StoreTable as BaseClass;
 
 class StoreTable extends BaseClass
 {
-    public static function getUfId()
-    {
-        return "CAT_STORE";
-    }
-
     public static function getByXmlId($id)
     {
         return self::getList([

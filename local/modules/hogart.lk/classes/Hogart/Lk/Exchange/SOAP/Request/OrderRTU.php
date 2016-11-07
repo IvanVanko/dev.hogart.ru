@@ -55,12 +55,11 @@ class OrderRTU extends AbstractPutRequest
                     if (($address = AddressTable::getByField('guid_id', $rtu['tk_address'])))
                         return (string)$address['value'];
                 }, [$rtu]),
-                "Ord_RTU_Driver" => $rtu['driver_name'],
-                "Ord_RTU_Driver_Phone" => $rtu['driver_phone'],
                 "deletion_mark" => !$rtu['is_active'],
                 "Ord_RTU_ID_Account" => new LazyRequest(function ($rtu) {
                     return (string)AccountTable::getRowById($rtu['account_id'])['user_guid_id'];
                 }, [$rtu]),
+                "Ord_RTU_Description" => $rtu['note']
             ];
             foreach ($rtu['items'] as $item_group => $items) {
                 foreach ($items as $item) {

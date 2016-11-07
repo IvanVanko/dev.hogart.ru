@@ -84,8 +84,7 @@ if ($arParams['USE_FILTER'] == 'Y')
     ?>
     <?
     //доработка фильтра для фильтрации складов
-    //здесь получаем склады на сайте. Флаг UF_TRANSIT говорит о том, что склад относится к пункту Складская программа. Остальные - Есть в наличии
-    $stores = BXHelper::getStores(array(), array(), false,false, array('ID','UF_TRANSIT','TITLE'), 'ID');
+    $stores = BXHelper::getStores(array(), array(), false,false, array('ID', 'TITLE'), 'ID');
 
 
     //получаем request филтьра складов и дополняем $stores флагами SELECTED тех складов которые выбрали для фильтрации

@@ -11,21 +11,21 @@
  * @var array $arParams
  */
 $component->arParams['url'] = '#manager-feedback';
-$component->arParams['dialog'] = 'manager-feedback';
+$component->arParams['dialog'] = 'manager-feedback-' . uniqid();
 use Hogart\Lk\Helper\Template\Dialog;
 ?>
 
 <? if (!empty($arParams['manager']['email'])): ?>
 
-    <? Dialog::Start("manager-feedback", [
+    <? Dialog::Start($component->arParams['dialog'], [
         'dialog-options' => 'closeOnConfirm: false',
-        'title' => vsprintf('Сообщение для %s (%s)', [$arParams['manager']['name'], $arParams['manager']['email']])
+        'title' => vsprintf('Сообщение для %s %s', [$arParams['manager']['name'], (string)$arParams['EXTEND_TITLE']])
     ]) ?>
     <form class="text-left" action="<?= $APPLICATION->GetCurPage(false) ?>" method="post">
         <label class="control-label">Тема сообщения</label>
         <div class="row">
             <div class="col-sm-12 form-group">
-                <input required name="subject" type="text" class="form-control" placeholder="Тема" data-error="Поле должно быть заполнено">
+                <input required value="" name="subject" type="text" class="form-control" placeholder="Тема" data-error="Поле должно быть заполнено">
                 <div class="help-block with-errors"></div>
             </div>
         </div>

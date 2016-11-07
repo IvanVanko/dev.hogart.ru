@@ -29,6 +29,9 @@ $order = $arResult['order'];
     <div class="col-sm-12">
         <div class="row spacer-20 order-line">
             <div class="col-sm-12">
+                <div id="svg">
+                    <svg id="relations"></svg>
+                </div>
                 <div class="row">
                     <div class="col-sm-12">
                         <h4>
@@ -54,7 +57,7 @@ $order = $arResult['order'];
                             /** @var OrderEventNote $note */
                             foreach ($arResult['history'] as $k => $note):
                             ?>
-                                <li id="<?= $note->getGuid() ?>" class="timeline-inverted">
+                                <li data-relation-history-color="#95c600" data-relation-history="<?= $note->getRelationGuid() ?>" id="<?= $note->getGuid() ?>" class="timeline-inverted">
                                     <? if(($icon = $note->getBadgeIcon())): ?>
                                     <div class="timeline-badge <?= $note->getBadgeClass() ?>">
                                         <?= $icon ?>

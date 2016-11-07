@@ -31,6 +31,14 @@ class CartSuggest
     }
 
     /**
+     * @return Client
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
      * @return array
      */
     public function createIndex()

@@ -21,7 +21,6 @@ use Hogart\Lk\Entity\AccountTable;
 use Hogart\Lk\Entity\AccountStoreRelationTable;
 use Hogart\Lk\Entity\ContactRelationTable;
 use Hogart\Lk\Entity\StaffRelationTable;
-use Hogart\Lk\Entity\StoreTable;
 
 if (!$this->initComponentTemplate())
     return;
@@ -40,19 +39,6 @@ if ($account['id']) {
     $account['is_general'] = AccountTable::isGeneralAccount($account['id']);
     $arResult['account'] = $account;
 
-    $arResult['stores'] = array_reduce(StoreTable::getList([
-        'filter' => [
-            '=ACTIVE' => true,
-            '=UF_TRANSIT' => 0 // убираем транзитные склады
-        ],
-    ])->fetchAll(), function ($result, $item) { $result[$item['ID']] = $item; return $result; }, []);
-
-    $arResult['av_stores'] = $arResult['stores'];
-
-    foreach ($account['stores'] as $store) {
-        unset($arResult['av_stores'][$store['ID']]);
-    }
-    
     $this->includeComponentTemplate();
 } else {
     new FlashError("У Вас нет доступа в данный раздел");

@@ -137,7 +137,8 @@ use Hogart\Lk\Entity\AddressTable;
                             </div>
                             <div class="col-lg-2 col-sm-2"><strong class="pull-left visible-xs">Статус:</strong> <?= ContractTable::showStatus($contract); ?></div>
                             <div class="col-lg-3 col-sm-3">
-                                <? if (!$contract['have_original']): ?>
+                                <? //выключено, но код оставил, чтобы, если что, не писать с нуля  ?>
+                                <? if (false && !$contract['have_original']): ?>
                                 <?= \Hogart\Lk\Helper\Template\Ajax::Link(
                                     '<i class="fa fa-file-o"></i> Запросить оригиналы',
                                     'contracts-ajax',
@@ -151,6 +152,17 @@ use Hogart\Lk\Entity\AddressTable;
                                     ]
                                 ) ?>
                                 <? endif; ?>
+
+                                <? $manager_feedback_params = $APPLICATION->IncludeComponent("hogart.lk:account.manager.feedback", "", [
+                                    "SUBJECT" => "Запрос от {$account_name} ({$arResult['account']['user_LOGIN']})" . " по " . ContractTable::showName($contract),
+                                ]); ?>
+                                <? if (!empty($manager_feedback_params['manager']['email'])): ?>
+                                    <a data-remodal-target="<?= $manager_feedback_params['dialog'] ?>" href="javascript:void(0)">
+                                        <i class="fa fa-question fa-lg text-warning" aria-hidden="true"></i>
+                                        Задать вопрос менеджеру
+                                    </a>
+                                <? endif; ?>
+
                             </div>
                         </div>
                     <? endforeach;?>

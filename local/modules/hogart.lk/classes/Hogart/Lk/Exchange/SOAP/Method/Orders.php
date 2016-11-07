@@ -8,11 +8,14 @@
 
 namespace Hogart\Lk\Exchange\SOAP\Method;
 
+use Hogart\Lk\Entity\FlashMessagesTable;
 use Hogart\Lk\Entity\OrderTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
 use Hogart\Lk\Exchange\SOAP\AbstractPutRequest;
+use Hogart\Lk\Exchange\SOAP\MethodException;
 use Hogart\Lk\Exchange\SOAP\Request;
 use Hogart\Lk\Exchange\SOAP\Response;
+use Hogart\Lk\Helper\Template\Message;
 
 class Orders extends AbstractMethod
 {
@@ -26,11 +29,31 @@ class Orders extends AbstractMethod
 
     public function ordersPut(AbstractPutRequest $request)
     {
+        $this->client->getLogger()->debug(var_export($request->__toRequest(), true));
         $response = $this->client->getSoapClient()->OrdersPut($request->__toRequest());
+        if (!empty($response->return->Error)) {
+            $this->client->getLogger()->error(
+                MethodException::getErrorMessage(MethodException::ERROR_SOAP, [$response->return->ErrorText, $response->return->Error])
+            );
+            return false;
+        }
         foreach ($response->return->Response as $order) {
             OrderTable::update($order->ID_Site, [
                 'guid_id' => $order->ID
             ]);
+
+            $order_row = OrderTable::getRowById($order->ID_Site);
+            $message = new Message(
+                OrderTable::showName($order_row) . " обновлен!",
+                Message::SEVERITY_INFO
+            );
+            $message
+                ->setIcon('fa fa-file-text-o')
+                ->setUrl("/account/order/" . $order->ID_Site)
+                ->setDelay(0)
+            ;
+            FlashMessagesTable::addNewMessage($order_row['account_id'], $message);
+
         }
         return $response;
     }

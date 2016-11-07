@@ -1,6 +1,18 @@
 @import (reference) "../../../../../../assets/hogart.lk/less/styles";
 @import "_timeline";
 
+#svg {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+.link {
+  text-decoration: underline !important;
+  &:hover {
+    color: @brand-green !important;
+  }
+}
 .history {
   .money();
   .order-item-list-wrapper {

@@ -40,12 +40,12 @@ if ($account['id']) {
     $state = $states[$arParams['STATE']];
 
     if (!empty($_REQUEST['copy_to_cart'])) {
-        OrderTable::copyToCart($_REQUEST['copy_to_cart']);
+        OrderTable::copyToCart($_REQUEST['copy_to_cart'], $account['id']);
         LocalRedirect('/account/cart/');
     }
 
     if (!empty($_REQUEST['copy_to_draft'])) {
-        OrderTable::copyToDraft($_REQUEST['copy_to_draft']);
+        OrderTable::copyToDraft($_REQUEST['copy_to_draft'], $account['id']);
         LocalRedirect('/account/orders/');
     }
 

@@ -23,18 +23,7 @@ use \Bitrix\Main\Localization\Loc;
                             <i class="fa fa-chevron-down" aria-hidden="true"></i>
                         </a>
                         <ul data-depth="2">
-                            <li class="item" data-depth="2">
-                                <a href="/account/orders/"><i class="fa fa-list" aria-hidden="true"></i> Заказы</a>
-                            </li>
-                            <li class="item" data-depth="2">
-                                <a href="javascript:void(0)"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Отчеты</a>
-                            </li>
-                            <li class="item" data-depth="2">
-                                <a href="/account/documents/"><i class="fa fa-users" aria-hidden="true"></i> Юр. лица</a>
-                            </li>
-                            <li class="item" data-depth="2">
-                                <a href="/account/settings/"><i class="fa fa-cogs" aria-hidden="true"></i> Настройки</a>
-                            </li>
+                            <? $APPLICATION->IncludeComponent("hogart.lk:account.menu", "", []) ?>
                             <li class="item" data-depth="2">
                                 <a href="?logout=yes"><i class="fa fa-sign-out" aria-hidden="true"></i> Выход</a>
                             </li>

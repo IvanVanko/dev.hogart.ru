@@ -19,30 +19,7 @@ CModule::IncludeModule("main");
 CModule::IncludeModule("catalog");
 CModule::IncludeModule("sprint.migration");
 
-$eventHelper = new \Hogart\Lk\Helper\Admin\EventHelper();
-if (($eventId = $eventHelper->addEventTypeIfNotExists(\Hogart\Lk\Helper\Mail\Event::HOGART_FEEDBACK, [
-    'LID' => 'ru',
-    'NAME' => 'Запрос от клиента',
-]))) {
-    $message =<<<TEXT
-Здравствуйте, #MANAGER#!
 
-Клиент #COMPANY_NAME# задает вопрос:
-
-#MESSAGE#
-
-Сообщение сгенерировано автоматически.
-TEXT;
-
-    $eventHelper->addEventMessageIfNotExists(\Hogart\Lk\Helper\Mail\Event::HOGART_FEEDBACK, [
-        'SUBJECT' => '#SUBJECT#',
-        'EMAIL_FROM' => '#DEFAULT_EMAIL_FROM#',
-        'EMAIL_TO' => '#MANAGER_EMAIL#',
-        'BODY_TYPE' => 'text',
-        'MESSAGE' => $message
-    ]);
-}
-exit;
 //$helper = new \Sprint\Migration\Helpers\IblockHelper();
 //$helper->addPropertyIfNotExists(CATALOG_IBLOCK_ID, [
 //    'NAME' => 'Кратность отгрузки',
@@ -80,6 +57,7 @@ exit;
 //    sleep(1);
 //}
 //$parse->initBranch();
+//$parse->initWarehouse();
 //exit;
 /** @var \Hogart\Lk\Exchange\SOAP\Client $soap */
 $soap = \Hogart\Lk\Exchange\SOAP\Client::getInstance();
@@ -97,12 +75,15 @@ $soap->getLogger()->registerLogger(new \Hogart\Lk\Logger\FileLogger(__DIR__ . "/
 //var_dump($soap->OrderRTU->orderRTUPut($o));
 //var_dump($soap->Payment->updatePayments());
 //var_dump($soap->Contract->contractPut(new \Hogart\Lk\Exchange\SOAP\Request\Contract(\Hogart\Lk\Entity\ContractTable::getContractForExchange(2))));
-//var_dump($soap->Orders->ordersPut(new \Hogart\Lk\Exchange\SOAP\Request\Order([\Hogart\Lk\Entity\OrderTable::getOrder(2)])));
+
+//var_dump(\Hogart\Lk\Entity\OrderTable::getOrder(9));
+//exit;
+//var_dump($soap->Orders->ordersPut(new \Hogart\Lk\Exchange\SOAP\Request\Order([\Hogart\Lk\Entity\OrderTable::getOrder(9)])));
 
 //$request = new \Hogart\Lk\Exchange\SOAP\Request\OrderRTU([\Hogart\Lk\Entity\OrderRTUTable::getRTUOrder(7)]);
 //var_dump($request->__toRequest());
 
-//var_dump($soap->OrderRTU->orderRTUPut(new \Hogart\Lk\Exchange\SOAP\Request\OrderRTU([\Hogart\Lk\Entity\OrderRTUTable::getRTUOrder(7)])));
+//var_dump($soap->OrderRTU->orderRTUPut(new \Hogart\Lk\Exchange\SOAP\Request\OrderRTU([\Hogart\Lk\Entity\OrderRTUTable::getRTUOrder(1)])));
 //$addressRequest = new \Hogart\Lk\Exchange\SOAP\Request\Address([\Hogart\Lk\Entity\AddressTable::getRowById(["guid_id" => "f07b8268-2492-5d54-aaba-111235682d05", "owner_id" => 2, "owner_type" => 2])]);
 //var_dump($addressRequest->__toRequest());
 //var_dump($soap->Address->addressPut($addressRequest));
@@ -110,10 +91,12 @@ $soap->getLogger()->registerLogger(new \Hogart\Lk\Logger\FileLogger(__DIR__ . "/
 //var_dump($soap->Address->updateAddresses());
 
 //var_dump($soap->Orders->updateOrders());
+var_dump($soap->OrderRTU->updateOrdersRTU());
+//var_dump($soap->RTU->updateRTUs());
 
-$companyRequest = new \Hogart\Lk\Exchange\SOAP\Request\Company([\Hogart\Lk\Entity\CompanyTable::getRowById(8)]);
-var_dump($companyRequest->__toRequest());
-var_dump($soap->Company->companyPut($companyRequest));
+//$companyRequest = new \Hogart\Lk\Exchange\SOAP\Request\Company([\Hogart\Lk\Entity\CompanyTable::getRowById(8)]);
+//var_dump($companyRequest->__toRequest());
+//var_dump($soap->Company->companyPut($companyRequest));
 
 //var_dump(new \Bitrix\Main\Type\DateTime("2016-10-03T13:26:23", 'Y-m-d H:i:s'));
 

@@ -20,13 +20,30 @@ var DataTableOptions = {
       targets:   1
     },
     {
+      data: 'quantity',
+      targets: 4,
+      orderable: false
+    },
+    {
       data: 'measure',
       targets: 5,
       orderable: false
     },
     {
       render: $.fn.dataTable.render.number(' ', '.', 2, '', ''),
-      targets: [6, 7, 8, 9]
+      targets: [6, 8]
+    },
+    {
+      data: 'price',
+      column: 'price',
+      render: $.fn.dataTable.render.number(' ', '.', 2, '', ''),
+      targets: [7]
+    },
+    {
+      data: 'total',
+      column: 'total',
+      render: $.fn.dataTable.render.number(' ', '.', 2, '', ''),
+      targets: [9]
     }
   ]
 };
@@ -58,6 +75,57 @@ $(function () {
     minDate: moment().add(1, 'days')
   });
 
+  $(document).on('input', 'input[name="quantity"]', function (e) {
+    var api = $(this).parents('table').dataTable().api();
+    var tr = $(this).parents('tr');
+    var data = api.row(tr).data();
+    var default_count = $(tr).data('defaultCount') || 1;
+    var prev_value = $(this).data('value');
+    var count = Math[$(this).val() < prev_value ? 'floor' : 'ceil']($(this).val() / default_count) * default_count;
+    if (count <= 0) {
+      $(this).val(prev_value);
+      return;
+    }
+
+    if (count > this.defaultValue) {
+      $(this).val(prev_value);
+      return;
+    }
+
+    $(this).val(count);
+    $(this).data('value', count);
+    api.cell(tr, 9).data(data.price * count).draw();
+    $(this).focus();
+    $(this).parents('.order-line').trigger('recalculate');
+  });
+
+  $(document).on('recalculate', '.order-line', function (e) {
+    var api = $('table[data-table]', this).dataTable().api();
+    var total = 0;
+    $.each(api.rows('.selected').data(), function (i, el) {
+      total += Math.round(el.total * 100) / 100;
+    });
+    total = Math.round(total * 100) / 100;
+    var max = $('[data-sale-max]', this).data('saleMax');
+
+    $('[data-sale-selected]', this)
+        .text($.fn.dataTable.render.number(' ', ',', 2, '', '').display(total))
+        .removeClass('color-danger')
+        .removeClass('color-primary')
+        .addClass('color-' + (total > max ? 'danger' : 'primary'))
+        .end()
+        .removeClass('sale-granted')
+        .addClass((total > max || total == 0 ? '' : 'sale-granted'))
+    ;
+
+    var btn = $(this).parents('[data-store]').find('[data-rtu-create]');
+    if (!$(this).parents('[data-store]').find('.order-line:not(.sale-granted)').length) {
+      btn.show();
+    } else {
+      btn.hide();
+    }
+  });
+
   $(document).on('change', '[data-switch][name="new_address"]', function (e) {
     $('fieldset[data-new-address]')
       .attr('disabled', 'disabled')
@@ -66,6 +134,15 @@ $(function () {
     $('fieldset[data-new-address="' + (this.checked ? 'true' : 'false') + '"]')
       .attr('disabled', null)
       .show();
+  });
+
+  $(document).on('change', 'select[name="contact"]', function (e) {
+    $('input[name="phone"]').val($('option:selected', this).data('phone'));
+    $('input[name="email"]').val($('option:selected', this).data('email'));
+  });
+
+  $(document).on('keydown, keyup', 'textarea[name="comment"]', function (e) {
+    $(this).parents().find('.char-count').text(Math.max(0, $(this).attr('maxlength') - $(this).val().length));
   });
 
   $(document).on('change', '[data-switch][name="new_contact"]', function (e) {
@@ -104,12 +181,24 @@ $(function () {
   });
 
   $('[data-table]').each(function (i, t) {
-    $(t).DataTable(DataTableOptions);
+    var table = $(t).DataTable(DataTableOptions);
+
+    table.on('select', function ( e, dt, type, indexes ) {
+      if ( type === 'row' ) {
+        $(e.target).parents('.order-line').trigger('recalculate');
+      }
+    });
+    table.on('deselect', function ( e, dt, type, indexes ) {
+      if ( type === 'row' ) {
+        $(e.target).parents('.order-line').trigger('recalculate');
+      }
+    });
+
   });
 
   Hogart_Lk.stickMenu($('[data-store]'));
 
-  $('.title :input').on('change', function (e) {
+  $('.checkbox-title :input').on('change', function (e) {
     var tables = $(e.target).parents('[data-order]').find('[data-table]');
     var method;
     if ($(e.target).is(':checked')) {
@@ -120,6 +209,7 @@ $(function () {
     tables.each(function (i, table) {
       $(table).dataTable().api().rows()[method]();
     });
+    $(this).parents('.order-line').trigger('recalculate');
   });
 
   $('[data-rtu-create]').on('click', function (e) {
@@ -150,4 +240,6 @@ $(function () {
     modal.open();
     $('form', modal.$modal).validator();
   });
+
+  $('.order-line').trigger('recalculate');
 });

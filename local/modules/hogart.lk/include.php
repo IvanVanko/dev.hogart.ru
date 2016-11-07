@@ -55,6 +55,8 @@ define("HOGART_DATE_TIME_FORMAT", "d.m.Y H:i");
 \Bitrix\Main\Page\Asset::getInstance()->addJs('//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.0/js/i18n/defaults-ru_RU.min.js', true);
 
 \Bitrix\Main\Page\Asset::getInstance()->addJs('/local/modules/hogart.lk/assets/hogart.lk/js/hogart.js', true);
+\Bitrix\Main\Page\Asset::getInstance()->addJs('/local/modules/hogart.lk/assets/snap.svg/snap.svg-min.js', true);
+\Bitrix\Main\Page\Asset::getInstance()->addJs('/local/modules/hogart.lk/assets/hogart.lk/js/svg.js', true);
 \Bitrix\Main\Page\Asset::getInstance()->addJs('/local/modules/hogart.lk/assets/hogart.lk/js/remodal.ext.js', true);
 \Bitrix\Main\Page\Asset::getInstance()->addJs('/local/modules/hogart.lk/assets/hogart.lk/js/jquery.input-apply.js', true);
 \Bitrix\Main\Page\Asset::getInstance()->addCss('/local/modules/hogart.lk/assets/hogart.lk/less/styles.css', true);

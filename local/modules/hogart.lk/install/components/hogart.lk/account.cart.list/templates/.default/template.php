@@ -54,10 +54,10 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
 });
 ?>
 
-<? if (!$arParams['isEmpty']): ?>
 <div class="cart-wrapper row">
-    <div id="carts" class="full-height col-sm-12">
+    <div id="carts" class="<?= (!$arParams['isEmpty'] ? "full-height" : "") ?> col-sm-12">
         <? $carts_node = Ajax::Start($component, ['step1']) ?>
+        <? if (!$arParams['isEmpty']): ?>
         <div class="row spacer">
             <div class="col-sm-9">
                 <? include __DIR__ . "/header.php"; ?>
@@ -280,12 +280,24 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                                                                                 <?= $arResult['measures'][$item['product']['MEASURE']] ?>
                                                                             </div>
                                                                             <? endif; ?>
-                                                                            <? if (!empty($item['STORE_TRANSIT'])): ?>
+                                                                            <? if (!empty($item['STORE_TRANSIT']) && $item['NEGATIVE_AMOUNT'] > 0): ?>
                                                                             <div>
                                                                                 <b>В пути</b>
                                                                                 <?= (int)$item['STORE_TRANSIT'] ?>
                                                                                 <?= $arResult['measures'][$item['product']['MEASURE']] ?>
                                                                             </div>
+                                                                            <? endif; ?>
+                                                                            <? if (!empty($item['STORE_RESERVE']) && $item['NEGATIVE_AMOUNT'] > 0): ?>
+                                                                            <div>
+                                                                                <b>Резерв</b>
+                                                                                <?= (int)$item['STORE_RESERVE'] ?>
+                                                                                <?= $arResult['measures'][$item['product']['MEASURE']] ?>
+                                                                            </div>
+                                                                            <? endif; ?>
+                                                                            <? if (!empty($item['props']['days_till_receive']['VALUE'])): ?>
+                                                                                <abbr title="Макс. срок поставки (в днях)">
+                                                                                    <i class="glyphicon glyphicon-time"></i> <?= $item['props']['days_till_receive']['VALUE'] ?> дн.
+                                                                                </abbr>
                                                                             <? endif; ?>
                                                                         </div>
                                                                     </div>
@@ -461,8 +473,9 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                 <? Ajax::End($cart['ajax_node']->getId()) ?>
             </div>
         <? endforeach; ?>
+
+        <? endif; ?>
         <? Ajax::End($carts_node->getId()) ?>
     </div>
 </div>
-<? endif; ?>
 <? $APPLICATION->ShowViewContent('empty_cart'); ?>

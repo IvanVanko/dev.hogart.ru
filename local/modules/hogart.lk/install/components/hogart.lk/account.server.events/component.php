@@ -40,6 +40,7 @@ if ($account['id']) {
     header("Access-Control-Allow-Origin: *");
 
     $timer = 0;
+    $cart_count = CartItemTable::getAccountCartCount($account['id']);
     while (connection_status() == CONNECTION_NORMAL) {
         if ($timer % 3 == 0) {
             $messages = FlashMessagesTable::getMessages($account['id'], 3);

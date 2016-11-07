@@ -16,7 +16,12 @@ $account_name = trim(implode(' ', [$arResult['account']['c_last_name'], $arResul
 ?>
 <div class="row">
     <div class="col-sm-12 col-xs-12">
-        <h3>Настройки аккаунта &laquo;<?= $account_name ?>&raquo;</h3>
+        <h3>
+            Настройки аккаунта
+            <? if (!empty($account_name)): ?>
+            &laquo;<?= $account_name ?>&raquo;
+            <? endif; ?>
+        </h3>
     </div>
     <div class="col-sm-12 col-xs-12 authinfo">
         <h4>Данные авторизации</h4>
@@ -48,7 +53,7 @@ $account_name = trim(implode(' ', [$arResult['account']['c_last_name'], $arResul
             </div>
             <? $contacts_node = \Hogart\Lk\Helper\Template\Ajax::Start($component, ['edit_contact', 'remove_contact']); ?>
             <? foreach ($arResult['account']['contacts'] as $contact): ?>
-                <div class="row vertical-align spacer contact" data-contact-id="<?= $contact['guid_id'] ?>">
+                <div class="row spacer-20 vertical-align spacer contact" data-contact-id="<?= $contact['guid_id'] ?>">
                     <? $contact_name = ($contact['last_name'] . " " . $contact['name'] . " " . $contact['middle_name']); ?>
                     <div class="col-lg-4 col-sm-3"><strong class="pull-left visible-xs">Имя:</strong> <?= $contact_name ?></div>
                     <div class="col-lg-3 col-sm-3"><strong class="pull-left visible-xs">Email:</strong> <a
@@ -92,6 +97,7 @@ $account_name = trim(implode(' ', [$arResult['account']['c_last_name'], $arResul
                         </div>
                     </div>
                 </div>
+                <div class="row"></div>
             <? endforeach;?>
             <? \Hogart\Lk\Helper\Template\Ajax::End($contacts_node->getId()); ?>
         </div>
@@ -229,33 +235,6 @@ $handler =<<<JS
       $.post("", { action: 'change-password' }, function () {
         inst.close();
       }, 'json');
-    })
-JS;
-\Hogart\Lk\Helper\Template\Dialog::Event('confirmation', $handler);
-\Hogart\Lk\Helper\Template\Dialog::End()
-?>
-
-<? \Hogart\Lk\Helper\Template\Dialog::Start("add-store-dialog", [
-    'dialog-options' => 'closeOnConfirm: false',
-    'title' => 'Добавить склад',
-]) ?>
-<form action="<?= $APPLICATION->GetCurPage() ?>" name="add-store" method="post">
-    <div class="form-group" style="position: relative">
-        <label>Выберите склады</label>
-        <select name="stores[]" class="form-control selectpicker" multiple>
-            <? foreach ($arResult['av_stores'] as $store): ?>
-                <option value="<?= $store['XML_ID'] ?>"><?= $store['TITLE'] . (!empty(trim($store['ADDRESS'])) ? (" (" . $store['ADDRESS'] . ")") : "") ?></option>
-            <? endforeach; ?>
-        </select>
-    </div>
-    <input type="hidden" name="action" value="add-store">
-</form>
-
-<?
-$id = \Hogart\Lk\Helper\Template\Dialog::$id;
-$handler =<<<JS
-    (function() {
-      $('[data-remodal-id="$id"] form').submit();
     })
 JS;
 \Hogart\Lk\Helper\Template\Dialog::Event('confirmation', $handler);

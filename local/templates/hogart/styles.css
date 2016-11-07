@@ -762,3 +762,9 @@ a[href^="mailto:"]:hover {
 footer {
   margin-top: 20px;
 }
+footer .p_logo {
+  width: 65px;
+  height: 28px;
+  background-image: url(/images/oldschool-logo.svg);
+  background-size: auto;
+}

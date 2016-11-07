@@ -79,6 +79,30 @@ class CompanyDiscountTable extends AbstractEntity
         return $prices;
     }
 
+    public static function prepareFrontByAccount($account_id, $prices)
+    {
+        $account = AccountTable::getAccountById($account_id);
+        $contract_id = $account['main_contract_id'];
+        if (empty($contract_id)) {
+            $companies = AccountCompanyRelationTable::getByAccountId($account['id']);
+            if (count($companies) == 1) {
+                $current_company = &reset($companies);
+            } else {
+                foreach ($companies as &$company) {
+                    if ($company['is_favorite']) {
+                        $current_company = &$company;
+                        break;
+                    }
+                }
+            }
+            if (!empty($current_company)) {
+                $contract = reset(ContractTable::getByCompanyId($current_company['id']));
+                $contract_id = $contract['id'];
+            }
+        }
+        return self::preparePricesByContract((int)$contract_id, $prices);
+    }
+
     /**
      * {@inheritDoc}
      */

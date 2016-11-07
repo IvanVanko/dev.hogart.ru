@@ -15,6 +15,8 @@ class OrderEventNote
 {
     /** @var  string */
     protected $guid;
+    /** @var   */
+    protected $relationGuid;
     /** @var  string */
     protected $title;
     /** @var Date  */
@@ -58,6 +60,24 @@ class OrderEventNote
     public function setGuid($guid)
     {
         $this->guid = $guid;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRelationGuid()
+    {
+        return $this->relationGuid;
+    }
+
+    /**
+     * @param mixed $relationGuid
+     * @return $this
+     */
+    public function setRelationGuid($relationGuid)
+    {
+        $this->relationGuid = $relationGuid;
         return $this;
     }
 

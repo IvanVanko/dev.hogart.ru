@@ -10,6 +10,7 @@ if ($arResult['DEPTH_LEVEL'] > 2) {
     $arResult['PARENT_PARENT_SECTION'] = CIBlockSection::GetList([], array_merge($arFilter, ["ID" => $arResult["IBLOCK_SECTION_ID"]]), false, ["UF_*"])->Fetch();
 }
 
+
 if (!empty($arParams['HREF_BRAND_CODE'])) {
 
     //делаем маппинг для дочерних классов представляющие разделы Хогарт
@@ -139,7 +140,9 @@ if (!empty($arParams['HREF_BRAND_CODE'])) {
 }
 $section_ids = array();
 $property_ids = array();
+$brands = [];
 $items = [];
+
 foreach ($arResult['ITEMS'] as &$arItem) {
 
     $elements_ids[] = $arItem['ID'];
@@ -148,6 +151,7 @@ foreach ($arResult['ITEMS'] as &$arItem) {
         $property_ids[] = $arDispProp['ID'];
     }
     $brand_id = $arItem['DISPLAY_PROPERTIES']['brand']['VALUE'];
+    $brands[] = $brand_id;
     $brand_code = $arItem['DISPLAY_PROPERTIES']['brand']['LINK_ELEMENT_VALUE'][$brand_id]['CODE'];
     if (!empty($brand_code)) {
         $exploded_url = explode("/",$arItem['DETAIL_PAGE_URL']);
@@ -165,8 +169,8 @@ foreach ($arResult['ITEMS'] as &$arItem) {
     }
     $items[$arItem["ID"]] = &$arItem;
 }
-$arResult['ITEMS'] = $items;
 
+$arResult['ITEMS'] = $items;
 
 //список соседних разделов
 $arFilter = array(
@@ -178,6 +182,7 @@ while ($arSect = $rsSect->GetNext())
 {
     $arResult["NEIB"][] =$arSect;
 }
+
 $arFilter = array(
     'IBLOCK_ID' => $arParams["IBLOCK_ID"],
     'SECTION_ID' => $arResult["ID"],
@@ -192,6 +197,8 @@ while ($arSect = $rsParentSection ->GetNext())
         $arResult["SUBS"][$arSect["ID"]]["ELEMENTS_COUNT"] = $count;
     }
 }
+
+
 
 if (count($arResult["SUBS"]) == 1) {
     LocalRedirect($arResult["SUBS"][0]["SECTION_PAGE_URL"]);
@@ -211,13 +218,16 @@ $arFilterBrands = array(
 $arSelectBrands = Array("ID", "NAME", 'DETAIL_PAGE_URL');
 $arBrands = CIBlockElement::GetList(array(), $arFilterBrands, false, false, false, $arSelectBrands);
 
+
 while ($res = $arBrands ->GetNext())
 {
     $arResult["ALL_BRANDS"][$res['ID']] = array('NAME' => $res['NAME'],'DETAIL_PAGE_URL' => $res['DETAIL_PAGE_URL'], );
 //    $arResult["ALL_BRANDS"][] = $res;
 }
+
 $arFilterColls = array(
-    'IBLOCK_ID' => 22
+    'IBLOCK_ID' => 22,
+    'PROPERTY_link_brand' => $brands
 );
 $arSelectColls = Array("ID", "NAME", 'DETAIL_PAGE_URL', 'DETAIL_TEXT', 'DETAIL_PICTURE', 'PREVIEW_TEXT');
 $arColls = CIBlockElement::GetList(array(), $arFilterColls, false, false, false, $arSelectColls);
@@ -226,15 +236,12 @@ while ($res = $arColls ->GetNext())
 {
     $arResult["ALL_COLLS"][$res['ID']] = array('NAME' => $res['NAME'], 'PREVIEW_TEXT' => $res['PREVIEW_TEXT'], 'DETAIL_TEXT' => $res['DETAIL_TEXT'], 'DETAIL_PICTURE' => $res['DETAIL_PICTURE']);
 }
-//echo '<pre>';
-//var_dump($arResult["ALL_COLLS"]);
-//echo '</pre>';
+
 $section_ids = array_unique($section_ids);
 
 global $USER;
 $account = \Hogart\Lk\Entity\AccountTable::getAccountByUserID($USER->GetID());
 $storeFilter = [
-    'UF_TRANSIT' => '0'
 ];
 
 if ($account['id']) {
@@ -246,29 +253,31 @@ if ($account['id']) {
     if (!empty($accountStores)) {
         $storeFilter['ID'] = $accountStores;
     }
+
+    $storeAmounts = \Hogart\Lk\Entity\StoreAmountTable::getStoreAmountByItemsId(array_keys($arResult['ITEMS']), $storeFilter['ID']);
 }
+
+$prices = array_reduce($arResult['ITEMS'], function ($result, $item) {
+    $result[$item["ID"]] = $item["PRICES"]["BASE"]["VALUE"];
+    return $result;
+}, []);
+
+$prices = \Hogart\Lk\Entity\CompanyDiscountTable::prepareFrontByAccount($account['id'], $prices);
+
+foreach ($arResult['ITEMS'] as $id => &$item) {
+    $item["PRICES"]["BASE"]["VALUE"] = $prices[$id]['price'];
+    $item["PRICES"]["BASE"]["DISCOUNT_VALUE"] = $prices[$id]['price'];
+    $item["PRICES"]["BASE"]["DISCOUNT_DIFF"] = $prices[$id]['discount_amount'];
+    $item["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"] = (float)$prices[$id]['discount'];
+    $item["STORE_AMOUNTS"] = !empty($storeAmounts[$id]) ? $storeAmounts[$id] : [];
+    $item['CATALOG_QUANTITY'] = 0;
+    foreach ($item["STORE_AMOUNTS"] as $amount) {
+        $item['CATALOG_QUANTITY'] += $amount['stock'];
+    }
+}
+
 $stores = BXHelper::getStores(array(), $storeFilter, false, false, array('ID', 'TITLE', 'ADDRESS'), 'ID');
 $arResult["STORES"] = $stores;
-
-if ($arParams['STORES_FILTERED'] != 'Y') {
-    $catalog_store_filter = array('LOGIC' => 'OR');
-    foreach ($stores as $store_id) {
-        $store_keys[] = 'CATALOG_STORE_AMOUNT_'.$store_id['ID'];
-        $catalog_store_filter[] = array('>CATALOG_STORE_AMOUNT_'.$store_id['ID'] => 0);
-    }
-    $custom_filter[] = $catalog_store_filter;
-    $custom_filter['ID'] = $elements_ids;
-    $elements = BXHelper::getElements(array(), $custom_filter, false, false, array('ID'), true, 'ID');
-    foreach ($arResult['ITEMS'] as &$arItem) {
-        $arItem['CATALOG_QUANTITY'] = 0;
-        if (isset($elements['RESULT'][$arItem['ID']])) {
-            foreach ($store_keys as $s_key) {
-                $arItem[$s_key] +=intval($elements['RESULT'][$arItem['ID']][$s_key]);
-            }
-        }
-    }
-}
-
 
 $property_ids = array_unique($property_ids);
 $prop_section_sort_result = \CUSTOM\Entity\SectionPropertySortTable::getList(array("select" => array("UF_SECTION_ID", "UF_PROPERTY_ID", "UF_SORT"), "filter" => array("UF_PROPERTY_ID" => $property_ids, 'UF_SECTION_ID' => $section_ids)));
@@ -277,19 +286,8 @@ while ($next = $prop_section_sort_result->fetch()) {
     $section_prop_sort[] = $next;
 }
 
-
 $section_properties = BXHelper::getPropertySectionLinks($arParams['IBLOCK_ID'], $section_ids, 3, 3, array(), array('SMART_FILTER' => 'Y'));
 foreach ($arResult['ITEMS'] as $i => &$arCollItem) {
-    if (!isset($store_keys)) {
-        $store_keys = preg_grep("/^CATALOG_STORE_AMOUNT_/",array_keys($arCollItem));//подсчитываем кол-во товара только по отфильтрованным складам.
-    }
-    if (!empty($store_keys)) {
-        $arCollItem['CATALOG_QUANTITY'] = 0;
-        foreach ($store_keys as $s_key) {
-            $arCollItem['CATALOG_QUANTITY'] +=intval($arCollItem[$s_key]);
-        }
-    }
-    //$section_properties = CIBlockSectionPropertyLink::GetArray(1, $arCollItem['IBLOCK_SECTION_ID']);
     $result_properties = array();
     foreach ($section_properties as $key => $value) {
         if ($value['ID'] == $arCollItem['~IBLOCK_SECTION_ID'] && array_key_exists($value['CODE'], $arCollItem['PROPERTIES'])) {
@@ -310,8 +308,6 @@ foreach ($arResult['ITEMS'] as $i => &$arCollItem) {
     HogartHelpers::mergeRangePropertiesForItem($arCollItem['PROPERTIES']);
 }
 
-
-
 BXHelper::addCachedKeys($this->__component, array(
     'ELEMENTS',
     'ALL_COLLS',
@@ -321,6 +317,7 @@ BXHelper::addCachedKeys($this->__component, array(
     'DEPTH_LEVEL',
     'CUSTOM_META'
 ), $arResult);
+
 
 
 $parentSection = BXHelper::getSectionPath($arResult["IBLOCK_ID"], $arResult["IBLOCK_SECTION_ID"], array());

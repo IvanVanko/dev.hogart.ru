@@ -10,7 +10,7 @@ use Hogart\Lk\Entity\ContractTable;
 use Hogart\Lk\Entity\OrderItemTable;
 
 ?>
-<div class="row order-line__header">
+<div class="row spacer-20 order-line__header">
     <div class="col-sm-6">
         <h4>
             <a href="/account/order/<?= $order['id'] ?>">
@@ -65,7 +65,7 @@ use Hogart\Lk\Entity\OrderItemTable;
 </div>
 <div class="row spacer-20">
     <div class="col-sm-6">
-        <? $APPLICATION->ShowViewContent('shipment-view-part') ?>
+        <?= $APPLICATION->GetViewContent('shipment-view-part') ?>
     </div>
     <div class="col-sm-3">
         <? if ($order['guid_id'] && $order['state'] == OrderTable::STATE_NORMAL && $order['totals']['release']): ?>
@@ -77,7 +77,7 @@ use Hogart\Lk\Entity\OrderItemTable;
         <? endif; ?>
     </div>
     <div class="col-sm-2">
-        <? if ($order['totals']['release'] <= 0 && $order['state'] == OrderTable::STATE_NORMAL && OrderTable::isProvideShipmentFlag($order['shipment_flag'], OrderItemTable::STATUS_IN_RESERVE)): ?>
+        <? if (($order['sale_granted'] || $order['totals']['release'] <= 0) && $order['state'] == OrderTable::STATE_NORMAL && OrderTable::isProvideShipmentFlag($order['shipment_flag'], OrderItemTable::STATUS_IN_RESERVE)): ?>
             <a href="/account/orders/shipment/<?= $order['s_XML_ID'] ?>/" class="btn btn-primary">Отгрузить</a>
         <? endif; ?>
     </div>

@@ -77,7 +77,13 @@ class Address extends AbstractMethod
                 'kladr_code' => (string)$address->Adr_Kod_KLADR,
                 'is_active' => !$address->deletion_mark
             ];
-            $result = AddressTable::replace($data);
+            try {
+                $result = AddressTable::replace($data);
+            } catch (\Exception $e) {
+                $answer->addResponse(new ResponseObject($address->Adr_ID_Owner, $address->Adr_Owner_Type, $address->Adr_ID_Address_Type, new MethodException(MethodException::ERROR_BITRIX, [$e->getMessage(), $e->getCode()])));
+                continue;
+            }
+
             $responseObject = new ResponseObject($address->Adr_ID_Owner, $address->Adr_Owner_Type, $address->Adr_ID_Address_Type);
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();

@@ -14,16 +14,28 @@ use Hogart\Lk\Entity\AddressTypeTable;
 use Hogart\Lk\Entity\ContactInfoTable;
 use Hogart\Lk\Entity\ContactTable;
 use Hogart\Lk\Entity\ContactRelationTable;
+use Hogart\Lk\Entity\FlashMessagesTable;
 use Hogart\Lk\Entity\OrderRTUTable;
 use Hogart\Lk\Entity\OrderTable;
 use Hogart\Lk\Entity\OrderRTUItemTable;
 use Hogart\Lk\Entity\OrderEventTable;
+
 use Hogart\Lk\Helper\Template\FlashSuccess;
+use Hogart\Lk\Helper\Template\FlashError;
+use Hogart\Lk\Helper\Template\Message;
+
+global $DB, $APPLICATION;
+
 
 
 if (!empty($_POST['action'])) {
     switch ($_POST['action']) {
         case 'add_rtu':
+            if (empty($arResult['orders'][$_REQUEST['store']])) {
+                new FlashError("Ошибка: в данный момент нет возможности создать заявку!");
+                LocalRedirect("/account/orders/");
+            }
+            $DB->StartTransaction();
             $orderRtu = [
                 'store_guid' => $_REQUEST['store'],
                 'account_id' => $arParams['account']['id'],
@@ -34,6 +46,7 @@ if (!empty($_POST['action'])) {
                 'phone' => ContactInfoTable::clearPhone($_POST['phone']),
                 'is_sms_notify' => (bool)$_POST['is_sms_notify'],
                 'is_email_notify' => (bool)$_POST['is_email_notify'],
+                'note' => (string)$_POST['comment']
             ];
 
             if (!empty($_POST['new_address'])) {
@@ -146,7 +159,14 @@ if (!empty($_POST['action'])) {
                 }, []);
 
                 $orders = [];
+                $sale_max = [];
                 foreach ($items as $item_id => $item) {
+                    if (empty($orders[$item['order_id']])) {
+                        $orders[$item['order_id']] = OrderTable::getRowById($item['order_id']);
+                    }
+
+                    $order = $orders[$item['order_id']];
+
                     $result = OrderRTUItemTable::addItem([
                         'order_rtu_id' => $order_rtu_id,
                         'order_id' => $item['order_id'],
@@ -159,23 +179,59 @@ if (!empty($_POST['action'])) {
                         'total' => round($item['total'] / $item['count'] * $rows[$item_id]['quantity'], 2),
                         'total_vat' => round($item['total_vat'] / $item['count'] * $rows[$item_id]['quantity'], 2)
                     ], $item_id);
+
+                    if (!$result->getId()) {
+                        $DB->Rollback();
+                        new FlashError("Произошла непредвиденная ошибка");
+                        LocalRedirect($APPLICATION->GetCurPage(false));
+                    }
+
+                    $sale_max[$item['order_id']] += $result->getData()['total'];
+
+                    if ($order['sale_granted'] && $order['sale_max_money'] > 0 && $order['sale_max_money'] < $sale_max[$item['order_id']]) {
+                        $DB->Rollback();
+                        new FlashError("Запрет на создание заявки на отгрузку: <b><u>превышена возможная сумма</u></b>", 0);
+                        LocalRedirect($APPLICATION->GetCurPage(false));
+                    }
                     OrderTable::resort($item['order_id']);
-                    $orders[] = $item['order_id'];
+                    OrderTable::update($item['order_id'], [
+                        'sale_max_money' => $order['sale_max_money'] - $sale_max[$item['order_id']]
+                    ]);
                 }
 
                 OrderRTUTable::putTo1c($order_rtu_id);
 
-                foreach (array_unique($orders) as $order_id) {
+                foreach ($orders as $order) {
                     OrderEventTable::add([
                         'entity_id' => $order_rtu_id,
                         'event' => OrderEventTable::ORDER_EVENT_ORDER_RTU_CREATE,
-                        'order_id' => $order_id,
+                        'order_id' => $order['id'],
                     ]);
+
+                    $accounts = OrderTable::getAccountsByOrder($order['id']);
+
+                    $message = new Message(
+                        OrderTable::showName($order) . " обновлен! Получена заявка на отгрузку",
+                        Message::SEVERITY_INFO
+                    );
+                    $message
+                        ->setIcon('fa fa-file-text-o')
+                        ->setUrl("/account/order/" . $order['id'])
+                        ->setDelay(0)
+                    ;
+
+                    foreach ($accounts as $account) {
+                        if ($account['a_id'] == $arParams['account']['id']) continue;
+                        FlashMessagesTable::addNewMessage($account['a_id'], $message);
+                    }
                 }
 
-                new FlashSuccess("Создан запрос на отгрузку");
+                $DB->Commit();
+
+                new FlashSuccess("Создана заявка на отгрузку");
                 LocalRedirect("/account/orders/");
             }
+            $DB->Rollback();
             break;
     }
 }

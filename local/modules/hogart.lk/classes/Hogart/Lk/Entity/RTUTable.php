@@ -44,6 +44,8 @@ class RTUTable extends AbstractEntity implements IOrderEventNote
 
             new IntegerField("order_id"),
             new ReferenceField("order", __NAMESPACE__ . "\\OrderTable", ["=this.order_id" => "ref.id"]),
+            new IntegerField("order_rtu_id"),
+            new ReferenceField("order_rtu", __NAMESPACE__ . "\\OrderRTUTable", ["=this.order_rtu_id" => "ref.id"]),
 
             new StringField("number"),
             new DatetimeField("rtu_date"),
@@ -80,7 +82,15 @@ class RTUTable extends AbstractEntity implements IOrderEventNote
 
     static function getOrderEventNote($entity_id, $event)
     {
-        $rtu = self::getRowById($entity_id);
+        $rtu = self::getRow([
+            'filter' => [
+                '=id' => $entity_id
+            ],
+            'select' => [
+                '*',
+                'or_' => 'order_rtu'
+            ]
+        ]);
         $note = new OrderEventNote(
             "Отгрузка №" . $rtu['number'],
             $rtu['rtu_date']
@@ -134,7 +144,18 @@ class RTUTable extends AbstractEntity implements IOrderEventNote
                 $measures[$measure['ID']] = $measure['SYMBOL_RUS'];
             }
 
-            $note->setTemplateData(['items' => $__items, 'measures' => $measures]);
+            $note->setTemplateData(['rtu' => $rtu, 'items' => $__items, 'measures' => $measures, ]);
+        }
+
+        $relation = OrderEventTable::getRow([
+            'filter' => [
+                '=entity' => OrderEventTable::ENTITY_ORDER_RTU,
+                '=entity_id' => $rtu['order_rtu_id'],
+                '=order_id' => $event['order_id']
+            ]
+        ]);
+        if (!empty($relation)) {
+            $note->setRelationGuid($relation['guid_id']);
         }
 
         $note

@@ -58,7 +58,6 @@ class OrderItemTable extends AbstractEntity
                 'primary' => true,
                 "autocomplete" => true
             ]),
-//            new StringField('d_guid_id'),
             new IntegerField("order_id"),
             new ReferenceField("order", __NAMESPACE__ . "\\OrderTable", ["=this.order_id" => "ref.id"]),
             new IntegerField("string_number"),
@@ -81,7 +80,9 @@ class OrderItemTable extends AbstractEntity
                 ],
                 'default_value' => self::STATUS_NOT_PROVIDED
             ]),
-            new IntegerField("delivery_time"), // Ориентировочный срок поставки если 1 или 2(заказан у поставщика)
+            new DateField("delivery_time", [
+                'default_value' => 0
+            ]), // Ориентировочный срок поставки если 1 или 2(заказан у поставщика)
             new StringField("item_group")
         ];
     }

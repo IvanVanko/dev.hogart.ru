@@ -31,6 +31,7 @@ class Timer
      */
     public function timer()
     {
+        $this->create();
         $new_timer = microtime(true);
         $timer = $new_timer - $this->timer;
         $this->timer = $new_timer;

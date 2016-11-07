@@ -72,13 +72,17 @@ class AccountStoreRelationTable extends AbstractEntity
      */
     public static function getByAccountId($account_id)
     {
-        return self::getList([
+        return array_reduce(self::getList([
             'filter' => [
                 '=account_id' => $account_id
             ],
             'select' => [
-                '' => 'store'
+                '' => 'store',
+                'a_' => 'account'
             ]
-        ])->fetchAll();
+        ])->fetchAll(), function ($result, $store) {
+            $result[$store['ID']] = $store;
+            return $result;
+        }, []);
     }
 }

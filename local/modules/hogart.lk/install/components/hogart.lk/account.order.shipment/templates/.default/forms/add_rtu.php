@@ -2,6 +2,7 @@
 
 use Hogart\Lk\Entity\OrderRTUTable;
 use Hogart\Lk\Entity\ContactTable;
+use Hogart\Lk\Entity\ContactInfoTable;
 use Hogart\Lk\Entity\AddressTable;
 
 ?>
@@ -76,72 +77,77 @@ use Hogart\Lk\Entity\AddressTable;
             </div>
         </div>
 
-        <div disabled="disabled" class="" data-delivery-type="<?= OrderRTUTable::DELIVERY_OUR ?>">
-            <div class="row">
-                <div class="col-sm-12">
-                    <label class="control-label">Контактное лицо</label>
-                </div>
+        <div class="row spacer"></div>
+        <div class="row">
+            <div class="col-sm-12">
+                <label class="control-label">Контактное лицо</label>
             </div>
-            <div class="row spacer">
-                <div class="col-sm-12">
-                    <div class="row spacer vertical-align">
-                        <div class="col-sm-8">
-                            <fieldset data-new-contact="false">
-                                <select required name="contact" class="form-control selectpicker" title="Выберите одно из контактных лиц">
-                                    <? foreach ($arResult['contacts'] as $contact): ?>
-                                        <option data-owner-type="<?= $contact['owner_type'] ?>" data-owner="<?= $contact['owner_id'] ?>" value="<?= $contact['id'] ?>"><?= ContactTable::getFio($contact) ?></option>
-                                    <? endforeach; ?>
-                                </select>
-                            </fieldset>
-                        </div>
-                        <div class="col-sm-4">
-                            <fieldset>
-                                <div class="checkbox checkbox-primary checkbox-inline">
-                                    <input data-switch type="checkbox" name="new_contact" value="1">
-                                    <label for="">
-                                        Новый контакт
-                                    </label>
-                                </div>
-                            </fieldset>
-                        </div>
+        </div>
+        <div class="row spacer">
+            <div class="col-sm-12">
+                <div class="row spacer vertical-align">
+                    <div class="col-sm-8">
+                        <fieldset data-new-contact="false">
+                            <select required name="contact" class="form-control selectpicker" title="Выберите одно из контактных лиц">
+                                <? foreach ($arResult['contacts'] as $contact): ?>
+                                    <option
+                                        data-owner-type="<?= $contact['owner_type'] ?>"
+                                        data-owner="<?= $contact['owner_id'] ?>"
+                                        data-email="<?= $contact['info'][ContactInfoTable::TYPE_EMAIL][0]['value'] ?>"
+                                        data-phone="<?= $contact['info'][ContactInfoTable::TYPE_PHONE][ContactInfoTable::PHONE_KIND_MOBILE]['value'] ? : $contact['info'][ContactInfoTable::TYPE_PHONE][ContactInfoTable::PHONE_KIND_STATIC]['value'] ?>"
+                                        value="<?= $contact['id'] ?>"><?= ContactTable::getFio($contact) ?>
+                                    </option>
+                                <? endforeach; ?>
+                            </select>
+                        </fieldset>
                     </div>
-                    <div class="row"></div>
+                    <div class="col-sm-4">
+                        <fieldset>
+                            <div class="checkbox checkbox-primary checkbox-inline">
+                                <input data-switch type="checkbox" name="new_contact" value="1">
+                                <label for="">
+                                    Новый контакт
+                                </label>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="row"></div>
 
-                    <fieldset disabled="disabled" style="display: none" data-new-contact="true" class="form-group">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <label class="control-label">Фамилия Имя Отчество</label>
-                                <div class="row spacer">
-                                    <div class="form-group col-sm-4">
-                                        <input name="new_last_name" required="required" type="text" class="col-sm-4 form-control" placeholder="Фамилия" data-error="Поле не должно быть пустым">
-                                        <div class="help-block with-errors"></div>
-                                    </div>
-                                    <div class="form-group col-sm-4">
-                                        <input name="new_name" required="required" type="text" class="col-sm-4 form-control" placeholder="Имя" data-error="Поле не должно быть пустым">
-                                        <div class="help-block with-errors"></div>
-                                    </div>
-                                    <div class="form-group col-sm-4">
-                                        <input name="new_middle_name" type="text" class="col-sm-4 form-control" placeholder="Отчество">
-                                    </div>
+                <fieldset disabled="disabled" style="display: none" data-new-contact="true" class="form-group">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="control-label">Фамилия Имя Отчество</label>
+                            <div class="row spacer">
+                                <div class="form-group col-sm-4">
+                                    <input name="new_last_name" required="required" type="text" class="col-sm-4 form-control" placeholder="Фамилия" data-error="Поле не должно быть пустым">
+                                    <div class="help-block with-errors"></div>
                                 </div>
-                                <div class="row">
-                                    <div class="form-group col-sm-4">
-                                        <label class="control-label">E-mail</label>
-                                        <input name="new_email" type="email" class="form-control" placeholder="Email">
-                                    </div>
-                                    <div class="form-group col-sm-4">
-                                        <label class="control-label">Телефон (моб.)</label>
-                                        <input required name="new_phone[<?= \Hogart\Lk\Entity\ContactInfoTable::PHONE_KIND_MOBILE ?>]" data-mask="+7 (999) 999-99-99" type="text" class="form-control" placeholder="Телефон">
-                                    </div>
-                                    <div class="form-group col-sm-4">
-                                        <label class="control-label">Телефон (гор.)</label>
-                                        <input name="new_phone[<?= \Hogart\Lk\Entity\ContactInfoTable::PHONE_KIND_STATIC ?>]" data-mask="+7 (999) 999-99-99" type="text" class="form-control" placeholder="Телефон">
-                                    </div>
+                                <div class="form-group col-sm-4">
+                                    <input name="new_name" required="required" type="text" class="col-sm-4 form-control" placeholder="Имя" data-error="Поле не должно быть пустым">
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <input name="new_middle_name" type="text" class="col-sm-4 form-control" placeholder="Отчество">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-sm-4">
+                                    <label class="control-label">E-mail</label>
+                                    <input name="new_email" type="email" class="form-control" placeholder="Email">
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label class="control-label">Телефон (моб.)</label>
+                                    <input required name="new_phone[<?= \Hogart\Lk\Entity\ContactInfoTable::PHONE_KIND_MOBILE ?>]" data-mask="+7 (999) 999-99-99" type="text" class="form-control" placeholder="Телефон">
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label class="control-label">Телефон (гор.)</label>
+                                    <input name="new_phone[<?= \Hogart\Lk\Entity\ContactInfoTable::PHONE_KIND_STATIC ?>]" data-mask="+7 (999) 999-99-99" type="text" class="form-control" placeholder="Телефон">
                                 </div>
                             </div>
                         </div>
-                    </fieldset>
-                </div>
+                    </div>
+                </fieldset>
             </div>
         </div>
         <div class="row spacer"></div>
@@ -266,10 +272,10 @@ use Hogart\Lk\Entity\AddressTable;
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <label class="control-label">Комментарий</label>
+                <label class="control-label">Комментарий (осталось <span class="char-count">128</span> симв.)</label>
             </div>
             <div class="col-sm-12 form-group">
-                <textarea class="form-control" name="comment" rows="3"></textarea>
+                <textarea maxlength="128" class="form-control" name="comment" rows="3"></textarea>
             </div>
         </div>
     </div>

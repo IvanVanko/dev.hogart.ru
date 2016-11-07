@@ -32,9 +32,10 @@ $arParams['account'] = $account;
 
 if ($account['id']) {
 
+    $arResult['orders'] = OrderTable::getShipmentOrders($account['id'], (string)$_REQUEST['store']);
+
     include (__DIR__ . "/proceed_request.php");
 
-    $arResult['orders'] = OrderTable::getShipmentOrders($account['id'], (string)$_REQUEST['store']);
     $arResult['stores'] = array_reduce(StoreTable::getByXmlId(array_keys($arResult['orders'])), function ($result, $store) {
         $result[$store['XML_ID']] = $store;
         return $result;

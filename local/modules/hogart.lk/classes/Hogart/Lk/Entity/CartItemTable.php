@@ -77,16 +77,39 @@ class CartItemTable extends AbstractEntity
             ],
             'select' => [
                 'count',
-                '' => 'item'
+                'ID' => 'item.ID'
             ],
         ])->fetchAll();
 
-        $props = array_reduce($items, function ($result, $item) { $result[$item['ID']] = $item; return $result; }, []);
-        \CIBlockElement::GetPropertyValuesArray($props, CATALOG_IBLOCK_ID, ['ID' => array_keys($props)], ['CODE' => ['default_count']]);
-
         $count = 0;
-        foreach ($items as $item) {
-            $count += $item['count'] / (intval($props[$item['ID']]['default_count']['VALUE']) ? : 1);
+
+        if (!empty($items)) {
+            $cache = new \CPHPCache();
+            $cache_id = md5(serialize($items));
+            $cache_path = '/cartItemsDefaultCountProps/';
+            $cache_time = 3600;
+
+            if ($cache_time > 0 && $cache->InitCache($cache_time, $cache_id, $cache_path))
+            {
+                $res = $cache->GetVars();
+                if (is_array($res["props"]) && (count($res["props"]) > 0))
+                    $props = $res["props"];
+            }
+
+            if (empty($props) || !is_array($props)) {
+                $props = array_reduce($items, function ($result, $item) { $result[$item['ID']] = $item; return $result; }, []);
+                \CIBlockElement::GetPropertyValuesArray($props, CATALOG_IBLOCK_ID, ['ID' => array_keys($props)], ['CODE' => ['default_count']]);
+
+                if ($cache_time > 0) {
+                    $cache->StartDataCache($cache_time, $cache_id, $cache_path);
+                    $cache->EndDataCache(["props" => $props]);
+                }
+            }
+
+            foreach ($items as $item) {
+                $count += $item['count'] / (intval($props[$item['ID']]['default_count']['VALUE']) ? : 1);
+            }
+
         }
 
         return $count;
@@ -145,6 +168,7 @@ class CartItemTable extends AbstractEntity
      */
     public static function addItem($account_id, $item_id, $count = 1, $item_group = '', $contract_id = 0, $store_guid = '')
     {
+        $account = AccountTable::getAccountById($account_id);
         if (!$contract_id) {
             $contracts = ContractTable::getByAccountId($account_id);
             if (count($contracts) == 1) {
@@ -156,6 +180,8 @@ class CartItemTable extends AbstractEntity
             $stores = AccountStoreRelationTable::getByAccountId($account_id);;
             if (count($stores) == 1) {
                 $store_guid = reset($stores)['XML_ID'];
+            } elseif (!empty($account['main_store_id']) && !empty($stores[$account['main_store_id']]['XML_ID'])) {
+                $store_guid = $stores[$account['main_store_id']]['XML_ID'];
             }
         }
 

@@ -34,12 +34,14 @@ $order = $arResult['order'];
             <div class="col-sm-12">
 
                 <? $this->SetViewTarget('shipment-view-part') ?>
+                <? if (OrderTable::isProvideShipmentFlag($order['shipment_flag'], OrderItemTable::STATUS_SHIPMENT)): ?>
                 <div class="checkbox checkbox-primary">
                     <input onchange="$('[data-shipment=\'0\']').toggle(this.checked)" type="checkbox" name="all_items">
                     <label>
                         <b>Отобразить полный состав</b>
                     </label>
                 </div>
+                <? endif; ?>
                 <? $this->EndViewTarget() ?>
 
                 <? include dirname(__FILE__) . "/../../../account.order.list/templates/.default/order-header.php" ?>
@@ -89,7 +91,19 @@ $order = $arResult['order'];
                                                     <td class="text-nowrap"><?= $item['props']['sku']['VALUE'] ?></td>
                                                     <td><a target="_blank" href="<?= $item['url'] ?>"><?= $item['NAME'] ?></a></td>
                                                     <? if (in_array($order['state'], [OrderTable::STATE_NORMAL])): ?>
-                                                    <td><span class="label label-<?= OrderItemTable::getStatusColor($item['status']) ?>"><?= OrderItemTable::showStatusText($item['status']) ?></span></td>
+                                                    <td>
+                                                        <span class="label label-<?= OrderItemTable::getStatusColor($item['status']) ?>">
+                                                            <?= OrderItemTable::showStatusText($item['status']) ?>
+                                                        </span>
+                                                        <? if (
+                                                            in_array($item['status'], [OrderItemTable::STATUS_SUPPLIER_ORDER, OrderItemTable::STATUS_INTERMEDIATE_STORE])
+                                                            && !empty($item['delivery_time'])): ?>
+                                                            <br><abbr title="Ориентировочный срок поставки">
+                                                                <i class="glyphicon glyphicon-time"></i>
+                                                                <?= $item['delivery_time']->format(HOGART_DATE_FORMAT) ?>
+                                                            </abbr>
+                                                        <? endif; ?>
+                                                    </td>
                                                     <? endif; ?>
                                                     <td class="text-nowrap"><?= $item['count'] ?></td>
                                                     <td><?= $order['measures'][$item['product']['MEASURE']] ?></td>
@@ -128,7 +142,8 @@ $order = $arResult['order'];
             <div class="menu">
                 <ul class="fa-ul">
                     <? $manager_feedback_params = $APPLICATION->IncludeComponent("hogart.lk:account.manager.feedback", "", [
-                        "SUBJECT" => "Запрос от " . CompanyTable::showName($order, 'co_') . " по " . OrderTable::showName($order)
+                        "SUBJECT" => "Запрос от " . CompanyTable::showName($order, 'co_') . " по " . OrderTable::showName($order),
+                        "EXTEND_TITLE" => " по заказу"
                     ]); ?>
                     <? if (!empty($manager_feedback_params['manager']['email'])): ?>
                     <li>

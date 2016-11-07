@@ -7,10 +7,22 @@
  *
  * @var array $items
  * @var array $measures
+ * @var array $rtu
  */
+
+use Hogart\Lk\Entity\OrderRTUTable;
 
 $_items = $items;
 ?>
+<div class="row">
+    <div class="col-sm-12 h5">
+        <? if (!empty($this->getRelationGuid())):?>
+            <a class="link" href="#<?= $this->getRelationGuid() ?>">
+                <b><?= OrderRTUTable::showName($rtu, 'or_') ?></b>
+            </a>
+        <? endif; ?>
+    </div>
+</div>
 <div class="row spacer"></div>
 <div class="row">
     <div class="col-sm-12">

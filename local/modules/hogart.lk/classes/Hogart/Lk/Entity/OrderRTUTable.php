@@ -19,6 +19,7 @@ use Bitrix\Main\Entity\EventResult;
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ReferenceField;
 use Bitrix\Main\Entity\StringField;
+use Bitrix\Main\Entity\TextField;
 use Bitrix\Main\Type\Date;
 use Bitrix\Main\Type\DateTime;
 use Hogart\Lk\Exchange\RabbitMQ\Exchange\OrderRTUExchange;
@@ -83,6 +84,7 @@ class OrderRTUTable extends AbstractEntity implements IOrderEventNote, IExchange
             new ReferenceField("tk_address_ref", __NAMESPACE__ . "\\AddressTable", ["=this.tk_address" => "ref.guid_id"]),
             new StringField("driver_name"),
             new StringField("driver_phone"),
+            new TextField("note"),
             new BooleanField("is_active"),
         ];
     }
@@ -222,9 +224,14 @@ class OrderRTUTable extends AbstractEntity implements IOrderEventNote, IExchange
 
     public static function onBeforeAdd(Event $event)
     {
+        $fields = $event->getParameter('fields');
         $result = new EventResult();
         $result->modifyFields([
-            'rtu_date' => new DateTime()
+            'account_id' => intval($fields['account_id']),
+            'rtu_date' => new DateTime(),
+            'driver_name' => (string)$fields['driver_name'],
+            'driver_phone' => (string)$fields['driver_phone'],
+            'note' => (string)$fields['note']
         ]);
 
         return $result;

@@ -112,30 +112,20 @@ if($section['RESULT'][0]['DEPTH_LEVEL'] < 3 && $arResult['SECTION']['RIGHT_MARGI
 
 //формируем дополнительный массив в $arResult['ITEMS'] для вывода в виде чебоксов
 
-//чекбос номер 1 представляет из себя фильтрацию по складам без флага UF_TRANSIT
-//чекбокс номер 2 предствляет из себя фильтрацию по складам с флагом UF_TRANSIT
-
 $arStoreItem = array();
-$arTransitStores = array();
 $arActiveStores = array();
 $selected_stores = array();
 foreach($arParams["STORES"] as $arStore) {
     if($arStore['SELECTED']) {
         $selected_stores[] = $arStore['ID'];
     }
-    if($arStore['UF_TRANSIT']) {
-        //$arTransitStores[] = $arStore['ID'];
-    }
-    else {
-        $arActiveStores[] = $arStore['ID'];
-    }
+    $arActiveStores[] = $arStore['ID'];
 }
 
 $selected_active = count(array_intersect($selected_stores, $arActiveStores)) > 0;
 $selected_warehouse = $arParams['SELECTED_WAREHOUSE'];
 //$properties = BXHelper::getProperties(array(), array('IBLOCK_ID' => $arParams['IBLOCK_ID'], 'CODE' => 'warehouse'), array('CODE','ID'), );
 //делаем пересечение массивов $stores с массивами соответствующих складов чтобы узнать какие из 2х пунктов фильтра Наличие выбраны
-//$selected_transit = count(array_intersect($selected_stores, $arTransitStores)) > 0;
 $arStoreValues = array(
     array(
         'CONTROL_ID' => 'arrFilter_stores_active',

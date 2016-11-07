@@ -107,7 +107,7 @@ class Account extends AbstractMethod
             $main_manager = StaffTable::getByField('guid_id', $accountInfo->Acc_ID_Main_Manager);
             $head_account = AccountTable::getByField('user_guid_id', $accountInfo->Acc_ID_Head);
             $main_contract = ContactTable::getByField('guid_id', $accountInfo->Acc_ID_Main_Contract);
-            $main_store = StoreTable::getList(['filter'=>['=XML_ID' => $accountInfo->Acc_ID_Main_Warehouse]])->fetch();
+            $main_store = StoreTable::getByXmlId($accountInfo->Acc_ID_Main_Warehouse)[0];
 
             $result = AccountTable::createOrUpdateByField([
                 'user_guid_id' => $accountInfo->Acc_ID,

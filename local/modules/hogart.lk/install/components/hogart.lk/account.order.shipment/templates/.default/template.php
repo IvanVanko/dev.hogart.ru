@@ -41,25 +41,45 @@ use Hogart\Lk\Entity\OrderTable;
                     <div class="row spacer">
                         <div class="col-sm-12">
                             <? foreach ($orders as $order): ?>
-                                <div class="row spacer-20 order-line" data-order="<?= $order['id'] ?>" data-company="<?= $order['co_id'] ?>">
+                                <div class="row spacer-20 order-line <?= ($order['sale_granted'] && $order['sale_max_money'] > 0 ? '' : 'sale-granted') ?>" data-order="<?= $order['id'] ?>" data-company="<?= $order['co_id'] ?>">
                                     <div class="col-sm-12">
                                         <script>
                                             addresses = $.extend(addresses, <?= \CUtil::PhpToJSObject($order['addresses']) ?> || {});
                                         </script>
-                                        <div class="row spacer-40">
+                                        <div class="row spacer-40 vertical-align">
                                             <div class="col-sm-8">
-                                                <h4>
-                                        <span class="title">
-                                            <input checked="checked" type="checkbox" />
-                                            <?= OrderTable::showName($order) ?>
-                                        </span>
-                                                    <sup><span class="label label-primary"><?= OrderTable::getTypeText($order['type']) ?></span></sup>
-                                                </h4>
-                                                <div><?= $order['co_name'] ?></div>
-                                                <div><?= ContractTable::showName($order, false, 'c_') ?></div>
+                                                <div>
+                                                    <div class="checkbox-title">
+                                                        <div class="checkbox checkbox-primary">
+                                                            <input type="checkbox" <?= ($order['sale_granted'] && $order['sale_max_money'] > 0 ? '' : 'checked="checked"')?>>
+                                                            <label></label>
+                                                        </div>
+                                                        <h4>
+                                                            <?= OrderTable::showName($order) ?>
+                                                            <sup><span class="label label-primary"><?= OrderTable::getTypeText($order['type']) ?></span></sup>
+                                                        </h4>
+                                                    </div>
+                                                    <div><?= $order['co_name'] ?></div>
+                                                    <div><?= ContractTable::showName($order, false, 'c_') ?></div>
+                                                </div>
                                             </div>
                                             <div class="col-sm-4 pull-right text-right">
-
+                                                <? if ($order['sale_granted'] && $order['sale_max_money'] > 0): ?>
+                                                    <div class="h5">
+                                                        <div>
+                                                            Доступна отгрузка на сумму
+                                                            <span data-sale-max="<?= $order['sale_max_money'] ?>" data-order="<?= $order['id'] ?>" class="money-<?= strtolower($order['currency']['CURRENCY']) ?>">
+                                                                <?= Money::show($order['sale_max_money']) ?>
+                                                            </span>
+                                                        </div>
+                                                        <div>
+                                                            Выбрано на сумму:
+                                                            <span data-sale-selected data-order="<?= $order['id'] ?>" class="money-<?= strtolower($order['currency']['CURRENCY']) ?>">
+                                                                0
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                <? endif; ?>
                                             </div>
                                         </div>
                                         <div class="row items">
@@ -101,7 +121,7 @@ use Hogart\Lk\Entity\OrderTable;
                                                                     </thead>
                                                                     <tbody>
                                                                     <? foreach ($items as $k => $item): ?>
-                                                                        <tr class="selected" id="<?= $item['id'] ?>" data-company="<?= $order['co_id'] ?>" data-order="<?= $order['id'] ?>">
+                                                                        <tr class="<?= ($order['sale_granted'] && $order['sale_max_money'] > 0 ? '' : 'selected')?>" id="<?= $item['id'] ?>" data-default-count="<?= max(1, (int)$item['props']['default_count']['VALUE']) ?>" data-company="<?= $order['co_id'] ?>" data-order="<?= $order['id'] ?>">
                                                                             <td><?= ($k + 1) ?></td>
                                                                             <td></td>
                                                                             <td class="text-nowrap"><?= $item['props']['sku']['VALUE'] ?></td>
@@ -110,11 +130,12 @@ use Hogart\Lk\Entity\OrderTable;
                                                                                 <input
                                                                                     name="quantity"
                                                                                     type="number"
-                                                                                    min="0"
+                                                                                    min="1"
                                                                                     max="<?= $item['count'] ?>"
                                                                                     class="form-control input-sm"
                                                                                     size="3" maxlength="3"
                                                                                     value="<?= $item['count'] ?>"
+                                                                                    data-value="<?= $item['count'] ?>"
                                                                                 >
                                                                             </td>
                                                                             <td><?= $order['measures'][$item['product']['MEASURE']] ?></td>

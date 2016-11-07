@@ -303,6 +303,11 @@ input[type="checkbox"] .styled:checked + label::after,
 input[type="radio"] .styled:checked + label::after {
   color: #fff;
 }
+.checkbox-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 .order-line .title input {
   margin: 0;
   margin-right: 5px;

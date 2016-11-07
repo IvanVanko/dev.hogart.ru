@@ -84,7 +84,13 @@ class AccountTable extends AbstractEntity
     {
         $account = self::getRowById($account_id);
         if (!empty($account['contact_id'])) {
-            return ContactTable::getRowById($account['contact_id']);
+            $contact = ContactTable::getRowById($account['contact_id']);
+            $contact['info'] = array_reduce(ContactInfoTable::getList([
+                'filter' => [
+                    '=contact.id' => $contact['id'],
+                ]
+            ])->fetchAll(), function ($result, $item) { $result[$item['info_type']][] = $item; return $result; }, []);
+            return $contact;
         }
     }
 

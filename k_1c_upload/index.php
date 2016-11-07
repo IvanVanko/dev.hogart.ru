@@ -1,6 +1,7 @@
 <?php
+require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
 require_once('ParsingModel.php');
-require_once("../bitrix/modules/main/include/prolog_before.php");
+ini_set("xdebug.var_display_max_depth", -1);
 $parce = new ParsingModel(!empty($_GET['dump']) ? $_GET['dump'] : false);
 if ($_GET['answer'] == 'Y') {
     $parce->answer = true;
