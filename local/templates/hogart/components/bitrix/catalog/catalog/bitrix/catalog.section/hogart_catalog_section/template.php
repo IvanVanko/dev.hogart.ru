@@ -177,7 +177,7 @@ $this->setFrameMode(true);
                         <div class="stock-items">
                             <div class="stock-items-table">
                             <? foreach ($arResult['STORES'] as $store_id => $store): ?>
-                                <? if (!$arItem['STORE_AMOUNTS'][$store_id]['is_visible']) continue; ?>
+                                <? if (!$arItem['STORE_AMOUNTS'][$store_id]['is_visible'] && empty($arItem["PROPERTIES"]["days_till_receive"]["VALUE"])) continue; ?>
                                 <div class="stock-item">
                                     <span class="stock-name h4 text-left">
                                         <?= $store["TITLE"]?>
