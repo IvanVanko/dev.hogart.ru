@@ -2253,6 +2253,7 @@ class ParsingModel {
             if($isGo) {
                 echo "<meta http-equiv=\"refresh\" content=\"2; url=".$_SERVER["REQUEST_URI"]."\">";
             }
+            return $isGo;
         }
     }
 

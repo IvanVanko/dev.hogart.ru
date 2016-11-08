@@ -9,6 +9,7 @@ namespace Hogart\Lk\Exchange\SOAP\Method\Orders;
 
 use Bitrix\Iblock\ElementTable;
 use Bitrix\Main\DB\SqlExpression;
+use Bitrix\Main\Type\Date;
 use Hogart\Lk\Entity\OrderItemTable;
 use Hogart\Lk\Entity\OrderTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
@@ -78,7 +79,7 @@ class OrderItem extends AbstractMethod
                 'total' => floatval($orderItem->Summ),
                 'total_vat' => floatval($orderItem->Sum_VAL),
                 'status' => (int)$orderItem->Status_Item,
-                'delivery_time' => intval($orderItem->Delivery_Time),
+                'delivery_time' => $orderItem->Delivery_Time ? new Date($orderItem->Delivery_Time, 'Y-m-d') : null,
                 'item_group' => (string)$orderItem->Group,
             ];
             if (($existing_item = array_shift($existing_items))) {

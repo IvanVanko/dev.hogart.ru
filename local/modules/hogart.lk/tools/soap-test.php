@@ -19,7 +19,6 @@ CModule::IncludeModule("main");
 CModule::IncludeModule("catalog");
 CModule::IncludeModule("sprint.migration");
 
-
 //$helper = new \Sprint\Migration\Helpers\IblockHelper();
 //$helper->addPropertyIfNotExists(CATALOG_IBLOCK_ID, [
 //    'NAME' => 'Кратность отгрузки',
@@ -58,6 +57,7 @@ CModule::IncludeModule("sprint.migration");
 //}
 //$parse->initBranch();
 //$parse->initWarehouse();
+//var_dump($parse->GetResultFunction('StockGet'));
 //exit;
 /** @var \Hogart\Lk\Exchange\SOAP\Client $soap */
 $soap = \Hogart\Lk\Exchange\SOAP\Client::getInstance();
@@ -89,9 +89,11 @@ $soap->getLogger()->registerLogger(new \Hogart\Lk\Logger\FileLogger(__DIR__ . "/
 //var_dump($soap->Address->addressPut($addressRequest));
 //var_dump($soap->AddressType->updateAddressTypes());
 //var_dump($soap->Address->updateAddresses());
-
-//var_dump($soap->Orders->updateOrders());
-var_dump($soap->OrderRTU->updateOrdersRTU());
+//var_dump($soap->Orders->ordersGet());
+//var_dump($soap->Orders->setIsAnswer(false)->updateOrders());
+//var_dump($soap->OrderRTU->updateOrdersRTU());
+//var_dump($soap->CompanyDiscount->getCompanyDiscounts());
+var_dump($soap->CompanyDiscount->updateCompanyDiscounts());
 //var_dump($soap->RTU->updateRTUs());
 
 //$companyRequest = new \Hogart\Lk\Exchange\SOAP\Request\Company([\Hogart\Lk\Entity\CompanyTable::getRowById(8)]);

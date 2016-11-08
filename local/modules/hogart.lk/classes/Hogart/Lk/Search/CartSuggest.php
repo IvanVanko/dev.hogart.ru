@@ -39,14 +39,14 @@ class CartSuggest
     }
 
     /**
-     * @return array
+     * @return $this
      */
     public function createIndex()
     {
         if (!$this->client->indices()->exists([
             'index' => self::INDEX
         ])) {
-            return $this->client->indices()->create([
+            $this->client->indices()->create([
                 'index' => self::INDEX,
                 'body' => [
                     'settings' => [
@@ -123,6 +123,7 @@ class CartSuggest
                 ]
             ]);
         }
+        return $this;
     }
 
     /**

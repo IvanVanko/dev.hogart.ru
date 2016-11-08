@@ -53,9 +53,10 @@ class CompanyDiscount extends AbstractMethod
         foreach ($response->return->Discount as $k => $discount) {
             // получаем компанию пользователя
             $company = CompanyTable::getByField('guid_id', $discount->Discount_ID_Company);
+            $discount->Company_Discount_ID = $discount->Discount_ID_Company . '_' . $discount->Discount_ID_Item;
             if(!isset($company)){
                 $answer->addResponse(new ResponseObject(
-                    $discount->Discount_ID_Company . '_' . $discount->Discount_ID_Item, new MethodException(
+                    $discount->Discount_ID_Company, new MethodException(
                         MethodException::ERROR_NO_CLIENT_COMPANY,
                         [$discount->Discount_ID_Company]
                     )
@@ -79,7 +80,7 @@ class CompanyDiscount extends AbstractMethod
             $result = CompanyDiscountTable::createOrUpdateByField([
                 'company_id' => $company['id'],
                 'item_id' => $item['ID'],
-                'discount' => $discount->Discount_Value,
+                'discount' => (float)$discount->Discount_Value,
             ], ['=company_id' => $company['id'], '=item_id' => $item['ID']]);
 
             if ($result->getErrorCollection()->count()) {

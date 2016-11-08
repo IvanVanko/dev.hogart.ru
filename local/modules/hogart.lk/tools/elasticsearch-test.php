@@ -22,8 +22,8 @@ CModule::IncludeModule("catalog");
 use Hogart\Lk\Search\CartSuggest;
 
 CartSuggest::getInstance()->deleteIndex();
-CartSuggest::getInstance()->createIndex();
-CartSuggest::getInstance()->indexAll();
+//CartSuggest::getInstance()->createIndex();
+//CartSuggest::getInstance()->indexAll();
 //var_dump(CartSuggest::getInstance()->search('термос 80'));
 
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/epilog_after.php");

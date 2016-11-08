@@ -60,6 +60,7 @@ class hogart_lk extends CModule
         \Hogart\Lk\Entity\RTUTable::createTableIfNotExists();
         \Hogart\Lk\Entity\StaffRelationTable::createTableIfNotExists();
         \Hogart\Lk\Entity\StaffTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\StoreAmountTable::createTableIfNotExists();
         \Hogart\Lk\Entity\FlashMessagesTable::createTableIfNotExists();
 
         return true;
@@ -96,6 +97,7 @@ class hogart_lk extends CModule
         \Hogart\Lk\Entity\RTUTable::dropTableIfExists();
         \Hogart\Lk\Entity\StaffRelationTable::dropTableIfExists();
         \Hogart\Lk\Entity\StaffTable::dropTableIfExists();
+        \Hogart\Lk\Entity\StoreAmountTable::dropTableIfExists();
         \Hogart\Lk\Entity\FlashMessagesTable::dropTableIfExists();
     }
 

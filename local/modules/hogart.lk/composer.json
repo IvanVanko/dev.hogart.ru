@@ -8,5 +8,8 @@
         "liip/process-manager": "^1.0",
         "jeremeamia/superclosure": "^2.2",
         "elasticsearch/elasticsearch": "^2.2"
+    },
+    "require-dev": {
+        "apigen/apigen": "^4.1"
     }
 }

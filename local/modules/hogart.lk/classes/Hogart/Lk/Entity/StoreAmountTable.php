@@ -115,13 +115,23 @@ class StoreAmountTable extends AbstractEntity
 
     public static function onAfterUpdate(Event $event)
     {
-        $catalog_product = new \CCatalogStoreProduct();
+        global $DB;
         $fields = $event->getParameter('fields');
         $store = StoreTable::getByXmlId($fields['store_guid'])[0];
-        $catalog_product->Update($fields['item_id'], [
-            "PRODUCT_ID" => $fields['item_id'],
-            "STORE_ID" => $store['ID'],
-            "AMOUNT" => $fields['stock'],
-        ]);
+        $SQL =<<<SQL
+update h_store_amount a
+join b_catalog_store_product b on (a.item_id = b.PRODUCT_ID)
+set b.AMOUNT = {$fields['stock']}
+where 1=1 
+	and a.store_guid = '{$fields['store_guid']}'
+	and b.store_id = {$store['ID']}
+	and a.item_id = {$fields['item_id']}
+	and a.stock != b.amount
+SQL;
+        try {
+            $DB->Query($SQL);
+        } catch (\Exception $e) {
+
+        }
     }
 }

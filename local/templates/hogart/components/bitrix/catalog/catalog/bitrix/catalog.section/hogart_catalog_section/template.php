@@ -214,7 +214,7 @@ $this->setFrameMode(true);
                                                 <?= (int)$arItem["PROPERTIES"]["days_till_receive"]["VALUE"] ?> дн.
                                             </div>
                                             <div class="desc h6">
-                                                Время ожид.
+                                                Срок поставки
                                             </div>
                                         </div>
                                         <? endif; ?>
