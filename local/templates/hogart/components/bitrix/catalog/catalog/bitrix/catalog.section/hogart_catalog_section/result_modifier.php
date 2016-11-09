@@ -198,15 +198,13 @@ while ($arSect = $rsParentSection ->GetNext())
     }
 }
 
-
-
 if (count($arResult["SUBS"]) == 1) {
     LocalRedirect($arResult["SUBS"][0]["SECTION_PAGE_URL"]);
 }
 
 if ($arParams["DEPTH_LEVEL"] == 2 && !$arParams["IS_FILTERED"]) {
     $subs = array_flip(array_keys($arResult["SUBS"]));
-    usort($arResult["ITEMS"], function ($a, $b) use ($subs) {
+    uasort($arResult["ITEMS"], function ($a, $b) use ($subs) {
         return $subs[$a["~IBLOCK_SECTION_ID"]] > $subs[$b["~IBLOCK_SECTION_ID"]];
     });
 
