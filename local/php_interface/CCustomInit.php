@@ -34,7 +34,7 @@ class CCustomInit {
         foreach ($this->folders as $abs_path) {
             $names = scandir($abs_path);
             foreach ($names as $name) {
-                if (!in_array($name,array(".","..")) && is_file($abs_path."/".$name)) {
+                if (!in_array($name,array(".","..")) && is_file($abs_path."/".$name) && pathinfo($abs_path."/".$name, PATHINFO_EXTENSION) == 'php') {
                     $this->files[] = $abs_path."/".$name;
                     if (!$result) $result = true;
                 }

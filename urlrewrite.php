@@ -179,6 +179,66 @@ $arUrlRewrite = array(
 		"RULE" => "",
 		"ID" => "bitrix:news",
 		"PATH" => "/stock/index.php",
+	),
+	array(
+		"CONDITION" => "#^/account/documents/?#",
+		"RULE" => "",
+		"ID" => "hogart.lk:account.documents",
+		"PATH" => "/local/modules/hogart.lk/front/account/documents/index.php"
+	),
+    array(
+        "CONDITION" => "#^/account/settings/?#",
+        "RULE" => "",
+        "ID" => "hogart.lk:account.settings",
+        "PATH" => "/local/modules/hogart.lk/front/account/settings/index.php"
+    ),
+    array(
+        "CONDITION" => "#^/account/cart/?#",
+        "RULE" => "",
+        "ID" => "hogart.lk:account.cart.list",
+        "PATH" => "/local/modules/hogart.lk/front/account/cart/index.php"
+    ),
+    array(
+        "CONDITION" => "#^/account/orders/pdf/([^/?]*)/([^/?]*).?#",
+        "RULE" => "order=\$1&pdf=\$2",
+        "ID" => "hogart.lk:account.order.pdf",
+        "PATH" => "/local/modules/hogart.lk/front/account/orders/pdf.php"
+    ),
+    array(
+        "CONDITION" => "#^/account/orders/shipment/([^/?]*).?#",
+        "RULE" => "store=\$1",
+        "ID" => "hogart.lk:account.order.shipment",
+        "PATH" => "/local/modules/hogart.lk/front/account/orders/shipment.php"
+    ),
+    array(
+        "CONDITION" => "#^/account/order/([0-9]+)/history/?#",
+        "RULE" => "order=\$1",
+        "ID" => "hogart.lk:account.order.history",
+        "PATH" => "/local/modules/hogart.lk/front/account/orders/history.php"
+    ),
+    array(
+        "CONDITION" => "#^/account/order/([^/?]*)[?/]?(.*)#",
+        "RULE" => "order=\$1",
+        "ID" => "hogart.lk:account.order",
+        "PATH" => "/local/modules/hogart.lk/front/account/orders/order.php"
+    ),
+    array(
+        "CONDITION" => "#^/account/orders/([^/?]*)[?/]?(.*)#",
+        "RULE" => "/local/modules/hogart.lk/front/account/orders/index.php?state=\$1",
+        "ID" => "hogart.lk:account.orders",
+        "PATH" => ""
+    ),
+	array(
+		"CONDITION" => "#^/account/_sse/?#",
+		"RULE" => "",
+		"ID" => "hogart.lk:account.server.events",
+		"PATH" => "/local/modules/hogart.lk/front/account/_sse.php"
+	),
+	array(
+		"CONDITION" => "#^/account/?#",
+		"RULE" => "",
+		"ID" => "hogart.lk:account",
+		"PATH" => "/local/modules/hogart.lk/front/account/index.php"
 	)
 );
 

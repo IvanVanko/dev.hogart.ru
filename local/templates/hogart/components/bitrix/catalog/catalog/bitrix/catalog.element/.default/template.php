@@ -100,12 +100,8 @@ $collectionComponentId = CAjax::GetComponentID("bitrix:catalog.element", "", "co
                     <div class="row vertical-align">
                         <div class="col-md-6">
                             <div class="price currency-<?= strtolower($arProduct["PRICES"]["BASE"]["CURRENCY"]) ?> text-nowrap">
-                                <? if ($USER->IsAuthorized() && !empty($arProduct["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
-                                    <?= HogartHelpers::woPrice($arProduct["PRICES"]["BASE"]["PRINT_DISCOUNT_VALUE"]); ?>
-                                <? else: ?>
-                                    <?= HogartHelpers::woPrice($arProduct["PRICES"]["BASE"]["PRINT_VALUE"]); ?>
-                                <? endif; ?>
-                                <i class="fa fa-<?=strtolower($arProduct["PRICES"]["BASE"]["CURRENCY"])?>" aria-hidden="true"></i>
+                                <?= \Hogart\Lk\Helper\Template\Money::show($arProduct["PRICES"]["BASE"]["DISCOUNT_VALUE"]) ?>
+                                <i class="fa fa-<?=strtolower($arResult["PRICES"]["BASE"]["CURRENCY"])?>" aria-hidden="true"></i>
                             </div>
                             <!--Только для авторизованных-->
                             <? if ($USER->IsAuthorized() && !empty($arProduct["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
@@ -131,7 +127,7 @@ $collectionComponentId = CAjax::GetComponentID("bitrix:catalog.element", "", "co
                     <? if ($USER->IsAuthorized() && !empty($arProduct["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
                         <div class="info-block">
                             <div class="old currency">
-                                <?= HogartHelpers::woPrice($arProduct["PRICES"]["BASE"]["PRINT_VALUE"]); ?>
+                                <?= \Hogart\Lk\Helper\Template\Money::show($arProduct["PRICES"]["BASE"]["VALUE"]) ?>
                                 <i class="fa fa-<?=strtolower($arProduct["PRICES"]["BASE"]["CURRENCY"])?>" aria-hidden="true"></i>
                             </div>
                         </div>
@@ -149,11 +145,11 @@ $collectionComponentId = CAjax::GetComponentID("bitrix:catalog.element", "", "co
                                     $attr_pop = 'data-popup="#popup-msg-product"';
                                 }
                                 ?>
-                                <a id="<?= $arProduct['BUY_URL'] ?>"
-                                   class="buy-btn btn btn-primary <?= $class_pop ?>" <?= $attr_pop ?>
-                                   href="javascript:void(0)" rel="nofollow">
-                                    <i class="fa fa-shopping-cart" aria-hidden="true"></i> Купить
-                                </a>
+                                <?= \Hogart\Lk\Helper\Template\Cart::Link(
+                                    '<i class="fa fa-cart-plus" aria-hidden="true"></i> Купить',
+                                    ['item_id' => $arProduct['ID']],
+                                    'class="buy-btn btn btn-primary ' . $class_pop . ' ' . $attr_pop . '"'
+                                ) ?>
                             </div>
                         </div>
                     <? endif; ?>
@@ -277,9 +273,9 @@ $collectionComponentId = CAjax::GetComponentID("bitrix:catalog.element", "", "co
                                 <? if (!empty($arResult["PRICES"]["BASE"])): ?>
                                 <div class="price text-nowrap">
                                     <? if($USER->IsAuthorized() && !empty($arResult["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
-                                        <?=HogartHelpers::woPrice($arResult["PRICES"]["BASE"]["PRINT_DISCOUNT_VALUE"]);?>
+                                        <?= \Hogart\Lk\Helper\Template\Money::show($arResult["PRICES"]["BASE"]["DISCOUNT_VALUE"]) ?>
                                     <? else: ?>
-                                        <?=HogartHelpers::woPrice($arResult["PRICES"]["BASE"]["PRINT_VALUE"]);?>
+                                        <?= \Hogart\Lk\Helper\Template\Money::show($arResult["PRICES"]["BASE"]["VALUE"]) ?>
                                     <? endif; ?>
                                     <i class="fa fa-<?=strtolower($arResult["PRICES"]["BASE"]["CURRENCY"])?>" aria-hidden="true"></i>
                                     <? if($USER->IsAuthorized() && !empty($arResult["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
@@ -350,11 +346,11 @@ $collectionComponentId = CAjax::GetComponentID("bitrix:catalog.element", "", "co
                                             $attr_pop = 'data-popup="#popup-msg-product"';
                                         }
                                         ?>
-                                        <a id="<?= $arResult['BUY_URL'] ?>"
-                                           class="buy-btn btn btn-primary <?= $class_pop ?>" <?= $attr_pop ?>
-                                           href="javascript:void(0)" rel="nofollow">
-                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i> Купить
-                                        </a>
+                                        <?= \Hogart\Lk\Helper\Template\Cart::Link(
+                                            '<i class="fa fa-cart-plus" aria-hidden="true"></i> Купить',
+                                            ['item_id' => $arResult['ID']],
+                                            'class="buy-btn btn btn-primary ' . $class_pop . ' ' . $attr_pop . '"'
+                                        ) ?>
                                     </div>
                                 <? endif; ?>
                             </div>

@@ -28,6 +28,33 @@ $sections_for_links = array($arResult['IBLOCK_SECTION_ID']);
 $brands = BXHelper::getElementLinkEnum($arResult['DISPLAY_PROPERTIES']['brand']['ID'], false, array(), 'CODE');
 $arResult['PRODUCT_PROPERTIES'] = $result_properties;
 
+global $USER;
+$account = \Hogart\Lk\Entity\AccountTable::getAccountByUserID($USER->GetID());
+$storeFilter = [
+];
+
+if ($account['id']) {
+    $accountStores = array_reduce(\Hogart\Lk\Entity\AccountStoreRelationTable::getByAccountId($account['id']), function ($result, $store) {
+        $result[] = $store['ID'];
+        return $result;
+    }, []);
+
+    if (!empty($accountStores)) {
+        $storeFilter['ID'] = $accountStores;
+    }
+
+    $prices = \Hogart\Lk\Entity\CompanyDiscountTable::prepareFrontByAccount($account['id'], [
+        $arResult['ID'] => $arResult["PRICES"]["BASE"]["VALUE"]
+    ]);
+    $arResult["PRICES"]["BASE"]["VALUE"] = $prices[$arResult['ID']]['price'];
+    $arResult["PRICES"]["BASE"]["DISCOUNT_VALUE"] = $prices[$arResult['ID']]['price'];
+    $arResult["PRICES"]["BASE"]["DISCOUNT_DIFF"] = $prices[$arResult['ID']]['discount_amount'];
+    $arResult["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"] = (float)$prices[$arResult['ID']]['discount'];
+}
+
+$stores = BXHelper::getStores(array(), $storeFilter, false, false, array('ID', 'TITLE', 'ADDRESS'), 'ID');
+$arResult["STORES"] = $stores;
+
 //buy_with_this
 if (!empty($arResult["PROPERTIES"]["buy_with_this"]["VALUE"])) {
     $ar_res = CIBlockElement::GetList(array("sort" => "asc"), array("ID" => $arResult["PROPERTIES"]["buy_with_this"]["VALUE"], "ACTIVE" => "Y"), false, false, array("*","CATALOG_GROUP_1", "PROPERTY_SKU", "PROPERTY_PHOTOS", "PREVIEW_PICTURE"));
@@ -75,7 +102,8 @@ if (!empty($arResult["PROPERTIES"]["collection"]["VALUE"])) {
         "IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
         "IBLOCK_ID" => $arParams['IBLOCK_ID'],
         "PROPERTY_collection" => $arResult["PROPERTIES"]["collection"]["VALUE"], 
-        'ACTIVE' => "Y"
+        'ACTIVE' => "Y",
+        '!ID' => $arResult['ID']
     );
 
     $arNavParams = array(
@@ -93,7 +121,6 @@ if (!empty($arResult["PROPERTIES"]["collection"]["VALUE"])) {
     while($ob = $res->Fetch()) {
         $ob = CIBlockElement::GetList([], array_merge($arFilter, ['ID' => $ob['ID']]), false, false, $arSelect)->GetNextElement();
         $arFields = $ob->GetFields();
-        $arFields['PRICE'] = BXHelper::calculateDicountPrice($arFields, 1, $arParams['PRICE_CODE'][0],SITE_ID, $arFields['CATALOG_CURRENCY_1']);
         $arFields["PROPERTIES"] = $ob->GetProperties();
         if (!isset($arResult["this_collection"]['ITEMS'][$arFields['ID']])) {
             $arResult["this_collection"]['ITEMS'][$arFields['ID']] = $arFields;
@@ -103,10 +130,21 @@ if (!empty($arResult["PROPERTIES"]["collection"]["VALUE"])) {
         }
     }
 
-    foreach ($arResult['this_collection']['ITEMS'] as $i => $arCollItem) {
+    $prices = array_reduce($arResult["this_collection"]['ITEMS'], function ($result, $item) {
+        $result[$item["ID"]] = $item["CATALOG_PRICE_1"];
+        return $result;
+    }, []);
+
+    $prices = \Hogart\Lk\Entity\CompanyDiscountTable::prepareFrontByAccount($account['id'], $prices);
+
+    foreach ($arResult['this_collection']['ITEMS'] as $id => &$arCollItem) {
+        $arCollItem["PRICES"]["BASE"]["VALUE"] = $arCollItem["CATALOG_PRICE_1"];
+        $arCollItem["PRICES"]["BASE"]["DISCOUNT_VALUE"] = $prices[$id]['price'];
+        $arCollItem["PRICES"]["BASE"]["DISCOUNT_DIFF"] = $prices[$id]['discount_amount'];
+        $arCollItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"] = (float)$prices[$id]['discount'];
         $sections_for_links[] = $arCollItem['IBLOCK_SECTION_ID'];
     }
-    
+
     $collection = CIBlockElement::GetByID($arResult["PROPERTIES"]["collection"]["VALUE"])->GetNext();
     $arResult["DISPLAY_PROPERTIES"]["collection"]["PREVIEW_TEXT"] = $collection["PREVIEW_TEXT"];
     $arResult["DISPLAY_PROPERTIES"]["collection"]["DETAIL_TEXT"] = $collection["DETAIL_TEXT"];
@@ -221,8 +259,6 @@ $res = CIBlockElement::GetByID($arResult['DISPLAY_PROPERTIES']['brand']['VALUE']
 if($ar_res = $res->GetNext())
 $arResult["CUSTOM"]["BRAND_NAME"]=$ar_res['NAME'];
 
-$stores = BXHelper::getStores(array(), array('UF_TRANSIT' => '0'), false, false, array('ID', 'TITLE', 'ADDRESS'), 'ID');
-$arResult["STORES"] = $stores;
 
 if ($arParams['STORES_FILTERED'] != 'Y') {
     $catalog_store_filter = array('LOGIC' => 'OR');

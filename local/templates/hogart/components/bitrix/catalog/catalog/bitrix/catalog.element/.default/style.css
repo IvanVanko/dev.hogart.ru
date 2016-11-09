@@ -1116,6 +1116,21 @@
   height: 100%;
   padding: 15px;
   border: 1px solid transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.product ul[data-control] > li > div a.buy {
+  background-color: #95c600;
+  color: white;
+  margin-top: 0;
+  display: inline-block;
+  padding: 5px 10px;
+  line-height: 14px;
+  border-radius: 5px;
+}
+.product ul[data-control] > li > div a.buy .fa {
+  font-size: 16px;
 }
 .product ul[data-control] > li > div .buy-btn {
   display: block;

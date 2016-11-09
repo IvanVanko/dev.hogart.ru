@@ -1,0 +1,79 @@
+@media screen and (max-width: 767px) {
+}
+@media (min-width: 768px) {
+}
+.tag-left-menu {
+  margin-top: 15px;
+  padding-left: 0;
+  list-style: none;
+  width: 90px;
+}
+.tag-left-menu li {
+  margin-bottom: 20px;
+  height: 90px;
+  padding: 15px 0;
+  line-height: 30px;
+  background-color: #95c600;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+.tag-left-menu li:hover,
+.tag-left-menu li:active,
+.tag-left-menu li.active {
+  background-color: #2c2432;
+}
+.tag-left-menu li a {
+  display: block;
+  color: white;
+  text-align: center;
+  text-transform: uppercase;
+}
+.tag-left-menu li a i {
+  display: block;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  font-size: 30px;
+  font-weight: 300;
+}
+.tag-left-menu li {
+  position: relative;
+}
+.tag-left-menu li a {
+  text-decoration: none;
+}
+.tag-left-menu li a:hover,
+.tag-left-menu li a:active,
+.tag-left-menu li a.active {
+  text-decoration: none;
+}
+.tag-left-menu li:before,
+.tag-left-menu li:after {
+  content: "";
+  position: absolute;
+  z-index: -2;
+  transition: all 250ms ease-out;
+}
+.tag-left-menu li:before {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+}
+.tag-left-menu li:hover a,
+.tag-left-menu li.active a {
+  text-decoration: none;
+}
+.tag-left-menu li:hover a:active,
+.tag-left-menu li:hover a.active,
+.tag-left-menu li.active a:active,
+.tag-left-menu li.active a.active {
+  text-decoration: none;
+}
+.tag-left-menu li:hover:before,
+.tag-left-menu li.active:before {
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(128, 128, 128, 0.1) inset;
+}
