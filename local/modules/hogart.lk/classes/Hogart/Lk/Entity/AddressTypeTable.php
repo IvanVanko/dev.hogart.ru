@@ -1,0 +1,74 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Ivan Koretskiy aka gillbeits[at]gmail.com
+ * Date: 01/08/16
+ * Time: 14:56
+ */
+
+namespace Hogart\Lk\Entity;
+
+
+use Bitrix\Main\Entity\IntegerField;
+use Bitrix\Main\Entity\StringField;
+use Hogart\Lk\Field\GuidField;
+
+/**
+ * Таблица Типов Адресов
+ * @package Hogart\Lk\Entity
+ */
+class AddressTypeTable extends AbstractEntity
+{
+    const TYPE_ACTUAL = 1; // фактический адрес
+    const TYPE_LEGAL = 2; // юридический адрес
+    const TYPE_DELIVERY = 3; // адрес доставки
+    const TYPE_TK = 4; // адрес транспортной компании
+
+    /**
+     * {@inheritDoc}
+     */
+    public static function getTableName()
+    {
+        return "h_address_type";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public static function getMap()
+    {
+        return [
+            new IntegerField("id", [
+                'primary' => true,
+                "autocomplete" => true
+            ]),
+            new StringField("guid_id"),
+            new StringField("name"),
+            new IntegerField("code")
+        ];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected static function getIndexes()
+    {
+        return [
+            new Index("idx_guid_id", ["guid_id" => 255])
+        ];
+    }
+
+    public static function getByCode($code)
+    {
+        $row = self::getByField('code', $code);
+        if (empty($row) && $code == self::TYPE_TK) {
+            AddressTypeTable::add([
+                'guid_id' => '',
+                'name' => 'Адрес транспортной компании',
+                'code' => AddressTypeTable::TYPE_TK
+            ]);
+            return self::getByCode($code);
+        }
+        return $row;
+    }
+}

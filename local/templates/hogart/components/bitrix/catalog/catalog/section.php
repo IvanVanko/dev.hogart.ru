@@ -63,9 +63,24 @@ if ($arParams['USE_FILTER'] == 'Y') {
     <? if ($section['DEPTH_LEVEL'] != 1) {
         $this->SetViewTarget("CATALOG_FILTER");
 
+        global $USER;
+        $account = \Hogart\Lk\Entity\AccountTable::getAccountByUserID($USER->GetID());
+        $storeFilter = [
+        ];
+
+        if ($account['id']) {
+            $accountStores = array_reduce(\Hogart\Lk\Entity\AccountStoreRelationTable::getByAccountId($account['id']), function ($result, $store) {
+                $result[] = $store['ID'];
+                return $result;
+            }, []);
+
+            if (!empty($accountStores)) {
+                $storeFilter['ID'] = $accountStores;
+            }
+        }
+
         //доработка фильтра для фильтрации складов
-        //здесь получаем склады на сайте. Флаг UF_TRANSIT говорит о том, что склад относится к пункту Складская программа. Остальные - Есть в наличии
-        $stores = BXHelper::getStores(array(), array(), false, false, array('ID', 'UF_TRANSIT', 'TITLE'), 'ID');
+        $stores = BXHelper::getStores(array(), $storeFilter, false, false, array('ID', 'TITLE'), 'ID');
 
         //получаем request филтьра складов и дополняем $stores флагами SELECTED тех складов которые выбрали для фильтрации
         $arFilterStores = $_REQUEST['arrFilter_stores'];
