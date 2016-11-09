@@ -10,6 +10,7 @@
 namespace Hogart\Lk\Entity;
 
 use Bitrix\Main\Entity;
+use Bitrix\Main\Error;
 use Hogart\Lk\Exchange\RabbitMQ\Consumer;
 use Hogart\Lk\Exchange\RabbitMQ\Exchange\AbstractExchange;
 use Hogart\Lk\Exchange\SOAP\AbstractPutRequest;
@@ -135,7 +136,7 @@ abstract class AbstractEntity extends Entity\DataManager
     /**
      * Заменить запись в таблице
      * @param $data
-     * @return Entity\AddResult
+     * @return Entity\AddResult|Entity\Result
      * @throws \Exception
      */
     public static function replace($data)
@@ -143,21 +144,30 @@ abstract class AbstractEntity extends Entity\DataManager
         $event = new Entity\Event(static::getEntity(), self::EVENT_ON_BEFORE_ADD, array("fields" => $data), true);
         $event->send();
         $data = $event->mergeFields($data);
-        $primary = static::getEntity()->getPrimaryArray();
-        $id = [];
-        foreach ($primary as $key) {
-            $field = static::getEntity()->getField($key);
-            $id[$key] = $data[$key] ? : ($field instanceof Entity\ScalarField ? $field->getDefaultValue() : null);
+        try {
+            $primary = static::getEntity()->getPrimaryArray();
+            $id = [];
+            foreach ($primary as $key) {
+                $field = static::getEntity()->getField($key);
+                $id[$key] = $data[$key] ? : ($field instanceof Entity\ScalarField ? $field->getDefaultValue() : null);
+            }
+            static::delete($id);
+            $result = static::add($data);
+        } catch (\Exception $e) {
+            $result = new Entity\Result();
+            $result->addError(new Error($e->getMessage(), $e->getCode()));
+            return $result;
         }
-        static::delete($id);
-        return static::add($data);
+
+        return $result;
+
     }
 
     /**
      * Создание или обновление записи в таблице
      * @param array $data данные которые добавляем|обновляем
      * @param string|array $fields одно или несколько полей для поиска
-     * @return Entity\AddResult|Entity\UpdateResult
+     * @return Entity\AddResult|Entity\UpdateResult|Entity\Result
      * @throws \Bitrix\Main\ArgumentException
      * @throws \Exception
      */
@@ -166,18 +176,24 @@ abstract class AbstractEntity extends Entity\DataManager
         $event = new Entity\Event(static::getEntity(), self::EVENT_ON_BEFORE_ADD, array("fields" => $data), true);
         $event->send();
         $data = $event->mergeFields($data);
-        $row = static::getList([
-            'filter' => (is_string($fields) ? ["={$fields}" => $data[$fields]] : $fields)
-        ])->fetch();
-        if (!empty($row)) {
-            $primary = static::getEntity()->getPrimaryArray();
-            $id = [];
-            foreach ($primary as $key) {
-                $id[$key] = $row[$key];
+        try {
+            $row = static::getList([
+                'filter' => (is_string($fields) ? ["={$fields}" => $data[$fields]] : $fields)
+            ])->fetch();
+            if (!empty($row)) {
+                $primary = static::getEntity()->getPrimaryArray();
+                $id = [];
+                foreach ($primary as $key) {
+                    $id[$key] = $row[$key];
+                }
+                $result = static::update($id, $data);
+            } else {
+                $result = static::add($data);
             }
-            $result = static::update($id, $data);
-        } else {
-            $result = static::add($data);
+        } catch (\Exception $e) {
+            $result = new Entity\Result();
+            $result->addError(new Error($e->getMessage(), $e->getCode()));
+            return $result;
         }
 
         if (
