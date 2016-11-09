@@ -94,7 +94,7 @@ class Company extends AbstractMethod
                 'guid_id' => $company->Comp_ID,
                 'kind_activity_id' => $activities[$company->Comp_ID_KindOfActivity] ? : '',
                 'name' => (string)$company->Comp_Name,
-                'type' => (string)$company->Comp_OOOIPFL,
+                'type' => intval($company->Comp_OOOIPFL),
                 'type_form' => (string)$company->Comp_OOO_type,
                 'inn' => (string)$company->Comp_INN,
                 'kpp' => (string)$company->Comp_KPP,
