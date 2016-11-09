@@ -48,7 +48,36 @@ class IBlockHandlers {
     const INVITATION = "INVITATION";
     const DENIED = "DENIED";
 
+    private static function __check_contacts_code_name(&$arParams, $exclude_self = false) {
+        if (empty($arParams["CODE"])) {
+            $raw_code = $arParams['NAME'];
+        } else {
+            $raw_code = $arParams["CODE"];
+        }
+
+        $code = CUtil::translit($raw_code, 'ru',
+            array('change_case' => 'L', 'replace_space' => '-', 'replace_other' => '-'));
+
+        // CODE must be unique
+        $filter = array(
+            "IBLOCK_ID" => $arParams["IBLOCK_ID"],
+            "SECTION_ID" => $arParams["IBLOCK_SECTION_ID"],
+            "CODE" => $code);
+        if ($exclude_self) {
+            $filter["!ID"] = $arParams["ID"];
+        }
+        $rsItems = CIBlockElement::GetList(array(), $filter, false, false, array("ID"));
+        if ($rsItems->AffectedRowsCount()) {
+            $code = $code . "_" . $arParams["ID"];
+        }
+        return $code;
+    }
+
     public static function OnBeforeIBlockElementAddHandler(&$arParams) {
+        if ($arParams["IBLOCK_ID"] == CONTACTS_IBLOCK_ID) {
+            $arParams["CODE"] = IBlockHandlers::__check_contacts_code_name($arParams);
+        }
+
         if($arParams["IBLOCK_ID"] == SEMINAR_IBLOCK_ID) {
             $ean_number = HogartHelpers::generateSeminarNumber();
             $property = BXHelper::getProperties(array(), array("IBLOCK_ID" => SEMINAR_IBLOCK_ID,
@@ -79,6 +108,10 @@ class IBlockHandlers {
         $property = BXHelper::getProperties(array(), array("IBLOCK_ID" => SEMINAR_IBLOCK_ID,
                                                            "CODE" => "sem_ean_id"), array("ID", "CODE"), "CODE");
         $property = $property["RESULT"]["sem_ean_id"];
+
+        if ($arParams["IBLOCK_ID"] == CONTACTS_IBLOCK_ID) {
+            $arParams["CODE"] = IBlockHandlers::__check_contacts_code_name($arParams, true);
+        }
 
         if($arParams["IBLOCK_ID"] == CATALOG_IBLOCK_ID) {
             $code = CUtil::translit($arParams['NAME'], 'ru',
