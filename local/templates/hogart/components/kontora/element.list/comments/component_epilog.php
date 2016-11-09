@@ -23,7 +23,7 @@ if (isset($arResult['arResult'])) {
                     </div>
                     <div class="text">
                         <? $date = explode('.', $arItem['DATE_CREATE']); ?>
-                        <? $date_from = FormatDate("d F Y", MakeTimeStamp($arItem["DATE_CREATE"])); ?>
+                        <? $date_from = strftime("%Y-%m-%d", MakeTimeStamp($arItem["DATE_CREATE"])); ?>
                         <p class="date"><?= $date_from ?></p>
                         <p>
                             <?= $arItem['PREVIEW_TEXT'] ?>
