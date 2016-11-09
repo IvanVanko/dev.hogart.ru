@@ -69,11 +69,11 @@ class CompanyDiscountTable extends AbstractEntity
             ])->fetchAll(), function ($result, $item) { $result[$item['item_id']]['discount'] = $item['discount']; return $result; }, []);
         }
         foreach ($prices as $id => &$price) {
-            $new_price = round($price * (100 - $discounts[$id]['discount']) / 100, 2);
+            $new_price = round($price * (100 - floatval($discounts[$id]['discount'])) / 100, 2);
             $price = [
-                'discount' => $discounts[$id]['discount'],
+                'discount' =>  floatval($discounts[$id]['discount']),
                 'price' => $new_price,
-                'discount_amount' => $price - $new_price
+                'discount_amount' => floatval($price - $new_price)
             ];
         }
         return $prices;
