@@ -97,7 +97,7 @@ $order = $arResult['order'];
                                                         </span>
                                                         <? if (
                                                             in_array($item['status'], [OrderItemTable::STATUS_SUPPLIER_ORDER, OrderItemTable::STATUS_INTERMEDIATE_STORE])
-                                                            && !empty($item['delivery_time'])): ?>
+                                                            && !empty($item['delivery_time']) && $item['delivery_time']->getTimestamp() > time()): ?>
                                                             <br><abbr title="Ориентировочный срок поставки">
                                                                 <i class="glyphicon glyphicon-time"></i>
                                                                 <?= $item['delivery_time']->format(HOGART_DATE_FORMAT) ?>
