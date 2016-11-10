@@ -9,8 +9,10 @@
 namespace Hogart\Lk\Exchange\RabbitMQ\Exchange;
 
 
+use Hogart\Lk\Entity\OrderTable;
 use Hogart\Lk\Exchange\SOAP\AbstractPutRequest;
 use Hogart\Lk\Exchange\SOAP\Client;
+use Hogart\Lk\Exchange\SOAP\Request\Order;
 
 /**
  * Задачи RabbitMQ - Заказы
@@ -58,6 +60,12 @@ class OrderExchange extends AbstractExchange
                 $request = unserialize($envelope->getBody());
                 if ($request instanceof AbstractPutRequest) {
                     Client::getInstance()->Orders->ordersPut($request);
+                }
+                break;
+            case 'request':
+                $order = OrderTable::getOrder(intval($envelope->getBody()));
+                if (!empty($order)) {
+                    Client::getInstance()->Orders->ordersPut(new Order([$order]));
                 }
                 break;
         }
