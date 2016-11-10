@@ -1,0 +1,100 @@
+@import (reference) "../../../../../../../../templates/hogart/variables";
+
+form {
+  text-align: left;
+}
+
+.delimiter {
+  border-bottom: 1px solid;
+}
+
+.header() {
+  strong {
+    border-bottom: 1px dashed @brand-green;
+    font-family: @font-family-serif;
+    font-size: @font-size-base;
+  }
+  strong.visible-xs {
+    margin-right: 20px;
+  }
+  a[href^="mailto:"] {
+    margin-left: 0;
+  }
+  .phone-number {
+    white-space: nowrap;
+    transition: all .3s linear;
+    font-family: @font-family-serif;
+    font-size: 1.1em;
+    &.type {
+      &-1 {
+        &:before {
+          content: "\f10b";
+          font-size: 1.5em;
+        }
+      }
+      &-2 {
+        &:before {
+          content: "\f095";
+        }
+      }
+    }
+    &:before {
+      display: inline-block;
+      font: normal normal normal 14px/1 FontAwesome;
+      font-size: inherit;
+      text-rendering: auto;
+      -webkit-font-smoothing: antialiased;
+      margin-right: 5px;
+    }
+  }
+}
+
+.help-block {
+  font-size: @font-size-h6;
+  font-family: @font-family-serif;
+}
+
+.authinfo {
+  margin-bottom: 20px;
+}
+
+.contacts {
+  margin-bottom: 20px;
+  .header();
+  .contact {
+  }
+}
+
+.managers {
+  margin-bottom: 20px;
+  .header();
+  .manager {
+    .fa {
+      padding-right: 5px;
+      font-size: @font-size-h5;
+      &.fa-star-o {
+        cursor: pointer;
+      }
+    }
+    .avatar {
+      img {
+        width: 64px;
+        height: 64px;
+        border-radius: 64px;
+      }
+    }
+  }
+}
+
+.stores {
+  margin-bottom: 20px;
+  .store {
+    .fa {
+      padding-right: 20px;
+      font-size: @font-size-h5;
+      &.fa-star-o {
+        cursor: pointer;
+      }
+    }
+  }
+}

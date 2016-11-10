@@ -14,12 +14,11 @@ while($prop = $dbProps->GetNext()) {
         "comments",
         Array(
             "IBLOCK_ID" => 15,
-            'ORDER' => array('sort' => 'asc'),
+            'ORDER' => array('created' => 'desc'),
             'PROPS' => 'Y',
             "NAV" => "Y",
             "ELEMENT_COUNT" => 10,
         ));
-
     $APPLICATION->IncludeComponent("bitrix:iblock.element.add.form", "comment", Array(
             "SEF_MODE" => "Y",
             "IBLOCK_TYPE" => "comments",

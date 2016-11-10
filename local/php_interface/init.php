@@ -85,35 +85,15 @@ if (CModule::IncludeModule("subscribe"))
 	$cPosting->AutoSend();
 }
 
+$loader = require dirname(__FILE__) . "/include/vendor/autoload.php";
+
 $obInit = new CCustomInit();
 $obInit->addFolder('classes');
 $obInit->addFolder('entities');
 $obInit->addFolder('forks');
-$obInit->addFolder('vendor');
 $obInit->addFolder('');
-//$obInit->addFolder('scripts');
-
-
 
 $obInit->Init();
-
-//if (class_exists('DeviceDetector')) {
-	$browsers = new DeviceDetector\DeviceDetector($_SERVER['HTTP_USER_AGENT']);
-	$browsers->parse();
-
-	$browsers->parse();
-
-	if ($browsers->isBot()) {
-		// handle bots,spiders,crawlers,...
-		$botInfo = $browsers->getBot();
-	} else {
-		$GLOBALS['user_agent']['browser'] = $browsers->getClient(); // holds information about browser, feed reader, media player, ...
-		$GLOBALS['user_agent']['os'] = $browsers->getOs();
-		$GLOBALS['user_agent']['device_type'] = $browsers->getDevice();
-		$GLOBALS['user_agent']['device_brand'] = $browsers->getBrand();
-		$GLOBALS['user_agent']['device_model'] = $browsers->getModel();
-	}
-//}
 
 global $BX_MENU_CUSTOM;
 $BX_MENU_CUSTOM = new HogartCustomMenu();
@@ -723,45 +703,3 @@ class MyClass
 }
 include_once($_SERVER['DOCUMENT_ROOT'] . '/local/templates/hogart/prop_checkbox.php');
 AddEventHandler("iblock", "OnIBlockPropertyBuildList", Array("CIBlockPropertyCheckbox", "GetUserTypeDescription"));
-
-/*
-AddEventHandler("main", "OnAdminTabControlBegin", "MyOnAdminTabControlBegin");
-function MyOnAdminTabControlBegin(&$form)
-{
-	if($GLOBALS["APPLICATION"]->GetCurPage() == "/bitrix/admin/subscr_edit.php")
-	{
-		print_r($form);
-		$form->tabs[] = array("DIV" => "my_edit", "TAB" => "Дополнительно", "ICON"=>"main_user_edit", "TITLE"=>"Дополнительные параметры", "CONTENT"=>
-			'<tr valign="top">
-				<td>Телефон:</td>
-				<td>
-					<input type="text" name="MY_HEADERS[]" value="" size="30"><br>
-				</td>
-			</tr>'
-		);
-	}
-}
-*/
-?>
-<?
-/*AddEventHandler('form', 'onAfterResultAdd', Array("ShareLink","onAfterResultAddHandler"));
-class ShareLink
-{
-
-	function onAfterResultAddHandler($WEB_FORM_ID, $RESULT_ID){
-
-		if ($WEB_FORM_ID == 10)
-		{
-			$arAnswer = CFormResult::GetDataByID($RESULT_ID,array("EMAIL","QUESTION"),
-				$arResult,$arAnswer2);
-//            $name = $arAnswer['FIO']['0']['USER_TEXT'];
-//            $phone = $arAnswer['PHONE']['0']['USER_TEXT'];
-			$text = $arAnswer['QUESTION']['0']['USER_TEXT'];
-			$email = $arAnswer['E-MAIL']['0']['USER_TEXT'];
-			$arSend = array("EMAIL" => $email, "QUESTION" => $text);
-			CEvent::Send('FORM_SEND_ARTICLE_s1',SITE_ID,$arSend);
-		}
-
-	}
-}*/
-?>

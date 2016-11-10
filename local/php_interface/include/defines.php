@@ -24,6 +24,7 @@ define("SEMINAR_IBLOCK_ID", 8);
 define("EQUIPMENT_SELECTION_IBLOCK_ID", 12);
 define("COLLECTION_IBLOCK_ID", 22);
 define("REVIEWS_IBLOCK_ID", 29);
+define("CONTACTS_IBLOCK_ID", 13);
 define("EVENTS_IBLOCK_ID", CIBlockTools::GetIBlockId('events'));
 define("EVENTS_ORGANIZER_IBLOCK_ID", CIBlockTools::GetIBlockId('event_organizer'));
 define("EVENTS_FORM_RESULT_IBLOCK_ID", CIBlockTools::GetIBlockId('event_form_result'));

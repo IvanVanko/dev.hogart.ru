@@ -1,0 +1,24 @@
+@media screen and (max-width: 767px) {
+}
+@media (min-width: 768px) {
+}
+.input-change-apply {
+  width: 100%;
+  display: block;
+  position: relative;
+}
+.input-change-apply [data-btn-apply],
+.input-change-apply [data-btn-discard] {
+  visibility: hidden;
+  cursor: pointer;
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: scale(0.9) translateY(-50%);
+}
+.input-change-apply [data-btn-apply] {
+  color: #95c600;
+}
+.input-change-apply [data-btn-discard] {
+  color: #d9534f;
+}

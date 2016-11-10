@@ -650,7 +650,6 @@ html {
 body {
   padding: 0;
   margin: 0;
-  min-width: 1024px;
   font-family: 'Roboto', sans-serif;
   font-weight: normal;
   font-size: 13px;
@@ -811,6 +810,17 @@ textarea {
   }
 }
 
+.header-cnt .header-nav .cart {
+  text-align: center;
+  height: 55px;
+  float: right;
+  width: 55px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
 .header-cnt .header-nav ul {
   width: 90%;
   display: table;
@@ -860,15 +870,12 @@ textarea {
   float: right;
   display: block;
   height: 55px;
-  width: 59px;
-  -webkit-transition: all 0.6s;
-  -moz-transition: all 0.6s;
-  -o-transition: all 0.6s;
-  transition: all 0.6s;
+  width: 167px;
   line-height: 64px;
   position: relative;
+  list-style: none;
 }
-.header-cnt .profile-url i {
+.header-cnt .profile-url i:not(.fa) {
   display: inline-block;
   margin-left: 16px;
 }
@@ -883,24 +890,67 @@ textarea {
   font-family: 'Roboto Condensed', sans-serif;
   font-size: 12px;
   font-weight: normal;
-  width: 150px;
+  width: 100%;
   color: #000000;
 }
-.header-cnt .profile-url:hover {
-  width: 167px;
+
+.header-cnt .profile-url.authorized .hide-text {
+  margin-left: 0;
+  width: 100%;
 }
-.header-cnt .profile-url:hover i {
+
+.header-cnt .profile-url {
+  width: 167px;
+
+  &.authorized {
+    .hide-text {
+      + i {
+        top: 90%;
+        left: 50%;
+        display: block;
+        position: absolute;
+        transform: translate(-50%, -100%);
+        color: #95c600;
+      }
+    }
+  }
+
+  &[data-depth] {
+    line-height: 55px;
+    vertical-align: middle;
+    padding-left: 0;
+    margin-bottom: 0;
+    a {
+      display: inline-block;
+    }
+    ul[data-depth] {
+      width: 100%;
+      line-height: 35px;
+      background-color: white;
+      margin-left: 0;
+      box-shadow: -5px 5px 10px;
+      font-family: "Roboto Condensed", sans-serif;
+      font-weight: normal;
+      a {
+        position: relative;
+        text-decoration: none;
+        text-transform: uppercase;
+      }
+    }
+  }
+}
+.header-cnt .profile-url i:not(.fa) {
   background-image: url(/images/icon-profile_h.png);
   background-repeat: no-repeat;
 }
 @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
-  .header-cnt .profile-url:hover i {
+  .header-cnt .profile-url i:not(.fa) {
     /* on retina, use image that's scaled by 2 */
     background-image: url(/images/icon-profile_h@2x.png);
     background-size: 23px 22px;
   }
 }
-.header-cnt .profile-url:hover .hide-text {
+.header-cnt .profile-url .hide-text {
   color: #95c600;
 }
 @media screen and (max-width: 1200px) {
@@ -910,7 +960,7 @@ textarea {
     top: 0;
     background: #fff;
   }
-  .header-cnt .profile-url:hover {
+  .header-cnt .profile-url {
     box-shadow: -1px 0 3px #ccc;
   }
 }
@@ -2334,11 +2384,11 @@ blockquote:before {
     background-size: 15px 13px;
   }
 }
-.date * {
+.date:not(.input-group) * {
   font-family: 'Roboto Condensed', sans-serif !important;
   font-weight: normal !important;
 }
-.date span {
+.date:not(.input-group) span {
   font-size: 40px !important;
   position: relative !important;
   top: 4px !important;
@@ -2349,11 +2399,11 @@ blockquote:before {
   -o-transform: rotate(2deg) !important;
   transform: rotate(2deg) !important;
 }
-.date sup {
+.date:not(.input-group) sup {
   font-size: 25px !important;
   line-height: 17px !important;
 }
-.date sub {
+.date:not(.input-group) sub {
   font-size: 12px !important;
   line-height: 17px !important;
 }
@@ -2551,7 +2601,6 @@ blockquote:before {
   padding-right: 0;
 }
 .authorized.profile-url {
-  background: #95c600;
 }
 .authorized.profile-url .icon-profile {
   width: 30px;
@@ -2570,26 +2619,26 @@ blockquote:before {
   }
 }
 .authorized.profile-url .hide-text {
-  width: 65%;
+  width: 100%;
   text-align: center;
-  color: #fff;
+  color: #95c600;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  margin-left: 0;
 }
-.authorized.profile-url:hover .icon-profile {
+.authorized.profile-url .icon-profile {
   background-image: url(/images/lk-profile.png);
   background-repeat: no-repeat;
 }
 @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
-  .authorized.profile-url:hover .icon-profile {
+  .authorized.profile-url .icon-profile {
     /* on retina, use image that's scaled by 2 */
     background-image: url(/images/lk-profile@2x.png);
     background-size: 30px 30px;
   }
 }
-.authorized.profile-url:hover .hide-text {
-  color: #fff;
+.authorized.profile-url .hide-text {
 }
 .float-right {
   float: right;
@@ -7686,6 +7735,7 @@ hr {
   font-weight: 300;
   font-size: 12px;
   line-height: 20px;
+  padding-top: 5px;
 }
 .comments-page .comments-list .text p {
   position: relative;
@@ -7693,6 +7743,7 @@ hr {
 .comments-page .comments-list .text p.date {
   margin: 0 0 -10px 0;
   opacity: .7;
+  padding: 5px 0;
 }
 .comments-page .comments-list .text p.date:before {
   display: none;

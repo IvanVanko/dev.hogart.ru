@@ -11,7 +11,7 @@ while (($brandElement = $brandRes->Fetch())) {
 
 foreach ($arResult['SECTIONS'] as &$arSection) {
     if ($arSection["DEPTH_LEVEL"] == 3) {
-        $sectionBrandRes = CIBlockElement::GetList(["PROPERTY_brand.NAME" => "ASC"], ["IBLOCK_ID" => $arResult["SECTION"]["IBLOCK_ID"], "SECTION_ID" => $arSection["ID"]], ["PROPERTY_brand"], false, ["PROPERTY_BRAND_VALUE"]);
+        $sectionBrandRes = CIBlockElement::GetList(["PROPERTY_brand.NAME" => "ASC"], ["IBLOCK_ID" => CATALOG_IBLOCK_ID, "SECTION_ID" => $arSection["ID"]], ["PROPERTY_brand"], false, ["PROPERTY_BRAND_VALUE"]);
         while ($sectionBrand = $sectionBrandRes->Fetch()) {
             $arSection["BRANDS"][] = $brands[$sectionBrand["PROPERTY_BRAND_VALUE"]];
         }

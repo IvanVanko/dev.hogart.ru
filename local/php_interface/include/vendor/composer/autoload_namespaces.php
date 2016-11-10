@@ -7,8 +7,10 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Viocon' => array($vendorDir . '/usmanhalalit/viocon/src'),
+    'Svg\\' => array($vendorDir . '/phenx/php-svg-lib/src'),
     'Sunra\\PhpSimple\\HtmlDomParser' => array($vendorDir . '/sunra/php-simple-html-dom-parser/Src'),
     'Pixie' => array($vendorDir . '/usmanhalalit/pixie/src'),
+    'FontLib\\' => array($vendorDir . '/phenx/php-font-lib/src'),
     'Firestorm\\BXHelper' => array($vendorDir . '/firestorm23/bxhelper/src'),
     'Doctrine\\ORM\\' => array($vendorDir . '/doctrine/orm/lib'),
     'Doctrine\\DBAL\\' => array($vendorDir . '/doctrine/dbal/lib'),
