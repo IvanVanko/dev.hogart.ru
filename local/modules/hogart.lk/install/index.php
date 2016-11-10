@@ -120,7 +120,8 @@ class hogart_lk extends CModule
 
         $stepTitles = [
             " - Параметры RabbitMQ",
-            " - Параметры SOAP-сервиса"
+            " - Параметры SOAP-сервиса",
+            " - Допполнительные параметры"
         ];
         $step = max(1, intval($step));
 
@@ -133,7 +134,7 @@ class hogart_lk extends CModule
             exec($command, $output);
         }
         
-        if ($step == 3) {
+        if ($step == 4) {
             RegisterModule($this->MODULE_ID);
             CopyDirFiles(__DIR__ . "/admin", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/admin");
             CopyDirFiles(__DIR__ . "/components", $_SERVER["DOCUMENT_ROOT"] . "/bitrix/components");
