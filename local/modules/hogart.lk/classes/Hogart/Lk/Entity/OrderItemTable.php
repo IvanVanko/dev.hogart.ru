@@ -18,6 +18,7 @@ use Bitrix\Main\Entity\FloatField;
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ReferenceField;
 use Bitrix\Main\Entity\StringField;
+use Bitrix\Main\Type\Date;
 use Doctrine\Common\Annotations\Annotation\Enum;
 use Hogart\Lk\Field\GuidField;
 
@@ -80,9 +81,7 @@ class OrderItemTable extends AbstractEntity
                 ],
                 'default_value' => self::STATUS_NOT_PROVIDED
             ]),
-            new DateField("delivery_time", [
-                'default_value' => 0
-            ]), // Ориентировочный срок поставки если 1 или 2(заказан у поставщика)
+            new DateField("delivery_time"), // Ориентировочный срок поставки если 1 или 2(заказан у поставщика)
             new StringField("item_group")
         ];
     }
@@ -148,6 +147,7 @@ class OrderItemTable extends AbstractEntity
         $result = new EventResult();
         $result->modifyFields([
             'status' => intval($fields['status']),
+            'delivery_time' => new Date()
         ]);
         return $result;
     }
