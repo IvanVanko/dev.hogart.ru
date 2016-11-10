@@ -81,7 +81,9 @@ class OrderItemTable extends AbstractEntity
                 ],
                 'default_value' => self::STATUS_NOT_PROVIDED
             ]),
-            new DateField("delivery_time"), // Ориентировочный срок поставки если 1 или 2(заказан у поставщика)
+            new DateField("delivery_time", [
+                'default_value' => '0000-00-00'
+            ]), // Ориентировочный срок поставки если 1 или 2(заказан у поставщика)
             new StringField("item_group")
         ];
     }
@@ -146,8 +148,7 @@ class OrderItemTable extends AbstractEntity
         $fields = $event->getParameter('fields');
         $result = new EventResult();
         $result->modifyFields([
-            'status' => intval($fields['status']),
-            'delivery_time' => new Date()
+            'status' => intval($fields['status'])
         ]);
         return $result;
     }
