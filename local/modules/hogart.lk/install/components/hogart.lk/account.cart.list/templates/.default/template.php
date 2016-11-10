@@ -226,7 +226,13 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                                                             <td><span class="glyphicon glyphicon-move" aria-hidden="true"></span></td>
                                                             <td></td>
                                                             <td class="text-nowrap"><?= $item['props']['sku']['VALUE'] ?></td>
-                                                            <td><a target="_blank" href="<?= $item['url'] ?>"><?= $item['NAME'] ?></a></td>
+                                                            <td>
+                                                                <? if ($item['ACTIVE'] == 'N'): ?>
+                                                                    <?= $item['NAME'] ?>
+                                                                <? else: ?>
+                                                                    <a target="_blank" href="<?= $item['url'] ?>"><?= $item['NAME'] ?></a>
+                                                                <? endif; ?>
+                                                            </td>
                                                             <td class="text-nowrap">
                                                                 <input tabindex="<?= $ii + 1 ?>" class="form-control input-sm"
                                                                        id="quantity-<?= $item['guid_id'] ?>"
