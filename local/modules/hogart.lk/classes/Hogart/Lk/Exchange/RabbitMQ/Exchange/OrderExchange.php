@@ -63,6 +63,7 @@ class OrderExchange extends AbstractExchange
                 }
                 break;
             case 'request':
+                $this->getConsumer()->getLogger()->notice(vsprintf("Попытка запроса заказа %s из 1с", [$envelope->getBody()]));
                 $order = OrderTable::getOrder(intval($envelope->getBody()));
                 if (!empty($order)) {
                     Client::getInstance()->Orders->ordersPut(new Order([$order]));
