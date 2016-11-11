@@ -10,9 +10,12 @@ namespace Hogart\Lk\Search;
 
 
 use Bitrix\Iblock\ElementTable;
+use Hogart\Lk\Creational\Singleton;
 
 class CartSuggest extends AbstractSearch
 {
+    use Singleton;
+
     function getIndex()
     {
         return "cart";

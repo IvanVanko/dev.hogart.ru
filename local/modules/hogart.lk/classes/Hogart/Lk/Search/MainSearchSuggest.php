@@ -11,9 +11,12 @@ namespace Hogart\Lk\Search;
 
 use Bitrix\Iblock\ElementTable;
 use Bitrix\Main\DB\Result;
+use Hogart\Lk\Creational\Singleton;
 
 class MainSearchSuggest extends AbstractSearch
 {
+    use Singleton;
+
     function getIndex()
     {
         return "main";

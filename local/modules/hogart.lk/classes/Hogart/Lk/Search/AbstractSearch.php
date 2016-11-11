@@ -15,8 +15,6 @@ use Hogart\Lk\Creational\Singleton;
 
 abstract class AbstractSearch
 {
-    use Singleton;
-
     /** @var  Client */
     protected $client;
     /** @var  string */
