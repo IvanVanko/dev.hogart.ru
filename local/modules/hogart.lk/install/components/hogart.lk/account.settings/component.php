@@ -33,7 +33,10 @@ include (__DIR__ . "/proceed_request.php");
 
 if ($account['id']) {
     $account['stores'] = AccountStoreRelationTable::getByAccountId($account['id']);
-    $account['contacts'] = ContactRelationTable::getAccountContacts($account['id']);
+    $account['contacts'] = array_merge(
+        ContactRelationTable::getAccountContacts($account['id']),
+        [AccountTable::getContact($account['id'])]
+    );
     $account['managers'] = StaffRelationTable::getManagersByAccountId($account['id']);
     $account['sub_accounts'] = AccountTable::getSubAccounts($account['id']);
     $account['is_general'] = AccountTable::isGeneralAccount($account['id']);

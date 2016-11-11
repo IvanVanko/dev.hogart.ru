@@ -61,7 +61,7 @@ class Order extends AbstractPutRequest
                         "Summ" => (float)$item['total'],
                         "Sum_VAL" => (float)$item['total_vat'],
                         "Status_Item" => (int)$item['status'],
-                        "Delivery_Time" => $item['delivery_time'],
+                        "Delivery_Time" => $item['delivery_time']->format('Y-m-d'),
                     ];
                 }
             }

@@ -24,10 +24,22 @@ class CartSuggest
 
     /** @var  Client */
     protected $client;
+    /** @var  string */
+    protected $indexName;
 
     protected function create()
     {
         $this->client = ClientBuilder::create()->build();
+        $this->indexName = $this->getIndexName();
+    }
+
+    protected function getIndexName()
+    {
+        global $DB;
+        if (null == $this->indexName) {
+            $this->indexName = vsprintf("%s-%s", [self::INDEX, md5(serialize($DB))]);
+        }
+        return $this->indexName;
     }
 
     /**
@@ -44,10 +56,10 @@ class CartSuggest
     public function createIndex()
     {
         if (!$this->client->indices()->exists([
-            'index' => self::INDEX
+            'index' => $this->indexName
         ])) {
             $this->client->indices()->create([
-                'index' => self::INDEX,
+                'index' => $this->indexName,
                 'body' => [
                     'settings' => [
                         'analysis' => [
@@ -132,10 +144,10 @@ class CartSuggest
     public function deleteIndex()
     {
         if ($this->client->indices()->exists([
-            'index' => self::INDEX
+            'index' => $this->indexName
         ])) {
             return $this->client->indices()->delete([
-                'index' => self::INDEX
+                'index' => $this->indexName
             ]);
         }
     }
@@ -186,7 +198,7 @@ class CartSuggest
         $properties = $props[$element['ID']];
         $params[] = [
             'index' => [
-                '_index' => self::INDEX,
+                '_index' => $this->indexName,
                 '_type' => self::TYPE,
                 '_id' => $element['ID'],
             ]
@@ -202,7 +214,7 @@ class CartSuggest
     public function search($term, $size = 20)
     {
         return $this->client->search([
-            'index' => self::INDEX,
+            'index' => $this->indexName,
             'type' => self::TYPE,
             'body' => [
                 'size' => $size,

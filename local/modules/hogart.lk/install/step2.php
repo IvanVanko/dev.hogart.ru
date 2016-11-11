@@ -38,5 +38,5 @@ foreach ($prevStepKeys as $key) {
         </tr>
     </table>
     <br>
-    <input type="submit" name="step_install" value="Завершить установку">
+    <input type="submit" name="step_install" value="Продолжить">
 </form>

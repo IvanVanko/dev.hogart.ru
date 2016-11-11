@@ -2160,7 +2160,7 @@ class ParsingModel {
                 "XML_ID" => $value->id,
                 "PROPERTY_VALUES" => $propA,
                 "NAME" => $value->name_full,
-                "ACTIVE" => "Y",
+                "ACTIVE" => $value->deletion_mark ? "N" : "Y",
                 "DETAIL_TEXT" => $value->description,
             );
 

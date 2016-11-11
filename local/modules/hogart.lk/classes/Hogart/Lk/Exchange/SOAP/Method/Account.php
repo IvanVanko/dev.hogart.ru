@@ -15,6 +15,7 @@ use Hogart\Lk\Entity\AccountTable;
 use Hogart\Lk\Entity\AccountStoreRelationTable;
 use Hogart\Lk\Entity\CompanyTable;
 use Hogart\Lk\Entity\ContactTable;
+use Hogart\Lk\Entity\ContractTable;
 use Hogart\Lk\Entity\StaffRelationTable;
 use Hogart\Lk\Entity\StaffTable;
 use Hogart\Lk\Entity\StoreTable;
@@ -106,7 +107,7 @@ class Account extends AbstractMethod
             $contact = ContactTable::getByField('guid_id', $accountInfo->Acc_ID_Contact);
             $main_manager = StaffTable::getByField('guid_id', $accountInfo->Acc_ID_Main_Manager);
             $head_account = AccountTable::getByField('user_guid_id', $accountInfo->Acc_ID_Head);
-            $main_contract = ContactTable::getByField('guid_id', $accountInfo->Acc_ID_Main_Contract);
+            $main_contract = ContractTable::getByField('guid_id', $accountInfo->Acc_ID_Main_Contract);
             $main_store = StoreTable::getByXmlId($accountInfo->Acc_ID_Main_Warehouse)[0];
 
             $result = AccountTable::createOrUpdateByField([
@@ -149,6 +150,7 @@ class Account extends AbstractMethod
                         AccountCompanyRelationTable::replace([
                             'account_id' => $result->getId(),
                             'company_id' => $company['id'],
+                            'is_favorite' => !empty($main_contract['id']) && $main_contract['company_id'] == $company['id']
                         ]);
                         $this->client->getLogger()->notice("Обработана компания клиента {$acc_Company}: добавлена запись");
                     }
