@@ -367,7 +367,7 @@ h6,
   z-index: 3001 !important;
 }
 ::-webkit-input-placeholder {
-  color: #eeeeee;
+  color: #dddddd;
   font-style: italic;
   font-size: 12px;
   text-indent: 0;

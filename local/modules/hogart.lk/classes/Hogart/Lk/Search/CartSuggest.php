@@ -10,44 +10,58 @@ namespace Hogart\Lk\Search;
 
 
 use Bitrix\Iblock\ElementTable;
-use Elasticsearch\Client;
-use Elasticsearch\ClientBuilder;
-use Hogart\Lk\Creational\Singleton;
-use Hogart\Lk\Debug\Timer;
 
-class CartSuggest
+class CartSuggest extends AbstractSearch
 {
-    use Singleton;
-
-    const INDEX = 'cart';
-    const TYPE = 'item';
-
-    /** @var  Client */
-    protected $client;
-    /** @var  string */
-    protected $indexName;
-
-    protected function create()
+    function getIndex()
     {
-        $this->client = ClientBuilder::create()->build();
-        $this->indexName = $this->getIndexName();
+        return "cart";
     }
 
-    protected function getIndexName()
+    function getType()
     {
-        global $DB;
-        if (null == $this->indexName) {
-            $this->indexName = vsprintf("%s-%s", [self::INDEX, md5(serialize($DB))]);
-        }
-        return $this->indexName;
+        return "item";
     }
 
     /**
-     * @return Client
+     * @return array
      */
-    public function getClient()
+    public function indexAll()
     {
-        return $this->client;
+        return $this->index(ElementTable::getList([
+            'filter' => ['=IBLOCK_ID' => CATALOG_IBLOCK_ID],
+            'select' => ['NAME', 'ID', 'XML_ID'],
+        ])->fetchAll());
+    }
+
+    /**
+     * @param $items
+     * @return array
+     */
+    public function index($items)
+    {
+        $responses = [];
+        $props = array_reduce($items, function ($result, $item) {
+            $result[$item['ID']] = $item;
+            return $result;
+        }, []);
+        \CIBlockElement::GetPropertyValuesArray($props, CATALOG_IBLOCK_ID, ['ID' => array_keys($props)], ['CODE' => ['sku']]);
+        $rows = [];
+        $i = 1;
+        foreach ($items as $item) {
+            $rows = array_merge($rows, $this->indexItem($item, $props));
+            if ($i % 1000 == 0) {
+                $responses = array_merge($responses, $this->client->bulk(['body' => $rows]));
+                $rows = [];
+            }
+            $i++;
+        }
+
+        if (!empty($rows)) {
+            $responses = array_merge($responses, $this->client->bulk(['body' => $rows]));
+        }
+
+        return $responses;
     }
 
     /**
@@ -56,10 +70,10 @@ class CartSuggest
     public function createIndex()
     {
         if (!$this->client->indices()->exists([
-            'index' => $this->indexName
+            'index' => $this->getIndexName()
         ])) {
             $this->client->indices()->create([
-                'index' => $this->indexName,
+                'index' => $this->getIndexName(),
                 'body' => [
                     'settings' => [
                         'analysis' => [
@@ -107,7 +121,7 @@ class CartSuggest
                         ]
                     ],
                     'mappings' => [
-                        self::TYPE => [
+                        $this->getType() => [
                             'properties' => [
                                 'sku' => [
                                     'type' => 'string',
@@ -138,68 +152,13 @@ class CartSuggest
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function deleteIndex()
-    {
-        if ($this->client->indices()->exists([
-            'index' => $this->indexName
-        ])) {
-            return $this->client->indices()->delete([
-                'index' => $this->indexName
-            ]);
-        }
-    }
-
-    /**
-     * @return array
-     */
-    public function indexAll()
-    {
-        return $this->index(ElementTable::getList([
-            'filter' => ['=IBLOCK_ID' => CATALOG_IBLOCK_ID],
-            'select' => ['NAME', 'ID', 'XML_ID'],
-        ])->fetchAll());
-    }
-
-    /**
-     * @param $items
-     * @return array
-     */
-    public function index($items)
-    {
-        $responses = [];
-        $props = array_reduce($items, function ($result, $item) {
-            $result[$item['ID']] = $item;
-            return $result;
-        }, []);
-        \CIBlockElement::GetPropertyValuesArray($props, CATALOG_IBLOCK_ID, ['ID' => array_keys($props)], ['CODE' => ['sku']]);
-        $rows = [];
-        $i = 1;
-        foreach ($items as $item) {
-            $rows = array_merge($rows, $this->indexItem($item, $props));
-            if ($i % 1000 == 0) {
-                $responses = array_merge($responses, $this->client->bulk(['body' => $rows]));
-                $rows = [];
-            }
-            $i++;
-        }
-
-        if (!empty($rows)) {
-            $responses = array_merge($responses, $this->client->bulk(['body' => $rows]));
-        }
-
-        return $responses;
-    }
-
-    public function indexItem($element, $props = [])
+    protected function indexItem($element, $props = [])
     {
         $properties = $props[$element['ID']];
         $params[] = [
             'index' => [
-                '_index' => $this->indexName,
-                '_type' => self::TYPE,
+                '_index' => $this->getIndexName(),
+                '_type' => $this->getType(),
                 '_id' => $element['ID'],
             ]
         ];
@@ -209,24 +168,5 @@ class CartSuggest
             'xml_id' => $element['XML_ID']
         ];
         return $params;
-    }
-
-    public function search($term, $size = 20)
-    {
-        return $this->client->search([
-            'index' => $this->indexName,
-            'type' => self::TYPE,
-            'body' => [
-                'size' => $size,
-                'query' => [
-                    'match' => [
-                        'content' => [
-                            'query' => $term,
-                            'operator' => 'and'
-                        ],
-                    ],
-                ]
-            ]
-        ]);
     }
 }
