@@ -9,8 +9,7 @@ use \Bitrix\Main\Localization\Loc;
 ?>
 <header class="header-cnt">
     <div class="inner">
-        <? $APPLICATION->IncludeComponent("bitrix:search.form", "header", Array(
-                "USE_SUGGEST" => "N",
+        <? $APPLICATION->IncludeComponent("hogart.lk:site.search.form", "", Array(
                 "PAGE" => "#SITE_DIR#search/index.php"
             )
         ); ?>

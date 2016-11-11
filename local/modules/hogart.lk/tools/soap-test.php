@@ -19,6 +19,16 @@ CModule::IncludeModule("main");
 CModule::IncludeModule("catalog");
 CModule::IncludeModule("sprint.migration");
 
+$result = \Hogart\Lk\Search\MainSearchSuggest::getInstance()
+//    ->deleteIndex()
+//    ->createIndex()
+//    ->indexAll()
+    ->search("11230251001", "s1")
+//    ->search("11230251001")
+;
+
+var_dump($result);
+exit;
 //$helper = new \Sprint\Migration\Helpers\IblockHelper();
 //$helper->addPropertyIfNotExists(CATALOG_IBLOCK_ID, [
 //    'NAME' => 'Кратность отгрузки',

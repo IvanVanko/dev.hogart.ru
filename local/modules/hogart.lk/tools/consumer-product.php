@@ -28,6 +28,7 @@ $consumer->setIsCliContext(true);
 
 $consumer->registerExchange([
     new \Hogart\Lk\Exchange\RabbitMQ\Exchange\ProductExchange(),
+    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\SiteExchange(),
 ]);
 
 while (true) {

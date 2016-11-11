@@ -157,7 +157,12 @@ abstract class AbstractExchange implements ExchangeInterface
             "delivery_mode" => 2,
             "timestamp" => time()
         ], $attributes);
-        return $this->exchange->publish($message, $this->getPublishKey($key), $flags, $attributes);
+
+        try {
+            return $this->exchange->publish($message, $this->getPublishKey($key), $flags, $attributes);
+        } catch (\Exception $e) {
+            $this->getConsumer()->getLogger()->error($e->getMessage());
+        }
     }
 
     /**
