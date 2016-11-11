@@ -38,9 +38,8 @@ abstract class AbstractSearch
 
     public function getIndexName()
     {
-        global $DB;
         if (null == $this->indexName) {
-            $this->indexName = vsprintf("%s-%s", [$this->getIndex(), md5(serialize($DB))]);
+            $this->indexName = vsprintf("%s-%s", [$this->getIndex(), substr(md5(serialize($_SERVER["DOCUMENT_ROOT"])), -6)]);
         }
         return $this->indexName;
     }

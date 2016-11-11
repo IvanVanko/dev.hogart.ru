@@ -10,6 +10,7 @@ namespace Hogart\Lk\Search;
 
 
 use Bitrix\Iblock\ElementTable;
+use Bitrix\Main\DB\Result;
 
 class MainSearchSuggest extends AbstractSearch
 {
@@ -23,17 +24,37 @@ class MainSearchSuggest extends AbstractSearch
         return "site";
     }
 
+    public function indexById($ids = null)
+    {
+        if (null === $ids) return false;
+
+        if (!is_array($ids)) $ids = [$ids];
+
+        return $this->indexAll([
+            '=ID' => $ids
+        ]);
+    }
+
+    public function deleteItemFromIndex($id)
+    {
+        return $this->client->delete([
+            'id' => $id,
+            'index' => $this->getIndexName(),
+            'type' => $this->getType()
+        ]);
+    }
+
     /**
+     * @param array $filter
      * @return array
      */
-    public function indexAll()
+    public function indexAll($filter = [])
     {
         $items = ElementTable::getList([
-            'filter' => [
-                '!IBLOCK_ID' => CATALOG_IBLOCK_ID,
+            'filter' => array_merge([
                 '=IBLOCK.ACTIVE' => true,
                 '=ACTIVE' => true,
-            ],
+            ], $filter),
             'select' => [
                 'SITE' => 'IBLOCK.Bitrix\Iblock\IblockSiteTable:IBLOCK.SITE_ID',
                 'NAME',
@@ -49,51 +70,30 @@ class MainSearchSuggest extends AbstractSearch
             ]
         ])->fetchAll();
 
-        $result = $this->index($items);
-
-        $items = ElementTable::getList([
-            'filter' => [
-                '=IBLOCK_ID' => CATALOG_IBLOCK_ID,
-                '=IBLOCK.ACTIVE' => true,
-                '=ACTIVE' => true,
-            ],
-            'select' => [
-                'SITE' => 'IBLOCK.Bitrix\Iblock\IblockSiteTable:IBLOCK.SITE_ID',
-                'NAME',
-                'ID',
-                'IBLOCK_SECTION_ID',
-                'IBLOCK_ID',
-                'BLOCK_NAME' => 'IBLOCK.NAME',
-                'XML_ID',
-                'CODE',
-                'DETAIL_PAGE_URL' => 'IBLOCK.DETAIL_PAGE_URL'
-            ]
-        ])->fetchAll();
-
-        $result = array_merge($result, $this->index($items, true));
-
-        return $result;
-
+        return $this->index($items);
     }
 
     /**
-     * @param $items
-     * @param bool $is_catalog
+     * @param array|Result $items
      * @return array
      */
-    public function index($items, $is_catalog = false)
+    public function index($items)
     {
         $responses = [];
-        $props = [];
-        if ($is_catalog) {
-            $props = array_reduce($items, function ($result, $item) {
-                $result[$item['ID']] = $item;
-                return $result;
-            }, []);
-            \CIBlockElement::GetPropertyValuesArray($props, CATALOG_IBLOCK_ID, ['ID' => array_keys($props)], ['CODE' => ['sku']]);
+
+        if ($items instanceof Result) {
+            $items = $items->fetchAll();
         }
+
+        $props = array_reduce($items, function ($result, $item) {
+            $result[$item['ID']] = $item;
+            return $result;
+        }, []);
+        \CIBlockElement::GetPropertyValuesArray($props, CATALOG_IBLOCK_ID, ['ID' => array_keys($props)], ['CODE' => ['sku']]);
+
         $rows = [];
         $i = 1;
+
         foreach ($items as $item) {
             $rows = array_merge($rows, $this->indexItem($item, $props));
             if ($i % 1000 == 0) {
@@ -129,9 +129,12 @@ class MainSearchSuggest extends AbstractSearch
             'preview_text' => strip_tags($element['PREVIEW_TEXT']),
             'detail_text' => strip_tags($element['DETAIL_TEXT']),
         ];
-        foreach ($props[$element['ID']] as $propName => $prop) {
-            $item[$propName] = $prop['VALUE'];
+        if ($element['IBLOCK_ID'] == CATALOG_IBLOCK_ID) {
+            foreach ($props[$element['ID']] as $propName => $prop) {
+                $item[$propName] = $prop['VALUE'];
+            }
         }
+
         $params[] = $item;
 
         return $params;

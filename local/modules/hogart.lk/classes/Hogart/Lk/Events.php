@@ -12,6 +12,8 @@ namespace Hogart\Lk;
 use Bitrix\Main\Mail\Event;
 use Hogart\Lk\Entity\AccountTable;
 use Hogart\Lk\Entity\ContactInfoTable;
+use Hogart\Lk\Exchange\RabbitMQ\Consumer;
+use Hogart\Lk\Exchange\RabbitMQ\Exchange\SiteExchange;
 
 class Events
 {
@@ -90,5 +92,23 @@ class Events
                 $event = 'ACCOUNT_CHANGED_PASSWORD';
             }
         }
+    }
+
+    public static function OnAfterIBlockElementAdd(&$arParams)
+    {
+        $exchange = new SiteExchange(Consumer::getInstance());
+        $exchange->publish($arParams["ID"], SiteExchange::INDEX_ITEM);
+    }
+
+    public static function OnAfterIBlockElementUpdate(&$arParams)
+    {
+        $exchange = new SiteExchange(Consumer::getInstance());
+        $exchange->publish($arParams["ID"], $arParams['ACTIVE'] == 'Y' ? SiteExchange::INDEX_ITEM : SiteExchange::INDEX_DELETE_ITEM);
+    }
+
+    public static function OnAfterIBlockElementDelete(&$arParams)
+    {
+        $exchange = new SiteExchange(Consumer::getInstance());
+        $exchange->publish($arParams["ID"], SiteExchange::INDEX_DELETE_ITEM);
     }
 }
