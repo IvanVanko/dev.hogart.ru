@@ -10,6 +10,7 @@ namespace Hogart\Lk\Exchange\SOAP\Method;
 
 use Bitrix\Main\Type\Date;
 use Hogart\Lk\Entity\CompanyTable;
+use Hogart\Lk\Entity\ContactRelationTable;
 use Hogart\Lk\Entity\ContactTable;
 use Hogart\Lk\Entity\KindOfActivityTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
@@ -59,9 +60,11 @@ class Company extends AbstractMethod
 
     public function updateCompanies()
     {
+        global $DB;
         $answer = new Response();
         $response = $this->getCompanies();
         $activities = [];
+
         foreach ($response->return->KindsOfActivity as $kind_of_activity) {
             $data = [
                 'guid_id' => $kind_of_activity->ID,
@@ -90,6 +93,7 @@ class Company extends AbstractMethod
                 }
             }
 
+            $DB->StartTransaction();
             $result = CompanyTable::createOrUpdateByField([
                 'guid_id' => $company->Comp_ID,
                 'kind_activity_id' => $activities[$company->Comp_ID_KindOfActivity] ? : '',
@@ -113,6 +117,8 @@ class Company extends AbstractMethod
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
                 $answer->addResponse(new ResponseObject($company->Comp_ID, new MethodException(MethodException::ERROR_BITRIX, [$error->getMessage(), $error->getCode()])));
+                $DB->Rollback();
+                continue;
             } else {
                 if ($result->getId()) {
                     if ($result instanceof UpdateResult) {
@@ -123,8 +129,30 @@ class Company extends AbstractMethod
                     $answer->addResponse(new ResponseObject($company->Comp_ID));
                 } else {
                     $answer->addResponse(new ResponseObject($company->Comp_ID, new MethodException(MethodException::ERROR_UNDEFINED)));
+                    $DB->Rollback();
+                    continue;
                 }
             }
+
+            $company_id = $result->getId();
+            foreach ($company->Company_Contacts as $company_contact) {
+                if (empty($company_contact->Cont_ID)) continue;
+
+                $contact = ContactTable::getByField("guid_id", $company_contact->Cont_ID);
+                if (empty($contact['id'])) continue;
+
+                $resultRelation = ContactRelationTable::replace([
+                    'contact_id' => intval($contact['id']),
+                    'owner_id' => $company_id,
+                    'owner_type' => ContactRelationTable::OWNER_TYPE_CLIENT_COMPANY,
+                    'post' => (string)$company_contact->Cont_Post
+                ]);
+
+                if (!empty($resultRelation->getId())) {
+                    $this->client->getLogger()->notice("Обновлена связь Контакта ({$company_contact->Cont_ID}) и Компании клиента ({$company->Comp_ID})");
+                }
+            }
+            $DB->Commit();
         }
         $this->companyAnswer($answer);
         return count($answer->Response);
