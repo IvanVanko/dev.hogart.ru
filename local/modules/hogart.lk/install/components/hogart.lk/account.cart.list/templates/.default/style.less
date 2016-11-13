@@ -176,7 +176,12 @@
               color: @brand-black;
             }
             a {
-              color: @brand-green;
+              color: @brand-black;
+              text-decoration: underline;
+              transition: color .2s linear;
+              &:hover {
+                color: @brand-green;
+              }
             }
           }
         }
