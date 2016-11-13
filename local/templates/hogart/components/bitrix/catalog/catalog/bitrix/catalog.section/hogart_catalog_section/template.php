@@ -417,8 +417,65 @@ $this->setFrameMode(true);
                         <div class="col-md-6 text-right text-nowrap">
                         <? if ($arItem["CATALOG_QUANTITY"] > 0): ?>
                             <div class="quantity quantity-success line <? if ($USER->IsAuthorized()): ?> line2<? endif; ?>">
-                            <? if ($USER->IsAuthorized()): ?> <span><?= $arItem["CATALOG_QUANTITY"]; ?>
-                                    <?=$arItem['CATALOG_MEASURE_NAME']?>.</span><? endif; ?></div>
+                            <? if ($USER->IsAuthorized()): ?>
+                                <span><?= $arItem["CATALOG_QUANTITY"]; ?>
+                                <?=$arItem['CATALOG_MEASURE_NAME']?>.</span><? endif; ?>
+                                <div class="stocks-wrapper">
+                        <div class="triangle-with-shadow"></div>
+                        <div class="stock-header">
+                            <?= $arItem["NAME"]?>, <?= $arResult["ALL_BRANDS"][$arItem["PROPERTIES"]["brand"]["VALUE"]]['NAME'] ?> <?= $arItem["PROPERTIES"]["sku"]["VALUE"] ?>
+                        </div>
+                        <div class="stock-items">
+                            <div class="stock-items-table">
+                            <? foreach ($arResult['STORES'] as $store_id => $store): ?>
+                                <? if (!$arItem['STORE_AMOUNTS'][$store_id]['is_visible'] && empty($arItem["PROPERTIES"]["days_till_receive"]["VALUE"])) continue; ?>
+                                <div class="stock-item">
+                                    <span class="stock-name h4 text-left">
+                                        <?= $store["TITLE"]?>
+                                    </span>
+                                    <span class="quantity">
+                                        <div>
+                                            <div class="amount h4">
+                                                <?= (int)$arItem['STORE_AMOUNTS'][$store_id]['stock'] ?> <?=$arItem['CATALOG_MEASURE_NAME']?>.
+                                            </div>
+                                            <div class="desc h6">
+                                                Остаток
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="amount h4">
+                                                <?= (int)$arItem['STORE_AMOUNTS'][$store_id]['in_reserve'] ?> <?=$arItem['CATALOG_MEASURE_NAME']?>.
+                                            </div>
+                                            <div class="desc h6">
+                                                Резерв
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="amount h4">
+                                                <?= (int)$arItem['STORE_AMOUNTS'][$store_id]['in_transit'] ?> <?=$arItem['CATALOG_MEASURE_NAME']?>.
+                                            </div>
+                                            <div class="desc h6">
+                                                Ожидается
+                                            </div>
+                                        </div>
+                                        <? if (!empty($arItem["PROPERTIES"]["days_till_receive"]["VALUE"])): ?>
+                                        <div>
+                                            <div class="amount h4">
+                                                <i class="glyphicon glyphicon-time"></i>
+                                                <?= (int)$arItem["PROPERTIES"]["days_till_receive"]["VALUE"] ?> дн.
+                                            </div>
+                                            <div class="desc h6">
+                                                Срок поставки
+                                            </div>
+                                        </div>
+                                        <? endif; ?>
+                                    </span>
+                                </div>
+                            <? endforeach; ?>
+                            </div>
+                        </div>
+                    </div>
+                            </div>
                             <? else: ?>
                             <div class="quantity quantity-fail text-nowrap">
                                 <i class="fa fa-truck" aria-hidden="true"></i> Под заказ
@@ -428,18 +485,21 @@ $this->setFrameMode(true);
                     </div>
                     <!--Только для авторизованных-->
                     <? if ($USER->IsAuthorized()): ?>
-                    <div class="row">
+                    <div class="row vertical-align">
                         <? if (!empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
-                        <div class="col-sm-6">
+                        <div class="col-sm-8">
                             <div class="info-block text-nowrap">
                                 <div class="old currency">
                                     <?= HogartHelpers::woPrice($arItem["PRICES"]["BASE"]["PRINT_VALUE"]); ?>
                                     <i class="fa fa-<?=strtolower($arItem["PRICES"]["BASE"]["CURRENCY"])?>" aria-hidden="true"></i>
                                 </div>
+                                <div class="discount">
+                                    <?= $arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"] ?>%
+                                </div>
                             </div>
                         </div>
                         <? endif; ?>
-                        <div class="col-sm-6 text-right pull-right">
+                        <div class="col-sm-4 text-right pull-right">
                             <?= \Hogart\Lk\Helper\Template\Cart::Link(
                                 '<i class="fa fa-cart-plus" aria-hidden="true"></i>',
                                 [

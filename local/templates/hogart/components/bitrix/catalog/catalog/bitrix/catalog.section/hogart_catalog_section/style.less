@@ -30,12 +30,129 @@
     }
   }
 }
+
+.stocks-wrapper {
+  display: none;
+  border: 0 none;
+  border-radius: 5px;
+  right: -25px;
+  bottom: 35px;
+  position: absolute;
+  background-color: white;
+  box-shadow: 1px 1px 10px 2px #666;
+  width: 330px;
+  z-index: 100;
+  .stock-header {
+    background: @brand-green;
+    white-space: normal;
+    text-align: center;
+    border-radius: 5px 5px 0 0;
+    color: white;
+    font-size: 1.2em;
+    padding: 6px 10px;
+  }
+  .stock-items {
+    color: @brand-black;
+    padding: 0 10px 10px;
+    .stock-items-table {
+      position: relative;
+      display: table;
+      width: 100%;
+      .stock-item {
+        display: table-row;
+        &:after {
+          position: absolute;
+          display: table-cell;
+          width: 100%;
+          content: "";
+          height: 0;
+          border-bottom: 1px solid lighten(@brand-black, 25%)
+        }
+        &:last-child:after {
+          content: none;
+        }
+        span {
+          display: block;
+          padding: 10px 0;
+          vertical-align: middle;
+          &.stock-name {
+            padding: 0;
+          }
+          &.quantity {
+            padding: 0;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            white-space: nowrap;
+            .amount {
+              margin: 0;
+            }
+            .desc {
+              margin-top: 0;
+              color: lighten(@brand-black, 25%)
+            }
+          }
+        }
+      }
+    }
+  }
+  .triangle-with-shadow {
+    width: 30px;
+    height: 30px;
+    overflow: hidden;
+    position: absolute;
+    bottom: -30px;
+    right: 15px;
+    &:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50%;
+      height: 50%;
+      background: #fff;
+      transform-origin: center;
+      transform:
+              translate(50%, -50%)
+              rotate(45deg)
+    ;
+      box-shadow: 1px 1px 10px 1px #666;
+    }
+  }
+}
+
 .catalog_page .perechen {
   .perechen-produts.grid {
     padding-left: 25px !important;
     margin-left: -25px !important;
-    overflow: hidden;
     transition: max-height .4s ease;
+
+    .quantity-success {
+      position: relative;
+      &:hover {
+        .stocks-wrapper {
+          display: block !important;
+        }
+      }
+    }
+
+    .discount {
+      top: auto;
+      left: auto;
+      background-color: @brand-green;
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      color: #fff;
+      border-radius: 100%;
+      font-family: 'Roboto Condensed', sans-serif;
+      font-weight: 300;
+      font-size: 12px;
+      line-height: 30px;
+      text-align: center;
+      position: relative;
+    }
 
     &.closed {
       max-height: 46px !important;
@@ -291,93 +408,7 @@
                         margin-top: 2px;
                       }
 
-                      .stocks-wrapper {
-                        display: none;
-                        border: 0 none;
-                        border-radius: 5px;
-                        right: -25px;
-                        bottom: 35px;
-                        position: absolute;
-                        background-color: white;
-                        box-shadow: 1px 1px 10px 2px #666;
-                        width: 330px;
-                        z-index: 100;
-                        .stock-header {
-                          background: @brand-green;
-                          border-radius: 5px 5px 0 0;
-                          color: white;
-                          font-size: 1.2em;
-                          padding: 6px 10px;
-                        }
-                        .stock-items {
-                          padding: 0 10px 10px;
-                          .stock-items-table {
-                            position: relative;
-                            display: table;
-                            width: 100%;
-                            .stock-item {
-                              display: table-row;
-                              &:after {
-                                position: absolute;
-                                display: table-cell;
-                                width: 100%;
-                                content: "";
-                                height: 0;
-                                border-bottom: 1px solid lighten(@brand-black, 25%)
-                              }
-                              &:last-child:after {
-                                content: none;
-                              }
-                              span {
-                                display: block;
-                                padding: 10px 0;
-                                vertical-align: middle;
-                                &.stock-name {
-                                  padding: 0;
-                                }
-                                &.quantity {
-                                  padding: 0;
-                                  display: flex;
-                                  flex-direction: row;
-                                  align-items: center;
-                                  justify-content: space-between;
-                                  white-space: nowrap;
-                                  .amount {
-                                    margin: 0;
-                                  }
-                                  .desc {
-                                    margin-top: 0;
-                                    color: lighten(@brand-black, 25%)
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                        .triangle-with-shadow {
-                          width: 30px;
-                          height: 30px;
-                          overflow: hidden;
-                          position: absolute;
-                          bottom: -30px;
-                          right: 15px;
-                          &:after {
-                            content: "";
-                            position: absolute;
-                            top: 0;
-                            left: 0;
-                            width: 50%;
-                            height: 50%;
-                            background: #fff;
-                            transform-origin: center;
-                            transform:
-                              translate(50%, -50%)
-                              rotate(45deg)
-                              ;
-                            box-shadow: 1px 1px 10px 1px #666;
-                          }
-                        }
-                      }
+
 
                       &:hover {
                         .stocks-wrapper {
