@@ -38,10 +38,10 @@ var DataTableOptions = {
       render: $.fn.dataTable.render.number(' ', '.', 2, '', ''),
       targets: 't-money'
     },
-    {
-      render: $.fn.dataTable.render.number('', '', 0, '', '&#37;'),
-      targets: 't-percent'
-    },
+    // {
+    //   render: $.fn.dataTable.render.number('', '', 0, '', '&#37;'),
+    //   targets: 't-percent'
+    // },
     {
       data: 'measure',
       targets: 6,

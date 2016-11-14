@@ -46,18 +46,34 @@ class CompanyDiscountTable extends AbstractEntity
         ];
     }
 
+    public static function getDiscountByContractAndItem($contract_id, $item_id)
+    {
+        $discount = self::getList([
+            'filter' => [
+                '=item_id' => $item_id,
+                '=company.Hogart\Lk\Entity\ContractTable:company.id' => $contract_id
+            ],
+            'select' => [
+                'discount'
+            ]
+        ])->fetch();
+
+        return floatval($discount['discount']);
+    }
+
     /**
-     * @param $contract_id
+     * @param int $contract_id
      * @param array $prices
+     * @param array $discounts
      * @return array
      */
-    public static function preparePricesByContract($contract_id = 0, $prices = [])
+    public static function preparePricesByContract($contract_id = 0, $prices = [], $discounts = [])
     {
         // ID номенклатуры
         $id = array_keys($prices);
-        $discounts = [];
+        $_discounts = [];
         if ($contract_id > 0) {
-            $discounts = array_reduce(self::getList([
+            $_discounts = array_reduce(self::getList([
                 'filter' => [
                     '=item_id' => $id,
                     '=company.Hogart\Lk\Entity\ContractTable:company.id' => $contract_id
@@ -69,9 +85,10 @@ class CompanyDiscountTable extends AbstractEntity
             ])->fetchAll(), function ($result, $item) { $result[$item['item_id']]['discount'] = $item['discount']; return $result; }, []);
         }
         foreach ($prices as $id => &$price) {
-            $new_price = round($price * (100 - floatval($discounts[$id]['discount'])) / 100, 2);
+            $new_price = round($price * (100 - floatval($discounts[$id] ? : $_discounts[$id]['discount'])) / 100, 2);
             $price = [
-                'discount' =>  floatval($discounts[$id]['discount']),
+                'max_discount' => floatval($_discounts[$id]['discount']),
+                'discount' =>  floatval($discounts[$id] ? : $_discounts[$id]['discount']),
                 'price' => $new_price,
                 'discount_amount' => floatval($price - $new_price)
             ];

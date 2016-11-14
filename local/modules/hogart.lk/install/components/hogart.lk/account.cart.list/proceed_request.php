@@ -113,6 +113,9 @@ if (
         case 'change_quantity':
             CartTable::changeCount($_REQUEST['cart_id'], $_REQUEST['item_id'], $_REQUEST['quantity']);
             break;
+        case 'change_discount':
+            CartTable::changeDiscount($_REQUEST['cart_id'], $_REQUEST['item_id'], $_REQUEST['discount']);
+            break;
         case 'edit_items_group':
             CartTable::changeCategory(
                 $_REQUEST['cart_id'],
