@@ -485,7 +485,7 @@ $this->setFrameMode(true);
                     </div>
                     <!--Только для авторизованных-->
                     <? if ($USER->IsAuthorized()): ?>
-                    <div class="row vertical-align">
+                    <div class="row <?= (!empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"]) ? "vertical-align" : "") ?>">
                         <? if (!empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
                         <div class="col-sm-8">
                             <div class="info-block text-nowrap">
