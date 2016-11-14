@@ -485,6 +485,11 @@ input[type="radio"] .styled:checked + label::after {
   color: #2c2432;
 }
 .cart-wrapper [data-cart] .cart-item-list-wrapper [data-item-group] [data-table] tr a {
+  color: #2c2432;
+  text-decoration: underline;
+  transition: color .2s linear;
+}
+.cart-wrapper [data-cart] .cart-item-list-wrapper [data-item-group] [data-table] tr a:hover {
   color: #95c600;
 }
 .cart-wrapper [data-cart] .cart-item-list-wrapper [data-item-group]:before {
