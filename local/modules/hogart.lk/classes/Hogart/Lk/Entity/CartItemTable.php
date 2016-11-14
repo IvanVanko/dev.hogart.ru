@@ -63,6 +63,9 @@ class CartItemTable extends AbstractEntity
             new DatetimeField("created_at"),
             new DatetimeField("updated_at"),
             new FloatField("price"),
+            new FloatField("discount", [
+                'default_value' => 0
+            ]),
             new IntegerField("price_ttl", [
                 'default_value' => self::$DEFAULT_PRICE_TTL
             ])
@@ -245,12 +248,16 @@ class CartItemTable extends AbstractEntity
             return new AddResult();
         }
 
+        $discount_prices[$item_id] = $price['PRICE'];
+        $discount_prices = CompanyDiscountTable::preparePricesByContract($contract_id, $discount_prices);
+
         $result = self::createOrUpdateByField([
             'cart_id' => $cart_id,
             'item_id' => $item_id,
             'item_group' => $item_group,
             'count' => $cnt,
             'price' => $price['PRICE'],
+            'discount' => floatval($discount_prices[$item_id]['discount']),
             'item_group_position' => $position
         ], 'guid_id');
         $data = $result->getData();

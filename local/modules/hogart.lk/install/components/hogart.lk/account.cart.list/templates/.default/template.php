@@ -208,7 +208,7 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                                                         <th >Ед.</th>
                                                         <th class="t-money">Цена</th>
                                                         <? if (!empty($cart['contract_id'])) :?>
-                                                        <th class="t-percent">Тек. скидка</th>
+                                                        <th class="t-percent">Скидка %</th>
                                                         <th class="t-money text-center">Цена&nbsp;с&nbsp;уч. скидки</th>
                                                         <? endif; ?>
                                                         <th class="t-money">Сумма</th>
@@ -248,7 +248,7 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                                                                     ) ?>
                                                                        data-change-apply
                                                                        data-change-discard="false"
-                                                                       type="text" size="3" maxlength="3" value="<?= $item['count'] ?>">
+                                                                       type="number" min="1" max="9999" size="3" maxlength="3" value="<?= $item['count'] ?>">
                                                             </td>
                                                             <td><?= $arResult['measures'][$item['product']['MEASURE']] ?></td>
                                                             <td class="text-nowrap money-<?= strtolower($cart['currency']['CURRENCY']) ?>"><?= $item['price'] ?></td>
@@ -269,7 +269,7 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                                                                     ) ?>
                                                                        data-change-apply
                                                                        data-change-discard="false"
-                                                                       type="text" size="3" maxlength="3" value="<?= $item['discount']['discount'] ?>">
+                                                                       type="number" min="0" max="<?= $item['discount']['max_discount'] ?>" size="3" maxlength="3" value="<?= $item['discount']['discount'] ?>">
                                                             </td>
                                                             <td class="text-nowrap money-<?= strtolower($cart['currency']['CURRENCY']) ?>"><?= $item['discount']['price'] ?></td>
                                                             <? endif; ?>
