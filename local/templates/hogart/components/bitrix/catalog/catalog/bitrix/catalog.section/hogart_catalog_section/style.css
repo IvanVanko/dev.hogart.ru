@@ -126,10 +126,10 @@
   transition: max-height 0.4s ease;
   margin-top: 0 !important;
 }
-.catalog_page .perechen .perechen-produts.grid .quantity-success {
+.catalog_page .perechen .perechen-produts.grid .quantity-wrapper {
   position: relative;
 }
-.catalog_page .perechen .perechen-produts.grid .quantity-success:hover .stocks-wrapper {
+.catalog_page .perechen .perechen-produts.grid .quantity-wrapper:hover .stocks-wrapper {
   display: block !important;
 }
 .catalog_page .perechen .perechen-produts.grid .discount {
@@ -436,21 +436,21 @@
 .catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li[data-brand-item-id] span.cell.quantity--available .fa {
   color: #95c600;
 }
-.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li[data-collection-item-id] span.cell.quantity--available .quantity-wrapper,
-.catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li[data-brand-item-id] span.cell.quantity--available .quantity-wrapper {
+.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li[data-collection-item-id] span.cell.quantity .quantity-wrapper,
+.catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li[data-brand-item-id] span.cell.quantity .quantity-wrapper {
   position: relative;
   display: inline-block;
   cursor: pointer;
 }
-.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li[data-collection-item-id] span.cell.quantity--available .quantity-wrapper:after,
-.catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li[data-brand-item-id] span.cell.quantity--available .quantity-wrapper:after {
+.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li[data-collection-item-id] span.cell.quantity .quantity-wrapper:after,
+.catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li[data-brand-item-id] span.cell.quantity .quantity-wrapper:after {
   border-bottom: dotted 1px #95c600;
   display: block;
   content: " ";
   margin-top: 2px;
 }
-.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li[data-collection-item-id] span.cell.quantity--available .quantity-wrapper:hover .stocks-wrapper,
-.catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li[data-brand-item-id] span.cell.quantity--available .quantity-wrapper:hover .stocks-wrapper {
+.catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li[data-collection-item-id] span.cell.quantity .quantity-wrapper:hover .stocks-wrapper,
+.catalog_page .perechen .perechen-produts.list li.brand-table ul[data-brand] li[data-brand-item-id] span.cell.quantity .quantity-wrapper:hover .stocks-wrapper {
   display: block !important;
 }
 .catalog_page .perechen .perechen-produts.list div.collection-table ul[data-collection] li.caption {

@@ -1058,10 +1058,10 @@
   transition: max-height 0.4s ease;
   margin-top: 0 !important;
 }
-.product ul[data-control] .quantity-success {
+.product ul[data-control] .quantity-wrapper {
   position: relative;
 }
-.product ul[data-control] .quantity-success:hover .stocks-wrapper {
+.product ul[data-control] .quantity-wrapper:hover .stocks-wrapper {
   display: block !important;
 }
 .product ul[data-control] .discount {

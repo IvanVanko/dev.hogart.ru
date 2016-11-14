@@ -127,8 +127,7 @@
     padding-left: 25px !important;
     margin-left: -25px !important;
     transition: max-height .4s ease;
-
-    .quantity-success {
+    .quantity-wrapper {
       position: relative;
       &:hover {
         .stocks-wrapper {
@@ -397,23 +396,22 @@
                     .fa {
                       color: @brand-green;
                     }
-                    .quantity-wrapper {
-                      position: relative;
-                      display: inline-block;
-                      cursor: pointer;
-                      &:after {
-                        border-bottom: dotted 1px @brand-green;
-                        display: block;
-                        content: " ";
-                        margin-top: 2px;
-                      }
+                  }
+                  .quantity-wrapper {
+                    position: relative;
+                    display: inline-block;
+                    cursor: pointer;
 
+                    &:after {
+                      border-bottom: dotted 1px @brand-green;
+                      display: block;
+                      content: " ";
+                      margin-top: 2px;
+                    }
 
-
-                      &:hover {
-                        .stocks-wrapper {
-                          display: block !important;
-                        }
+                    &:hover {
+                      .stocks-wrapper {
+                        display: block !important;
                       }
                     }
                   }

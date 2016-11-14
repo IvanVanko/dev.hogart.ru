@@ -57,7 +57,6 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
 <div class="cart-wrapper row">
     <div id="carts" class="<?= (!$arParams['isEmpty'] ? "full-height" : "") ?> col-sm-12">
         <? $carts_node = Ajax::Start($component, ['step1']) ?>
-        <? if (!$arParams['isEmpty']): ?>
         <div class="row spacer">
             <div class="col-sm-9">
                 <? include __DIR__ . "/header.php"; ?>
@@ -254,7 +253,24 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                                                             <td><?= $arResult['measures'][$item['product']['MEASURE']] ?></td>
                                                             <td class="text-nowrap money-<?= strtolower($cart['currency']['CURRENCY']) ?>"><?= $item['price'] ?></td>
                                                             <? if (!empty($cart['contract_id'])) :?>
-                                                            <td><?= $item['discount']['discount'] ?></td>
+                                                            <td>
+                                                                <input tabindex="-1" class="form-control input-sm"
+                                                                       id="discount-<?= $item['guid_id'] ?>"
+                                                                    <?= Ajax::OnEvent(
+                                                                        'changeapply',
+                                                                        $cart['guid_id'],
+                                                                        $cart['ajax_node']->getId(),
+                                                                        [
+                                                                            'cart_id' => $cart['guid_id'],
+                                                                            'item_id' => $item['guid_id'],
+                                                                            'action' => 'change_discount',
+                                                                            'discount' => 'javascript:function (element) { return $(element).val(); }',
+                                                                        ]
+                                                                    ) ?>
+                                                                       data-change-apply
+                                                                       data-change-discard="false"
+                                                                       type="text" size="3" maxlength="3" value="<?= $item['discount']['discount'] ?>">
+                                                            </td>
                                                             <td class="text-nowrap money-<?= strtolower($cart['currency']['CURRENCY']) ?>"><?= $item['discount']['price'] ?></td>
                                                             <? endif; ?>
                                                             <td class="text-nowrap money-<?= strtolower($cart['currency']['CURRENCY']) ?>"><?= ($item['discount']['price'] * $item['count']) ?></td>
@@ -480,7 +496,6 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
             </div>
         <? endforeach; ?>
 
-        <? endif; ?>
         <? Ajax::End($carts_node->getId()) ?>
     </div>
 </div>
