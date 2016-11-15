@@ -23,7 +23,9 @@ while ($ob = $ar_res->GetNextElement()) {
 	$arFields["FILE"]["EXTENTION"] = $info->getExtension();
 	$arResult["DOCS"][] = $arFields;
 }
-$sections_for_links = array($arResult['IBLOCK_SECTION_ID']);
+
+if (!empty($arResult['IBLOCK_SECTION_ID']))
+    $sections_for_links = array($arResult['IBLOCK_SECTION_ID']);
 
 $brands = BXHelper::getElementLinkEnum($arResult['DISPLAY_PROPERTIES']['brand']['ID'], false, array(), 'CODE');
 $arResult['PRODUCT_PROPERTIES'] = $result_properties;
@@ -66,6 +68,7 @@ if (!empty($arResult["PROPERTIES"]["buy_with_this"]["VALUE"])) {
     }
 }
 foreach ($arResult['buy_with_this']["ITEMS"] as $i => $arCollItem) {
+    if (empty($arCollItem['IBLOCK_SECTION_ID'])) continue;
     $sections_for_links[] = $arCollItem['IBLOCK_SECTION_ID'];
 }
 if (!empty($arResult["PROPERTIES"]["related"]["VALUE"])) {
@@ -79,6 +82,7 @@ if (!empty($arResult["PROPERTIES"]["related"]["VALUE"])) {
     }
 }
 foreach ($arResult['related']["ITEMS"] as $i => $arCollItem) {
+    if (empty($arCollItem['IBLOCK_SECTION_ID'])) continue;
     $sections_for_links[] = $arCollItem['IBLOCK_SECTION_ID'];
 }
 
@@ -93,6 +97,7 @@ if (!empty($arResult["PROPERTIES"]["alternative"]["VALUE"])) {
     }
 }
 foreach ($arResult['alternative'] as $i => $arCollItem) {
+    if (empty($arCollItem['IBLOCK_SECTION_ID'])) continue;
     $sections_for_links[] = $arCollItem['IBLOCK_SECTION_ID'];
 }
 
@@ -142,7 +147,10 @@ if (!empty($arResult["PROPERTIES"]["collection"]["VALUE"])) {
         $arCollItem["PRICES"]["BASE"]["DISCOUNT_VALUE"] = $prices[$id]['price'];
         $arCollItem["PRICES"]["BASE"]["DISCOUNT_DIFF"] = $prices[$id]['discount_amount'];
         $arCollItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"] = (float)$prices[$id]['discount'];
-        $sections_for_links[] = $arCollItem['IBLOCK_SECTION_ID'];
+
+        if (!empty($arCollItem['IBLOCK_SECTION_ID'])) {
+            $sections_for_links[] = $arCollItem['IBLOCK_SECTION_ID'];
+        }
     }
 
     $collection = CIBlockElement::GetByID($arResult["PROPERTIES"]["collection"]["VALUE"])->GetNext();
