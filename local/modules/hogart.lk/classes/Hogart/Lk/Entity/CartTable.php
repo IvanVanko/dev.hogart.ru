@@ -473,6 +473,22 @@ class CartTable extends AbstractEntity
         ]);
     }
 
+    public static function setMaxDiscounts($cart_id)
+    {
+        $cart = CartTable::getByPrimary(['guid_id' => $cart_id])->fetch();
+        $cart = self::getAccountCartList($cart['account_id'], $cart_id);
+
+        foreach ($cart['items'] as $item_group => $items) {
+            foreach ($items as $item) {
+                CartItemTable::update($item['guid_id'], [
+                    'cart_id' => $item['cart_id'],
+                    'discount' => $item['discount']['max_discount']
+                ]);
+            }
+        }
+        return true;
+    }
+
     public static function onBeforeAdd(Event $event)
     {
         $result = new EventResult();
