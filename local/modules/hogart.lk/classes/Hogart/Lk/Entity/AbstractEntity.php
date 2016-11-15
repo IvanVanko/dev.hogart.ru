@@ -191,7 +191,7 @@ abstract class AbstractEntity extends Entity\DataManager
                 $result = static::add($data);
             }
         } catch (\Exception $e) {
-            $result = new Entity\Result();
+            $result = new Entity\UpdateResult();
             $result->addError(new Error($e->getMessage(), $e->getCode()));
             return $result;
         }

@@ -28,6 +28,7 @@ $account = AccountTable::getAccountByUserID($USER->GetID());
 if ($account['id']) {
     ini_set('output_buffering', 'Off');
     ini_set('zlib.output_compression', 'Off');
+    $session_id = session_id();
     session_write_close();
     ignore_user_abort(true);
     ob_implicit_flush(true);
@@ -54,10 +55,12 @@ if ($account['id']) {
         }
 
         if ($timer % 5 == 0) {
-            session_start(session_id());
-            $account = AccountTable::getAccountByUserID($USER->GetID());
-            echo "data: " . json_encode(['type' => 'heartbeat', 'account' => (int)$account['id']]) . PHP_EOL . PHP_EOL;
+            session_start($session_id);
+            $user_id = $USER->GetID();
             session_write_close();
+
+            $account = AccountTable::getAccountByUserID($user_id);
+            echo "data: " . json_encode(['type' => 'heartbeat', 'account' => (int)$account['id']]) . PHP_EOL . PHP_EOL;
         }
 
         if ($cart_count != ($new_cart_count = CartItemTable::getAccountCartCount($account['id']))) {

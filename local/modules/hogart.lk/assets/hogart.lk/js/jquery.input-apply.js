@@ -74,7 +74,7 @@
           return true;
         });
 
-        self.on('keyup', function (e) {
+        self.on('keyup input', function (e) {
           var data = self.data('changeApply');
           if (e.keyCode == 13) {
             if (data.changed)

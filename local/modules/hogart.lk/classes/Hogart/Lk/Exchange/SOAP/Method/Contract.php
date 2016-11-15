@@ -88,7 +88,7 @@ class Contract extends AbstractMethod
                 'number' => (string)$contract->Contr_Number,
                 'start_date' => new Date((string)$contract->Contr_Date, 'Y-m-d'),
                 'end_date' => new Date((string)$contract->Contr_DateTO, 'Y-m-d'),
-                'extension' => $contract->Contr_Prolon,
+                'prolongation' => (bool)$contract->Contr_Prolon,
                 'currency_code' => $contract->Contr_ID_Money,
                 'perm_item' => (bool)$contract->Contr_Perm_Item,
                 'perm_promo' => (bool)$contract->Contr_Perm_Promo,

@@ -208,7 +208,8 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                                                         <th >Ед.</th>
                                                         <th class="t-money">Цена</th>
                                                         <? if (!empty($cart['contract_id'])) :?>
-                                                        <th class="t-percent">Скидка %</th>
+                                                        <th class="">Скидка %</th>
+                                                        <th class="t-percent">Max. скидка %</th>
                                                         <th class="t-money text-center">Цена&nbsp;с&nbsp;уч. скидки</th>
                                                         <? endif; ?>
                                                         <th class="t-money">Сумма</th>
@@ -269,8 +270,9 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                                                                     ) ?>
                                                                        data-change-apply
                                                                        data-change-discard="false"
-                                                                       type="number" min="0" max="<?= $item['discount']['max_discount'] ?>" size="3" maxlength="3" value="<?= $item['discount']['discount'] ?>">
+                                                                       type="number" min="0" max="<?= $item['discount']['max_discount'] ?>" size="2" maxlength="2" value="<?= $item['discount']['discount'] ?>">
                                                             </td>
+                                                            <td class="text-nowrap"><?= $item['discount']['max_discount'] ?></td>
                                                             <td class="text-nowrap money-<?= strtolower($cart['currency']['CURRENCY']) ?>"><?= $item['discount']['price'] ?></td>
                                                             <? endif; ?>
                                                             <td class="text-nowrap money-<?= strtolower($cart['currency']['CURRENCY']) ?>"><?= ($item['discount']['price'] * $item['count']) ?></td>
@@ -443,6 +445,23 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                                                     ]
                                                 ) ?>
                                             </li>
+                                            <? if (!empty($cart['contract_id'])): ?>
+                                                <li data-set-max_discounts>
+                                                    <i class="fa fa-li fa-percent fa-lg text-primary" aria-hidden="true"></i>
+                                                    <?= Ajax::Link(
+                                                        'Установить max. скидки',
+                                                        'carts',
+                                                        $carts_node->getId(),
+                                                        [
+                                                            'cart_id' => $cart['guid_id'],
+                                                            'action' => 'set_max_discounts',
+                                                            'item' => null,
+                                                            'new_item_group' => null,
+                                                            'copy' => null
+                                                        ]
+                                                    ) ?>
+                                                </li>
+                                            <? endif; ?>
                                             <li data-copy-move-button>
                                                 <i class="fa fa-li fa-copy fa-lg text-primary" aria-hidden="true"></i>
                                                 <?= Ajax::Link(

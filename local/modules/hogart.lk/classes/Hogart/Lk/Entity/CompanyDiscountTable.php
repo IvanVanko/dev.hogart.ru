@@ -9,10 +9,13 @@
 namespace Hogart\Lk\Entity;
 
 
+use Bitrix\Iblock\ElementTable;
 use Bitrix\Main\DB\SqlExpression;
+use Bitrix\Main\Entity\Event;
 use Bitrix\Main\Entity\FloatField;
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ReferenceField;
+use Hogart\Lk\Helper\Template\Message;
 
 /**
  * Таблица Скидок компании на товары
@@ -128,5 +131,41 @@ class CompanyDiscountTable extends AbstractEntity
         return [
             new Index("idx_company_discount_entity_most", ['company_id', 'item_id']),
         ];
+    }
+
+    public static function onAfterUpdate(Event $event)
+    {
+        $fields = $event->getParameter('fields');
+
+        $items = CartItemTable::getList([
+            'filter' => [
+                '=cart.contract.company_id' => $fields['company_id'],
+                '=item_id' => $fields['item_id'],
+                '>discount' => $fields['discount']
+            ],
+            'select' => [
+                '*',
+                'account_id' => 'cart.account_id'
+            ]
+        ])->fetchAll();
+
+        foreach ($items as $item) {
+            CartItemTable::update($item["guid_id"], [
+                'cart_id' => $item["cart_id"],
+                'discount' => floatval($fields['discount'])
+            ]);
+
+            $element = ElementTable::getById($item["item_id"])->fetch();
+
+            $message = new Message(
+                vsprintf("Скидка на товар <b><u>%s</u></b> в корзине изменена!", [$element["NAME"]]),
+                Message::SEVERITY_WARNING
+            );
+            $message
+                ->setIcon('fa fa-exclamation-triangle')
+                ->setDelay(0)
+            ;
+            FlashMessagesTable::addNewMessage($item['account_id'], $message);
+        }
     }
 }
