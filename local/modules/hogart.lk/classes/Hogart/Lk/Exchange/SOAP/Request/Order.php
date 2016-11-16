@@ -51,7 +51,7 @@ class Order extends AbstractPutRequest
                         "Order_Line_Number" => (int)$item['string_number'],
                         "Order_Item_ID" => '', // $item['d_guid_id'], //
                         "ID_Item" => $item['XML_ID'],
-                        "Item_Acrticle" => $item['props']['sku']['VALUE'],
+                        "Item_Article" => $item['props']['sku']['VALUE'],
                         "Item_Name" => $item['NAME'],
                         "Count" => (int)$item['count'],
                         "Group" => $item['item_group'],
