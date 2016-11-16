@@ -137,8 +137,8 @@ abstract class AbstractExchange implements ExchangeInterface
                 $this->queue->ack($message->getDeliveryTag());
                 $this->consumer->getLogger()->notice("Финиш задачи {$message->getRoutingKey()} обработана");
             } catch (\Exception $e) {
-                $this->queue->nack($message->getDeliveryTag(), AMQP_REQUEUE);
-                $error = "Ошибка обработки задачи {$message->getRoutingKey()}: {$e->getMessage()}\n" . $e->getTraceAsString();
+                $this->queue->nack($message->getDeliveryTag(), (intval($message->getTimeStamp()) + 2*3600) > time() ? AMQP_REQUEUE: AMQP_NOPARAM);
+                $error = "Ошибка обработки задачи {$message->getRoutingKey()}: {$e->getMessage()} ({$e->getCode()})\n" . $e->getTraceAsString();
                 $this->consumer->getLogger()->error($error);
             }
         }
@@ -155,8 +155,7 @@ abstract class AbstractExchange implements ExchangeInterface
     {
         $attributes = array_merge([
             "delivery_mode" => 2,
-            "timestamp" => time(),
-            "expiration" => "120000"
+            "timestamp" => time()
         ], $attributes);
 
         try {
