@@ -25,7 +25,7 @@ use Hogart\Lk\Helper\Template\FlashError;
 use Hogart\Lk\Helper\Template\FlashSuccess;
 use Hogart\Lk\Helper\Mail\Event;
 
-global $APPLICATION;
+global $APPLICATION, $DB;
 
 if (!empty($account['id']) && !empty($_REQUEST)) {
 
@@ -157,6 +157,7 @@ if (!empty($account['id']) && !empty($_REQUEST)) {
             die();
             break;
         case 'add-company':
+            $DB->StartTransaction();
             $new_company = [
                 'type' => intval($_POST['company_type']),
                 'is_active' => (bool)$_POST['is_active']
@@ -298,6 +299,35 @@ if (!empty($account['id']) && !empty($_REQUEST)) {
                         break;
                 }
 
+                $start_date = new DateTime();
+                $end_date = new DateTime();
+                $end_date->setDate($start_date->format('Y'), '12', '31');
+                $diff = $start_date->diff(new DateTime($start_date->format('Y') . "-10-01"));
+                if ($diff->format('%R%a') < 0) {
+                    $end_date->add(new DateInterval('P1Y'));
+                }
+
+                $company = $added_company_result->getData();
+                $contract = [
+                    'company_id' => $added_company_result->getId(),
+                    'hogart_company_id' => "",
+                    'start_date' => Date::createFromPhp($start_date),
+                    'end_date' => Date::createFromPhp($end_date),
+                    'currency_code' => "RUB",
+                    'perm_item' => true,
+                    'perm_promo' => false,
+                    'perm_clearing' => true,
+                    'perm_card' => $company['type'] != CompanyTable::TYPE_LEGAL_ENTITY,
+                    'perm_cash' => true,
+                    'is_active' => true
+                ];
+
+                ContractTable::add($contract);
+
+                $DB->Commit();
+                new FlashSuccess(vsprintf("Создана компания %s", [$added_company_result->getData()['name']]));
+            } else {
+                $DB->Rollback();
             }
             LocalRedirect($APPLICATION->GetCurPage(false));
             die();
