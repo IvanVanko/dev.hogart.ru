@@ -613,7 +613,7 @@ HTML;
                     'item_group' => $item_group,
                     'count' => $item['count'],
                     'price' => $item['price'],
-                    'discount' => floatval($item['price'] - $item['discount']['price']),
+                    'discount' => floatval($item['discount']['discount']),
                     'discount_price' => floatval($item['discount']['price']),
                     'total' => ($item['discount']['price'] ? : $item['price']) * $item['count']
                 ];
