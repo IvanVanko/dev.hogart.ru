@@ -32,10 +32,9 @@ class Orders extends AbstractMethod
         $this->client->getLogger()->debug(var_export($request->__toRequest(), true));
         $response = $this->client->getSoapClient()->OrdersPut($request->__toRequest());
         if (!empty($response->return->Error)) {
-            $this->client->getLogger()->error(
-                MethodException::getErrorMessage(MethodException::ERROR_SOAP, [$response->return->ErrorText, $response->return->Error])
-            );
-            return false;
+            $error = new MethodException(MethodException::ERROR_SOAP, [$response->return->ErrorText, $response->return->Error]);
+            $this->client->getLogger()->error($error->getMessage());
+            throw $error;
         }
         foreach ($response->return->Response as $order) {
             OrderTable::update($order->ID_Site, [
