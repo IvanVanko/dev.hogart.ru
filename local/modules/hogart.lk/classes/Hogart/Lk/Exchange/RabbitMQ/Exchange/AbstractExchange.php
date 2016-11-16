@@ -112,6 +112,7 @@ abstract class AbstractExchange implements ExchangeInterface
         $this->queue = new \AMQPQueue($this->consumer->getChannel());
         $this->queue->setName($this->getQueueName());
         $this->queue->setFlags(AMQP_DURABLE);
+        $this->queue->setArgument("x-dead-letter-exchange", "hogart.lk.dlx");
         $this->queue->declareQueue();
         $this->queue->bind($this->getExchangeName(), "{$this->getQueueName()}.#");
         
@@ -137,7 +138,7 @@ abstract class AbstractExchange implements ExchangeInterface
                 $this->queue->ack($message->getDeliveryTag());
                 $this->consumer->getLogger()->notice("Финиш задачи {$message->getRoutingKey()} обработана");
             } catch (\Exception $e) {
-                $this->queue->nack($message->getDeliveryTag(), (intval($message->getTimeStamp()) + 2*3600) > time() ? AMQP_REQUEUE: AMQP_NOPARAM);
+                $this->queue->reject($message->getDeliveryTag());
                 $error = "Ошибка обработки задачи {$message->getRoutingKey()}: {$e->getMessage()} ({$e->getCode()})\n" . $e->getTraceAsString();
                 $this->consumer->getLogger()->error($error);
             }

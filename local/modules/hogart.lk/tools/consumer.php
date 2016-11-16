@@ -44,6 +44,7 @@ $consumer->registerExchange([
     new \Hogart\Lk\Exchange\RabbitMQ\Exchange\RTUExchange(),
     new \Hogart\Lk\Exchange\RabbitMQ\Exchange\StaffExchange(),
     new \Hogart\Lk\Exchange\RabbitMQ\Exchange\CurrencyRateExchange(),
+    new \Hogart\Lk\Exchange\RabbitMQ\Exchange\DlxExchange(),
 ]);
 
 while (true) {
