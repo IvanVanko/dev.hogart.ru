@@ -118,7 +118,7 @@ use Hogart\Lk\Entity\AddressTable;
                         <div class="col-lg-3 col-sm-3"></div>
                     </div>
                     <? foreach ($arResult['current_company']['contracts'] as $contract): ?>
-                        <div class="row vertical-align spacer contact" data-contract-id="<?= $contract['guid_id'] ?>">
+                        <div class="row vertical-align spacer contract" data-contract-id="<?= $contract['guid_id'] ?>">
                             <div class="col-lg-3 col-sm-3"><strong class="pull-left visible-xs">Договор:</strong>
 
                                 <? if (count($arResult['current_company']['contracts']) > 1): ?>
