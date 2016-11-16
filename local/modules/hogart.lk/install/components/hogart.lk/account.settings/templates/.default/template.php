@@ -126,7 +126,7 @@ $account_name = trim(implode(' ', [$arResult['account']['c_last_name'], $arResul
             <div class="row store spacer">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" data-store-id="<?= $store['XML_ID'] ?>">
                     <i
-                        <?= ($store['store_ID'] != $arResult['account']['main_store_id'] ? \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('stores', $stores_node->getId(), ['fav_store' => $store['ID']]) : '') ?>
+                        <?= ($store['ID'] != $arResult['account']['main_store_id'] ? \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('stores', $stores_node->getId(), ['fav_store' => $store['ID']]) : '') ?>
                         class="fa fa-star<?= ($store['ID'] == $arResult['account']['main_store_id'] ? ' color-green' : '-o') ?>"></i>
                     <?= $store['TITLE'] . " " . $store['ADDRESS'] ?>
                 </div>

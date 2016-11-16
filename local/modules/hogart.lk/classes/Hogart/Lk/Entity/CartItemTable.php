@@ -174,7 +174,9 @@ class CartItemTable extends AbstractEntity
         $account = AccountTable::getAccountById($account_id);
         if (!$contract_id) {
             $contracts = ContractTable::getByAccountId($account_id);
-            if (count($contracts) == 1) {
+            if ($account['main_contract_id']) {
+                $contract_id = $account['main_contract_id'];
+            } elseif (count($contracts) == 1) {
                 $contract_id = reset($contracts)['id'];
             }
         }

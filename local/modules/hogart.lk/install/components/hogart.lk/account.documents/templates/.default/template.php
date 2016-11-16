@@ -120,6 +120,12 @@ use Hogart\Lk\Entity\AddressTable;
                     <? foreach ($arResult['current_company']['contracts'] as $contract): ?>
                         <div class="row vertical-align spacer contact" data-contract-id="<?= $contract['guid_id'] ?>">
                             <div class="col-lg-3 col-sm-3"><strong class="pull-left visible-xs">Договор:</strong>
+
+                                <? if (count($arResult['current_company']['contracts']) > 1): ?>
+                                    <i
+                                        <?= ($contract['id'] != $arResult['account']['main_contract_id'] ? \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('contracts-ajax', $contracts_node->getId(), ['fav_contract' => $contract['id']]) : '') ?>
+                                        class="fa fa-star<?= ($contract['id'] == $arResult['account']['main_contract_id'] ? ' color-green' : '-o') ?>"></i>
+                                <? endif; ?>
                                 <span>
                                     <?= ContractTable::showName($contract); ?>
                                 </span>

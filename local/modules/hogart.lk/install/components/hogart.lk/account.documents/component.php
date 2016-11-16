@@ -35,9 +35,9 @@ $account = AccountTable::getAccountByUserID($USER->GetID());
 $account = AccountTable::getAccountById($account['id']);
 
 if ($account['id']) {
-    $account['is_general'] = AccountTable::isGeneralAccount($account['id']);
-
     include (__DIR__ . "/proceed_request.php");
+
+    $account['is_general'] = AccountTable::isGeneralAccount($account['id']);
 
     $companies = AccountCompanyRelationTable::getByAccountId($account['id']);
     if (count($companies) == 1) {

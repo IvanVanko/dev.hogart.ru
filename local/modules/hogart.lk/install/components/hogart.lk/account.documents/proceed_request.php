@@ -4,8 +4,12 @@
  * User: Ivan Koretskiy aka gillbeits[at]gmail.com
  * Date: 06/09/16
  * Time: 22:11
+ *
+ * @global CMain $APPLICATION
+ * @global CUser $USER
  */
 
+use Hogart\Lk\Entity\AccountTable;
 use Hogart\Lk\Entity\ContactRelationTable;
 use Hogart\Lk\Entity\PaymentAccountTable;
 use Hogart\Lk\Entity\PaymentAccountRelationTable;
@@ -416,9 +420,15 @@ if (!empty($account['id']) && !empty($_REQUEST)) {
     if (!empty($_REQUEST['fav_company'])) {
         AccountCompanyRelationTable::toggleFavorite($account['id'], $_REQUEST['fav_company']);
     }
+    if (!empty($_REQUEST['fav_contract'])) {
+        AccountTable::update($account['id'], [
+            "main_contract_id" => intval($_REQUEST['fav_contract'])
+        ]);
+        $account = AccountTable::getAccountByUserID($USER->GetID());
+    }
     if (!empty($_REQUEST['remove_company'])) {
         if (AccountCompanyRelationTable::isHaveAccess($account['id'], $_REQUEST['remove_company'], true)) {
-            if ($account['is_general']) {
+            if (AccountTable::isGeneralAccount($account['id'])) {
                 CompanyTable::update($_REQUEST['remove_company'], [
                     "is_active" => false,
                 ]);

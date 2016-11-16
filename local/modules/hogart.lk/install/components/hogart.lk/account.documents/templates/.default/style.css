@@ -817,6 +817,9 @@ input[type="radio"] .styled:checked + label::after {
 .delimiter {
   border-bottom: 1px solid;
 }
+.dropdown-toggle.bs-placeholder {
+  border-color: #d9534f;
+}
 form {
   text-align: left;
 }
