@@ -186,7 +186,7 @@ if (!empty($account['id']) && !empty($_REQUEST)) {
                         'doc_serial' => $_POST['doc_serial'],
                         'doc_number' => $_POST['doc_number'],
                         'doc_ufms' => $_POST['doc_ufms'],
-                        'doc_date' => !empty($_POST['doc_date']) ? new Date($_POST['doc_date'], 'd.m.Y') : "",
+                        'doc_date' => new Date(!empty($_POST['doc_date']) ? $_POST['doc_date'] : "00.00.0000", 'd.m.Y'),
                     ]);
                     break;
                 case 3:
@@ -197,7 +197,7 @@ if (!empty($account['id']) && !empty($_REQUEST)) {
                         'doc_serial' => $_POST['doc_serial'],
                         'doc_number' => $_POST['doc_number'],
                         'doc_ufms' => $_POST['doc_ufms'],
-                        'doc_date' => !empty($_POST['doc_date']) ? new Date($_POST['doc_date'], 'd.m.Y') : "",
+                        'doc_date' => new Date(!empty($_POST['doc_date']) ? $_POST['doc_date'] : "00.00.0000", 'd.m.Y'),
                     ]);
                     break;
             }
