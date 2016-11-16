@@ -137,7 +137,7 @@ abstract class AbstractExchange implements ExchangeInterface
                 $this->queue->ack($message->getDeliveryTag());
                 $this->consumer->getLogger()->notice("Финиш задачи {$message->getRoutingKey()} обработана");
             } catch (\Exception $e) {
-                $this->queue->nack($message->getDeliveryTag());
+                $this->queue->nack($message->getDeliveryTag(), AMQP_REQUEUE);
                 $error = "Ошибка обработки задачи {$message->getRoutingKey()}: {$e->getMessage()}\n" . $e->getTraceAsString();
                 $this->consumer->getLogger()->error($error);
             }
