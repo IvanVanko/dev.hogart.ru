@@ -155,7 +155,8 @@ abstract class AbstractExchange implements ExchangeInterface
     {
         $attributes = array_merge([
             "delivery_mode" => 2,
-            "timestamp" => time()
+            "timestamp" => time(),
+            "expiration" => "120000"
         ], $attributes);
 
         try {
