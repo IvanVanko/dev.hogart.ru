@@ -86,7 +86,9 @@ class ContactTable extends AbstractEntity implements IExchangeable
             ],
             'select' => [
                 '*',
-                'a_' => __NAMESPACE__ . '\ContactRelationTable:contact.account'
+                'a_' => __NAMESPACE__ . '\ContactRelationTable:contact.account',
+                'co_' => __NAMESPACE__ . '\ContactRelationTable:contact.company',
+                'hco_' => __NAMESPACE__ . '\ContactRelationTable:contact.hogart_company'
             ]
         ])->fetchAll();
         self::publishToRabbit(new ContactExchange(), new Contact($contacts));

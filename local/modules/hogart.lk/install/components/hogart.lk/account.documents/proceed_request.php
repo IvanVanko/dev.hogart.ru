@@ -299,6 +299,15 @@ if (!empty($account['id']) && !empty($_REQUEST)) {
                         break;
                 }
 
+                if (!empty($new_company['chief_contact_id'])) {
+                    ContactRelationTable::replace([
+                        'contact_id' => $new_company['chief_contact_id'],
+                        'owner_id' => $added_company_result->getId(),
+                        'owner_type' => ContactRelationTable::OWNER_TYPE_CLIENT_COMPANY,
+                        'post' => 'Генеральный директор'
+                    ]);
+                }
+
                 $start_date = new DateTime();
                 $end_date = new DateTime();
                 $end_date->setDate($start_date->format('Y'), '12', '31');
