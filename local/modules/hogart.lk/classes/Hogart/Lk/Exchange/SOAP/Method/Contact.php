@@ -39,6 +39,7 @@ class Contact extends AbstractMethod
 
     public function contactsPut(AbstractPutRequest $request)
     {
+        $this->client->getLogger()->debug(var_export($request->__toRequest(), true));
         $response = $this->client->getSoapClient()->ContactPut($request->__toRequest());
         foreach ($response->return->Response as $contact) {
             ContactTable::update($contact->ID_Site, [
