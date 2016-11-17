@@ -237,7 +237,8 @@ class OrderTable extends AbstractEntity
         if (is_int($order_id)) {
 
             $filter = array_merge([
-                '=id' => $order_id
+                '=id' => $order_id,
+                '=is_active' => true
             ], $filter);
 
             $order = self::getRow([
@@ -404,7 +405,10 @@ class OrderTable extends AbstractEntity
     public static function getByAccount($account_id, PageNavigation $nav = null, $state = self::STATE_NORMAL, $filter = [], $item_filter = [])
     {
         $filter = array_merge([
+            '=is_active' => true,
             '=state' => $state,
+            '=contract.is_active' => true,
+            '=contract.company.is_active' => true,
             '=contract.company.Hogart\Lk\Entity\AccountCompanyRelationTable:company.account.id' => $account_id
         ], $filter);
         $ordersResult = self::getList([

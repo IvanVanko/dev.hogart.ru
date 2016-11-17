@@ -36,6 +36,13 @@ class Contract extends AbstractMethod
     public function contractPut(AbstractPutRequest $request)
     {
         $response = $this->client->getSoapClient()->ContractPut($request->__toRequest());
+
+        if (!empty($response->return->Error)) {
+            $error = new MethodException(MethodException::ERROR_SOAP, [$response->return->ErrorText, $response->return->Error]);
+            $this->client->getLogger()->error($error->getMessage());
+            throw $error;
+        }
+
         foreach ($response->return->Response as $contract) {
             $c = [
                 'guid_id' => $contract->ID,
