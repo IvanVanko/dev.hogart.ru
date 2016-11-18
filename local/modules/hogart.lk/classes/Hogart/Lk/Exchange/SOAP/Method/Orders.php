@@ -31,6 +31,7 @@ class Orders extends AbstractMethod
     {
         $this->client->getLogger()->debug(var_export($request->__toRequest(), true));
         $response = $this->client->getSoapClient()->OrdersPut($request->__toRequest());
+        $this->client->getLogger()->debug(var_export($response, true));
         if (!empty($response->return->Error)) {
             $error = new MethodException(MethodException::ERROR_SOAP, [$response->return->ErrorText, $response->return->Error]);
             $this->client->getLogger()->error($error->getMessage());
