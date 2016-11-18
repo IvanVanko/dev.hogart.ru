@@ -42,6 +42,13 @@ class Contact extends AbstractMethod
         $this->client->getLogger()->debug(var_export($request->__toRequest(), true));
         $response = $this->client->getSoapClient()->ContactPut($request->__toRequest());
         foreach ($response->return->Response as $contact) {
+
+            if (!empty($contact->Error)) {
+                $error = new MethodException(MethodException::ERROR_SOAP, [$contact->ErrorText, $contact->Error]);
+                $this->client->getLogger()->error($error->getMessage());
+                throw $error;
+            }
+
             ContactTable::update($contact->ID_Site, [
                 'guid_id' => $contact->ID
             ]);
