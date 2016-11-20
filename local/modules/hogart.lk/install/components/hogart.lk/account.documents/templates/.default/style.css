@@ -910,6 +910,13 @@ form .suggestions-wrapper {
   -webkit-font-smoothing: antialiased;
   margin-right: 5px;
 }
+.contracts .contract .fa {
+  padding-right: 20px;
+  font-size: 14px;
+}
+.contracts .contract .fa.fa-star-o {
+  cursor: pointer;
+}
 .addresses {
   margin-bottom: 20px;
 }

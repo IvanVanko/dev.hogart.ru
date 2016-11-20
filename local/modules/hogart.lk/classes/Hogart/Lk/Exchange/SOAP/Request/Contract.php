@@ -9,7 +9,10 @@
 namespace Hogart\Lk\Exchange\SOAP\Request;
 
 
+use Hogart\Lk\Entity\CompanyTable;
+use Hogart\Lk\Entity\HogartCompanyTable;
 use Hogart\Lk\Exchange\SOAP\AbstractPutRequest;
+use Hogart\Lk\Exchange\SOAP\LazyRequest;
 
 class Contract extends AbstractPutRequest
 {
@@ -23,8 +26,18 @@ class Contract extends AbstractPutRequest
     {
         foreach ($contracts as $contract) {
             $this->contracts[] = (object)[
-                "Contr_ID_Company" => $contract['co_guid_id'],
-                "Contr_ID_Hogart" => $contract['hco_guid_id'],
+                "Contr_ID_Company" => new LazyRequest(function ($contract) {
+                    if (!empty($contract['co_id'])) {
+                        return (string)CompanyTable::getRowById($contract['co_id'])['guid_id'];
+                    }
+                    return "";
+                }, [$contract]),
+                "Contr_ID_Hogart" => new LazyRequest(function ($contract) {
+                    if (!empty($contract['hco_id'])) {
+                        return (string)HogartCompanyTable::getRowById($contract['hco_id'])['guid_id'];
+                    }
+                    return "";
+                }, [$contract]),
                 "Contr_ID" => $contract['guid_id'],
                 "Contr_ID_Site" => $contract['id'],
                 "Contr_Number" => $contract['number'],

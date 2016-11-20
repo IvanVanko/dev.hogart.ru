@@ -287,12 +287,12 @@ $collectionComponentId = CAjax::GetComponentID("bitrix:catalog.element", "", "co
                                 <!--Только для авторизованных-->
                                 <? if($USER->IsAuthorized() && !empty($arResult["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
                                     <div class="info-block">
-                                        <!--div class="discount">
-                                            -<?=$arResult["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"]?>%
-                                        </div-->
                                         <div class="old currency">
                                             <?=HogartHelpers::woPrice($arResult["PRICES"]["BASE"]["PRINT_VALUE"]);?>
                                             <i class="fa fa-<?=strtolower($arResult["PRICES"]["BASE"]["CURRENCY"])?>" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="discount" style="display: inline-block">
+                                            -<?=$arResult["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"]?>%
                                         </div>
                                         <div class="sup small">* Цена указана с учетом скидки клиента</div>
                                     </div>

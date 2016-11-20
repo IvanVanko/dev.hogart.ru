@@ -303,6 +303,9 @@ input[type="checkbox"] .styled:checked + label::after,
 input[type="radio"] .styled:checked + label::after {
   color: #fff;
 }
+.dropdown-toggle.bs-placeholder {
+  border-color: #d9534f;
+}
 .full-height.empty-cart {
   display: flex;
   align-items: center;

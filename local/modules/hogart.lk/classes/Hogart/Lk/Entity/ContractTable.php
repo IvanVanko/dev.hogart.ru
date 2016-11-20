@@ -152,13 +152,15 @@ HTML;
 
     /**
      * @param $account_id
+     * @param bool $is_active
      * @return array
      */
-    public static function getByAccountId($account_id)
+    public static function getByAccountId($account_id, $is_active = true)
     {
         return self::getList([
             'filter' => [
-                'company.Hogart\Lk\Entity\AccountCompanyRelationTable:company.account.id' => $account_id
+                '=company.Hogart\Lk\Entity\AccountCompanyRelationTable:company.account.id' => $account_id,
+                '=is_active' => $is_active
             ],
             'select' => [
                 '*',
@@ -214,6 +216,26 @@ HTML;
         $fields = $event->getParameter('fields');
         if (!empty($id) && empty($fields['guid_id'])) {
             self::publishToRabbit(new ContractExchange(), new Contract(self::getContractForExchange($id)));
+        }
+    }
+
+    public static function onAfterUpdate(Event $event)
+    {
+        $fields = $event->getParameter('fields');
+        $id = $event->getParameter('id');
+
+        if (!$fields['is_active']) {
+            $accounts = AccountTable::getList([
+                'filter' => [
+                    '=main_contract_id' => $id
+                ]
+            ])->fetchAll();
+
+            foreach ($accounts as $account) {
+                AccountTable::update($account['id'], [
+                    'main_contract_id' => 0
+                ]);
+            }
         }
     }
 }

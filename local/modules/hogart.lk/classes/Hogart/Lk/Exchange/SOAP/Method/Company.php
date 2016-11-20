@@ -39,6 +39,13 @@ class Company extends AbstractMethod
     {
         $response = $this->client->getSoapClient()->CompanyPut($request->__toRequest());
         foreach ($response->return->Response as $company) {
+
+            if (!empty($company->Error)) {
+                $error = new MethodException(MethodException::ERROR_SOAP, [$company->ErrorText, $company->Error]);
+                $this->client->getLogger()->error($error->getMessage());
+                throw $error;
+            }
+
             CompanyTable::update($company->ID_Site, [
                 'guid_id' => $company->ID
             ]);

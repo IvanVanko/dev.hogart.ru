@@ -4,8 +4,12 @@
  * User: Ivan Koretskiy aka gillbeits[at]gmail.com
  * Date: 06/09/16
  * Time: 22:11
+ *
+ * @global CMain $APPLICATION
+ * @global CUser $USER
  */
 
+use Hogart\Lk\Entity\AccountTable;
 use Hogart\Lk\Entity\ContactRelationTable;
 use Hogart\Lk\Entity\PaymentAccountTable;
 use Hogart\Lk\Entity\PaymentAccountRelationTable;
@@ -21,7 +25,7 @@ use Hogart\Lk\Helper\Template\FlashError;
 use Hogart\Lk\Helper\Template\FlashSuccess;
 use Hogart\Lk\Helper\Mail\Event;
 
-global $APPLICATION;
+global $APPLICATION, $DB;
 
 if (!empty($account['id']) && !empty($_REQUEST)) {
 
@@ -153,6 +157,7 @@ if (!empty($account['id']) && !empty($_REQUEST)) {
             die();
             break;
         case 'add-company':
+            $DB->StartTransaction();
             $new_company = [
                 'type' => intval($_POST['company_type']),
                 'is_active' => (bool)$_POST['is_active']
@@ -181,7 +186,7 @@ if (!empty($account['id']) && !empty($_REQUEST)) {
                         'doc_serial' => $_POST['doc_serial'],
                         'doc_number' => $_POST['doc_number'],
                         'doc_ufms' => $_POST['doc_ufms'],
-                        'doc_date' => !empty($_POST['doc_date']) ? new Date($_POST['doc_date'], 'd.m.Y') : "",
+                        'doc_date' => new Date($_POST['doc_date'], 'd.m.Y'),
                     ]);
                     break;
                 case 3:
@@ -192,7 +197,7 @@ if (!empty($account['id']) && !empty($_REQUEST)) {
                         'doc_serial' => $_POST['doc_serial'],
                         'doc_number' => $_POST['doc_number'],
                         'doc_ufms' => $_POST['doc_ufms'],
-                        'doc_date' => !empty($_POST['doc_date']) ? new Date($_POST['doc_date'], 'd.m.Y') : "",
+                        'doc_date' => new Date($_POST['doc_date'], 'd.m.Y'),
                     ]);
                     break;
             }
@@ -294,6 +299,44 @@ if (!empty($account['id']) && !empty($_REQUEST)) {
                         break;
                 }
 
+                if (!empty($new_company['chief_contact_id'])) {
+                    ContactRelationTable::replace([
+                        'contact_id' => $new_company['chief_contact_id'],
+                        'owner_id' => $added_company_result->getId(),
+                        'owner_type' => ContactRelationTable::OWNER_TYPE_CLIENT_COMPANY,
+                        'post' => 'Генеральный директор'
+                    ]);
+                }
+
+                $start_date = new DateTime();
+                $end_date = new DateTime();
+                $end_date->setDate($start_date->format('Y'), '12', '31');
+                $diff = $start_date->diff(new DateTime($start_date->format('Y') . "-10-01"));
+                if ($diff->format('%R%a') < 0) {
+                    $end_date->add(new DateInterval('P1Y'));
+                }
+
+                $company = $added_company_result->getData();
+                $contract = [
+                    'company_id' => $added_company_result->getId(),
+                    'hogart_company_id' => "",
+                    'start_date' => Date::createFromPhp($start_date),
+                    'end_date' => Date::createFromPhp($end_date),
+                    'currency_code' => "RUB",
+                    'perm_item' => true,
+                    'perm_promo' => false,
+                    'perm_clearing' => true,
+                    'perm_card' => $company['type'] != CompanyTable::TYPE_LEGAL_ENTITY,
+                    'perm_cash' => true,
+                    'is_active' => true
+                ];
+
+                ContractTable::add($contract);
+
+                $DB->Commit();
+                new FlashSuccess(vsprintf("Создана компания %s", [$added_company_result->getData()['name']]));
+            } else {
+                $DB->Rollback();
             }
             LocalRedirect($APPLICATION->GetCurPage(false));
             die();
@@ -416,9 +459,15 @@ if (!empty($account['id']) && !empty($_REQUEST)) {
     if (!empty($_REQUEST['fav_company'])) {
         AccountCompanyRelationTable::toggleFavorite($account['id'], $_REQUEST['fav_company']);
     }
+    if (!empty($_REQUEST['fav_contract'])) {
+        AccountTable::update($account['id'], [
+            "main_contract_id" => intval($_REQUEST['fav_contract'])
+        ]);
+        $account = AccountTable::getAccountByUserID($USER->GetID());
+    }
     if (!empty($_REQUEST['remove_company'])) {
         if (AccountCompanyRelationTable::isHaveAccess($account['id'], $_REQUEST['remove_company'], true)) {
-            if ($account['is_general']) {
+            if (AccountTable::isGeneralAccount($account['id'])) {
                 CompanyTable::update($_REQUEST['remove_company'], [
                     "is_active" => false,
                 ]);
