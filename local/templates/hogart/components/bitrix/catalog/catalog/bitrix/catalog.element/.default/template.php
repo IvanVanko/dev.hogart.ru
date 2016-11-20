@@ -130,11 +130,11 @@ $collectionComponentId = CAjax::GetComponentID("bitrix:catalog.element", "", "co
                                     <div class="stocks-wrapper">
                                         <div class="triangle-with-shadow"></div>
                                         <div class="stock-header">
-                                            <?= $arProduct["NAME"]?>, <?= $arProduct["ALL_BRANDS"][$arProduct["PROPERTIES"]["brand"]["VALUE"]]['NAME'] ?> <?= $arProduct["PROPERTIES"]["sku"]["VALUE"] ?>
+                                            <?= $arProduct["NAME"]?>, <?= $arProduct['BRAND_NAME'] ?> <?= $arProduct["PROPERTY_SKU_VALUE"] ?>
                                         </div>
                                         <div class="stock-items">
                                             <div class="stock-items-table">
-                                                <? foreach ($arProduct['STORES'] as $store_id => $store): ?>
+                                                <? foreach ($arResult['STORES'] as $store_id => $store): ?>
                                                     <? if (!$arProduct['STORE_AMOUNTS'][$store_id]['is_visible'] && empty($arProduct["PROPERTIES"]["days_till_receive"]["VALUE"])) continue; ?>
                                                     <div class="stock-item">
                                                 <span class="stock-name h4 text-left">
