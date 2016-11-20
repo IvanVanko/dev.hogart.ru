@@ -111,9 +111,7 @@ $collectionComponentId = CAjax::GetComponentID("bitrix:catalog.element", "", "co
                             <? endif; ?>
                             <!---->
                         </div>
-                    </div>
-                    <div class="row vertical-align">
-                        <div class="col-md-6 text-nowrap">
+                        <div class="col-md-6 text-right text-nowrap">
                             <div class="quantity-wrapper">
                                 <? if ($arProduct["CATALOG_QUANTITY"] > 0): ?>
                                     <div class="quantity quantity-success line <? if ($USER->IsAuthorized()): ?> line2<? endif; ?>">
