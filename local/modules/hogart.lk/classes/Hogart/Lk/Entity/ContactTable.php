@@ -86,6 +86,7 @@ class ContactTable extends AbstractEntity implements IExchangeable
             ],
             'select' => [
                 '*',
+                'post' => __NAMESPACE__ . '\ContactRelationTable:contact.post',
                 'a_' => __NAMESPACE__ . '\ContactRelationTable:contact.account',
                 'co_' => __NAMESPACE__ . '\ContactRelationTable:contact.company',
                 'hco_' => __NAMESPACE__ . '\ContactRelationTable:contact.hogart_company'
