@@ -112,15 +112,78 @@ $collectionComponentId = CAjax::GetComponentID("bitrix:catalog.element", "", "co
                             <!---->
                         </div>
                         <div class="col-md-6 text-right text-nowrap">
-                            <? if ($arProduct["CATALOG_QUANTITY"] > 0): ?>
-                                <div class="quantity quantity-success line <? if ($USER->IsAuthorized()): ?> line2<? endif; ?>">В
-                                    наличии<? if ($USER->IsAuthorized()): ?> <span><?= $arProduct["CATALOG_QUANTITY"]; ?>
-                                        <?=$arProduct['CATALOG_MEASURE_NAME']?>.</span><? endif; ?></div>
-                            <? else: ?>
-                                <div class="quantity quantity-fail text-nowrap">
-                                    <i class="fa fa-truck" aria-hidden="true"></i> Под заказ
-                                </div>
-                            <? endif; ?>
+                            <div class="quantity-wrapper">
+                                <? if ($arProduct["CATALOG_QUANTITY"] > 0): ?>
+                                    <div class="quantity quantity-success line <? if ($USER->IsAuthorized()): ?> line2<? endif; ?>">
+                                        <? if ($USER->IsAuthorized()): ?>
+                                            <span><?= $arProduct["CATALOG_QUANTITY"]; ?>
+                                                <?=$arProduct['CATALOG_MEASURE_NAME']?>.</span>
+                                        <? endif; ?>
+                                    </div>
+                                <? else: ?>
+                                    <div class="quantity quantity-fail text-nowrap">
+                                        <i class="fa fa-truck" aria-hidden="true"></i> Заказ
+                                    </div>
+                                <? endif; ?>
+
+                                <? if ($USER->IsAuthorized() && ($arProduct["CATALOG_QUANTITY"] > 0 || !empty($arProduct["PROPERTIES"]["days_till_receive"]["VALUE"]))): ?>
+                                    <div class="stocks-wrapper">
+                                        <div class="triangle-with-shadow"></div>
+                                        <div class="stock-header">
+                                            <?= $arProduct["NAME"]?>, <?= $arProduct['BRAND_NAME'] ?> <?= $arProduct["PROPERTY_SKU_VALUE"] ?>
+                                        </div>
+                                        <div class="stock-items">
+                                            <div class="stock-items-table">
+                                                <? foreach ($arResult['STORES'] as $store_id => $store): ?>
+                                                    <? if (!$arProduct['STORE_AMOUNTS'][$store_id]['is_visible'] && empty($arProduct["PROPERTIES"]["days_till_receive"]["VALUE"])) continue; ?>
+                                                    <div class="stock-item">
+                                                <span class="stock-name h4 text-left">
+                                                    <?= $store["TITLE"]?>
+                                                </span>
+                                                        <span class="quantity">
+                                                    <div>
+                                                        <div class="amount h4">
+                                                            <?= (int)$arProduct['STORE_AMOUNTS'][$store_id]['stock'] ?> <?=$arProduct['CATALOG_MEASURE_NAME']?>.
+                                                        </div>
+                                                        <div class="desc h6">
+                                                            Остаток
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="amount h4">
+                                                            <?= (int)$arItem['STORE_AMOUNTS'][$store_id]['in_reserve'] ?> <?=$arProduct['CATALOG_MEASURE_NAME']?>.
+                                                        </div>
+                                                        <div class="desc h6">
+                                                            Резерв
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="amount h4">
+                                                            <?= (int)$arProduct['STORE_AMOUNTS'][$store_id]['in_transit'] ?> <?=$arProduct['CATALOG_MEASURE_NAME']?>.
+                                                        </div>
+                                                        <div class="desc h6">
+                                                            Ожидается
+                                                        </div>
+                                                    </div>
+                                                            <? if (!empty($arProduct["PROPERTIES"]["days_till_receive"]["VALUE"])): ?>
+                                                                <div>
+                                                        <div class="amount h4">
+                                                            <i class="glyphicon glyphicon-time"></i>
+                                                            <?= (int)$arProduct["PROPERTIES"]["days_till_receive"]["VALUE"] ?> дн.
+                                                        </div>
+                                                        <div class="desc h6">
+                                                            Срок поставки
+                                                        </div>
+                                                    </div>
+                                                            <? endif; ?>
+                                                </span>
+                                                    </div>
+                                                <? endforeach; ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <? endif; ?>
+                            </div>
                         </div>
                     </div>
                     <!--Только для авторизованных-->
@@ -315,7 +378,7 @@ $collectionComponentId = CAjax::GetComponentID("bitrix:catalog.element", "", "co
                                 <? else: ?>
                                     <div class="">
                                         <div class="quantity quantity-fail text-nowrap">
-                                            <i class="fa fa-truck" aria-hidden="true"></i> Под заказ
+                                            <i class="fa fa-truck" aria-hidden="true"></i> Заказ
                                             <? if(!empty($arResult["PROPERTIES"]["delivery_period"]["VALUE"])): ?>
                                                 <br>
                                                 <span>Срок поставки <?=$arResult["PROPERTIES"]["delivery_period"]["VALUE"]?> <?=number($arResult["PROPERTIES"]["delivery_period"]["VALUE"], array('день',

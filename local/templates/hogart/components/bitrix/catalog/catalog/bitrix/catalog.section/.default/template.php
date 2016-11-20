@@ -105,7 +105,7 @@ $this->setFrameMode(true);
 		                    <?if ($arItem["CATALOG_QUANTITY"] > 0):?>
 		                    	<div class="line <?if ($USER->IsAuthorized()):?> line2<?endif;?>">В наличии<?if ($USER->IsAuthorized()):?> <span><?=$arItem["CATALOG_QUANTITY"];?> шт.</span><?endif;?></div>
 		                    <?else:?>
-		                    	Под заказ
+		                    	Заказ
 		                    	<?if (!empty($arItem["PROPERTIES"]["delivery_period"]["VALUE"])):?>
 			                    	<br>
 			                    	Срок поставки <span><?=$arItem["PROPERTIES"]["delivery_period"]["VALUE"]?> <?=number($arItem["PROPERTIES"]["delivery_period"]["VALUE"], array('день', 'дня', 'дней'))?></span>

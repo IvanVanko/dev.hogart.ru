@@ -9,8 +9,10 @@
 namespace Hogart\Lk\Exchange\SOAP\Request;
 
 
+use Hogart\Lk\Entity\AddressTable;
 use Hogart\Lk\Entity\AddressTypeTable;
 use Hogart\Lk\Exchange\SOAP\AbstractPutRequest;
+use Hogart\Lk\Exchange\SOAP\LazyRequest;
 
 class Address extends AbstractPutRequest
 {
@@ -28,7 +30,9 @@ class Address extends AbstractPutRequest
         foreach ($addresses as $address) {
             $type = AddressTypeTable::getRowById($address['type_id']);
             $this->addresses[] = (object)[
-                "Adr_ID_Owner" => $address['owner_id'],
+                "Adr_ID_Owner" => new LazyRequest(function ($address) {
+                    return (string)AddressTable::getOwnerRel($address);
+                }, [$address]),
                 "Adr_Owner_Type" => $address['owner_type'],
                 "Adr_ID_Address_Type" => $type['guid_id'],
                 "Adr_ID_Site" => $address['guid_id'],

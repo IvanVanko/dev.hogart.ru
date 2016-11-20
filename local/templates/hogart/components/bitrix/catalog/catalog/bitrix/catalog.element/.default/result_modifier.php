@@ -102,7 +102,7 @@ foreach ($arResult['alternative'] as $i => $arCollItem) {
 }
 
 if (!empty($arResult["PROPERTIES"]["collection"]["VALUE"])) {
-    $arSelect = array('ID', 'NAME', 'DETAIL_PAGE_URL', "CATALOG_GROUP_1", "PROPERTY_SKU", "PROPERTY_PHOTOS", "PREVIEW_PICTURE");
+    $arSelect = array('ID', 'NAME', 'DETAIL_PAGE_URL', 'CATALOG_MEASURE', "CATALOG_GROUP_1", "PROPERTY_SKU", "PROPERTY_PHOTOS", "PREVIEW_PICTURE");
     $arFilter = array(
         "IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
         "IBLOCK_ID" => $arParams['IBLOCK_ID'],
@@ -122,7 +122,7 @@ if (!empty($arResult["PROPERTIES"]["collection"]["VALUE"])) {
         ["ID"],
         $arNavParams,
         []);
-    
+
     while($ob = $res->Fetch()) {
         $ob = CIBlockElement::GetList([], array_merge($arFilter, ['ID' => $ob['ID']]), false, false, $arSelect)->GetNextElement();
         $arFields = $ob->GetFields();
@@ -133,7 +133,30 @@ if (!empty($arResult["PROPERTIES"]["collection"]["VALUE"])) {
             $arResult["this_collection"]['ITEMS'][$arFields['ID']]['PROPERTY_SKU_VALUE'] = $arFields['PROPERTY_SKU_VALUE'];
             $arResult["this_collection"]['ITEMS'][$arFields['ID']]['PROPERTY_PHOTOS_VALUE'] = $arFields['PROPERTY_PHOTOS_VALUE'];
         }
+
+        if (0 < $arFields['CATALOG_MEASURE'])
+        {
+            $rsMeasures = CCatalogMeasure::getList(
+                array(),
+                array('ID' => $arFields['CATALOG_MEASURE']),
+                false,
+                false,
+                array('ID', 'SYMBOL_RUS')
+            );
+            if ($arMeasure = $rsMeasures->GetNext())
+            {
+                $arResult["this_collection"]['ITEMS'][$arFields['ID']]['CATALOG_MEASURE_NAME'] = $arMeasure['SYMBOL_RUS'];
+                $arResult["this_collection"]['ITEMS'][$arFields['ID']]['~CATALOG_MEASURE_NAME'] = $arMeasure['~SYMBOL_RUS'];
+            }
+        }
+
+        if ('' == $arResult["this_collection"]['ITEMS'][$arFields['ID']]['CATALOG_MEASURE_NAME']) {
+            $arDefaultMeasure = CCatalogMeasure::getDefaultMeasure(true, true);
+            $arResult["this_collection"]['ITEMS'][$arFields['ID']]['CATALOG_MEASURE_NAME'] = $arDefaultMeasure['SYMBOL_RUS'];
+            $arResult["this_collection"]['ITEMS'][$arFields['ID']]['~CATALOG_MEASURE_NAME'] = $arDefaultMeasure['~SYMBOL_RUS'];
+        }
     }
+
 
     $prices = array_reduce($arResult["this_collection"]['ITEMS'], function ($result, $item) {
         $result[$item["ID"]] = $item["CATALOG_PRICE_1"];
@@ -141,6 +164,7 @@ if (!empty($arResult["PROPERTIES"]["collection"]["VALUE"])) {
     }, []);
 
     $prices = \Hogart\Lk\Entity\CompanyDiscountTable::prepareFrontByAccount($account['id'], $prices);
+    $storeAmounts = \Hogart\Lk\Entity\StoreAmountTable::getStoreAmountByItemsId(array_keys($arResult['this_collection']['ITEMS']), $storeFilter['ID']);
 
     foreach ($arResult['this_collection']['ITEMS'] as $id => &$arCollItem) {
         $arCollItem["PRICES"]["BASE"]["VALUE"] = $arCollItem["CATALOG_PRICE_1"];
@@ -150,6 +174,11 @@ if (!empty($arResult["PROPERTIES"]["collection"]["VALUE"])) {
 
         if (!empty($arCollItem['IBLOCK_SECTION_ID'])) {
             $sections_for_links[] = $arCollItem['IBLOCK_SECTION_ID'];
+        }
+        $arCollItem["STORE_AMOUNTS"] = !empty($storeAmounts[$id]) ? $storeAmounts[$id] : [];
+        $arCollItem['CATALOG_QUANTITY'] = 0;
+        foreach ($arCollItem["STORE_AMOUNTS"] as $amount) {
+            $arCollItem['CATALOG_QUANTITY'] += $amount['stock'];
         }
     }
 
@@ -178,7 +207,6 @@ if (!empty($arResult["PROPERTIES"]["collection"]["VALUE"])) {
     if ($navComponentObject->arResult["NavPageNomer"] + 1 <= $navComponentObject->arResult["NavPageCount"]) {
         $arResult["this_collection"]["NEXT_LINK"] = $navComponentObject->arResult["sUrlPath"] . "?" . $strNavQueryString . "PAGEN_" . $navComponentObject->arResult["NavNum"] . "=" . ($navComponentObject->arResult["NavPageNomer"]+1);
     }
-    
 }
 
 $sections_for_links = array_unique($sections_for_links);
@@ -284,14 +312,25 @@ if ($arParams['STORES_FILTERED'] != 'Y') {
         }
     }
 
-    if (!isset($store_keys)) {
-        $store_keys = preg_grep("/^CATALOG_STORE_AMOUNT_/",array_keys($arResult));
-    }
-    if (!empty($store_keys)) {
+    $account = \Hogart\Lk\Entity\AccountTable::getAccountByUserID($USER->GetID());
+    $storeFilter = [
+    ];
+
+    if ($account['id']) {
+        $accountStores = array_reduce(\Hogart\Lk\Entity\AccountStoreRelationTable::getByAccountId($account['id']), function ($result, $store) {
+            $result[] = $store['ID'];
+            return $result;
+        }, []);
+
+        if (!empty($accountStores)) {
+            $storeFilter['ID'] = $accountStores;
+        }
+
+        $storeAmounts = \Hogart\Lk\Entity\StoreAmountTable::getStoreAmountByItemsId([$arResult['ID']], $storeFilter['ID']);
+        $arResult["STORE_AMOUNTS"] = !empty($storeAmounts[$arResult['ID']]) ? $storeAmounts[$arResult['ID']] : [];
         $arResult['CATALOG_QUANTITY'] = 0;
-        foreach ($store_keys as $s_key) {
-            $arResult['CATALOG_QUANTITY'] +=intval($arResult[$s_key]);
+        foreach ($arResult["STORE_AMOUNTS"] as $amount) {
+            $arResult['CATALOG_QUANTITY'] += $amount['stock'];
         }
     }
-    
 }
