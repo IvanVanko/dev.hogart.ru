@@ -164,7 +164,7 @@ $this->setFrameMode(true);
                         <i class="fa fa-check" aria-hidden="true"></i>
                     <? endif; ?>
                 <? else: ?>
-                    <span style="white-space: nowrap"><i class="fa fa-close" aria-hidden="true"></i> Под заказ</span>
+                    <span style="white-space: nowrap"><i class="fa fa-close" aria-hidden="true"></i> Заказ</span>
                 <? endif; ?>
 
                 <? if ($USER->IsAuthorized() && $arItem["CATALOG_QUANTITY"] > 0): ?>
@@ -427,7 +427,7 @@ $this->setFrameMode(true);
                                 </div>
                                 <? else: ?>
                                 <div class="quantity quantity-fail text-nowrap">
-                                    <i class="fa fa-truck" aria-hidden="true"></i> Под заказ
+                                    <i class="fa fa-truck" aria-hidden="true"></i> Заказ
                                 </div>
                                 <? endif; ?>
 
