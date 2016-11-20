@@ -190,11 +190,11 @@ $collectionComponentId = CAjax::GetComponentID("bitrix:catalog.element", "", "co
                     <!--Только для авторизованных-->
                     <? if ($USER->IsAuthorized()): ?>
                     <div class="row <?= (!empty($arProduct["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"]) ? "vertical-align" : "") ?>">
-                        <? if (!empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
+                        <? if (!empty($arProduct["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
                             <div class="col-sm-8">
                                 <div class="info-block text-nowrap">
                                     <div class="old currency">
-                                        <?= HogartHelpers::woPrice($arProduct["PRICES"]["BASE"]["PRINT_VALUE"]); ?>
+                                        <?= HogartHelpers::woPrice($arProduct["PRICES"]["BASE"]["VALUE"]); ?>
                                         <i class="fa fa-<?=strtolower($arProduct["PRICES"]["BASE"]["CURRENCY"])?>" aria-hidden="true"></i>
                                     </div>
                                     <div class="discount">
