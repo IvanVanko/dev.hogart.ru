@@ -194,7 +194,7 @@ $collectionComponentId = CAjax::GetComponentID("bitrix:catalog.element", "", "co
                             <div class="col-sm-8">
                                 <div class="info-block text-nowrap">
                                     <div class="old currency">
-                                        <?= HogartHelpers::woPrice($arProduct["PRICES"]["BASE"]["VALUE"]); ?>
+                                        <?= \Hogart\Lk\Helper\Template\Money::show($arProduct["PRICES"]["BASE"]["VALUE"]); ?>
                                         <i class="fa fa-<?=strtolower($arProduct["PRICES"]["BASE"]["CURRENCY"])?>" aria-hidden="true"></i>
                                     </div>
                                     <div class="discount">

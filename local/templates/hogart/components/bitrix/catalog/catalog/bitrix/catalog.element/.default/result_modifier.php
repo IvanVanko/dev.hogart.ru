@@ -48,6 +48,7 @@ if ($account['id']) {
     $prices = \Hogart\Lk\Entity\CompanyDiscountTable::prepareFrontByAccount($account['id'], [
         $arResult['ID'] => $arResult["PRICES"]["BASE"]["VALUE"]
     ]);
+
     $arResult["PRICES"]["BASE"]["VALUE"] = $prices[$arResult['ID']]['price'];
     $arResult["PRICES"]["BASE"]["DISCOUNT_VALUE"] = $prices[$arResult['ID']]['price'];
     $arResult["PRICES"]["BASE"]["DISCOUNT_DIFF"] = $prices[$arResult['ID']]['discount_amount'];
@@ -167,6 +168,7 @@ if (!empty($arResult["PROPERTIES"]["collection"]["VALUE"])) {
     $storeAmounts = \Hogart\Lk\Entity\StoreAmountTable::getStoreAmountByItemsId(array_keys($arResult['this_collection']['ITEMS']), $storeFilter['ID']);
 
     foreach ($arResult['this_collection']['ITEMS'] as $id => &$arCollItem) {
+        $arCollItem["PRICES"]["BASE"]["CURRENCY"] = $arCollItem["CATALOG_CURRENCY_1"];
         $arCollItem["PRICES"]["BASE"]["VALUE"] = $arCollItem["CATALOG_PRICE_1"];
         $arCollItem["PRICES"]["BASE"]["DISCOUNT_VALUE"] = $prices[$id]['price'];
         $arCollItem["PRICES"]["BASE"]["DISCOUNT_DIFF"] = $prices[$id]['discount_amount'];
