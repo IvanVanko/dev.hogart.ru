@@ -284,14 +284,25 @@ if ($arParams['STORES_FILTERED'] != 'Y') {
         }
     }
 
-    if (!isset($store_keys)) {
-        $store_keys = preg_grep("/^CATALOG_STORE_AMOUNT_/",array_keys($arResult));
-    }
-    if (!empty($store_keys)) {
+    $account = \Hogart\Lk\Entity\AccountTable::getAccountByUserID($USER->GetID());
+    $storeFilter = [
+    ];
+
+    if ($account['id']) {
+        $accountStores = array_reduce(\Hogart\Lk\Entity\AccountStoreRelationTable::getByAccountId($account['id']), function ($result, $store) {
+            $result[] = $store['ID'];
+            return $result;
+        }, []);
+
+        if (!empty($accountStores)) {
+            $storeFilter['ID'] = $accountStores;
+        }
+
+        $storeAmounts = \Hogart\Lk\Entity\StoreAmountTable::getStoreAmountByItemsId([$arResult['ID']], $storeFilter['ID']);
+        $arResult["STORE_AMOUNTS"] = !empty($storeAmounts[$arResult['ID']]) ? $storeAmounts[$arResult['ID']] : [];
         $arResult['CATALOG_QUANTITY'] = 0;
-        foreach ($store_keys as $s_key) {
-            $arResult['CATALOG_QUANTITY'] +=intval($arResult[$s_key]);
+        foreach ($arResult["STORE_AMOUNTS"] as $amount) {
+            $arResult['CATALOG_QUANTITY'] += $amount['stock'];
         }
     }
-    
 }
