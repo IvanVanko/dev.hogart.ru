@@ -9,10 +9,13 @@
 namespace Hogart\Lk\Entity;
 
 
+use Bitrix\Iblock\ElementTable;
 use Bitrix\Main\DB\SqlExpression;
+use Bitrix\Main\Entity\Event;
 use Bitrix\Main\Entity\FloatField;
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ReferenceField;
+use Hogart\Lk\Helper\Template\Message;
 
 /**
  * Таблица Скидок компании на товары
@@ -46,18 +49,34 @@ class CompanyDiscountTable extends AbstractEntity
         ];
     }
 
+    public static function getDiscountByContractAndItem($contract_id, $item_id)
+    {
+        $discount = self::getList([
+            'filter' => [
+                '=item_id' => $item_id,
+                '=company.Hogart\Lk\Entity\ContractTable:company.id' => $contract_id
+            ],
+            'select' => [
+                'discount'
+            ]
+        ])->fetch();
+
+        return floatval($discount['discount']);
+    }
+
     /**
-     * @param $contract_id
+     * @param int $contract_id
      * @param array $prices
+     * @param array $discounts
      * @return array
      */
-    public static function preparePricesByContract($contract_id = 0, $prices = [])
+    public static function preparePricesByContract($contract_id = 0, $prices = [], $discounts = [])
     {
         // ID номенклатуры
         $id = array_keys($prices);
-        $discounts = [];
+        $_discounts = [];
         if ($contract_id > 0) {
-            $discounts = array_reduce(self::getList([
+            $_discounts = array_reduce(self::getList([
                 'filter' => [
                     '=item_id' => $id,
                     '=company.Hogart\Lk\Entity\ContractTable:company.id' => $contract_id
@@ -69,9 +88,10 @@ class CompanyDiscountTable extends AbstractEntity
             ])->fetchAll(), function ($result, $item) { $result[$item['item_id']]['discount'] = $item['discount']; return $result; }, []);
         }
         foreach ($prices as $id => &$price) {
-            $new_price = round($price * (100 - floatval($discounts[$id]['discount'])) / 100, 2);
+            $new_price = round($price * (100 - floatval($discounts[$id] ? : $_discounts[$id]['discount'])) / 100, 2);
             $price = [
-                'discount' =>  floatval($discounts[$id]['discount']),
+                'max_discount' => floatval($_discounts[$id]['discount']),
+                'discount' =>  floatval($discounts[$id] ? : $_discounts[$id]['discount']),
                 'price' => $new_price,
                 'discount_amount' => floatval($price - $new_price)
             ];
@@ -111,5 +131,41 @@ class CompanyDiscountTable extends AbstractEntity
         return [
             new Index("idx_company_discount_entity_most", ['company_id', 'item_id']),
         ];
+    }
+
+    public static function onAfterUpdate(Event $event)
+    {
+        $fields = $event->getParameter('fields');
+
+        $items = CartItemTable::getList([
+            'filter' => [
+                '=cart.contract.company_id' => $fields['company_id'],
+                '=item_id' => $fields['item_id'],
+                '>discount' => $fields['discount']
+            ],
+            'select' => [
+                '*',
+                'account_id' => 'cart.account_id'
+            ]
+        ])->fetchAll();
+
+        foreach ($items as $item) {
+            CartItemTable::update($item["guid_id"], [
+                'cart_id' => $item["cart_id"],
+                'discount' => floatval($fields['discount'])
+            ]);
+
+            $element = ElementTable::getById($item["item_id"])->fetch();
+
+            $message = new Message(
+                vsprintf("Скидка на товар <b><u>%s</u></b> в корзине изменена!", [$element["NAME"]]),
+                Message::SEVERITY_WARNING
+            );
+            $message
+                ->setIcon('fa fa-exclamation-triangle')
+                ->setDelay(0)
+            ;
+            FlashMessagesTable::addNewMessage($item['account_id'], $message);
+        }
     }
 }

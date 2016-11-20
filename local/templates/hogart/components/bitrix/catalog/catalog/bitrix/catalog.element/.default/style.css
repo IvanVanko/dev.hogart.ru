@@ -1055,9 +1055,30 @@
 .product ul[data-control] {
   padding-left: 25px !important;
   margin-left: -25px !important;
-  overflow: hidden;
   transition: max-height 0.4s ease;
   margin-top: 0 !important;
+}
+.product ul[data-control] .quantity-wrapper {
+  position: relative;
+}
+.product ul[data-control] .quantity-wrapper:hover .stocks-wrapper {
+  display: block !important;
+}
+.product ul[data-control] .discount {
+  top: auto;
+  left: auto;
+  background-color: #95c600;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  color: #fff;
+  border-radius: 100%;
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 30px;
+  text-align: center;
+  position: relative;
 }
 .product ul[data-control].closed {
   max-height: 46px !important;
@@ -1157,7 +1178,6 @@
   list-style: none;
   margin: 0;
   margin-top: 35px;
-  overflow: hidden;
   padding: 0;
   display: -webkit-box;
   display: -moz-box;
@@ -1270,6 +1290,22 @@
 .product .product-info .img-wrap {
   width: 100%;
   text-align: center;
+}
+.product .product-info .discount {
+  top: auto;
+  left: auto;
+  background-color: #95c600;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  color: #fff;
+  border-radius: 100%;
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 30px;
+  text-align: center;
+  position: relative;
 }
 .product .product-info .info-wrap .price {
   font-family: "Roboto Condensed", sans-serif;

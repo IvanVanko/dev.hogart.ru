@@ -79,12 +79,6 @@ function DebugMemory() {
 	}
 }
 
-if (CModule::IncludeModule("subscribe"))
-{
-	$cPosting = new CPosting;
-	$cPosting->AutoSend();
-}
-
 $loader = require dirname(__FILE__) . "/include/vendor/autoload.php";
 
 $obInit = new CCustomInit();

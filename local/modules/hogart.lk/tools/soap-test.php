@@ -19,11 +19,19 @@ CModule::IncludeModule("main");
 CModule::IncludeModule("catalog");
 CModule::IncludeModule("sprint.migration");
 
-$result = \Hogart\Lk\Search\MainSearchSuggest::getInstance()
+
+\Hogart\Lk\Entity\ContactTable::putTo1c(13);
+exit;
+$a = \Hogart\Lk\Search\CartSuggest::getInstance();
+$b = \Hogart\Lk\Search\MainSearchSuggest::getInstance();
+
+var_dump($a->getIndexName(), $b->getIndexName());
+exit;
+$result = \Hogart\Lk\Search\CartSuggest::getInstance()
 //    ->deleteIndex()
-//    ->createIndex()
-//    ->indexAll()
-    ->search("11230251001", "s1")
+    ->createIndex()
+    ->indexAll()
+//    ->search("11230251001", "s1")
 //    ->search("11230251001")
 ;
 
@@ -84,7 +92,7 @@ $soap->getLogger()->registerLogger(new \Hogart\Lk\Logger\FileLogger(__DIR__ . "/
 //var_dump($o->__toRequest());
 //var_dump($soap->OrderRTU->orderRTUPut($o));
 //var_dump($soap->Payment->updatePayments());
-//var_dump($soap->Contract->contractPut(new \Hogart\Lk\Exchange\SOAP\Request\Contract(\Hogart\Lk\Entity\ContractTable::getContractForExchange(2))));
+//var_dump($soap->Contract->contractPut(new \Hogart\Lk\Exchange\SOAP\Request\Contract(\Hogart\Lk\Entity\ContractTable::getContractForExchange(4))));
 
 //var_dump(\Hogart\Lk\Entity\OrderTable::getOrder(9));
 //exit;

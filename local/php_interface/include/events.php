@@ -846,52 +846,52 @@ class DisplayHandlers {
 
 }
 
-AddEventHandler("subscribe", "OnBeforeSubscriptionAdd", array("SubscribeHandlers", "OnBeforeSubscriptionAddHandler"));
-AddEventHandler("subscribe", "OnBeforeSubscriptionUpdate", array("SubscribeHandlers",
-                                                                 "OnBeforeSubscriptionUpdateHandler"));
+//AddEventHandler("subscribe", "OnBeforeSubscriptionAdd", array("SubscribeHandlers", "OnBeforeSubscriptionAddHandler"));
+//AddEventHandler("subscribe", "OnBeforeSubscriptionUpdate", array("SubscribeHandlers",
+//                                                                 "OnBeforeSubscriptionUpdateHandler"));
 
-class SubscribeHandlers {
-
-    public static function OnBeforeSubscriptionAddHandler($arFields) {
-        $arCustomSubscriptionFields = CStorage::GetVar("arCustomSubscriptionFields");
-        if(!is_array($arCustomSubscriptionFields)) {
-            $arCustomSubscriptionFields = array();
-        }
-        $arCustomSubscriptionFields[$arFields["EMAIL"]] = array("PHONE" => $_POST['entity']['UF_SUBSCRIBER_PHONE'],
-                                                                "EMAIL" => $arFields["EMAIL"]);
-        CStorage::SetVar($arCustomSubscriptionFields, "arCustomSubscriptionFields");
-        register_shutdown_function(function () {
-            $arCustomSubscriptionFields = CStorage::GetVar("arCustomSubscriptionFields");
-            foreach($arCustomSubscriptionFields as $key => $field) {
-                $subscription = CSubscription::GetByEmail($field["EMAIL"])->fetch();
-                if(array_key_exists($subscription["EMAIL"], $arCustomSubscriptionFields)) {
-                    \CUSTOM\Entity\SubscribeSettingsTable::Add(array("UF_SUBSCRIBER_ID" => $subscription["ID"],
-                                                                     "UF_SUBSCRIBER_PHONE" => $field["PHONE"]));
-                }
-                unset($arCustomSubscriptionFields[$key]);
-            }
-            CStorage::SetVar($arCustomSubscriptionFields, "arCustomSubscriptionFields");
-        });
-    }
-
-    public static function OnBeforeSubscriptionUpdateHandler($arFields) {
-
-        $subscriber_phone = (string)$_POST['entity']['UF_SUBSCRIBER_PHONE'];
-
-        $fields = array();
-
-        if($subscriber_phone) {
-            $fields['UF_SUBSCRIBER_PHONE'] = $subscriber_phone;
-        }
-
-        if($subscriber_phone) {
-            $settings_entry = \CUSTOM\Entity\SubscribeSettingsTable::GetList(array(
-                'select' => array('ID'),
-                'filter' => array('UF_SUBSCRIBER_ID' => $arFields["ID"])
-            ))->fetch();
-
-            \CUSTOM\Entity\SubscribeSettingsTable::Update($settings_entry['ID'], $fields);
-        }
-    }
-
-}
+//class SubscribeHandlers {
+//
+//    public static function OnBeforeSubscriptionAddHandler($arFields) {
+//        $arCustomSubscriptionFields = CStorage::GetVar("arCustomSubscriptionFields");
+//        if(!is_array($arCustomSubscriptionFields)) {
+//            $arCustomSubscriptionFields = array();
+//        }
+//        $arCustomSubscriptionFields[$arFields["EMAIL"]] = array("PHONE" => $_POST['entity']['UF_SUBSCRIBER_PHONE'],
+//                                                                "EMAIL" => $arFields["EMAIL"]);
+//        CStorage::SetVar($arCustomSubscriptionFields, "arCustomSubscriptionFields");
+//        register_shutdown_function(function () {
+//            $arCustomSubscriptionFields = CStorage::GetVar("arCustomSubscriptionFields");
+//            foreach($arCustomSubscriptionFields as $key => $field) {
+//                $subscription = CSubscription::GetByEmail($field["EMAIL"])->fetch();
+//                if(array_key_exists($subscription["EMAIL"], $arCustomSubscriptionFields)) {
+//                    \CUSTOM\Entity\SubscribeSettingsTable::Add(array("UF_SUBSCRIBER_ID" => $subscription["ID"],
+//                                                                     "UF_SUBSCRIBER_PHONE" => $field["PHONE"]));
+//                }
+//                unset($arCustomSubscriptionFields[$key]);
+//            }
+//            CStorage::SetVar($arCustomSubscriptionFields, "arCustomSubscriptionFields");
+//        });
+//    }
+//
+//    public static function OnBeforeSubscriptionUpdateHandler($arFields) {
+//
+//        $subscriber_phone = (string)$_POST['entity']['UF_SUBSCRIBER_PHONE'];
+//
+//        $fields = array();
+//
+//        if($subscriber_phone) {
+//            $fields['UF_SUBSCRIBER_PHONE'] = $subscriber_phone;
+//        }
+//
+//        if($subscriber_phone) {
+//            $settings_entry = \CUSTOM\Entity\SubscribeSettingsTable::GetList(array(
+//                'select' => array('ID'),
+//                'filter' => array('UF_SUBSCRIBER_ID' => $arFields["ID"])
+//            ))->fetch();
+//
+//            \CUSTOM\Entity\SubscribeSettingsTable::Update($settings_entry['ID'], $fields);
+//        }
+//    }
+//
+//}

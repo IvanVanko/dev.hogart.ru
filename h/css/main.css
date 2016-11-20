@@ -4306,7 +4306,6 @@ blockquote:before {
   list-style: none;
   margin: 0;
   margin-top: 35px;
-  overflow: hidden;
   padding: 0;
   display: -webkit-box;
   display: -moz-box;

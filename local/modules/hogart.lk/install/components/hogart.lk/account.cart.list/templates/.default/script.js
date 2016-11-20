@@ -7,6 +7,15 @@ $.fn.fileinput.defaults.ajaxSettings = $.extend($.fn.fileinput.defaults.ajaxSett
   }
 });
 
+BX.ajax.Setup({
+  headers: [
+    {
+      name: "Cache-Control",
+      value: "no-cache"
+    }
+  ]
+});
+
 var DataTableOptions = {
   info: false,
   searching: false,

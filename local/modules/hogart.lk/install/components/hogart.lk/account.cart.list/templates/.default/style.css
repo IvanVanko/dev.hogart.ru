@@ -303,6 +303,9 @@ input[type="checkbox"] .styled:checked + label::after,
 input[type="radio"] .styled:checked + label::after {
   color: #fff;
 }
+.dropdown-toggle.bs-placeholder {
+  border-color: #d9534f;
+}
 .full-height.empty-cart {
   display: flex;
   align-items: center;
@@ -485,6 +488,11 @@ input[type="radio"] .styled:checked + label::after {
   color: #2c2432;
 }
 .cart-wrapper [data-cart] .cart-item-list-wrapper [data-item-group] [data-table] tr a {
+  color: #2c2432;
+  text-decoration: underline;
+  transition: color .2s linear;
+}
+.cart-wrapper [data-cart] .cart-item-list-wrapper [data-item-group] [data-table] tr a:hover {
   color: #95c600;
 }
 .cart-wrapper [data-cart] .cart-item-list-wrapper [data-item-group]:before {

@@ -19,7 +19,7 @@
         onBlurTrigger: 'changeapply'
       }, initData, options);
 
-      if (self.is(':input') && (['text']).indexOf(self.attr('type')) != -1) {
+      if (self.is(':input') && (['text', 'number']).indexOf(self.attr('type')) != -1) {
         var id = "applier_" + Math.random().toString().substr(2);
         var container = $('<div class="input-change-apply" id="' + id + '"></div>');
         self.after(container);
@@ -74,7 +74,7 @@
           return true;
         });
 
-        self.on('keyup', function (e) {
+        self.on('keyup input', function (e) {
           var data = self.data('changeApply');
           if (e.keyCode == 13) {
             if (data.changed)

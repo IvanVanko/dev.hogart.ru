@@ -141,7 +141,8 @@ class CartTable extends AbstractEntity
                 ]
             ])->fetchAll();
 
-            $discount_prices = [];
+            $prices = [];
+            $discounts = [];
             $cart['measures'] = [];
             $itemsId = [];
             foreach ($cart['items'] as &$item) {
@@ -155,7 +156,8 @@ class CartTable extends AbstractEntity
                     $item['price'] /= $cart['currency']['CURRENT_BASE_RATE'];
                     $item['price'] = round($item['price'], 2);
                 }
-                $discount_prices[$item['item_id']] = $item['price'];
+                $prices[$item['item_id']] = $item['price'];
+                $discounts[$item['item_id']] = $item['discount'];
                 $item['url'] = \CIBlock::ReplaceDetailUrl($item['url'], $item, false, 'E');
                 $itemsId[] = $item['XML_ID'];
             }
@@ -186,7 +188,7 @@ class CartTable extends AbstractEntity
 
 
                 $products = array_reduce($products, function ($result, $item) { $result[$item['ID']] = $item; return $result; }, []);
-                $discount_prices = CompanyDiscountTable::preparePricesByContract($cart['contract_id'], $discount_prices);
+                $prices = CompanyDiscountTable::preparePricesByContract($cart['contract_id'], $prices, $discounts);
 
                 foreach ($cart['items'] as &$item) {
                     $item['props'] = $items[$item['item_id']];
@@ -208,8 +210,8 @@ class CartTable extends AbstractEntity
                     $item['STORE_TRANSIT'] = (int)$store_amount[$item['item_id']][$cart['store_guid']]['in_transit'];
                     $item['STORE_ALL_AMOUNT'] = (int)$store_amount[$item['item_id']]['__stock'];
 
-                    if (isset($discount_prices[$item['item_id']])) {
-                        $item['discount'] = $discount_prices[$item['item_id']];
+                    if (isset($prices[$item['item_id']])) {
+                        $item['discount'] = $prices[$item['item_id']];
                         $cart['total'] += ($total = $item['discount']['price'] * $item['count']);
                     } else {
                         $cart['total'] += ($total = $item['price'] * $item['count']);
@@ -454,6 +456,37 @@ class CartTable extends AbstractEntity
             'cart_id' => $cart_id,
             'count' => $new_count
         ]);
+    }
+
+    public static function changeDiscount($cart_id, $item_id, $discount)
+    {
+        $item = CartItemTable::getByPrimary($item_id)->fetch();
+        $cart = self::getByPrimary($cart_id)->fetch();
+        $max_discount = CompanyDiscountTable::getDiscountByContractAndItem($cart['contract_id'], $item['item_id']);
+        if ($max_discount < $discount) {
+            new FlashError(vsprintf("Скидка не может превышать <b>%.2f%%</b>", floatval($max_discount)));
+            return false;
+        }
+        return CartItemTable::update($item_id, [
+            'cart_id' => $cart_id,
+            'discount' => floatval($discount)
+        ]);
+    }
+
+    public static function setMaxDiscounts($cart_id)
+    {
+        $cart = CartTable::getByPrimary(['guid_id' => $cart_id])->fetch();
+        $cart = self::getAccountCartList($cart['account_id'], $cart_id);
+
+        foreach ($cart['items'] as $item_group => $items) {
+            foreach ($items as $item) {
+                CartItemTable::update($item['guid_id'], [
+                    'cart_id' => $item['cart_id'],
+                    'discount' => $item['discount']['max_discount']
+                ]);
+            }
+        }
+        return true;
     }
 
     public static function onBeforeAdd(Event $event)
