@@ -416,9 +416,7 @@ $this->setFrameMode(true);
                             <? endif; ?>
                             <!---->
                         </div>
-                    </div>
-                    <div class="row vertical-align">
-                        <div class="col-md-6 text-nowrap">
+                        <div class="col-md-6 text-right text-nowrap">
                             <div class="quantity-wrapper">
                                 <? if ($arItem["CATALOG_QUANTITY"] > 0): ?>
                                 <div class="quantity quantity-success line <? if ($USER->IsAuthorized()): ?> line2<? endif; ?>">
