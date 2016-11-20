@@ -186,14 +186,34 @@ $collectionComponentId = CAjax::GetComponentID("bitrix:catalog.element", "", "co
                             </div>
                         </div>
                     </div>
+
                     <!--Только для авторизованных-->
-                    <? if ($USER->IsAuthorized() && !empty($arProduct["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
-                        <div class="info-block">
-                            <div class="old currency">
-                                <?= \Hogart\Lk\Helper\Template\Money::show($arProduct["PRICES"]["BASE"]["VALUE"]) ?>
-                                <i class="fa fa-<?=strtolower($arProduct["PRICES"]["BASE"]["CURRENCY"])?>" aria-hidden="true"></i>
+                    <? if ($USER->IsAuthorized()): ?>
+                    <div class="row <?= (!empty($arProduct["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"]) ? "vertical-align" : "") ?>">
+                        <? if (!empty($arProduct["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
+                            <div class="col-sm-8">
+                                <div class="info-block text-nowrap">
+                                    <div class="old currency">
+                                        <?= HogartHelpers::woPrice($arProduct["PRICES"]["BASE"]["VALUE"]); ?>
+                                        <i class="fa fa-<?=strtolower($arProduct["PRICES"]["BASE"]["CURRENCY"])?>" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="discount">
+                                        <?= $arProduct["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"] ?>%
+                                    </div>
+                                </div>
                             </div>
+                        <? endif; ?>
+                        <div class="col-sm-4 text-right pull-right">
+                            <?= \Hogart\Lk\Helper\Template\Cart::Link(
+                                '<i class="fa fa-cart-plus" aria-hidden="true"></i>',
+                                [
+                                    'item_id' => $arProduct['ID'],
+                                    'count' => '1'
+                                ],
+                                'class="black buy"'
+                            ) ?>
                         </div>
+                    </div>
                     <? endif; ?>
                     <? if(!empty($arProduct["PRICES"]["BASE"]["PRINT_VALUE"])): ?>
                         <div class="row">
