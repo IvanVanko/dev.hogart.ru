@@ -14,6 +14,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
+
+use \Hogart\Lk\Helper\Template\Account;
 ?>
 
 <? if(!empty($arResult['PARENT_PARENT_SECTION']["UF_PRICE"])): ?>
@@ -67,7 +69,7 @@ $this->setFrameMode(true);
             <span class="cell">Наличие</span>
             <span class="cell">Ед. изм.</span>
             <span class="cell">Цена <i class="fa fa-<?= strtolower($arItem["PRICES"]["BASE"]["CURRENCY"]) ?>" aria-hidden="true"></i></span>
-            <? if ($USER->IsAuthorized()): ?>
+            <? if (Account::isAuthorized()): ?>
                 <span class="cell">%</span>
                 <span class="cell">К заказу</span>
             <? endif; ?>
@@ -158,19 +160,19 @@ $this->setFrameMode(true);
                 <? endif; ?>
             <? endforeach; ?>
             <span class="cell quantity text-center <? if ($arItem["CATALOG_QUANTITY"] > 0): ?>quantity--available<? endif; ?>">
-                <div class="<? if ($USER->IsAuthorized()):?>quantity-wrapper<? endif; ?>">
+                <div class="<? if (Account::isAuthorized()):?>quantity-wrapper<? endif; ?>">
                 <? if ($arItem["CATALOG_QUANTITY"] > 0): ?>
-                    <? if (!$USER->IsAuthorized()): ?>
+                    <? if (!Account::isAuthorized()): ?>
                         <i class="fa fa-check" aria-hidden="true"></i>
                     <? endif; ?>
                 <? else: ?>
                     <span style="white-space: nowrap"><i class="fa fa-close" aria-hidden="true"></i> Заказ</span>
                 <? endif; ?>
 
-                <? if ($USER->IsAuthorized() && $arItem["CATALOG_QUANTITY"] > 0): ?>
+                <? if (Account::isAuthorized() && $arItem["CATALOG_QUANTITY"] > 0): ?>
                     <span style="white-space: nowrap"><?= $arItem["CATALOG_QUANTITY"]; ?></span>
                 <? endif; ?>
-                    <? if ($USER->IsAuthorized() && ($arItem["CATALOG_QUANTITY"] > 0 || !empty($arItem["PROPERTIES"]["days_till_receive"]["VALUE"]))): ?>
+                    <? if (Account::isAuthorized() && ($arItem["CATALOG_QUANTITY"] > 0 || !empty($arItem["PROPERTIES"]["days_till_receive"]["VALUE"]))): ?>
                     <div class="stocks-wrapper">
                         <div class="triangle-with-shadow"></div>
                         <div class="stock-header">
@@ -231,13 +233,13 @@ $this->setFrameMode(true);
             </span>
             <span class="cell text-center"><?=$arItem['CATALOG_MEASURE_NAME']?>.</span>
             <span class="cell text-center price currency-<?= strtolower($arItem["PRICES"]["BASE"]["CURRENCY"]) ?>">
-                <? if ($USER->IsAuthorized() && !empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
+                <? if (Account::isAuthorized() && !empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
                     <?= \Hogart\Lk\Helper\Template\Money::show($arItem["PRICES"]["BASE"]["DISCOUNT_VALUE"]) ?>
                 <? else: ?>
                     <?= \Hogart\Lk\Helper\Template\Money::show($arItem["PRICES"]["BASE"]["VALUE"]) ?>
                 <? endif; ?>
             </span>
-            <? if ($USER->IsAuthorized()): ?>
+            <? if (Account::isAuthorized()): ?>
             <span class="cell text-center">
                 <? if (!empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
                 <div class="grid-hide discount">
@@ -401,7 +403,7 @@ $this->setFrameMode(true);
                     <div class="row vertical-align">
                         <div class="col-md-6">
                             <div class="price currency-<?= strtolower($arItem["PRICES"]["BASE"]["CURRENCY"]) ?> text-nowrap">
-                                <? if ($USER->IsAuthorized() && !empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
+                                <? if (Account::isAuthorized() && !empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
                                     <?= \Hogart\Lk\Helper\Template\Money::show($arItem["PRICES"]["BASE"]["DISCOUNT_VALUE"]) ?>
                                 <? else: ?>
                                     <?= \Hogart\Lk\Helper\Template\Money::show($arItem["PRICES"]["BASE"]["VALUE"]) ?>
@@ -409,7 +411,7 @@ $this->setFrameMode(true);
                                 <i class="fa fa-<?=strtolower($arItem["PRICES"]["BASE"]["CURRENCY"])?>" aria-hidden="true"></i>
                             </div>
                             <!--Только для авторизованных-->
-                            <? if ($USER->IsAuthorized() && !empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
+                            <? if (Account::isAuthorized() && !empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
                                 <div class="grid-hide discount">
                                     <?= $arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"] ?>%
                                 </div>
@@ -419,8 +421,8 @@ $this->setFrameMode(true);
                         <div class="col-md-6 text-right text-nowrap">
                             <div class="quantity-wrapper">
                                 <? if ($arItem["CATALOG_QUANTITY"] > 0): ?>
-                                <div class="quantity quantity-success line <? if ($USER->IsAuthorized()): ?> line2<? endif; ?>">
-                                <? if ($USER->IsAuthorized()): ?>
+                                <div class="quantity quantity-success line <? if (Account::isAuthorized()): ?> line2<? endif; ?>">
+                                <? if (Account::isAuthorized()): ?>
                                     <span><?= $arItem["CATALOG_QUANTITY"]; ?>
                                     <?=$arItem['CATALOG_MEASURE_NAME']?>.</span>
                                 <? endif; ?>
@@ -431,7 +433,7 @@ $this->setFrameMode(true);
                                 </div>
                                 <? endif; ?>
 
-                                <? if ($USER->IsAuthorized() && ($arItem["CATALOG_QUANTITY"] > 0 || !empty($arItem["PROPERTIES"]["days_till_receive"]["VALUE"]))): ?>
+                                <? if (Account::isAuthorized() && ($arItem["CATALOG_QUANTITY"] > 0 || !empty($arItem["PROPERTIES"]["days_till_receive"]["VALUE"]))): ?>
                                 <div class="stocks-wrapper">
                                     <div class="triangle-with-shadow"></div>
                                     <div class="stock-header">
@@ -492,7 +494,7 @@ $this->setFrameMode(true);
                         </div>
                     </div>
                     <!--Только для авторизованных-->
-                    <? if ($USER->IsAuthorized()): ?>
+                    <? if (Account::isAuthorized()): ?>
                     <div class="row <?= (!empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"]) ? "vertical-align" : "") ?>">
                         <? if (!empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
                         <div class="col-sm-8">

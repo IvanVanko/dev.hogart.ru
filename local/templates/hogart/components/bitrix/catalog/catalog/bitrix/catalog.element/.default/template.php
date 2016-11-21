@@ -14,6 +14,10 @@
 /** @var CBitrixComponent $component */
 
 $this->setFrameMode(true);
+
+use Hogart\Lk\Helper\Template\Account;
+
+
 $collectionComponentId = CAjax::GetComponentID("bitrix:catalog.element", "", "collection");
 $buyWithThisComponentId = CAjax::GetComponentID("bitrix:catalog.element", "", "buy_with_this");
 ?>
@@ -57,7 +61,7 @@ $this->EndViewTarget();
             <div class="row">
                 <div class="col-md-6">
                     <div class="img-wrap <?=(count($arResult["DISPLAY_PROPERTIES"]["photos"]["VALUE"]) > 1) ? '' : 'count1'?>">
-                        <? if($USER->IsAuthorized() && !empty($arResult["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
+                        <? if(Account::isAuthorized() && !empty($arResult["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
                             <!--div class="sale">
                                 -<?=$arResult["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"]?>%
                             </div-->
@@ -150,20 +154,20 @@ $this->EndViewTarget();
                                 
                                 <? if (!empty($arResult["PRICES"]["BASE"])): ?>
                                 <div class="price text-nowrap">
-                                    <? if($USER->IsAuthorized() && !empty($arResult["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
+                                    <? if(Account::isAuthorized() && !empty($arResult["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
                                         <?= \Hogart\Lk\Helper\Template\Money::show($arResult["PRICES"]["BASE"]["DISCOUNT_VALUE"]) ?>
                                     <? else: ?>
                                         <?= \Hogart\Lk\Helper\Template\Money::show($arResult["PRICES"]["BASE"]["VALUE"]) ?>
                                     <? endif; ?>
                                     <i class="fa fa-<?=strtolower($arResult["PRICES"]["BASE"]["CURRENCY"])?>" aria-hidden="true"></i>
-                                    <? if($USER->IsAuthorized() && !empty($arResult["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
+                                    <? if(Account::isAuthorized() && !empty($arResult["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
                                         <sup>*</sup>
                                     <? endif; ?>
                                 </div>
                                 <? endif; ?>
                                 
                                 <!--Только для авторизованных-->
-                                <? if($USER->IsAuthorized() && !empty($arResult["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
+                                <? if(Account::isAuthorized() && !empty($arResult["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
                                     <div class="info-block">
                                         <div class="old currency">
                                             <?=HogartHelpers::woPrice($arResult["PRICES"]["BASE"]["PRINT_VALUE"]);?>
@@ -186,7 +190,7 @@ $this->EndViewTarget();
                                     <div class="">
                                         <div class="icon-carTon grid-hide">
                                             <div class="quantity quantity-success">В
-                                                наличии<? if ($USER->IsAuthorized()): ?> <span><?= $arResult["CATALOG_QUANTITY"]; ?>
+                                                наличии<? if (Account::isAuthorized()): ?> <span><?= $arResult["CATALOG_QUANTITY"]; ?>
                                                     <?=$arResult['CATALOG_MEASURE_NAME']?>.</span><? endif; ?></div>
                                         </div>
                                     </div>
@@ -212,17 +216,11 @@ $this->EndViewTarget();
                                         </div>
                                     <? endif; ?>
                                 <? endif; ?>
-                                <? if($USER->IsAuthorized()): ?>
+                                <? if(Account::isAuthorized()): ?>
                                     <div class="">
                                         <?
                                         $class_pop = '';
                                         $attr_pop = '';
-                                        ?>
-                                        <?
-                                        if (!$USER->IsAuthorized()) {
-                                            $class_pop = 'js-popup-open';
-                                            $attr_pop = 'data-popup="#popup-msg-product"';
-                                        }
                                         ?>
                                         <?= \Hogart\Lk\Helper\Template\Cart::Link(
                                             '<i class="fa fa-cart-plus" aria-hidden="true"></i> Купить',

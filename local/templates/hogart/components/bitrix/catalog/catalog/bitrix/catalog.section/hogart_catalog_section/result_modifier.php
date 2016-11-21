@@ -239,6 +239,7 @@ $section_ids = array_unique($section_ids);
 
 global $USER;
 $account = \Hogart\Lk\Entity\AccountTable::getAccountByUserID($USER->GetID());
+$arParams['account'] = $account;
 $storeFilter = [
 ];
 
