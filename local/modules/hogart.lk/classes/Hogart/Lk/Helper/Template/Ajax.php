@@ -112,7 +112,7 @@ class Ajax
         $killParams = array_merge(array_keys($params), [BX_AJAX_PARAM_ID]);
         foreach ($params as $key => $param) {
             if (preg_match("%^javascript:(?P<function>.*?)$%", $param, $m)) {
-                $__html .= '_[\'' . $key . '\'] = ' . htmlspecialchars($m['function']) . '';
+                $__html .= '_[\'' . $key . '\'] = ' . htmlspecialchars($m['function']) . ';';
                 unset($params[$key]);
             }
         }
