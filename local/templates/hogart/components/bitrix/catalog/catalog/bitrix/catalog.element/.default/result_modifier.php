@@ -181,20 +181,18 @@ if (!empty($arResult["PROPERTIES"]["buy_with_this"]["VALUE"])) {
     $base_link = CHTTP::urlAddParams(GetPagePath(false, false), ["buy_with_this" => md5(serialize($arResult["PROPERTIES"]["buy_with_this"]["VALUE"]))], array("encode"=>true));
     $prepareRelatedItems($arResult["buy_with_this"], $base_link, $arFilter);
 }
-
 foreach ($arResult['buy_with_this']["ITEMS"] as $i => $arCollItem) {
     if (empty($arCollItem['IBLOCK_SECTION_ID'])) continue;
     $sections_for_links[] = $arCollItem['IBLOCK_SECTION_ID'];
 }
-if (!empty($arResult["PROPERTIES"]["related"]["VALUE"])) {
-    $ar_res = CIBlockElement::GetList(array("sort" => "asc"), array("ID" => $arResult["PROPERTIES"]["related"]["VALUE"], "ACTIVE" => "Y"), false, false, array("*","CATALOG_GROUP_ID" => 1, "PROPERTY_SKU", "PROPERTY_PHOTOS", "PREVIEW_PICTURE"));
-    while ($ob = $ar_res->GetNextElement()) {
-        $arFields = $ob->GetFields();
 
-        $arFields['PRICE'] = BXHelper::calculateDicountPrice($arFields, 1, $arParams['PRICE_CODE'][0],SITE_ID, $arFields['CATALOG_CURRENCY_1']);
-        $arFields["PROPERTIES"] = $ob->GetProperties();
-        $arResult["related"]["ITEMS"][] = $arFields;
-    }
+// related
+if (!empty($arResult["PROPERTIES"]["related"]["VALUE"])) {
+    $arFilter = [
+        "ID" => $arResult["PROPERTIES"]["related"]["VALUE"],
+    ];
+    $base_link = CHTTP::urlAddParams(GetPagePath(false, false), ["related" => md5(serialize($arResult["PROPERTIES"]["related"]["VALUE"]))], array("encode"=>true));
+    $prepareRelatedItems($arResult["related"], $base_link, $arFilter);
 }
 foreach ($arResult['related']["ITEMS"] as $i => $arCollItem) {
     if (empty($arCollItem['IBLOCK_SECTION_ID'])) continue;
@@ -203,18 +201,17 @@ foreach ($arResult['related']["ITEMS"] as $i => $arCollItem) {
 
 //alternative
 if (!empty($arResult["PROPERTIES"]["alternative"]["VALUE"])) {
-    $ar_res = CIBlockElement::GetList(array("sort" => "asc"), array("ID" => $arResult["PROPERTIES"]["alternative"]["VALUE"], "ACTIVE" => "Y"), false, false, array("*","CATALOG_GROUP_ID" => 1, "PROPERTY_SKU", "PROPERTY_PHOTOS", "PREVIEW_PICTURE"));
-    while ($ob = $ar_res->GetNextElement()) {
-        $arFields = $ob->GetFields();
-        $arFields["PROPERTIES"] = $ob->GetProperties();
-        $arFields['PRICE'] = BXHelper::calculateDicountPrice($arFields, 1, $arParams['PRICE_CODE'][0],SITE_ID, $arFields['CATALOG_CURRENCY_1']);
-        $arResult["alternative"][] = $arFields;
-    }
+    $arFilter = [
+        "ID" => $arResult["PROPERTIES"]["alternative"]["VALUE"],
+    ];
+    $base_link = CHTTP::urlAddParams(GetPagePath(false, false), ["alternative" => md5(serialize($arResult["PROPERTIES"]["alternative"]["VALUE"]))], array("encode"=>true));
+    $prepareRelatedItems($arResult["alternative"], $base_link, $arFilter);
 }
-foreach ($arResult['alternative'] as $i => $arCollItem) {
+foreach ($arResult['alternative']["ITEMS"] as $i => $arCollItem) {
     if (empty($arCollItem['IBLOCK_SECTION_ID'])) continue;
     $sections_for_links[] = $arCollItem['IBLOCK_SECTION_ID'];
 }
+
 
 if (!empty($arResult["PROPERTIES"]["collection"]["VALUE"])) {
     $arFilter = array(
