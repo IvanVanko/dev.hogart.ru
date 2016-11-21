@@ -9,7 +9,9 @@
 namespace Hogart\Lk\Exchange\SOAP\Request;
 
 
+use Hogart\Lk\Entity\OrderTable;
 use Hogart\Lk\Exchange\SOAP\AbstractPutRequest;
+use Hogart\Lk\Exchange\SOAP\LazyRequest;
 
 class Order extends AbstractPutRequest
 {
@@ -26,14 +28,23 @@ class Order extends AbstractPutRequest
     {
         foreach ($orders as $order) {
             $_order = (object)[
-                'Order_ID_Hogart' => $order['hco_guid_id'],
-                'Order_ID_Company' => $order['co_guid_id'],
+                'Order_ID_Hogart' => new LazyRequest(function ($order) {
+                    $order = OrderTable::getOrder($order['id']);
+                    return $order['hco_guid_id'];
+                }, [$order]),
+                'Order_ID_Company' => new LazyRequest(function ($order) {
+                    $order = OrderTable::getOrder($order['id']);
+                    return $order['co_guid_id'];
+                }, [$order]),
                 'Order_ID' => (string)$order['guid_id'],
                 'Order_ID_Site' => $order['id'],
                 'Order_Date' => $order['order_date']->format('Y-m-d H:i:s'),
                 'Order_Number' => $order['number'],
                 'Order_Form_Oper' => $order['type'],
-                'Order_ID_Contract' => $order['c_guid_id'],
+                'Order_ID_Contract' => new LazyRequest(function ($order) {
+                    $order = OrderTable::getOrder($order['id']);
+                    return $order['c_guid_id'];
+                }, [$order]),
                 'Order_Status' => $order['status'],
                 'Order_ID_Stock' => $order['store_guid'],
                 'Order_ID_Account' => $order['a_user_guid_id'],
@@ -49,7 +60,7 @@ class Order extends AbstractPutRequest
                 foreach ($items as $k => $item) {
                     $_order->Order_Items[] = (object)[
                         "Order_Line_Number" => (int)$item['string_number'],
-                        "Order_Item_ID" => '', // $item['d_guid_id'], //
+                        "Order_Item_ID" => '',
                         "ID_Item" => $item['XML_ID'],
                         "Item_Article" => $item['props']['sku']['VALUE'],
                         "Item_Name" => $item['NAME'],
