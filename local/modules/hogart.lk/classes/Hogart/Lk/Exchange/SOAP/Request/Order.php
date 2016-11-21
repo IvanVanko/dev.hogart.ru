@@ -29,11 +29,11 @@ class Order extends AbstractPutRequest
         foreach ($orders as $order) {
             $_order = (object)[
                 'Order_ID_Hogart' => new LazyRequest(function ($order) {
-                    $order = OrderTable::getOrder($order['id']);
+                    $order = OrderTable::getOrder((int)$order['id']);
                     return $order['hco_guid_id'];
                 }, [$order]),
                 'Order_ID_Company' => new LazyRequest(function ($order) {
-                    $order = OrderTable::getOrder($order['id']);
+                    $order = OrderTable::getOrder((int)$order['id']);
                     return $order['co_guid_id'];
                 }, [$order]),
                 'Order_ID' => (string)$order['guid_id'],
@@ -42,7 +42,7 @@ class Order extends AbstractPutRequest
                 'Order_Number' => $order['number'],
                 'Order_Form_Oper' => $order['type'],
                 'Order_ID_Contract' => new LazyRequest(function ($order) {
-                    $order = OrderTable::getOrder($order['id']);
+                    $order = OrderTable::getOrder((int)$order['id']);
                     return $order['c_guid_id'];
                 }, [$order]),
                 'Order_Status' => $order['status'],
