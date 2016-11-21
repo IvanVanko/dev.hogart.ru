@@ -46,7 +46,10 @@ class Contact extends AbstractPutRequest
                 'Cont_Name' => $contact['name'],
                 'Cont_Middle_Name' => $contact['middle_name'],
                 'deletion_mark' => !$contact['is_active'],
-                'Cont_Post' => (string)$contact['post'],
+                'Cont_Post' => new LazyRequest(function ($contact) {
+                    $contact = ContactTable::getContactForExchange($contact['id']);
+                    return (string)$contact['post'];
+                }, [$contact]),
                 'Comp_ID_Account' => (string)$contact['a_user_guid_id']
             ];
         }
