@@ -13,6 +13,7 @@ use Hogart\Lk\Entity\AbstractEntity;
 use Hogart\Lk\Entity\ContactInfoTable;
 use Hogart\Lk\Exchange\SOAP\AbstractMethod;
 use Bitrix\Main\Entity\UpdateResult;
+use Hogart\Lk\Exchange\SOAP\AbstractPutRequest;
 use Hogart\Lk\Exchange\SOAP\MethodException;
 use Hogart\Lk\Exchange\SOAP\Request;
 use Hogart\Lk\Exchange\SOAP\Response;
@@ -26,6 +27,25 @@ class ContactInfo extends AbstractMethod
     function getName()
     {
         return "ContactInfo";
+    }
+
+    public function contactInfoPut(AbstractPutRequest $request)
+    {
+        $this->client->getLogger()->debug(var_export($request->__toRequest(), true));
+        $response = $this->client->getSoapClient()->ContactInfoPut($request->__toRequest());
+        foreach ($response->return->Response as $info) {
+
+            if (!empty($info->Error)) {
+                $error = new MethodException(MethodException::ERROR_SOAP, [$info->ErrorText, $info->Error]);
+                $this->client->getLogger()->error($error->getMessage());
+                throw $error;
+            }
+
+            ContactInfoTable::update($info->ID_Site, [
+                'd_guid_id' => $info->ID
+            ]);
+        }
+        return $response;
     }
 
     public function getContactsInfo()

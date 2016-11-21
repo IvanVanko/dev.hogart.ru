@@ -64,14 +64,28 @@ class OrderItem extends AbstractMethod
                     '=IBLOCK.ID' => new SqlExpression('?i', CATALOG_IBLOCK_ID)
                 ]
             ])->fetch();
-            if (!isset($item)) {
-                throw new MethodException(MethodException::ERROR_NO_ITEM, [$orderItem->Order_ID, $orderItem->Order_Line_Number]);
+            $item_id = $item['ID'];
+            if (empty($item_id)) {
+                // создаем позицию скрытую от глаз, если уже не получится - исключение
+                $propA = [];
+                $propA['sku'] = $orderItem->Item_Article;
+                $propA['default_count'] = floatval($orderItem->Item_default_count);
+                $arLoadProductArray = Array(
+                    "IBLOCK_ID" => CATALOG_IBLOCK_ID,
+                    "XML_ID" => $orderItem->ID_Item,
+                    "PROPERTY_VALUES" => $propA,
+                    "NAME" => $orderItem->Item_Name,
+                    "ACTIVE" => "N"
+                );
+                $item_id = (new \CIBlockElement())->Add($arLoadProductArray, false, false, false);
+                if (empty($item_id)) {
+                    throw new MethodException(MethodException::ERROR_NO_ITEM, [$orderItem->Order_ID, $orderItem->Order_Line_Number]);
+                }
             }
             $data = [
-//                'd_guid_id' => $orderItem->Order_Item_ID,
                 'order_id' => $order['id'],
                 'string_number' => $orderItem->Order_Line_Number,
-                'item_id' => $item['ID'],
+                'item_id' => $item_id,
                 'count' => $orderItem->Count,
                 'price' => $orderItem->Cost,
                 'discount' => floatval($orderItem->Discount),

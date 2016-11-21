@@ -16,6 +16,8 @@ use Bitrix\Main\Entity\EventResult;
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ScalarField;
 use Bitrix\Main\Entity\StringField;
+use Hogart\Lk\Exchange\RabbitMQ\Exchange\ContactInfoExchange;
+use Hogart\Lk\Exchange\SOAP\Request\ContactInfo;
 use Hogart\Lk\Field\GuidField;
 use Ramsey\Uuid\Uuid;
 
@@ -129,5 +131,21 @@ class ContactInfoTable extends AbstractEntityRelation
             'value' => $value
         ]);
         return $result;
+    }
+
+    public static function putTo1c($primary)
+    {
+        $info = self::getRowById($primary);
+        self::publishToRabbit(new ContactInfoExchange(), new ContactInfo([$info]));
+    }
+
+    public static function onAfterAdd(Event $event)
+    {
+        self::putTo1c($event->getParameter('primary'));
+    }
+
+    public static function onAfterUpdate(Event $event)
+    {
+        self::putTo1c($event->getParameter('primary'));
     }
 }

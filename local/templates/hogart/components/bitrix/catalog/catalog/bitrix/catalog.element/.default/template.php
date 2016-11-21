@@ -15,156 +15,34 @@
 
 $this->setFrameMode(true);
 $collectionComponentId = CAjax::GetComponentID("bitrix:catalog.element", "", "collection");
+$buyWithThisComponentId = CAjax::GetComponentID("bitrix:catalog.element", "", "buy_with_this");
 ?>
-<? $this->SetViewTarget("related-collection-items"); ?>
-<? if(!empty($arResult["this_collection"]["PREV_LINK"]) || !empty($arResult["this_collection"]["NEXT_LINK"])): ?>
-    <div id="con-4" class="controls text-right">
-        <? if (!empty($arResult["this_collection"]["PREV_LINK"])): ?>
-            <div class="prev">
-                <a href="<?= $arResult["this_collection"]["PREV_LINK"] ?>" onclick="BX.ajax.insertToNode('<?= $arResult["this_collection"]["PREV_LINK"] ?>', 'com_<?= $collectionComponentId ?>'); return false;">
-                    <i class="fa fa-arrow-circle-o-left"></i>
-                </a>
-            </div>
-        <? endif; ?>
-        <? if (!empty($arResult["this_collection"]["NEXT_LINK"])): ?>
-            <div class="next">
-                <a href="<?= $arResult["this_collection"]["NEXT_LINK"] ?>" onclick="BX.ajax.insertToNode('<?= $arResult["this_collection"]["NEXT_LINK"] ?>', 'com_<?= $collectionComponentId ?>'); return false;">
-                    <i class="fa fa-arrow-circle-o-right"></i>
-                </a>
-            </div>
-        <? endif; ?>
-    </div>
-<? endif; ?>
 
-<ul data-control="#con-4" class="row ">
-    <? foreach ($arResult["this_collection"]["ITEMS"] as $arProduct): ?>
-        <li class="col-lg-3 col-md-4 col-sm-6 this-collection-item">
-            <div>
-                <span class="perechen-img">
-                    <a href="<?= $arProduct["DETAIL_PAGE_URL"] ?>">
-                        <?
-                        $pic = "/images/project_no_img.jpg";
-                        if (!empty($arProduct["PREVIEW_PICTURE"])) {
-                            $file = CFile::ResizeImageGet(
-                                $arProduct["PREVIEW_PICTURE"], array("width" => 400, "height" => 160), BX_RESIZE_IMAGE_PROPORTIONAL, true);
-                            if (file_exists(realpath($_SERVER["DOCUMENT_ROOT"] . $file['src'])))
-                                $pic = $file['src'];
-                        }
-                        elseif (!empty($arProduct["DETAIL_PICTURE"])) {
-
-                            $file = CFile::ResizeImageGet(
-                                $arProduct["DETAIL_PICTURE"], array("width" => 400, "height" => 160), BX_RESIZE_IMAGE_PROPORTIONAL, true);
-                            if (file_exists(realpath($_SERVER["DOCUMENT_ROOT"] . $file['src'])))
-                                $pic = $file['src'];
-                        }
-                        ?>
-                        <img src="<?=$pic?>" alt=""/>
-                    </a>
-                </span>
-
-                <div class="prod-box">
-                    <? if (!empty($arProduct["PROPERTY_SKU_VALUE"])): ?>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="art">Артикул: <span><?= $arProduct["PROPERTY_SKU_VALUE"] ?></span></div>
-                            </div>
-                        </div>
-                    <? endif; ?>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <a href="<?= $arProduct["DETAIL_PAGE_URL"] ?>"><h3><?= $arProduct["NAME"] ?></h3></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="param-cnt">
-                    <ul class="param">
-                        <li class="note">
-                            <div class="dotted">
-                                <span class="text-left">Бренд</span>
-                                                    <span class="text-right">
-                                                        <span class="pr"><?= $arProduct['BRAND_NAME'] ?></span>
-                                                    </span>
-                            </div>
-                        </li>
-                        <? if(!empty($arProduct['COLLECTION_NAME'])): ?>
-                            <li class="note">
-                                <div class="dotted">
-                                    <span class="text-left">Коллекция</span>
-                                    <span class="text-right"><?= $arProduct['COLLECTION_NAME'] ?></span>
-                                </div>
-                            </li>
-                        <? endif; ?>
-                    </ul>
-                </div>
-                <div class="price-cnt <? if ($USER->IsAuthorized()): ?> auth-block<? endif; ?>">
-                    <div class="row vertical-align">
-                        <div class="col-md-6">
-                            <div class="price currency-<?= strtolower($arProduct["PRICES"]["BASE"]["CURRENCY"]) ?> text-nowrap">
-                                <?= \Hogart\Lk\Helper\Template\Money::show($arProduct["PRICES"]["BASE"]["DISCOUNT_VALUE"]) ?>
-                                <i class="fa fa-<?=strtolower($arResult["PRICES"]["BASE"]["CURRENCY"])?>" aria-hidden="true"></i>
-                            </div>
-                            <!--Только для авторизованных-->
-                            <? if ($USER->IsAuthorized() && !empty($arProduct["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
-                                <div class="grid-hide discount">
-                                    <?= $arProduct["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"] ?>%
-                                </div>
-                            <? endif; ?>
-                            <!---->
-                        </div>
-                        <div class="col-md-6 text-right text-nowrap">
-                            <? if ($arProduct["CATALOG_QUANTITY"] > 0): ?>
-                                <div class="quantity quantity-success line <? if ($USER->IsAuthorized()): ?> line2<? endif; ?>">В
-                                    наличии<? if ($USER->IsAuthorized()): ?> <span><?= $arProduct["CATALOG_QUANTITY"]; ?>
-                                        <?=$arProduct['CATALOG_MEASURE_NAME']?>.</span><? endif; ?></div>
-                            <? else: ?>
-                                <div class="quantity quantity-fail text-nowrap">
-                                    <i class="fa fa-truck" aria-hidden="true"></i> Под заказ
-                                </div>
-                            <? endif; ?>
-                        </div>
-                    </div>
-                    <!--Только для авторизованных-->
-                    <? if ($USER->IsAuthorized() && !empty($arProduct["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
-                        <div class="info-block">
-                            <div class="old currency">
-                                <?= \Hogart\Lk\Helper\Template\Money::show($arProduct["PRICES"]["BASE"]["VALUE"]) ?>
-                                <i class="fa fa-<?=strtolower($arProduct["PRICES"]["BASE"]["CURRENCY"])?>" aria-hidden="true"></i>
-                            </div>
-                        </div>
-                    <? endif; ?>
-                    <? if(!empty($arProduct["PRICES"]["BASE"]["PRINT_VALUE"])): ?>
-                        <div class="row">
-                            <div class="col-md-12 text-center">
-                                <?
-                                $class_pop = '';
-                                $attr_pop = '';
-                                ?>
-                                <?
-                                if (!$USER->IsAuthorized()) {
-                                    $class_pop = 'js-popup-open';
-                                    $attr_pop = 'data-popup="#popup-msg-product"';
-                                }
-                                ?>
-                                <?= \Hogart\Lk\Helper\Template\Cart::Link(
-                                    '<i class="fa fa-cart-plus" aria-hidden="true"></i> Купить',
-                                    ['item_id' => $arProduct['ID']],
-                                    'class="buy-btn btn btn-primary ' . $class_pop . ' ' . $attr_pop . '"'
-                                ) ?>
-                            </div>
-                        </div>
-                    <? endif; ?>
-                    <!---->
-                </div>
-            </div>
-        </li>
-    <? endforeach; ?>
-</ul>
-<? $this->EndViewTarget(); ?>
-
+<?php
+$this->SetViewTarget("related-collection-items");
+$componentId = $collectionComponentId;
+$related = $arResult["this_collection"];
+include __DIR__ . "/related-items.php";
+$this->EndViewTarget();
+?>
 
 <? if (!empty($_REQUEST["collection"])): ?>
     <? $APPLICATION->RestartBuffer() ?>
     <? $APPLICATION->ShowViewContent("related-collection-items") ?>
+    <? exit; ?>
+<? endif; ?>
+
+<?
+$this->SetViewTarget("buy-with-this-items");
+$componentId = $buyWithThisComponentId;
+$related = $arResult["buy_with_this"];
+include __DIR__ . "/related-items.php";
+$this->EndViewTarget();
+?>
+
+<? if (!empty($_REQUEST["buy_with_this"])): ?>
+    <? $APPLICATION->RestartBuffer() ?>
+    <? $APPLICATION->ShowViewContent("buy-with-this-items") ?>
     <? exit; ?>
 <? endif; ?>
 
@@ -315,7 +193,7 @@ $collectionComponentId = CAjax::GetComponentID("bitrix:catalog.element", "", "co
                                 <? else: ?>
                                     <div class="">
                                         <div class="quantity quantity-fail text-nowrap">
-                                            <i class="fa fa-truck" aria-hidden="true"></i> Под заказ
+                                            <i class="fa fa-truck" aria-hidden="true"></i> Заказ
                                             <? if(!empty($arResult["PROPERTIES"]["delivery_period"]["VALUE"])): ?>
                                                 <br>
                                                 <span>Срок поставки <?=$arResult["PROPERTIES"]["delivery_period"]["VALUE"]?> <?=number($arResult["PROPERTIES"]["delivery_period"]["VALUE"], array('день',
@@ -398,19 +276,19 @@ $collectionComponentId = CAjax::GetComponentID("bitrix:catalog.element", "", "co
                     <li role="presentation" class="<?= (!$tab_active ? 'active' : '') ?>">
                         <a href="#related" aria-controls="related" role="tab" data-toggle="tab">Сопутствующие товары</a>
                     </li>
-                    <? $tab_active = 'related'; ?>
+                    <? $tab_active = $tab_active ? : 'related'; ?>
                 <? endif; ?>
                 <? if(isset($arResult["alternative"]["ITEMS"])): ?>
                     <li role="presentation" class="<?= (!$tab_active ? 'active' : '') ?>">
                         <a href="#alternative" aria-controls="alternative" role="tab" data-toggle="tab">Альтернативные товары</a>
                     </li>
-                    <? $tab_active = 'alternative'; ?>
+                    <? $tab_active = $tab_active ? : 'alternative'; ?>
                 <? endif; ?>
                 <? if(isset($arResult["this_collection"]["ITEMS"])): ?>
                     <li role="presentation" class="<?= (!$tab_active ? 'active' : '') ?>">
                         <a href="#this_collection" aria-controls="this_collection" role="tab" data-toggle="tab">Еще из этой коллекции</a>
                     </li>
-                    <? $tab_active = 'this_collection'; ?>
+                    <? $tab_active = $tab_active ? : 'this_collection'; ?>
                 <? endif; ?>
             </ul>
             <div class="tab-content">
@@ -421,200 +299,16 @@ $collectionComponentId = CAjax::GetComponentID("bitrix:catalog.element", "", "co
                     </div>
                 </div>
                 <? endif; ?>
+
+                <? if(isset($arResult["buy_with_this"]["ITEMS"])): ?>
+                <div role="tabpanel" class="tab-pane <?= ($tab_active == 'buy_with_this' ? 'active' : '') ?>" id="buy_with_this">
+                    <div id="com_<?= $buyWithThisComponentId ?>">
+                        <? $APPLICATION->ShowViewContent("buy-with-this-items") ?>
+                    </div>
+                </div>
+                <? endif; ?>
             </div>
         </div>
-
-        <!-- div class="products-similar-tabs inner">
-            <ul class="tabs-similar">
-                <? if(isset($arResult["buy_with_this"])): ?>
-                    <li><a href="#tab-1" class="active">С этим товаром покупают</a></li>
-                <? endif; ?>
-                <? if(isset($arResult["related"])): ?>
-                    <li><a href="#tab-2">Сопутствующие товары</a></li>
-                <? endif; ?>
-
-                <? if(isset($arResult["alternative"])): ?>
-                    <li><a href="#tab-3">Альтернативные товары</a></li>
-                <? endif; ?>
-
-                <? if(isset($arResult["this_collection"])): ?>
-                    <li><a href="#tab-4">Еще из этой коллекции</a></li>
-                <? endif; ?>
-            </ul>
-            <div class="items-similar">
-                <? if(isset($arResult["buy_with_this"])): ?>
-                    <div id="tab-1" class="item-similar active">
-                        <div id="con-1" class="controls">
-                            <div class="prev"></div>
-                            <div class="next"></div>
-                        </div>
-                        <ul data-control="#con-1" class="js-slider-similar">
-                            <? foreach($arResult["buy_with_this"] as $key => $arProduct): ?>
-                                <li>
-		        	<span class="preview-img">
-                        <? if(!empty($arProduct["PREVIEW_PICTURE"])) {
-                            //$file = CFile::GetPath($arProduct["PREVIEW_PICTURE"]);
-                            $file = CFile::ResizeImageGet($arProduct["PREVIEW_PICTURE"],
-                                array('width' => 406, 'height' => 142), BX_RESIZE_IMAGE_PROPORTIONAL_ALT, true);
-                            $file = $file['src'];
-                        }
-                        elseif(!empty($arProduct["PROPERTY_PHOTOS_VALUE"])) {
-                            //$file = CFile::GetPath($arProduct["PROPERTY_PHOTOS_VALUE"]);
-                            $file = CFile::ResizeImageGet($arProduct["PROPERTY_PHOTOS_VALUE"],
-                                array('width' => 406, 'height' => 142), BX_RESIZE_IMAGE_PROPORTIONAL_ALT, true);
-                            $file = $file['src'];
-                        }
-                        else {
-                            $file = '/images/project_no_img.jpg';
-                        } ?>
-                        <a href="<?=$arProduct["DETAIL_PAGE_URL"]?>" style="background-image: url(<?=$file?>)">
-		        	</span>
-                                    <a href="<?=$arProduct["DETAIL_PAGE_URL"]?>"><h3><?=$arProduct["NAME"]?></h3></a>
-                                    <? if(!empty($arProduct["PROPERTY_SKU_VALUE"])): ?>
-                                        <span class="art">Артикул: <span><?=$arProduct["PROPERTY_SKU_VALUE"]?></span></span>
-                                    <? endif; ?>
-                                    <div class="param">
-                                        <div>
-                                            <dl>
-                                                <dt>Бренд</dt>
-                                                <dd class="pr"><?=$arProduct['BRAND_NAME']?></dd>
-                                            </dl>
-                                            <dl>
-                                                <dt>Коллекция</dt>
-                                                <dd class="pr"><?=$arProduct['COLLECTION_NAME']?></dd>
-                                            </dl>
-                                        </div>
-                                        <?=HogartHelpers::getAdjacentProductPropertyHtml($arProduct['ID'], $arProduct["SHOW_PROPS"], $arProduct["HIDDEN_PROPS"], array('brand',
-                                            'photos',
-                                            'sku',
-                                            'collection'));?>
-                                    </div>
-                                    <div class="price currency-<?=strtolower($arProduct['CATALOG_CURRENCY_1'])?>">
-                                        <?=HogartHelpers::wPrice($arProduct['PRICE'])?>
-                                    </div>
-                                </li>
-                            <? endforeach; ?>
-                        </ul>
-
-                    </div>
-                <? endif; ?>
-
-                <? if(isset($arResult["related"])): ?>
-                    <div id="tab-2" class="item-similar">
-                        <div id="con-2" class="controls">
-                            <div class="prev"></div>
-                            <div class="next"></div>
-                        </div>
-                        <ul data-control="#con-2" class="js-slider-similar ">
-                            <? foreach($arResult["related"] as $arProduct): ?>
-                                <li>
-		        	<span class="preview-img">
-                        <? if(!empty($arProduct["PREVIEW_PICTURE"])) {
-                            //$file = CFile::GetPath($arProduct["PREVIEW_PICTURE"]);
-                            $file = CFile::ResizeImageGet($arProduct["PREVIEW_PICTURE"],
-                                array('width' => 406, 'height' => 142), BX_RESIZE_IMAGE_PROPORTIONAL_ALT, true);
-                            $file = $file['src'];
-                        }
-                        elseif(!empty($arProduct["PROPERTY_PHOTOS_VALUE"])) {
-                            //$file = CFile::GetPath($arProduct["PROPERTY_PHOTOS_VALUE"]);
-                            $file = CFile::ResizeImageGet($arProduct["PROPERTY_PHOTOS_VALUE"],
-                                array('width' => 406, 'height' => 142), BX_RESIZE_IMAGE_PROPORTIONAL_ALT, true);
-                            $file = $file['src'];
-                        }
-                        else {
-                            $file = '/images/project_no_img.jpg';
-                        } ?>
-                        <a href="<?=$arProduct["DETAIL_PAGE_URL"]?>" style="background-image: url(<?=$file?>)">
-		        	</span>
-                                    <a href="<?=$arProduct["DETAIL_PAGE_URL"]?>"><h3><?=$arProduct["NAME"]?></h3></a>
-                                    <? if(!empty($arProduct["PROPERTY_SKU_VALUE"])): ?>
-                                        <span class="art">Артикул: <span><?=$arProduct["PROPERTY_SKU_VALUE"]?></span></span>
-                                    <? endif; ?>
-                                    <div class="param">
-                                        <div>
-                                            <dl>
-                                                <dt>Бренд</dt>
-                                                <dd class="pr"><?=$arProduct['BRAND_NAME']?></dd>
-                                            </dl>
-                                            <dl>
-                                                <dt>Коллекция</dt>
-                                                <dd class="pr"><?=$arProduct['COLLECTION_NAME']?></dd>
-                                            </dl>
-                                        </div>
-                                        <?=HogartHelpers::getAdjacentProductPropertyHtml($arProduct['ID'], $arProduct["SHOW_PROPS"], $arProduct["HIDDEN_PROPS"], array('brand',
-                                            'photos',
-                                            'sku',
-                                            'collection'));?>
-                                    </div>
-                                    <div class="price currency-<?=strtolower($arProduct['CATALOG_CURRENCY_1'])?>">
-                                        <?=HogartHelpers::wPrice($arProduct['PRICE'])?>
-                                    </div>
-                                </li>
-                            <? endforeach; ?>
-                        </ul>
-
-                    </div>
-                <? endif; ?>
-
-                <? if(isset($arResult["alternative"])): ?>
-                    <div id="tab-3" class="item-similar">
-                        <div id="con-3" class="controls">
-                            <div class="prev"></div>
-                            <div class="next"></div>
-                        </div>
-                        <ul data-control="#con-3" class="js-slider-similar">
-                            <? foreach($arResult["alternative"] as $arProduct): ?>
-                                <li>
-		        	<span class="preview-img">
-                        <? if(!empty($arProduct["PREVIEW_PICTURE"])) {
-                            //$file = CFile::GetPath($arProduct["PREVIEW_PICTURE"]);
-                            $file = CFile::ResizeImageGet($arProduct["PREVIEW_PICTURE"],
-                                array('width' => 406, 'height' => 142), BX_RESIZE_IMAGE_PROPORTIONAL_ALT, true);
-                            $file = $file['src'];
-                        }
-                        elseif(!empty($arProduct["PROPERTY_PHOTOS_VALUE"])) {
-                            //$file = CFile::GetPath($arProduct["PROPERTY_PHOTOS_VALUE"]);
-                            $file = CFile::ResizeImageGet($arProduct["PROPERTY_PHOTOS_VALUE"],
-                                array('width' => 406, 'height' => 142), BX_RESIZE_IMAGE_PROPORTIONAL_ALT, true);
-                            $file = $file['src'];
-                        }
-                        else {
-                            $file = '/images/project_no_img.jpg';
-                        } ?>
-                        <a href="<?=$arProduct["DETAIL_PAGE_URL"]?>" style="background-image: url(<?=$file?>)">
-		        	</span>
-                                    <a href="<?=$arProduct["DETAIL_PAGE_URL"]?>"><h3><?=$arProduct["NAME"]?></h3></a>
-                                    <? if(!empty($arProduct["PROPERTY_SKU_VALUE"])): ?>
-                                        <span class="art">Артикул: <span><?=$arProduct["PROPERTY_SKU_VALUE"]?></span></span>
-                                    <? endif; ?>
-                                    <div class="param">
-                                        <div>
-                                            <dl>
-                                                <dt>Бренд</dt>
-                                                <dd class="pr"><?=$arProduct['BRAND_NAME']?></dd>
-                                            </dl>
-                                            <dl>
-                                                <dt>Коллекция</dt>
-                                                <dd class="pr"><?=$arProduct['COLLECTION_NAME']?></dd>
-                                            </dl>
-                                        </div>
-                                        <?=HogartHelpers::getAdjacentProductPropertyHtml($arProduct['ID'], $arProduct["SHOW_PROPS"], $arProduct["HIDDEN_PROPS"], array('brand',
-                                            'photos',
-                                            'sku',
-                                            'collection'));?>
-                                    </div>
-                                    <div class="price currency-<?=strtolower($arProduct['CATALOG_CURRENCY_1'])?>">
-                                        <?=HogartHelpers::wPrice($arProduct['PRICE'])?>
-                                    </div>
-                                </li>
-                            <? endforeach; ?>
-                        </ul>
-
-                    </div>
-                <? endif; ?>
-
-            </div>
-        </div -->
 
     </div>
     <div class="col-md-3 element-info">

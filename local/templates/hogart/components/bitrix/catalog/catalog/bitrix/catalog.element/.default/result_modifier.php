@@ -48,6 +48,7 @@ if ($account['id']) {
     $prices = \Hogart\Lk\Entity\CompanyDiscountTable::prepareFrontByAccount($account['id'], [
         $arResult['ID'] => $arResult["PRICES"]["BASE"]["VALUE"]
     ]);
+
     $arResult["PRICES"]["BASE"]["VALUE"] = $prices[$arResult['ID']]['price'];
     $arResult["PRICES"]["BASE"]["DISCOUNT_VALUE"] = $prices[$arResult['ID']]['price'];
     $arResult["PRICES"]["BASE"]["DISCOUNT_DIFF"] = $prices[$arResult['ID']]['discount_amount'];
@@ -57,16 +58,130 @@ if ($account['id']) {
 $stores = BXHelper::getStores(array(), $storeFilter, false, false, array('ID', 'TITLE', 'ADDRESS'), 'ID');
 $arResult["STORES"] = $stores;
 
+$prepareRelatedItems = function (&$result = [], $base_link = null, $arFilter = [], $arSelect = []) use ($arParams, $arResult, $account, $storeFilter) {
+
+    $arSelect = array_merge(
+        ['ID', 'NAME', 'DETAIL_PAGE_URL', 'CATALOG_MEASURE', "CATALOG_GROUP_1", "PROPERTY_SKU", "PROPERTY_PHOTOS", "PREVIEW_PICTURE"],
+        $arSelect
+    );
+
+    $arFilter = array_merge(
+        [
+            "IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
+            "IBLOCK_ID" => $arParams['IBLOCK_ID'],
+            'ACTIVE' => "Y",
+            '!ID' => $arResult['ID']
+        ],
+        $arFilter
+    );
+
+    $arNavParams = array(
+        "nPageSize" => 4
+    );
+
+    $res = CIBlockElement::GetList(
+        [],
+        $arFilter,
+        ["ID"],
+        $arNavParams,
+        []);
+
+    while($ob = $res->Fetch()) {
+        $ob = CIBlockElement::GetList([], array_merge($arFilter, ['ID' => $ob['ID']]), false, false, $arSelect)->GetNextElement();
+        $arFields = $ob->GetFields();
+        $arFields["PROPERTIES"] = $ob->GetProperties();
+        if (!isset($result['ITEMS'][$arFields['ID']])) {
+            $result['ITEMS'][$arFields['ID']] = $arFields;
+        } else {
+            $result['ITEMS'][$arFields['ID']]['PROPERTY_SKU_VALUE'] = $arFields['PROPERTY_SKU_VALUE'];
+            $result['ITEMS'][$arFields['ID']]['PROPERTY_PHOTOS_VALUE'] = $arFields['PROPERTY_PHOTOS_VALUE'];
+        }
+
+        if (0 < $arFields['CATALOG_MEASURE'])
+        {
+            $rsMeasures = CCatalogMeasure::getList(
+                array(),
+                array('ID' => $arFields['CATALOG_MEASURE']),
+                false,
+                false,
+                array('ID', 'SYMBOL_RUS')
+            );
+            if ($arMeasure = $rsMeasures->GetNext())
+            {
+                $result['ITEMS'][$arFields['ID']]['CATALOG_MEASURE_NAME'] = $arMeasure['SYMBOL_RUS'];
+                $result['ITEMS'][$arFields['ID']]['~CATALOG_MEASURE_NAME'] = $arMeasure['~SYMBOL_RUS'];
+            }
+        }
+
+        if ('' == $result['ITEMS'][$arFields['ID']]['CATALOG_MEASURE_NAME']) {
+            $arDefaultMeasure = CCatalogMeasure::getDefaultMeasure(true, true);
+            $result['ITEMS'][$arFields['ID']]['CATALOG_MEASURE_NAME'] = $arDefaultMeasure['SYMBOL_RUS'];
+            $result['ITEMS'][$arFields['ID']]['~CATALOG_MEASURE_NAME'] = $arDefaultMeasure['~SYMBOL_RUS'];
+        }
+    }
+
+
+    $prices = array_reduce($result['ITEMS'], function ($result, $item) {
+        $result[$item["ID"]] = $item["CATALOG_PRICE_1"];
+        return $result;
+    }, []);
+
+    $prices = \Hogart\Lk\Entity\CompanyDiscountTable::prepareFrontByAccount($account['id'], $prices);
+    $storeAmounts = \Hogart\Lk\Entity\StoreAmountTable::getStoreAmountByItemsId(array_keys($result['ITEMS']), $storeFilter['ID']);
+
+    foreach ($result['ITEMS'] as $id => &$arCollItem) {
+        $arCollItem["PRICES"]["BASE"]["CURRENCY"] = $arCollItem["CATALOG_CURRENCY_1"];
+        $arCollItem["PRICES"]["BASE"]["VALUE"] = $arCollItem["CATALOG_PRICE_1"];
+        $arCollItem["PRICES"]["BASE"]["DISCOUNT_VALUE"] = $prices[$id]['price'];
+        $arCollItem["PRICES"]["BASE"]["DISCOUNT_DIFF"] = $prices[$id]['discount_amount'];
+        $arCollItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"] = (float)$prices[$id]['discount'];
+
+        if (!empty($arCollItem['IBLOCK_SECTION_ID'])) {
+            $sections_for_links[] = $arCollItem['IBLOCK_SECTION_ID'];
+        }
+        $arCollItem["STORE_AMOUNTS"] = !empty($storeAmounts[$id]) ? $storeAmounts[$id] : [];
+        $arCollItem['CATALOG_QUANTITY'] = 0;
+        foreach ($arCollItem["STORE_AMOUNTS"] as $amount) {
+            $arCollItem['CATALOG_QUANTITY'] += $amount['stock'];
+        }
+    }
+
+    if (null !== $base_link) {
+        $navComponentParameters["BASE_LINK"] = $base_link;
+
+
+        $result["NAV_STRING"] = $res->GetPageNavStringEx(
+            $navComponentObject,
+            $arParams["PAGER_TITLE"],
+            $arParams["PAGER_TEMPLATE"],
+            $arParams["PAGER_SHOW_ALWAYS"],
+            $this,
+            $navComponentParameters
+        );
+
+        $strNavQueryString = ($navComponentObject->arResult["NavQueryString"] != "" ? $navComponentObject->arResult["NavQueryString"]."&amp;" : "");
+
+        if ($navComponentObject->arResult["NavPageNomer"] - 1 > 0) {
+            $result["PREV_LINK"] = $navComponentObject->arResult["sUrlPath"] . "?" . $strNavQueryString . "PAGEN_" . $navComponentObject->arResult["NavNum"] . "=" . ($navComponentObject->arResult["NavPageNomer"]-1);
+        }
+
+        if ($navComponentObject->arResult["NavPageNomer"] + 1 <= $navComponentObject->arResult["NavPageCount"]) {
+            $result["NEXT_LINK"] = $navComponentObject->arResult["sUrlPath"] . "?" . $strNavQueryString . "PAGEN_" . $navComponentObject->arResult["NavNum"] . "=" . ($navComponentObject->arResult["NavPageNomer"]+1);
+        }
+    }
+
+    return $result['ITEMS'];
+};
+
 //buy_with_this
 if (!empty($arResult["PROPERTIES"]["buy_with_this"]["VALUE"])) {
-    $ar_res = CIBlockElement::GetList(array("sort" => "asc"), array("ID" => $arResult["PROPERTIES"]["buy_with_this"]["VALUE"], "ACTIVE" => "Y"), false, false, array("*","CATALOG_GROUP_1", "PROPERTY_SKU", "PROPERTY_PHOTOS", "PREVIEW_PICTURE"));
-    while ($ob = $ar_res->GetNextElement()) {
-        $arFields = $ob->GetFields();
-        $arFields['PRICE'] = BXHelper::calculateDicountPrice($arFields, 1, $arParams['PRICE_CODE'][0],SITE_ID, $arFields['CATALOG_CURRENCY_1']);
-        $arFields["PROPERTIES"] = $ob->GetProperties();
-        $arResult["buy_with_this"]["ITEMS"][] = $arFields;
-    }
+    $arFilter = [
+        "ID" => $arResult["PROPERTIES"]["buy_with_this"]["VALUE"],
+    ];
+    $base_link = CHTTP::urlAddParams(GetPagePath(false, false), ["buy_with_this" => md5(serialize($arResult["PROPERTIES"]["buy_with_this"]["VALUE"]))], array("encode"=>true));
+    $prepareRelatedItems($arResult["buy_with_this"], $base_link, $arFilter);
 }
+
 foreach ($arResult['buy_with_this']["ITEMS"] as $i => $arCollItem) {
     if (empty($arCollItem['IBLOCK_SECTION_ID'])) continue;
     $sections_for_links[] = $arCollItem['IBLOCK_SECTION_ID'];
@@ -102,83 +217,16 @@ foreach ($arResult['alternative'] as $i => $arCollItem) {
 }
 
 if (!empty($arResult["PROPERTIES"]["collection"]["VALUE"])) {
-    $arSelect = array('ID', 'NAME', 'DETAIL_PAGE_URL', "CATALOG_GROUP_1", "PROPERTY_SKU", "PROPERTY_PHOTOS", "PREVIEW_PICTURE");
     $arFilter = array(
-        "IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
-        "IBLOCK_ID" => $arParams['IBLOCK_ID'],
-        "PROPERTY_collection" => $arResult["PROPERTIES"]["collection"]["VALUE"], 
-        'ACTIVE' => "Y",
-        '!ID' => $arResult['ID']
+        "PROPERTY_collection" => $arResult["PROPERTIES"]["collection"]["VALUE"],
     );
 
-    $arNavParams = array(
-        "nPageSize" => 4
-    );
-    $arNavigation = CDBResult::GetNavParams($arNavParams);
-    
-    $res = CIBlockElement::GetList(
-        [],
-        $arFilter,
-        ["ID"],
-        $arNavParams,
-        []);
-    
-    while($ob = $res->Fetch()) {
-        $ob = CIBlockElement::GetList([], array_merge($arFilter, ['ID' => $ob['ID']]), false, false, $arSelect)->GetNextElement();
-        $arFields = $ob->GetFields();
-        $arFields["PROPERTIES"] = $ob->GetProperties();
-        if (!isset($arResult["this_collection"]['ITEMS'][$arFields['ID']])) {
-            $arResult["this_collection"]['ITEMS'][$arFields['ID']] = $arFields;
-        } else {
-            $arResult["this_collection"]['ITEMS'][$arFields['ID']]['PROPERTY_SKU_VALUE'] = $arFields['PROPERTY_SKU_VALUE'];
-            $arResult["this_collection"]['ITEMS'][$arFields['ID']]['PROPERTY_PHOTOS_VALUE'] = $arFields['PROPERTY_PHOTOS_VALUE'];
-        }
-    }
-
-    $prices = array_reduce($arResult["this_collection"]['ITEMS'], function ($result, $item) {
-        $result[$item["ID"]] = $item["CATALOG_PRICE_1"];
-        return $result;
-    }, []);
-
-    $prices = \Hogart\Lk\Entity\CompanyDiscountTable::prepareFrontByAccount($account['id'], $prices);
-
-    foreach ($arResult['this_collection']['ITEMS'] as $id => &$arCollItem) {
-        $arCollItem["PRICES"]["BASE"]["VALUE"] = $arCollItem["CATALOG_PRICE_1"];
-        $arCollItem["PRICES"]["BASE"]["DISCOUNT_VALUE"] = $prices[$id]['price'];
-        $arCollItem["PRICES"]["BASE"]["DISCOUNT_DIFF"] = $prices[$id]['discount_amount'];
-        $arCollItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"] = (float)$prices[$id]['discount'];
-
-        if (!empty($arCollItem['IBLOCK_SECTION_ID'])) {
-            $sections_for_links[] = $arCollItem['IBLOCK_SECTION_ID'];
-        }
-    }
+    $base_link = CHTTP::urlAddParams(GetPagePath(false, false), ["collection" => $arResult["PROPERTIES"]["collection"]["VALUE"]], array("encode"=>true));
+    $prepareRelatedItems($arResult["this_collection"], $base_link, $arFilter);
 
     $collection = CIBlockElement::GetByID($arResult["PROPERTIES"]["collection"]["VALUE"])->GetNext();
     $arResult["DISPLAY_PROPERTIES"]["collection"]["PREVIEW_TEXT"] = $collection["PREVIEW_TEXT"];
     $arResult["DISPLAY_PROPERTIES"]["collection"]["DETAIL_TEXT"] = $collection["DETAIL_TEXT"];
-
-    $navComponentParameters["BASE_LINK"] = CHTTP::urlAddParams(GetPagePath(false, false), ["collection" => $arResult["PROPERTIES"]["collection"]["VALUE"]], array("encode"=>true));
-
-
-    $arResult["this_collection"]["NAV_STRING"] = $res->GetPageNavStringEx(
-        $navComponentObject,
-        $arParams["PAGER_TITLE"],
-        $arParams["PAGER_TEMPLATE"],
-        $arParams["PAGER_SHOW_ALWAYS"],
-        $this,
-        $navComponentParameters
-    );
-
-    $strNavQueryString = ($navComponentObject->arResult["NavQueryString"] != "" ? $navComponentObject->arResult["NavQueryString"]."&amp;" : "");
-
-    if ($navComponentObject->arResult["NavPageNomer"] - 1 > 0) {
-        $arResult["this_collection"]["PREV_LINK"] = $navComponentObject->arResult["sUrlPath"] . "?" . $strNavQueryString . "PAGEN_" . $navComponentObject->arResult["NavNum"] . "=" . ($navComponentObject->arResult["NavPageNomer"]-1);
-    }
-
-    if ($navComponentObject->arResult["NavPageNomer"] + 1 <= $navComponentObject->arResult["NavPageCount"]) {
-        $arResult["this_collection"]["NEXT_LINK"] = $navComponentObject->arResult["sUrlPath"] . "?" . $strNavQueryString . "PAGEN_" . $navComponentObject->arResult["NavNum"] . "=" . ($navComponentObject->arResult["NavPageNomer"]+1);
-    }
-    
 }
 
 $sections_for_links = array_unique($sections_for_links);

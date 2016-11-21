@@ -77,6 +77,21 @@ class ContactTable extends AbstractEntity implements IExchangeable
         ]);
     }
 
+    public static function getContactForExchange($primary)
+    {
+        return self::getRow([
+            'filter' => [
+                '=id' => $primary
+            ],
+            'select' => [
+                '*',
+                'post' => __NAMESPACE__ . '\ContactRelationTable:contact.post',
+                'a_' => __NAMESPACE__ . '\ContactRelationTable:contact.account',
+                'co_' => __NAMESPACE__ . '\ContactRelationTable:contact.company',
+                'hco_' => __NAMESPACE__ . '\ContactRelationTable:contact.hogart_company'
+            ]
+        ]);
+    }
 
     public static function putTo1c($primary)
     {
@@ -86,6 +101,7 @@ class ContactTable extends AbstractEntity implements IExchangeable
             ],
             'select' => [
                 '*',
+                'post' => __NAMESPACE__ . '\ContactRelationTable:contact.post',
                 'a_' => __NAMESPACE__ . '\ContactRelationTable:contact.account',
                 'co_' => __NAMESPACE__ . '\ContactRelationTable:contact.company',
                 'hco_' => __NAMESPACE__ . '\ContactRelationTable:contact.hogart_company'

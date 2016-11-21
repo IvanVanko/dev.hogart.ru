@@ -7,6 +7,7 @@
 
 namespace Hogart\Lk\Exchange\RabbitMQ\Exchange;
 
+use Hogart\Lk\Exchange\SOAP\AbstractPutRequest;
 use Hogart\Lk\Exchange\SOAP\Client;
 
 /**
@@ -50,6 +51,12 @@ class ContactInfoExchange extends AbstractExchange
         switch ($key = $this->getRoutingKey($envelope)) {
             case 'get':
                 Client::getInstance()->ContactInfo->updateContactsInfo();
+                break;
+            case 'put':
+                $request = unserialize($envelope->getBody());
+                if ($request instanceof AbstractPutRequest) {
+                    Client::getInstance()->ContactInfo->contactInfoPut($request);
+                }
                 break;
         }
     }

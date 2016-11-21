@@ -106,6 +106,31 @@ abstract class AbstractEntityRelation extends AbstractEntity
     }
 
     /**
+     * @param $row
+     * @return mixed
+     */
+    public static function getOwnerRel($row)
+    {
+        $type = self::$types[$row['owner_type']];
+        $owner = self::getOwner($row);
+        if (!empty($owner)) {
+            return $owner[$type['rel']];
+        }
+    }
+
+    /**
+     * @param $row
+     * @return mixed
+     */
+    public static function getOwner($row)
+    {
+        $type = self::$types[$row['owner_type']];
+        /** @var AbstractEntity $table */
+        $table = $type['table'];
+        return $table::getByField($type['rel_id'], $row['owner_id']);
+    }
+
+    /**
      * {@inheritDoc}
      */
     public static function getMap()
