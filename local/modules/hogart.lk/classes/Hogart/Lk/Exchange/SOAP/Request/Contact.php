@@ -31,13 +31,14 @@ class Contact extends AbstractPutRequest
         foreach ($contacts as $contact) {
             $this->contacts[] = (object)[
                 'Cont_ID_Company' => new LazyRequest(function ($contact) {
+                    $contact = ContactTable::getContactForExchange($contact['id']);
                     if (!empty($contact['co_id'])) {
-                        return (string)CompanyTable::getRowById($contact['co_id'])['guid_id'];
+                        return (string)$contact['co_guid_id'];
                     }
                     if (!empty($contact['hco_id'])) {
-                        return (string)HogartCompanyTable::getRowById($contact['hco_id'])['guid_id'];
+                        return (string)$contact['hco_guid_id'];
                     }
-                    return "";
+                    return null;
                 }, [$contact]),
                 'Cont_ID' => $contact['guid_id'],
                 'Cont_ID_Site' => $contact['id'],
