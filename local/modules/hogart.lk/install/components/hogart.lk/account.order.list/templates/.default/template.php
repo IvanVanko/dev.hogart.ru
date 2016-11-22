@@ -27,7 +27,7 @@ use Hogart\Lk\Helper\Template\Ajax;
     <div data-loader-wrapper="[data-loader-orders]" id="orders-list" class="col-sm-9 order-list">
         <? $ordersNode = Ajax::Start($component); ?>
         <? foreach ($arResult['orders'] as $k => $order): ?>
-        <div class="row spacer-20 order-line">
+        <div class="row spacer-20 order-line" data-order-id="<?= $order['id'] ?>">
             <div class="col-sm-12">
                 <? include dirname(__FILE__) . "/order-header.php" ?>
             </div>
