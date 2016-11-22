@@ -553,7 +553,8 @@ HTML;
 
         $items = OrderItemTable::getList([
             'filter' => [
-                '=order_id' => $order_id
+                '=order_id' => $order_id,
+                '=item.ACTIVE' => 'Y'
             ]
         ])->fetchAll();
         foreach ($items as $item) {
