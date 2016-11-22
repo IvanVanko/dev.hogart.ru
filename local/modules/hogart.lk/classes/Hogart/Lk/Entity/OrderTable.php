@@ -436,8 +436,11 @@ class OrderTable extends AbstractEntity
         }
         $orders = $ordersResult->fetchAll();
 
-        foreach ($orders as &$order) {
+        foreach ($orders as $k => &$order) {
             $order = self::getOrder($order, $filter, $item_filter, $account_id);
+            if (null === $order) {
+                unset($orders[$k]);
+            }
         }
         return $orders;
     }
