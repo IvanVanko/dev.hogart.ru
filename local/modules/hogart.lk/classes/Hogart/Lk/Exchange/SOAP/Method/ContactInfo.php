@@ -41,9 +41,9 @@ class ContactInfo extends AbstractMethod
                 throw $error;
             }
 
-            ContactInfoTable::update($info->ID_Site, [
+            ContactInfoTable::createOrUpdateByField([
                 'd_guid_id' => $info->ID
-            ]);
+            ], 'guid_id');
         }
         return $response;
     }
