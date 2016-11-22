@@ -42,6 +42,9 @@ if ($account['id']) {
         $arResult['order']['pdf'] = PdfTable::getByEntityClass(PdfTable::ENTITY_ORDER, intval($_REQUEST['order']));
         include __DIR__ . "/proceed_request.php";
         $APPLICATION->AddChainItem(OrderTable::showName($arResult['order']), "", false);
+    } else {
+        new FlashError("Такого заказ не существует!");
+        LocalRedirect('/account/orders/');
     }
 
     $this->includeComponentTemplate();
