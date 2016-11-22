@@ -2154,6 +2154,38 @@ class ParsingModel {
             if($value->date_changed != '0001-01-01')
                 $propA['date_changed'] = CDatabase::FormatDate($value->date_changed, 'YYYY-MM-DD', 'DD.MM.YYYY 00:00:00');
 
+            // related, buy_with_this, alternative
+            $arRelatedItemTypes = array(
+                'buy_with_this' => array('IBLOCK_PROPERTY_ID' => 54, '1C_NAME' => 'another_id'),
+                'related' => array('IBLOCK_PROPERTY_ID' => 55, '1C_NAME' => 'accomp_id'),
+                'alternative' => array('IBLOCK_PROPERTY_ID' => 56, '1C_NAME' => 'same_id'),
+            );
+
+            foreach ($arRelatedItemTypes as $relatedType => $relatedTypeValue) {
+                if (!isset($value->$relatedTypeValue['1C_NAME']) or strlen($value->$relatedTypeValue['1C_NAME']) == 0) {
+                    continue;
+                }
+
+                foreach (explode(',', $value->$relatedTypeValue['1C_NAME']) as $relatedItemGUID) {
+                    $relatedItems = CIBlockElement::GetList(
+                        array(),
+                        array(
+                            'IBLOCK_ID' => $BLOCK_ID,
+                            '=XML_ID' => $relatedItemGUID),
+                        false,
+                        false,
+                        array('ID')
+                    );
+
+                    if ($relatedItem = $relatedItems->GetNext()) {
+                        if (isset($propA[$relatedType]) and isset($propA[$relatedType][$relatedTypeValue['IBLOCK_PROPERTY_ID']])) {
+                            $propA[$relatedType][$relatedTypeValue["IBLOCK_PROPERTY_ID"]][] = $relatedItem['ID'];
+                        }
+                        $propA[$relatedType] = array($relatedTypeValue["IBLOCK_PROPERTY_ID"] => array($relatedItem['ID']));
+                    }
+                }
+            }
+
             $arLoadProductArray = Array(
                 "IBLOCK_SECTION_ID" => $section_id,
                 "IBLOCK_ID" => $BLOCK_ID,
