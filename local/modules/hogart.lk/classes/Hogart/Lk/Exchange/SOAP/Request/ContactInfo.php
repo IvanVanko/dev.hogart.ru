@@ -24,7 +24,7 @@ class ContactInfo extends AbstractPutRequest
     public function __construct($info = [])
     {
         foreach ($info as $item) {
-            $info[] = (object)[
+            $this->info[] = (object)[
                 "Info_ID_Owner" => new LazyRequest(function ($info) {
                     return (string)ContactInfoTable::getOwnerRel($info);
                 }, [$item]),
