@@ -22,7 +22,10 @@ use Bitrix\Main\Entity\StringField;
 use Bitrix\Main\Entity\TextField;
 use Bitrix\Main\Type\DateTime;
 use Bitrix\Main\UI\PageNavigation;
+use Hogart\Lk\Exchange\RabbitMQ\Consumer;
+use Hogart\Lk\Exchange\RabbitMQ\Exchange\AbstractExchange;
 use Hogart\Lk\Exchange\RabbitMQ\Exchange\OrderExchange;
+use Hogart\Lk\Exchange\SOAP\AbstractPutRequest;
 use Hogart\Lk\Exchange\SOAP\Request\Order;
 use Hogart\Lk\Field\GuidField;
 use Hogart\Lk\Helper\Template\FlashError;
@@ -108,7 +111,10 @@ class OrderTable extends AbstractEntity
             new BooleanField("sale_granted"),
             new FloatField("sale_max_money"),
             new BooleanField("perm_reserve"),
-            new BooleanField("is_active")
+            new BooleanField("is_active"),
+            new BooleanField("is_actual", [
+                'default_value' => false
+            ])
         ];
     }
 
@@ -718,4 +724,23 @@ HTML;
         $id = $event->getParameter('id')['id'];
         OrderItemTable::deleteByOrderId($id);
     }
+
+    /**
+     * @inheritDoc
+     */
+    public static function publishToRabbit(AbstractExchange $exchange, Order $request, $key = 'put')
+    {
+        if (!Consumer::getInstance()->isIsCliContext()) {
+            $orders = $request->__toRequest()->Data['Order'];
+
+            foreach ($orders as $order) {
+                self::update($order->Order_ID_Site, [
+                    'is_actual' => false
+                ]);
+            }
+        }
+        parent::publishToRabbit($exchange, $request, $key);
+    }
+
+
 }

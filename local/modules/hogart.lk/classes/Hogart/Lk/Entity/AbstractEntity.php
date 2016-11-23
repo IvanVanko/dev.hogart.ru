@@ -198,6 +198,7 @@ abstract class AbstractEntity extends Entity\DataManager
 
         if (
             !$result->getId()
+            && $result instanceof Entity\AddResult
             && empty($result->getErrors())
             && is_string($primary = static::getEntity()->getPrimary())
             && static::getEntity()->getField($primary) instanceof GuidField
