@@ -302,13 +302,13 @@ $this->EndViewTarget();
                 <? endif; ?>
                 <? if(isset($arResult["related"]["ITEMS"])): ?>
                     <li role="presentation" class="<?= (!$tab_active ? 'active' : '') ?>">
-                        <a href="#related" aria-controls="related" role="tab" data-toggle="tab">Сопутствующие товары</a>
+                        <a href="#related" aria-controls="related" role="tab" data-toggle="tab">Принадлежности</a>
                     </li>
                     <? $tab_active = $tab_active ? : 'related'; ?>
                 <? endif; ?>
                 <? if(isset($arResult["alternative"]["ITEMS"])): ?>
                     <li role="presentation" class="<?= (!$tab_active ? 'active' : '') ?>">
-                        <a href="#alternative" aria-controls="alternative" role="tab" data-toggle="tab">Альтернативные товары</a>
+                        <a href="#alternative" aria-controls="alternative" role="tab" data-toggle="tab">Аналоги</a>
                     </li>
                     <? $tab_active = $tab_active ? : 'alternative'; ?>
                 <? endif; ?>
