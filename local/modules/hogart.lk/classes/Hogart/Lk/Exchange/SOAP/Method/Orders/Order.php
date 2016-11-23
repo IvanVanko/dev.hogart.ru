@@ -87,6 +87,7 @@ class Order extends AbstractMethod
                 'sale_max_money' => (float)$order->Order_Max_Monet_Sale,
                 'perm_reserve' => $order->Order_Reserve,
                 'is_active' => !$order->deletion_mark,
+                'is_actual' => true
             ], 'guid_id');
 
             if ($result->getErrorCollection()->count()) {

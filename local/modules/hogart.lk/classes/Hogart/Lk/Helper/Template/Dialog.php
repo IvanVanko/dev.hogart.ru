@@ -47,13 +47,16 @@ HTML;
 
     public static function End($options = [], $echo = true)
     {
-        $html = '<br><br>';
+        $html = "";
+        if (false !== $options['end_breaks']) {
+            $html .= '<br><br>';
+        }
         if (false !== $options['cancel']) {
-            $html .= '<button data-remodal-action="cancel" class="btn btn-danger remodal-cancel">Отменить</button>';
+            $html .= '<button data-remodal-action="cancel" class="btn btn-danger remodal-cancel">' . ($options['cancel_text'] ? : 'Отменить') . '</button>';
         }
         
         if (false !== $options['confirm']) {
-            $html .= '<button data-remodal-action="confirm" class="btn btn-primary remodal-confirm">ОК</button>';
+            $html .= '<button data-remodal-action="confirm" class="btn btn-primary remodal-confirm">' . ($options['confirm_text'] ? : 'ОК') . '</button>';
         }
         
         $html .= '</div>';
