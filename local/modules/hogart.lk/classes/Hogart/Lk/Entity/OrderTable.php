@@ -238,7 +238,9 @@ class OrderTable extends AbstractEntity
 
             $filter = array_merge([
                 '=id' => $order_id,
-                '=is_active' => true
+                '=is_active' => true,
+                '=contract.is_active' => true,
+                '=contract.company.is_active' => true,
             ], $filter);
 
             $order = self::getRow([
