@@ -19,8 +19,14 @@ CModule::IncludeModule("main");
 CModule::IncludeModule("catalog");
 CModule::IncludeModule("sprint.migration");
 
+//\Hogart\Lk\Entity\OrderItemEditTable::dropTableIfExists();
+//\Hogart\Lk\Entity\OrderItemEditTable::createTableIfNotExists();
+//\Hogart\Lk\Entity\OrderEditTable::copyFromOrder(1);
+//var_dump(\Hogart\Lk\Entity\OrderEditTable::getOrder(1));
+//\Hogart\Lk\Entity\OrderEditTable::delete(1);
 
-\Hogart\Lk\Entity\ContactTable::putTo1c(13);
+$request = new \Hogart\Lk\Exchange\SOAP\Request\Order([\Hogart\Lk\Entity\OrderTable::getOrder(1)]);
+\Hogart\Lk\Entity\OrderTable::publishToRabbit(new \Hogart\Lk\Exchange\RabbitMQ\Exchange\OrderExchange(), $request);
 exit;
 $a = \Hogart\Lk\Search\CartSuggest::getInstance();
 $b = \Hogart\Lk\Search\MainSearchSuggest::getInstance();

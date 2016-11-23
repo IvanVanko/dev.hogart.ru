@@ -20,7 +20,7 @@ define("NO_SPECIAL_CHARS_CHAIN", true);
 use Bitrix\Main\Localization\Loc;
 use Hogart\Lk\Entity\AccountTable;
 use Hogart\Lk\Entity\OrderTable;
-use Hogart\Lk\Entity\PdfTable;
+use Hogart\Lk\Entity\OrderEditTable;
 use Hogart\Lk\Helper\Template\FlashError;
 
 Loc::loadMessages(__FILE__);
@@ -37,16 +37,24 @@ if ($account['id']) {
         return;
     }
 
-    $arResult['order'] = OrderTable::getOrder(intval($_REQUEST['order']), [], [
-        '>count' => 0
-    ]);
+    $order = OrderTable::getRowById(intval($_REQUEST['order']));
+
+    if (!$order['is_actual']) {
+        new FlashError("На данный момент заказ на синхронизации");
+        LocalRedirect('/account/order/' . intval($_REQUEST['order']) . '/');
+        return;
+    }
+
+    include __DIR__ . "/proceed_request.php";
+
+    $arResult['order'] = OrderEditTable::getOrder(intval($_REQUEST['order']));
+    if (empty($arResult['order'])) {
+        $arResult['order'] = OrderEditTable::copyFromOrder(intval($_REQUEST['order']));
+    }
+
     if (!empty($arResult['order'])) {
-        $arResult['order']['pdf'] = PdfTable::getByEntityClass(PdfTable::ENTITY_ORDER, intval($_REQUEST['order']));
-        include __DIR__ . "/proceed_request.php";
-        $APPLICATION->AddChainItem(OrderTable::showName($arResult['order']), "", false);
-    } else {
-        new FlashError("Такого заказ не существует!");
-        LocalRedirect('/account/orders/');
+        $APPLICATION->AddChainItem(OrderTable::showName($arResult['order'], '_'), "/account/order/" . intval($_REQUEST['order']), false);
+        $APPLICATION->AddChainItem("Редактирование", "", false);
     }
 
     $this->includeComponentTemplate();

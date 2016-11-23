@@ -81,6 +81,24 @@ class OrderItem extends AbstractMethod
                 if (empty($item_id)) {
                     throw new MethodException(MethodException::ERROR_NO_ITEM, [$orderItem->Order_ID, $orderItem->Order_Line_Number]);
                 }
+
+                $measure = \CCatalogMeasure::getList([], ["CODE" => $orderItem->Item_unit_messure_catalog_id])->Fetch();
+                $measure_id = $measure['ID'];
+                if (empty($measure)) {
+                    $measure_id = \CCatalogMeasure::add(array(
+                        'MEASURE_TITLE' => $orderItem->Item_unit_messure_catalog_name,
+                        'SYMBOL_RUS' => $orderItem->Item_unit_messure_catalog_name,
+                        'SYMBOL_INTL' => $orderItem->Item_unit_messure_catalog_name,
+                        'SYMBOL_LETTER_INTL' => $orderItem->Item_unit_messure_catalog_name,
+                        'CODE' => $orderItem->Item_unit_messure_catalog_id
+                    ));
+                }
+                \CCatalogProduct::Add([
+                    "ID" => $item_id,
+                    "VAT_ID" => 1,
+                    "VAT_INCLUDED" => "Y",
+                    "MEASURE" => $measure_id
+                ]);
             }
             $data = [
                 'order_id' => $order['id'],

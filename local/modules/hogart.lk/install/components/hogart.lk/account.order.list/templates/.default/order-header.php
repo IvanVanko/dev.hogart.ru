@@ -18,6 +18,11 @@ use Hogart\Lk\Entity\OrderItemTable;
                                     <?= OrderTable::showName($order) ?>
                                 </span>
             </a>
+            <? if (!$order['is_actual']): ?>
+                <sup>
+                    <span class="label label-danger label-xs">синхронизация</span>
+                </sup>
+            <? endif; ?>
             <? if ($order['history'] > 0 && in_array($order['state'], [OrderTable::STATE_ARCHIVE, OrderTable::STATE_NORMAL])): ?>
                 <span style="padding-left: 5px;"><a href="/account/order/<?= $order['id'] ?>/history/" class="btn btn-warning btn-xs"><i class="fa fa-history"></i> История</a></span>
             <? endif; ?>

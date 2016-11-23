@@ -147,6 +147,15 @@ $order = $arResult['order'];
         <div data-stick-block>
             <div class="menu">
                 <ul class="fa-ul">
+                    <? if ($order['is_actual']): ?>
+                    <li>
+                        <a href="/account/order/<?= $order['id'] ?>/edit/">
+                            <i class="fa fa-li fa-lg fa-pencil text-primary" aria-hidden="true"></i>
+                            Редактировать
+                        </a>
+                    </li>
+                    <li class="delimiter"></li>
+                    <? endif; ?>
                     <? $manager_feedback_params = $APPLICATION->IncludeComponent("hogart.lk:account.manager.feedback", "", [
                         "SUBJECT" => "Запрос от " . CompanyTable::showName($order, 'co_') . " по " . OrderTable::showName($order),
                         "EXTEND_TITLE" => " по заказу"

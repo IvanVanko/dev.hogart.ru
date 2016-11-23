@@ -217,6 +217,12 @@ $arUrlRewrite = array(
         "PATH" => "/local/modules/hogart.lk/front/account/orders/history.php"
     ),
     array(
+        "CONDITION" => "#^/account/order/([0-9]+)/edit/?#",
+        "RULE" => "order=\$1",
+        "ID" => "hogart.lk:account.order.edit",
+        "PATH" => "/local/modules/hogart.lk/front/account/orders/edit.php"
+    ),
+    array(
         "CONDITION" => "#^/account/order/([^/?]*)[?/]?(.*)#",
         "RULE" => "order=\$1",
         "ID" => "hogart.lk:account.order",
