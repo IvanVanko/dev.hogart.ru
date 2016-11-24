@@ -135,7 +135,6 @@ $prepareRelatedItems = function (&$result = [], $base_link = null, $arFilter = [
         $arCollItem["PRICES"]["BASE"]["DISCOUNT_VALUE"] = $prices[$id]['price'];
         $arCollItem["PRICES"]["BASE"]["DISCOUNT_DIFF"] = $prices[$id]['discount_amount'];
         $arCollItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"] = (float)$prices[$id]['discount'];
-
         if (!empty($arCollItem['IBLOCK_SECTION_ID'])) {
             $sections_for_links[] = $arCollItem['IBLOCK_SECTION_ID'];
         }

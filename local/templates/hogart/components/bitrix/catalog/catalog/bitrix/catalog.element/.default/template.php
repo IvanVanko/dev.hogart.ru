@@ -219,9 +219,15 @@ $this->EndViewTarget();
                                 <? if($arResult["CATALOG_QUANTITY"] > 0): ?>
                                     <div class="">
                                         <div class="icon-carTon grid-hide">
-                                            <div class="quantity quantity-success">В
-                                                наличии<? if (Account::isAuthorized()): ?> <span><?= $arResult["CATALOG_QUANTITY"]; ?>
-                                                    <?=$arResult['CATALOG_MEASURE_NAME']?>.</span><? endif; ?></div>
+                                            <div class="quantity quantity-success">
+                                                В наличии
+                                                <? if (Account::isAuthorized()):?>
+                                                    <span>
+                                                        <?= $arResult["CATALOG_QUANTITY"]; ?>
+                                                        <?=$arResult['CATALOG_MEASURE_NAME']?>.
+                                                    </span>
+                                                <? endif; ?>
+                                            </div>
                                         </div>
                                     </div>
                                 <? else: ?>
