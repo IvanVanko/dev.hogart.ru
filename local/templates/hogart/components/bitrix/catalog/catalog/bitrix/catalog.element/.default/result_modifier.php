@@ -272,6 +272,7 @@ foreach (array('this_collection','alternative','related','buy_with_this') as $i 
         if (empty($arResultItem['SHOW_PROPS'])) {
             $arResultItem['SHOW_PROPS'] = $arResultItem['HIDDEN_PROPS'];
         }
+        $arResultItem["RELATED_SECTION"] = $result_key;
     }
 }
 $linkedElements = BXHelper::getElements(array(), array('IBLOCK_ID' => array(COLLECTION_IBLOCK_ID, BRAND_IBLOCK_ID), 'ID' => $arAdjacentCollsBrandsIds), false, false, array("ID", "CODE", "NAME"), true, 'ID');

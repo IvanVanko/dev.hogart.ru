@@ -92,6 +92,25 @@ $controlsID = uniqid();
                                 </div>
                             </li>
                         <? endif; ?>
+                        <? if($arProduct["RELATED_SECTION"] == "this_collection"): ?>
+                            <?
+                                $showPropertyIndex = 0;
+                                $skipProperties = array("collection", "sku", "brand", "days_till_receive", "warehouse");
+                            ?>
+                            <? foreach ($arProduct['SHOW_PROPS'] as $i => $arProperty): ?>
+                                <? if (in_array($arProperty["CODE"], $skipProperties)): ?>
+                                    <? continue; ?>
+                                <? endif; ?>
+                                <li class="note">
+                                    <div class="dotted">
+                                        <span class="text-left"><?= $arProperty['NAME'] ?></span>
+                                        <span class="text-right"><span class="pr"><?= $arProperty["VALUE"] ?></span></span>
+                                    </div>
+                                </li>
+                                <? $showPropertyIndex += 1; ?>
+                                <? if ($showPropertyIndex >= 3): ?><? break ?><? endif; ?>
+                            <? endforeach; ?>
+                        <? endif; ?>
                     </ul>
                 </div>
                 <div class="price-cnt<? if ($USER->IsAuthorized()): ?> auth-block<? endif; ?>">
