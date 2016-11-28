@@ -2155,11 +2155,25 @@ class ParsingModel {
                 $propA['date_changed'] = CDatabase::FormatDate($value->date_changed, 'YYYY-MM-DD', 'DD.MM.YYYY 00:00:00');
 
             // related, buy_with_this, alternative
-            $arRelatedItemTypes = array(
-                'buy_with_this' => array('IBLOCK_PROPERTY_ID' => 54, '1C_NAME' => 'another_id'),
-                'related' => array('IBLOCK_PROPERTY_ID' => 55, '1C_NAME' => 'accomp_id'),
-                'alternative' => array('IBLOCK_PROPERTY_ID' => 56, '1C_NAME' => 'same_id'),
+            $arRelatedItemTypes = array();
+            $arBitrixPropertyCodes = array(
+                "related" => "accomp_id",
+                "buy_with_this" => "another_id",
+                "alternative" => "same_id");
+            $properties = CIBlockProperty::GetList(
+                array(),
+                array("CODE" => array_keys($arBitrixPropertyCodes),
+                      "IBLOCK_ID" => self::CATALOG_IBLOCK_ID)
             );
+            while ($prop_fields = $properties->GetNext()) {
+                foreach ($arBitrixPropertyCodes as $code => $codeIn1c ) {
+                    if ($prop_fields["CODE"] == $code) {
+                        $arRelatedItemTypes[$code] = array(
+                            'IBLOCK_PROPERTY_ID' => $prop_fields["ID"],
+                            '1C_NAME' => $codeIn1c);
+                    }
+                }
+            }
 
             foreach ($arRelatedItemTypes as $relatedType => $relatedTypeValue) {
                 if (!isset($value->$relatedTypeValue['1C_NAME']) or strlen($value->$relatedTypeValue['1C_NAME']) == 0) {
