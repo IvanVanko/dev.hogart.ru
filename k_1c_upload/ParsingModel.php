@@ -2148,6 +2148,9 @@ class ParsingModel {
             $propA['brand'] = $id_brand;
             $propA['is_new'] = $value->novelty ? 19 : '';
             $propA['default_count'] = $value->default_count;
+            $propA['kit_count'] = $value->kit_count;
+            $propA['kit_count_unit_messure_catalog'] = $arCatalogMeasures[$value->kit_count_unit_messure_catalog_id]['ID'] ? : null;
+
             if($value->date_added != '0001-01-01') {
                 $propA['date_added'] = CDatabase::FormatDate($value->date_added, 'YYYY-MM-DD', 'DD.MM.YYYY 00:00:00');
             }
