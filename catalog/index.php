@@ -106,7 +106,7 @@ else {
             "LIST_META_KEYWORDS" => "-",
             "LIST_META_DESCRIPTION" => "-",
             "LIST_BROWSER_TITLE" => "-",
-            "DETAIL_PROPERTY_CODE" => array("photos", "collection", "brand", "sku", "undefined", ""),
+            "DETAIL_PROPERTY_CODE" => array("photos", "collection", "brand", "sku", "undefined", "kit_count", "kit_count_unit_messure_catalog", "default_count"),
             "DETAIL_META_KEYWORDS" => "-",
             "DETAIL_META_DESCRIPTION" => "-",
             "DETAIL_BROWSER_TITLE" => "-",

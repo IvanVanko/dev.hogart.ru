@@ -8,6 +8,22 @@ $photos = $arResult['DISPLAY_PROPERTIES']['photos']['VALUE'];
 rsort($photos);
 $arResult['DISPLAY_PROPERTIES']['photos']['VALUE'] = $photos;
 
+if (!empty($arResult["DISPLAY_PROPERTIES"]["kit_count_unit_messure_catalog"]['VALUE']))
+{
+    $rsMeasures = CCatalogMeasure::getList(
+        array(),
+        array('ID' => $arResult["DISPLAY_PROPERTIES"]["kit_count_unit_messure_catalog"]['VALUE']),
+        false,
+        false,
+        array('ID', 'SYMBOL_RUS')
+    );
+    if ($arMeasure = $rsMeasures->GetNext())
+    {
+        $arResult["DISPLAY_PROPERTIES"]["kit_count_unit_messure_catalog"]['CATALOG_MEASURE_NAME'] = $arMeasure['SYMBOL_RUS'];
+        $arResult["DISPLAY_PROPERTIES"]["kit_count_unit_messure_catalog"]['~CATALOG_MEASURE_NAME'] = $arMeasure['~SYMBOL_RUS'];
+    }
+}
+
 //Documents
 $access_level = ($USER->IsAuthorized()) ? array(1, 2) : 1;
 $ar_res = CIBlockElement::GetList(array("sort" => "asc"),

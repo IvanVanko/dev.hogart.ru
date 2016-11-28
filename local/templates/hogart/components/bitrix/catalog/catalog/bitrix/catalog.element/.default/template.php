@@ -190,6 +190,8 @@ $this->EndViewTarget();
                                         <?= \Hogart\Lk\Helper\Template\Money::show($arResult["PRICES"]["BASE"]["VALUE"]) ?>
                                     <? endif; ?>
                                     <i class="fa fa-<?=strtolower($arResult["PRICES"]["BASE"]["CURRENCY"])?>" aria-hidden="true"></i>
+                                    /
+                                    <?=$arResult['CATALOG_MEASURE_NAME']?>.
                                     <? if(Account::isAuthorized() && !empty($arResult["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
                                         <sup>*</sup>
                                     <? endif; ?>
@@ -214,6 +216,23 @@ $this->EndViewTarget();
                                     </small>
                                 <? endif; ?>
                                 <!---->
+
+                                <? if (!empty($arResult["DISPLAY_PROPERTIES"]["kit_count"]['VALUE']) && !empty($arResult["DISPLAY_PROPERTIES"]["kit_count_unit_messure_catalog"]['VALUE'])): ?>
+                                    <div>
+                                        <?= $arResult["DISPLAY_PROPERTIES"]["kit_count"]['VALUE'] ?>
+                                        <?= $arResult['CATALOG_MEASURE_NAME'] ?>. в
+                                        <?= $arResult["DISPLAY_PROPERTIES"]["kit_count_unit_messure_catalog"]['CATALOG_MEASURE_NAME'] ?>.
+                                    </div>
+                                <? endif; ?>
+
+                                <? if (!empty($arResult["DISPLAY_PROPERTIES"]["default_count"]['VALUE'])): ?>
+                                    <div>
+                                        Отгружается только по
+                                        <?= $arResult["DISPLAY_PROPERTIES"]["default_count"]['VALUE'] ?>
+                                        <?= $arResult['CATALOG_MEASURE_NAME'] ?>.
+                                    </div>
+                                <? endif; ?>
+
                             </div>
                             <div class="col-md-6">
                                 <? if($arResult["CATALOG_QUANTITY"] > 0): ?>
