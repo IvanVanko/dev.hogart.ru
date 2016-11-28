@@ -253,8 +253,6 @@ if ($account['id']) {
         $storeFilter['ID'] = $accountStores;
     }
 
-    $storeAmounts = \Hogart\Lk\Entity\StoreAmountTable::getStoreAmountByItemsId(array_keys($arResult['ITEMS']), $storeFilter['ID']);
-
     $prices = array_reduce($arResult['ITEMS'], function ($result, $item) {
         $result[$item["ID"]] = $item["PRICES"]["BASE"]["VALUE"];
         return $result;
@@ -267,11 +265,6 @@ if ($account['id']) {
         $item["PRICES"]["BASE"]["DISCOUNT_VALUE"] = $prices[$id]['price'];
         $item["PRICES"]["BASE"]["DISCOUNT_DIFF"] = $prices[$id]['discount_amount'];
         $item["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"] = (float)$prices[$id]['discount'];
-        $item["STORE_AMOUNTS"] = !empty($storeAmounts[$id]) ? $storeAmounts[$id] : [];
-        $item['CATALOG_QUANTITY'] = 0;
-        foreach ($item["STORE_AMOUNTS"] as $amount) {
-            $item['CATALOG_QUANTITY'] += $amount['stock'];
-        }
     }
 }
 
@@ -285,17 +278,16 @@ while ($next = $prop_section_sort_result->fetch()) {
     $section_prop_sort[] = $next;
 }
 
+$storeAmounts = \Hogart\Lk\Entity\StoreAmountTable::getStoreAmountByItemsId(array_keys($arResult['ITEMS']), $storeFilter['ID']);
 $section_properties = BXHelper::getPropertySectionLinks($arParams['IBLOCK_ID'], $section_ids, 3, 3, array(), array('SMART_FILTER' => 'Y'));
 foreach ($arResult['ITEMS'] as $i => &$arCollItem) {
-    if (!isset($store_keys)) {
-        $store_keys = preg_grep("/^CATALOG_STORE_AMOUNT_/",array_keys($arCollItem));//подсчитываем кол-во товара только по отфильтрованным складам.
+
+    $arCollItem["STORE_AMOUNTS"] = !empty($storeAmounts[$arCollItem['ID']]) ? $storeAmounts[$arCollItem['ID']] : [];
+    $arCollItem['CATALOG_QUANTITY'] = 0;
+    foreach ($arCollItem["STORE_AMOUNTS"] as $amount) {
+        $arCollItem['CATALOG_QUANTITY'] += $amount['stock'];
     }
-    if (!empty($store_keys) && empty($account['id'])) {
-        $arCollItem['CATALOG_QUANTITY'] = 0;
-        foreach ($store_keys as $s_key) {
-            $arCollItem['CATALOG_QUANTITY'] +=intval($arCollItem[$s_key]);
-        }
-    }
+
     $result_properties = array();
     foreach ($section_properties as $key => $value) {
         if ($value['ID'] == $arCollItem['~IBLOCK_SECTION_ID'] && array_key_exists($value['CODE'], $arCollItem['PROPERTIES'])) {

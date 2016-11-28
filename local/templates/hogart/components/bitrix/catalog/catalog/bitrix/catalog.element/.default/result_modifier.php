@@ -342,12 +342,12 @@ if ($arParams['STORES_FILTERED'] != 'Y') {
         if (!empty($accountStores)) {
             $storeFilter['ID'] = $accountStores;
         }
+    }
 
-        $storeAmounts = \Hogart\Lk\Entity\StoreAmountTable::getStoreAmountByItemsId([$arResult['ID']], $storeFilter['ID']);
-        $arResult["STORE_AMOUNTS"] = !empty($storeAmounts[$arResult['ID']]) ? $storeAmounts[$arResult['ID']] : [];
-        $arResult['CATALOG_QUANTITY'] = 0;
-        foreach ($arResult["STORE_AMOUNTS"] as $amount) {
-            $arResult['CATALOG_QUANTITY'] += $amount['stock'];
-        }
+    $storeAmounts = \Hogart\Lk\Entity\StoreAmountTable::getStoreAmountByItemsId([$arResult['ID']], $storeFilter['ID']);
+    $arResult["STORE_AMOUNTS"] = !empty($storeAmounts[$arResult['ID']]) ? $storeAmounts[$arResult['ID']] : [];
+    $arResult['CATALOG_QUANTITY'] = 0;
+    foreach ($arResult["STORE_AMOUNTS"] as $amount) {
+        $arResult['CATALOG_QUANTITY'] += $amount['stock'];
     }
 }
