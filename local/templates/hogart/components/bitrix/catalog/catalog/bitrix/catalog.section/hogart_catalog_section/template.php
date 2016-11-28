@@ -425,6 +425,8 @@ use \Hogart\Lk\Helper\Template\Account;
                                 <? if (Account::isAuthorized()): ?>
                                     <span><?= $arItem["CATALOG_QUANTITY"]; ?>
                                     <?=$arItem['CATALOG_MEASURE_NAME']?>.</span>
+                                <? else: ?>
+                                    <i class="fa fa-check" aria-hidden="true"></i> Наличие
                                 <? endif; ?>
                                 </div>
                                 <? else: ?>
