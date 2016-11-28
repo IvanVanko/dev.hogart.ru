@@ -2154,6 +2154,52 @@ class ParsingModel {
             if($value->date_changed != '0001-01-01')
                 $propA['date_changed'] = CDatabase::FormatDate($value->date_changed, 'YYYY-MM-DD', 'DD.MM.YYYY 00:00:00');
 
+            // related, buy_with_this, alternative
+            $arRelatedItemTypes = array();
+            $arBitrixPropertyCodes = array(
+                "related" => "accomp_id",
+                "buy_with_this" => "another_id",
+                "alternative" => "same_id");
+            $properties = CIBlockProperty::GetList(
+                array(),
+                array("CODE" => array_keys($arBitrixPropertyCodes),
+                      "IBLOCK_ID" => self::CATALOG_IBLOCK_ID)
+            );
+            while ($prop_fields = $properties->GetNext()) {
+                foreach ($arBitrixPropertyCodes as $code => $codeIn1c ) {
+                    if ($prop_fields["CODE"] == $code) {
+                        $arRelatedItemTypes[$code] = array(
+                            'IBLOCK_PROPERTY_ID' => $prop_fields["ID"],
+                            '1C_NAME' => $codeIn1c);
+                    }
+                }
+            }
+
+            foreach ($arRelatedItemTypes as $relatedType => $relatedTypeValue) {
+                if (!isset($value->$relatedTypeValue['1C_NAME']) or strlen($value->$relatedTypeValue['1C_NAME']) == 0) {
+                    continue;
+                }
+
+                foreach (explode(',', $value->$relatedTypeValue['1C_NAME']) as $relatedItemGUID) {
+                    $relatedItems = CIBlockElement::GetList(
+                        array(),
+                        array(
+                            'IBLOCK_ID' => $BLOCK_ID,
+                            '=XML_ID' => $relatedItemGUID),
+                        false,
+                        false,
+                        array('ID')
+                    );
+
+                    if ($relatedItem = $relatedItems->GetNext()) {
+                        if (isset($propA[$relatedType]) and isset($propA[$relatedType][$relatedTypeValue['IBLOCK_PROPERTY_ID']])) {
+                            $propA[$relatedType][$relatedTypeValue["IBLOCK_PROPERTY_ID"]][] = $relatedItem['ID'];
+                        }
+                        $propA[$relatedType] = array($relatedTypeValue["IBLOCK_PROPERTY_ID"] => array($relatedItem['ID']));
+                    }
+                }
+            }
+
             $arLoadProductArray = Array(
                 "IBLOCK_SECTION_ID" => $section_id,
                 "IBLOCK_ID" => $BLOCK_ID,
