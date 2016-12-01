@@ -87,6 +87,7 @@ class Order extends AbstractMethod
                 'sale_max_money' => (float)$order->Order_Max_Monet_Sale,
                 'perm_reserve' => $order->Order_Reserve,
                 'is_active' => !$order->deletion_mark,
+                'is_actual' => true
             ], 'guid_id');
 
             if ($result->getErrorCollection()->count()) {
@@ -112,16 +113,19 @@ class Order extends AbstractMethod
 
                     $DB->Commit();
 
-	                $message = new Message(
-		                OrderTable::showName($result->getData()) . " обновлен!",
-		                Message::SEVERITY_INFO
-	                );
-	                $message
-		                ->setIcon('fa fa-file-text-o')
-		                ->setUrl("/account/order/" . $result->getId())
-		                ->setDelay(0)
-	                ;
-	                FlashMessagesTable::addNewMessage($result->getData()['account_id'], $message);
+                    if (!$order->deletion_mark) {
+
+                        $message = new Message(
+                            OrderTable::showName($result->getData()) . " обновлен!",
+                            Message::SEVERITY_INFO
+                        );
+                        $message
+                            ->setIcon('fa fa-file-text-o')
+                            ->setUrl("/account/order/" . $result->getId())
+                            ->setDelay(0)
+                        ;
+                        FlashMessagesTable::addNewMessage($result->getData()['account_id'], $message);
+                    }
 
                 } else {
                     $answer->addResponse(new ResponseObject($order->Order_ID, new MethodException(MethodException::ERROR_UNDEFINED)));

@@ -29,7 +29,7 @@ $controlsID = uniqid();
 <? endif; ?>
 
 
-<ul data-control="#con-<?= $controlsID ?>" class="row ">
+<ul data-control="#con-<?= $controlsID ?>" class="row related-products">
     <? foreach ($related['ITEMS'] as $arProduct): ?>
         <li class="col-lg-3 col-md-4 col-sm-6 this-collection-item">
             <div>
@@ -64,11 +64,16 @@ $controlsID = uniqid();
                         </div>
                     <? endif; ?>
                     <div class="row">
-                        <div class="col-md-12">
-                            <a href="<?= $arProduct["DETAIL_PAGE_URL"] ?>"><h3><?= $arProduct["NAME"] ?></h3></a>
+                        <div class="col-md-12 related-product-name">
+                            <a href="<?= $arProduct["DETAIL_PAGE_URL"] ?>">
+                                <span class="related-product-name">
+                                    <h3><?= $arProduct["NAME"] ?></h3>
+                                </span>
+                            </a>
                         </div>
                     </div>
                 </div>
+                <br>
                 <div class="param-cnt">
                     <ul class="param">
                         <li class="note">
@@ -87,31 +92,34 @@ $controlsID = uniqid();
                                 </div>
                             </li>
                         <? endif; ?>
+                        <? if($arProduct["RELATED_SECTION"] == "this_collection"): ?>
+                            <?
+                                $showPropertyIndex = 0;
+                                $skipProperties = array("collection", "sku", "brand", "days_till_receive", "warehouse");
+                            ?>
+                            <? foreach ($arProduct['SHOW_PROPS'] as $i => $arProperty): ?>
+                                <? if (in_array($arProperty["CODE"], $skipProperties)): ?>
+                                    <? continue; ?>
+                                <? endif; ?>
+                                <li class="note">
+                                    <div class="dotted">
+                                        <span class="text-left"><?= $arProperty['NAME'] ?></span>
+                                        <span class="text-right"><span class="pr"><?= $arProperty["VALUE"] ?></span></span>
+                                    </div>
+                                </li>
+                                <? $showPropertyIndex += 1; ?>
+                                <? if ($showPropertyIndex >= 3): ?><? break ?><? endif; ?>
+                            <? endforeach; ?>
+                        <? endif; ?>
                     </ul>
                 </div>
-                <div class="price-cnt <? if ($USER->IsAuthorized()): ?> auth-block<? endif; ?>">
+                <div class="price-cnt<? if ($USER->IsAuthorized()): ?> auth-block<? endif; ?>">
                     <div class="row vertical-align">
-                        <div class="col-md-6">
-                            <div class="price currency-<?= strtolower($arProduct["PRICES"]["BASE"]["CURRENCY"]) ?> text-nowrap">
-                                <?= \Hogart\Lk\Helper\Template\Money::show($arProduct["PRICES"]["BASE"]["DISCOUNT_VALUE"]) ?>
-                                <i class="fa fa-<?=strtolower($arResult["PRICES"]["BASE"]["CURRENCY"])?>" aria-hidden="true"></i>
-                            </div>
-                            <!--Только для авторизованных-->
-                            <? if ($USER->IsAuthorized() && !empty($arProduct["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
-                                <div class="grid-hide discount">
-                                    <?= $arProduct["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"] ?>%
-                                </div>
-                            <? endif; ?>
-                            <!---->
-                        </div>
-                        <div class="col-md-6 text-right text-nowrap">
+                        <div class="col-md-6 text-nowrap">
                             <div class="quantity-wrapper">
                                 <? if ($arProduct["CATALOG_QUANTITY"] > 0): ?>
                                     <div class="quantity quantity-success line <? if ($USER->IsAuthorized()): ?> line2<? endif; ?>">
-                                        <? if ($USER->IsAuthorized()): ?>
-                                            <span><?= $arProduct["CATALOG_QUANTITY"]; ?>
-                                                <?=$arProduct['CATALOG_MEASURE_NAME']?>.</span>
-                                        <? endif; ?>
+                                        В наличии <? if ($USER->IsAuthorized()): ?><span><?= $arProduct["CATALOG_QUANTITY"]; ?> <?=$arProduct['CATALOG_MEASURE_NAME']?>.</span><? endif; ?>
                                     </div>
                                 <? else: ?>
                                     <div class="quantity quantity-fail text-nowrap">
@@ -177,6 +185,31 @@ $controlsID = uniqid();
                                     </div>
                                 <? endif; ?>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row vertical-align">
+                        <div class="col-md-6">
+                            <div class="price currency-<?= strtolower($arProduct["PRICES"]["BASE"]["CURRENCY"]) ?> text-nowrap">
+                            <? if ($USER->IsAuthorized() and isset($arProduct["PRICES"]["BASE"])): ?>
+                                <? if (isset($arProduct["PRICES"]["BASE"]["DISCOUNT_VALUE"])): ?>
+                                    <?= \Hogart\Lk\Helper\Template\Money::show($arProduct["PRICES"]["BASE"]["DISCOUNT_VALUE"]) ?>
+                                <? elseif (isset($arProduct["PRICES"]["BASE"]["VALUE"])): ?>
+                                    <?= \Hogart\Lk\Helper\Template\Money::show($arProduct["PRICES"]["BASE"]["VALUE"]) ?>
+                                <? else: ?>
+                                    <?= \Hogart\Lk\Helper\Template\Money::show($arProduct["CATALOG_PRICE_1"]) ?>
+                                <? endif; ?>
+                            <? else: ?>
+                                <?= \Hogart\Lk\Helper\Template\Money::show($arProduct["CATALOG_PRICE_1"]) ?>
+                            <? endif; ?>
+                                <i class="fa fa-<?=strtolower($arResult["PRICES"]["BASE"]["CURRENCY"])?>" aria-hidden="true"></i>
+                            </div>
+                            <!--Только для авторизованных-->
+                            <? if ($USER->IsAuthorized() && !empty($arProduct["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
+                                <div class="grid-hide discount">
+                                    <?= $arProduct["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"] ?>%
+                                </div>
+                            <? endif; ?>
+                            <!---->
                         </div>
                     </div>
 

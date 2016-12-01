@@ -53,6 +53,9 @@ class hogart_lk extends CModule
         \Hogart\Lk\Entity\OrderTable::createTableIfNotExists();
         \Hogart\Lk\Entity\OrderRTUTable::createTableIfNotExists();
         \Hogart\Lk\Entity\OrderRTUItemTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\OrderEditTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\OrderItemEditTable::createTableIfNotExists();
+        \Hogart\Lk\Entity\OrderItemEditRelTable::createTableIfNotExists();
         \Hogart\Lk\Entity\PdfTable::createTableIfNotExists();
         \Hogart\Lk\Entity\PaymentAccountRelationTable::createTableIfNotExists();
         \Hogart\Lk\Entity\PaymentAccountTable::createTableIfNotExists();
@@ -90,6 +93,9 @@ class hogart_lk extends CModule
         \Hogart\Lk\Entity\OrderTable::dropTableIfExists();
         \Hogart\Lk\Entity\OrderRTUTable::dropTableIfExists();
         \Hogart\Lk\Entity\OrderRTUItemTable::dropTableIfExists();
+        \Hogart\Lk\Entity\OrderEditTable::dropTableIfExists();
+        \Hogart\Lk\Entity\OrderItemEditTable::dropTableIfExists();
+        \Hogart\Lk\Entity\OrderItemEditRelTable::dropTableIfExists();
         \Hogart\Lk\Entity\PdfTable::dropTableIfExists();
         \Hogart\Lk\Entity\PaymentAccountRelationTable::dropTableIfExists();
         \Hogart\Lk\Entity\PaymentAccountTable::dropTableIfExists();

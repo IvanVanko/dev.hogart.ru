@@ -20,6 +20,8 @@ use Hogart\Lk\Helper\Template\Account;
 
 $collectionComponentId = CAjax::GetComponentID("bitrix:catalog.element", "", "collection");
 $buyWithThisComponentId = CAjax::GetComponentID("bitrix:catalog.element", "", "buy_with_this");
+$relatedComponentId = CAjax::GetComponentID("bitrix:catalog.element", "", "related");
+$alternativeComponentId = CAjax::GetComponentID("bitrix:catalog.element", "", "alternative");
 ?>
 
 <?php
@@ -47,6 +49,34 @@ $this->EndViewTarget();
 <? if (!empty($_REQUEST["buy_with_this"])): ?>
     <? $APPLICATION->RestartBuffer() ?>
     <? $APPLICATION->ShowViewContent("buy-with-this-items") ?>
+    <? exit; ?>
+<? endif; ?>
+
+<?
+$this->SetViewTarget("related-items");
+$componentId = $relatedComponentId;
+$related = $arResult["related"];
+include __DIR__ . "/related-items.php";
+$this->EndViewTarget();
+?>
+
+<? if (!empty($_REQUEST["related"])): ?>
+    <? $APPLICATION->RestartBuffer() ?>
+    <? $APPLICATION->ShowViewContent("related-items") ?>
+    <? exit; ?>
+<? endif; ?>
+
+<?
+$this->SetViewTarget("alternative-items");
+$componentId = $alternativeComponentId;
+$related = $arResult["alternative"];
+include __DIR__ . "/related-items.php";
+$this->EndViewTarget();
+?>
+
+<? if (!empty($_REQUEST["alternative"])): ?>
+    <? $APPLICATION->RestartBuffer() ?>
+    <? $APPLICATION->ShowViewContent("alternative-items") ?>
     <? exit; ?>
 <? endif; ?>
 
@@ -160,6 +190,8 @@ $this->EndViewTarget();
                                         <?= \Hogart\Lk\Helper\Template\Money::show($arResult["PRICES"]["BASE"]["VALUE"]) ?>
                                     <? endif; ?>
                                     <i class="fa fa-<?=strtolower($arResult["PRICES"]["BASE"]["CURRENCY"])?>" aria-hidden="true"></i>
+                                    /
+                                    <?=$arResult['CATALOG_MEASURE_NAME']?>.
                                     <? if(Account::isAuthorized() && !empty($arResult["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
                                         <sup>*</sup>
                                     <? endif; ?>
@@ -184,14 +216,37 @@ $this->EndViewTarget();
                                     </small>
                                 <? endif; ?>
                                 <!---->
+
+                                <? if (!empty($arResult["DISPLAY_PROPERTIES"]["kit_count"]['VALUE']) && !empty($arResult["DISPLAY_PROPERTIES"]["kit_count_unit_messure_catalog"]['VALUE'])): ?>
+                                    <div>
+                                        <?= $arResult["DISPLAY_PROPERTIES"]["kit_count"]['VALUE'] ?>
+                                        <?= $arResult['CATALOG_MEASURE_NAME'] ?>. в
+                                        <?= $arResult["DISPLAY_PROPERTIES"]["kit_count_unit_messure_catalog"]['CATALOG_MEASURE_NAME'] ?>.
+                                    </div>
+                                <? endif; ?>
+
+                                <? if (!empty($arResult["DISPLAY_PROPERTIES"]["default_count"]['VALUE'])): ?>
+                                    <div>
+                                        Отгружается только по
+                                        <?= $arResult["DISPLAY_PROPERTIES"]["default_count"]['VALUE'] ?>
+                                        <?= $arResult['CATALOG_MEASURE_NAME'] ?>.
+                                    </div>
+                                <? endif; ?>
+
                             </div>
                             <div class="col-md-6">
                                 <? if($arResult["CATALOG_QUANTITY"] > 0): ?>
                                     <div class="">
                                         <div class="icon-carTon grid-hide">
-                                            <div class="quantity quantity-success">В
-                                                наличии<? if (Account::isAuthorized()): ?> <span><?= $arResult["CATALOG_QUANTITY"]; ?>
-                                                    <?=$arResult['CATALOG_MEASURE_NAME']?>.</span><? endif; ?></div>
+                                            <div class="quantity quantity-success">
+                                                В наличии
+                                                <? if (Account::isAuthorized()):?>
+                                                    <span>
+                                                        <?= $arResult["CATALOG_QUANTITY"]; ?>
+                                                        <?=$arResult['CATALOG_MEASURE_NAME']?>.
+                                                    </span>
+                                                <? endif; ?>
+                                            </div>
                                         </div>
                                     </div>
                                 <? else: ?>
@@ -272,13 +327,13 @@ $this->EndViewTarget();
                 <? endif; ?>
                 <? if(isset($arResult["related"]["ITEMS"])): ?>
                     <li role="presentation" class="<?= (!$tab_active ? 'active' : '') ?>">
-                        <a href="#related" aria-controls="related" role="tab" data-toggle="tab">Сопутствующие товары</a>
+                        <a href="#related" aria-controls="related" role="tab" data-toggle="tab">Принадлежности</a>
                     </li>
                     <? $tab_active = $tab_active ? : 'related'; ?>
                 <? endif; ?>
                 <? if(isset($arResult["alternative"]["ITEMS"])): ?>
                     <li role="presentation" class="<?= (!$tab_active ? 'active' : '') ?>">
-                        <a href="#alternative" aria-controls="alternative" role="tab" data-toggle="tab">Альтернативные товары</a>
+                        <a href="#alternative" aria-controls="alternative" role="tab" data-toggle="tab">Аналоги</a>
                     </li>
                     <? $tab_active = $tab_active ? : 'alternative'; ?>
                 <? endif; ?>
@@ -304,6 +359,22 @@ $this->EndViewTarget();
                         <? $APPLICATION->ShowViewContent("buy-with-this-items") ?>
                     </div>
                 </div>
+                <? endif; ?>
+
+                <? if(isset($arResult["related"]["ITEMS"])): ?>
+                <div role="tabpanel" class="tab-pane <?= ($tab_active == 'related' ? 'active' : '') ?>" id="related">
+                    <div id="com_<?= $relatedComponentId ?>">
+                        <? $APPLICATION->ShowViewContent("related-items") ?>
+                    </div>
+                </div>
+                <? endif; ?>
+
+                <? if(isset($arResult["alternative"]["ITEMS"])): ?>
+                    <div role="tabpanel" class="tab-pane <?= ($tab_active == 'alternative' ? 'active' : '') ?>" id="alternative">
+                        <div id="com_<?= $alternativeComponentId ?>">
+                            <? $APPLICATION->ShowViewContent("alternative-items") ?>
+                        </div>
+                    </div>
                 <? endif; ?>
             </div>
         </div>

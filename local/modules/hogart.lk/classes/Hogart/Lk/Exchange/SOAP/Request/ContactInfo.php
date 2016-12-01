@@ -24,7 +24,7 @@ class ContactInfo extends AbstractPutRequest
     public function __construct($info = [])
     {
         foreach ($info as $item) {
-            $info[] = (object)[
+            $this->info[] = (object)[
                 "Info_ID_Owner" => new LazyRequest(function ($info) {
                     return (string)ContactInfoTable::getOwnerRel($info);
                 }, [$item]),
@@ -33,7 +33,7 @@ class ContactInfo extends AbstractPutRequest
                 "Info_ID_Site" => $item['guid_id'],
                 "Info_Type" => intval($item['info_type']),
                 "Info_PhoneKind" => intval($item['phone_kind']),
-                "Info_Value" => (string)$item['value'],
+                "Info_Value" => (string)(intval($item['info_type']) == ContactInfoTable::TYPE_PHONE ? ContactInfoTable::formatPhone($item['value']) : $item['value']),
                 "deletion_mark" => !$item['is_active'],
             ];
         }

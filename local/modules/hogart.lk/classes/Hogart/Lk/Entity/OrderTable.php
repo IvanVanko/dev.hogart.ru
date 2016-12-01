@@ -22,7 +22,10 @@ use Bitrix\Main\Entity\StringField;
 use Bitrix\Main\Entity\TextField;
 use Bitrix\Main\Type\DateTime;
 use Bitrix\Main\UI\PageNavigation;
+use Hogart\Lk\Exchange\RabbitMQ\Consumer;
+use Hogart\Lk\Exchange\RabbitMQ\Exchange\AbstractExchange;
 use Hogart\Lk\Exchange\RabbitMQ\Exchange\OrderExchange;
+use Hogart\Lk\Exchange\SOAP\AbstractPutRequest;
 use Hogart\Lk\Exchange\SOAP\Request\Order;
 use Hogart\Lk\Field\GuidField;
 use Hogart\Lk\Helper\Template\FlashError;
@@ -108,7 +111,10 @@ class OrderTable extends AbstractEntity
             new BooleanField("sale_granted"),
             new FloatField("sale_max_money"),
             new BooleanField("perm_reserve"),
-            new BooleanField("is_active")
+            new BooleanField("is_active"),
+            new BooleanField("is_actual", [
+                'default_value' => false
+            ])
         ];
     }
 
@@ -238,7 +244,9 @@ class OrderTable extends AbstractEntity
 
             $filter = array_merge([
                 '=id' => $order_id,
-                '=is_active' => true
+                '=is_active' => true,
+                '=contract.is_active' => true,
+                '=contract.company.is_active' => true,
             ], $filter);
 
             $order = self::getRow([
@@ -436,8 +444,11 @@ class OrderTable extends AbstractEntity
         }
         $orders = $ordersResult->fetchAll();
 
-        foreach ($orders as &$order) {
+        foreach ($orders as $k => &$order) {
             $order = self::getOrder($order, $filter, $item_filter, $account_id);
+            if (null === $order) {
+                unset($orders[$k]);
+            }
         }
         return $orders;
     }
@@ -553,7 +564,8 @@ HTML;
 
         $items = OrderItemTable::getList([
             'filter' => [
-                '=order_id' => $order_id
+                '=order_id' => $order_id,
+                '=item.ACTIVE' => 'Y'
             ]
         ])->fetchAll();
         foreach ($items as $item) {
@@ -712,4 +724,23 @@ HTML;
         $id = $event->getParameter('id')['id'];
         OrderItemTable::deleteByOrderId($id);
     }
+
+    /**
+     * @inheritDoc
+     */
+    public static function publishToRabbit(AbstractExchange $exchange, Order $request, $key = 'put')
+    {
+        if (!Consumer::getInstance()->isIsCliContext()) {
+            $orders = $request->__toRequest()->Data['Order'];
+
+            foreach ($orders as $order) {
+                self::update($order->Order_ID_Site, [
+                    'is_actual' => false
+                ]);
+            }
+        }
+        parent::publishToRabbit($exchange, $request, $key);
+    }
+
+
 }
