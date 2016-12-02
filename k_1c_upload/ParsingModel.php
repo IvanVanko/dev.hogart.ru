@@ -2172,7 +2172,8 @@ class ParsingModel {
                     array("CODE" => $code, "IBLOCK_ID" => self::CATALOG_IBLOCK_ID)
                 );
                 $prop_fields = $properties->GetNext();
-                if ($prop_fields) {
+
+                if (!empty($prop_fields)) {
                     $arRelatedItemTypes[$code] = array(
                         'IBLOCK_PROPERTY_ID' => $prop_fields["ID"],
                         '1C_NAME' => $arBitrixPropertyCodes[$code]
@@ -2181,11 +2182,11 @@ class ParsingModel {
             }
 
             foreach ($arRelatedItemTypes as $relatedType => $relatedTypeValue) {
-                if (!isset($value->$relatedTypeValue['1C_NAME']) or strlen($value->$relatedTypeValue['1C_NAME']) == 0) {
+                if (!isset($value->{$relatedTypeValue['1C_NAME']}) or strlen($value->{$relatedTypeValue['1C_NAME']}) == 0) {
                     continue;
                 }
 
-                foreach (explode(',', $value->$relatedTypeValue['1C_NAME']) as $relatedItemGUID) {
+                foreach (explode(',', $value->{$relatedTypeValue['1C_NAME']}) as $relatedItemGUID) {
                     $relatedItems = CIBlockElement::GetList(
                         array(),
                         array(
@@ -2197,10 +2198,7 @@ class ParsingModel {
                     );
 
                     if ($relatedItem = $relatedItems->GetNext()) {
-                        if (isset($propA[$relatedType]) and isset($propA[$relatedType][$relatedTypeValue['IBLOCK_PROPERTY_ID']])) {
-                            $propA[$relatedType][$relatedTypeValue["IBLOCK_PROPERTY_ID"]][] = $relatedItem['ID'];
-                        }
-                        $propA[$relatedType] = array($relatedTypeValue["IBLOCK_PROPERTY_ID"] => array($relatedItem['ID']));
+                        $propA[$relatedType][] = $relatedItem['ID'];
                     }
                 }
             }
