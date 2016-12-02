@@ -2159,19 +2159,21 @@ class ParsingModel {
             $arBitrixPropertyCodes = array(
                 "related" => "accomp_id",
                 "buy_with_this" => "another_id",
-                "alternative" => "same_id");
-            $properties = CIBlockProperty::GetList(
-                array(),
-                array("CODE" => array_keys($arBitrixPropertyCodes),
-                      "IBLOCK_ID" => self::CATALOG_IBLOCK_ID)
+                "alternative" => "same_id"
             );
-            while ($prop_fields = $properties->GetNext()) {
-                foreach ($arBitrixPropertyCodes as $code => $codeIn1c ) {
-                    if ($prop_fields["CODE"] == $code) {
-                        $arRelatedItemTypes[$code] = array(
-                            'IBLOCK_PROPERTY_ID' => $prop_fields["ID"],
-                            '1C_NAME' => $codeIn1c);
-                    }
+
+            foreach(array_keys($arBitrixPropertyCodes) as $code) {
+                $prop_fields = null;
+                $properties = CIBlockProperty::GetList(
+                    array(),
+                    array("CODE" => $code, "IBLOCK_ID" => self::CATALOG_IBLOCK_ID)
+                );
+                $prop_fields = $properties->GetNext();
+                if ($prop_fields) {
+                    $arRelatedItemTypes[$code] = array(
+                        'IBLOCK_PROPERTY_ID' => $prop_fields["ID"],
+                        '1C_NAME' => $arBitrixPropertyCodes[$code]
+                    );
                 }
             }
 
