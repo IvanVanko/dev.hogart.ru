@@ -236,7 +236,7 @@ $this->EndViewTarget();
                             </div>
                             <div class="col-md-6">
                                 <? if($arResult["CATALOG_QUANTITY"] > 0): ?>
-                                    <div class="">
+                                    <div class="quantity-wrapper">
                                         <div class="icon-carTon grid-hide">
                                             <div class="quantity quantity-success">
                                                 В наличии
@@ -248,6 +248,63 @@ $this->EndViewTarget();
                                                 <? endif; ?>
                                             </div>
                                         </div>
+                                        <? if ($USER->IsAuthorized()): ?>
+                                            <div class="stocks-wrapper">
+                                                <div class="triangle-with-shadow"></div>
+                                                <div class="stock-header">
+                                                    <?= $arResult["NAME"]?>, <?= $arResult['BRAND_NAME'] ?> <?= $arResult["PROPERTY_SKU_VALUE"] ?>
+                                                </div>
+                                                <div class="stock-items">
+                                                    <div class="stock-items-table">
+                                                        <? foreach ($arResult['STORES'] as $store_id => $store): ?>
+                                                            <? if (!$arResult['STORE_AMOUNTS'][$store_id]['is_visible'] && empty($arResult["PROPERTIES"]["days_till_receive"]["VALUE"])) continue; ?>
+                                                            <div class="stock-item">
+                                                <span class="stock-name h4 text-left">
+                                                    <?= $store["TITLE"]?>
+                                                </span>
+                                                                <span class="quantity">
+                                                    <div>
+                                                        <div class="amount h4">
+                                                            <?= (int)$arResult['STORE_AMOUNTS'][$store_id]['stock'] ?> <?=$arResult['CATALOG_MEASURE_NAME']?>.
+                                                        </div>
+                                                        <div class="desc h6">
+                                                            Остаток
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="amount h4">
+                                                            <?= (int)$arResult['STORE_AMOUNTS'][$store_id]['in_reserve'] ?> <?=$arResult['CATALOG_MEASURE_NAME']?>.
+                                                        </div>
+                                                        <div class="desc h6">
+                                                            Резерв
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="amount h4">
+                                                            <?= (int)$arResult['STORE_AMOUNTS'][$store_id]['in_transit'] ?> <?=$arResult['CATALOG_MEASURE_NAME']?>.
+                                                        </div>
+                                                        <div class="desc h6">
+                                                            Ожидается
+                                                        </div>
+                                                    </div>
+                                                                    <? if (!empty($arResult["PROPERTIES"]["days_till_receive"]["VALUE"])): ?>
+                                                                        <div>
+                                                        <div class="amount h4">
+                                                            <i class="glyphicon glyphicon-time"></i>
+                                                            <?= (int)$arResult["PROPERTIES"]["days_till_receive"]["VALUE"] ?> дн.
+                                                        </div>
+                                                        <div class="desc h6">
+                                                            Срок поставки
+                                                        </div>
+                                                    </div>
+                                                                    <? endif; ?>
+                                                </span>
+                                                            </div>
+                                                        <? endforeach; ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <? endif; ?>
                                     </div>
                                 <? else: ?>
                                     <div class="">
