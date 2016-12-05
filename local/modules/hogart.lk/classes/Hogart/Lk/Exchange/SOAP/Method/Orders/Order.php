@@ -39,6 +39,42 @@ class Order extends AbstractMethod
         return "Order";
     }
 
+    public function blockOrder($account_guid, $order_guid)
+    {
+        $request = [
+            "Data" => (object)[
+                "Acc_ID" => $account_guid,
+                "Order_ID" => $order_guid
+            ]
+        ];
+        $response = $this->client->getSoapClient()->OrderBlock($request);
+
+        if (!empty($response->return->OrderBlockRespons->BlockSuccessful)) {
+            $this->client->getLogger()->error($response->return->OrderBlockRespons->BlockUnSuccessfulText);
+            throw new \Exception($response->return->OrderBlockRespons->BlockUnSuccessfulText);
+        }
+
+        return $response->return->OrderBlockRespons;
+    }
+
+    public function unblockOrder($account_guid, $order_guid)
+    {
+        $request = [
+            "Data" => (object)[
+                "Acc_ID" => $account_guid,
+                "Order_ID" => $order_guid
+            ]
+        ];
+        $response = $this->client->getSoapClient()->OrderUnblock($request);
+
+        if (!empty($response->return->OrderUnblockRespons->UnblockSuccessful)) {
+            $this->client->getLogger()->error($response->return->OrderUnblockRespons->UnblockUnSuccessfulText);
+            throw new \Exception($response->return->OrderUnblockRespons->UnblockUnSuccessfulText);
+        }
+
+        return $response->return->OrderUnblockRespons;
+    }
+
     /**
      * @param $orders
      * @param Response $answer
