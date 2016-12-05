@@ -39,7 +39,7 @@ class Order extends AbstractMethod
         return "Order";
     }
 
-    public function blockOrder($account_guid, $order_guid)
+    public function blockOrder($order_guid, $account_guid)
     {
         $request = [
             "Data" => (object)[
@@ -49,15 +49,15 @@ class Order extends AbstractMethod
         ];
         $response = $this->client->getSoapClient()->OrderBlock($request);
 
-        if (!empty($response->return->OrderBlockRespons->BlockSuccessful)) {
-            $this->client->getLogger()->error($response->return->OrderBlockRespons->BlockUnSuccessfulText);
-            throw new \Exception($response->return->OrderBlockRespons->BlockUnSuccessfulText);
+        if (empty($response->return->BlockSuccessful)) {
+            $this->client->getLogger()->error($response->return->BlockUnSuccessfulText);
+            throw new \Exception($response->return->BlockUnSuccessfulText);
         }
 
-        return $response->return->OrderBlockRespons;
+        return $response->return;
     }
 
-    public function unblockOrder($account_guid, $order_guid)
+    public function unblockOrder($order_guid, $account_guid)
     {
         $request = [
             "Data" => (object)[
@@ -67,12 +67,12 @@ class Order extends AbstractMethod
         ];
         $response = $this->client->getSoapClient()->OrderUnblock($request);
 
-        if (!empty($response->return->OrderUnblockRespons->UnblockSuccessful)) {
-            $this->client->getLogger()->error($response->return->OrderUnblockRespons->UnblockUnSuccessfulText);
-            throw new \Exception($response->return->OrderUnblockRespons->UnblockUnSuccessfulText);
+        if (empty($response->return->UnblockSuccessful)) {
+            $this->client->getLogger()->error($response->return->UnblockUnSuccessfulText);
+            throw new \Exception($response->return->UnblockUnSuccessfulText);
         }
 
-        return $response->return->OrderUnblockRespons;
+        return $response->return;
     }
 
     /**
