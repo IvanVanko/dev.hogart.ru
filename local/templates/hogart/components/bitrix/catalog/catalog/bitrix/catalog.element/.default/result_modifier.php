@@ -302,6 +302,7 @@ foreach (array('this_collection','alternative','related','buy_with_this') as $i 
 
 
 HogartHelpers::mergeRangePropertiesForItem($arResult['PROPERTIES']);
+$arSkipUnsetProperties = array("days_till_receive");
 foreach ($arResult['PROPERTIES'] as $key => &$arResultProperty) {
     if (isset($arSectionProps[$arResult['IBLOCK_SECTION_ID']][$arResultProperty['CODE']])) {
         $arResultProperty = array_merge($arSectionProps[$arResult['IBLOCK_SECTION_ID']][$arResultProperty['CODE']], $arResultProperty);
@@ -312,6 +313,7 @@ foreach ($arResult['PROPERTIES'] as $key => &$arResultProperty) {
         }
         $arResultProperty['DISPLAY_EXPANDED_SORT'] = intval($arResultProperty['DISPLAY_EXPANDED'] == "Y")*100;
     } else {
+        if (in_array($key, $arSkipUnsetProperties)) {continue;}
         unset($arResult['PROPERTIES'][$key]);
     }
 }
