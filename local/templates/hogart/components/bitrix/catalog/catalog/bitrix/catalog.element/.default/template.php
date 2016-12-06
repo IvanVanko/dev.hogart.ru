@@ -235,8 +235,8 @@ $this->EndViewTarget();
 
                             </div>
                             <div class="col-md-6">
+                                <div class="quantity-wrapper">
                                 <? if($arResult["CATALOG_QUANTITY"] > 0): ?>
-                                    <div class="quantity-wrapper">
                                         <div class="icon-carTon grid-hide">
                                             <div class="quantity quantity-success">
                                                 В наличии
@@ -248,21 +248,41 @@ $this->EndViewTarget();
                                                 <? endif; ?>
                                             </div>
                                         </div>
-                                        <? if ($USER->IsAuthorized()): ?>
-                                            <div class="stocks-wrapper">
-                                                <div class="triangle-with-shadow"></div>
-                                                <div class="stock-header">
-                                                    <?= $arResult["NAME"]?>, <?= $arResult['BRAND_NAME'] ?> <?= $arResult["PROPERTY_SKU_VALUE"] ?>
-                                                </div>
-                                                <div class="stock-items">
-                                                    <div class="stock-items-table">
-                                                        <? foreach ($arResult['STORES'] as $store_id => $store): ?>
-                                                            <? if (!$arResult['STORE_AMOUNTS'][$store_id]['is_visible'] && empty($arResult["PROPERTIES"]["days_till_receive"]["VALUE"])) continue; ?>
-                                                            <div class="stock-item">
+                                <? else: ?>
+                                        <div class="quantity quantity-fail text-nowrap">
+                                            <i class="fa fa-truck" aria-hidden="true"></i> Заказ
+                                            <? if(!empty($arResult["PROPERTIES"]["delivery_period"]["VALUE"])): ?>
+                                                <br>
+                                                <span>Срок поставки <?=$arResult["PROPERTIES"]["delivery_period"]["VALUE"]?> <?=number($arResult["PROPERTIES"]["delivery_period"]["VALUE"], array('день',
+                                                        'дня',
+                                                        'дней'))?></span>
+                                            <? endif; ?>
+                                        </div>
+                                    <? if(!empty($arResult["PROPERTIES"]["supply"]["VALUE"])): ?>
+                                        <div class="">
+                                            <div class="icon-sheTon grid-hide">
+                                                ожидаемое поступление <br>
+                                                <?=FormatDate('d F',
+                                                    MakeTimeStamp($arResult["PROPERTIES"]["supply"]["VALUE"]));?>
+                                            </div>
+                                        </div>
+                                    <? endif; ?>
+                                <? endif; ?>
+                                    <? if ($USER->IsAuthorized()): ?>
+                                        <div class="stocks-wrapper">
+                                            <div class="triangle-with-shadow"></div>
+                                            <div class="stock-header">
+                                                <?= $arResult["NAME"]?>, <?= $arResult['BRAND_NAME'] ?> <?= $arResult["PROPERTY_SKU_VALUE"] ?>
+                                            </div>
+                                            <div class="stock-items">
+                                                <div class="stock-items-table">
+                                                    <? foreach ($arResult['STORES'] as $store_id => $store): ?>
+                                                        <? if (!$arResult['STORE_AMOUNTS'][$store_id]['is_visible'] && empty($arResult["PROPERTIES"]["days_till_receive"]["VALUE"])) continue; ?>
+                                                        <div class="stock-item">
                                                 <span class="stock-name h4 text-left">
                                                     <?= $store["TITLE"]?>
                                                 </span>
-                                                                <span class="quantity">
+                                                            <span class="quantity">
                                                     <div>
                                                         <div class="amount h4">
                                                             <?= (int)$arResult['STORE_AMOUNTS'][$store_id]['stock'] ?> <?=$arResult['CATALOG_MEASURE_NAME']?>.
@@ -287,8 +307,8 @@ $this->EndViewTarget();
                                                             Ожидается
                                                         </div>
                                                     </div>
-                                                                    <? if (!empty($arResult["PROPERTIES"]["days_till_receive"]["VALUE"])): ?>
-                                                                        <div>
+                                                                <? if (!empty($arResult["PROPERTIES"]["days_till_receive"]["VALUE"])): ?>
+                                                                    <div>
                                                         <div class="amount h4">
                                                             <i class="glyphicon glyphicon-time"></i>
                                                             <?= (int)$arResult["PROPERTIES"]["days_till_receive"]["VALUE"] ?> дн.
@@ -297,37 +317,15 @@ $this->EndViewTarget();
                                                             Срок поставки
                                                         </div>
                                                     </div>
-                                                                    <? endif; ?>
+                                                                <? endif; ?>
                                                 </span>
-                                                            </div>
-                                                        <? endforeach; ?>
-                                                    </div>
+                                                        </div>
+                                                    <? endforeach; ?>
                                                 </div>
-                                            </div>
-                                        <? endif; ?>
-                                    </div>
-                                <? else: ?>
-                                    <div class="">
-                                        <div class="quantity quantity-fail text-nowrap">
-                                            <i class="fa fa-truck" aria-hidden="true"></i> Заказ
-                                            <? if(!empty($arResult["PROPERTIES"]["delivery_period"]["VALUE"])): ?>
-                                                <br>
-                                                <span>Срок поставки <?=$arResult["PROPERTIES"]["delivery_period"]["VALUE"]?> <?=number($arResult["PROPERTIES"]["delivery_period"]["VALUE"], array('день',
-                                                        'дня',
-                                                        'дней'))?></span>
-                                            <? endif; ?>
-                                        </div>
-                                    </div>
-                                    <? if(!empty($arResult["PROPERTIES"]["supply"]["VALUE"])): ?>
-                                        <div class="">
-                                            <div class="icon-sheTon grid-hide">
-                                                ожидаемое поступление <br>
-                                                <?=FormatDate('d F',
-                                                    MakeTimeStamp($arResult["PROPERTIES"]["supply"]["VALUE"]));?>
                                             </div>
                                         </div>
                                     <? endif; ?>
-                                <? endif; ?>
+                                </div>
                                 <? if(Account::isAuthorized()): ?>
                                     <div class="">
                                         <?
