@@ -113,6 +113,10 @@ $prepareRelatedItems = function (&$result = [], $base_link = null, $arFilter = [
             $result['ITEMS'][$arFields['ID']]['PROPERTY_PHOTOS_VALUE'] = $arFields['PROPERTY_PHOTOS_VALUE'];
         }
 
+        if (isset($arFields["PROPERTIES"]["days_till_receive"])) {
+            $result['ITEMS'][$arFields['ID']]['PROPERTY_DAYS_TILL_RECEIVE'] = $arFields["PROPERTIES"]["days_till_receive"];
+        }
+
         if (0 < $arFields['CATALOG_MEASURE'])
         {
             $rsMeasures = CCatalogMeasure::getList(

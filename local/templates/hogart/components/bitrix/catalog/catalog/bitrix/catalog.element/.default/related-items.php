@@ -127,7 +127,7 @@ $controlsID = uniqid();
                                     </div>
                                 <? endif; ?>
 
-                                <? if ($USER->IsAuthorized() && ($arProduct["CATALOG_QUANTITY"] > 0 || !empty($arProduct["PROPERTIES"]["days_till_receive"]["VALUE"]))): ?>
+                                <? if ($USER->IsAuthorized() && ($arProduct["CATALOG_QUANTITY"] > 0 || !empty($arProduct["PROPERTY_DAYS_TILL_RECEIVE"]["VALUE"]))): ?>
                                     <div class="stocks-wrapper">
                                         <div class="triangle-with-shadow"></div>
                                         <div class="stock-header">
@@ -136,7 +136,7 @@ $controlsID = uniqid();
                                         <div class="stock-items">
                                             <div class="stock-items-table">
                                                 <? foreach ($arResult['STORES'] as $store_id => $store): ?>
-                                                    <? if (!$arProduct['STORE_AMOUNTS'][$store_id]['is_visible'] && empty($arProduct["PROPERTIES"]["days_till_receive"]["VALUE"])) continue; ?>
+                                                    <? if (!$arProduct['STORE_AMOUNTS'][$store_id]['is_visible'] && empty($arProduct["PROPERTY_DAYS_TILL_RECEIVE"]["VALUE"])) continue; ?>
                                                     <div class="stock-item">
                                                 <span class="stock-name h4 text-left">
                                                     <?= $store["TITLE"]?>
@@ -166,11 +166,11 @@ $controlsID = uniqid();
                                                             Ожидается
                                                         </div>
                                                     </div>
-                                                            <? if (!empty($arProduct["PROPERTIES"]["days_till_receive"]["VALUE"])): ?>
+                                                            <? if (!empty($arProduct["PROPERTY_DAYS_TILL_RECEIVE"]["VALUE"])): ?>
                                                                 <div>
                                                         <div class="amount h4">
                                                             <i class="glyphicon glyphicon-time"></i>
-                                                            <?= (int)$arProduct["PROPERTIES"]["days_till_receive"]["VALUE"] ?> дн.
+                                                            <?= (int)$arProduct["PROPERTY_DAYS_TILL_RECEIVE"]["VALUE"] ?> дн.
                                                         </div>
                                                         <div class="desc h6">
                                                             Срок поставки
