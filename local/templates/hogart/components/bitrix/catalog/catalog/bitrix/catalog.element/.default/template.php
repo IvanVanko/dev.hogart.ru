@@ -98,7 +98,7 @@ $this->EndViewTarget();
                         <? endif; ?>
                         <div class="bxslider">
                             <ul class="bx-wrap" id="js-scale-01">
-                                <? $image_src = "/images/no-img-big.jpg"; ?>
+                                <? $image_src = "/images/project_no_img.jpg"; ?>
                                 <? if(!empty($arResult['PREVIEW_PICTURE']['SRC']) && file_exists($_SERVER["DOCUMENT_ROOT"] . $arResult['PREVIEW_PICTURE']['SRC'])): ?>
                                     <?
                                     $image_big_src = $arResult['PREVIEW_PICTURE'];
