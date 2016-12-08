@@ -1,3 +1,17 @@
+.detail-text-show-more,
+.detail-text-hide-more {
+  text-decoration: underline;
+  cursor: pointer;
+  color: red;
+  position: relative;
+}
+.detail-text-show-more {
+  top: 220px;
+  left: 220px;
+}
+.detail-text-hide-more {
+  visibility: hidden;
+}
 /* item_detail_v2 */
 .bx_item_detail .bx_item_title {
   padding-bottom: 14px;

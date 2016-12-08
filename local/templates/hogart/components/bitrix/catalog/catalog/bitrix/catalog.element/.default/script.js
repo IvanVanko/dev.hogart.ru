@@ -2837,3 +2837,29 @@ window.JCCatalogElement.prototype.allowViewedCount = function(update)
 	}
 };
 })(window);
+
+function showMoreHandler() {
+	if ($('.detail-text-show-more').hasClass( "detail-text-show-more" )) {
+		var detail_text_real_height = $('.detail').css('height');
+		var detail_text_small_size = '200px';
+		$('.detail').css('height', detail_text_small_size).css('overflow', 'hidden');
+		$('.detail-text-show-more').click(function () {
+			$('.detail-text-show-more').hide();
+			$('.detail').animate({ height: detail_text_real_height }, 500);
+			$('.detail-text-hide-more')
+				.css('left', '220px')
+				.css('visibility', 'visible');
+			}
+		);
+		$('.detail-text-hide-more').click(function () {
+			$('.detail-text-hide-more').css('visibility', 'hidden');
+			$('.detail').animate({ height: detail_text_small_size}, 500);
+			$('.detail-text-show-more').show(700);
+			$(document).scrollTop(0);
+		});
+	}
+}
+
+$( document ).ready(function() {
+	showMoreHandler();
+});
