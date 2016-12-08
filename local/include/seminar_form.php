@@ -21,8 +21,8 @@ $APPLICATION->IncludeComponent(
         "CHAIN_ITEM_LINK" => "",
         "IGNORE_CUSTOM_TEMPLATE" => "N",
         "USE_EXTENDED_ERRORS" => "N",
-        "CACHE_TYPE" => "A",
-        "CACHE_TIME" => "3600",
+        "CACHE_TYPE" => "N",
+        "CACHE_TIME" => "0",
         "CACHE_NOTES" => "",
         "VARIABLE_ALIASES" => Array(
             "WEB_FORM_ID" => "WEB_FORM_ID",
