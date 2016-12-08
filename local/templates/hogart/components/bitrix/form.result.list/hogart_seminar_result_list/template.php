@@ -46,7 +46,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
             <h3><?=$arFormResult['USER_NAME']?></h3>
 
             <div class="big-text"><?=$arFormResult['USER_COMPANY']?></div>
-            <div class="row">
+            <div class="">
                 <div class="col2">
                     <h3>Дата и время</h3>
                     <span><?=$arSeminars[$s_id]['DISPLAY_BEGIN_DATE']?></span>

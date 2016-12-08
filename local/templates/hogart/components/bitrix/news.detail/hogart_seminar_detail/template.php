@@ -196,6 +196,7 @@ $seminarTitle = $arResult['NAME'];
     </div>
     <div class="col-md-3 aside">
         <? $APPLICATION->IncludeComponent("kontora:element.detail", "seminar-sidebar", array(
+            "CACHE_TIME" => 0,
             "IBLOCK_ID" => $arParams["IBLOCK_ID"],
             "CODE" => $_REQUEST["ELEMENT_CODE"],
             "PROPS" => "Y",
