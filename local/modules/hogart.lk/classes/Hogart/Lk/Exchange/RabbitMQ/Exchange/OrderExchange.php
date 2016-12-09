@@ -76,13 +76,13 @@ class OrderExchange extends AbstractExchange
             case 'unblock':
                 $data = simplexml_load_string($envelope->getBody());
 
-                $order = OrderTable::getByField("guid_id", $data->Order_ID);
-                $account = AccountTable::getByField("user_guid_id", $data->Acc_ID);
-                $staff = StaffTable::getByField("guid_id", $data->Staf_ID);
+                $order = OrderTable::getByField("guid_id", (string)$data->Order_ID);
+                $account = AccountTable::getByField("user_guid_id", (string)$data->Acc_ID);
+                $staff = StaffTable::getByField("guid_id", (string)$data->Staf_ID);
 
                 $this->getConsumer()->getLogger()->notice(vsprintf("Попытка разблокировки заказа %s из 1с", [$order['id']]));
 
-                Client::getInstance()->Order->unblockOrder($data->Order_ID);
+                Client::getInstance()->Order->unblockOrder((string)$data->Order_ID);
 
                 if (empty($account)) break;
 
@@ -92,7 +92,7 @@ class OrderExchange extends AbstractExchange
                         [
                             OrderTable::showName($order),
                             implode(' ', [$staff['last_name'], $staff['name']]),
-                            $data->Reason
+                            (string)$data->Reason
                         ]
                     ),
                     Message::SEVERITY_WARNING
