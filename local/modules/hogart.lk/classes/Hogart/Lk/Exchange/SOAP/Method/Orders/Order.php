@@ -9,6 +9,7 @@ namespace Hogart\Lk\Exchange\SOAP\Method\Orders;
 
 use Bitrix\Main\Type\DateTime;
 use Hogart\Lk\Entity\FlashMessagesTable;
+use Hogart\Lk\Entity\OrderEditTable;
 use Hogart\Lk\Entity\OrderItemTable;
 use Hogart\Lk\Entity\OrderTable;
 use Hogart\Lk\Entity\StoreTable;
@@ -57,11 +58,10 @@ class Order extends AbstractMethod
         return $response->return;
     }
 
-    public function unblockOrder($order_guid, $account_guid)
+    public function unblockOrder($order_guid)
     {
         $request = [
             "Data" => (object)[
-                "Acc_ID" => $account_guid,
                 "Order_ID" => $order_guid
             ]
         ];
@@ -147,7 +147,19 @@ class Order extends AbstractMethod
 	                    continue;
                     }
 
+                    if (!empty($order->Order_ID)) {
+                        try {
+                            $this->unblockOrder($order->Order_ID);
+                        } catch (\Exception $e) {
+                            $response->setError(new MethodException(MethodException::ERROR_SOAP, [$e->getMessage(), $e->getCode()]));
+                            $DB->Rollback();
+                            continue;
+                        }
+                    }
+
                     $DB->Commit();
+
+                    OrderEditTable::delete($result->getId());
 
                     if (!$order->deletion_mark) {
 

@@ -19,6 +19,7 @@ define("NO_SPECIAL_CHARS_CHAIN", true);
 use Hogart\Lk\Entity\AccountTable;
 use Hogart\Lk\Entity\FlashMessagesTable;
 use Hogart\Lk\Entity\CartItemTable;
+use Hogart\Lk\Entity\OrderEditTable;
 use Hogart\Lk\Helper\Template\FlashError;
 
 
@@ -40,38 +41,56 @@ if ($account['id']) {
     header("Cache-Control: no-cache");
     header("Access-Control-Allow-Origin: *");
 
-    $timer = 0;
-    $cart_count = CartItemTable::getAccountCartCount($account['id']);
-    while (connection_status() == CONNECTION_NORMAL) {
-        if ($timer % 3 == 0) {
-            $messages = FlashMessagesTable::getMessages($account['id'], 3);
-            if (!empty($messages)) {
-                foreach ($messages as $message) {
-                    echo "data: " . $message->toJSON() . PHP_EOL;
-                    echo "id: " . $message->getUnique() . PHP_EOL;
-                    echo PHP_EOL;
-                }
+    switch ((string)$_GET["action"]) {
+        case 'edit_order':
+            $timer = 15;
+            while ($timer >= 0) {
+                $order = OrderEditTable::getByField("order_id", $_GET['order_id']);
+                echo "data: " . json_encode(['type' => 'edit_order_cancel', 'order_id' => $order['order_id']]) . PHP_EOL . PHP_EOL;
+                echo PHP_EOL;
+                ob_flush();
+                flush();
+                sleep(1);
+                $timer--;
             }
-        }
+            break;
+        default:
 
-        if ($timer % 5 == 0) {
-            session_start($session_id);
-            $user_id = $USER->GetID();
-            session_write_close();
+            $timer = 0;
+            $cart_count = CartItemTable::getAccountCartCount($account['id']);
+            while (connection_status() == CONNECTION_NORMAL) {
+                if ($timer % 3 == 0) {
+                    $messages = FlashMessagesTable::getMessages($account['id'], 3);
+                    if (!empty($messages)) {
+                        foreach ($messages as $message) {
+                            echo "data: " . $message->toJSON() . PHP_EOL;
+                            echo "id: " . $message->getUnique() . PHP_EOL;
+                            echo PHP_EOL;
+                        }
+                    }
+                }
 
-            $account = AccountTable::getAccountByUserID($user_id);
-            echo "data: " . json_encode(['type' => 'heartbeat', 'account' => (int)$account['id']]) . PHP_EOL . PHP_EOL;
-        }
+                if ($timer % 5 == 0) {
+                    session_start($session_id);
+                    $user_id = $USER->GetID();
+                    session_write_close();
 
-        if ($cart_count != ($new_cart_count = CartItemTable::getAccountCartCount($account['id']))) {
-            echo "data: " . json_encode(['type' => 'cart_counter', 'count'=> $new_cart_count]) . PHP_EOL . PHP_EOL;
-            $cart_count = $new_cart_count;
-        }
+                    $account = AccountTable::getAccountByUserID($user_id);
+                    echo "data: " . json_encode(['type' => 'heartbeat', 'account' => (int)$account['id']]) . PHP_EOL . PHP_EOL;
+                }
 
-        ob_flush();
-        flush();
-        sleep(1);
-        $timer++;
+                if ($cart_count != ($new_cart_count = CartItemTable::getAccountCartCount($account['id']))) {
+                    echo "data: " . json_encode(['type' => 'cart_counter', 'count'=> $new_cart_count]) . PHP_EOL . PHP_EOL;
+                    $cart_count = $new_cart_count;
+                }
+
+                ob_flush();
+                flush();
+                sleep(1);
+                $timer++;
+            }
+
+            break;
     }
 
     exit(0);
