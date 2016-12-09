@@ -98,7 +98,7 @@ $this->EndViewTarget();
                         <? endif; ?>
                         <div class="bxslider">
                             <ul class="bx-wrap" id="js-scale-01">
-                                <? $image_src = "/images/no-img-big.jpg"; ?>
+                                <? $image_src = "/images/project_no_img.jpg"; ?>
                                 <? if(!empty($arResult['PREVIEW_PICTURE']['SRC']) && file_exists($_SERVER["DOCUMENT_ROOT"] . $arResult['PREVIEW_PICTURE']['SRC'])): ?>
                                     <?
                                     $image_big_src = $arResult['PREVIEW_PICTURE'];
@@ -358,10 +358,16 @@ $this->EndViewTarget();
                                         <div class="preview"><?= $arResult["DISPLAY_PROPERTIES"]["collection"]["PREVIEW_TEXT"] ?></div>
                                     <? endif; ?>
                                     <? if (!empty($arResult["DISPLAY_PROPERTIES"]["collection"]["DETAIL_TEXT"])): ?>
+                                        <? if (strlen($arResult["DISPLAY_PROPERTIES"]["collection"]["DETAIL_TEXT"]) > 600): ?>
+                                            <div class="detail-text-show-more">Подробнее >></div>
+                                        <? endif; ?>
                                         <? if(!empty($arResult["DISPLAY_PROPERTIES"]["collection"]["PREVIEW_TEXT"])): ?>
                                             <div class="more">Далее</div>
                                         <? endif; ?>
                                         <div class="detail"><?= $arResult["DISPLAY_PROPERTIES"]["collection"]["DETAIL_TEXT"] ?></div>
+                                        <? if (strlen($arResult["DISPLAY_PROPERTIES"]["collection"]["DETAIL_TEXT"]) > 600): ?>
+                                            <div class="detail-text-hide-more">Свернуть <<</div>
+                                        <? endif; ?>
                                     <? endif; ?>
                                 </div>
                             </div>
