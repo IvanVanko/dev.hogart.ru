@@ -358,14 +358,14 @@ $this->EndViewTarget();
                                         <div class="preview"><?= $arResult["DISPLAY_PROPERTIES"]["collection"]["PREVIEW_TEXT"] ?></div>
                                     <? endif; ?>
                                     <? if (!empty($arResult["DISPLAY_PROPERTIES"]["collection"]["DETAIL_TEXT"])): ?>
-                                        <? if (strlen($arResult["DISPLAY_PROPERTIES"]["collection"]["DETAIL_TEXT"]) > 600): ?>
+                                        <? if (strlen($arResult["DISPLAY_PROPERTIES"]["collection"]["DETAIL_TEXT"]) > 400): ?>
                                             <div class="detail-text-show-more">Подробнее >></div>
                                         <? endif; ?>
                                         <? if(!empty($arResult["DISPLAY_PROPERTIES"]["collection"]["PREVIEW_TEXT"])): ?>
                                             <div class="more">Далее</div>
                                         <? endif; ?>
                                         <div class="detail"><?= $arResult["DISPLAY_PROPERTIES"]["collection"]["DETAIL_TEXT"] ?></div>
-                                        <? if (strlen($arResult["DISPLAY_PROPERTIES"]["collection"]["DETAIL_TEXT"]) > 600): ?>
+                                        <? if (strlen($arResult["DISPLAY_PROPERTIES"]["collection"]["DETAIL_TEXT"]) > 400): ?>
                                             <div class="detail-text-hide-more">Свернуть <<</div>
                                         <? endif; ?>
                                     <? endif; ?>
