@@ -84,6 +84,7 @@ if ($account['id']) {
                     $cart_count = $new_cart_count;
                 }
 
+                ob_get_flush();
                 ob_flush();
                 flush();
                 sleep(1);
