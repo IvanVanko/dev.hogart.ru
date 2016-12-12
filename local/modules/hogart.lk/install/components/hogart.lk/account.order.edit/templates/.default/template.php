@@ -25,7 +25,7 @@ use Hogart\Lk\Helper\Template\Money;
 
 $order = $arResult['order'];
 ?>
-
+<script>var order_id = <?= $order['_id'] ?>; </script>
 <div class="row full-height" data-stick-parent>
     <div class="col-sm-12">
         <div id="order-edit" class="row spacer-20 order-line">
