@@ -240,7 +240,7 @@ class OrderTable extends AbstractEntity
 
     public static function getOrder($order_id, $filter = [], $item_filter = [], $account_id = null)
     {
-        if (!is_a($order_id, __CLASS__)) {
+        if (!is_array($order_id)) {
 
             $filter = array_merge([
                 '=id' => (int)$order_id,
