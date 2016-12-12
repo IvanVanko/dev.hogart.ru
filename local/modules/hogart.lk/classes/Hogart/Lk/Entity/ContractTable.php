@@ -160,6 +160,7 @@ HTML;
         return self::getList([
             'filter' => [
                 '=company.Hogart\Lk\Entity\AccountCompanyRelationTable:company.account.id' => $account_id,
+                '=company.is_active' => $is_active,
                 '=is_active' => $is_active
             ],
             'select' => [
