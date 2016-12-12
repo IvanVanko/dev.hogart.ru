@@ -2,7 +2,8 @@
 .detail-text-hide-more {
   text-decoration: underline;
   cursor: pointer;
-  color: red;
+  color: #95c600;
+  position: relative;
 }
 .detail-text-show-more {
   position: relative;
