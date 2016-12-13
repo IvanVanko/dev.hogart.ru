@@ -123,4 +123,28 @@ $(function () {
     initQuickAdd (node);
     $('[data-change-apply]').changeApply();
   });
+
+  if (order_id) {
+    var eventSource = new EventSource("/account/_sse/?action=edit_order&order_id=" + order_id);
+    eventSource.addEventListener("message", function (event) {
+      var type = event.type;
+      if (type === "message") {
+        var message;
+        try {
+          message = JSON.parse(event.data);
+        } catch (exception) {
+
+        }
+        if ($.isPlainObject(message)) {
+          switch (message.type) {
+            case 'edit_order_cancel':
+              if (!message.order_id) {
+                document.location = "/account/order/" + order_id;
+              }
+              break;
+          }
+        }
+      }
+    });
+  }
 });

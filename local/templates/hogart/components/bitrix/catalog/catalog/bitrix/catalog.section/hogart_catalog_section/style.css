@@ -8,6 +8,9 @@
 }
 @media (min-width: 768px) {
 }
+.catalog_page .perechen .perechen-produts.list > li img {
+  max-height: 220px;
+}
 .price-list a {
   transition: all .3s linear;
   font-family: "Roboto Condensed", sans-serif;

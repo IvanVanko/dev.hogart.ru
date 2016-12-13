@@ -9,10 +9,14 @@
 namespace Hogart\Lk\Exchange\RabbitMQ\Exchange;
 
 
+use Hogart\Lk\Entity\AccountTable;
+use Hogart\Lk\Entity\FlashMessagesTable;
 use Hogart\Lk\Entity\OrderTable;
+use Hogart\Lk\Entity\StaffTable;
 use Hogart\Lk\Exchange\SOAP\AbstractPutRequest;
 use Hogart\Lk\Exchange\SOAP\Client;
 use Hogart\Lk\Exchange\SOAP\Request\Order;
+use Hogart\Lk\Helper\Template\Message;
 
 /**
  * Задачи RabbitMQ - Заказы
@@ -68,6 +72,40 @@ class OrderExchange extends AbstractExchange
                 if (!empty($order)) {
                     Client::getInstance()->Orders->ordersPut(new Order([$order]));
                 }
+                break;
+            case 'unblock':
+                $data = simplexml_load_string($envelope->getBody());
+
+                $order = OrderTable::getByField("guid_id", (string)$data->Order_ID);
+                $account = AccountTable::getByField("user_guid_id", (string)$data->Acc_ID);
+                $staff = StaffTable::getByField("guid_id", (string)$data->Staf_ID);
+
+                $this->getConsumer()->getLogger()->notice(vsprintf("Попытка разблокировки заказа %s из 1с", [$order['id']]));
+
+                Client::getInstance()->Order->unblockOrder((string)$data->Order_ID);
+
+                if (empty($account)) break;
+
+                $message = new Message(
+                    vsprintf(
+                        "менеджер %s разблокировал %s по причине %s",
+                        [
+                            OrderTable::showName($order),
+                            implode(' ', [$staff['last_name'], $staff['name']]),
+                            (string)$data->Reason
+                        ]
+                    ),
+                    Message::SEVERITY_WARNING
+                );
+                $message
+                    ->setIcon('fa fa-exclamation-triangle')
+                ;
+
+                $flash_result = FlashMessagesTable::addNewMessage($account['id'], $message);
+                if ($flash_result->getId()) {
+                    $this->getConsumer()->getLogger()->notice("Добавлено оповещение по разблокировке заказа ({$order['id']})");
+                }
+
                 break;
         }
     }
