@@ -138,6 +138,14 @@ $prepareRelatedItems = function (&$result = [], $base_link = null, $arFilter = [
             $result['ITEMS'][$arFields['ID']]['CATALOG_MEASURE_NAME'] = $arDefaultMeasure['SYMBOL_RUS'];
             $result['ITEMS'][$arFields['ID']]['~CATALOG_MEASURE_NAME'] = $arDefaultMeasure['~SYMBOL_RUS'];
         }
+
+        if (!empty($arFields["PREVIEW_PICTURE"])) {
+            $result['ITEMS'][$arFields['ID']]["PICTURE"] = CFile::GetFileArray($arFields["PREVIEW_PICTURE"]);
+        } elseif (!empty($arFields["DETAIL_PICTURE"])) {
+            $result['ITEMS'][$arFields['ID']]["PICTURE"] = CFile::GetFileArray($arFields["DETAIL_PICTURE"]);
+        } else {
+            $result['ITEMS'][$arFields['ID']]["PICTURE"] = null;
+        }
     }
 
 

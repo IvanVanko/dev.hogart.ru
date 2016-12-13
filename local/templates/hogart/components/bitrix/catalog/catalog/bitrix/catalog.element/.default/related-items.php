@@ -37,11 +37,8 @@ $controlsID = uniqid();
                     <a href="<?= $arProduct["DETAIL_PAGE_URL"] ?>">
                         <?
                         $arImage = null;
-                        if (!empty($arProduct["PREVIEW_PICTURE"]['SRC']) && file_exists(realpath($_SERVER["DOCUMENT_ROOT"] . $arProduct["PREVIEW_PICTURE"]["SRC"]))) {
-                            $arImage = $arProduct["PREVIEW_PICTURE"];
-                        }
-                        elseif (!empty($arProduct["DETAIL_PICTURE"]['SRC']) && file_exists(realpath($_SERVER["DOCUMENT_ROOT"] . $arProduct["DETAIL_PICTURE"]["SRC"]))) {
-                            $arImage = $arProduct["DETAIL_PICTURE"];
+                        if (!empty($arProduct["PICTURE"]['SRC']) && file_exists(realpath($_SERVER["DOCUMENT_ROOT"] . $arProduct["PICTURE"]["SRC"]))) {
+                            $arImage = $arProduct["PICTURE"];
                         }
                         if (!empty($arImage)) {
                             $file = CFile::ResizeImageGet($arImage, array("width" => 213, "height" => 160), BX_RESIZE_IMAGE_EXACT, true);
