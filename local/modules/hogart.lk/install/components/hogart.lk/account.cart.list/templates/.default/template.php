@@ -36,67 +36,63 @@ use Bitrix\Main\EventManager;
             </div>
         </div>
 
-        <!-- isEmpty: <?= var_export($arParams['isEmpty'], true) ?> -->
-        <? if ($arParams['isEmpty']): ?>
-            <div class="row">
-                <div class="col-sm-12 full-height empty-cart color-green">
-                    <div class="h2">
+        <div class="<?= !$arParams['isEmpty'] ? 'hidden' : ''?> row">
+            <div class="col-sm-12 full-height empty-cart color-green">
+                <div class="h2">
                     <span class="fa-stack fa-lg">
                       <i class="fa fa-square fa-stack-2x"></i>
                       <i class="fa fa-shopping-cart fa-inverse fa-stack-1x"></i>
                     </span>
-                        Корзина пуста
-                    </div>
-                    <br>
-                    <div class="row post-table-footer vertical-align">
-                        <div class="col-sm-8">
-                            <div class="add-item-simple center-between">
-                                <div class="add-item-label text-nowrap">Быстрое добавление</div>
-                                <input required
-                                    <?= Ajax::OnEvent(
-                                        'typeaheadselect',
-                                        'carts',
-                                        $carts_node->getId(),
-                                        [
-                                            'cart_id' => null,
-                                            'item_group' => null,
-                                            'action' => 'add_item_simple',
-                                            'sku' => 'javascript:function (element) { return $(element).data("sku"); }',
-                                        ]
-                                    ) ?>
-                                       type="text" class="quick-cart-add form-control" placeholder="Введите артикул/наименование">
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <?= Ajax::Link(
-                                '<i class="fa fa-plus fa-lg text-primary" aria-hidden="true"></i> Добавить из файла',
-                                'carts',
-                                $carts_node->getId(),
-                                [
-                                    'cart_id' => null,
-                                    'action' => 'add_items_file',
-                                    'item' => null,
-                                    'new_item_group' => null,
-                                    'copy' => null
-                                ],
-                                '',
-                                Ajax::DIALOG_AJAX_LINK,
-                                [
-                                    'title' => 'Добавление позиций из файла',
-                                    'template_file' => __DIR__ . "/forms/add-items.php",
-                                    'template_vars' => ['cart' => null, 'item_group' => null],
-                                    'dialog_keys' => [],
-                                    'dialog_event_hogart.lk.openajaxlinkdialog' => 'openLinkAddItemsDialog',
-                                ]
-                            ) ?>
-                        </div>
-                    </div>
-                    <br>
-                    <a href="/account/orders/" role="button" class="btn btn-primary btn-lg">Перейти в заказы</a>
+                    Корзина пуста
                 </div>
+                <br>
+                <div class="row post-table-footer vertical-align">
+                    <div class="col-sm-8">
+                        <div class="add-item-simple center-between">
+                            <div class="add-item-label text-nowrap">Быстрое добавление</div>
+                            <input required
+                                <?= Ajax::OnEvent(
+                                    'typeaheadselect',
+                                    'carts',
+                                    $carts_node->getId(),
+                                    [
+                                        'cart_id' => null,
+                                        'item_group' => null,
+                                        'action' => 'add_item_simple',
+                                        'sku' => 'javascript:function (element) { return $(element).data("sku"); }',
+                                    ]
+                                ) ?>
+                                   type="text" class="quick-cart-add form-control" placeholder="Введите артикул/наименование">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <?= Ajax::Link(
+                            '<i class="fa fa-plus fa-lg text-primary" aria-hidden="true"></i> Добавить из файла',
+                            'carts',
+                            $carts_node->getId(),
+                            [
+                                'cart_id' => null,
+                                'action' => 'add_items_file',
+                                'item' => null,
+                                'new_item_group' => null,
+                                'copy' => null
+                            ],
+                            '',
+                            Ajax::DIALOG_AJAX_LINK,
+                            [
+                                'title' => 'Добавление позиций из файла',
+                                'template_file' => __DIR__ . "/forms/add-items.php",
+                                'template_vars' => ['cart' => null, 'item_group' => null],
+                                'dialog_keys' => ['emptyCartFileAdd'],
+                                'dialog_event_hogart.lk.openajaxlinkdialog' => 'openLinkAddItemsDialog',
+                            ]
+                        ) ?>
+                    </div>
+                </div>
+                <br>
+                <a href="/account/orders/" role="button" class="btn btn-primary btn-lg">Перейти в заказы</a>
             </div>
-
-        <? endif; ?>
+        </div>
 
         <? foreach ($arResult['carts'] as &$cart): ?>
             <div id="<?= $cart['guid_id'] ?>" data-cart="<?= $cart['guid_id'] ?>" class="row spacer-all-20 <?= (empty($cart['items']) ? "hidden" : "") ?>">
