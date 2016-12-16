@@ -27,41 +27,76 @@ use Bitrix\Main\EventManager;
 
 ?>
 
-<? $this->SetViewTarget('empty_cart') ?>
-<? if ($arParams['isEmpty']): ?>
-    <div class="row">
-        <div class="col-sm-12 full-height empty-cart color-green">
-            <div class="h2">
-                    <span class="fa-stack fa-lg">
-                      <i class="fa fa-square fa-stack-2x"></i>
-                      <i class="fa fa-shopping-cart fa-inverse fa-stack-1x"></i>
-                    </span>
-                Корзина пуста
-            </div>
-            <br>
-            <a href="/account/orders/" role="button" class="btn btn-primary btn-lg">Перейти в заказы</a>
-        </div>
-    </div>
-<? endif; ?>
-<? $this->EndViewTarget() ?>
-
-<?
-EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJAX_VIEW_NODE, function () {
-    global $APPLICATION;
-    if ((!defined('ADMIN_SECTION') || !ADMIN_SECTION) && !preg_match('%application/json%', $_SERVER['HTTP_ACCEPT'])) {
-        $APPLICATION->ShowViewContent('empty_cart');
-    }
-});
-?>
-
 <div class="cart-wrapper row">
-    <div id="carts" class="<?= (!$arParams['isEmpty'] ? "full-height" : "") ?> col-sm-12">
+    <div id="carts" class="full-height col-sm-12">
         <? $carts_node = Ajax::Start($component, ['step1']) ?>
         <div class="row spacer">
             <div class="col-sm-9">
                 <? include __DIR__ . "/header.php"; ?>
             </div>
         </div>
+
+        <!-- isEmpty: <?= var_export($arParams['isEmpty'], true) ?> -->
+        <? if ($arParams['isEmpty']): ?>
+            <div class="row">
+                <div class="col-sm-12 full-height empty-cart color-green">
+                    <div class="h2">
+                    <span class="fa-stack fa-lg">
+                      <i class="fa fa-square fa-stack-2x"></i>
+                      <i class="fa fa-shopping-cart fa-inverse fa-stack-1x"></i>
+                    </span>
+                        Корзина пуста
+                    </div>
+                    <br>
+                    <div class="row post-table-footer vertical-align">
+                        <div class="col-sm-8">
+                            <div class="add-item-simple center-between">
+                                <div class="add-item-label text-nowrap">Быстрое добавление</div>
+                                <input required
+                                    <?= Ajax::OnEvent(
+                                        'typeaheadselect',
+                                        'carts',
+                                        $carts_node->getId(),
+                                        [
+                                            'cart_id' => null,
+                                            'item_group' => null,
+                                            'action' => 'add_item_simple',
+                                            'sku' => 'javascript:function (element) { return $(element).data("sku"); }',
+                                        ]
+                                    ) ?>
+                                       type="text" class="quick-cart-add form-control" placeholder="Введите артикул/наименование">
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <?= Ajax::Link(
+                                '<i class="fa fa-plus fa-lg text-primary" aria-hidden="true"></i> Добавить из файла',
+                                'carts',
+                                $carts_node->getId(),
+                                [
+                                    'cart_id' => null,
+                                    'action' => 'add_items_file',
+                                    'item' => null,
+                                    'new_item_group' => null,
+                                    'copy' => null
+                                ],
+                                '',
+                                Ajax::DIALOG_AJAX_LINK,
+                                [
+                                    'title' => 'Добавление позиций из файла',
+                                    'template_file' => __DIR__ . "/forms/add-items.php",
+                                    'template_vars' => ['cart' => null, 'item_group' => null],
+                                    'dialog_keys' => [],
+                                    'dialog_event_hogart.lk.openajaxlinkdialog' => 'openLinkAddItemsDialog',
+                                ]
+                            ) ?>
+                        </div>
+                    </div>
+                    <br>
+                    <a href="/account/orders/" role="button" class="btn btn-primary btn-lg">Перейти в заказы</a>
+                </div>
+            </div>
+
+        <? endif; ?>
 
         <? foreach ($arResult['carts'] as &$cart): ?>
             <div id="<?= $cart['guid_id'] ?>" data-cart="<?= $cart['guid_id'] ?>" class="row spacer-all-20 <?= (empty($cart['items']) ? "hidden" : "") ?>">
@@ -417,8 +452,8 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                                                     <i class="fa fa-li fa-remove fa-lg text-danger" aria-hidden="true"></i>
                                                     <?= Ajax::Link(
                                                         'Удалить отсутствующие на складе',
-                                                        $cart['guid_id'],
-                                                        $cart['ajax_node']->getId(),
+                                                        'carts',
+                                                        $carts_node->getId(),
                                                         [
                                                             'cart_id' => $cart['guid_id'],
                                                             'action' => 'delete_nostock_items',
@@ -490,8 +525,8 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
                                                 <i class="fa fa-li fa-trash fa-lg text-danger" aria-hidden="true"></i>
                                                 <?= Ajax::Link(
                                                     'Удалить строки',
-                                                    $cart['guid_id'],
-                                                    $cart['ajax_node']->getId(),
+                                                    'carts',
+                                                    $carts_node->getId(),
                                                     [
                                                         'cart_id' => $cart['guid_id'],
                                                         'item' => 'javascript:function(element) { return getSelectedCartRows(element); } ',
@@ -518,4 +553,3 @@ EventManager::getInstance()->addEventHandler("hogart.lk", ViewNode::EVENT_ON_AJA
         <? Ajax::End($carts_node->getId()) ?>
     </div>
 </div>
-<? $APPLICATION->ShowViewContent('empty_cart'); ?>
