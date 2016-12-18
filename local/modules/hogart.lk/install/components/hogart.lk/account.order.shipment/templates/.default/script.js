@@ -127,10 +127,10 @@ $(function () {
         .text($.fn.dataTable.render.number(' ', ',', 2, '', '').display(total))
         .removeClass('color-danger')
         .removeClass('color-primary')
-        .removeClass('sale-granted')
-        .removeClass('selected')
         .addClass('color-' + (total > max ? 'danger' : 'primary'))
         .end()
+        .removeClass('sale-granted')
+        .removeClass('selected')
         .addClass(api.rows('.selected').count() ? 'selected' : '')
         .addClass((total > max || total == 0 ? '' : 'sale-granted'))
     ;
