@@ -136,7 +136,10 @@ $(function () {
     ;
 
     var btn = $(this).parents('[data-store]').find('[data-rtu-create]');
-    if (!$(this).parents('[data-store]').find('.order-line.selected:not(.sale-granted)').length) {
+    if (
+      $(this).parents('[data-store]').find('.order-line.selected').length
+      && !$(this).parents('[data-store]').find('.order-line.selected:not(.sale-granted)').length
+    ) {
       btn.show();
     } else {
       btn.hide();
