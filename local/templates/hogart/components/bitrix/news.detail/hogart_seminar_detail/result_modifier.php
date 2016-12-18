@@ -16,7 +16,7 @@ while($ob = $res->GetNextElement()) {
 
 
     if($arFields['ID'] == $arResult['PROPERTIES']['org']['VALUE']) {
-        $arResult['ORGS'] = $arFields;
+        $arResult['ORGS'][] = $arFields;
     }
     if(in_array($arFields['ID'], $arResult['PROPERTIES']['lecturer']['VALUE'])) {
         $arResult['LECTORS'][] = $arFields;
