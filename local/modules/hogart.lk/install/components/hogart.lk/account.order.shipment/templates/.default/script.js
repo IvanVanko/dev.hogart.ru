@@ -99,9 +99,24 @@ $(function () {
     $(this).parents('.order-line').trigger('recalculate');
   });
 
+  $('.checkbox-title :input').on('change', function (e) {
+    var tables = $(e.target).parents('[data-order]').find('[data-table]');
+    var method;
+    if ($(e.target).is(':checked')) {
+      method = 'select';
+    } else {
+      method = 'deselect';
+    }
+    tables.each(function (i, table) {
+      $(table).dataTable().api().rows()[method]();
+    });
+    $(this).parents('.order-line').trigger('recalculate');
+  });
+
   $(document).on('recalculate', '.order-line', function (e) {
     var api = $('table[data-table]', this).dataTable().api();
     var total = 0;
+
     $.each(api.rows('.selected').data(), function (i, el) {
       total += Math.round(el.total * 100) / 100;
     });
@@ -112,14 +127,16 @@ $(function () {
         .text($.fn.dataTable.render.number(' ', ',', 2, '', '').display(total))
         .removeClass('color-danger')
         .removeClass('color-primary')
+        .removeClass('sale-granted')
+        .removeClass('selected')
         .addClass('color-' + (total > max ? 'danger' : 'primary'))
         .end()
-        .removeClass('sale-granted')
+        .addClass(api.rows('.selected').count() ? 'selected' : '')
         .addClass((total > max || total == 0 ? '' : 'sale-granted'))
     ;
 
     var btn = $(this).parents('[data-store]').find('[data-rtu-create]');
-    if ($('[data-sale-selected]', this).hasClass('sale-granted')) {
+    if (!$(this).parents('[data-store]').find('.order-line.selected:not(.sale-granted)').length) {
       btn.show();
     } else {
       btn.hide();
@@ -197,20 +214,6 @@ $(function () {
   });
 
   Hogart_Lk.stickMenu($('[data-store]'));
-
-  $('.checkbox-title :input').on('change', function (e) {
-    var tables = $(e.target).parents('[data-order]').find('[data-table]');
-    var method;
-    if ($(e.target).is(':checked')) {
-      method = 'select';
-    } else {
-      method = 'deselect';
-    }
-    tables.each(function (i, table) {
-      $(table).dataTable().api().rows()[method]();
-    });
-    $(this).parents('.order-line').trigger('recalculate');
-  });
 
   $('[data-rtu-create]').on('click', function (e) {
     e.preventDefault();
