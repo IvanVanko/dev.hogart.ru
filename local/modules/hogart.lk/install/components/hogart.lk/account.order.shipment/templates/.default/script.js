@@ -119,7 +119,7 @@ $(function () {
     ;
 
     var btn = $(this).parents('[data-store]').find('[data-rtu-create]');
-    if (!$(this).parents('[data-store]').find('.order-line:not(.sale-granted)').length) {
+    if ($('[data-sale-selected]', this).hasClass('sale-granted')) {
       btn.show();
     } else {
       btn.hide();
