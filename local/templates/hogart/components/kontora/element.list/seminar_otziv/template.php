@@ -1,7 +1,8 @@
 <?if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();?>
 <?if (!empty($arResult['ITEMS'])):?>
 	<?if ($APPLICATION->GetCurPage() != '/learn/comments.php'):?>
-		<div class="clearfix">
+		<div class="clearfix"></div>
+		<div class="reviews">
 	        <h4 class="display-inline-block">Отзывы</h4>
 
 	        <div class="control control-action null-margin big text-right">
@@ -9,6 +10,20 @@
 	        </div>
 	    </div>
 	<?endif?>
+
+	<div>
+		<?
+		$APPLICATION->IncludeFile(
+			"/local/include/share.php",
+			array(
+				"TITLE" => $arResult["NAME"],
+				"DESCRIPTION" => !empty($arResult["PREVIEW_TEXT"]) ? $arResult["PREVIEW_TEXT"] : $arResult["DETAIL_TEXT"],
+				"LINK" => $APPLICATION->GetCurPage(),
+				"IMAGE" => $share_img_src
+			)
+		);
+		?>
+	</div>
 
 	<ul class="comment-learn">
 		<?foreach ($arResult['ITEMS'] as $arItem):?>

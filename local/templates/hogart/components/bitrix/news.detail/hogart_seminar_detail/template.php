@@ -102,7 +102,7 @@ $seminarTitle = $arResult['NAME'];
             </ul>
         <? endif; ?>
 
-        <? if (!empty($arResult['ORGS'])): ?>
+        <? if (!empty($arResult['ORGS']) and ($date_end > $now)): ?>
             <div class="clearfix">
                 <h4 class="display-inline-block"><?= $arResult["PROPERTIES"]["org"]["NAME"]; ?></h4>
             </div>
@@ -156,18 +156,6 @@ $seminarTitle = $arResult['NAME'];
             <? endif; ?>
         <? endif; ?>
 
-        <? $APPLICATION->IncludeFile(
-            "/local/include/share.php",
-            array(
-                "TITLE" => $arResult["NAME"],
-                "DESCRIPTION" => !empty($arResult["PREVIEW_TEXT"]) ? $arResult["PREVIEW_TEXT"] : $arResult["DETAIL_TEXT"],
-                "LINK" => $APPLICATION->GetCurPage(),
-                "IMAGE" => $share_img_src
-            )
-        ); ?>
-        <?
-
-        ?>
         <? if ($date_end < $now && $date_end != '-10800' && LANGUAGE_ID != "en"): ?>
             <? $comments_cnt = $APPLICATION->IncludeComponent("kontora:element.list", "seminar_otziv", array(
                 "IBLOCK_ID" => 23,
