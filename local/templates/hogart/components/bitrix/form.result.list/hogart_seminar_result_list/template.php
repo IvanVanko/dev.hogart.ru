@@ -46,19 +46,19 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
             <h3><?=$arFormResult['USER_NAME']?></h3>
 
             <div class="big-text"><?=$arFormResult['USER_COMPANY']?></div>
-            <div class="">
-                <div class="col2">
+            <div class="float-row">
+                <div class="col">
                     <h3>Дата и время</h3>
                     <span><?=$arSeminars[$s_id]['DISPLAY_BEGIN_DATE']?></span>
                 </div>
-                <div class="col2">
+                <div class="col">
                     <h3>Адрес</h3>
                     <span><?=$arSeminars[$s_id]['ADDRESS']?></span>
                 </div>
+                <div class="clearfix"></div>
             </div>
             <h3>Лекторы семинара</h3>
-
-            <p>
+            <p class="lectors">
                 <?$lectors_html_array = array();?>
                 <?foreach ($arSeminars[$s_id]['LECTURERS'] as $arLecture) {
                     $lectors_html_array[] = $arLecture["NAME"]." / "."<span class=\"company-reg\">".$arLecture["COMPANY"].", ".$arLecture["POST"]."</span>";

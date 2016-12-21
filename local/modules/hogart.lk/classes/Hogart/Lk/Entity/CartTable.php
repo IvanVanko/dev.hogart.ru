@@ -19,6 +19,7 @@ use Bitrix\Main\Entity\ReferenceField;
 use Bitrix\Main\Entity\ScalarField;
 use Bitrix\Main\Type\DateTime;
 use Hogart\Lk\Field\GuidField;
+use Hogart\Lk\Helper\Template\Account;
 use Hogart\Lk\Helper\Template\Error;
 use Hogart\Lk\Helper\Template\FlashError;
 use Hogart\Lk\Helper\Template\FlashWarning;
@@ -242,14 +243,17 @@ class CartTable extends AbstractEntity
             return false;
         }
 
-        $cart = self::getByPrimary($cart_id)->fetch();
+        if (!empty($cart_id)) {
+            $cart = self::getByPrimary($cart_id)->fetch();
+        }
+
         $result = CartItemTable::addItem(
-            $cart['account_id'],
+            $cart['account_id'] ? : Account::getAccountId(),
             $item['ID'],
-            $count,
-            $item_group,
-            $cart['contract_id'],
-            $cart['store_guid']
+            (int)$count,
+            (string)$item_group,
+            (int)$cart['contract_id'],
+            (string)$cart['store_guid']
         );
         if (!$result->getId()) {
             foreach ($result->getErrors() as $error) {

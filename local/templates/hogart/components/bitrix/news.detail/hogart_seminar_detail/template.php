@@ -2,6 +2,19 @@
 global $seminarTitle;
 $seminarTitle = $arResult['NAME'];
 ?>
+
+<?php
+    $date_end = strtotime(FormatDate("d.m.Y", MakeTimeStamp($arResult['PROPERTIES']['sem_end_date']['VALUE'])));
+    $date_end = (!empty($date_end)) ? $date_end : 0;
+
+    $now = strtotime(date($DB->DateFormatToPHP(CSite::GetDateFormat("SHORT")), time()));
+
+    $semStartDate = FormatDate("d F", MakeTimeStamp($arResult['PROPERTIES']['sem_start_date']['VALUE']));
+    $semStartDateFull = FormatDate("d F Y", MakeTimeStamp($arResult['PROPERTIES']['sem_start_date']['VALUE']));
+
+    $semEndDate = FormatDate("d F Y", MakeTimeStamp($arResult['PROPERTIES']['sem_end_date']['VALUE']));
+    $semStartTime = FormatDate("H:i", MakeTimeStamp($arResult['PROPERTIES']['sem_start_date']['VALUE']));
+?>
 <div class="row">
     <div class="col-md-9">
         <div class="row vertical-align">
@@ -35,20 +48,26 @@ $seminarTitle = $arResult['NAME'];
 
         <div class="img-title">
             <img src="<?= $arResult["DETAIL_PICTURE"]['SRC'] ?>" alt=""/>
-            <? $semStartDate = FormatDate("d F ", MakeTimeStamp($arResult['PROPERTIES']['sem_start_date']['VALUE'])); ?>
-            <? $semStartDateFull = FormatDate("d F Y ", MakeTimeStamp($arResult['PROPERTIES']['sem_start_date']['VALUE'])); ?>
-            <? $semEndDate = FormatDate("d F Y", MakeTimeStamp($arResult['PROPERTIES']['sem_end_date']['VALUE'])); ?>
-            <? $semStartTime = FormatDate("d F Y", MakeTimeStamp($arResult['PROPERTIES']['sem_end_date']['VALUE'])); ?>
+
             <? if (!empty($arResult['PROPERTIES']['sem_start_date']['VALUE'])): ?>
                 <div class="date">
                     <? if (!empty($semStartDate) && FormatDate("Y", MakeTimeStamp($arResult['PROPERTIES']['sem_end_date']['VALUE'])) != "1970"): ?>
-                        <sup>с <?= $semStartDate ?> по <?= $semEndDate ?></sup>
+                        <sup>
+                            <? if ($semStartDateFull != $semEndDate): ?>
+                                с <?= $semStartDate ?> по <?= $semEndDate ?>
+                            <? else: ?>
+                                <?= $semEndDate ?>
+                            <? endif; ?>
+                        </sup>
                     <? else: ?>
                         <sup><?= $semStartDateFull; ?></sup>
                     <? endif; ?>
                     <? if (!empty($arResult['PROPERTIES']['time']['VALUE'])): ?>
                         <span>/</span>
                         <sub><?= $arResult['PROPERTIES']['time']['VALUE'] ?></sub>
+                    <? else: ?>
+                        <span>/</span>
+                        <sub><?= $semStartTime ?></sub>
                     <? endif; ?>
                 </div>
             <? endif; ?>
@@ -61,39 +80,54 @@ $seminarTitle = $arResult['NAME'];
             <h4><?= GetMessage("Программа семинара") ?></h4>
             <?= $arResult["PROPERTIES"]["program_txt"]["~VALUE"]['TEXT']; ?>
         <? endif; ?>
+
         <? if (!empty($arResult['LECTORS'])): ?>
             <div class="clearfix">
                 <h4 class="display-inline-block"><?= GetMessage($arResult["PROPERTIES"]["lecturer"]["NAME"]); ?></h4>
-                <? if (count($arResult['LECTORS']) > 2): ?>
-                    <div class="control control-action null-margin">
-                        <span class="prev black"><a href="#" id="prev"></a></span>
-                        <span class="next black"><a href="#" id="next"></a></span>
-                    </div>
-    
-                <? endif; ?>
             </div>
-            <? if (count($arResult['LECTORS']) > 2): ?>
-                <ul class="learn-people-list js-normal-slider3" data-next="#next" data-prev="#prev">
-            <? else: ?>
-                <ul class="learn-people-list">
-            <? endif; ?>
+            <ul class="learn-people-list">
             <? foreach ($arResult['LECTORS'] as $key => $arItem): ?>
                 <li>
-                    <img src="<?= CFile::GetPath($arItem['PREVIEW_PICTURE']); ?>" alt=""/>
-
+                    <?php $arLectorPicture = CFile::GetFileArray($arItem['DETAIL_PICTURE']); ?>
+                    <? if(!empty($arLectorPicture['SRC']) && file_exists(realpath($_SERVER["DOCUMENT_ROOT"] . $arLectorPicture["SRC"]))): ?>
+                        <?php $pic = CFile::ResizeImageGet($arLectorPicture, array("width" => 150, "height" => 150), BX_RESIZE_IMAGE_EXACT, true)['src']; ?>
+                        <img src="<?= $pic ?>" alt=""/>
+                    <? endif; ?>
                     <h3><?= $arItem['NAME']; ?></h3>
                     <span><?= $arItem['props']['company']['VALUE']; ?></span>
                     <span>–</span>
                     <i><?= $arItem['props']['status']['VALUE']; ?></i>
                 </li>
             <? endforeach; ?>
-                </ul>
+            </ul>
         <? endif; ?>
-        <? if (!empty($arResult['PROPERTIES']['adress']['VALUE'])): ?>
+
+        <? if (!empty($arResult['ORGS']) and ($date_end > $now)): ?>
+            <div class="clearfix">
+                <h4 class="display-inline-block"><?= $arResult["PROPERTIES"]["org"]["NAME"]; ?></h4>
+            </div>
+            <ul class="learn-people-list">
+                <? foreach ($arResult['ORGS'] as $key => $arItem): ?>
+                    <li>
+                        <?php $arLectorPicture = CFile::GetFileArray($arItem['DETAIL_PICTURE']); ?>
+                        <? if(!empty($arLectorPicture['SRC']) && file_exists(realpath($_SERVER["DOCUMENT_ROOT"] . $arLectorPicture["SRC"]))): ?>
+                            <?php $pic = CFile::ResizeImageGet($arLectorPicture, array("width" => 150, "height" => 150), BX_RESIZE_IMAGE_EXACT, true)['src']; ?>
+                            <img src="<?= $pic ?>" alt=""/>
+                        <? endif; ?>
+                        <h3><?= $arItem['NAME']; ?></h3>
+                        <span><?= $arItem['props']['company']['VALUE']; ?></span>
+                        <span>–</span>
+                        <i><?= $arItem['props']['status']['VALUE']; ?></i>
+                    </li>
+                <? endforeach; ?>
+            </ul>
+        <? endif; ?>
+
+        <? if (!empty($arResult['PROPERTIES']['address']['VALUE']) and $date_end > $now): ?>
             <h4><?= GetMessage("Адрес и контактная информация") ?></h4>
 
             <p class="light">
-                <?= GetMessage("Адрес офиса") ?>: <?= $arResult['PROPERTIES']['adress']['VALUE']; ?><br>
+                <?= GetMessage("Адрес офиса") ?>: <?= $arResult['PROPERTIES']['address']['VALUE']; ?><br>
                 <? if (!empty($arResult['PROPERTIES']['map']['VALUE'])): ?>
                     <?
                     $needCoords = $arResult['PROPERTIES']['map']['VALUE'];
@@ -115,27 +149,13 @@ $seminarTitle = $arResult['NAME'];
                 </div>
             <? endif; ?>
             <? if (!empty($arResult['PROPERTIES']['public_transport']['~VALUE']['TEXT'])): ?>
-                <p class="head icon-bus"><?= $arResult['PROPERTIES']['public_transport']['NAME'] ?>:</p>
+                <div class="public_transport">
+                    <p class="head icon-bus"><?= $arResult['PROPERTIES']['public_transport']['NAME'] ?>:</p>
+                </div>
                 <?= $arResult['PROPERTIES']['public_transport']['~VALUE']['TEXT'] ?>
             <? endif; ?>
         <? endif; ?>
-        <? $APPLICATION->IncludeFile(
-            "/local/include/share.php",
-            array(
-                "TITLE" => $arResult["NAME"],
-                "DESCRIPTION" => !empty($arResult["PREVIEW_TEXT"]) ? $arResult["PREVIEW_TEXT"] : $arResult["DETAIL_TEXT"],
-                "LINK" => $APPLICATION->GetCurPage(),
-                "IMAGE" => $share_img_src
-            )
-        ); ?>
-        <?
-        $date_end = FormatDate("d.m.Y", MakeTimeStamp($arResult['PROPERTIES']['sem_end_date']['VALUE']));
-        $date_end = strtotime($date_end);
-        $date_end = (!empty($date_end)) ? $date_end : 0;
 
-        $now = date($DB->DateFormatToPHP(CSite::GetDateFormat("SHORT")), time());
-        $now = strtotime($now);
-        ?>
         <? if ($date_end < $now && $date_end != '-10800' && LANGUAGE_ID != "en"): ?>
             <? $comments_cnt = $APPLICATION->IncludeComponent("kontora:element.list", "seminar_otziv", array(
                 "IBLOCK_ID" => 23,
