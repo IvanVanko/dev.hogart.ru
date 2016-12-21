@@ -1,0 +1,25 @@
+.img-title {
+  height: 400px;
+  overflow: hidden;
+}
+.img-title img {
+  width: 100% !important;
+}
+.learn-people-list {
+  margin-top: 5px !important;
+}
+.learn-people-list li {
+  min-height: 140px !important;
+}
+.public_transport {
+  margin-top: 10px;
+}
+.info-creator .photo img {
+  width: 200px;
+}
+.reg_page .control-action {
+  margin-top: 15px !important;
+}
+.reviews {
+  margin-top: 30px;
+}
