@@ -6,7 +6,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
 <?if (!empty($arResult['arrResults'])) {?>
     <?$this->SetViewTarget('SEMINAR_PREVIEW_TEXT');?>
         <h1>Вы успешно зарегистрированы на семинар
-            «<?=$arSeminars[$arResult['arrResults'][0]['SEMINAR_ID']]['NAME']?>»</h1>
+            «<?=$arSeminars[$arResult['arrResults'][0]['SEMINAR_ID']][0]['NAME']?>»</h1>
         <small>Спасибо, что обратились в нашу компанию! Ваша заявка на семинар принята. В ближайшее время с вами свяжется специалист для уточнения деталей.
         </small>
     <?$this->EndViewTarget();?>
@@ -41,7 +41,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
             <?}?>
         </div>
         <div class="col2">
-            <h2>Приглашение на семинар<br><?=$arSeminars[$s_id]['NAME']?></h2>
+            <h2>Приглашение на семинар<br><?=$arSeminars[$s_id][0]['NAME']?></h2>
 
             <h3><?=$arFormResult['USER_NAME']?></h3>
 

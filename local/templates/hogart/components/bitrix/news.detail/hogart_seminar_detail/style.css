@@ -1,3 +1,7 @@
+h4 {
+  font-size: 26px !important;
+  font-weight: 500 !important;
+}
 .img-title {
   height: 400px;
   overflow: hidden;
@@ -18,7 +22,7 @@
   width: 200px;
 }
 .reg_page .control-action {
-  margin-top: 15px !important;
+  margin-top: 10px !important;
 }
 .reviews {
   margin-top: 30px;
