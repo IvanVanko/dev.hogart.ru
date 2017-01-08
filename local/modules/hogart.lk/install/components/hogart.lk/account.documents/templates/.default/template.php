@@ -185,7 +185,7 @@ use Hogart\Lk\Entity\AddressTable;
                             <div class="delimiter color-green"></div>
                         </div>
                     </div>
-                    <h4>Контакты компании</h4>
+                    <h4>Лица с правом подписи</h4>
                     <div class="row header hidden-xs spacer">
                         <div class="col-lg-4 col-sm-3"><strong>Контактное лицо</strong></div>
                         <div class="col-lg-3 col-sm-3"><strong>Email</strong></div>
