@@ -256,7 +256,7 @@ use Hogart\Lk\Entity\AddressTable;
                 <? endif; ?>
             </div>
         <? endif; ?>
-        <? $delivery_addresses = $arResult['current_company']['addresses'][AddressTypeTable::getByField('code', AddressTypeTable::TYPE_DELIVERY)['id']]; ?>
+        <? $delivery_addresses = $arResult['current_company']['addresses'][AddressTypeTable::TYPE_DELIVERY]; ?>
         <? if ($arResult['current_company']['id'] && (count($delivery_addresses) || $arResult['account']['is_general'])): ?>
             <div class="col-sm-12 col-xs-12 addresses">
                 <div id="address-ajax">
