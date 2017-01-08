@@ -136,7 +136,7 @@ use Hogart\Lk\Entity\AddressTable;
                             <div class="col-lg-2 col-sm-2"><strong class="pull-left visible-xs">Срок действия:</strong>
                                 <span>
                                 <?= $contract['end_date']->format('d/m/Y') ?>
-                                    <? if ($contract['end_date']->getTimestamp() < (new \Bitrix\Main\Type\DateTime())->getTimestamp()): ?>
+                                    <? if (!$contract['prolongation'] && $contract['end_date']->getTimestamp() < (new \Bitrix\Main\Type\DateTime())->getTimestamp()): ?>
                                         <sup><span class="label label-danger label-xs">истек</span></sup>
                                     <? endif; ?>
                                 </span>
