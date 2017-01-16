@@ -12,8 +12,8 @@ if ($_POST["sending_phone"]!='') {
 //    $phone = str_replace('+-()', '', $phone);
 //    echo $phone."\n\n";
     $message = 'Добрый день.' . "\n\n" .
-        'Вы зарегистрировались на семинар "' . $seminar_name . '"' . "\n\n" .
-        'Пропуск на семинар можно просмотреть на странице ' . $page_href . "\n\n".
+        'Вы зарегистрировались на семинар: "' . $seminar_name . '"' . "\n\n" .
+        'Пропуск на семинар можно просмотреть на странице: ' . $page_href . "\n\n".
         'www.hogart.ru'."\n" ;
 
     $r = send_sms($phone, $message);
@@ -24,13 +24,9 @@ if ($_POST["sending_phone"]!='') {
 
     if ($r[1] > 0){
         $success=1;
-        //echo $success;
-        echo "Сообщение отправлено";
+        printf("<span class='msg-success'>Сообщение отправлено.</span>");
     }
     else{
-        $success=0;
-        //echo $success;
-        echo "Произошла ошибка № ", -$r[1];
-//        echo "Сообщение отправлено";
+        printf("<span class='msg-fail'>Сообщение не отправлено. Произошла ошибка '%s'.</span>", $r[1]);
     }
 }
