@@ -187,6 +187,18 @@ $arUrlRewrite = array(
 		"PATH" => "/local/modules/hogart.lk/front/account/documents/index.php"
 	),
     array(
+        "CONDITION" => "#^/account/reports/get/([^/?]*)/([^/?]*).?#",
+        "RULE" => "account=$1&report=$2",
+        "ID" => "hogart.lk:account.report.get",
+        "PATH" => "/local/modules/hogart.lk/front/account/reports/get.php"
+    ),
+	array(
+		"CONDITION" => "#^/account/reports/?#",
+		"RULE" => "",
+		"ID" => "hogart.lk:account.reports.list",
+		"PATH" => "/local/modules/hogart.lk/front/account/reports/index.php"
+	),
+    array(
         "CONDITION" => "#^/account/settings/?#",
         "RULE" => "",
         "ID" => "hogart.lk:account.settings",
