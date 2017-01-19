@@ -230,12 +230,16 @@ SQL;
         $objPHPExcel->getProperties()->setLastModifiedBy("Компания Хогарт");
         $objPHPExcel->getProperties()->setTitle($typeText);
         $objPHPExcel->getProperties()->setSubject($typeText);
-        $objPHPExcel->removeSheetByIndex(0);
+        $objPHPExcel->removeSheetByIndex();
 
         foreach ($request['company'] as $index => $companyId) {
+            $companyName = CompanyTable::showName($company);
+            if (empty($companyName)) {
+                continue;
+            }
             $company = $companies[$companyId];
             $sheet = $objPHPExcel->createSheet($index);
-            $sheet->setTitle(CompanyTable::showName($company));
+            $sheet->setTitle($companyName);
 
             $headerNames = [];
 
