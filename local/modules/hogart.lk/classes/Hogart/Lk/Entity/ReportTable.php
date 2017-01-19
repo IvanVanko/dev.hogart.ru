@@ -450,12 +450,6 @@ SQL;
             }
         }
 
-        foreach ($objPHPExcel->getAllSheets() as $allSheet) {
-            var_dump($allSheet->getTitle());
-        }
-        var_dump($request['company'], count($objPHPExcel->getAllSheets()));
-        exit;
-
         $writer = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $guid = Uuid::uuid1()->toString();
         $path = HOGART_REPORTS_DIR . "/{$guid}.xlsx";
