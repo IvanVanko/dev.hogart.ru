@@ -128,6 +128,11 @@ class ReportTable extends AbstractEntity
             $having[] = "STOCK > 0";
         }
 
+        if (!empty($request["warehouse"])) {
+            if (!is_array($having)) $having = [];
+            $having[] = "WAREHOUSE = 'Y'";
+        }
+
         if (!empty($having)) {
             $having = "HAVING " . implode(", ", $having);
         }
@@ -185,6 +190,7 @@ select
   bie.XML_ID, 
   sku.value as SKU, 
   brand.NAME as BRAND,
+  warehouse.value as WAREHOUSE,
   concat('/upload/', b_file.SUBDIR, '/', b_file.FILE_NAME) as PREVIEW_IMAGE,
   IFNULL(sum(h_store_amount.stock), 0) as STOCK,
   b_catalog_price.PRICE
@@ -192,6 +198,7 @@ from b_iblock_section bis
 left join b_iblock_element bie on (bis.ID = bie.IBLOCK_SECTION_ID and bie.IBLOCK_ID = $catalogId and bie.ACTIVE = 'Y')
 left join b_file ON (b_file.ID = bie.PREVIEW_PICTURE)
 left join b_iblock_element_property sku ON (bie.ID = sku.`IBLOCK_ELEMENT_ID` and sku.`IBLOCK_PROPERTY_ID` = (select ID from b_iblock_property where IBLOCK_ID = $catalogId and `CODE` = 'sku'))
+left join b_iblock_element_property warehouse ON (bie.ID = warehouse.`IBLOCK_ELEMENT_ID` and warehouse.`IBLOCK_PROPERTY_ID` = (select ID from b_iblock_property where IBLOCK_ID = $catalogId and `CODE` = 'warehouse'))
 left join b_iblock_element_property brandId ON (bie.ID = brandId.`IBLOCK_ELEMENT_ID` and brandId.`IBLOCK_PROPERTY_ID` = (select ID from b_iblock_property where IBLOCK_ID = $catalogId and `CODE` = 'brand'))
 left join b_iblock_element brand ON (brandId.value = brand.ID)
 left join b_catalog_price ON (b_catalog_price.PRODUCT_ID = bie.ID)

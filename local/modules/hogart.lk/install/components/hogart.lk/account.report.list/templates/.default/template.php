@@ -136,7 +136,7 @@ use Hogart\Lk\Entity\ReportTable;
             </div>
             <div class="col-sm-6">
                 <div class="checkbox checkbox-primary checkbox-inline">
-                    <input data-switch="" type="checkbox" name="stock_program" value="1">
+                    <input data-switch="" type="checkbox" name="warehouse" value="1">
                     <label>
                         Складская программа
                     </label>
