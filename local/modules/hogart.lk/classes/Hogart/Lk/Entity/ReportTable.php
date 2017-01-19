@@ -264,7 +264,9 @@ SQL;
 
             switch ($request['report']) {
                 case self::TYPE_PRICE:
-                    $companyPrices = CompanyDiscountTable::getPricesByCompany($companyId, $prices);
+                    if (!empty($items) && !empty($prices)) {
+                        $companyPrices = CompanyDiscountTable::getPricesByCompany($companyId, $prices);
+                    }
                     $headerNames = array_merge($headerNames, [
                         "Цена" => \PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
                         "Макс. скидка" => \PHPExcel_Style_NumberFormat::FORMAT_PERCENTAGE_00,
