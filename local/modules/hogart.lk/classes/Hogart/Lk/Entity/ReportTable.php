@@ -233,11 +233,12 @@ SQL;
         $objPHPExcel->removeSheetByIndex();
 
         foreach ($request['company'] as $index => $companyId) {
+            $company = $companies[$companyId];
             $companyName = CompanyTable::showName($company);
             if (empty($companyName)) {
                 continue;
             }
-            $company = $companies[$companyId];
+
             $sheet = $objPHPExcel->createSheet($index);
             $sheet->setTitle($companyName);
 
@@ -448,6 +449,12 @@ SQL;
                 ;
             }
         }
+
+        foreach ($objPHPExcel->getAllSheets() as $allSheet) {
+            var_dump($allSheet->getTitle());
+        }
+        var_dump($request['company'], count($objPHPExcel->getAllSheets()));
+        exit;
 
         $writer = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $guid = Uuid::uuid1()->toString();
