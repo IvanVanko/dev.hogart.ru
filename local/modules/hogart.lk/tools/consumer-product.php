@@ -12,8 +12,6 @@ define("NO_KEEP_STATISTIC", true);
 define("NOT_CHECK_PERMISSIONS", true);
 define("ADMIN_SECTION", true);
 set_time_limit(0);
-ini_set('output_buffering', 'Off');
-ini_set('implicit_flush', 1);
 
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
 
