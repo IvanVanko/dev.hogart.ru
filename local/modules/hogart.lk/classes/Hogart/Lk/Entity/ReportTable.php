@@ -233,6 +233,7 @@ SQL;
 
         foreach ($request['company'] as $index => $companyId) {
             $company = $companies[$companyId];
+            $objPHPExcel->createSheet($index);
             $sheet = $objPHPExcel->setActiveSheetIndex($index);
             $sheet->setTitle(CompanyTable::showName($company));
 
