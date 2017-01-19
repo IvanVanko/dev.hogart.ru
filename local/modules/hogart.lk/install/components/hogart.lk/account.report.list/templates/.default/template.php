@@ -28,6 +28,10 @@ use Hogart\Lk\Entity\ReportTable;
                                 <?= ReportTable::getTitle($id) ?>
                             </span>
                             <i class="fa fa-download"></i>
+                            <span class="h6 color-green">
+                                — .<?= pathinfo($report['path'], PATHINFO_EXTENSION) ?>
+                                , <?= round(filesize($report['path']) / 1048576, 2) ?> mb
+                            </span>
                         </a>
                     </h4>
                 </div>
