@@ -42,8 +42,13 @@ if (Account::isAuthorized()) {
     $filename = ReportTable::getFilename($_REQUEST['report']);
 
     $APPLICATION->RestartBuffer();
+    if (ob_get_level()) ob_end_clean();
     header("Content-type:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
     header("Content-Disposition:attachment;filename='{$filename}.xlsx'");
+    header('Expires: 0');
+    header('Cache-Control: must-revalidate');
+    header('Pragma: public');
+    header('Content-Length: ' . filesize($file['path']));
     readfile($file['path']);
     exit;
 
