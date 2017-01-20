@@ -98,7 +98,7 @@ $controlsID = uniqid();
                                 $skipProperties = array("collection", "sku", "brand", "days_till_receive", "warehouse");
                             ?>
                             <? foreach ($arProduct['SHOW_PROPS'] as $i => $arProperty): ?>
-                                <? if (in_array($arProperty["CODE"], $skipProperties)): ?>
+                                <? if (in_array($arProperty["CODE"], $skipProperties) or is_array($arProperty["VALUE"])): ?>
                                     <? continue; ?>
                                 <? endif; ?>
                                 <li class="note">
