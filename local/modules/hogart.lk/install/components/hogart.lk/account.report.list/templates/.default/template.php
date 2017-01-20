@@ -18,35 +18,173 @@ use Hogart\Lk\Entity\ReportTable;
 
 <div class="row">
     <div class="col-sm-9" id="reports-list">
-        <? $reportsNode = Ajax::Start($component); ?>
+        <form action="<?= $APPLICATION->GetCurPage(false) ?>" name="new-report" method="post">
+            <input type="hidden" name="action" value="new-report">
+            <div class="row">
+                <div class="col-sm-12">
+                    <label class="control-label">Тип отчета</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 form-group">
+                    <select class="form-control selectpicker" name="report" id="report">
+                        <? foreach ([ReportTable::TYPE_PRICE, ReportTable::TYPE_STOCK] as $type): ?>
+                            <option value="<?= $type ?>"><?= ReportTable::getTypeText($type) ?></option>
+                        <? endforeach; ?>
+                    </select>
+                </div>
+            </div>
+
+            <div id="companies">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="control-label">Компания(-ии)</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 form-group">
+                        <select class="form-control selectpicker" name="company[]" id="company" title="Все" data-live-search="true" multiple>
+                            <? foreach($arResult['companies'] as $company): ?>
+                                <option <?= $company['selected'] ?> value="<?= $company['id']?>"><?= $company['name']; ?></option>
+                            <? endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <label class="control-label">Категории</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 form-group">
+                    <select class="form-control" name="category[]" id="category" multiple>
+                        <? foreach ($arResult['categories'] as $category): ?>
+                            <option value="<?= $category['ID'] ?>" data-section="<?= $category['PATH'] ?>"><?= $category['NAME'] ?></option>
+                        <? endforeach; ?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <label class="control-label">Бренды</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 form-group">
+                    <select class="form-control selectpicker" name="brand[]" id="brand" title="Все" data-live-search="true" multiple>
+                        <? foreach($arResult['brands'] as $brand): ?>
+                            <option value="<?= $brand['ID']?>"><?= $brand['NAME']; ?></option>
+                        <? endforeach; ?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="checkbox checkbox-primary checkbox-inline">
+                        <input data-switch="" type="checkbox" name="in_stock" value="1">
+                        <label>
+                            Наличие
+                        </label>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="checkbox checkbox-primary checkbox-inline">
+                        <input data-switch="" type="checkbox" name="warehouse" value="1">
+                        <label>
+                            Складская программа
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row spacer-20">
+                <div class="col-sm-6">
+                    <div class="checkbox checkbox-primary checkbox-inline">
+                        <input data-switch="" type="checkbox" name="sale" value="1">
+                        <label>
+                            Распродажа
+                        </label>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="checkbox checkbox-primary checkbox-inline">
+                        <input data-switch="" type="checkbox" name="image" value="1">
+                        <label>
+                            Выводить изображение
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <label class="control-label">Группировка</label>
+                </div>
+            </div>
+            <div class="row groups">
+                <div class="col-sm-5">
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <h6>Доступные для группировки поля</h6>
+                        </div>
+                    </div>
+                    <ul class="list-group" id="available-group">
+                        <li data-id="category" class="list-group-item">
+                            <i class="fa fa-arrows"></i>
+                            По категории
+                        </li>
+                        <li data-id="brand" class="list-group-item">
+                            <i class="fa fa-arrows"></i>
+                            По бренду
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-sm-2 text-center">
+                    <h3><i class="fa fa-arrows-h"></i></h3>
+                </div>
+                <div class="col-sm-5">
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <h6>Группировать по</h6>
+                        </div>
+                    </div>
+                    <ul class="list-group" id="enabled-group"></ul>
+                </div>
+                <input type="hidden" name="groups" value="">
+            </div>
+            <div class="row">
+                <div class="col-sm-6 pull-right text-right">
+                    <input type="submit" class="btn btn-primary" value="Сформировать">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-sm-3 order-filter aside">
+        <h4>Последние 5 отчетов</h4>
         <? foreach ($arResult['reports'] as $id => $report): ?>
             <div class="row spacer report-line" data-report-id="<?= $id ?>">
                 <div class="col-sm-12">
-                    <h4>
+                    <h5>
                         <a href="/account/reports/get/<?= $report['account_id'] ?>/<?= $id ?>">
                             <span class="title">
                                 <?= ReportTable::getTitle($id) ?>
                             </span>
+                            <br>
                             <i class="fa fa-download"></i>
                             <span class="h6 color-green">
                                 — .<?= pathinfo($report['path'], PATHINFO_EXTENSION) ?>
                                 , <?= round(filesize($report['path']) / 1048576, 2) ?> mb
                             </span>
                         </a>
-                    </h4>
-                </div>
-            </div>
-            <div class="row spacer">
-                <div class="col-sm-12">
-                    <div class="delimiter color-green"></div>
+                    </h5>
                 </div>
             </div>
         <? endforeach; ?>
-        <? Ajax::End($reportsNode->getId()); ?>
-    </div>
-    <div class="col-sm-3 order-filter aside">
-        <?= Dialog::Button('add-queue', 'Новый отчет', 'btn btn-primary', 'id="add-report"') ?>
-        <? include __DIR__ . "/filter.php" ?>
+
     </div>
 </div>
 
@@ -54,150 +192,7 @@ use Hogart\Lk\Entity\ReportTable;
     'dialog-options' => 'hashTracking: false, closeOnOutsideClick: false, closeOnEscape: false, closeOnConfirm: false',
     'title' => 'Новый отчет'
 ])?>
-<form action="<?= $APPLICATION->GetCurPage(false) ?>" name="new-report" method="post">
-    <input type="hidden" name="action" value="new-report">
 
-    <div style="text-align: left">
-
-        <div class="row">
-            <div class="col-sm-12 text-center">
-                <h4>Отбор</h4>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-12">
-                <label class="control-label">Тип отчета</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12 form-group">
-                <select class="form-control selectpicker" name="report" id="report">
-                    <? foreach ([ReportTable::TYPE_PRICE, ReportTable::TYPE_STOCK] as $type): ?>
-                        <option value="<?= $type ?>"><?= ReportTable::getTypeText($type) ?></option>
-                    <? endforeach; ?>
-                </select>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-12">
-                <label class="control-label">Компания(-ии)</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12 form-group">
-                <select class="form-control selectpicker" name="company[]" id="company" title="Все" multiple>
-                    <? foreach($arResult['companies'] as $company): ?>
-                        <option value="<?= $company['id']?>"><?= $company['name']; ?></option>
-                    <? endforeach; ?>
-                </select>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-12">
-                <label class="control-label">Категории</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12 form-group">
-                <select class="form-control" name="category[]" id="category" multiple>
-                    <? foreach ($arResult['categories'] as $category): ?>
-                        <option value="<?= $category['ID'] ?>" data-section="<?= $category['PATH'] ?>"><?= $category['NAME'] ?></option>
-                    <? endforeach; ?>
-                </select>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-12">
-                <label class="control-label">Бренды</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12 form-group">
-                <select class="form-control selectpicker" name="brand[]" id="brand" title="Все" data-live-search="true" multiple>
-                    <? foreach($arResult['brands'] as $brand): ?>
-                        <option value="<?= $brand['ID']?>"><?= $brand['NAME']; ?></option>
-                    <? endforeach; ?>
-                </select>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="checkbox checkbox-primary checkbox-inline">
-                    <input data-switch="" type="checkbox" name="in_stock" value="1">
-                    <label>
-                        Наличие
-                    </label>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="checkbox checkbox-primary checkbox-inline">
-                    <input data-switch="" type="checkbox" name="warehouse" value="1">
-                    <label>
-                        Складская программа
-                    </label>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="checkbox checkbox-primary checkbox-inline">
-                    <input data-switch="" type="checkbox" name="sale" value="1">
-                    <label>
-                        Распродажа
-                    </label>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="checkbox checkbox-primary checkbox-inline">
-                    <input data-switch="" type="checkbox" name="image" value="1">
-                    <label>
-                        Выводить изображение
-                    </label>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-12 text-center">
-                <h4>Группировка</h4>
-            </div>
-        </div>
-
-        <div class="row" style="display: flex">
-            <div class="col-sm-6">
-                <div class="row">
-                    <div class="col-sm-12 text-center">
-                        <h6>Возможные поля для группировки</h6>
-                    </div>
-                </div>
-                <ul style="height: 100%" class="list-group" id="available-group">
-                    <li data-id="category" class="list-group-item">
-                        По категории
-                    </li>
-                    <li data-id="brand" class="list-group-item">
-                        По бренду
-                    </li>
-                </ul>
-            </div>
-            <div class="col-sm-6">
-                <div class="row">
-                    <div class="col-sm-12 text-center">
-                        <h6>Активные поля для группировки</h6>
-                    </div>
-                </div>
-                <ul style="height: 100%" class="list-group" id="enabled-group">
-                </ul>
-            </div>
-            <input type="hidden" name="groups" value="">
-        </div>
-    </div>
-</form>
 <?
 $id = Dialog::$id;
 $handler =<<<JS

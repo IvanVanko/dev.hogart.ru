@@ -27,6 +27,9 @@ $(function () {
   });
 
   $('#category').treeMultiselect({ sortable: true, hideSidePanel: true, startCollapsed: true });
+  $('#report').on('change', function () {
+    $('#companies').toggle($(this).val() != 'stock');
+  }).change();
 
   Sortable.create(document.getElementById('available-group'), {
     group: "groups",

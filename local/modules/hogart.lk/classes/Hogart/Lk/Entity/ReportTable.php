@@ -72,16 +72,20 @@ class ReportTable extends AbstractEntity
         ];
     }
 
-    public static function getByAccountId($account_id, $filter = [])
+    public static function getByAccountId($account_id, $filter = [], $limit = null)
     {
-        return array_reduce(self::getList([
+        $parameters = [
             'filter' => array_merge([
                 '=account_id' => $account_id
             ], $filter),
             'order' => [
                 'created_at' => 'desc'
             ]
-        ])->fetchAll(), function ($result, $item) { $result[$item['guid_id']] = $item; return $result; }, []);
+        ];
+        if (null !== $limit) {
+            $parameters['limit'] = $limit;
+        }
+        return array_reduce(self::getList($parameters)->fetchAll(), function ($result, $item) { $result[$item['guid_id']] = $item; return $result; }, []);
     }
 
     public static function generateReport($request)

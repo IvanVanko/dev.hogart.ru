@@ -30,8 +30,16 @@ if (Account::isAuthorized()) {
     include (__DIR__ . "/proceed_request.php");
     include (__DIR__ . "/proceed_filter.php");
 
-    $arResult['reports'] = ReportTable::getByAccountId(Account::getAccountId(), $arParams['filter'] ? : []);
+    $arResult['reports'] = ReportTable::getByAccountId(Account::getAccountId(), $arParams['filter'] ? : [], 5);
     $arResult['companies'] = AccountCompanyRelationTable::getByAccountId(Account::getAccountId());
+
+    foreach ($arResult['companies'] as &$company) {
+        if ($company['is_favorite']) {
+            $company['selected'] = 'selected="selected"';
+            break;
+        }
+    }
+
     $categoriesTmp = [];
     $categoriesResult = CIBlockSection::GetList(['left_margin' => 'asc'], ['SITE_ID' => SITE_ID, 'IBLOCK_ID' => CATALOG_IBLOCK_ID, 'GLOBAL_ACTIVE' => 'Y'], false, ['ID', 'NAME', 'DEPTH_LEVEL', 'IBLOCK_SECTION_ID']);
     while ($category = $categoriesResult->GetNext()) {

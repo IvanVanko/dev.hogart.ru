@@ -821,3 +821,20 @@ input[type="radio"] .styled:checked + label::after {
   width: 100%;
   margin-bottom: 20px;
 }
+.groups {
+  position: relative;
+  display: flex;
+}
+.groups ul {
+  border: 1px solid #eee;
+  padding-bottom: 40px;
+}
+div.tree-multiselect {
+  border: none !important;
+}
+div.tree-multiselect div.title {
+  background-color: #95c600 !important;
+}
+div.tree-multiselect > div.selections {
+  padding: 0 !important;
+}
