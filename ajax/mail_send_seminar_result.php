@@ -5,11 +5,18 @@
 
 <?
 if (!empty($_REQUEST['seminar_name']) && !empty($_REQUEST['page_href']) && !empty($_REQUEST['email'])) {
-    $event_sent_id = CEvent::Send("SEND_SEMINAR_RESULT",SITE_ID,array("USER_EMAIL" => $_REQUEST['email'], "RESULT_URL" => $_REQUEST["page_href"], "SEMINAR_NAME" => $_REQUEST['seminar_name']));
+    $event_sent_id = CEvent::Send(
+        "SEND_SEMINAR_RESULT",
+        SITE_ID,
+        array(
+            "USER_EMAIL" => $_REQUEST['email'],
+            "RESULT_URL" => $_REQUEST["page_href"],
+            "SEMINAR_NAME" => $_REQUEST['seminar_name'])
+    );
     if (intval($event_sent_id)) {
-        echo "Сообщение отправлено";
+        printf("<span class='msg-success'>Сообщение отправлено.</span>");
     } else {
-        echo "Произошла ошибка";
+        printf("<span class='msg-fail'>Сообщение не отправлено. Произошла ошибка.</span>");
     }
 }
 ?>
