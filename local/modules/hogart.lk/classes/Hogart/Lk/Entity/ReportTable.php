@@ -138,7 +138,7 @@ class ReportTable extends AbstractEntity
         }
 
         if (!empty($having)) {
-            $having = "HAVING " . implode(", ", $having);
+            $having = "HAVING " . implode(" and ", $having);
         }
 
         $categoriesTmp = [];
