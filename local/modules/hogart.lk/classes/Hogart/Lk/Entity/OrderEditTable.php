@@ -190,6 +190,25 @@ class OrderEditTable extends AbstractEntity
         return true;
     }
 
+    public static function changeNote($order_id, $note)
+    {
+        $order = OrderTable::getRow([
+            'filter' => [
+                '=id' => $order_id
+            ],
+            'select' => [
+                'note'
+            ]
+        ]);
+
+        OrderEditTable::update($order_id, [
+            'note' => (string)$note,
+            'is_changed' => $order['note'] != (string)$note
+        ]);
+
+        return true;
+    }
+
     public static function copyFromOrder($order_id)
     {
         global $DB;

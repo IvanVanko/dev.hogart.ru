@@ -16,15 +16,10 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
 
 CModule::IncludeModule("hogart.lk");
 
-$productExchange =
-    (new \Hogart\Lk\Exchange\RabbitMQ\Exchange\ProductExchange())
-        ->useConsumer(\Hogart\Lk\Exchange\RabbitMQ\Consumer::getInstance())
-;
-$productExchange->publish("", "index");
-//$accountExchange->getExchange()->publish("gillbeits@gmail.com", $accountExchange->getPublishKey('send_password'), AMQP_NOPARAM, ['delivery_mode' => 2]);
-//
-exit;
 $consumer = \Hogart\Lk\Exchange\RabbitMQ\Consumer::getInstance();
+$consumer->registerExchange(new \Hogart\Lk\Exchange\RabbitMQ\Exchange\ReportExchange());
+$consumer->run();
+exit;
 //
 //(new \Hogart\Lk\Exchange\RabbitMQ\Exchange\OrderRTUExchange($consumer))->publish("", "get");
 

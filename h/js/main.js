@@ -2078,12 +2078,17 @@ function initSubmitRegular(submit_form) {
         $(submit_form).on('submit', function (e) {
             e.preventDefault();
             ajaxForm(this, false, function (result) {
-                console.log(result);
-                if ($(result).find('[name=success]').val()) {
+                if ($(result).find("[name=success]").val()) {
                     location.reload();
                 }
                 else {
-                    $(submit_form).html(result);
+                    // Fix for /learn/result.php
+                    if ($(submit_form).hasClass("submit-result-field")) {
+                        $(submit_form).find(".submit-result-msg").html(result);
+                        $(submit_form).find(".submit-result").removeClass("hide", 500);
+                    } else {
+                        $(submit_form).html(result);
+                    }
                     initUserForms();
                 }
             });
@@ -2092,7 +2097,6 @@ function initSubmitRegular(submit_form) {
 }
 
 function initSubmitMerged(submit_form) {
-    console.log('this2');
     document.merged_forms_cache.push({
         'form': submit_form,
         'name': $(submit_form).attr('name'),
@@ -2194,6 +2198,11 @@ function initUserForms() {
 
         }
         $(el).addClass('init');
+
+        $(el).find(".clean-on-submit").each(function (i, field) {
+            $(field).val('');
+        });
+
     });
 }
 

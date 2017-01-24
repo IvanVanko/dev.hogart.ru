@@ -1,9 +1,19 @@
 <? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die(); ?>
-<?
-$date_from = FormatDate("d.m.Y", MakeTimeStamp($arResult['PROPERTIES']['sem_start_date']['VALUE']));
-$now = date($DB->DateFormatToPHP(CSite::GetDateFormat("SHORT")), time()); ?>
+<?php
+use Hogart\Lk\Helper\Common\DateTime;
 
-<? if (strtotime($date_from) < strtotime($now) && $date_from != '01.01.1970'): ?>
+$date_from = FormatDate("d.m.Y", MakeTimeStamp($arResult['PROPERTIES']['sem_start_date']['VALUE']));
+$seminarRegistrationClosed = false;
+if (!empty($arResult['PROPERTIES']['sem_end_date']['VALUE'])) {
+    if (DateTime::compareTwoEpochDates(
+            time(),
+            DateTime::changeDateTimeWithOffset($arResult['PROPERTIES']['sem_end_date']['VALUE'], -DEFAULT_CLOSE_REGISTRATION_OFFSET)) == DateTime::$DATE_ONE_BIGGER ) {
+        $seminarRegistrationClosed = true;
+    }
+}
+?>
+
+<? if ($seminarRegistrationClosed): ?>
     <? if (!empty($arResult["PROPERTIES"]["materials"]["VALUE"])) { ?>
         <h2><?= $arResult['PROPERTIES']['materials']['NAME']; ?></h2>
         <ul class="ul-file">

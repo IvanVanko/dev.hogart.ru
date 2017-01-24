@@ -1,19 +1,43 @@
-<? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
-global $seminarTitle;
-$seminarTitle = $arResult['NAME'];
+<?php
+    if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
+    global $seminarTitle;
+    $seminarTitle = $arResult['NAME'];
 ?>
 
 <?php
-    $date_end = strtotime(FormatDate("d.m.Y", MakeTimeStamp($arResult['PROPERTIES']['sem_end_date']['VALUE'])));
-    $date_end = (!empty($date_end)) ? $date_end : 0;
+    use Hogart\Lk\Helper\Common\DateTime;
 
-    $now = strtotime(date($DB->DateFormatToPHP(CSite::GetDateFormat("SHORT")), time()));
+    $seminarDateTimeLabel = "";
+    if (empty($arResult['PROPERTIES']['sem_end_date']['VALUE']) or
+        DateTime::isTwoDatesEqualAsStrings(
+            $arResult['PROPERTIES']['sem_start_date']['VALUE'],
+            $arResult['PROPERTIES']['sem_end_date']['VALUE'],
+            "d.m.Y"))
+    {
+        $seminarDateTimeLabel = FormatDate("d F Y", MakeTimeStamp($arResult['PROPERTIES']['sem_start_date']['VALUE']));
+    } else {
+        $seminarDateTimeLabel = sprintf(
+            "с %s по %s",
+            FormatDate("d F", MakeTimeStamp($arResult['PROPERTIES']['sem_start_date']['VALUE'])),
+            FormatDate("d F Y", MakeTimeStamp($arResult['PROPERTIES']['sem_end_date']['VALUE']))
+        );
+    }
+    $seminarDateTimeLabel = sprintf("<sup>%s</sup>", $seminarDateTimeLabel);
+    if (!empty($arResult['PROPERTIES']['time']['VALUE'])) {
+        $seminarDateTimeLabel .= sprintf("<span>/</span><sub>%s</sub>", $arResult['PROPERTIES']['time']['VALUE']);
+    } else {
+        $seminarDateTimeLabel .= sprintf("<span>/</span><sub>%s</sub>",
+            FormatDate("H:i", MakeTimeStamp($arResult['PROPERTIES']['sem_start_date']['VALUE'])));
+    }
 
-    $semStartDate = FormatDate("d F", MakeTimeStamp($arResult['PROPERTIES']['sem_start_date']['VALUE']));
-    $semStartDateFull = FormatDate("d F Y", MakeTimeStamp($arResult['PROPERTIES']['sem_start_date']['VALUE']));
-
-    $semEndDate = FormatDate("d F Y", MakeTimeStamp($arResult['PROPERTIES']['sem_end_date']['VALUE']));
-    $semStartTime = FormatDate("H:i", MakeTimeStamp($arResult['PROPERTIES']['sem_start_date']['VALUE']));
+    $seminarRegistrationClosed = false;
+    if (!empty($arResult['PROPERTIES']['sem_end_date']['VALUE'])) {
+        if (DateTime::compareTwoEpochDates(
+            time(),
+            DateTime::changeDateTimeWithOffset($arResult['PROPERTIES']['sem_end_date']['VALUE'], -DEFAULT_CLOSE_REGISTRATION_OFFSET)) == DateTime::$DATE_ONE_BIGGER ) {
+            $seminarRegistrationClosed = true;
+        }
+    }
 ?>
 <div class="row">
     <div class="col-md-9">
@@ -51,24 +75,7 @@ $seminarTitle = $arResult['NAME'];
 
             <? if (!empty($arResult['PROPERTIES']['sem_start_date']['VALUE'])): ?>
                 <div class="date">
-                    <? if (!empty($semStartDate) && FormatDate("Y", MakeTimeStamp($arResult['PROPERTIES']['sem_end_date']['VALUE'])) != "1970"): ?>
-                        <sup>
-                            <? if ($semStartDateFull != $semEndDate): ?>
-                                с <?= $semStartDate ?> по <?= $semEndDate ?>
-                            <? else: ?>
-                                <?= $semEndDate ?>
-                            <? endif; ?>
-                        </sup>
-                    <? else: ?>
-                        <sup><?= $semStartDateFull; ?></sup>
-                    <? endif; ?>
-                    <? if (!empty($arResult['PROPERTIES']['time']['VALUE'])): ?>
-                        <span>/</span>
-                        <sub><?= $arResult['PROPERTIES']['time']['VALUE'] ?></sub>
-                    <? else: ?>
-                        <span>/</span>
-                        <sub><?= $semStartTime ?></sub>
-                    <? endif; ?>
+                    <?= $seminarDateTimeLabel ?>
                 </div>
             <? endif; ?>
         </div>
@@ -102,7 +109,7 @@ $seminarTitle = $arResult['NAME'];
             </ul>
         <? endif; ?>
 
-        <? if (!empty($arResult['ORGS']) and ($date_end > $now)): ?>
+        <? if (!empty($arResult['ORGS']) and (!$seminarRegistrationClosed)): ?>
             <div class="clearfix">
                 <h4 class="display-inline-block"><?= $arResult["PROPERTIES"]["org"]["NAME"]; ?></h4>
             </div>
@@ -123,7 +130,7 @@ $seminarTitle = $arResult['NAME'];
             </ul>
         <? endif; ?>
 
-        <? if (!empty($arResult['PROPERTIES']['address']['VALUE']) and $date_end > $now): ?>
+        <? if (!empty($arResult['PROPERTIES']['address']['VALUE']) and !$seminarRegistrationClosed): ?>
             <h4><?= GetMessage("Адрес и контактная информация") ?></h4>
 
             <p class="light">
@@ -156,7 +163,7 @@ $seminarTitle = $arResult['NAME'];
             <? endif; ?>
         <? endif; ?>
 
-        <? if ($date_end < $now && $date_end != '-10800' && LANGUAGE_ID != "en"): ?>
+        <? if ($seminarRegistrationClosed && LANGUAGE_ID != "en"): ?>
             <? $comments_cnt = $APPLICATION->IncludeComponent("kontora:element.list", "seminar_otziv", array(
                 "IBLOCK_ID" => 23,
                 "PROPS" => "Y",

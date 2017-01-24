@@ -19,7 +19,7 @@
         onBlurTrigger: 'changeapply'
       }, initData, options);
 
-      if (self.is(':input') && (['text', 'number']).indexOf(self.attr('type')) != -1) {
+      if (self.is(':input') && ((['text', 'number']).indexOf(self.attr('type')) != -1 || self.prop("tagName") == "TEXTAREA")) {
         var id = "applier_" + Math.random().toString().substr(2);
         var container = $('<div class="input-change-apply" id="' + id + '"></div>');
         self.after(container);

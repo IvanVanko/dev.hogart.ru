@@ -19,6 +19,11 @@ CModule::IncludeModule("main");
 CModule::IncludeModule("catalog");
 CModule::IncludeModule("sprint.migration");
 
+
+\Hogart\Lk\Entity\ReportTable::dropTableIfExists();
+\Hogart\Lk\Entity\ReportTable::createTableIfNotExists();
+exit;
+
 //\Hogart\Lk\Entity\OrderItemEditTable::dropTableIfExists();
 //\Hogart\Lk\Entity\OrderItemEditTable::createTableIfNotExists();
 //\Hogart\Lk\Entity\OrderEditTable::copyFromOrder(1);

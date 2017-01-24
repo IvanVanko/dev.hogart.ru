@@ -1,6 +1,16 @@
 @import (reference) "../../../../../../assets/hogart.lk/less/styles";
 @import "../../../../../../assets/hogart.lk/less/awesome-bootstrap-checkbox";
 
+textarea#note {
+  width: 100%;
+  display: block;
+  border: 1px solid #eee;
+  &:focus::-webkit-input-placeholder {
+    text-indent: 0;
+    transition: none;
+  }
+}
+
 .order-line {
   .money();
   display: block;

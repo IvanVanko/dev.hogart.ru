@@ -32,6 +32,9 @@ switch ($_REQUEST['action']) {
     case 'change_discount':
         $result = OrderItemEditTable::changeDiscount(intval($_REQUEST['order_id']), (string)$_REQUEST['item_id'], (string)$_REQUEST['item_group'], floatval($_REQUEST['discount']));
         break;
+    case 'change_note':
+        $result = OrderEditTable::changeNote(intval($_REQUEST['order_id']), $_REQUEST['note']);
+        break;
     case 'delete_items':
         OrderItemEditTable::softDelete(intval($_REQUEST['order_id']), $_REQUEST['item']);
         break;
