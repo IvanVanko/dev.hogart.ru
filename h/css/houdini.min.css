@@ -20,13 +20,13 @@
     visibility: visible
 }
 
-.js-houdini .collapse:not([aria-expanded]) {
+/*.js-houdini .collapse:not([aria-expanded]) {
     max-height: 0;
     overflow: hidden;
     opacity: 0;
     -webkit-transition: opacity .35s ease;
     transition: opacity .35s ease
-}
+}*/
 
 .js-houdini .collapse:not([aria-expanded]).active {
     max-height: 9999em;
