@@ -1,7 +1,7 @@
 <? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die(); ?>
 
 <div class="row vertical-align">
-    <div class="col-md-10">
+    <div class="col-md-10 col-sm-12 brand-detail__controls">
         <h3 style="margin-top: 10px"><?= $arResult['NAME'] ?></h3>
         <div class="controls text-right">
             <? if (!empty($arResult["PREV"])): ?>
@@ -20,7 +20,7 @@
             <? endif; ?>
         </div>
     </div>
-    <div class="col-md-2 text-right">
+    <div class="col-md-2 text-right brand-documentation">
         <div class="hogart-share text-right">
             <a data-toggle="tooltip" data-placement="top" title="Документация" href="<?= SITE_DIR ?>documentation/<?= $arResult['CODE'] ?>/"><i class="fa fa-file-archive-o" aria-hidden="true"></i></a>
             <a data-toggle="tooltip" data-placement="top" href="#" class="js-popup-open"
@@ -36,7 +36,7 @@
 </div>
 
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-3 col-sm-12">
         <?
         if (!empty($arResult['PREVIEW_PICTURE']['SRC']) && file_exists($_SERVER["DOCUMENT_ROOT"] . $arResult['PREVIEW_PICTURE']['SRC'])) {
             $arImage = $arResult['PREVIEW_PICTURE'];
@@ -52,9 +52,9 @@
         <img class="brand-photo-thing" src="<?= $pic ?>" alt=""/ >
         <a target="_blank" href="<?= $arResult['PROPERTIES']['site']['VALUE'] ?>"><?= $arResult['PROPERTIES']['site']['VALUE'] ?></a>
     </div>
-    <div class="col-md-9">
+    <div class="col-md-9 col-sm-12">
         <?= $arResult['PREVIEW_TEXT'] ?>
-    </div>
+    </div> 
 </div>
 
 <? foreach (['about_company' => "О компании", 'about_products' => "О продуктах и решениях"] as $gallery_key => $section_name): ?>

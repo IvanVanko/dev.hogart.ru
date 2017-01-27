@@ -4,7 +4,12 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 if(empty($arResult))
 	return "";
 
+global $APPLICATION;
+
 $strReturn = '<ul class="breadcrumbs">';
+if ($APPLICATION->GetCurDir() == "/catalog/") {
+    $strReturn = '<ul class="breadcrumbs breadcrumbs-hide">';
+}
 
 $num_items = count($arResult);
 for($index = 0, $itemSize = $num_items; $index < $itemSize; $index++)

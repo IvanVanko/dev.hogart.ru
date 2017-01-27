@@ -254,7 +254,7 @@ use \Hogart\Lk\Helper\Template\Account;
             </span>
             <? endif; ?>
 
-            <span class="cell text-center buy">
+            <span class="cell text-center buy catalog-list__button">
                     <?
                     $class_pop = '';
                     $attr_pop = '';
@@ -296,16 +296,16 @@ use \Hogart\Lk\Helper\Template\Account;
         <? if($arParams["DEPTH_LEVEL"] > 2 && $brandId != $arItem["PROPERTIES"]["brand"]["VALUE"] && !$arParams["IS_FILTERED"]): ?>
         <? if(null !== $brandId): ?>
         </ul>
-        <ul class="row perechen-produts js-target-perechen <?=$arParams['VIEW_TYPE']?> <? if ($arParams["IS_TABLE_VIEW"]): ?>table-view<? endif; ?>">
+        <ul class="row perechen-produts catalog-list js-target-perechen <?=$arParams['VIEW_TYPE']?> <? if ($arParams["IS_TABLE_VIEW"]): ?>table-view<? endif; ?>">
         <? endif; ?>
         <? $brandId = $arItem["PROPERTIES"]["brand"]["VALUE"]; ?>
         
-        <li class="col-md-12 caption" data-brand-id="<?= $arItem["PROPERTIES"]["brand"]["VALUE"] ?>" data-brand-name="<?= $arResult["ALL_BRANDS"][$brandId]["NAME"] ?>">
+        <li class="col-md-12 col-sm-12 caption catalog-list__caption" data-brand-id="<?= $arItem["PROPERTIES"]["brand"]["VALUE"] ?>" data-brand-name="<?= $arResult["ALL_BRANDS"][$brandId]["NAME"] ?>">
             <span class="brand-name"><i class="fa"></i><?= $arResult["ALL_BRANDS"][$brandId]["NAME"] ?></span>
         </li>
         <? endif; ?>
         
-        <li class="col-lg-3 col-md-4 col-sm-6" data-item-id="<?= $i ?>">
+        <li class="col-lg-3 col-md-4 col-sm-12" data-item-id="<?= $i ?>">
             <div>
                 <span class="perechen-img">
                     <a href="<?= $arItem["DETAIL_PAGE_URL"] ?>">
@@ -335,13 +335,13 @@ use \Hogart\Lk\Helper\Template\Account;
                 <div class="prod-box">
                     <? if (!empty($arItem["PROPERTIES"]["sku"]["VALUE"])): ?>
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-12 col-sm-12">
                                 <div class="art">Артикул: <span><?= $arItem["PROPERTIES"]["sku"]["VALUE"] ?></span></div>
                             </div>
                         </div>
                     <? endif; ?>
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 col-sm-12">
                             <a href="<?= $arItem["DETAIL_PAGE_URL"] ?>"><h3><?= $arItem["NAME"] ?></h3></a>
                         </div>
                     </div>
@@ -399,9 +399,9 @@ use \Hogart\Lk\Helper\Template\Account;
                         <?}?>
                     </ul>
                 </div>
-                <div class="price-cnt <? if ($USER->IsAuthorized()): ?> auth-block<? endif; ?>">
+                <div class="price-cnt catalog-list__price<? if ($USER->IsAuthorized()): ?> auth-block<? endif; ?>">
                     <div class="row vertical-align">
-                        <div class="col-md-6">
+                        <div class="col-md-6 col-sm-12">
                             <div class="price currency-<?= strtolower($arItem["PRICES"]["BASE"]["CURRENCY"]) ?> text-nowrap">
                                 <? if (Account::isAuthorized() && !empty($arItem["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
                                     <?= \Hogart\Lk\Helper\Template\Money::show($arItem["PRICES"]["BASE"]["DISCOUNT_VALUE"]) ?>
@@ -418,7 +418,7 @@ use \Hogart\Lk\Helper\Template\Account;
                             <? endif; ?>
                             <!---->
                         </div>
-                        <div class="col-md-6 text-right text-nowrap">
+                        <div class="col-md-6 col-sm-12 text-right text-nowrap">
                             <div class="quantity-wrapper">
                                 <? if ($arItem["CATALOG_QUANTITY"] > 0): ?>
                                 <div class="quantity quantity-success line <? if (Account::isAuthorized()): ?> line2<? endif; ?>">
@@ -511,9 +511,9 @@ use \Hogart\Lk\Helper\Template\Account;
                             </div>
                         </div>
                         <? endif; ?>
-                        <div class="col-sm-4 text-right pull-right">
+                        <div class="col-sm-12 col-md-4 catalog-list__button text-right pull-right">
                             <?= \Hogart\Lk\Helper\Template\Cart::Link(
-                                '<i class="fa fa-cart-plus" aria-hidden="true"></i>',
+                                '<span class="btn__cart">Добавить в корзину</span><i class="fa fa-cart-plus" aria-hidden="true"></i>',
                                 [
                                     'item_id' => $arItem['ID'],
                                     'count' => '1'
@@ -525,7 +525,7 @@ use \Hogart\Lk\Helper\Template\Account;
                     <? endif; ?>
                     <? if(!empty($arItem["PRICES"]["BASE"]["PRINT_VALUE"])): ?>
                     <div class="row">
-                        <div class="col-md-12 text-center">
+                        <div class="col-md-12 col-sm-12 catalog-list__button text-center">
                             <?
                             $class_pop = '';
                             $attr_pop = '';

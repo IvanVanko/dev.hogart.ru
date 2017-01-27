@@ -22,7 +22,7 @@ if (isset($templateData['TEMPLATE_THEME']))
 	$this->addExternalCss($templateData['TEMPLATE_THEME']);
 }
 ?>
-<div class="bx-filter <?=$templateData["TEMPLATE_CLASS"]?> <?if ($arParams["FILTER_VIEW_MODE"] == "HORIZONTAL") echo "bx-filter-horizontal"?>">
+<div class="filter-mobile bx-filter <?=$templateData["TEMPLATE_CLASS"]?> <?if ($arParams["FILTER_VIEW_MODE"] == "HORIZONTAL") echo "bx-filter-horizontal"?>">
 	<div class="bx-filter-section container-fluid">
 		<form name="<?echo $arResult["FILTER_NAME"]."_form"?>" action="<?echo $arResult["FORM_ACTION"]?>" method="get" class="smartfilter">
 			<?foreach($arResult["HIDDEN"] as $arItem):?>
@@ -45,6 +45,10 @@ if (isset($templateData['TEMPLATE_THEME']))
 						?>
 						<div class="<?if ($arParams["FILTER_VIEW_MODE"] == "HORIZONTAL"):?>col-sm-6 col-md-4<?else:?>col-lg-12<?endif?> bx-filter-parameters-box bx-active">
 							<span class="bx-filter-container-modef"></span>
+							<div class="filter__search">
+								<label class="filter__label" for="mobile-filter-search">Поиск по названию, артиклу</label>
+								<input class="filter__input" type="text" id="mobile-filter-search" />
+							</div>
 							<div class="bx-filter-parameters-box-title" onclick="smartFilter.hideFilterProps(this)"><span><i data-role="prop_angle" class="fa fa-angle-<?if ($arItem["DISPLAY_EXPANDED"]== "Y"):?>up<?else:?>down<?endif?>"></i> <?=$arItem["NAME"]?></span></div>
 							<div class="bx-filter-block" data-role="bx_filter_block">
 								<div class="row bx-filter-parameters-box-container">
@@ -77,7 +81,7 @@ if (isset($templateData['TEMPLATE_THEME']))
 										</div>
 									</div>
 
-									<div class="col-xs-10 col-xs-offset-1 bx-ui-slider-track-container">
+									<div class="col-xs-10 col-xs-offset-1 bx-ui-slider-track-container filter__track">
 										<div class="bx-ui-slider-track" id="drag_track_<?=$key?>">
 											<?
 											$precision = $arItem["DECIMALS"]? $arItem["DECIMALS"]: 0;

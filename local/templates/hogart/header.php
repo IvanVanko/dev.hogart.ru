@@ -75,6 +75,9 @@ Loc::loadLanguageFile(__FILE__);
     $APPLICATION->AddHeadScript("/h/js/script_dev.js");
     $APPLICATION->SetAdditionalCSS("/h/css/style_dev.css");
 
+
+    $authorized = $USER->IsAuthorized();
+
     foreach ($_GET as $key => $param) {
         if (strpos($key, "PAGEN_") === 0) {
             ?>
@@ -154,140 +157,6 @@ Loc::loadLanguageFile(__FILE__);
             </div>
         </aside>
     </div>
-    <div id="container-inner">
-        <div class="header-mobile">
-            <a class="header-mobile__menu" href="#">
-                <img src="/images/header-menu.svg" />
-            </a>
-            <div class="header-mobile__search">
-                <label for="input_search" class="header-mobile__search-label">
-                    <img src="/images/header-search.svg" />
-                </label>
-                <input id="input_search" class="header-mobile__search-input" />
-            </div>
-            <a class="header-mobile__cart" href="#">
-                <img src="/images/header-cart.svg" />
-                <span>3</span>
-            </a>
-        </div>
-        <ul class="main-navigation">
-            <li>
-                <a href="#" title="">
-                    <div class="image">
-                        <img src="/images/navigation-1.svg" alt="" title="" />
-                    </div>
-                    <span>О компании</span>
-                </a>
-                <ul class="navigation-sub-menu">
-                    <li>
-                        <a class="not-line" href="#" title="">
-                            <div class="image">
-                                <img src="/images/navigation-2.svg" alt="" title="" />
-                            </div>
-                            <span>Контакты</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="#" title="">
-                    <div class="image">
-                        <img src="/images/navigation-3.svg" alt="" title="" />
-                    </div>
-                    <span>Продукция</span>
-                </a>
-                <ul class="navigation-sub-menu">
-                    <li>
-                        <a href="#" title="">Вентиляция</a>
-                    </li>
-                    <li>
-                       <a href="#" title="">Канализация</a>
-                    </li>
-                    <li>
-                        <a href="#" title="">Отопление</a>
-                    </li>
-                    <li>
-                        <a href="#" title="">Плитка</a>
-                    </li>
-                    <li>
-                        <a href="#" title="">Сантехника</a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="#" title="">
-                    <div class="image">
-                        <img src="/images/navigation-4.svg" alt="" title="" />
-                    </div>
-                    <span>Бренды</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" title="">
-                    <div class="image">
-                        <img src="/images/navigation-5.svg" alt="" title="" />
-                    </div>
-                    <span>Документация</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" title="">
-                    <div class="image">
-                        <img src="/images/navigation-6.svg" alt="" title="" />
-                    </div>
-                    <span>Личный кабинет</span>
-                </a>
-                <ul class="navigation-sub-menu">
-                    <li>
-                        <a class="not-line" href="#" title="">
-                            <div class="image">
-                                <img src="/images/navigation-7.svg" alt="" title="" />
-                            </div>
-                            <span>Заказы</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="not-line" href="#" title="">
-                            <div class="image">
-                                <img src="/images/navigation-8.svg" alt="" title="" />
-                            </div>
-                            <span>Отчеты</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="not-line" href="#" title="">
-                            <div class="image">
-                                <img src="/images/navigation-9.svg" alt="" title="" />
-                            </div>
-                            <span>Настройки</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="not-line" href="#" title="">
-                            <div class="image">
-                                <img src="/images/navigation-10.svg" alt="" title="" />
-                            </div>
-                            <span>Юридические лица</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="not-line" href="#" title="">
-                            <div class="image">
-                                <img src="/images/navigation-11.svg" alt="" title="" />
-                            </div>
-                            <span>Выход</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </div>
-    <div class="credits-mobile">
-        <a href="#" class="m_logo">
-            <img src="/images/m_logo.svg" alt="" title="" />
-        </a>
-        <span class="address">© 2014, ООО «Хогарт»</span>
-    </div>
     <div class="credits">
         <p class="address">
             <? $APPLICATION->IncludeComponent("bitrix:main.include", "", Array(
@@ -305,23 +174,155 @@ Loc::loadLanguageFile(__FILE__);
             </li>
         </ul>
     </div>
-    <a href="#" title="" class="help">
-        <img src="/images/help.svg" alt="" title="" />
-    </a>
     <div class="main-container">
         <div class="container-inner">
+            <ul class="main-navigation"  id="accordion-main" role="tablist" aria-multiselectable="true">
+                <li>
+                    <a class="main-navigation__link" role="tab" data-toggle="collapse" data-parent="#accordion-main" href="#menu-about-company" aria-expanded="false" aria-controls="amenities" title="О компании">
+                        <div class="image">
+                            <img src="/images/navigation-1.svg" alt="" title="" />
+                        </div>
+                        <span>О компании</span>
+                    </a>
+                    <ul id="menu-about-company" role="tabpanel" class="navigation-sub-menu collapse panel-collapse">
+                        <li>
+                            <a class="not-line" href="/contacts/tsentralnyy-ofis-khogart-v-moskve-sklad-i-servisnaya-sluzhba/" title="Контакты">
+                                <div class="image">
+                                    <img src="/images/navigation-2.svg" alt="" title="" />
+                                </div>
+                                <span>Контакты</span>
+                            </a>
+                        </li>
+                    </ul>
+
+                </li>
+
+                <li>
+                    <a role="tab" class="main-navigation__link" data-toggle="collapse" data-parent="#accordion-main" href="#menu-product" aria-expanded="false" aria-controls="amenities" title="Продукция">
+                        <div class="image">
+                            <img src="/images/navigation-3.svg" alt="" title="" />
+                        </div>
+                        <span>Продукция</span>
+                    </a>
+                    <?
+                    $APPLICATION->IncludeComponent(
+                        "hogart:catalog.section.list",
+                        "mobile_main_page",
+                        array(
+                            "IBLOCK_TYPE" => "catalog",
+                            "IBLOCK_ID" => CATALOG_IBLOCK_ID,
+                            "CACHE_TYPE" => "A",
+                            "CACHE_TIME" => "36000000",
+                            "TOP_DEPTH" => "1",
+                        ),
+                        $component,
+                        array("HIDE_ICONS" => "Y")
+                    );
+                    ?>
+                </li>
+                <li>
+                    <a href="/brands/" title="Бренды">
+                        <div class="image">
+                            <img src="/images/navigation-4.svg" alt="" title="" />
+                        </div>
+                        <span>Бренды</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/documentation/" title="Документация">
+                        <div class="image">
+                            <img src="/images/navigation-5.svg" alt="" title="" />
+                        </div>
+                        <span>Документация</span>
+                    </a>
+                </li>
+                <?php if ($authorized) {?>
+                    <li>
+                        <a class="main-navigation__link" role="tab" data-toggle="collapse" data-parent="#accordion-main" href="#menu-lk" aria-expanded="false" aria-controls="amenities" title="Личный кабинет">
+                            <div class="image">
+                                <img src="/images/navigation-6.svg" alt="" title="" />
+                            </div>
+                            <span>Личный кабинет</span>
+                        </a>
+                        <ul id="menu-lk" role="tabpanel" class="navigation-sub-menu collapse panel-collapse">
+                            <li>
+                                <a class="not-line" href="/account/orders/active/" title="Заказы">
+                                    <div class="image">
+                                        <img src="/images/navigation-7.svg" alt="" title="" />
+                                    </div>
+                                    <span>Заказы</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="not-line" href="/account/reports/" title="Отчеты">
+                                    <div class="image">
+                                        <img src="/images/navigation-8.svg" alt="" title="" />
+                                    </div>
+                                    <span>Отчеты</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="not-line" href="/account/settings/" title="Настройки">
+                                    <div class="image">
+                                        <img src="/images/navigation-9.svg" alt="" title="" />
+                                    </div>
+                                    <span>Настройки</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="not-line" href="/account/documents/" title="Юридические лица">
+                                    <div class="image">
+                                        <img src="/images/navigation-10.svg" alt="" title="" />
+                                    </div>
+                                    <span>Юридические лица</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="not-line" href="?logout=yes" title="Выход">
+                                    <div class="image">
+                                        <img src="/images/navigation-11.svg" alt="" title="" />
+                                    </div>
+                                    <span>Выход</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                <?} else {?>
+                    <li>
+                        <a href="/account/" title="Личный кабинет">
+                            <div class="image">
+                                <img src="/images/navigation-6.svg" alt="" title="" />
+                            </div>
+                            <span>Личный кабинет</span>
+                        </a>
+                    </li>
+                <?}?>
+            </ul>
+            <footer class="inner footer-mobile">
+                <div class="credits-mobile">
+                    <a href="#" class="m_logo">
+                        <img src="/images/m_logo.svg" alt="" title="" />
+                    </a>
+                    <div class="footer-mobile__right">
+                        <a href="#" title="" class="help">
+                            <img src="/images/help.svg" alt="" title="" />
+                        </a>
+                        <span class="address">© 2014, ООО «Хогарт»</span>
+                    </div>
+                </div>
+            </footer>
 <? else: ?>
 <div class="container-fluid" style="overflow: hidden;">
     <div id="header-block" class="row fixed-block">
-        <div class="col-md-1" style="padding-right: 0">
+        <div class="col-md-1 header-mobile__top-menu" style="padding-right: 0">
             <a style="display: inline-block; margin: 10px 0 0 10px;" href="<?= SITE_DIR ?>">
                 <img style="width: 100%" src="/images/<?= LANGUAGE_ID ?>-logo-black.svg" class="logo"
                      alt="Hogart"/>
             </a>
         </div>
-        <div class="col-md-11 header" style="padding-right: 0">
+        <div class="col-md-11 col-sm-12 header" style="padding-right: 0">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12 header__mobile">
                     <? include __DIR__ . "/header_line.php" ?>
                     <?
                     $APPLICATION->IncludeComponent("bitrix:menu", "top_menu", Array(
@@ -343,82 +344,8 @@ Loc::loadLanguageFile(__FILE__);
             </div>
         </div>
     </div>
-    <div class="header-mobile">
-        <a class="header-mobile__menu" href="#">
-            <img src="/images/header-menu.svg" />
-        </a>
-        <div class="header-mobile__search">
-            <label for="input_search" class="header-mobile__search-label">
-                <img src="/images/header-search.svg" />
-            </label>
-            <input id="input_search" class="header-mobile__search-input" />
-        </div>
-        <a class="header-mobile__cart" href="#">
-            <img src="/images/header-cart.svg" />
-            <span>3</span>
-        </a>
-    </div>
-    <div class="container-main">
-        <ul id="accordion" role="tablist" aria-multiselectable="true" class="catalog-mobile">
-            <li class="catalog-mobile__column">
-                <a class="catalog-mobile__accordion" role="tab" data-toggle="collapse" data-parent="#accordion" href="#heating" aria-expanded="true" aria-controls="amenities" title="Отопление">Отопление</a>
-                <ul id="heating" role="tabpanel" class="catalog-mobile__sub-menu collapse in panel-collapse">
-                    <li calss="catalog-mobile__sub-item">
-                        <a class="catalog-mobile__sub-link" href="#" title="Автоматика">Автоматика</a>
-                    </li>
-                    <li id="sub-accordion" role="tablist" aria-multiselectable="true" class="catalog-mobile">
-                        <a class="catalog-mobile__sub-link" role="tab" data-toggle="collapse" data-parent="#sub-accordion" href="#armature" aria-expanded="true" aria-controls="amenities" title="Арматура">Арматура</a>
-                        <ul id="armature" role="tabpanel" class="catalog-mobile__description collapse panel-collapse">
-                            <li>
-                                <p>Арматура для водо- и теплоснабжения<p>
-                                <a href="" title="Giacomini">Giacomini</a>
-                            </li>
-                            <li>
-                                <p>Арматура для обвязки котельных</p>
-                                <a href="" title="Giacomini">Giacomini</a>
-                                <a href="" title="Meibes">Meibes</a>
-                                <a href="" title="Oventrop">Oventrop</a>
-                            </li>
-                            <li>
-                                <p>Арматура для отопительных приборов</p>
-                                <a href="" title="ELSEN">ELSEN</a>
-                                <a href="" title="Giacomini">Giacomini</a>
-                                <a href="" title="Oventrop">Oventrop</a>
-                            </li>
-                            <li>
-                                <p>Арматура для топливных емкостей и топлиприводов</p>
-                                <a href="" title="Giacomini">Giacomini</a>
-                                <a href="" title="Oventrop">Oventrop</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li calss="catalog-mobile__sub-item">
-                        <a class="catalog-mobile__sub-link" href="#" title="Водонагреватели">Водонагреватели</a>
-                    </li>
-                    <li calss="catalog-mobile__sub-item">
-                        <a class="catalog-mobile__sub-link" href="#" title="Горелки">Горелки</a>
-                    </li>
-                    <li calss="catalog-mobile__sub-item">
-                        <a class="catalog-mobile__sub-link" href="#" title="Дымоходы">Дымоходы</a>
-                    </li>
-                </ul>
-            </li>
-            <li class="catalog-mobile__column">
-                <a class="catalog-mobile__accordion" role="tab" data-toggle="collapse" data-parent="#accordion" href="#sanitary-ware" aria-expanded="false" aria-controls="amenities"  title="Отопление">Сантехника</a>
-            </li>
-            <li class="catalog-mobile__column">
-                <a class="catalog-mobile__accordion" role="tab" data-toggle="collapse" data-parent="#accordion" href="#ventilation" aria-expanded="false" aria-controls="amenities"  title="Отопление">Вентиляция</a>
-            </li>
-        </ul>
-    </div>
-    <div class="credits-mobile">
-        <a href="#" class="m_logo">
-            <img src="/images/m_logo.svg" alt="" title="" />
-        </a>
-        <span class="address">© 2014, ООО «Хогарт»</span>
-    </div>
-    <div id="main-wrapper" class="row main-wrapper-mobile">
-        <div class="col-md-1">
+    <div id="main-wrapper" class="row">
+        <div class="col-md-1 main-wrapper__left-menu">
             <? $APPLICATION->IncludeComponent("bitrix:main.include", "", Array(
                 "AREA_FILE_SHOW" => "sect",
                 "AREA_FILE_SUFFIX" => "inc_left",
@@ -426,7 +353,7 @@ Loc::loadLanguageFile(__FILE__);
                 "EDIT_TEMPLATE" => "standard.php"
             )); ?>
         </div>
-        <div class="col-md-11">
+        <div class="col-md-11 col-sm-12 main-wrapper__content">
             <div class="main-container">
                 <div class="container-inner">
                     <? if ($APPLICATION->GetCurDir() != SITE_DIR) {

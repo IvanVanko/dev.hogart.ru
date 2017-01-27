@@ -1,38 +1,39 @@
-window.addEventListener("load", function(event) {
+$ (document).on('ready', function() {
 
-    var ul = document.querySelector('ul.main-navigation');
-    var li = ul.childNodes;
+    $('.js-filter-mobile').on('click', function() {
+        console.log(2323);
+        $('.filter-mobile').addClass('active');
+        $("body").css({'overflow': 'hidden', 'position': 'fixed', 'width': '100vw'});
+    });
 
-
-    function handle_show(e) {
-        var elem = e.target.closest('li');
-        if( elem.querySelector('.navigation-sub-menu') && !elem.classList.contains('show') ) {
-            elem.classList.add('show');
-        } else {
-            elem.classList.remove('show');
-        }
-    }
-
-    for( var i = 0; i < li.length; i++) {
-        li[i].addEventListener('click', handle_show);
-    }
-
+    $(document).click(function(event) {
+        if ($(event.target).closest(".filter-mobile, .js-filter-mobile").length) return;
+        $('.filter-mobile').removeClass('active');
+        $("body").attr({'style':''});
+        event.stopPropagation();
+    });
+    $(".filter-mobile").mCustomScrollbar();
 });
 
-window.addEventListener("load", function(event) {
+$ (document).on('ready', function() {
 
-    var input = document.querySelector('.header-mobile__search-input');
-    var block_search = document.querySelector('.header-mobile__search');
+    $('.header-mobile__menu').on('click', function() {
+        $(this).toggleClass('active');
 
-    function handle_focus(e) {
-        if( block_search.classList.contains('focus')) {
-            block_search.classList.remove('focus');
+        if($(this).hasClass('active')) {
+            $('.hamburger-mobile').addClass('active');
+            $("body").css({'overflow': 'hidden', 'position': 'fixed', 'width': '100vw'});
         } else {
-            block_search.classList.add('focus');
+            $('.hamburger-mobile').removeClass('active');
         }
-    }
+        
+        return false;
+    });
 
-    input.addEventListener('focus', handle_focus);
-    input.addEventListener('focusout', handle_focus);
-
+    $(document).click(function(event) {
+        if ($(event.target).closest(".hamburger-mobile, .header-mobile__menu").length) return;
+        $('.hamburger-mobile').removeClass('active');
+        $("body").attr({'style':''});
+        event.stopPropagation();
+    });
 });

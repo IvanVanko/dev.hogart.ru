@@ -81,7 +81,7 @@ $this->EndViewTarget();
 <? endif; ?>
 
 <div class="row">
-    <div class="col-md-9 main-info">
+    <div class="col-md-9 col-sm-12 main-info">
         <? if(!empty($arResult["DISPLAY_PROPERTIES"]["sku"]["VALUE"])): ?>
             <div class="art">Артикул: <span><?=$arResult["DISPLAY_PROPERTIES"]["sku"]["VALUE"]?></span></div>
         <? endif; ?>
@@ -121,8 +121,7 @@ $this->EndViewTarget();
                                             $image_src = $pic["src"];
                                             ?>
                                         <? endif; ?>
-                                        <img <?= (!empty($image_big_src) ? 'data-big-img="' . $image_big_src['SRC'] . '"' : '') ?> title="<?=$arResult['NAME']?>"
-                                                                                                                                   src="<?= $image_src ?>" data-group="producPop" class="js-popup-open-img" />
+                                        <img <?= (!empty($image_big_src) ? 'data-big-img="' . $image_big_src['SRC'] . '"' : '') ?> title="<?=$arResult['NAME']?>" src="<?= $image_src ?>" data-group="producPop" cl>
                                     </div>
                                 </li>
 
@@ -180,7 +179,7 @@ $this->EndViewTarget();
                 <div class="col-md-6">
                     <div class="info-wrap">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-6 ol-sm-12">
                                 
                                 <? if (!empty($arResult["PRICES"]["BASE"])): ?>
                                 <div class="price text-nowrap">
@@ -195,6 +194,9 @@ $this->EndViewTarget();
                                     <? if(Account::isAuthorized() && !empty($arResult["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
                                         <sup>*</sup>
                                     <? endif; ?>
+                                </div>
+                                <div class="price__old text-nowrap">
+                                    168 156,43 руб.
                                 </div>
                                 <? endif; ?>
                                 
@@ -234,7 +236,7 @@ $this->EndViewTarget();
                                 <? endif; ?>
 
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 col-sm-12">
                                 <div class="quantity-wrapper">
                                 <? if($arResult["CATALOG_QUANTITY"] > 0): ?>
                                         <div class="icon-carTon grid-hide">
@@ -341,7 +343,7 @@ $this->EndViewTarget();
                                 <? endif; ?>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row brand-title__mobile">
                             <div class="col-md-12">
                                 <span class="brand-title">
                                     <? if (!empty($arResult["DISPLAY_PROPERTIES"]['collection'])): ?>
@@ -377,7 +379,7 @@ $this->EndViewTarget();
             </div>
         </div>
 
-        <div class="products-similar-tabs">
+        <div class="products-similar-tabs products-similar-tabs__mobile">
             <ul class="nav nav-tabs" role="tablist">
                 <? $tab_active = null; ?>
                 <? if(isset($arResult["buy_with_this"]["ITEMS"])): ?>
@@ -441,7 +443,7 @@ $this->EndViewTarget();
         </div>
 
     </div>
-    <div class="col-md-3 element-info">
+    <div class="col-md-3 element-info element-info__mobile">
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active"><a href="#properties" aria-controls="properties" role="tab" data-toggle="tab">Характеристики</a></li>
             <? if(count($arResult["DOCS"]) > 0): ?>
@@ -502,5 +504,52 @@ $this->EndViewTarget();
             </div>
             <? endif; ?>
         </div>
+    </div>
+
+    <div class="col-sm-12 info-mobile">
+        <ul class="info-mobile__navigation"  id="info-navigation-mobile" role="tablist" aria-multiselectable="true">
+            <li class="info-mobile__item">
+                <a class="info-mobile__link" role="tab" data-toggle="collapse" data-parent="#info-navigation-mobile" href="#mobile-info-description" aria-expanded="false" aria-controls="amenities" title="Описание">Описание
+                </a>
+                <ul id="mobile-info-description" role="tabpanel" class="info-mobile__description collapse panel-collapse">
+                    <li>
+                        <span class="info-mobile__name">Бренд</span>
+                        <a href="" title="Nordman" class="info-mobile__link">Nordman</a>
+                    </li>
+                    <li>
+                        <span class="info-mobile__name">Коллекция</span>
+                        <a href="" title="AE_MRV" class="info-mobile__link">AE_MRV</a>
+                    </li>
+                    <li>
+                        <span class="info-mobile__name">Тип установки</span>
+                        <span class="info-mobile__name info-mobile__name--left">Настенный</span>
+                    </li>
+                </ul>
+            </li>
+            <li class="info-mobile__item">
+                <a class="info-mobile__link" role="tab" data-toggle="collapse" data-parent="#info-navigation-mobile" href="#" aria-expanded="false" aria-controls="amenities" title="Характеристики">Характеристики
+                </a>
+            </li>
+            <li class="info-mobile__item">
+                <a class="info-mobile__link" role="tab" data-toggle="collapse" data-parent="#info-navigation-mobile" href="#mobile-info" aria-expanded="false" aria-controls="amenities" title="Описание">Описание
+                </a>
+            </li>
+            <li class="info-mobile__item">
+                <a class="info-mobile__link" role="tab" data-toggle="collapse" data-parent="#info-navigation-mobile" href="#mobile-info" aria-expanded="false" aria-controls="amenities" title="Аналоги">Аналоги
+                </a>
+            </li>
+            <li class="info-mobile__item">
+                <a class="info-mobile__link" role="tab" data-toggle="collapse" data-parent="#info-navigation-mobile" href="#mobile-info" aria-expanded="false" aria-controls="amenities" title="Принадлежности">Принадлежности
+                </a>
+            </li>
+            <li class="info-mobile__item">
+                <a class="info-mobile__link" role="tab" data-toggle="collapse" data-parent="#info-navigation-mobile" href="#mobile-info" aria-expanded="false" aria-controls="amenities" title="Описание">Из этой серии
+                </a>
+            </li>
+            <li class="info-mobile__item">
+                <a class="info-mobile__link" role="tab" data-toggle="collapse" data-parent="#info-navigation-mobile" href="#mobile-info" aria-expanded="false" aria-controls="amenities" title="Описание">С этим покупают
+                </a>
+            </li>
+        </ul>
     </div>
 </div>

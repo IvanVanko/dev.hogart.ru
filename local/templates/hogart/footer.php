@@ -7,8 +7,19 @@ global $MESS;
 ?>
 <? if($APPLICATION->GetCurDir() != SITE_DIR): ?>
     <footer class="inner">
-        <span>© 2014, ООО «Хогарт», 117041,  г. Москва, ул Поляны, 52</span>
+        <span class="footer__address">© 2014, ООО «Хогарт», 117041,  г. Москва, ул Поляны, 52</span>
         <a target="_blank" href="http://oldschool.agency" class="p_logo"></a>
+        <div class="credits-mobile">
+            <a href="http://hogart.bx.oldschool.ru/" class="m_logo">
+                <img src="/images/m_logo.svg" alt="" title="" />
+            </a>
+            <div class="footer-mobile__right">
+                <a href="#" title="" class="help">
+                    <img src="/images/help.svg" alt="" title="" />
+                </a>
+                <span class="address">© 2014, ООО «Хогарт»</span>
+            </div>
+        </div>
     </footer>
 <? endif; ?>
 

@@ -13,7 +13,7 @@
 $this->setFrameMode(true);
 ?>
 
-<div class="row">
+<div class="row catalog-hide">
 	<!-- блок категорий -->
 	<div class="col-md-9 sections">
 		<?
@@ -84,4 +84,22 @@ $this->setFrameMode(true);
 		));
 		?>
 	</div>
+</div>
+<!-- блок категорий для мобильной версии -->
+<div class="container-main">
+    <?
+    $APPLICATION->IncludeComponent(
+        "hogart:catalog.section.list",
+        "mobile",
+        array(
+            "IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
+            "IBLOCK_ID" => $arParams["IBLOCK_ID"],
+            "CACHE_TYPE" => $arParams["CACHE_TYPE"],
+            "CACHE_TIME" => $arParams["CACHE_TIME"],
+            "TOP_DEPTH" => $arParams["SECTION_TOP_DEPTH"],
+        ),
+        $component,
+        array("HIDE_ICONS" => "Y")
+    );
+    ?>
 </div>

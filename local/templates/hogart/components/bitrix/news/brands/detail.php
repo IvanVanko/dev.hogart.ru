@@ -15,7 +15,7 @@ $this->setFrameMode(true);
 
 <? if (!empty($arResult["VARIABLES"]["ELEMENT_CODE"])): ?>
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-9 col-sm-12 brand-detail">
             <?
             $ElementID = $APPLICATION->IncludeComponent(
                 "bitrix:news.detail",
@@ -72,10 +72,9 @@ $this->setFrameMode(true);
             );
             ?>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 brand-catalog__mobile">
             <? $APPLICATION->ShowViewContent("brand-catalog") ?>
         </div>
-    </div>
 <? else: ?>
     <? BXHelper::NotFound(); ?>
 <? endif; ?>
