@@ -49,6 +49,31 @@ class CompanyDiscountTable extends AbstractEntity
         ];
     }
 
+    public static function getPricesByCompany($company_id, $prices = [])
+    {
+        $id = array_keys($prices);
+        $_discounts = array_reduce(self::getList([
+            'filter' => [
+                '=item_id' => $id,
+                '=company_id' => $company_id
+            ],
+            'select' => [
+                'item_id',
+                'discount'
+            ]
+        ])->fetchAll(), function ($result, $item) { $result[$item['item_id']]['discount'] = $item['discount']; return $result; }, []);
+        foreach ($prices as $id => &$price) {
+            $new_price = round($price * (100 - floatval($_discounts[$id]['discount'])) / 100, 2);
+            $price = [
+                'max_discount' => floatval($_discounts[$id]['discount']),
+                'discount' =>  floatval($_discounts[$id]['discount']),
+                'price' => $new_price,
+                'discount_amount' => floatval($price - $new_price)
+            ];
+        }
+        return $prices;
+    }
+
     public static function getDiscountByContractAndItem($contract_id, $item_id)
     {
         $discount = self::getList([

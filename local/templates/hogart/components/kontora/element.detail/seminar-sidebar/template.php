@@ -1,9 +1,19 @@
 <? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die(); ?>
-<?
-$date_from = FormatDate("d.m.Y", MakeTimeStamp($arResult['PROPERTIES']['sem_start_date']['VALUE']));
-$now = date($DB->DateFormatToPHP(CSite::GetDateFormat("SHORT")), time()); ?>
+<?php
+use Hogart\Lk\Helper\Common\DateTime;
 
-<? if (strtotime($date_from) < strtotime($now) && $date_from != '01.01.1970'): ?>
+$date_from = FormatDate("d.m.Y", MakeTimeStamp($arResult['PROPERTIES']['sem_start_date']['VALUE']));
+$seminarRegistrationClosed = false;
+if (!empty($arResult['PROPERTIES']['sem_end_date']['VALUE'])) {
+    if (DateTime::compareTwoEpochDates(
+            time(),
+            DateTime::changeDateTimeWithOffset($arResult['PROPERTIES']['sem_end_date']['VALUE'], -DEFAULT_CLOSE_REGISTRATION_OFFSET)) == DateTime::$DATE_ONE_BIGGER ) {
+        $seminarRegistrationClosed = true;
+    }
+}
+?>
+
+<? if ($seminarRegistrationClosed): ?>
     <? if (!empty($arResult["PROPERTIES"]["materials"]["VALUE"])) { ?>
         <h2><?= $arResult['PROPERTIES']['materials']['NAME']; ?></h2>
         <ul class="ul-file">
@@ -27,7 +37,7 @@ $now = date($DB->DateFormatToPHP(CSite::GetDateFormat("SHORT")), time()); ?>
             <? if ($arResult['ORGS']['PREVIEW_PICTURE']) { ?>
                 <div class="photo">
                     <img src="<?
-                    $pic = CFile::ResizeImageGet($arResult['ORGS']['PREVIEW_PICTURE'],
+                    $pic = CFile::ResizeImageGet($arResult['ORGS']['DETAIL_PICTURE'],
                         array('width' => 250, 'height' => 320), BX_RESIZE_IMAGE_PROPORTIONAL, true, array());
                     echo $pic['src'];
                     ?>" alt=""/>
@@ -35,13 +45,7 @@ $now = date($DB->DateFormatToPHP(CSite::GetDateFormat("SHORT")), time()); ?>
                 </div>
             <? } ?>
             <div class="head"><?= $arResult['ORGS']['props']['status']['~VALUE']; ?>
-                / <?= $arResult['ORGS'][0]['props']['company']['VALUE']; ?></div>
-            <ul class="contact">
-                <li class="phone"><?= $arResult['ORGS']['props']['phone']['VALUE']; ?></li>
-                <li class="email"><a
-                        href="mailto:<?= $arResult['ORGS']['props']['mail']['VALUE']; ?>"><?= $arResult['ORGS']['props']['mail']['VALUE']; ?></a>
-                </li>
-            </ul>
+                / <?= $arResult['ORGS']['props']['company']['VALUE']; ?></div>
         </div>
     <? endif; ?>
 <? elseif (empty($date_from) || $date_from == '01.01.1970'): ?>

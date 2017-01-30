@@ -49,7 +49,7 @@ $order = $arResult['order'];
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row spacer-20">
                     <div class="col-sm-12">
                         <? foreach ($order['items'] as $item_group => $items): ?>
                             <div class="row" data-order-group-wrapper>
@@ -210,13 +210,22 @@ $order = $arResult['order'];
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-6 comment">
-                        <? if (!empty($order['note'])): ?>
-                            <p class="h6">
-                                <i class="fa fa-comment" aria-hidden="true"></i>
-                                <i><?= $order['note'] ?></i>
-                            </p>
-                        <? endif; ?>
+                    <div class="col-sm-12 comment">
+                        <textarea
+                            <?= Ajax::OnEvent(
+                                'changeapply',
+                                'order-edit',
+                                $order_edit_node->getId(),
+                                [
+                                    'order_id' => $order['_id'],
+                                    'action' => 'change_note',
+                                    'note' => 'javascript:function (element) { return $(element).val(); }',
+                                ]
+                            ) ?>
+                                placeholder="Добавьте комментарий к заказу"
+                                data-change-apply
+                                data-change-discard="false"
+                                name="note" id="note" rows="2"><?= $order['note'] ?></textarea>
                     </div>
                 </div>
             </div>

@@ -243,3 +243,10 @@
     }
   }
 }
+
+.empty-cart {
+  .post-table-footer {
+    &:extend(.cart-wrapper [data-cart] .cart-item-list-wrapper [data-item-group] .post-table-footer all);
+    width: 70%;
+  }
+}

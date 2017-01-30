@@ -90,8 +90,8 @@ JS;
         return '<a href="javascript:void(0)" class="' . $class . '" data-remodal-target="' . $id . '">' . $label . '</a>';
     }
 
-    public static function Button($id, $label, $class = "")
+    public static function Button($id, $label, $class = "", $addition = "")
     {
-        return '<button class="' . $class . '" data-remodal-target="' . $id . '">' . $label . '</button>';
+        return '<button class="' . $class . '" data-remodal-target="' . $id . '" ' . $addition . '>' . $label . '</button>';
     }
 }

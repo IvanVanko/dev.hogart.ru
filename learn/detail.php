@@ -2,6 +2,8 @@
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetTitle("Обучение");
 $APPLICATION->SetPageProperty("body_class","reg_page");
+
+define("DEFAULT_CLOSE_REGISTRATION_OFFSET", 2 * 3600);
 ?>
 <script>
 

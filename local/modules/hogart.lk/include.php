@@ -30,14 +30,19 @@ CStorage::setVar($currencies, 'HOGART.CURRENCIES');
 
 $tmp = $_SERVER['DOCUMENT_ROOT'] . "/local/modules/hogart.lk/tmp";
 $pdf = $_SERVER['DOCUMENT_ROOT'] . "/local/modules/hogart.lk/pdf";
+$reports = $_SERVER['DOCUMENT_ROOT'] . "/local/modules/hogart.lk/reports";
 if (!file_exists($tmp)) {
     mkdir($tmp, 0777, true);
 }
 if (!file_exists($pdf)) {
     mkdir($pdf, 0777, true);
 }
+if (!file_exists($reports)) {
+    mkdir($reports, 0777, true);
+}
 define("HOGART_PDF_DIR", $pdf);
 define("HOGART_TMP_DIR", $tmp);
+define("HOGART_REPORTS_DIR", $reports);
 define("HOGART_DATE_FORMAT", "d.m.Y");
 define("HOGART_DATE_TIME_FORMAT", "d.m.Y H:i");
 
@@ -86,3 +91,8 @@ define("HOGART_DATE_TIME_FORMAT", "d.m.Y H:i");
 
 \Bitrix\Main\Page\Asset::getInstance()->addCss('/local/modules/hogart.lk/assets/hogart.lk/less/bootstrap-datetimepicker.css', true);
 \Bitrix\Main\Page\Asset::getInstance()->addJs('//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.42/js/bootstrap-datetimepicker.min.js', true);
+
+\Bitrix\Main\Page\Asset::getInstance()->addJs('//cdnjs.cloudflare.com/ajax/libs/Sortable/1.4.2/Sortable.min.js', true);
+
+\Bitrix\Main\Page\Asset::getInstance()->addJs('/local/modules/hogart.lk/assets/tree-multiselect/jquery.tree-multiselect.min.js', true);
+\Bitrix\Main\Page\Asset::getInstance()->addCss('/local/modules/hogart.lk/assets/tree-multiselect/jquery.tree-multiselect.min.css', true);

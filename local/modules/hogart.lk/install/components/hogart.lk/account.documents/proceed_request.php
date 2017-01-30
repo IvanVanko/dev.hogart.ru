@@ -40,6 +40,11 @@ if (!empty($account['id']) && !empty($_REQUEST)) {
             break;
         case 'add-address':
             $address = json_decode($_POST['__address']);
+            $count = count(AddressTable::getByOwner($_SESSION['current_company_id'], AddressTable::OWNER_TYPE_CLIENT_COMPANY)[AddressTypeTable::TYPE_DELIVERY]);
+            if ($count + 1 > 10) {
+                new FlashError("Максимальное кол-во адресов ограничено 10 шт.");
+                break;
+            }
             $address_type = AddressTypeTable::getByField('code', AddressTypeTable::TYPE_DELIVERY);
             $addressRes = AddressTable::replace([
                 'owner_id' => $_SESSION['current_company_id'],

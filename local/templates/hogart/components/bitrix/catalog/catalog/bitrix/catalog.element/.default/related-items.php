@@ -36,19 +36,19 @@ $controlsID = uniqid();
                 <span class="perechen-img">
                     <a href="<?= $arProduct["DETAIL_PAGE_URL"] ?>">
                         <?
-                        $pic = "/images/project_no_img.jpg";
-                        if (!empty($arProduct["PREVIEW_PICTURE"])) {
-                            $file = CFile::ResizeImageGet(
-                                $arProduct["PREVIEW_PICTURE"], array("width" => 400, "height" => 160), BX_RESIZE_IMAGE_PROPORTIONAL, true);
-                            if (file_exists(realpath($_SERVER["DOCUMENT_ROOT"] . $file['src'])))
-                                $pic = $file['src'];
+                        $arImage = null;
+                        if (!empty($arProduct["PICTURE"]['SRC']) && file_exists(realpath($_SERVER["DOCUMENT_ROOT"] . $arProduct["PICTURE"]["SRC"]))) {
+                            $arImage = $arProduct["PICTURE"];
                         }
-                        elseif (!empty($arProduct["DETAIL_PICTURE"])) {
-
-                            $file = CFile::ResizeImageGet(
-                                $arProduct["DETAIL_PICTURE"], array("width" => 400, "height" => 160), BX_RESIZE_IMAGE_PROPORTIONAL, true);
-                            if (file_exists(realpath($_SERVER["DOCUMENT_ROOT"] . $file['src'])))
-                                $pic = $file['src'];
+                        if (!empty($arImage)) {
+                            $file = CFile::ResizeImageGet($arImage, array("width" => 213, "height" => 160), BX_RESIZE_IMAGE_EXACT, true);
+                            $pic = $file['src'];
+                        } else {
+                            if (!file_exists($_SERVER["DOCUMENT_ROOT"] . "/images/project_no_img_400x160.jpg")) {
+                                $file = $_SERVER["DOCUMENT_ROOT"] . "/images/project_no_img_400x160.jpg";
+                                CFile::ResizeImageFile($_SERVER["DOCUMENT_ROOT"] . "/images/project_no_img.jpg", $file, array("width" => 213, "height" => 160));
+                            }
+                            $pic = "/images/project_no_img_400x160.jpg";
                         }
                         ?>
                         <img src="<?=$pic?>" alt=""/>
@@ -98,7 +98,7 @@ $controlsID = uniqid();
                                 $skipProperties = array("collection", "sku", "brand", "days_till_receive", "warehouse");
                             ?>
                             <? foreach ($arProduct['SHOW_PROPS'] as $i => $arProperty): ?>
-                                <? if (in_array($arProperty["CODE"], $skipProperties)): ?>
+                                <? if (in_array($arProperty["CODE"], $skipProperties) or is_array($arProperty["VALUE"])): ?>
                                     <? continue; ?>
                                 <? endif; ?>
                                 <li class="note">

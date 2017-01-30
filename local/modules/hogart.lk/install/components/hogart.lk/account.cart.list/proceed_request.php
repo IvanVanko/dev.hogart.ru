@@ -27,13 +27,9 @@ if (!empty($_REQUEST['search'])) {
 }
 
 if (
-    !empty($_REQUEST['cart_id'])
-    && (
-        Ajax::isAjax(Ajax::GetAjaxId($this, ['step1']))
-        || Ajax::isAjax(Ajax::GetAjaxId($this, ['cart_id' => $_REQUEST['cart_id']]))
-    )
+    Ajax::isAjax(Ajax::GetAjaxId($this, ['step1']))
+    || (!empty($_REQUEST['cart_id']) && Ajax::isAjax(Ajax::GetAjaxId($this, ['cart_id' => $_REQUEST['cart_id']])))
 ) {
-
     switch ($_REQUEST['action']) {
         case 'create_order':
             $orderId = OrderTable::createByCart($_REQUEST['cart_id'], $_REQUEST['perm_reserve'], (string)$_REQUEST['note']);

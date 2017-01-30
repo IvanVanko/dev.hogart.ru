@@ -136,7 +136,7 @@ use Hogart\Lk\Entity\AddressTable;
                             <div class="col-lg-2 col-sm-2"><strong class="pull-left visible-xs">Срок действия:</strong>
                                 <span>
                                 <?= $contract['end_date']->format('d/m/Y') ?>
-                                    <? if ($contract['end_date']->getTimestamp() < (new \Bitrix\Main\Type\DateTime())->getTimestamp()): ?>
+                                    <? if (!$contract['prolongation'] && $contract['end_date']->getTimestamp() < (new \Bitrix\Main\Type\DateTime())->getTimestamp()): ?>
                                         <sup><span class="label label-danger label-xs">истек</span></sup>
                                     <? endif; ?>
                                 </span>
@@ -185,7 +185,7 @@ use Hogart\Lk\Entity\AddressTable;
                             <div class="delimiter color-green"></div>
                         </div>
                     </div>
-                    <h4>Контакты компании</h4>
+                    <h4>Лица с правом подписи</h4>
                     <div class="row header hidden-xs spacer">
                         <div class="col-lg-4 col-sm-3"><strong>Контактное лицо</strong></div>
                         <div class="col-lg-3 col-sm-3"><strong>Email</strong></div>
@@ -256,7 +256,7 @@ use Hogart\Lk\Entity\AddressTable;
                 <? endif; ?>
             </div>
         <? endif; ?>
-        <? $delivery_addresses = $arResult['current_company']['addresses'][AddressTypeTable::getByField('code', AddressTypeTable::TYPE_DELIVERY)['id']]; ?>
+        <? $delivery_addresses = $arResult['current_company']['addresses'][AddressTypeTable::TYPE_DELIVERY]; ?>
         <? if ($arResult['current_company']['id'] && (count($delivery_addresses) || $arResult['account']['is_general'])): ?>
             <div class="col-sm-12 col-xs-12 addresses">
                 <div id="address-ajax">
