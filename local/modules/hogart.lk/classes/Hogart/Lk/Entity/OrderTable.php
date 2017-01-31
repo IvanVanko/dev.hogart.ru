@@ -268,10 +268,10 @@ class OrderTable extends AbstractEntity
 
         $account_id = $account_id ? : $order['account_id'];
 
-        if (null !== $account_id) {
+        if (intval($account_id)) {
             $account = AccountTable::getRow([
                 'filter' => [
-                    '=id' => $account_id
+                    '=id' => intval($account_id)
                 ],
                 'select' => [
                     'a_' => '*',
