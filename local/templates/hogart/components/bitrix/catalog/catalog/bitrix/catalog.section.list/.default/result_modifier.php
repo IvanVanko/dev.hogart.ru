@@ -9,20 +9,13 @@ while (($brandElement = $brandRes->Fetch())) {
     $brands[$brandElement["ID"]] = $brandElement;
 }
 
-if (!($__SECTIONS = BXHelper::getCache("SECTIONS"))) {
-
-    foreach ($arResult['SECTIONS'] as &$arSection) {
-        if ($arSection["DEPTH_LEVEL"] == 3) {
-            $sectionBrandRes = CIBlockElement::GetList(["PROPERTY_brand.NAME" => "ASC"], ["IBLOCK_ID" => CATALOG_IBLOCK_ID, "SECTION_ID" => $arSection["ID"]], ["PROPERTY_brand"], false, ["PROPERTY_BRAND_VALUE"]);
-            while ($sectionBrand = $sectionBrandRes->Fetch()) {
-                $arSection["BRANDS"][] = $brands[$sectionBrand["PROPERTY_BRAND_VALUE"]];
-            }
+foreach ($arResult['SECTIONS'] as &$arSection) {
+    if ($arSection["DEPTH_LEVEL"] == 3) {
+        $sectionBrandRes = CIBlockElement::GetList(["PROPERTY_brand.NAME" => "ASC"], ["IBLOCK_ID" => CATALOG_IBLOCK_ID, "SECTION_ID" => $arSection["ID"]], ["PROPERTY_brand"], false, ["PROPERTY_BRAND_VALUE"]);
+        while ($sectionBrand = $sectionBrandRes->Fetch()) {
+            $arSection["BRANDS"][] = $brands[$sectionBrand["PROPERTY_BRAND_VALUE"]];
         }
     }
-
-    BXHelper::setCache("SECTIONS", $arResult['SECTIONS']);
-} else {
-    $arResult['SECTIONS'] = $__SECTIONS;
 }
 
 BXHelper::addCachedKeys($this->__component, array('BRANDS'), $arResult);
