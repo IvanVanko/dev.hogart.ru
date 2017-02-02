@@ -43,7 +43,6 @@ $order = $arResult['order'];
                 </div>
                 <? endif; ?>
                 <? $this->EndViewTarget() ?>
-
                 <? include dirname(__FILE__) . "/../../../account.order.list/templates/.default/order-header.php" ?>
                 <div class="row">
                     <div class="col-sm-12">
@@ -234,7 +233,7 @@ $order = $arResult['order'];
 ?>
 
 <? \Hogart\Lk\Helper\Template\Dialog::Start('order-payment', [
-//    'dialog-options' => 'closeOnOutsideClick: false, closeOnEscape: false, closeOnConfirm: false',
+    'dialog-options' => 'closeOnOutsideClick: false, closeOnEscape: false, closeOnConfirm: false',
     'title' => 'Подтверждение оплаты'
 ])?>
 <form action="<?= $APPLICATION->GetCurPage() ?>" name="order-payment" method="post">
