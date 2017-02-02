@@ -233,3 +233,25 @@ $order = $arResult['order'];
 \Hogart\Lk\Helper\Template\Dialog::End()
 ?>
 
+<? \Hogart\Lk\Helper\Template\Dialog::Start('order-payment', [
+    'dialog-options' => 'hashTracking: false, closeOnOutsideClick: false, closeOnEscape: false, closeOnConfirm: false',
+    'title' => 'Подтверждение оплаты'
+])?>
+<form action="<?= $APPLICATION->GetCurPage() ?>" name="order-payment" method="post">
+    <? include __DIR__ . "/forms/payment.php" ?>
+    <input type="hidden" name="action" value="order-payment">
+</form>
+<?
+
+$id = \Hogart\Lk\Helper\Template\Dialog::$id;
+$handler =<<<JS
+    (function() {
+      var form = $('[data-remodal-id="$id"] form');
+      var inst = $('[data-remodal-id="$id"]').remodal();
+      form.validator();
+    })
+JS;
+\Hogart\Lk\Helper\Template\Dialog::Event('opening', $handler);
+
+\Hogart\Lk\Helper\Template\Dialog::End(['confirm' => false])
+?>
