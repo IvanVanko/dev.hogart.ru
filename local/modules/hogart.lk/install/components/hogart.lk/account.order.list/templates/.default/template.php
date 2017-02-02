@@ -29,6 +29,7 @@ use Hogart\Lk\Helper\Template\Ajax;
         <? foreach ($arResult['orders'] as $k => $order): ?>
         <div class="row spacer-20 order-line" data-order-id="<?= $order['id'] ?>">
             <div class="col-sm-12">
+                <? $isListOfOrders = true; ?>
                 <? include dirname(__FILE__) . "/order-header.php" ?>
             </div>
         </div>

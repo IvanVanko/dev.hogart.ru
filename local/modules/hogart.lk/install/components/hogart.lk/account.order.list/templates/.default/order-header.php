@@ -74,7 +74,10 @@ use Hogart\Lk\Entity\OrderItemTable;
     </div>
     <div class="col-sm-3">
         <? if ($order['guid_id'] && $order['state'] == OrderTable::STATE_NORMAL && $order['totals']['release']): ?>
-            <a href="/account/order/<?= $order['id'] ?>/#order-payment" class="btn btn-primary"><i class="fa fa-money" aria-hidden="true"></i> Оплатить</a>
+            <a href="<?= ($isListOfOrders ? "/account/order/{$order['id']}/#order-payment" : "javascript:void(0)") ?>"
+               <?= ($isListOfOrders ? '' : 'data-remodal-target="order-payment"') ?>
+               class="btn btn-primary"><i class="fa fa-money" aria-hidden="true"></i> Оплатить
+            </a>
         <? elseif($order['totals']['release']): ?>
             <div class="h5 color-danger">
                 Не выполнено условие по оплате
