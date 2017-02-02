@@ -363,6 +363,9 @@ h6,
   font-family: "Roboto Condensed", sans-serif;
   margin-top: 10px;
 }
+.close {
+  opacity: 0.8 !important;
+}
 [data-notify="container"] {
   z-index: 3001 !important;
 }
