@@ -234,7 +234,7 @@ $order = $arResult['order'];
 ?>
 
 <? \Hogart\Lk\Helper\Template\Dialog::Start('order-payment', [
-    'dialog-options' => 'hashTracking: false, closeOnOutsideClick: false, closeOnEscape: false, closeOnConfirm: false',
+//    'dialog-options' => 'closeOnOutsideClick: false, closeOnEscape: false, closeOnConfirm: false',
     'title' => 'Подтверждение оплаты'
 ])?>
 <form action="<?= $APPLICATION->GetCurPage() ?>" name="order-payment" method="post">
