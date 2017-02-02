@@ -74,7 +74,7 @@ use Hogart\Lk\Entity\OrderItemTable;
     </div>
     <div class="col-sm-3">
         <? if ($order['guid_id'] && $order['state'] == OrderTable::STATE_NORMAL && $order['totals']['release']): ?>
-            <a href="/account/order/<?= $order['id'] ?>/?t=<?= time() ?>#order-payment" class="btn btn-primary"><i class="fa fa-money" aria-hidden="true"></i> Оплатить</a>
+            <a data-remodal-target="order-payment" href="javascript:void(0)" class="btn btn-primary"><i class="fa fa-money" aria-hidden="true"></i> Оплатить</a>
         <? elseif($order['totals']['release']): ?>
             <div class="h5 color-danger">
                 Не выполнено условие по оплате
@@ -87,3 +87,26 @@ use Hogart\Lk\Entity\OrderItemTable;
         <? endif; ?>
     </div>
 </div>
+
+<? \Hogart\Lk\Helper\Template\Dialog::Start('order-payment', [
+    'dialog-options' => 'closeOnOutsideClick: false, closeOnEscape: false, closeOnConfirm: false',
+    'title' => 'Подтверждение оплаты'
+])?>
+    <form action="<?= $APPLICATION->GetCurPage() ?>" name="order-payment" method="post">
+        <? include dirname(__FILE__) . "/../../../account.order.element/templates/.default/forms/payment.php" ?>
+        <input type="hidden" name="action" value="order-payment">
+    </form>
+<?
+
+$id = \Hogart\Lk\Helper\Template\Dialog::$id;
+$handler =<<<JS
+    (function() {
+      var form = $('[data-remodal-id="$id"] form');
+      var inst = $('[data-remodal-id="$id"]').remodal();
+      form.validator();
+    })
+JS;
+\Hogart\Lk\Helper\Template\Dialog::Event('opening', $handler);
+
+\Hogart\Lk\Helper\Template\Dialog::End(['confirm' => false])
+?>
