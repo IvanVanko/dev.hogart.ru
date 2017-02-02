@@ -18,22 +18,20 @@ $ (document).on('ready', function() {
 $ (document).on('ready', function() {
 
     $('.header-mobile__menu').on('click', function() {
-        $(this).toggleClass('active');
-
-        if($(this).hasClass('active')) {
-            $('.hamburger-mobile').addClass('active');
-            $("body").css({'overflow': 'hidden', 'position': 'fixed', 'width': '100vw'});
-        } else {
-            $('.hamburger-mobile').removeClass('active');
-        }
-        
-        return false;
+        $('.hamburger-mobile').addClass('active');
+        $('.perspective').addClass('active');
+        $('.hamburger-mobile__close').addClass('active');
+        $('.hamburger-mobile__content').addClass('active');     
     });
 
     $(document).click(function(event) {
         if ($(event.target).closest(".hamburger-mobile, .header-mobile__menu").length) return;
         $('.hamburger-mobile').removeClass('active');
-        $("body").attr({'style':''});
+        $('.hamburger-mobile__close').removeClass('active');
+        $('.perspective').removeClass('active');
+        $('.hamburger-mobile__content').removeClass('active');
         event.stopPropagation();
     });
+
+    /*$(".hamburger-mobile").mCustomScrollbar();*/
 });

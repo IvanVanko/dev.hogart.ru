@@ -34,6 +34,8 @@ global $MESS;
     </div>
     </div>
 <?endif; ?>
+</div>
+</div>
 
 <div class="popup-cnt">
     <div class="inner-cnt" id="popup-os">

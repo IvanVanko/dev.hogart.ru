@@ -434,8 +434,7 @@ if ($section["DEPTH_LEVEL"] == 1): ?>
             $GLOBALS['CATALOG_CURRENT_SECTION_ID'] = $intSectionID;
             ?>
         </div>
-        <div class="col-md-3 col-sm-12">
-            <a href="#" class="filter-mobile__link js-filter-mobile" title="Фильтр"></a>
+        <div class="col-md-3">
             <?= $APPLICATION->GetViewContent("CATALOG_FILTER"); ?>
             <?= $APPLICATION->GetViewContent("CATALOG_SUBS"); ?>
         </div>
