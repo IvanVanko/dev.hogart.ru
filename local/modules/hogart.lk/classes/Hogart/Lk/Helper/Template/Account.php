@@ -14,6 +14,7 @@ use Hogart\Lk\Entity\AccountTable;
 class Account
 {
     protected static $account_id;
+    protected static $account;
 
     public static function isAuthorized()
     {
@@ -28,9 +29,16 @@ class Account
             $account = AccountTable::getAccountByUserID($USER->GetID());
             if (!empty($account)) {
                 self::$account_id = $account['id'];
+                self::$account = $account;
             }
         }
 
         return self::$account_id;
+    }
+
+    public static function getAccount()
+    {
+        self::getAccountId();
+        return self::$account;
     }
 }

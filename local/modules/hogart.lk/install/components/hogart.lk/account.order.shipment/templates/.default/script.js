@@ -121,7 +121,9 @@ $(function () {
       total += Math.round(el.total * 100) / 100;
     });
     total = Math.round(total * 100) / 100;
-    var max = $('[data-sale-max]', this).data('saleMax');
+    var max = parseFloat($('[data-sale-max]', this).data('saleMax') || 0);
+
+    console.log(max);
 
     $('[data-sale-selected]', this)
         .text($.fn.dataTable.render.number(' ', ',', 2, '', '').display(total))

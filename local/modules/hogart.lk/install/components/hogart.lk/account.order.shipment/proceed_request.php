@@ -201,7 +201,14 @@ if (!empty($_POST['action'])) {
 
                 OrderRTUTable::putTo1c($order_rtu_id);
 
+                $credit_contracts = [];
+
                 foreach ($orders as $order) {
+
+                    if ($order['c_is_credit']) {
+                        $credit_contracts[] = $order['contract_id'];
+                    }
+
                     OrderEventTable::add([
                         'entity_id' => $order_rtu_id,
                         'event' => OrderEventTable::ORDER_EVENT_ORDER_RTU_CREATE,
@@ -223,6 +230,18 @@ if (!empty($_POST['action'])) {
                     foreach ($accounts as $account) {
                         if ($account['a_id'] == $arParams['account']['id']) continue;
                         FlashMessagesTable::addNewMessage($account['a_id'], $message);
+                    }
+                }
+
+                foreach ($credit_contracts as $credit_contract_id) {
+                    $credit_orders = OrderTable::getByAccount(\Hogart\Lk\Helper\Template\Account::getAccountId(), null, OrderTable::STATE_NORMAL, [
+                        '=contract.id' => $credit_contract_id,
+                    ]);
+
+                    foreach ($credit_orders as $credit_order) {
+                        OrderTable::update($credit_order['id'], [
+                            'is_actual' => false
+                        ]);
                     }
                 }
 

@@ -41,7 +41,7 @@ use Hogart\Lk\Entity\OrderTable;
                     <div class="row spacer">
                         <div class="col-sm-12">
                             <? foreach ($orders as $order): ?>
-                                <div class="row spacer-20 order-line <?= ($order['sale_granted'] && $order['sale_max_money'] > 0 ? '' : 'sale-granted') ?>" data-order="<?= $order['id'] ?>" data-company="<?= $order['co_id'] ?>">
+                                <div class="row spacer-20 order-line <?= ($order['sale_granted'] && OrderTable::isMaxMoneyValid($order) ? '' : 'sale-granted') ?>" data-order="<?= $order['id'] ?>" data-company="<?= $order['co_id'] ?>">
                                     <div class="col-sm-12">
                                         <script>
                                             addresses = $.extend(addresses, <?= \CUtil::PhpToJSObject($order['addresses']) ?> || {});
@@ -51,7 +51,7 @@ use Hogart\Lk\Entity\OrderTable;
                                                 <div>
                                                     <div class="checkbox-title">
                                                         <div class="checkbox checkbox-primary">
-                                                            <input type="checkbox" <?= ($order['sale_granted'] && $order['sale_max_money'] > 0 ? '' : 'checked="checked"')?>>
+                                                            <input type="checkbox" <?= ($order['sale_granted'] && OrderTable::isMaxMoneyValid($order) ? '' : 'checked="checked"')?>>
                                                             <label></label>
                                                         </div>
                                                         <h4>
@@ -64,12 +64,12 @@ use Hogart\Lk\Entity\OrderTable;
                                                 </div>
                                             </div>
                                             <div class="col-sm-4 pull-right text-right">
-                                                <? if ($order['sale_granted'] && $order['sale_max_money'] > 0): ?>
+                                                <? if ($order['sale_granted'] && OrderTable::isMaxMoneyValid($order)): ?>
                                                     <div class="h5">
                                                         <div>
                                                             Доступна отгрузка на сумму
-                                                            <span data-sale-max="<?= $order['sale_max_money'] ?>" data-order="<?= $order['id'] ?>" class="money-<?= strtolower($order['currency']['CURRENCY']) ?>">
-                                                                <?= Money::show($order['sale_max_money']) ?>
+                                                            <span data-sale-max="<?= Money::show(OrderTable::maxMoneySale($order)) ?>" data-order="<?= $order['id'] ?>" class="money-<?= strtolower($order['currency']['CURRENCY']) ?>">
+                                                                <?= Money::show(OrderTable::maxMoneySale($order)) ?>
                                                             </span>
                                                         </div>
                                                         <div>
@@ -121,7 +121,7 @@ use Hogart\Lk\Entity\OrderTable;
                                                                     </thead>
                                                                     <tbody>
                                                                     <? foreach ($items as $k => $item): ?>
-                                                                        <tr class="<?= ($order['sale_granted'] && $order['sale_max_money'] > 0 ? '' : 'selected')?>" id="<?= $item['id'] ?>" data-default-count="<?= max(1, (int)$item['props']['default_count']['VALUE']) ?>" data-company="<?= $order['co_id'] ?>" data-order="<?= $order['id'] ?>">
+                                                                        <tr class="<?= ($order['sale_granted'] && OrderTable::isMaxMoneyValid($order) ? '' : 'selected')?>" id="<?= $item['id'] ?>" data-default-count="<?= max(1, (int)$item['props']['default_count']['VALUE']) ?>" data-company="<?= $order['co_id'] ?>" data-order="<?= $order['id'] ?>">
                                                                             <td><?= ($k + 1) ?></td>
                                                                             <td></td>
                                                                             <td class="text-nowrap"><?= $item['props']['sku']['VALUE'] ?></td>

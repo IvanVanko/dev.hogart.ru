@@ -85,7 +85,7 @@ use Hogart\Lk\Entity\OrderItemTable;
         <? endif; ?>
     </div>
     <div class="col-sm-2">
-        <? if ($order['sale_granted'] && $order['state'] == OrderTable::STATE_NORMAL && OrderTable::isProvideShipmentFlag($order['shipment_flag'], OrderItemTable::STATUS_IN_RESERVE)): ?>
+        <? if ($order['is_actual'] && $order['sale_granted'] && (!$order['c_is_credit'] || ($order['c_is_credit'] && OrderTable::isMaxMoneyValid($order))) && $order['state'] == OrderTable::STATE_NORMAL && OrderTable::isProvideShipmentFlag($order['shipment_flag'], OrderItemTable::STATUS_IN_RESERVE)): ?>
             <a href="/account/orders/shipment/<?= $order['s_XML_ID'] ?>/" class="btn btn-primary">Отгрузить</a>
         <? endif; ?>
     </div>
