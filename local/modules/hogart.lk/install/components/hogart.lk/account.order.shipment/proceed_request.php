@@ -233,18 +233,6 @@ if (!empty($_POST['action'])) {
                     }
                 }
 
-                foreach ($credit_contracts as $credit_contract_id) {
-                    $credit_orders = OrderTable::getByAccount(\Hogart\Lk\Helper\Template\Account::getAccountId(), null, OrderTable::STATE_NORMAL, [
-                        '=contract.id' => $credit_contract_id,
-                    ]);
-
-                    foreach ($credit_orders as $credit_order) {
-                        OrderTable::update($credit_order['id'], [
-                            'is_actual' => false
-                        ]);
-                    }
-                }
-
                 $DB->Commit();
 
                 new FlashSuccess("Создана заявка на отгрузку");
