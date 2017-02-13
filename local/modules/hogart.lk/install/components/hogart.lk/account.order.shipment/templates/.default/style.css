@@ -308,6 +308,18 @@ input[type="radio"] .styled:checked + label::after {
   flex-direction: row;
   align-items: center;
 }
+[data-store] .money-:after {
+  padding-left: 5px;
+  content: "\20bd";
+}
+[data-store] .money-rub:after {
+  padding-left: 5px;
+  content: "\20bd";
+}
+[data-store] .money-eur:before {
+  padding-right: 5px;
+  content: "€";
+}
 .order-line .title input {
   margin: 0;
   margin-right: 5px;

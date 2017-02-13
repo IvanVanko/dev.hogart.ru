@@ -35,13 +35,34 @@ use Hogart\Lk\Entity\OrderTable;
                 <div class="col-sm-9">
                     <div class="row spacer">
                         <div class="col-sm-12">
-                            <h4>Выберите позиции для отгрузки со склада <abbr title="<?= $arResult['stores'][$store]['ADDRESS'] ?>"><?= $arResult['stores'][$store]['TITLE'] ?></abbr></h4>
+                            <h4>Выберите позиции для отгрузки со склада
+                                <abbr title="<?= $arResult['stores'][$store]['ADDRESS'] ?>"><?= $arResult['stores'][$store]['TITLE'] ?></abbr>
+                            </h4>
+                            <div class="h5">
+                                <?
+                                $account_limit = floatval(\Hogart\Lk\Helper\Template\Account::getAccount()['sale_max_money']);
+                                ?>
+                                Кредитный лимит по аккаунту
+                                <span data-account-credit-limit="<?= $account_limit ?>"
+                                      class="money-rub"
+                                >
+                                    <?= Money::show($account_limit) ?>
+                                </span>
+                                (<span data-account-sale-selected class="money-rub">
+                                    0
+                                </span>)
+                            </div>
                         </div>
                     </div>
                     <div class="row spacer">
                         <div class="col-sm-12">
                             <? foreach ($orders as $order): ?>
-                                <div class="row spacer-20 order-line <?= ($order['sale_granted'] && OrderTable::isMaxMoneyValid($order) ? '' : 'sale-granted') ?>" data-order="<?= $order['id'] ?>" data-company="<?= $order['co_id'] ?>">
+                                <div class="row spacer-20 order-line"
+                                     data-order="<?= $order['id'] ?>"
+                                     data-credit="<?= $order['c_is_credit'] ?>"
+                                     data-company="<?= $order['co_id'] ?>"
+                                     data-contract-id="<?= $order['c_id'] ?>"
+                                >
                                     <div class="col-sm-12">
                                         <script>
                                             addresses = $.extend(addresses, <?= \CUtil::PhpToJSObject($order['addresses']) ?> || {});
@@ -51,7 +72,7 @@ use Hogart\Lk\Entity\OrderTable;
                                                 <div>
                                                     <div class="checkbox-title">
                                                         <div class="checkbox checkbox-primary">
-                                                            <input type="checkbox" <?= ($order['sale_granted'] && OrderTable::isMaxMoneyValid($order) ? '' : 'checked="checked"')?>>
+                                                            <input type="checkbox">
                                                             <label></label>
                                                         </div>
                                                         <h4>
@@ -61,15 +82,28 @@ use Hogart\Lk\Entity\OrderTable;
                                                     </div>
                                                     <div><?= $order['co_name'] ?></div>
                                                     <div><?= ContractTable::showName($order, false, 'c_') ?></div>
+                                                    <? if (!empty($order['c_is_credit'])) :?>
+                                                    <div class="h5">
+                                                        Кредитный лимит по договору
+                                                        <span data-contract-credit-limit="<?= floatval($order['c_sale_max_money']) ?>"
+                                                              class="money-<?= strtolower($order['c_currency_code']) ?>"
+                                                        >
+                                                            <?= Money::show($order['c_sale_max_money']) ?>
+                                                        </span>
+                                                        (<span data-contract-sale-selected data-order="<?= $order['id'] ?>" class="money-<?= strtolower($order['currency']['CURRENCY']) ?>">
+                                                            0
+                                                        </span>)
+                                                    </div>
+                                                    <? endif; ?>
                                                 </div>
                                             </div>
                                             <div class="col-sm-4 pull-right text-right">
-                                                <? if ($order['sale_granted'] && OrderTable::isMaxMoneyValid($order)): ?>
+                                                <? if ($order['sale_granted']): ?>
                                                     <div class="h5">
                                                         <div>
                                                             Доступна отгрузка на сумму
-                                                            <span data-sale-max="<?= Money::show(OrderTable::maxMoneySale($order)) ?>" data-order="<?= $order['id'] ?>" class="money-<?= strtolower($order['currency']['CURRENCY']) ?>">
-                                                                <?= Money::show(OrderTable::maxMoneySale($order)) ?>
+                                                            <span data-sale-max="<?= $order['sale_max_money'] ?>" data-order="<?= $order['id'] ?>" class="money-<?= strtolower($order['currency']['CURRENCY']) ?>">
+                                                                <?= Money::show($order['sale_max_money']) ?>
                                                             </span>
                                                         </div>
                                                         <div>
@@ -121,7 +155,7 @@ use Hogart\Lk\Entity\OrderTable;
                                                                     </thead>
                                                                     <tbody>
                                                                     <? foreach ($items as $k => $item): ?>
-                                                                        <tr class="<?= ($order['sale_granted'] && OrderTable::isMaxMoneyValid($order) ? '' : 'selected')?>" id="<?= $item['id'] ?>" data-default-count="<?= max(1, (int)$item['props']['default_count']['VALUE']) ?>" data-company="<?= $order['co_id'] ?>" data-order="<?= $order['id'] ?>">
+                                                                        <tr class="" id="<?= $item['id'] ?>" data-default-count="<?= max(1, (int)$item['props']['default_count']['VALUE']) ?>" data-company="<?= $order['co_id'] ?>" data-order="<?= $order['id'] ?>">
                                                                             <td><?= ($k + 1) ?></td>
                                                                             <td></td>
                                                                             <td class="text-nowrap"><?= $item['props']['sku']['VALUE'] ?></td>

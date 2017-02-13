@@ -14,11 +14,14 @@ use Hogart\Lk\Entity\AddressTypeTable;
 use Hogart\Lk\Entity\ContactInfoTable;
 use Hogart\Lk\Entity\ContactTable;
 use Hogart\Lk\Entity\ContactRelationTable;
+use Hogart\Lk\Entity\ContractTable;
 use Hogart\Lk\Entity\FlashMessagesTable;
 use Hogart\Lk\Entity\OrderRTUTable;
 use Hogart\Lk\Entity\OrderTable;
 use Hogart\Lk\Entity\OrderRTUItemTable;
 use Hogart\Lk\Entity\OrderEventTable;
+
+use Hogart\Lk\Helper\Template\Account;
 
 use Hogart\Lk\Helper\Template\FlashSuccess;
 use Hogart\Lk\Helper\Template\FlashError;
@@ -159,13 +162,22 @@ if (!empty($_POST['action'])) {
                 }, []);
 
                 $orders = [];
-                $sale_max = [];
+                $contracts = [];
+                $account_max = Account::getAccount()['sale_max_money'];
+                $account_sale_max = 0;
+                $contract_sale_max = [];
+                $order_sale_max = [];
                 foreach ($items as $item_id => $item) {
                     if (empty($orders[$item['order_id']])) {
                         $orders[$item['order_id']] = OrderTable::getRowById($item['order_id']);
                     }
 
+                    if (empty($contracts[$orders[$item['order_id']]['contract_id']])) {
+                        $contracts[$orders[$item['order_id']]['contract_id']] = ContractTable::getRowById($orders[$item['order_id']]['contract_id']);
+                    }
+
                     $order = $orders[$item['order_id']];
+                    $contract = $contracts[$orders[$item['order_id']]['contract_id']];
 
                     $result = OrderRTUItemTable::addItem([
                         'order_rtu_id' => $order_rtu_id,
@@ -186,16 +198,33 @@ if (!empty($_POST['action'])) {
                         LocalRedirect($APPLICATION->GetCurPage(false));
                     }
 
-                    $sale_max[$item['order_id']] += $result->getData()['total'];
+                    $t = $result->getData()['total'];
 
-                    if ($order['sale_granted'] && $order['sale_max_money'] > 0 && $order['sale_max_money'] < $sale_max[$item['order_id']]) {
+                    if ($contract['is_credit']) {
+                        $contract_sale_max[$contract['id']] += $t;
+                        $account_sale_max += $t;
+                    }
+
+                    $order_sale_max[$item['order_id']] += $t;
+
+                    if (!$order['sale_granted'] || $order['sale_max_money'] <= 0 || $order['sale_max_money'] < $order_sale_max[$item['order_id']]) {
                         $DB->Rollback();
                         new FlashError("Запрет на создание заявки на отгрузку: <b><u>превышена возможная сумма</u></b>", 0);
                         LocalRedirect($APPLICATION->GetCurPage(false));
                     }
+
+                    if ($contract['is_credit'] && ($contract_sale_max[$contract['id']] > $contract['sale_max_money'] || $account_sale_max > $account_max)) {
+                        $DB->Rollback();
+                        $message = "Запрет на создание заявки на отгрузку: <b><u>превышена сумма кредита " . (
+                            $contract_sale_max[$contract['id']] > $contract['sale_max_money'] ? "по договору" : "по аккаунту"
+                            ) . "</u></b>";
+                        new FlashError($message, 0);
+                        LocalRedirect($APPLICATION->GetCurPage(false));
+                    }
+
                     OrderTable::resort($item['order_id']);
                     OrderTable::update($item['order_id'], [
-                        'sale_max_money' => $order['sale_max_money'] - $sale_max[$item['order_id']]
+                        'sale_max_money' => $order['sale_max_money'] - $order_sale_max[$item['order_id']]
                     ]);
                 }
 
@@ -232,6 +261,7 @@ if (!empty($_POST['action'])) {
                         FlashMessagesTable::addNewMessage($account['a_id'], $message);
                     }
                 }
+
 
                 $DB->Commit();
 
