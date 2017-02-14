@@ -31,9 +31,6 @@ use Hogart\Lk\Helper\Template\Money;
         <div><?= $order['co_name'] ?></div>
         <div><?= ContractTable::showName($order, false, 'c_') ?></div>
         <div>Отгрузка со склада: <u><?= $order['s_TITLE'] ?></u> </div>
-        <? if ($order['c_is_credit']): ?>
-        <div>Остаток кредит-лимита по договору: <span class="money<?= ($order['c_currency_code'] == "RUB" ? "" : "-eur") ?>"><?= Money::show($order['c_sale_max_money']) ?></span></div>
-        <? endif; ?>
     </div>
     <div class="col-sm-3">
         <div class="h5">Общая сумма: <abbr title="Общая сумма по заказу"><span class="money<?= ($order['c_currency_code'] == "RUB" ? "" : "-eur") ?>"><?= number_format((float)$order['totals']['items'], 2, '.', ' ') ?></span></abbr></div>
@@ -75,6 +72,9 @@ use Hogart\Lk\Helper\Template\Money;
 <div class="row spacer-20">
     <div class="col-sm-6">
         <?= $APPLICATION->GetViewContent('shipment-view-part') ?>
+        <? if ($order['c_is_credit']): ?>
+            <div style="font-weight: bold">Остаток кредит-лимита по договору: <span class="money<?= ($order['c_currency_code'] == "RUB" ? "" : "-eur") ?>"><?= Money::show($order['c_sale_max_money']) ?></span></div>
+        <? endif; ?>
     </div>
     <div class="col-sm-3">
         <? if ($order['guid_id'] && $order['state'] == OrderTable::STATE_NORMAL && $order['totals']['release']): ?>
