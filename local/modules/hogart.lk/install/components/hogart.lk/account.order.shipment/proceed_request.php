@@ -9,6 +9,7 @@
  */
 
 use Bitrix\Main\Type\Date;
+use Hogart\Lk\Entity\AccountTable;
 use Hogart\Lk\Entity\AddressTable;
 use Hogart\Lk\Entity\AddressTypeTable;
 use Hogart\Lk\Entity\ContactInfoTable;
@@ -227,6 +228,20 @@ if (!empty($_POST['action'])) {
                     OrderTable::resort($item['order_id']);
                     OrderTable::update($item['order_id'], [
                         'sale_max_money' => $order['sale_max_money'] - $order_sale_max[$item['order_id']]
+                    ]);
+                }
+
+                foreach ($contract_sale_max as $contract_id => $sale_max_money) {
+                    if ($sale_max_money > 0) {
+                        ContractTable::update($contract_id, [
+                            'sale_max_money' => max(0, $contracts[$contract_id]['sale_max_money'] - $sale_max_money)
+                        ]);
+                    }
+                }
+
+                if ($account_sale_max > 0) {
+                    AccountTable::update(Account::getAccountId(), [
+                        'sale_max_money' => max(0, $account_max - $account_sale_max)
                     ]);
                 }
 
