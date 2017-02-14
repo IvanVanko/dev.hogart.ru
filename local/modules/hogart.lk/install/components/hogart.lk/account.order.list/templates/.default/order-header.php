@@ -8,6 +8,7 @@
 use Hogart\Lk\Entity\OrderTable;
 use Hogart\Lk\Entity\ContractTable;
 use Hogart\Lk\Entity\OrderItemTable;
+use Hogart\Lk\Helper\Template\Money;
 
 ?>
 <div class="row spacer-20 order-line__header">
@@ -30,6 +31,9 @@ use Hogart\Lk\Entity\OrderItemTable;
         <div><?= $order['co_name'] ?></div>
         <div><?= ContractTable::showName($order, false, 'c_') ?></div>
         <div>Отгрузка со склада: <u><?= $order['s_TITLE'] ?></u> </div>
+        <? if ($order['c_is_credit']): ?>
+        <div>Остаток кредит-лимита по договору: <span class="money<?= ($order['c_currency_code'] == "RUB" ? "" : "-eur") ?>"><?= Money::show($order['c_sale_max_money']) ?></span></div>
+        <? endif; ?>
     </div>
     <div class="col-sm-3">
         <div class="h5">Общая сумма: <abbr title="Общая сумма по заказу"><span class="money<?= ($order['c_currency_code'] == "RUB" ? "" : "-eur") ?>"><?= number_format((float)$order['totals']['items'], 2, '.', ' ') ?></span></abbr></div>
