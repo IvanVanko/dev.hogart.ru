@@ -50,6 +50,7 @@ if (!empty($_POST['action'])) {
                 'is_sms_notify' => (bool)$_POST['is_sms_notify'],
                 'is_email_notify' => (bool)$_POST['is_email_notify'],
                 'status' => OrderRTUTable::STATUS_ACTIVE,
+                'refuse_reason' => "",
                 'note' => (string)$_POST['comment']
             ];
 
