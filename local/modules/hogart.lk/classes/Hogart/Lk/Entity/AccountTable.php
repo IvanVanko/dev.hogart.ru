@@ -62,7 +62,9 @@ class AccountTable extends AbstractEntity
             new IntegerField("main_contract_id"),
             new ReferenceField("main_contract", __NAMESPACE__ . "\\ContractTable", ["=this.main_contract_id" => "ref.id"]),
 
-            new FloatField("sale_max_money"),
+            new FloatField("sale_max_money", [
+                'default_value' => 0
+            ]),
 
             new BooleanField("is_promo_accesss"),
             new BooleanField("is_active")

@@ -118,7 +118,7 @@ class Account extends AbstractMethod
                 'main_store_id' => $main_store['ID'] ?: 0,
                 'head_account_id' => $head_account['id'] ?: 0,
                 'main_contract_id' => $main_contract['id'] ?: 0,
-                'sale_max_money' => $accountInfo->Acc_Max_Monet_Sale,
+                'sale_max_money' => (float)$accountInfo->Acc_Max_Monet_Sale,
                 'is_promo_accesss' => $accountInfo->Acc_PromoAccess,
                 'is_active' => !$accountInfo->deletion_mark
             ], 'user_guid_id');
