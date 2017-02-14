@@ -104,7 +104,7 @@ class Contract extends AbstractMethod
                 'perm_card' => (bool)$contract->Contr_Perm_Card,
                 'perm_cash' => (bool)$contract->Contr_Perm_Cash,
                 'is_credit' => (bool)$contract->Contr_Credit,
-                'sale_max_money' => (float)$contract->Order_Max_Monet_Sale,
+                'sale_max_money' => (float)$contract->Contr_Max_Monet_Sale,
                 'cash_control' => (bool)$contract->Contr_Cash_Control,
                 'cash_limit' => intval($contract->Contr_Limit_Cash),
                 'deferral' => intval($contract->Contr_Defferal),
