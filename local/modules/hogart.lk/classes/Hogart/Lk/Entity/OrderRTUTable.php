@@ -219,6 +219,9 @@ class OrderRTUTable extends AbstractEntity implements IOrderEventNote, IExchange
     public static function getOrderEventNote($entity_id, $event)
     {
         $order_rtu = self::getRTUOrder($entity_id);
+
+        if (!$order_rtu['is_active']) return null;
+
         $note = new OrderEventNote(
             self::showName($order_rtu)
         );
