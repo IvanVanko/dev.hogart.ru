@@ -112,6 +112,14 @@ class OrderRTUTable extends AbstractEntity implements IOrderEventNote, IExchange
         ];
     }
 
+    public static function getStatusText($status)
+    {
+        return [
+            self::STATUS_ACTIVE => "Активна",
+            self::STATUS_CANCEL => "Отклонена",
+        ][$status];
+    }
+
     public static function getDeliveryTypeText($delivery)
     {
         return [
