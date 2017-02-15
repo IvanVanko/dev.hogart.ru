@@ -25,7 +25,7 @@ $_items = $items;
 <? if ($order_rtu['status'] == OrderRTUTable::STATUS_CANCEL): ?>
     <div class="row">
         <div class="col-sm-12 h5">
-            <b>Причина отклонение:</b>
+            <b>Причина отклонения:</b>
             <?= $order_rtu['refuse_reason'] ?>
         </div>
     </div>
