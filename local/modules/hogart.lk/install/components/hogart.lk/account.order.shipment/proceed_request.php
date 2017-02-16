@@ -52,7 +52,8 @@ if (!empty($_POST['action'])) {
                 'is_email_notify' => (bool)$_POST['is_email_notify'],
                 'status' => OrderRTUTable::STATUS_ACTIVE,
                 'refuse_reason' => "",
-                'note' => (string)$_POST['comment']
+                'note' => (string)$_POST['comment'],
+                'is_active' => true
             ];
 
             if (!empty($_POST['new_address'])) {
