@@ -443,18 +443,22 @@ use Bitrix\Main\EventManager;
                                                 <?= $create_order_button ?>
                                             </li>
                                             <? endif; ?>
-                                            <li data-clear>
-                                                <i class="fa fa-li fa-remove fa-lg text-danger" aria-hidden="true"></i>
+
+
+                                            <li data-delete-button>
+                                                <i class="fa fa-li fa-trash fa-lg text-danger" aria-hidden="true"></i>
                                                 <?= Ajax::Link(
-                                                    'Очистить',
+                                                    'Удалить выбранные товары',
                                                     'carts',
                                                     $carts_node->getId(),
                                                     [
                                                         'cart_id' => $cart['guid_id'],
-                                                        'action' => 'clear',
-                                                        'item' => null,
+                                                        'item' => 'javascript:function(element) { return getSelectedCartRows(element); } ',
+                                                        'action' => 'delete_items',
                                                         'new_item_group' => null,
-                                                        'copy' => null
+                                                        'quantity' => null,
+                                                        'item_id' => null,
+                                                        'new_order' => null
                                                     ]
                                                 ) ?>
                                             </li>
@@ -476,6 +480,22 @@ use Bitrix\Main\EventManager;
                                                     ) ?>
                                                 </li>
                                             <? endif; ?>
+                                            <li data-clear>
+                                                <i class="fa fa-li fa-remove fa-lg text-danger" aria-hidden="true"></i>
+                                                <?= Ajax::Link(
+                                                    'Удалить все товары',
+                                                    'carts',
+                                                    $carts_node->getId(),
+                                                    [
+                                                        'cart_id' => $cart['guid_id'],
+                                                        'action' => 'clear',
+                                                        'item' => null,
+                                                        'new_item_group' => null,
+                                                        'copy' => null
+                                                    ]
+                                                ) ?>
+                                            </li>
+                                            <br>
                                             <li data-reload>
                                                 <i class="fa fa-li fa-refresh fa-lg text-primary" aria-hidden="true"></i>
                                                 <?= Ajax::Link(
