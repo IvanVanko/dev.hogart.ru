@@ -72,6 +72,13 @@ use Hogart\Lk\Helper\Template\Money;
 <div class="row spacer-20">
     <div class="col-sm-6">
         <?= $APPLICATION->GetViewContent('shipment-view-part') ?>
+
+        <? if (!empty($order['block_reason'])): ?>
+            <div style="font-weight: bold" class="text-danger">
+                <?= $order['block_reason'] ?>
+            </div>
+        <? endif; ?>
+
         <? if ($order['c_is_credit']): ?>
             <div style="font-weight: bold">Остаток кредит-лимита по договору: <span class="money<?= ($order['c_currency_code'] == "RUB" ? "" : "-eur") ?>"><?= Money::show($order['c_sale_max_money']) ?></span></div>
         <? endif; ?>
