@@ -19,7 +19,7 @@ $_items = $items;
 <div class="row">
     <div class="col-sm-12 h5">
         <b>Статус:</b>
-        <?= OrderRTUTable::getDeliveryTypeText($order_rtu['delivery_type'])?>
+        <?= OrderRTUTable::getStatusText($order_rtu['status'])?>
     </div>
 </div>
 <? if ($order_rtu['status'] == OrderRTUTable::STATUS_CANCEL): ?>
