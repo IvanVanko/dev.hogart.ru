@@ -72,13 +72,6 @@ use Hogart\Lk\Helper\Template\Money;
 <div class="row spacer-20">
     <div class="col-sm-6">
         <?= $APPLICATION->GetViewContent('shipment-view-part') ?>
-
-        <? if (!empty($order['block_reason'])): ?>
-            <div style="font-weight: bold" class="text-danger">
-                <?= $order['block_reason'] ?>
-            </div>
-        <? endif; ?>
-
         <? if ($order['c_is_credit']): ?>
             <div style="font-weight: bold">Остаток кредит-лимита по договору: <span class="money<?= ($order['c_currency_code'] == "RUB" ? "" : "-eur") ?>"><?= Money::show($order['c_sale_max_money']) ?></span></div>
         <? endif; ?>
@@ -98,6 +91,10 @@ use Hogart\Lk\Helper\Template\Money;
     <div class="col-sm-2">
         <? if ($order['is_actual'] && $order['sale_granted'] && ((!$order['c_is_credit'] && $order['sale_max_money'] > 0) || ($order['c_is_credit'] && OrderTable::isMaxMoneyValid($order))) && $order['state'] == OrderTable::STATE_NORMAL && OrderTable::isProvideShipmentFlag($order['shipment_flag'], OrderItemTable::STATUS_IN_RESERVE)): ?>
             <a href="/account/orders/shipment/<?= $order['s_XML_ID'] ?>/" class="btn btn-primary">Отгрузить</a>
+        <? elseif (!empty($order['block_reason'])): ?>
+            <div style="font-weight: bold" class="text-danger">
+                <?= $order['block_reason'] ?>
+            </div>
         <? endif; ?>
     </div>
 </div>
