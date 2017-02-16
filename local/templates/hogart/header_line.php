@@ -97,7 +97,7 @@ $authorized = $USER->IsAuthorized();
             <label for="input_search" class="header-mobile__search-label">
                 <img src="/images/header-search.svg" />
             </label>
-            <input id="input_search" class="header-mobile__search-input" />
+            <input id="input_search" class="header-mobile__search-input active" placeholder="Артикул или наименование..." />
         </div>
         <? if ($authorized) {?>
             <? $APPLICATION->IncludeComponent("hogart.lk:account.cart.add", "mobile", [

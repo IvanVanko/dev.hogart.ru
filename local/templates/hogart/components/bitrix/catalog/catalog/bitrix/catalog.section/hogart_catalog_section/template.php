@@ -32,7 +32,8 @@ use \Hogart\Lk\Helper\Template\Account;
 </div>
 <? endif; ?>
 <ul class="row perechen-produts js-target-perechen <?=$arParams['VIEW_TYPE']?> <? if ($arParams["IS_TABLE_VIEW"]): ?>table-view<? endif; ?>">
-<? $collectionId = null; $brandId = null; $table_sort = null; $sectionId = null; ?>
+<? $collectionId = null; $brandId = null; $table_sort = null; $sectionId = null;
+$mobileHtml = ($arParams["IS_TABLE_VIEW"]) ? '<div class="col-md-9 collection-table-mobile"><ul class="row perechen-produts js-target-perechen list ">' : '<div class="col-md-9"><ul class="row perechen-produts js-target-perechen list ">'; ?>
 <? foreach ($arResult["ITEMS"] as $i => $arItem):?>
         <?
         $rsFile = CFile::GetByID($arItem['PROPERTIES']['photos']['VALUE'][0]);
@@ -42,6 +43,7 @@ use \Hogart\Lk\Helper\Template\Account;
     <? if ($arParams["IS_TABLE_VIEW"]): ?>
         <? if (!empty($collectionId) && $collectionId != $arItem["PROPERTIES"]["collection"]["VALUE"]): ?>
             </ul></div>
+            <?= $mobileHtml . '</ul></div>'; $mobileHtml = '<div class="col-md-9 collection-table-mobile"><ul class="row perechen-produts js-target-perechen list ">'; ?>
             <!-- закрываем блок коллекции <?= $collectionId ?> -->
             <?  $collectionId = null; $table_sort = null; ?>
         <? endif; ?>
@@ -101,7 +103,8 @@ use \Hogart\Lk\Helper\Template\Account;
             ?>
 
             <? if ($brand_block): ?>
-            </ul>
+                </ul>
+            </div>
             <!-- конец блока товаров без коллекции -->
             <? $brand_block = false; ?>
             <? endif; ?>
@@ -274,12 +277,14 @@ use \Hogart\Lk\Helper\Template\Account;
             </span>
         </li>
 
-    <? else: ?>
+    <? //else: ?>
+    <? endif; ?>
+        <? if ($arParams["IS_TABLE_VIEW"]) {ob_start();} ?>
         <? if($sectionId != $arItem["~IBLOCK_SECTION_ID"] && $arParams["DEPTH_LEVEL"] == 2 && !$arParams["IS_FILTERED"]): ?>
-        <? if(null !== $sectionId): ?>
-        </ul>
-        <ul class="row perechen-produts js-target-perechen <?=$arParams['VIEW_TYPE']?> <? if ($arParams["IS_TABLE_VIEW"]): ?>table-view<? endif; ?>">
-        <? endif; ?>
+            <? if(null !== $sectionId): ?>
+                </ul>
+                <ul class="row perechen-produts js-target-perechen <?=$arParams['VIEW_TYPE']?> <? if ($arParams["IS_TABLE_VIEW"]): ?>table-view<? endif; ?>">
+            <? endif; ?>
         <li class="col-md-12 caption" data-section-id="<?= $arItem["~IBLOCK_SECTION_ID"] ?>" data-section-name="<?= $arResult["SUBS"][$arItem["~IBLOCK_SECTION_ID"]]["NAME"] ?>">
             <span>
                 <span class="section-name"><i class="fa"></i><?= $arResult["SUBS"][$arItem["~IBLOCK_SECTION_ID"]]["NAME"] ?></span>
@@ -292,20 +297,20 @@ use \Hogart\Lk\Helper\Template\Account;
         </li>
         <? $sectionId = $arItem["~IBLOCK_SECTION_ID"] ?>
         <? endif; ?>
-        
+
         <? if($arParams["DEPTH_LEVEL"] > 2 && $brandId != $arItem["PROPERTIES"]["brand"]["VALUE"] && !$arParams["IS_FILTERED"]): ?>
         <? if(null !== $brandId): ?>
         </ul>
         <ul class="row perechen-produts catalog-list js-target-perechen <?=$arParams['VIEW_TYPE']?> <? if ($arParams["IS_TABLE_VIEW"]): ?>table-view<? endif; ?>">
         <? endif; ?>
         <? $brandId = $arItem["PROPERTIES"]["brand"]["VALUE"]; ?>
-        
+
         <li class="col-md-12 col-sm-12 caption catalog-list__caption" data-brand-id="<?= $arItem["PROPERTIES"]["brand"]["VALUE"] ?>" data-brand-name="<?= $arResult["ALL_BRANDS"][$brandId]["NAME"] ?>">
             <span class="brand-name"><i class="fa"></i><?= $arResult["ALL_BRANDS"][$brandId]["NAME"] ?></span>
         </li>
         <? endif; ?>
-        
-        <li class="col-lg-3 col-md-4 col-sm-12" data-item-id="<?= $i ?>">
+
+        <li class="col-lg-3 col-md-4 col-sm-12 col-xs-12" data-item-id="<?= $i ?>">
             <div>
                 <span class="perechen-img">
                     <a href="<?= $arItem["DETAIL_PAGE_URL"] ?>">
@@ -513,12 +518,12 @@ use \Hogart\Lk\Helper\Template\Account;
                         <? endif; ?>
                         <div class="col-sm-12 col-md-4 catalog-list__button text-right pull-right">
                             <?= \Hogart\Lk\Helper\Template\Cart::Link(
-                                '<span class="btn__cart">Добавить в корзину</span><i class="fa fa-cart-plus" aria-hidden="true"></i>',
+                                '<span class="btn__cart">Добавить в корзину</span><i class="fa fa-cart-plus" aria-hidden="true"></i><span class="button-perechen">Купить</span>',
                                 [
                                     'item_id' => $arItem['ID'],
                                     'count' => '1'
                                 ],
-                                'class="black buy"'
+                                'class="black buy button-cart"'
                             ) ?>
                         </div>
                     </div>
@@ -541,7 +546,7 @@ use \Hogart\Lk\Helper\Template\Account;
                                 [
                                     'item_id' => $arItem['ID'],
                                 ],
-                                'class="black grid-hide ' . $class_pop . ' ' . $attr_pop . '"'
+                                'class="black grid-hide button-mobile ' . $class_pop . ' ' . $attr_pop . '"'
                             ) ?>
                         </div>
                     </div>
@@ -550,13 +555,15 @@ use \Hogart\Lk\Helper\Template\Account;
                 </div>
             </div>
         </li>
-    <? endif; ?>
+        <? if ($arParams["IS_TABLE_VIEW"]) {$mobileHtml .= ob_get_clean();} ?>
+    <? //endif; ?>
 
 <? endforeach; ?>
 
 <? if (!empty($collectionId) && $arParams["IS_TABLE_VIEW"]): ?>
     <!-- закрываем блок коллекции -->
     </ul></div>
+    <?= $mobileHtml . '</ul></div>'; unset($mobileHtml); ?>
     <? $collectionId = null; $table_sort = null; ?>
 <? endif; ?>
 
@@ -590,7 +597,7 @@ use \Hogart\Lk\Helper\Template\Account;
         <div class="row">
             <div class="col-md-12">
                 <a data-src-href="<?= $sub["SECTION_PAGE_URL"] ?>" href="javascript:void(0)" onclick="smartFilter.sectionFilter(this);"><?= $sub["NAME"] ?></a>
-            </div>    
+            </div>
         </div>
     <? endforeach; ?>
     </div>

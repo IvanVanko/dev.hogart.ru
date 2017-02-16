@@ -23,6 +23,7 @@ if (isset($templateData['TEMPLATE_THEME']))
 }
 ?>
 <div class="filter-mobile bx-filter <?=$templateData["TEMPLATE_CLASS"]?> <?if ($arParams["FILTER_VIEW_MODE"] == "HORIZONTAL") echo "bx-filter-horizontal"?>">
+	<a href="#" class="filter-mobile__link js-filter-mobile" title=""></a>
 	<div class="bx-filter-section container-fluid">
 		<form name="<?echo $arResult["FILTER_NAME"]."_form"?>" action="<?echo $arResult["FORM_ACTION"]?>" method="get" class="smartfilter">
 			<?foreach($arResult["HIDDEN"] as $arItem):?>
@@ -60,7 +61,7 @@ if (isset($templateData['TEMPLATE_THEME']))
 												type="text"
 												name="<?echo $arItem["VALUES"]["MIN"]["CONTROL_NAME"]?>"
 												id="<?echo $arItem["VALUES"]["MIN"]["CONTROL_ID"]?>"
-												value="<?echo $arItem["VALUES"]["MIN"]["HTML_VALUE"]?>"
+												value="<?echo (int) $arItem["VALUES"]["MIN"]["VALUE"]?>"
 												size="5"
 												onkeyup="smartFilter.keyup(this)"
 											/>
@@ -74,7 +75,7 @@ if (isset($templateData['TEMPLATE_THEME']))
 												type="text"
 												name="<?echo $arItem["VALUES"]["MAX"]["CONTROL_NAME"]?>"
 												id="<?echo $arItem["VALUES"]["MAX"]["CONTROL_ID"]?>"
-												value="<?echo $arItem["VALUES"]["MAX"]["HTML_VALUE"]?>"
+												value="<?echo (int) $arItem["VALUES"]["MAX"]["VALUE"]?>"
 												size="5"
 												onkeyup="smartFilter.keyup(this)"
 											/>
@@ -192,7 +193,7 @@ if (isset($templateData['TEMPLATE_THEME']))
 												type="text"
 												name="<?echo $arItem["VALUES"]["MIN"]["CONTROL_NAME"]?>"
 												id="<?echo $arItem["VALUES"]["MIN"]["CONTROL_ID"]?>"
-												value="<?echo $arItem["VALUES"]["MIN"]["HTML_VALUE"]?>"
+												value="<?echo $arItem["VALUES"]["MIN"]["VALUE"]?>"
 												size="5"
 												onkeyup="smartFilter.keyup(this)"
 											/>
@@ -206,7 +207,7 @@ if (isset($templateData['TEMPLATE_THEME']))
 												type="text"
 												name="<?echo $arItem["VALUES"]["MAX"]["CONTROL_NAME"]?>"
 												id="<?echo $arItem["VALUES"]["MAX"]["CONTROL_ID"]?>"
-												value="<?echo $arItem["VALUES"]["MAX"]["HTML_VALUE"]?>"
+												value="<?echo $arItem["VALUES"]["MAX"]["VALUE"]?>"
 												size="5"
 												onkeyup="smartFilter.keyup(this)"
 											/>
@@ -276,7 +277,7 @@ if (isset($templateData['TEMPLATE_THEME']))
 												type="text"
 												name="<?echo $arItem["VALUES"]["MIN"]["CONTROL_NAME"]?>"
 												id="<?echo $arItem["VALUES"]["MIN"]["CONTROL_ID"]?>"
-												value="<?echo $arItem["VALUES"]["MIN"]["HTML_VALUE"]?>"
+												value="<?echo $arItem["VALUES"]["MIN"]["VALUE"]?>"
 												size="5"
 												onkeyup="smartFilter.keyup(this)"
 												/>
@@ -290,7 +291,7 @@ if (isset($templateData['TEMPLATE_THEME']))
 												type="text"
 												name="<?echo $arItem["VALUES"]["MAX"]["CONTROL_NAME"]?>"
 												id="<?echo $arItem["VALUES"]["MAX"]["CONTROL_ID"]?>"
-												value="<?echo $arItem["VALUES"]["MAX"]["HTML_VALUE"]?>"
+												value="<?echo $arItem["VALUES"]["MAX"]["VALUE"]?>"
 												size="5"
 												onkeyup="smartFilter.keyup(this)"
 												/>
@@ -634,13 +635,13 @@ if (isset($templateData['TEMPLATE_THEME']))
 								name="set_filter"
 								value="<?=GetMessage("CT_BCSF_SET_FILTER")?>"
 							/>
-							<input
+							<button
 								class="btn btn-link"
 								type="submit"
 								id="del_filter"
 								name="del_filter"
 								value="<?=GetMessage("CT_BCSF_DEL_FILTER")?>"
-							/>
+							/> <?=GetMessage("CT_BCSF_DEL_FILTER")?>
 							<div class="bx-filter-popup-result <?if ($arParams["FILTER_VIEW_MODE"] == "VERTICAL") echo $arParams["POPUP_POSITION"]?>" id="modef" <?if(!isset($arResult["ELEMENT_COUNT"])) echo 'style="display:none"';?> style="display: inline-block;">
 								<?echo GetMessage("CT_BCSF_FILTER_COUNT", array("#ELEMENT_COUNT#" => '<span id="modef_num">'.intval($arResult["ELEMENT_COUNT"]).'</span>'));?>
 								<span class="arrow"></span>

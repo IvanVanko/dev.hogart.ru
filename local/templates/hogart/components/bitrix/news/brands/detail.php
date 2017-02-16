@@ -15,7 +15,7 @@ $this->setFrameMode(true);
 
 <? if (!empty($arResult["VARIABLES"]["ELEMENT_CODE"])): ?>
     <div class="row">
-        <div class="col-md-9 col-sm-12 brand-detail">
+        <div class="col-md-9 col-xs-12 brand-detail" id="accordion-brand">
             <?
             $ElementID = $APPLICATION->IncludeComponent(
                 "bitrix:news.detail",
@@ -72,7 +72,7 @@ $this->setFrameMode(true);
             );
             ?>
         </div>
-        <div class="col-md-3 brand-catalog__mobile">
+        <div class="col-md-3 col-xs-12 brand-catalog__mobile-hide">
             <? $APPLICATION->ShowViewContent("brand-catalog") ?>
         </div>
 <? else: ?>

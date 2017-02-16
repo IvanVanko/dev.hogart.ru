@@ -111,19 +111,19 @@ Loc::loadLanguageFile(__FILE__);
                         </a>
                         <ul id="hamburger-about-company" class="navigation-sub-menu collapse panel-collapse">
                             <li>
-                                <a href="/account/settings/" title="Акции">Акции</a>
+                                <a href="/stock/" title="Акции">Акции</a>
                             </li>
                             <li>
-                                <a href="#" title="Новости">Новости</a>
+                                <a href="/company/news/" title="Новости">Новости</a>
                             </li>
                             <li>
-                                <a href="#" title="Отзывы">Отзывы</a>
+                                <a href="/company/comments/" title="Отзывы">Отзывы</a>
                             </li>
                             <li>
-                                <a href="#" title="Контакты">Контакты</a>
+                                <a href="/contacts/tsentralnyy-ofis-khogart-v-moskve-sklad-i-servisnaya-sluzhba/" title="Контакты">Контакты</a>
                             </li>
                             <li>
-                                <a href="#" title="Вакансии">Вакансии</a>
+                                <a href="/company/jobs/" title="Вакансии">Вакансии</a>
                             </li>
                         </ul>
                     </li>
@@ -176,35 +176,44 @@ Loc::loadLanguageFile(__FILE__);
                     </li>
                     <li class="panel panel-default">
                         <a class="main-navigation__link" data-toggle="collapse" data-parent="#accordion-hamburger" href="#hamburger-solution" aria-expanded="false" title="Комплексные решения">
+                            <div class="image">
+                                <img src="/images/puzzle.svg" alt="" title="" />
+                            </div>
                             <span>Комплексные решения</span>
                         </a>
                         <ul id="hamburger-solution" class="navigation-sub-menu catalog-mobile--main panel-collapse collapse" "="" aria-expanded="false" style="">
                             <li class="catalog-mobile__column">
-                                <a href="#" title="Реализованные проекты">Реализованные проекты</a>
+                                <a href="/integrated-solutions/all_projects.php" title="Реализованные проекты">Реализованные проекты</a>
                             </li>
                         </ul>
                     </li>
                     <li class="panel panel-default">
                         <a class="main-navigation__link" data-toggle="collapse" data-parent="#accordion-hamburger" href="#hamburger-teaching" aria-expanded="false" title="Обучение">
+                            <div class="image">
+                                <img src="/images/open-book.svg" alt="" title="" />
+                            </div>
                             <span>Обучение</span>
                         </a>
                         <ul id="hamburger-teaching" class="navigation-sub-menu catalog-mobile--main panel-collapse collapse" "="" aria-expanded="false" style="">
                             <li class="catalog-mobile__column">
-                                <a href="#" title="Архив семинаров">Архив семинаров</a>
+                                <a href="/learn/archive-seminarov/" title="Архив семинаров">Архив семинаров</a>
                             </li>
                             <li class="catalog-mobile__column">
-                                <a href="#" title="Полезная информация">Полезная информация</a>
+                                <a href="/helpful-information/" title="Полезная информация">Полезная информация</a>
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <a href="#" title="Сервис">
+                        <a href="/services/" title="Сервис">
+                            <div class="image">
+                                <img src="/images/repairing-service.svg" alt="" title="" />
+                            </div>
                             <span>Сервис</span>
                         </a>
                     </li>
                     <?php if ($authorized) {?>
                         <li class="panel panel-default">
-                            <a class="main-navigation__link" data-toggle="collapse" data-parent="#accordion-main" href="#gamburger-lk" aria-expanded="false" title="Личный кабинет">
+                            <a class="main-navigation__link" data-toggle="collapse" data-parent="#accordion-hamburger" href="#gamburger-lk" aria-expanded="false" title="Личный кабинет">
                                 <div class="image">
                                     <img src="/images/navigation-6.svg" alt="" title="" />
                                 </div>
@@ -350,15 +359,15 @@ Loc::loadLanguageFile(__FILE__);
                 <div class="container-inner">
                     <ul class="main-navigation"  id="accordion-main" role="tablist" aria-multiselectable="true">
                         <li class="main-navigation__item">
-                            <a class="main-navigation__link" role="tab" data-toggle="collapse" data-parent="#accordion-main" href="#menu-about-company" aria-expanded="false" aria-controls="amenities" title="О компании">
+                            <a class="main-navigation__link" data-toggle="collapse" data-parent="#accordion-main" href="#menu-about-company" aria-expanded="false" title="О компании">
                                 <div class="image">
                                     <img src="/images/navigation-1.svg" alt="" title="" />
                                 </div>
                                 <span>О компании</span>
                             </a>
-                            <ul id="menu-about-company" role="tabpanel" class="navigation-sub-menu collapse panel-collapse">
+                            <ul id="menu-about-company" class="navigation-sub-menu collapse panel-collapse">
                                 <li>
-                                    <a class="not-line" href="/contacts/tsentralnyy-ofis-khogart-v-moskve-sklad-i-servisnaya-sluzhba/" title="Контакты">
+                                    <a class="not-line" title="Контакты" href="/contacts/tsentralnyy-ofis-khogart-v-moskve-sklad-i-servisnaya-sluzhba/">
                                         <div class="image">
                                             <img src="/images/navigation-2.svg" alt="" title="" />
                                         </div>
@@ -366,7 +375,6 @@ Loc::loadLanguageFile(__FILE__);
                                     </a>
                                 </li>
                             </ul>
-
                         </li>
 
                         <li class="main-navigation__item">
