@@ -552,23 +552,6 @@ use Bitrix\Main\EventManager;
                                                     ]
                                                 ) ?>
                                             </li>
-                                            <li data-delete-button>
-                                                <i class="fa fa-li fa-trash fa-lg text-danger" aria-hidden="true"></i>
-                                                <?= Ajax::Link(
-                                                    'Удалить строки',
-                                                    'carts',
-                                                    $carts_node->getId(),
-                                                    [
-                                                        'cart_id' => $cart['guid_id'],
-                                                        'item' => 'javascript:function(element) { return getSelectedCartRows(element); } ',
-                                                        'action' => 'delete_items',
-                                                        'new_item_group' => null,
-                                                        'quantity' => null,
-                                                        'item_id' => null,
-                                                        'new_order' => null
-                                                    ]
-                                                ) ?>
-                                            </li>
                                         </ul>
                                     </div>
                                 </div>
