@@ -442,6 +442,7 @@ use Bitrix\Main\EventManager;
                                             <li data-create-order-button>
                                                 <?= $create_order_button ?>
                                             </li>
+                                            <br><br>
                                             <? endif; ?>
 
 
@@ -495,7 +496,7 @@ use Bitrix\Main\EventManager;
                                                     ]
                                                 ) ?>
                                             </li>
-                                            <br>
+                                            <br><br>
                                             <li data-reload>
                                                 <i class="fa fa-li fa-refresh fa-lg text-primary" aria-hidden="true"></i>
                                                 <?= Ajax::Link(
