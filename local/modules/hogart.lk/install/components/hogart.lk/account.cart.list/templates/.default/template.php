@@ -443,6 +443,21 @@ use Bitrix\Main\EventManager;
                                                 <?= $create_order_button ?>
                                             </li>
                                             <? endif; ?>
+                                            <li data-clear>
+                                                <i class="fa fa-li fa-remove fa-lg text-danger" aria-hidden="true"></i>
+                                                <?= Ajax::Link(
+                                                    'Очистить',
+                                                    'carts',
+                                                    $carts_node->getId(),
+                                                    [
+                                                        'cart_id' => $cart['guid_id'],
+                                                        'action' => 'clear',
+                                                        'item' => null,
+                                                        'new_item_group' => null,
+                                                        'copy' => null
+                                                    ]
+                                                ) ?>
+                                            </li>
                                             <? if (!empty($cart['store_guid'])): ?>
                                                 <li data-store-check>
                                                     <i class="fa fa-li fa-remove fa-lg text-danger" aria-hidden="true"></i>
