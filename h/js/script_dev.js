@@ -57,4 +57,23 @@ $ (document).on('ready', function() {
         $('.header-mobile__search-input').removeClass('active');
         event.stopPropagation();
     });
-}); */       
+}); */ 
+
+$ (document).on('ready', function() {
+
+    $('.js-filter-stock-mobile').on('click', function() {
+        $('.filter-stock').toggleClass('active');
+        $('.filter-stock__link').toggleClass('active');
+        $('body').toggleClass('body-mobile');
+        return false;
+    });
+
+    $(document).click(function(event) {
+        if ($(event.target).closest(".filter-stock, .js-filter-stock-mobile").length) return;
+        $('.filter-stock').removeClass('active');
+        $('.filter-stock__link').removeClass('active');
+        $('body').removeClass('body-mobile');
+        event.stopPropagation();
+    });
+    $(".filter-stock").mCustomScrollbar();
+});

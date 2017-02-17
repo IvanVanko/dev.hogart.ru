@@ -3,7 +3,7 @@
 }
 ?>
 
-<div class="col-md-9">
+<div class="col-md-9 col-xs-12">
     <div class="row">
         <div class="col-md-10">
             <h3><?=\Bitrix\Main\Localization\Loc::getMessage("title_contacts")?></h3>

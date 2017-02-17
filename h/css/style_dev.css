@@ -107,7 +107,53 @@
     display: none;
 }
 
-@media (max-width: 768px) {
+.vacancy_page .creator-big .contact li {
+    margin-left: 0;
+}
+
+.vacancy_page .creator-big .contact li.phone {
+    margin-right: 15px;
+}
+
+.vacancy_page .creator-big .contact li a[href^="mailto:"]:before {
+    content: none;
+}
+
+.vacancy_page .creator-big .contact li a {
+    border-bottom: none;
+}
+
+.news_page .gallery-slider li {
+    padding: 0;
+    overflow: hidden;
+}
+
+.news_page .gallery-slider {
+    margin-bottom: 15px;
+}
+
+.controls {
+    float: right;
+}
+
+.company-page .sert-slider-cnt li .img-wrap {
+    width: 100%;
+}
+
+ .company-page .sert-slider-cnt li .img-wrap img {
+    width: 100%;
+    height: auto;
+}
+
+.learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover .content .inner a {
+    opacity: 0;
+}
+
+.learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover .content .inner a:hover {
+    opacity: 1;
+}
+
+@media(max-width: 768px) {
 
     .cart-counter2 {
         float: right;
@@ -115,6 +161,7 @@
 
     .share-mobile {
         display: block;
+        margin-bottom: 20px;
     }
 
     .share-mobile .pluso-more {
@@ -163,7 +210,8 @@
         display: none;
     }
 
-    body, .index-page {
+    body,
+    .index-page {
         height: 100% !important;
     }
 
@@ -979,11 +1027,19 @@
         height: 38px;
     }
 
-    .checkbox label {
-        position: relative;
+    .action_filter h3,
+    .filter-news h3 {
+        color: #fff;
     }
 
-    .checkbox .bx-filter-input-checkbox .bx-filter-param-text:before {
+    .checkbox label {
+        position: relative;
+        color: #fff;
+    }
+
+    .checkbox .bx-filter-input-checkbox .bx-filter-param-text:before,
+    .action_filter .checkbox:before,
+    .filter-news .checkbox:before {
         content:"";
         position: absolute;
         left: 0;
@@ -995,7 +1051,9 @@
         border-radius: 2px;
     }
 
-    .checkbox .bx-filter-input-checkbox input[type=checkbox]:checked + .bx-filter-param-text:after {
+    .checkbox .bx-filter-input-checkbox input[type=checkbox]:checked + .bx-filter-param-text:after,
+    .action_filter .checkbox input[type=checkbox]:checked + label,
+    .filter-news .checkbox input[type=checkbox]:checked + label {
         content:"";
         position: absolute;
         top: 5px;
@@ -1021,6 +1079,13 @@
         transform: translateX(-100%) translateZ(0px);
     }
 
+    .perspective.active .hamburger-mobile__close:before,
+    .perspective.active .hamburger-mobile__close:after {
+        width: 25px;
+        height: 3px;
+    }
+    
+
     .hamburger-mobile__close {
         left: 100%;
         position: absolute;
@@ -1037,8 +1102,6 @@
     .hamburger-mobile__close:after {
         content:"";
         display: block;
-        width: 25px;
-        height: 3px;
         background: #000;
         position: absolute;
         top: 0;
@@ -1046,6 +1109,8 @@
         bottom: 0;
         left: 0;
         margin: auto;
+        width: 0;
+        height: 0;
     }
 
     .hamburger-mobile__close:before {
@@ -1060,7 +1125,8 @@
         text-align: right;
     }
 
-    .filter-mobile  {
+    .filter-mobile,
+    .filter-stock  {
         position: fixed;
         width: 270px;
         z-index: 3000;
@@ -1072,15 +1138,26 @@
         transition: left 0.4s ease-in-out, right 0.4s ease-in-out, transform 0.4s ease-in-out;
     }
 
+    .filter-stock {
+        background: #2b2431;
+        padding: 15px;
+    }
+
+    .filter-stock .sections-list a {
+        color: #fff;
+    }
+
     .filter-mobile .mCSB_scrollTools {
         opacity: 0 !important;
     }
 
-    .filter-mobile.active {
+    .filter-mobile.active,
+    .filter-stock.active {
         right: 0;
     }
 
-    .filter-mobile__link {
+    .filter-mobile__link,
+    .filter-stock__link {
         display: block;
         position: fixed;
         top: 50%;
@@ -1092,14 +1169,15 @@
         z-index: 100;
         opacity: 1;
         transition: opacity 0.5s, right 0.4s ease-in-out;
-
     }
 
-    .filter-mobile__link.active {
+    .filter-mobile__link.active,
+    .filter-stock__link.active {
         right: 255px;
     }
 
-    .filter-mobile__link:before {
+    .filter-mobile__link:before,
+    .filter-stock__link:before {
         content:"";
         position: absolute;
         left: 0;
@@ -1116,7 +1194,8 @@
         transform: rotate(45deg);
     }
 
-    .filter-mobile__link.active:before {
+    .filter-mobile__link.active:before,
+    .filter-stock__link.active:before {
         right: 10px;
         top: 0;
         transform: rotate(-138deg);
@@ -1199,14 +1278,14 @@
         transition: transform 0.5s ease-in-out 0s, height 0.5s ease-in-out 0s;
         width: 100%;
         z-index: 8;
-        padding-top: 55px;
-        padding-left: 120px;
     }
     
     .perspective.active .hamburger-mobile__content {
         transform: translateX(-100%) translateZ(0px);
         height: 100%;
         overflow:visible;
+        padding-top: 55px;
+        padding-left: 120px;
     }
 
     .perspective.active #header-block.sticky + .row {
@@ -1252,7 +1331,6 @@
         margin: auto;
         width: 10px;
         height: 10px;
-
     }
 
     .brand-controls .next a:before {
@@ -1401,6 +1479,15 @@
         overflow: visible;
     }
 
+    .pagination {
+        margin-bottom: 20px;
+        padding-left: 0;
+    }
+
+    .news-subscribe {
+        display: none;
+    }
+
     .controls {
         display: none;
     }
@@ -1408,7 +1495,7 @@
     .controls-mobile {
         display: inline-block;
         width: 100px;
-        flot: right;
+        float: right;
         margin: 0 0 5px 0 !important;
     }
 
@@ -1552,7 +1639,7 @@
     }
 
     .row .perechen-produts {
-        maex-height: auto !important;
+        max-height: auto !important;
     }
 
     .detail-text {
@@ -1685,5 +1772,70 @@
         max-height: none;
         height: auto;
         width: 100%;
+    }
+
+    .hogart-share {
+        display: none;
+    }
+
+    .preview-project-viewport .preview-project-viewport-inner {
+        padding-bottom: 0;
+    }
+
+    .action_page .action-list li .info-wrap p {
+        margin-left: 0;
+    }
+
+    .img-mobile {
+        display: none;
+    }
+
+    ul.organizers li.organizer-item {
+        height: auto;
+    }
+
+    .organizers {
+        padding-left: 0;
+    }
+
+    .aside.aside-mobile {
+        min-height: 0 !important;
+    }
+
+    .aside.aside-company {
+        border-left: none;
+    }
+
+    .comments-page .comments-list .photo {
+        display: block;
+        margin: 0 auto;
+    }
+
+    .inner.map-cnt {
+        margin-bottom: 20px;
+    }
+
+    .vacancy_page .list-vacancy {
+        margin-bottom: 20px;
+    }
+
+    .learn-page .head-learn .var-view li {
+        margin-bottom: 15px;
+    }
+
+    .learn-page .head-learn .var-view li:last-child {
+        margin-bottom: 0;
+    }
+
+    ul.all-project-box {
+        justify-content: center;
+    }
+
+    .company__mobile {
+        margin-bottom: 20px;
+    }
+
+    .company__mobile .bx-viewport {
+        height: auto !important;
     }
 }

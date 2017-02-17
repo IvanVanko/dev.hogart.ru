@@ -14,7 +14,7 @@ $this->setFrameMode(true);
 $page = $APPLICATION->GetCurDir(true);
 ?>
 <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-9 col-xs-12">
         <h3><?= $APPLICATION->GetTitle() ?></h3>
         <ul class="list-base-learn">
             <?foreach ($arResult["ITEMS"] as $arItem):
@@ -55,7 +55,7 @@ $page = $APPLICATION->GetCurDir(true);
         </ul>
         <?= $arResult["NAV_STRING"]; ?>
     </div>
-    <div class="col-md-3 aside">
+    <div class="col-md-3 col-xs-12 aside aside-mobile">
         <? if (!empty($arResult['FILTER']['BRANDS']) || (!empty($arResult["FILTER"]["DIRECTIONS"]) && LANGUAGE_ID != "en")): ?>
             <form action="#" class="archive_filter">
                 <?if (!empty($arResult['FILTER']['BRANDS'])):?>

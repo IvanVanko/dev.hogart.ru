@@ -103,13 +103,16 @@ Loc::loadLanguageFile(__FILE__);
             <div class="hamburger-mobile__scroll">
                 <ul class="main-navigation main-navigation--hamburger panel-group"  id="accordion-hamburger" role="tablist" aria-multiselectable="true">
                     <li class="panel panel-default">
-                        <a class="main-navigation__link" data-toggle="collapse" data-parent="#accordion-hamburger" href="#hamburger-about-company" aria-expanded="false" title="О компании">
+                        <a class="main-navigation__link" data-toggle="collapse" data-parent="#accordion-hamburger" href="#hamburger-about-company" aria-expanded="false" title="Хогарт">
                             <div class="image">
                                 <img src="/images/navigation-1.svg" alt="" title="" />
                             </div>
-                            <span>О компании</span>
+                            <span>Хогарт</span>
                         </a>
                         <ul id="hamburger-about-company" class="navigation-sub-menu collapse panel-collapse">
+                            <li class="catalog-mobile__column">
+                                <a href="/company/" title="Вентиляция">О компании</a>
+                            </li>
                             <li>
                                 <a href="/stock/" title="Акции">Акции</a>
                             </li>
@@ -195,6 +198,9 @@ Loc::loadLanguageFile(__FILE__);
                             <span>Обучение</span>
                         </a>
                         <ul id="hamburger-teaching" class="navigation-sub-menu catalog-mobile--main panel-collapse collapse" "="" aria-expanded="false" style="">
+                            <li class="catalog-mobile__column">
+                                <a href="/learn/" title="Семинары">Семинары</a>
+                            </li>
                             <li class="catalog-mobile__column">
                                 <a href="/learn/archive-seminarov/" title="Архив семинаров">Архив семинаров</a>
                             </li>
@@ -359,20 +365,18 @@ Loc::loadLanguageFile(__FILE__);
                 <div class="container-inner">
                     <ul class="main-navigation"  id="accordion-main" role="tablist" aria-multiselectable="true">
                         <li class="main-navigation__item">
-                            <a class="main-navigation__link" data-toggle="collapse" data-parent="#accordion-main" href="#menu-about-company" aria-expanded="false" title="О компании">
+                            <a class="main-navigation__link" data-toggle="collapse" data-parent="#accordion-main" href="#menu-about-company" aria-expanded="false" title="Хогарт">
                                 <div class="image">
                                     <img src="/images/navigation-1.svg" alt="" title="" />
                                 </div>
-                                <span>О компании</span>
+                                <span>Хогарт</span>
                             </a>
                             <ul id="menu-about-company" class="navigation-sub-menu collapse panel-collapse">
-                                <li>
-                                    <a class="not-line" title="Контакты" href="/contacts/tsentralnyy-ofis-khogart-v-moskve-sklad-i-servisnaya-sluzhba/">
-                                        <div class="image">
-                                            <img src="/images/navigation-2.svg" alt="" title="" />
-                                        </div>
-                                        <span>Контакты</span>
-                                    </a>
+                                <li class="catalog-mobile__column">
+                                    <a href="/company/" title="Вентиляция">О компании</a>
+                                </li>
+                                <li class="catalog-mobile__column">
+                                    <a title="Контакты" href="/contacts/tsentralnyy-ofis-khogart-v-moskve-sklad-i-servisnaya-sluzhba/">Контакты</a>
                                 </li>
                             </ul>
                         </li>

@@ -16,10 +16,10 @@ $page = $APPLICATION->GetCurDir();
 ?>
 
 <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-9 col-xs-12">
         <div style="display: flex;flex-direction: row;align-items: center;justify-content: space-between;">
             <h3><? $APPLICATION->ShowTitle() ?></h3>
-            <div>
+            <div class="news-subscribe">
                 <a href="#" class="js-popup-open btn btn-primary" data-popup="#popup-subscribe-mod"><?= GetMessage("Подписаться на новости")?></a>
             </div>
         </div>
@@ -72,47 +72,50 @@ $page = $APPLICATION->GetCurDir();
         <? endif; ?>
         <?=$arResult["NAV_STRING"];?>
     </div>
-    <div class="col-md-3 aside">
-        <form action="#" class="no-padding">
-            <? if (!empty($arResult["FILTER"]["DIRECTIONS"])): ?>
-                <h3>Направление</h3>
-                <div class="form-group">
-                    <? foreach($arResult['FILTER']['DIRECTIONS'] as $key => $arDirection): ?>
-                        <div class="checkbox">
-                            <label>
-                                <input
-                                    name="direction[]"
-                                    id="doc_<?=$key + 1?>"
-                                    type="checkbox"
-                                    value="<?=$arDirection['ID']?>"
-                                    onchange="this.form.submit()"
-                                    <? if(in_array($arDirection['ID'], $_REQUEST['direction'])): ?>
-                                        checked
-                                    <? endif; ?>
-                                > <?=$arDirection['NAME']?>
-                            </label>
-                        </div>
-                    <? endforeach; ?>
-                </div>
-            <? endif; ?>
-            <? if (!empty($arResult["FILTER"]["TAG"])): ?>
-                <h3><?= GetMessage("Тип новости")?></h3>
-                <div class="form-group">
-                    <? foreach($arResult["FILTER"]["TAG"] as $key => $tag): ?>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox"
-                                       id="checkbox_<?=$key?>"
-                                       name="tag[<?=$tag["PROPERTY_TAG_VALUE_ENUM_ID"]?>]"
-                                       value="<?=$tag["PROPERTY_TAG_VALUE_VALUE"]?>"
-                                       onchange="this.form.submit()"
-                                    <? if(isset($_REQUEST["tag"][$tag["PROPERTY_TAG_VALUE_ENUM_ID"]])): ?> checked<? endif; ?>
-                                > <?=$tag["PROPERTY_TAG_VALUE_VALUE"]?>
-                            </label>
-                        </div>
-                    <? endforeach; ?>
-                </div>
-            <? endif; ?>
-        </form>
+    <div class="col-md-3 col-xs-12 aside aside-mobile">
+        <div class="filter-stock">
+            <a class="filter-stock__link js-filter-stock-mobile" href="#" title=""></a>
+            <form action="#" class="no-padding filter-news">
+                <? if (!empty($arResult["FILTER"]["DIRECTIONS"])): ?>
+                    <h3>Направление</h3>
+                    <div class="form-group">
+                        <? foreach($arResult['FILTER']['DIRECTIONS'] as $key => $arDirection): ?>
+                            <div class="checkbox">
+                                <label>
+                                    <input
+                                        name="direction[]"
+                                        id="doc_<?=$key + 1?>"
+                                        type="checkbox"
+                                        value="<?=$arDirection['ID']?>"
+                                        onchange="this.form.submit()"
+                                        <? if(in_array($arDirection['ID'], $_REQUEST['direction'])): ?>
+                                            checked
+                                        <? endif; ?>
+                                    > <?=$arDirection['NAME']?>
+                                </label>
+                            </div>
+                        <? endforeach; ?>
+                    </div>
+                <? endif; ?>
+                <? if (!empty($arResult["FILTER"]["TAG"])): ?>
+                    <h3><?= GetMessage("Тип новости")?></h3>
+                    <div class="form-group">
+                        <? foreach($arResult["FILTER"]["TAG"] as $key => $tag): ?>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox"
+                                           id="checkbox_<?=$key?>"
+                                           name="tag[<?=$tag["PROPERTY_TAG_VALUE_ENUM_ID"]?>]"
+                                           value="<?=$tag["PROPERTY_TAG_VALUE_VALUE"]?>"
+                                           onchange="this.form.submit()"
+                                        <? if(isset($_REQUEST["tag"][$tag["PROPERTY_TAG_VALUE_ENUM_ID"]])): ?> checked<? endif; ?>
+                                    > <?=$tag["PROPERTY_TAG_VALUE_VALUE"]?>
+                                </label>
+                            </div>
+                        <? endforeach; ?>
+                    </div>
+                <? endif; ?>
+            </form>
+        </div>
     </div>
 </div>

@@ -1,6 +1,6 @@
 <?if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();?>
 <? if (count($arResult['ITEMS'] > 0)): ?>
-    <div class="col-md-3 aside">
+    <div class="col-md-3 col-xs-12 aside-mobile">
         <ul class="contacts-list">
             <?foreach ($arResult['ITEMS'] as $arItem):?>
                 <li class="<?if ($arItem['ID'] == $arParams['CURRENT_ID']):?> active<?endif;?>">

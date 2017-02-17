@@ -3,7 +3,7 @@
 } ?>
 <? $page = $APPLICATION->GetCurDir(true); ?>
 <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-9 col-xs-12">
         <h3><? $APPLICATION->ShowTitle() ?></h3>
         <? if(count($arResult["ITEMS"]) > 0): ?>
             <ul class="action-list">
@@ -19,7 +19,7 @@
                     $date_to = FormatDate("d F", MakeTimeStamp($arItem["ACTIVE_TO"]));
                     ?>
                     <li id="<?=$this->GetEditAreaId($arItem['ID'])?>">
-                        <div class="img-wrap">
+                        <div class="img-wrap img-mobile">
                             <? if (!empty($arItem['PREVIEW_PICTURE']['SRC']) && file_exists($_SERVER["DOCUMENT_ROOT"] . $arItem['PREVIEW_PICTURE']['SRC'])): ?>
                                 <? $pic = $arItem['PREVIEW_PICTURE']['SRC']; ?>
                             <? else: ?>
@@ -62,100 +62,103 @@
             </ul>
         <? endif; ?>
     </div>
-    <div class="col-md-3 aside">
+    <div class="col-md-3 col-xs-12 aside aside-mobile">
         <? if (LANGUAGE_ID != "en"): ?>
-            <form action="#" class="action_filter">
-                <? if(count($arResult['FILTER']['DIRECTIONS']) > 0): ?>
-                    <h3>Направление</h3>
+            <div class="filter-stock">
+                <a class="filter-stock__link js-filter-stock-mobile" href="#" title=""></a>
+                <form action="#" class="action_filter">
+                    <? if(count($arResult['FILTER']['DIRECTIONS']) > 0): ?>
+                        <h3>Направление</h3>
 
-                    <? foreach($arResult['FILTER']['DIRECTIONS'] as $key => $arDirection): ?>
-                        <div class="checkbox">
-                            <label>
-                                <input 
-                                    name="direction[]" 
-                                    id="doc_<?=$key + 1?>" 
-                                    type="checkbox" 
-                                    value="<?=$arDirection['ID']?>"
-                                    <? if(in_array($arDirection['ID'], $_REQUEST['direction'])): ?>
-                                        checked
-                                    <? endif; ?>
-                                > <?=$arDirection['NAME']?>
-                            </label>
-                        </div>
-                    <? endforeach; ?>
-                <? endif; ?>
-
-                <? if(count($arResult['FILTER']['BRANDS']) > 0): ?>
-                    <h3>Бренд</h3>
-                    <div class="row breands hide-big-cnt" data-hide="Еще бренды">
-                        <? foreach($arResult['FILTER']['BRANDS'] as $key => $arBrand): ?>
-                            <div class="col-md-6 checkbox" style="margin-top: 0;">
+                        <? foreach($arResult['FILTER']['DIRECTIONS'] as $key => $arDirection): ?>
+                            <div class="checkbox">
                                 <label>
-                                    <input
-                                        name="brand[]"
-                                        id="breands_<?=$key + 1?>"
-                                        type="checkbox"
-                                        value="<?=$arBrand['ID']?>"
-                                        <? if(in_array($arBrand['ID'], $_REQUEST['brand'])): ?>
+                                    <input 
+                                        name="direction[]" 
+                                        id="doc_<?=$key + 1?>" 
+                                        type="checkbox" 
+                                        value="<?=$arDirection['ID']?>"
+                                        <? if(in_array($arDirection['ID'], $_REQUEST['direction'])): ?>
                                             checked
                                         <? endif; ?>
-                                    > <?=$arBrand['VALUE']?>
+                                    > <?=$arDirection['NAME']?>
                                 </label>
                             </div>
                         <? endforeach; ?>
-                    </div>
-                <? endif; ?>
+                    <? endif; ?>
 
-                <? if($arResult["custom_filter_count"]["sale"] > 0): ?>
-                    <div class="checkbox">
-                        <label>
-                            <input
-                                type="checkbox"
-                                name="sale"
-                                id="breands_122"
-                                value="Y"
-                                <? if($_REQUEST['sale'] == 'Y'): ?>
-                                    checked
-                                <? endif; ?>
-                            > Распродажа
-                        </label>
-                    </div>
-                <? endif; ?>
-                <? if($arResult["custom_filter_count"]["markdown"] > 0): ?>
-                    <div class="checkbox">
-                        <label>
-                            <input
-                                type="checkbox"
-                                name="markdown"
-                                id="breands_133"
-                                value="Y"
-                                <? if($_REQUEST['markdown'] == 'Y'): ?>
-                                    checked
-                                <? endif; ?>
-                            > Уценка
-                        </label>
-                    </div>
-                <? endif; ?>
-                <? if(count($arResult['FILTER']['CITY']) > 0): ?>
-                    <h3>Город</h3>
-                    <div class="form-group">
-                        <select class="form-control" name="city">
-                            <option value="">Выбрать город</option>
-                            <? foreach($arResult['FILTER']['CITY'] as $city): ?>
-                                <option
-                                    value="<?=$city['ID']?>"
-                                    <? if($_REQUEST['city'] == $city['ID']): ?>
-                                        selected
-                                    <? endif; ?>
-                                >
-                                    <?=$city['VALUE']?>
-                                </option>
+                    <? if(count($arResult['FILTER']['BRANDS']) > 0): ?>
+                        <h3>Бренд</h3>
+                        <div class="row breands hide-big-cnt" data-hide="Еще бренды">
+                            <? foreach($arResult['FILTER']['BRANDS'] as $key => $arBrand): ?>
+                                <div class="col-md-6 checkbox" style="margin-top: 0;">
+                                    <label>
+                                        <input
+                                            name="brand[]"
+                                            id="breands_<?=$key + 1?>"
+                                            type="checkbox"
+                                            value="<?=$arBrand['ID']?>"
+                                            <? if(in_array($arBrand['ID'], $_REQUEST['brand'])): ?>
+                                                checked
+                                            <? endif; ?>
+                                        > <?=$arBrand['VALUE']?>
+                                    </label>
+                                </div>
                             <? endforeach; ?>
-                        </select>
-                    </div>
-                <? endif; ?>
-                <a href="<?=$page?>" class="btn btn-primary">Сбросить запрос</a>
-            </form>
+                        </div>
+                    <? endif; ?>
+
+                    <? if($arResult["custom_filter_count"]["sale"] > 0): ?>
+                        <div class="checkbox">
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    name="sale"
+                                    id="breands_122"
+                                    value="Y"
+                                    <? if($_REQUEST['sale'] == 'Y'): ?>
+                                        checked
+                                    <? endif; ?>
+                                > Распродажа
+                            </label>
+                        </div>
+                    <? endif; ?>
+                    <? if($arResult["custom_filter_count"]["markdown"] > 0): ?>
+                        <div class="checkbox">
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    name="markdown"
+                                    id="breands_133"
+                                    value="Y"
+                                    <? if($_REQUEST['markdown'] == 'Y'): ?>
+                                        checked
+                                    <? endif; ?>
+                                > Уценка
+                            </label>
+                        </div>
+                    <? endif; ?>
+                    <? if(count($arResult['FILTER']['CITY']) > 0): ?>
+                        <h3>Город</h3>
+                        <div class="form-group">
+                            <select class="form-control" name="city">
+                                <option value="">Выбрать город</option>
+                                <? foreach($arResult['FILTER']['CITY'] as $city): ?>
+                                    <option
+                                        value="<?=$city['ID']?>"
+                                        <? if($_REQUEST['city'] == $city['ID']): ?>
+                                            selected
+                                        <? endif; ?>
+                                    >
+                                        <?=$city['VALUE']?>
+                                    </option>
+                                <? endforeach; ?>
+                            </select>
+                        </div>
+                    <? endif; ?>
+                    <a href="<?=$page?>" class="btn btn-primary">Сбросить запрос</a>
+                </form>
+            </div>
         <? else: ?>
         <h2><?=GetMessage("Основные направления деятельности")?></h2>
         <?
