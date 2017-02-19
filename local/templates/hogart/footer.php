@@ -6,9 +6,62 @@ Loc::loadLanguageFile(__FILE__);
 global $MESS;
 ?>
 <? if($APPLICATION->GetCurDir() != SITE_DIR): ?>
-    <footer class="inner">
-        <span>© 2014, ООО «Хогарт», 117041,  г. Москва, ул Поляны, 52</span>
+    <footer class="inner col-md-12 col-xs-12 col-sm-12">
+        <span class="footer__address">© 2014, ООО «Хогарт», 117041,  г. Москва, ул Поляны, 52</span>
         <a target="_blank" href="http://oldschool.agency" class="p_logo"></a>
+        <div class="credits-mobile">
+            <a href="http://hogart.bx.oldschool.ru/" class="m_logo">
+                <img src="/images/m_logo.svg" alt="" title="" />
+            </a>
+            <div class="footer-mobile__right">
+                <span class="address">© 2014, ООО «Хогарт»</span>
+            </div>
+            <a href="#" title="" class="help js-help">
+                <img src="/images/help.svg" alt="" title="" />
+            </a>
+            <div class="footer-menu" id="accordion-footer">
+                <div class="footer-menu__panel panel panel-default">
+                    <a class="footer-menu__link" data-toggle="collapse" data-parent="#accordion-footer" href="#footer-contact" aria-expanded="false" title="Позвонить">Позвонить
+                    </a>
+                    <div id="footer-contact" class="footer-menu__content collapse panel-collapse">
+                        <a class="footer-menu__tel" href="tel:84957881112" title="">+7 (495) 788-11-12</a>
+                        <a class="footer-menu__tel" href="tel:88127034114" title="">+7 (812) 703-41-14</a>
+                    </div>
+                </div>
+                <div class="footer-menu__panel panel panel-default">
+                    <a class="footer-menu__link" data-toggle="collapse" data-parent="#accordion-footer" href="#footer-map" aria-expanded="false" title="Проехать">Проехать
+                    </a>
+                    <div id="footer-map" class="footer-menu__content collapse panel-collapse">
+                        <ul class="contacts-list-mobile">
+                            <li class=" active">
+                                <a href="/contacts/tsentralnyy-ofis-khogart-v-moskve-sklad-i-servisnaya-sluzhba/">
+                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                Центральный офис "Хогарт" в Москве, склад и сервисная служба
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="/contacts/ofis-kompanii-khogart-v-sankt-peterburge/">
+                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                Офис компании «Хогарт» в Санкт-Петербурге
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="/contacts/salon-khogart-art-v-tsentre-dizayna-i-arkhitektury-artplay/">
+                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                Салоно ХОГАРТ_арт в ARTPLAY
+                                </a>
+                            </li>
+                                <li class="">
+                                <a href="/contacts/calon-khogart-art-na-ulitse-khamovnicheskiy-val/">
+                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                Cалон «Хогарт арт» на улице Хамовнический Вал
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </footer>
 <? endif; ?>
 
@@ -23,6 +76,8 @@ global $MESS;
     </div>
     </div>
 <?endif; ?>
+</div>
+</div>
 
 <div class="popup-cnt">
     <div class="inner-cnt" id="popup-os">

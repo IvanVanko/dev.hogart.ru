@@ -10,7 +10,7 @@ if (isset($arResult['arResult'])) {
     return;
 }
 ?>
-<div class="col-md-9">
+<div class="col-md-9 col-xs-12">
     <h3><? $APPLICATION->ShowTitle() ?></h3>
     <? if (count($arResult['ITEMS']) > 0): ?>
         <ul class="comments-list">
