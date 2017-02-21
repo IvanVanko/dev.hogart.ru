@@ -549,3 +549,8 @@ input[type="radio"] .styled:checked + label::after {
 .empty-cart .post-table-footer {
   width: 70%;
 }
+@media (max-width: 768px) {
+  .cart-wrapper [data-cart] .cart-group-menu .menu {
+    border-left: none;
+  }
+}

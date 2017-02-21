@@ -332,7 +332,7 @@ input[type="radio"] .styled:checked + label::after {
   content: "€";
 }
 @media (max-width: 768px) {
-  .order-line__header {
+  .order-list .order-line .order-line__header {
     display: block;
   }
 }

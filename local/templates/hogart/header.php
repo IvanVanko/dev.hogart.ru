@@ -72,7 +72,7 @@ Loc::loadLanguageFile(__FILE__);
     $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/vendor/parsley.min.js");
     $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/lib.js");
     $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/main.js");
-    $APPLICATION->AddHeadScript("/h/js/script_dev.js");
+//    $APPLICATION->AddHeadScript("/h/js/script_dev.js");
     $APPLICATION->SetAdditionalCSS("/h/css/style_dev.css");
 
 
