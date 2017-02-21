@@ -3,7 +3,7 @@ require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetTitle("Сервисная служба Хогарт");
 ?>
 <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-9 col-xs-12">
         <?
         $APPLICATION->IncludeComponent(
             "bitrix:news.list",
@@ -71,7 +71,7 @@ $APPLICATION->SetTitle("Сервисная служба Хогарт");
             )
         ); ?>
     </div>
-    <div class="col-md-3 aside">
+    <div class="col-md-3 col-xs-12 aside aside-mobile">
         <? $APPLICATION->IncludeComponent(
             "bitrix:form.result.new", "server_service",
             array(

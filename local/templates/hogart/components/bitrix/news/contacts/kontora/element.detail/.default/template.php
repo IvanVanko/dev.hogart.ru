@@ -89,7 +89,7 @@
                 <?= GetMessage("Схема проезда на автомобиле") ?>
                 <i class="icon-bottom icon-full"></i>
             </a>
-            <div class="way-scheme" style="display: none;">
+            <div class="way-scheme js-increase-size" style="display: none;">
                 <img src="<?=CFile::GetPath($arResult['PROPERTIES']['by_car_scheme']['VALUE'])?>" alt=""/>
 
             </div>

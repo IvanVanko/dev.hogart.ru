@@ -68,7 +68,7 @@ $share_img_src = false;
                         <div class="next" id="galN"><i class="fa fa-arrow-circle-o-right"></i></div>
                     </div>
                 <?}?>
-                <ul class="js-normal-slider-init" style="min-width: 500px" data-width="#galElWidth" data-next="#galN" data-prev="#galP">
+                <ul class="js-normal-slider-init-news" style="min-width: 500px" data-width="#galElWidth" data-next="#galN" data-prev="#galP">
                     <? $countGalImg = 0;?>
                    
                     <?
@@ -123,7 +123,7 @@ $share_img_src = false;
                             mySlider.reloadSlider(settings());
                         }
 
-                        mySlider = $('.js-normal-slider-init').bxSlider(settings());
+                        mySlider = $('.js-normal-slider-init-news').bxSlider(settings());
                         $(window).resize(tourLandingScript);
                     });
                 </script>

@@ -12,7 +12,7 @@
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);?>
 <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-9 col-xs-12">
         <?if (!empty($arResult["VARIABLES"]["ELEMENT_CODE"])) {?>
             <?
             $ElementID = $APPLICATION->IncludeComponent(
@@ -71,7 +71,7 @@ $this->setFrameMode(true);?>
             BXHelper::NotFound();
         }?>
     </div>
-    <div class="col-md-3 aside">
+    <div class="col-md-3 col-xs-12 aside aside-mobile">
         <?$APPLICATION->IncludeComponent(
             "kontora:element.list",
             "sections_news",

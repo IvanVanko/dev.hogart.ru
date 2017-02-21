@@ -7,7 +7,7 @@ $ (document).on('ready', function() {
         return false;
     });
 
-    $('.perspective').click(function(event) {
+    $(document).click(function(event) {
         if ($(event.target).closest(".filter-mobile, .js-filter-mobile").length) return;
         $('.filter-mobile').removeClass('active');
         $('.filter-mobile__link').removeClass('active');
@@ -23,7 +23,7 @@ $ (document).on('ready', function() {
         $('.perspective').addClass('active');     
     });
 
-    $('.perspective').click(function(event) {
+    $(document).click(function(event) {
         if ($(event.target).closest(".hamburger-mobile, .header-mobile__menu").length) return;
         $('.perspective').removeClass('active');
         event.stopPropagation();
@@ -38,7 +38,7 @@ $ (document).on('ready', function() {
         $('.footer-menu').toggleClass('active');  
     });
 
-    $('.perspective').click(function(event) {
+    $(document).click(function(event) {
         if ($(event.target).closest(".js-help, .footer-menu").length) return;
         $('.footer-menu').removeClass('active');
         event.stopPropagation();
@@ -51,7 +51,7 @@ $ (document).on('ready', function() {
         $('.footer-menu-main').toggleClass('active');  
     });
 
-    $('.perspective').click(function(event) {
+    $(document).click(function(event) {
         if ($(event.target).closest(".js-help-main, .footer-menu-main").length) return;
         $('.footer-menu-main').removeClass('active');
         event.stopPropagation();
@@ -81,7 +81,7 @@ $ (document).on('ready', function() {
         return false;
     });
 
-    $('.perspective').click(function(event) {
+    $(document).click(function(event) {
         if ($(event.target).closest(".filter-stock, .js-filter-stock-mobile").length) return;
         $('.filter-stock').removeClass('active');
         $('.filter-stock__link').removeClass('active');
@@ -89,4 +89,4 @@ $ (document).on('ready', function() {
         event.stopPropagation();
     });
     $(".filter-stock").mCustomScrollbar();
-});
+});        
