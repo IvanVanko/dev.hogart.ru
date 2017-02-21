@@ -15,10 +15,17 @@ use Hogart\Lk\Helper\Template\Money;
     <div class="col-sm-6">
         <h4>
             <a href="/account/order/<?= $order['id'] ?>">
-                                <span class="title">
-                                    <?= OrderTable::showName($order) ?>
-                                </span>
+                <span class="title">
+                    <?= OrderTable::showName($order) ?>
+                </span>
             </a>
+            <sup class="visible-xs-inline">
+                <? if ($order['state'] == OrderTable::STATE_NORMAL): ?>
+                    <span class="label label-default label-xs"><?= OrderTable::getStatusText($order['status']) ?></span>
+                <? endif; ?>
+                <span class="hidden-xs-inline label label-primary label-xs"><?= OrderTable::getTypeText($order['type']) ?></span>
+            </sup>
+
             <? if (!$order['is_actual']): ?>
                 <sup>
                     <span class="label label-danger label-xs">синхронизация</span>
@@ -50,7 +57,7 @@ use Hogart\Lk\Helper\Template\Money;
     </div>
     <div class="col-sm-1 text-right pull-right">
         <? if ($order['state'] == OrderTable::STATE_NORMAL): ?>
-            <div class="h5">
+            <div class="hidden-xs h5">
                 <span class="label label-default"><?= OrderTable::getStatusText($order['status']) ?></span>
             </div>
         <? endif; ?>
@@ -66,7 +73,7 @@ use Hogart\Lk\Helper\Template\Money;
                 </div>
             </div>
         <? endif; ?>
-        <span class="label label-primary"><?= OrderTable::getTypeText($order['type']) ?></span>
+        <span class="hidden-xs label label-primary"><?= OrderTable::getTypeText($order['type']) ?></span>
     </div>
 </div>
 <div class="row spacer-20">

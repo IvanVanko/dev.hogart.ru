@@ -469,3 +469,11 @@ input[type="radio"] .styled:checked + label::after {
 .menu ul li + li {
   margin-top: 5px;
 }
+@media (max-width: 768px) {
+  .order-line .order-line__header {
+    display: block;
+  }
+  .menu {
+    border-left: none;
+  }
+}
