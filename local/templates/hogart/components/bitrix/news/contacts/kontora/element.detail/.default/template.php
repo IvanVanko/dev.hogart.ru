@@ -22,10 +22,14 @@
     <address>
         <?=$arResult['PROPRTIES']['adress']['VALUE']?><br>
         <? if(!empty($arResult['PROPERTIES']['address']['VALUE'])): ?>
-            <?= GetMessage("Адрес") ?>: <?=$arResult['PROPERTIES']['address']['VALUE']?><br>
+            <?= GetMessage("Адрес") ?>: <a href="#map"><?=$arResult['PROPERTIES']['address']['VALUE']?></a><br>
         <?endif;
         if(!empty($arResult['PROPERTIES']['phone']['VALUE'])):?>
-            <?= GetMessage("тел.") ?>: <?=implode(', ', $arResult['PROPERTIES']['phone']['VALUE'])?><br>
+            <?= GetMessage("тел.") ?>: 
+            <? foreach ($arResult['PROPERTIES']['phone']['VALUE'] as $i => $phone): ?>
+                <a href="tel:<?= $phone ?>"><?= $phone ?></a><?= ($i + 1 != count($arResult['PROPERTIES']['phone']['VALUE'])) ? ',' : '' ?>
+            <? endforeach; ?>
+            <br>
         <?endif;
         if(!empty($arResult['PROPERTIES']['mail']['VALUE'])):
             $email_html = array();

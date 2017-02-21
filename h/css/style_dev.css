@@ -153,7 +153,19 @@
     opacity: 1;
 }
 
+.seminar__information--mobile {
+    display: none;
+}
+
 @media(max-width: 768px) {
+
+    .seminar__information--mobile {
+        display: block;
+    }
+
+    .seminar__information {
+        display: none;
+    }
 
     .cart-counter2 {
         float: right;
@@ -1028,7 +1040,8 @@
     }
 
     .action_filter h3,
-    .filter-news h3 {
+    .filter-news h3,
+    .filter-documentation h3 {
         color: #fff;
     }
 
@@ -1039,7 +1052,8 @@
 
     .checkbox .bx-filter-input-checkbox .bx-filter-param-text:before,
     .action_filter .checkbox:before,
-    .filter-news .checkbox:before {
+    .filter-news .checkbox:before,
+    .filter-documentation .checkbox:before {
         content:"";
         position: absolute;
         left: 0;
@@ -1053,7 +1067,8 @@
 
     .checkbox .bx-filter-input-checkbox input[type=checkbox]:checked + .bx-filter-param-text:after,
     .action_filter .checkbox input[type=checkbox]:checked + label,
-    .filter-news .checkbox input[type=checkbox]:checked + label {
+    .filter-news .checkbox input[type=checkbox]:checked + label,
+    .filter-documentation .checkbox input[type=checkbox]:checked + label {
         content:"";
         position: absolute;
         top: 5px;
@@ -1126,7 +1141,8 @@
     }
 
     .filter-mobile,
-    .filter-stock  {
+    .filter-stock,
+    .filter-documentation  {
         position: fixed;
         width: 270px;
         z-index: 3000;
@@ -1138,7 +1154,8 @@
         transition: left 0.4s ease-in-out, right 0.4s ease-in-out, transform 0.4s ease-in-out;
     }
 
-    .filter-stock {
+    .filter-stock,
+    .filter-documentation {
         background: #2b2431;
         padding: 15px;
     }
@@ -1152,7 +1169,8 @@
     }
 
     .filter-mobile.active,
-    .filter-stock.active {
+    .filter-stock.active,
+    .filter-documentation.active {
         right: 0;
     }
 
@@ -1278,13 +1296,13 @@
         transition: transform 0.5s ease-in-out 0s, height 0.5s ease-in-out 0s;
         width: 100%;
         z-index: 8;
+        top: 55px;
     }
     
     .perspective.active .hamburger-mobile__content {
         transform: translateX(-100%) translateZ(0px);
         height: 100%;
         overflow:visible;
-        padding-top: 55px;
         padding-left: 120px;
     }
 
@@ -1684,7 +1702,8 @@
         padding-top: 15px;
     }
 
-    .footer-menu {
+    .footer-menu,
+    .footer-menu-main {
         position: fixed;
         right: -100%;
         bottom: 50px;
@@ -1693,7 +1712,8 @@
         width: 250px;
     }
 
-    .footer-menu.active {
+    .footer-menu.active,
+    .footer-menu-main.active {
         right: 15px;
     }
 
@@ -1800,6 +1820,7 @@
 
     .aside.aside-mobile {
         min-height: 0 !important;
+        border-left: none;
     }
 
     .aside.aside-company {
@@ -1837,5 +1858,14 @@
 
     .company__mobile .bx-viewport {
         height: auto !important;
+    }
+
+    .date:not(.input-group) sup {
+        font-size: 15px !important;
+        line-height: 17px !important;
+    }
+
+    .img-title .date {
+        padding: 20px 5px 0;
     }
 }

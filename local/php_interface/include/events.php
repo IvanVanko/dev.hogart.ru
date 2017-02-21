@@ -48,11 +48,65 @@ class IBlockHandlers {
     const INVITATION = "INVITATION";
     const DENIED = "DENIED";
 
+    private static function __get_iblock_name($iblock_id) {
+        $res = CIBlock::GetByID($iblock_id);
+        if ($ar_res = $res->GetNext()) {
+            return $ar_res['NAME'];
+        }
+        return false;
+    }
+
+    private static function __get_iblock_properties_names($iblock_id) {
+        $arResult = array();
+        $rsProperty = CIBlockProperty::GetList(array(), array('IBLOCK_ID' => $iblock_id));
+        while($element = $rsProperty->Fetch()) {
+            $arResult[$element['NAME']] = $element['ID'];
+        }
+        return $arResult;
+    }
+
+    private static function __throw_admin_exception($msg) {
+        global $APPLICATION;
+        //$exception = new CAdminException();
+        //$exception->AddMessage(array("text" => $msg));
+        //$APPLICATION->ThrowException($exception);
+        $APPLICATION->ThrowException($msg);
+    }
+
+    private static function __check_seminars_fields($arParams) {
+        $arPropertiesNames = IBlockHandlers::__get_iblock_properties_names($arParams['IBLOCK_ID']);
+        $erMessages = Array();
+        $result = True;
+
+        // Проверка полей 'Время начала' и 'Время завершения'
+        foreach (Array('Время начала', 'Время завершения') as $k) {
+            if(!empty($arParams['PROPERTY_VALUES'][$arPropertiesNames[$k]]) and !empty(array_keys($arParams['PROPERTY_VALUES'][$arPropertiesNames[$k]]))) {
+                $k2 = array_keys($arParams['PROPERTY_VALUES'][$arPropertiesNames[$k]])[0];
+                $msg = "'" . $k . "' семинара должно быть в формате НН:MM";
+                if (preg_match('/(\d\d):(\d\d)/', $arParams['PROPERTY_VALUES'][$arPropertiesNames[$k]][$k2]['VALUE'], $m)) {
+                    $hour = (int) $m[1];
+                    $min = (int) $m[2];
+                    if ($hour < 0 or $hour > 23 or $min < 0 or $min > 59) {
+                        $erMessages[] = $msg;
+                        $result = False;
+                    }
+                } else {
+                    $erMessages[] = $msg;
+                    $result = False;
+                }
+            }
+        }
+        // Проверка полей 'Дата начала семинара' и 'Дата конца семинара'
+
+        IBlockHandlers::__throw_admin_exception(implode("\n", $erMessages));
+        return $result;
+    }
+
     private static function __check_contacts_code_name(&$arParams, $exclude_self = false) {
-        if (empty($arParams["CODE"])) {
+        if (empty($arParams['CODE'])) {
             $raw_code = $arParams['NAME'];
         } else {
-            $raw_code = $arParams["CODE"];
+            $raw_code = $arParams['CODE'];
         }
 
         $code = CUtil::translit($raw_code, 'ru',
@@ -74,6 +128,19 @@ class IBlockHandlers {
     }
 
     public static function OnBeforeIBlockElementAddHandler(&$arParams) {
+        $iblock_name = IBlockHandlers::__get_iblock_name($arParams["IBLOCK_ID"]);
+
+        switch ($iblock_name) {
+            case "Семинары":
+                if (!IBlockHandlers::__check_seminars_fields($arParams)) {
+                    return true;
+                }
+                break;
+
+            default:
+                break;
+        }
+
         if ($arParams["IBLOCK_ID"] == CONTACTS_IBLOCK_ID) {
             $arParams["CODE"] = IBlockHandlers::__check_contacts_code_name($arParams);
         }
@@ -104,6 +171,20 @@ class IBlockHandlers {
     }
 
     public static function OnBeforeIBlockElementUpdateHandler(&$arParams) {
+        $iblock_name = IBlockHandlers::__get_iblock_name($arParams["IBLOCK_ID"]);
+
+        switch ($iblock_name) {
+            case "Семинары":
+                if (!IBlockHandlers::__check_seminars_fields($arParams)) {
+                    return false;
+                }
+                break;
+
+            default:
+                break;
+        }
+
+
         global $APPLICATION;
         $property = BXHelper::getProperties(array(), array("IBLOCK_ID" => SEMINAR_IBLOCK_ID,
                                                            "CODE" => "sem_ean_id"), array("ID", "CODE"), "CODE");
