@@ -40,10 +40,9 @@
     }
 ?>
 <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-9 col-xs-12">
         <div class="row vertical-align">
             <div class="col-md-10">
-                <h3 style="margin-top: 10px"><?= $arResult['NAME'] ?></h3>
                 <div class="controls text-right">
                     <? if (!empty($arResult["PREV"])): ?>
                         <div class="prev">
@@ -52,6 +51,9 @@
                             </a>
                         </div>
                     <? endif; ?>
+                </div>
+                <h3 style="margin-top: 10px"><?= $arResult['NAME'] ?></h3>
+                <div class="controls text-right">
                     <? if (!empty($arResult["NEXT"])): ?>
                         <div class="next">
                             <a href="<?= $arResult["NEXT"] ?>">
@@ -163,7 +165,19 @@
             <? endif; ?>
         <? endif; ?>
 
-        <? if ($seminarRegistrationClosed && LANGUAGE_ID != "en"): ?>
+        <div class="col-md-3 col-xs-12 aside aside-mobile seminar__information--mobile">
+            <? $APPLICATION->IncludeComponent("kontora:element.detail", "seminar-sidebar", array(
+                "CACHE_TIME" => 0,
+                "IBLOCK_ID" => $arParams["IBLOCK_ID"],
+                "CODE" => $_REQUEST["ELEMENT_CODE"],
+                "PROPS" => "Y",
+                "PROPERTY_CODE" => array("adress"),
+                "ADD_CHAIN_ITEM" => "N",
+                "SEM_IS_CLOSED" => $arResult["SEM_IS_CLOSED"],
+            ));?>
+        </div>
+
+        <? if ($arResult["SEM_IS_CLOSED"] && LANGUAGE_ID != "en"): ?>
             <? $comments_cnt = $APPLICATION->IncludeComponent("kontora:element.list", "seminar_otziv", array(
                 "IBLOCK_ID" => 23,
                 "PROPS" => "Y",
@@ -182,6 +196,7 @@
                     "bitrix:iblock.element.add.form",
                     "seminar_otziv",
                     Array(
+                        "SEM_IS_CLOSED" => $arResult["SEM_IS_CLOSED"],
                         "COMPONENT_TEMPLATE" => ".default",
                         "IBLOCK_TYPE" => "training",
                         "IBLOCK_ID" => "23",
@@ -221,14 +236,15 @@
             </div>
         <? endif; ?>
     </div>
-    <div class="col-md-3 aside">
+    <div class="col-md-3 col-xs-12 aside aside-mobile seminar__information">
         <? $APPLICATION->IncludeComponent("kontora:element.detail", "seminar-sidebar", array(
             "CACHE_TIME" => 0,
             "IBLOCK_ID" => $arParams["IBLOCK_ID"],
             "CODE" => $_REQUEST["ELEMENT_CODE"],
             "PROPS" => "Y",
             "PROPERTY_CODE" => array("adress"),
-            "ADD_CHAIN_ITEM" => "N"
+            "ADD_CHAIN_ITEM" => "N",
+            "SEM_IS_CLOSED" => $arResult["SEM_IS_CLOSED"],
         ));?>
     </div>
 </div>

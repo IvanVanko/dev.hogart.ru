@@ -145,11 +145,11 @@
     height: auto;
 }
 
-.learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover .content .inner a {
+.learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover .content .inner {
     opacity: 0;
 }
 
-.learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover .content .inner a:hover {
+.learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover .content .inner:hover {
     opacity: 1;
 }
 
@@ -1041,7 +1041,8 @@
 
     .action_filter h3,
     .filter-news h3,
-    .filter-documentation h3 {
+    .filter-documentation h3,
+    .filter-helpful h3 {
         color: #fff;
     }
 
@@ -1050,10 +1051,20 @@
         color: #fff;
     }
 
+    .checkbox.checkbox-stock {
+        padding-left: 0;
+        margin-left: 15px;
+    }
+
+    .checkbox-text {
+        color: #fff !important;
+    }
+
     .checkbox .bx-filter-input-checkbox .bx-filter-param-text:before,
-    .action_filter .checkbox:before,
-    .filter-news .checkbox:before,
-    .filter-documentation .checkbox:before {
+    .action_filter .checkbox .checkbox-text:before,
+    .filter-news .checkbox .checkbox-text:before,
+    .filter-documentation .checkbox .checkbox-text:before,
+    .filter-helpful .checkbox .checkbox-text:before {
         content:"";
         position: absolute;
         left: 0;
@@ -1066,9 +1077,10 @@
     }
 
     .checkbox .bx-filter-input-checkbox input[type=checkbox]:checked + .bx-filter-param-text:after,
-    .action_filter .checkbox input[type=checkbox]:checked + label,
-    .filter-news .checkbox input[type=checkbox]:checked + label,
-    .filter-documentation .checkbox input[type=checkbox]:checked + label {
+    .action_filter .checkbox input[type=checkbox]:checked + .checkbox-text:after,
+    .filter-news .checkbox input[type=checkbox]:checked + .checkbox-text:after,
+    .filter-documentation .checkbox input[type=checkbox]:checked + .checkbox-text:after,
+    .filter-helpful .checkbox input[type=checkbox]:checked + .checkbox-text:after {
         content:"";
         position: absolute;
         top: 5px;
@@ -1088,6 +1100,28 @@
 
     .checkbox span {
         color: #fff;
+    }
+
+    .filter-helpful__input,
+    .filter-documentation__input {
+        height: 38px;
+        width: 100%;
+        border-color: #fff !important;
+        background: #fff !important;
+    }
+
+    .filter-helpful {
+        font-size: 0;
+    }
+
+    .filter-helpful .btn.btn-link {
+        width: 50%;
+        padding: 6px 0;
+    }
+
+    .filter-helpful .btn.btn-primary {
+        padding: 6px 0;
+        width: 50%;
     }
 
     .perspective.active .hamburger-mobile__close {
@@ -1141,8 +1175,7 @@
     }
 
     .filter-mobile,
-    .filter-stock,
-    .filter-documentation  {
+    .filter-stock {
         position: fixed;
         width: 270px;
         z-index: 3000;
@@ -1154,8 +1187,7 @@
         transition: left 0.4s ease-in-out, right 0.4s ease-in-out, transform 0.4s ease-in-out;
     }
 
-    .filter-stock,
-    .filter-documentation {
+    .filter-stock {
         background: #2b2431;
         padding: 15px;
     }
@@ -1500,6 +1532,19 @@
     .pagination {
         margin-bottom: 20px;
         padding-left: 0;
+        text-align: center;
+        font-size: 0;
+        width: 100%;
+    }
+
+    .pagination li {
+        display: inline-block;
+        vertical-align: top;
+        float: none;
+    }
+
+    .pagination li:last-child {
+        margin-right: 0;
     }
 
     .news-subscribe {
@@ -1726,6 +1771,7 @@
         background: #fff;
         padding: 10px;
         border-bottom: 1px solid #95C600;
+        text-align: left;
     }
 
     .footer-menu__tel {
@@ -1748,6 +1794,7 @@
         padding: 10px 10px;
         background: #95C600;
         font-size: 14px !important;
+        text-align: left;
     }
 
     .footer-menu__link[data-toggle="collapse"][aria-expanded="true"] {
@@ -1830,6 +1877,12 @@
     .comments-page .comments-list .photo {
         display: block;
         margin: 0 auto;
+        height: auto;
+        width: 100%;
+    }
+
+    .comments-page .comments-list .photo .inner {
+        position: static !important;
     }
 
     .inner.map-cnt {
@@ -1856,10 +1909,6 @@
         margin-bottom: 20px;
     }
 
-    .company__mobile .bx-viewport {
-        height: auto !important;
-    }
-
     .date:not(.input-group) sup {
         font-size: 15px !important;
         line-height: 17px !important;
@@ -1867,5 +1916,67 @@
 
     .img-title .date {
         padding: 20px 5px 0;
+    }
+
+    .company .counter-company li {
+        align-items: flex-start;
+    }
+
+    .company .counter-company li > span {
+        margin-top: 5px;
+    }
+
+    ul.organizers li.organizer-item img {
+        height: auto;
+        wodth: 100px;
+    }
+
+    .bx-viewport ul li .img-wrap {
+        width: 100%;
+    }
+
+    .bx-viewport ul li .img-wrap img {
+        width: 100%;
+    }
+
+    .bx-controls.bx-has-pager {
+        height: auto;
+    }
+
+    .img-wrap img {
+        max-width: 100%;
+    }
+
+    .news-list li img {
+        display: none;
+    }
+
+    .news-list li {
+        padding-left: 0 !important;
+    }
+
+    .learn-people-list li > * {
+        padding-left: 0;
+    }
+
+    .learn-page .list-base-learn li {
+        padding-left: 0;
+    }
+
+    .learn-page .list-base-learn li img {
+        display: none;
+    }
+
+    .learn-page .list-base-learn li .top-time {
+        border-bottom: none;
+    }
+
+    .list-base-learn > li a h2 {
+        font-size: 20px !important;
+    }
+
+    .learn-page .list-base-learn li img {
+        vertical-align: top;
+        padding: 0 10px 10px 0;
     }
 }

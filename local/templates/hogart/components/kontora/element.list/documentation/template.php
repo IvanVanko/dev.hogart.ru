@@ -2,7 +2,7 @@
 <? $page = $APPLICATION->GetCurDir(true); ?>
 
 <div class="row">
-    <div class="col-md-9 col-sm-12">
+    <div class="col-md-9 col-sm-12 col-xs-12">
         <h3><?= $APPLICATION->GetTitle() ?></h3>
         <h5><a class="color-green" data-toggle="tooltip" data-placement="right" title="Информация о бренде <?= $arParams["BRAND_NAME"] ?>" href="/brands/<?= $_REQUEST["ELEMENT_CODE"] ?>/">О бренде <i class="fa fa-angle-double-right" aria-hidden="true"></i></a></h5>
         <div class="row vertical-align">
@@ -63,7 +63,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-3 col-sm-12 aside aside--mobile">
+    <div class="col-md-3 col-sm-12 col-xs-12 aside aside-mobile">
         <div class="filter-stock">
             <a class="filter-stock__link js-filter-stock-mobile" href="#" title=""></a>
             <div class="reg-side-cnt padding">
@@ -79,13 +79,13 @@
                                         id="breands_<?= $type ?>"
                                         value="<?= $type ?>"
                                         <? if (in_array($type, $_REQUEST['types'])): ?> checked<? endif; ?>
-                                    /> <?= $type ?>
+                                    /><span class="checkbox-text"> <?= $type ?></span>
                                 </label>
                             </div>
                         <? endforeach; ?>
                     <? endif; ?>
                     <h3>Название</h3>
-                    <div class="field custom_label">
+                    <div class="field custom_label filter-documentation__input">
                         <input type="text" id="email" name="product" value="<?= $_REQUEST['product'] ?>">
                     </div>
                     <button class="btn btn-primary">Найти документы</button>

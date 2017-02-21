@@ -51,9 +51,9 @@
                         <div class="next"><i class="fa fa-arrow-circle-o-right"></i></div>
                     </div>
                 <? endif; ?>
-                <ul class="sert-slider-cnt js-company-slider">
+                <ul class="sert-slider-cnt js-company-slider-about">
                     <? foreach ($arResult["PROPERTIES"]["honors"]["VALUE"] as $value):
-                        $file = CFile::ResizeImageGet($value, array('width' => 126, 'height' => 179), BX_RESIZE_IMAGE_PROPORTIONAL, true);
+                        $file = CFile::ResizeImageGet($value, array('width' => 250, 'height' => 140), BX_RESIZE_IMAGE_PROPORTIONAL, true);
                         $fileBig = CFile::GetPath($value);
                         ?>
                         <li>
@@ -97,7 +97,7 @@
                             mySlider.reloadSlider(settings());
                         }
 
-                        mySlider = $('.js-company-slider').bxSlider(settings());
+                        mySlider = $('.js-company-slider-about').bxSlider(settings());
                         $(window).resize(tourLandingScript);
                     });
                 </script>

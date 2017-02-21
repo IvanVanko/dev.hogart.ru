@@ -81,7 +81,7 @@
                                         <? if(in_array($arDirection['ID'], $_REQUEST['direction'])): ?>
                                             checked
                                         <? endif; ?>
-                                    > <?=$arDirection['NAME']?>
+                                    > <span class="checkbox-text"><?=$arDirection['NAME']?></span>
                                 </label>
                             </div>
                         <? endforeach; ?>
@@ -91,7 +91,7 @@
                         <h3>Бренд</h3>
                         <div class="row breands hide-big-cnt" data-hide="Еще бренды">
                             <? foreach($arResult['FILTER']['BRANDS'] as $key => $arBrand): ?>
-                                <div class="col-md-6 checkbox" style="margin-top: 0;">
+                                <div class="col-md-6 col-xs-12 checkbox checkbox-stock" style="margin-top: 0;">
                                     <label>
                                         <input
                                             name="brand[]"
@@ -101,7 +101,7 @@
                                             <? if(in_array($arBrand['ID'], $_REQUEST['brand'])): ?>
                                                 checked
                                             <? endif; ?>
-                                        > <?=$arBrand['VALUE']?>
+                                        > <span class="checkbox-text"><?=$arBrand['VALUE']?></span>
                                     </label>
                                 </div>
                             <? endforeach; ?>
@@ -119,7 +119,7 @@
                                     <? if($_REQUEST['sale'] == 'Y'): ?>
                                         checked
                                     <? endif; ?>
-                                > Распродажа
+                                > <span class="checkbox-text">Распродажа</span>
                             </label>
                         </div>
                     <? endif; ?>
@@ -134,7 +134,7 @@
                                     <? if($_REQUEST['markdown'] == 'Y'): ?>
                                         checked
                                     <? endif; ?>
-                                > Уценка
+                                > <span class="checkbox-text">Уценка</span>
                             </label>
                         </div>
                     <? endif; ?>

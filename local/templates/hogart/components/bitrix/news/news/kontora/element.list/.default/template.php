@@ -91,7 +91,7 @@ $page = $APPLICATION->GetCurDir();
                                         <? if(in_array($arDirection['ID'], $_REQUEST['direction'])): ?>
                                             checked
                                         <? endif; ?>
-                                    > <?=$arDirection['NAME']?>
+                                    >   <span class="checkbox-text"><?=$arDirection['NAME']?></span>
                                 </label>
                             </div>
                         <? endforeach; ?>
@@ -109,12 +109,13 @@ $page = $APPLICATION->GetCurDir();
                                            value="<?=$tag["PROPERTY_TAG_VALUE_VALUE"]?>"
                                            onchange="this.form.submit()"
                                         <? if(isset($_REQUEST["tag"][$tag["PROPERTY_TAG_VALUE_ENUM_ID"]])): ?> checked<? endif; ?>
-                                    > <?=$tag["PROPERTY_TAG_VALUE_VALUE"]?>
+                                    > <span class="checkbox-text"><?=$tag["PROPERTY_TAG_VALUE_VALUE"]?></span>
                                 </label>
                             </div>
                         <? endforeach; ?>
                     </div>
                 <? endif; ?>
+                <button class="btn btn-link" type="button" name="" value="Сбросить"> Сбросить 
             </form>
         </div>
     </div>
