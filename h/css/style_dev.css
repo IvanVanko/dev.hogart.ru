@@ -2020,4 +2020,8 @@
         margin-top: -160px !important;
         padding-top: 160px !important;
     }
+
+    .documentation_page .doc-loadlist li:not(.head) span {
+        color: #000 !important;
+    }
 }
