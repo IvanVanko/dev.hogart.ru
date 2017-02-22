@@ -43,14 +43,14 @@ if (!isset($arParams['ITEM_TEMPLATE']) && empty($arParams['ITEM_TEMPLATE'])):?>
             </div>
         <? endif; ?>
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-5 col-xs-12">
                 <? if (!empty($arResult["DETAIL_PICTURE"])): ?>
                     <div class="text-center inner no-padding">
                         <img style="padding-top: 10px;" src="<?= $arResult['DETAIL_PICTURE']['SRC'] ?>" class="paddingimg" alt="<?= $arResult['NAME'] ?>"/>
                     </div>
                 <? endif; ?>
             </div>
-            <div class="col-md-7">
+            <div class="col-md-7 col-xs-12">
                 <? if (!empty($arResult["PROPERTIES"]['description'])): ?>
                     <h3><?= GetMessage("Описание") ?></h3>
                     <?= $arResult["PROPERTIES"]['description']['~VALUE']['TEXT']; ?>
@@ -59,7 +59,18 @@ if (!isset($arParams['ITEM_TEMPLATE']) && empty($arParams['ITEM_TEMPLATE'])):?>
                     <div style="display: flex; flex-direction: row; align-items: center;">
                         <h3><?= GetMessage("Фотографии объекта") ?></h3>
                         <? if (count($arResult['PROPERTIES']['photogallery']['VALUE']) > 2): ?>
-                            <div class="controls text-right">
+                            <div id="js-normal-slider-init" class="controls text-right">
+                                <div class="prev" id="galP">
+                                    <i class="fa fa-arrow-circle-o-left"></i>
+                                </div>
+                                <div class="next" id="galN">
+                                    <i class="fa fa-arrow-circle-o-right"></i>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        <? endif; ?>
+                        <? if (count($arResult['PROPERTIES']['photogallery']['VALUE']) > 1): ?>
+                            <div id="js-normal-slider-init-mobile" class="controls controls-mobile text-right">
                                 <div class="prev" id="galP">
                                     <i class="fa fa-arrow-circle-o-left"></i>
                                 </div>
@@ -71,37 +82,70 @@ if (!isset($arParams['ITEM_TEMPLATE']) && empty($arParams['ITEM_TEMPLATE'])):?>
                         <? endif; ?>
                     </div>
                     <div class="row gallery-slider" id="galElWidth">
-                        <ul class="js-normal-slider-init" style="min-width: 500px" data-width="#galElWidth" data-next="#galN"
+                        <ul class="js-normal-slider-init-solutions" style="min-width: 500px" data-width="#galElWidth" data-next="#galN"
                             data-prev="#galP">
-                            <? $countGalImg = 0; ?>
-                            <li>
-                                <div class="gall-news-one">
-                                    <? foreach ($arResult['PROPERTIES']['photogallery']['VALUE'] as $key => $photo):
-                                        $photoBig = CFile::GetPath($photo);
-                                        $photo = CFile::ResizeImageGet(
-                                            $photo,
-                                            array("width" => 320, "height" => 320),
-                                            BX_RESIZE_IMAGE_PROPORTIONAL,
-                                            true
-                                        );
-                                        ?>
+                            <? foreach ($arResult['PROPERTIES']['photogallery']['VALUE'] as $key => $photo):
+                                $photoBig = CFile::GetPath($photo);
+                                $photo = CFile::ResizeImageGet(
+                                    $photo,
+                                    array("width" => 320, "height" => 320),
+                                    BX_RESIZE_IMAGE_PROPORTIONAL,
+                                    true
+                                );
+                                ?>
+                                <li>
+                                    <div class="gall-news-one">
                                         <div class="img-wrap">
                                             <img class="js-popup-open-img" title="<?= $arResult['PROPERTIES']['photogallery']['DESCRIPTION'][$key] ?>" data-big-img="<?= $photoBig ?>" data-group="gallG" data-bi src="<?= $photo['src'] ?>"
                                                  alt=""/>
                                         </div>
-                                        <? $countGalImg++;
-                                        if ($countGalImg % 2 == 0) {
-                                            $countGalImg = 0;
-                                            echo '</div></li>';
-                                            if ($countGalImg != count($arResult['PROPERTIES']['photogallery']['VALUE'])) {
-                                                echo '<li><div class="gall-news-one">';
-                                            }
-                                        }
-                                        ?>
-                                    <? endforeach; ?>
-                                </div>
-                            </li>
+                                    </div>
+                                </li>
+                            <? endforeach; ?>
                         </ul>
+                        <script>
+                            $(document).ready(function () {
+                                // initiates responsive slide gallery           
+                                var settings = function() {
+                                    var settings1 = {
+                                        minSlides: 2,
+                                        maxSlides: 2,
+                                        moveSlides: 2,
+                                        slideMargin: 22,
+                                        slideWidth: $(this).width() / 2 - 22,
+                                        pager: false,
+                                        nextText: '',
+                                        prevText: '',
+                                        nextSelector: $('#js-normal-slider-init').find('.next'),
+                                        prevSelector: $('#js-normal-slider-init').find('.prev'),
+                                        infiniteLoop: false
+                                    };
+                                    var settings2 = {
+                                        minSlides: 1,
+                                        maxSlides: 1,
+                                        moveSlides: 1,
+                                        infiniteLoop: true,
+                                        pager: true,
+                                        pagerType: 'full',
+                                        slideWidth: $(this).width() / 1,
+                                        nextText: '',
+                                        prevText: '',
+                                        nextSelector: $('#js-normal-slider-init-mobile').find('.next'),
+                                        prevSelector: $('#js-normal-slider-init-mobile').find('.prev')
+                                    };
+                                    return ($(window).width()<768) ? settings2 : settings1;
+                                }
+
+                                var mySlider;
+
+                                function tourLandingScript() {
+                                    mySlider.reloadSlider(settings());
+                                }
+
+                                mySlider = $('.js-normal-slider-init-solutions').bxSlider(settings());
+                                $(window).resize(tourLandingScript);
+                            });
+                        </script>
                     </div>
                 <? endif ?>
             </div>
