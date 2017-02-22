@@ -159,6 +159,10 @@
 
 @media(max-width: 768px) {
 
+    .company .counter-company li > span img {
+        max-width: none !important;
+    }
+
     .seminar__information--mobile {
         display: block;
     }
