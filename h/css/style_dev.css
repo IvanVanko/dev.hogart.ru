@@ -157,6 +157,10 @@
     display: none;
 }
 
+.complex-page .gall-news-one .img-wrap {
+    width: 100%;
+}
+
 @media(max-width: 768px) {
 
     .seminar__information--mobile {
@@ -1102,8 +1106,8 @@
         color: #fff;
     }
 
-    .filter-helpful__input,
-    .filter-documentation__input {
+    .filter-helpful__input input,
+    .filter-documentation__input input {
         height: 38px;
         width: 100%;
         border-color: #fff !important;
@@ -1931,10 +1935,13 @@
         margin-top: 5px;
     }
 
+    .company .counter-company li > span img {
+        max-width: none !important;
+    }
+
     ul.organizers li.organizer-item img {
         height: auto;
-        width: 100px;
-        max-width: none !important;
+        width: 100px; 
     }
 
     .bx-viewport ul li .img-wrap {
@@ -1984,5 +1991,33 @@
     .learn-page .list-base-learn li img {
         vertical-align: top;
         padding: 0 10px 10px 0;
+    }
+
+    .news-one-cnt img {
+        max-width: 100%;
+        width: 100%;
+        height: auto;
+    }
+
+    .item-box .checkbox input {
+        display: block !important;
+    }
+
+    .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover .content .inner {
+        background: none;
+        padding: 10px 30px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+
+    .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover:hover .content {
+        height: 150px;
+    }
+
+    #calendar-list {
+        margin-top: -160px !important;
+        padding-top: 160px !important;
     }
 }
