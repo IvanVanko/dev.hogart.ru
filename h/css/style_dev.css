@@ -1042,7 +1042,8 @@
     .action_filter h3,
     .filter-news h3,
     .filter-documentation h3,
-    .filter-helpful h3 {
+    .filter-helpful h3,
+    .archive_filter h3 {
         color: #fff;
     }
 
@@ -1051,20 +1052,18 @@
         color: #fff;
     }
 
-    .checkbox.checkbox-stock {
+    .checkbox.checkbox-stock,
+    .checkbox.checkbox-archive {
         padding-left: 0;
         margin-left: 15px;
     }
 
     .checkbox-text {
         color: #fff !important;
+        font-size: 13px;
     }
 
-    .checkbox .bx-filter-input-checkbox .bx-filter-param-text:before,
-    .action_filter .checkbox .checkbox-text:before,
-    .filter-news .checkbox .checkbox-text:before,
-    .filter-documentation .checkbox .checkbox-text:before,
-    .filter-helpful .checkbox .checkbox-text:before {
+    .checkbox-text:before {
         content:"";
         position: absolute;
         left: 0;
@@ -1080,7 +1079,8 @@
     .action_filter .checkbox input[type=checkbox]:checked + .checkbox-text:after,
     .filter-news .checkbox input[type=checkbox]:checked + .checkbox-text:after,
     .filter-documentation .checkbox input[type=checkbox]:checked + .checkbox-text:after,
-    .filter-helpful .checkbox input[type=checkbox]:checked + .checkbox-text:after {
+    .filter-helpful .checkbox input[type=checkbox]:checked + .checkbox-text:after,
+    .archive_filter .checkbox input[type=checkbox]:checked + .checkbox-text:after {
         content:"";
         position: absolute;
         top: 5px;
@@ -1110,16 +1110,19 @@
         background: #fff !important;
     }
 
-    .filter-helpful {
+    .filter-helpful,
+    .archive_filter {
         font-size: 0;
     }
 
-    .filter-helpful .btn.btn-link {
+    .filter-helpful .btn.btn-link,
+    .archive_filter .btn.btn-link {
         width: 50%;
         padding: 6px 0;
     }
 
-    .filter-helpful .btn.btn-primary {
+    .filter-helpful .btn.btn-primary,
+    .archive_filter .btn.btn-primary {
         padding: 6px 0;
         width: 50%;
     }
@@ -1196,7 +1199,8 @@
         color: #fff;
     }
 
-    .filter-mobile .mCSB_scrollTools {
+    .filter-mobile .mCSB_scrollTools,
+    .filter-stock .mCSB_scrollTools {
         opacity: 0 !important;
     }
 
@@ -1268,12 +1272,13 @@
         height: auto;
         height: 100%;
         overflow-y: visible;
+        overflow-x: visible;
     }
 
     .perspective.active {
         overflow: visible; 
         perspective: 320px;
-        overflow-x: hidden;
+        overflow-x: visible;
     }
 
     .hamburger-mobile {
@@ -1928,7 +1933,8 @@
 
     ul.organizers li.organizer-item img {
         height: auto;
-        wodth: 100px;
+        width: 100px;
+        max-width: none !important;
     }
 
     .bx-viewport ul li .img-wrap {
