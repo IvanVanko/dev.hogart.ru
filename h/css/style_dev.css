@@ -161,6 +161,33 @@
     width: 100%;
 }
 
+.complex-page .gall-news-one .img-wrap {
+    height: auto;
+}
+
+.complex-page .gall-news-one .img-wrap img {
+    position: static;
+}
+
+.learn-page .list-base-learn li img {
+    width: 100px;
+    height: auto;
+}
+
+.company-page .sert-slider-cnt li {
+    text-align: center;
+}
+
+.company-page .sert-slider-cnt li img {
+    width: auto;
+    height: 140px;
+}
+
+.company-page .sert-slider-cnt li:before,
+.company-page .sert-slider-cnt li:after {
+    content: none;
+}
+
 @media(max-width: 768px) {
 
     .seminar__information--mobile {
@@ -1106,7 +1133,7 @@
         color: #fff;
     }
 
-    .filter-helpful__input input,
+    .filter-helpful__input,
     .filter-documentation__input input {
         height: 38px;
         width: 100%;
@@ -1887,7 +1914,6 @@
         display: block;
         margin: 0 auto;
         height: auto;
-        width: 100%;
     }
 
     .comments-page .comments-list .photo .inner {
@@ -1972,6 +1998,10 @@
         padding-left: 0;
     }
 
+    .learn-people-list li {
+        width: 100% !important;
+    }
+
     .learn-page .list-base-learn li {
         padding-left: 0;
     }
@@ -2003,6 +2033,17 @@
         display: block !important;
     }
 
+    .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover .content .inner:active {
+        opacity: 1;
+    }
+
+    .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover:active {
+        box-shadow: 0 0 4px #ccc;
+        opacity: 1;
+        position: relative;
+        z-index: 100;
+    }
+
     .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover .content .inner {
         background: none;
         padding: 10px 30px;
@@ -2010,10 +2051,24 @@
         top: 0;
         left: 0;
         width: 100%;
+        height: 100%;
+        display: none;
     }
 
-    .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover:hover .content {
+    .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover:active .content .inner,
+    .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover:hover .content .inner {
+        display: block;
+        opacity: 1;
+    }
+
+    .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover:hover .content,
+    .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover:active .content {
         height: 150px;
+    }
+
+    .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover .ui-state-default {
+        width: 100%;
+        z-index: 50;
     }
 
     #calendar-list {
@@ -2023,5 +2078,55 @@
 
     .documentation_page .doc-loadlist li:not(.head) span {
         color: #000 !important;
+    }
+
+    .slider-comment {
+        position: relative !important;
+    }
+
+    .complex-page .gall-news-one .img-wrap img {
+        position: static;
+    }
+
+    .complex-page .gall-news-one .img-wrap {
+        height: auto;
+    }
+
+    .complex-page .gall-news-one .img-wrap:hover {
+        transform: scale(1);
+    }
+
+    .complex-page .gallery-slider li {
+        padding: 0 30px 0;
+    }
+
+    .gallery-slider {
+        margin-bottom: 20px;
+    }
+
+    .project-detail__name-mobile {
+        display: block !important;
+    }
+
+    .learn-page .list-base-learn li h2 {
+        font-size: 20px !important;
+    }
+
+    .brand-catalog__description {
+        margin-bottom: 20px;
+    }
+
+    .company-page .sert-slider-cnt li {
+        text-align: center;
+    }
+
+    .company-page .sert-slider-cnt li img {
+        width: auto;
+        height: 160px;
+    }
+
+    .company-page .sert-slider-cnt li:before,
+    .company-page .sert-slider-cnt li:after {
+        content: none;
     }
 }

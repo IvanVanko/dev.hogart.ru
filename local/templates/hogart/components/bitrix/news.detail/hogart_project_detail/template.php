@@ -56,7 +56,7 @@ if (!isset($arParams['ITEM_TEMPLATE']) && empty($arParams['ITEM_TEMPLATE'])):?>
                     <?= $arResult["PROPERTIES"]['description']['~VALUE']['TEXT']; ?>
                 <? endif; ?>
                 <? if (!empty($arResult['PROPERTIES']['photogallery']['VALUE'])): ?>
-                    <div style="display: flex; flex-direction: row; align-items: center;">
+                    <div class="project-detail__name-mobile" style="display: flex; flex-direction: row; align-items: center;">
                         <h3><?= GetMessage("Фотографии объекта") ?></h3>
                         <? if (count($arResult['PROPERTIES']['photogallery']['VALUE']) > 2): ?>
                             <div id="js-normal-slider-init" class="controls text-right">
@@ -153,7 +153,7 @@ if (!isset($arParams['ITEM_TEMPLATE']) && empty($arParams['ITEM_TEMPLATE'])):?>
 
         <? if (!empty($arResult['PROPERTIES']['video']['VALUE'])) : ?>
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12 col-xs-12">
                     <div class="proj-video-box">
                         <div class="open-video">Видео презентация</div>
                         <div id="proj-video" class="popup-img-cnt " style="display: none;">
@@ -212,7 +212,7 @@ if (!isset($arParams['ITEM_TEMPLATE']) && empty($arParams['ITEM_TEMPLATE'])):?>
         <? endif; ?>
         <? if (!empty($arResult["PROPERTIES"]['review_text']['VALUE'])): ?>
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12 col-xs-12">
                     <h3>Отзыв</h3>
                     <ul class="complex-comments-list">
 
@@ -250,7 +250,7 @@ if (!isset($arParams['ITEM_TEMPLATE']) && empty($arParams['ITEM_TEMPLATE'])):?>
         </div>
     </div>
     <? if (!empty($arResult['PROPERTIES']['infographics']['VALUE'])): ?>
-    <div class="col-md-3 aside">
+    <div class="col-md-3 col-xs-12 aside aside-mobile">
         <h3><?= GetMessage("Оборудование") ?></h3>
         <? foreach ($arResult['PROPERTIES']['infographics']['VALUE'] as $key => $infographic): ?>
             <div class="row vertical-align">
