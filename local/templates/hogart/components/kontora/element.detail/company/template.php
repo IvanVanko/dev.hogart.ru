@@ -53,7 +53,7 @@
                 <? endif; ?>
                 <ul class="sert-slider-cnt js-company-slider-about">
                     <? foreach ($arResult["PROPERTIES"]["honors"]["VALUE"] as $value):
-                        $file = CFile::ResizeImageGet($value, array('width' => 250, 'height' => 140), BX_RESIZE_IMAGE_PROPORTIONAL, true);
+                        $file = CFile::ResizeImageGet($value, array('width' => 600, 'height' => 500), BX_RESIZE_IMAGE_PROPORTIONAL, true);
                         $fileBig = CFile::GetPath($value);
                         ?>
                         <li>

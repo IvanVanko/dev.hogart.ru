@@ -58,7 +58,41 @@
 </div>
 
 <div class="brand-catalog__mobile" style="margin-top: 20px;">
-    <? $APPLICATION->ShowViewContent("brand-catalog-mobile") ?>
+    <div class="brand-catalog__category">
+        <div class="brand-catalog__title title h4 text-uppercase">Каталог продукции <span class="brand-name"><?= $arResult['NAME'] ?></span></div>
+        <a class="brand-catalog__accordion" data-toggle="collapse" data-parent="#accordion-brand" href="#brand-category" aria-expanded="false" title="Каталог">
+            <span class="brand-catalog__control">
+                <span class="brand-catalog__plus">+</span >
+                <span class="brand-catalog__minus">-</span>
+            </span >
+            <span class="brand-catalog__text">Каталог</span>
+        </a>
+        <div id="brand-category" class="brand-catalog__content collapse panel-collapse panel panel-default"> 
+            <? if (!empty($arResult['PARENT_SECTIONS']) && !empty($arResult['PRODUCT_SECTION_GROUPS']) && !empty($arResult['PRODUCT_GROUPS'])): ?>
+                <ul id="#accordion-sub-brand" class="brand-catalog__list">
+                    <? foreach ($arResult['PARENT_SECTIONS'] as $arParentSection): ?>
+                        <li class="panel panel-default">
+                            <a data-toggle="collapse" data-parent="#accordion-sub-brand" href="#<?=$arParentSection['ID'] ?>" aria-expanded="false" title="Каталог" class="h4 text-uppercase catalog-mobile__name"><?= $arParentSection['NAME'] ?></a>
+                            <ul id="<?=$arParentSection['ID'] ?>" class="catalog-mobile__description catalog-mobile__description--brand panel-collapse collapse">
+                                <? foreach ($arResult['PRODUCT_SECTION_GROUPS'][$arParentSection['ID']] as $arChildSection): ?>
+                                    <? $ch_id = $arChildSection['ID'] ?>
+        
+                                    <li><a class="h5" href="<?= $arChildSection['SECTION_PAGE_URL'] ?>"><?= $arChildSection['NAME'] ?></a>
+                                        (<?= $arResult['PRODUCT_GROUPS'][$ch_id]['CNT'] ?>)
+                                    </li>
+                                <? endforeach; ?>
+                            </ul>
+                        </li>
+                    <? endforeach; ?>
+                </ul>
+            <? else: ?>
+                <p class="no-catalog">
+                    Для подбора оборудования <span class="brand-name"><?= $arResult['NAME'] ?></span>
+                     <a href="<?= SITE_DIR ?>contacts/tsentralnyy-ofis-khogart-v-moskve-sklad-i-servisnaya-sluzhba/">обращайтесь к менеджерам компании</a>
+                </p>
+            <? endif; ?>
+        </div>
+    </div>
 </div>
 
 <? if($arResult['PREVIEW_TEXT'] || $arResult['DETAIL_TEXT']): ?>
@@ -167,44 +201,6 @@
         </div>
     </div>
 <? endif; ?>
-
-<? $this->SetViewTarget('brand-catalog-mobile') ?>
-    <div class="brand-catalog__category">
-        <div class="brand-catalog__title title h4 text-uppercase">Каталог продукции <span class="brand-name"><?= $arResult['NAME'] ?></span></div>
-        <a class="brand-catalog__accordion" data-toggle="collapse" data-parent="#accordion-brand" href="#brand-category" aria-expanded="false" title="Каталог">
-            <span class="brand-catalog__control">
-                <span class="brand-catalog__plus">+</span >
-                <span class="brand-catalog__minus">-</span>
-            </span >
-            <span class="brand-catalog__text">Каталог</span>
-        </a>
-        <div id="brand-category" class="brand-catalog__content collapse panel-collapse panel panel-default"> 
-            <? if (!empty($arResult['PARENT_SECTIONS']) && !empty($arResult['PRODUCT_SECTION_GROUPS']) && !empty($arResult['PRODUCT_GROUPS'])): ?>
-                <ul id="#accordion-sub-brand" class="brand-catalog__list">
-                    <? foreach ($arResult['PARENT_SECTIONS'] as $arParentSection): ?>
-                        <li class="panel panel-default">
-                            <a data-toggle="collapse" data-parent="#accordion-sub-brand" href="#<?=$arParentSection['ID'] ?>" aria-expanded="false" title="Каталог" class="h4 text-uppercase catalog-mobile__name"><?= $arParentSection['NAME'] ?></a>
-                            <ul id="<?=$arParentSection['ID'] ?>" class="catalog-mobile__description catalog-mobile__description--brand panel-collapse collapse">
-                                <? foreach ($arResult['PRODUCT_SECTION_GROUPS'][$arParentSection['ID']] as $arChildSection): ?>
-                                    <? $ch_id = $arChildSection['ID'] ?>
-        
-                                    <li><a class="h5" href="<?= $arChildSection['SECTION_PAGE_URL'] ?>"><?= $arChildSection['NAME'] ?></a>
-                                        (<?= $arResult['PRODUCT_GROUPS'][$ch_id]['CNT'] ?>)
-                                    </li>
-                                <? endforeach; ?>
-                            </ul>
-                        </li>
-                    <? endforeach; ?>
-                </ul>
-            <? else: ?>
-                <p class="no-catalog">
-                    Для подбора оборудования <span class="brand-name"><?= $arResult['NAME'] ?></span>
-                     <a href="<?= SITE_DIR ?>contacts/tsentralnyy-ofis-khogart-v-moskve-sklad-i-servisnaya-sluzhba/">обращайтесь к менеджерам компании</a>
-                </p>
-            <? endif; ?>
-        </div>
-    </div>
-<? $this->EndViewTarget() ?>
 
 <? $this->SetViewTarget('brand-catalog') ?>
     <div class="title h4 text-uppercase">Каталог продукции <span class="brand-name"><?= $arResult['NAME'] ?></span></div>
