@@ -72,7 +72,7 @@ $this->setFrameMode(true);
             );
             ?>
         </div>
-        <div class="col-md-3 col-xs-12 brand-catalog__mobile-hide">
+        <div class="col-md-3 col-xs-12 aside brand-catalog__mobile-hide">
             <? $APPLICATION->ShowViewContent("brand-catalog") ?>
         </div>
 <? else: ?>

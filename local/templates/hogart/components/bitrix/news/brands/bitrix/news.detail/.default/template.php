@@ -99,6 +99,11 @@
     <div class="row" style="margin-top: 20px;">
         <div class="col-md-12">
             <div class="brand-catalog__description">
+                <? if($arResult['DETAIL_TEXT']): ?>
+                    <div class="brand__detail-link">
+                        <a title="Подробнее"  href="#brand-detail">Подробнее >></a>
+                    </div>
+                <? endif; ?>
                 <a class="brand-catalog__accordion" data-toggle="collapse" data-parent="#accordion-brand" href="#brand-description" aria-expanded="true" title="Описание">
                     <span class="brand-catalog__control">
                         <span class="brand-catalog__plus">+</span >
@@ -110,7 +115,6 @@
                     <div class="col-md-9 col-sm-12 brand-mobile__accordion-text">
                         <?= $arResult['PREVIEW_TEXT'] ?>
                     </div>
-                    <?= $arResult['DETAIL_TEXT'] ?>
                     <? foreach (['about_company' => "О компании", 'about_products' => "О продуктах и решениях"] as $gallery_key => $section_name): ?>
                         <? if (!empty($arResult["PROPERTIES"]["photogallery_" . $gallery_key]['VALUE']) || !empty($arResult["PROPERTIES"]["videogallery_" . $gallery_key]['VALUE'])): ?>
                             <div class="row">
@@ -196,6 +200,9 @@
                             </div>
                         <? endif; ?>
                     <? endforeach; ?>
+                    <div id="brand-detail" class="brand__detail">
+                        <?= $arResult['DETAIL_TEXT'] ?>
+                    </div>
                 </div>
             </div>
         </div>
