@@ -35,7 +35,7 @@ $vacancyName = $vacancy['NAME'];
                 $component
             ); ?>
         </div>
-        <div class="col-md-3 col-xs-12 aside-mobile">
+        <div class="col-md-3 col-xs-12 aside aside-mobile">
             <? $APPLICATION->IncludeComponent(
                 "bitrix:form.result.new",
                 "",
