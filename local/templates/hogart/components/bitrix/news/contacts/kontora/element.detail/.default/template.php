@@ -3,7 +3,7 @@
 }
 ?>
 
-<div class="col-md-9">
+<div class="col-md-9 col-xs-12">
     <div class="row">
         <div class="col-md-10">
             <h3><?=\Bitrix\Main\Localization\Loc::getMessage("title_contacts")?></h3>
@@ -22,10 +22,14 @@
     <address>
         <?=$arResult['PROPRTIES']['adress']['VALUE']?><br>
         <? if(!empty($arResult['PROPERTIES']['address']['VALUE'])): ?>
-            <?= GetMessage("Адрес") ?>: <?=$arResult['PROPERTIES']['address']['VALUE']?><br>
+            <?= GetMessage("Адрес") ?>: <a href="#map"><?=$arResult['PROPERTIES']['address']['VALUE']?></a><br>
         <?endif;
         if(!empty($arResult['PROPERTIES']['phone']['VALUE'])):?>
-            <?= GetMessage("тел.") ?>: <?=implode(', ', $arResult['PROPERTIES']['phone']['VALUE'])?><br>
+            <?= GetMessage("тел.") ?>: 
+            <? foreach ($arResult['PROPERTIES']['phone']['VALUE'] as $i => $phone): ?>
+                <a href="tel:<?= $phone ?>"><?= $phone ?></a><?= ($i + 1 != count($arResult['PROPERTIES']['phone']['VALUE'])) ? ',' : '' ?>
+            <? endforeach; ?>
+            <br>
         <?endif;
         if(!empty($arResult['PROPERTIES']['mail']['VALUE'])):
             $email_html = array();
@@ -85,7 +89,7 @@
                 <?= GetMessage("Схема проезда на автомобиле") ?>
                 <i class="icon-bottom icon-full"></i>
             </a>
-            <div class="way-scheme" style="display: none;">
+            <div class="way-scheme js-increase-size" style="display: none;">
                 <img src="<?=CFile::GetPath($arResult['PROPERTIES']['by_car_scheme']['VALUE'])?>" alt=""/>
 
             </div>

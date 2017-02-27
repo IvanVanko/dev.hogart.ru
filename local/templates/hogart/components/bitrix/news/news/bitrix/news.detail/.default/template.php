@@ -3,7 +3,7 @@ $date_from = FormatDate("d F Y", MakeTimeStamp($arResult["ACTIVE_FROM"]));
 $share_img_src = false;
 ?>
 <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-9 col-xs-12">
         <div class="row vertical-align">
             <div class="col-md-10">
                 <h3 style="margin-top: 10px"><?$APPLICATION->ShowTitle()?></h3>
@@ -56,40 +56,77 @@ $share_img_src = false;
                 <?if (!empty($arResult['PROPERTIES']['photogallery']['VALUE'])): ?><h2>Фотогалерея</h2><? endif; ?>
             </div>
             <div class="row gallery-slider" id="galElWidth">
-                <ul class="js-normal-slider-init" style="min-width: 500px" data-width="#galElWidth" data-next="#galN" data-prev="#galP">
-                    <? $countGalImg = 0;?>
-                    <li>
-                        <div class="gall-news-one">
-                            <?
-                            foreach ($arResult['PROPERTIES']['photogallery']['VALUE'] as $key => $photo):
-                                $photoBig = CFile::GetPath($photo);
-                                $photo = CFile::ResizeImageGet($photo, array('width'=>320, 'height'=>320), BX_RESIZE_IMAGE_PROPORTIONAL, true);
-                                if  (!$key) {
-                                    $share_img_src = $photo['src'];
-                                }
-                                ?>
-
-                                <div class="img-wrap">
-                                    <img class="js-popup-open-img" title="<?=$arResult['NAME']?>" data-big-img="<?=$photoBig?>" data-group="gallG" src="<?= $photo['src'] ?>" alt=""/>
-                                </div>
-                                <?$countGalImg++;
-                                if($countGalImg%4==0){
-                                    $countGalImg = 0;
-                                    echo '</div></li>';
-                                    if($countGalImg!=count($arResult['PROPERTIES']['photogallery']['VALUE']))
-                                        echo '<li><div class="gall-news-one">';
-                                }
-                                ?>
-                            <? endforeach; ?>
-                        </div>
-                    </li>
-                </ul>
-                <? if (count($arResult['PROPERTIES']['photogallery']['VALUE']) > 4) { ?>
-                    <div class="controls">
+                <? if (count($arResult['PROPERTIES']['photogallery']['VALUE']) > 3) { ?>
+                    <div id="normal-slider-init" class="controls">
                         <div class="prev" id="galP"><i class="fa fa-arrow-circle-o-left"></i></div>
                         <div class="next" id="galN"><i class="fa fa-arrow-circle-o-right"></i></div>
                     </div>
                 <?}?>
+                <? if (count($arResult['PROPERTIES']['photogallery']['VALUE']) > 1) { ?>
+                    <div id="normal-slider-init-mobile" class="controls controls-mobile">
+                        <div class="prev" id="galP"><i class="fa fa-arrow-circle-o-left"></i></div>
+                        <div class="next" id="galN"><i class="fa fa-arrow-circle-o-right"></i></div>
+                    </div>
+                <?}?>
+                <ul class="js-normal-slider-init-news" style="min-width: 500px" data-width="#galElWidth" data-next="#galN" data-prev="#galP">
+                    <? $countGalImg = 0;?>
+                   
+                    <?
+                    foreach ($arResult['PROPERTIES']['photogallery']['VALUE'] as $key => $photo):
+                        $photoBig = CFile::GetPath($photo);
+                        $photo = CFile::ResizeImageGet($photo, array('width'=>320, 'height'=>320),BX_RESIZE_IMAGE_EXACT, true);
+                        if  (!$key) {
+                            $share_img_src = $photo['src'];
+                        }
+                        ?>
+                        <li>
+                            <div class="img-wrap">
+                                <img class="js-popup-open-img" title="<?=$arResult['NAME']?>" data-big-img="<?=$photoBig?>" data-group="gallG" src="<?= $photo['src'] ?>" alt=""/>
+                            </div>
+                        </li>
+                    <? endforeach; ?>
+                </ul>
+                 <script>
+                    $(document).ready(function () {
+                        // initiates responsive slide gallery           
+                        var settings = function() {
+                            var settings1 = {
+                                minSlides: 3,
+                                maxSlides: 3,
+                                slideMargin: 22,
+                                slideWidth: $(this).width() / 3 - 22,
+                                pager: false,
+                                nextText: '',
+                                prevText: '',
+                                nextSelector: $('#normal-slider-init').find('.next'),
+                                prevSelector: $('#normal-slider-init').find('.prev'),
+                                infiniteLoop: false
+                            };
+                            var settings2 = {
+                                minSlides: 1,
+                                maxSlides: 1,
+                                infiniteLoop: true,
+                                pager: true,
+                                pagerType: 'full',
+                                slideWidth: $(this).width() / 1,
+                                nextText: '',
+                                prevText: '',
+                                nextSelector: $('#normal-slider-init-mobile').find('.next'),
+                                prevSelector: $('#normal-slider-init-mobile').find('.prev')
+                            };
+                            return ($(window).width()<768) ? settings2 : settings1;
+                        }
+
+                        var mySlider;
+
+                        function tourLandingScript() {
+                            mySlider.reloadSlider(settings());
+                        }
+
+                        mySlider = $('.js-normal-slider-init-news').bxSlider(settings());
+                        $(window).resize(tourLandingScript);
+                    });
+                </script>
             </div>
             <? /*endif*/ ?>
 
@@ -104,7 +141,7 @@ $share_img_src = false;
             )
         );?>
     </div>
-    <div class="col-md-3 aside">
+    <div class="col-md-3 col-xs-12 aside aside-mobile">
         <?$APPLICATION->IncludeComponent(
             "kontora:element.list",
             "news_detail",

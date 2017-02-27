@@ -14,7 +14,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
 $this->setFrameMode(false); ?>
-<div class="col-md-3 aside">
+<div class="col-md-3 col-xs-12 aside aside-mobile">
     <h3><?= GetMessage("Оставьте отзыв") ?></h3>
 
     <? //Изменяем порядок вывода полей

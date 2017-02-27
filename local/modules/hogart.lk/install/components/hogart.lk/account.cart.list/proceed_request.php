@@ -129,6 +129,9 @@ if (
         case 'delete_items':
             CartTable::deleteItems($_REQUEST['cart_id'], $_REQUEST['item']);
             break;
+        case 'clear':
+            CartTable::delete($_REQUEST['cart_id']);
+            break;
         case 'delete_nostock_items':
             CartTable::deleteNoStockItems($_REQUEST['cart_id']);
             break;

@@ -15,7 +15,7 @@ $this->setFrameMode(true);
 
 <? if ($APPLICATION->GetCurDir() === $arParams["SEF_FOLDER"]): ?>
 <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-9 col-xs-12">
         <h3><?$APPLICATION->ShowTitle()?></h3>
         <p>
             <?$APPLICATION->IncludeComponent("bitrix:main.include","",Array(
@@ -38,7 +38,7 @@ $this->setFrameMode(true);
             $component
         );?>
     </div>
-    <div class="col-md-3 aside">
+    <div class="col-md-3 col-xs-12 aside aside-mobile">
         <?$APPLICATION->IncludeComponent(
             "kontora:element.list",
             "history",

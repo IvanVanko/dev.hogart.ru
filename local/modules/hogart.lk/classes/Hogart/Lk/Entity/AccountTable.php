@@ -11,6 +11,7 @@ namespace Hogart\Lk\Entity;
 
 use Bitrix\Main\Entity\BooleanField;
 use Bitrix\Main\Entity\Event;
+use Bitrix\Main\Entity\FloatField;
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ReferenceField;
 use Hogart\Lk\Field\GuidField;
@@ -60,6 +61,10 @@ class AccountTable extends AbstractEntity
 
             new IntegerField("main_contract_id"),
             new ReferenceField("main_contract", __NAMESPACE__ . "\\ContractTable", ["=this.main_contract_id" => "ref.id"]),
+
+            new FloatField("sale_max_money", [
+                'default_value' => 0
+            ]),
 
             new BooleanField("is_promo_accesss"),
             new BooleanField("is_active")

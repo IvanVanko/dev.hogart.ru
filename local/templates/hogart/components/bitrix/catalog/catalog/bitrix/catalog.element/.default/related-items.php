@@ -31,7 +31,7 @@ $controlsID = uniqid();
 
 <ul data-control="#con-<?= $controlsID ?>" class="row related-products">
     <? foreach ($related['ITEMS'] as $arProduct): ?>
-        <li class="col-lg-3 col-md-4 col-sm-6 this-collection-item">
+        <li class="col-lg-3 col-md-4 col-sm-6 col-xs-12 this-collection-item">
             <div>
                 <span class="perechen-img">
                     <a href="<?= $arProduct["DETAIL_PAGE_URL"] ?>">
@@ -229,14 +229,14 @@ $controlsID = uniqid();
                                     </div>
                                 </div>
                             <? endif; ?>
-                            <div class="col-sm-4 text-right pull-right">
+                            <div class="col-sm-4 col-xs-12 text-right pull-right">
                                 <?= \Hogart\Lk\Helper\Template\Cart::Link(
-                                    '<i class="fa fa-cart-plus" aria-hidden="true"></i>',
+                                    '<i class="fa fa-cart-plus" aria-hidden="true"></i><span class="button-collection__text">Купить</span>',
                                     [
                                         'item_id' => $arProduct['ID'],
                                         'count' => '1'
                                     ],
-                                    'class="black buy"'
+                                    'class="button-collection black buy"'
                                 ) ?>
                             </div>
                         </div>

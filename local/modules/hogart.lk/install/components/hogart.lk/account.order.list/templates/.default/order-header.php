@@ -8,16 +8,24 @@
 use Hogart\Lk\Entity\OrderTable;
 use Hogart\Lk\Entity\ContractTable;
 use Hogart\Lk\Entity\OrderItemTable;
+use Hogart\Lk\Helper\Template\Money;
 
 ?>
 <div class="row spacer-20 order-line__header">
     <div class="col-sm-6">
         <h4>
             <a href="/account/order/<?= $order['id'] ?>">
-                                <span class="title">
-                                    <?= OrderTable::showName($order) ?>
-                                </span>
+                <span class="title">
+                    <?= OrderTable::showName($order) ?>
+                </span>
             </a>
+            <sup class="visible-xs-inline">
+                <? if ($order['state'] == OrderTable::STATE_NORMAL): ?>
+                    <span class="label label-default label-xs"><?= OrderTable::getStatusText($order['status']) ?></span>
+                <? endif; ?>
+                <span class="hidden-xs-inline label label-primary label-xs"><?= OrderTable::getTypeText($order['type']) ?></span>
+            </sup>
+
             <? if (!$order['is_actual']): ?>
                 <sup>
                     <span class="label label-danger label-xs">синхронизация</span>
@@ -49,7 +57,7 @@ use Hogart\Lk\Entity\OrderItemTable;
     </div>
     <div class="col-sm-1 text-right pull-right">
         <? if ($order['state'] == OrderTable::STATE_NORMAL): ?>
-            <div class="h5">
+            <div class="hidden-xs h5">
                 <span class="label label-default"><?= OrderTable::getStatusText($order['status']) ?></span>
             </div>
         <? endif; ?>
@@ -65,12 +73,15 @@ use Hogart\Lk\Entity\OrderItemTable;
                 </div>
             </div>
         <? endif; ?>
-        <span class="label label-primary"><?= OrderTable::getTypeText($order['type']) ?></span>
+        <span class="hidden-xs label label-primary"><?= OrderTable::getTypeText($order['type']) ?></span>
     </div>
 </div>
 <div class="row spacer-20">
     <div class="col-sm-6">
         <?= $APPLICATION->GetViewContent('shipment-view-part') ?>
+        <? if ($order['c_is_credit']): ?>
+            <div style="font-weight: bold">Остаток кредит-лимита по договору: <span class="money<?= ($order['c_currency_code'] == "RUB" ? "" : "-eur") ?>"><?= Money::show($order['c_sale_max_money']) ?></span></div>
+        <? endif; ?>
     </div>
     <div class="col-sm-3">
         <? if ($order['guid_id'] && $order['state'] == OrderTable::STATE_NORMAL && $order['totals']['release']): ?>
@@ -85,8 +96,12 @@ use Hogart\Lk\Entity\OrderItemTable;
         <? endif; ?>
     </div>
     <div class="col-sm-2">
-        <? if ($order['sale_granted'] && $order['state'] == OrderTable::STATE_NORMAL && OrderTable::isProvideShipmentFlag($order['shipment_flag'], OrderItemTable::STATUS_IN_RESERVE)): ?>
+        <? if ($order['is_actual'] && $order['sale_granted'] && ((!$order['c_is_credit'] && $order['sale_max_money'] > 0) || ($order['c_is_credit'] && OrderTable::isMaxMoneyValid($order))) && $order['state'] == OrderTable::STATE_NORMAL && OrderTable::isProvideShipmentFlag($order['shipment_flag'], OrderItemTable::STATUS_IN_RESERVE)): ?>
             <a href="/account/orders/shipment/<?= $order['s_XML_ID'] ?>/" class="btn btn-primary">Отгрузить</a>
+        <? elseif (!empty($order['block_reason'])): ?>
+            <div style="font-weight: bold" class="text-danger">
+                <?= $order['block_reason'] ?>
+            </div>
         <? endif; ?>
     </div>
 </div>

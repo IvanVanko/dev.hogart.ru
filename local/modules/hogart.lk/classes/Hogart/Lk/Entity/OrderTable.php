@@ -28,6 +28,7 @@ use Hogart\Lk\Exchange\RabbitMQ\Exchange\OrderExchange;
 use Hogart\Lk\Exchange\SOAP\AbstractPutRequest;
 use Hogart\Lk\Exchange\SOAP\Request\Order;
 use Hogart\Lk\Field\GuidField;
+use Hogart\Lk\Helper\Template\Account;
 use Hogart\Lk\Helper\Template\FlashError;
 use Hogart\Lk\Helper\Template\FlashSuccess;
 
@@ -110,6 +111,7 @@ class OrderTable extends AbstractEntity
             new TextField("note"),
             new BooleanField("sale_granted"),
             new FloatField("sale_max_money"),
+            new TextField("block_reason"),
             new BooleanField("perm_reserve"),
             new BooleanField("is_active"),
             new BooleanField("is_actual", [
@@ -236,6 +238,18 @@ class OrderTable extends AbstractEntity
             ]
         ])->fetchAll();
         return $companies;
+    }
+
+    public static function maxMoneySale($order, $account_id = null)
+    {
+        $account = ($account_id == null ? Account::getAccount() : AccountTable::getAccountById($account_id));
+        $sale_max_money = $account['sale_max_money'];
+        return max(0, !$order['c_is_credit'] ? $order['sale_max_money'] :  min($sale_max_money, $order['c_sale_max_money'], $order['sale_max_money']));
+    }
+
+    public static function isMaxMoneyValid($order, $account_id = null)
+    {
+        return self::maxMoneySale($order, $account_id) > 0;
     }
 
     public static function getOrder($order_id, $filter = [], $item_filter = [], $account_id = null)
@@ -456,7 +470,8 @@ class OrderTable extends AbstractEntity
     public static function getShipmentOrders($account_id, $store)
     {
         $orders = self::getByAccount($account_id, null, self::STATE_NORMAL, [
-            '=store_guid' => $store
+            '=store_guid' => $store,
+            '=is_actual' => true,
         ], [
             '=status' => OrderItemTable::STATUS_IN_RESERVE,
         ]);

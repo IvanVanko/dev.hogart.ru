@@ -15,7 +15,7 @@
         <? $brand_links["brand_letter_" . $first_letter] = $first_letter; ?>
         <ul class="brands-list row">
     <? endif; ?>
-        <li class="col-lg-2 col-md-3 col-sm-4 col-xs-6" id="<?= $this->GetEditAreaId($arItem['ID']) ?>">
+        <li class="col-lg-2 col-md-3 col-sm-4 col-xs-12" id="<?= $this->GetEditAreaId($arItem['ID']) ?>">
             <a href="<?= $arItem['LINK'] ?>">
                     <span>
                         <? $pic = "/images/project_no_img.jpg"; ?>
@@ -42,7 +42,7 @@
 <? endif; ?>
 
 <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-9 col-xs-12">
         <h3><?= $APPLICATION->GetTitle() ?></h3>
         <p>
             <?= HogartHelpers::ShowStaticContent("documentation", "PREVIEW_TEXT") ?>
@@ -50,7 +50,7 @@
         <?= $APPLICATION->GetViewContent("brands-letters") ?>
         <?= $APPLICATION->GetViewContent("brands-list") ?>
     </div>
-    <div class="col-md-3 aside">
+    <div class="col-md-3 col-xs-12 aside aside-mobile">
         <div class="brand-links">
             <div class="row">
                 <? foreach ($arResult["BRANDS"] as $arItem): ?>

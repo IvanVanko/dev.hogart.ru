@@ -81,7 +81,7 @@ $this->EndViewTarget();
 <? endif; ?>
 
 <div class="row">
-    <div class="col-md-9 main-info">
+    <div class="col-md-9 col-sm-12 main-info">
         <? if(!empty($arResult["DISPLAY_PROPERTIES"]["sku"]["VALUE"])): ?>
             <div class="art">Артикул: <span><?=$arResult["DISPLAY_PROPERTIES"]["sku"]["VALUE"]?></span></div>
         <? endif; ?>
@@ -89,7 +89,7 @@ $this->EndViewTarget();
 
         <div class="product-info">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 col-xs-12">
                     <div class="img-wrap <?=(count($arResult["DISPLAY_PROPERTIES"]["photos"]["VALUE"]) > 1) ? '' : 'count1'?>">
                         <? if(Account::isAuthorized() && !empty($arResult["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
                             <!--div class="sale">
@@ -121,8 +121,7 @@ $this->EndViewTarget();
                                             $image_src = $pic["src"];
                                             ?>
                                         <? endif; ?>
-                                        <img <?= (!empty($image_big_src) ? 'data-big-img="' . $image_big_src['SRC'] . '"' : '') ?> title="<?=$arResult['NAME']?>"
-                                                                                                                                   src="<?= $image_src ?>" data-group="producPop" class="js-popup-open-img" />
+                                        <img <?= (!empty($image_big_src) ? 'data-big-img="' . $image_big_src['SRC'] . '"' : '') ?> title="<?=$arResult['NAME']?>" src="<?= $image_src ?>" data-group="producPop" cl>
                                     </div>
                                 </li>
 
@@ -177,25 +176,30 @@ $this->EndViewTarget();
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 col-xs-12">
                     <div class="info-wrap">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-6 ol-sm-12">
                                 
                                 <? if (!empty($arResult["PRICES"]["BASE"])): ?>
-                                <div class="price text-nowrap">
-                                    <? if(Account::isAuthorized() && !empty($arResult["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
-                                        <?= \Hogart\Lk\Helper\Template\Money::show($arResult["PRICES"]["BASE"]["DISCOUNT_VALUE"]) ?>
-                                    <? else: ?>
-                                        <?= \Hogart\Lk\Helper\Template\Money::show($arResult["PRICES"]["BASE"]["VALUE"]) ?>
+                                    <div class="price text-nowrap">
+                                        <? if(Account::isAuthorized() && !empty($arResult["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
+                                            <?= \Hogart\Lk\Helper\Template\Money::show($arResult["PRICES"]["BASE"]["DISCOUNT_VALUE"]) ?>
+                                        <? else: ?>
+                                            <?= \Hogart\Lk\Helper\Template\Money::show($arResult["PRICES"]["BASE"]["VALUE"]) ?>
+                                        <? endif; ?>
+                                        <i class="fa fa-<?=strtolower($arResult["PRICES"]["BASE"]["CURRENCY"])?>" aria-hidden="true"></i>
+                                        /
+                                        <?=$arResult['CATALOG_MEASURE_NAME']?>.
+                                        <? if(Account::isAuthorized() && !empty($arResult["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
+                                            <sup>*</sup>
+                                        <? endif; ?>
+                                    </div>
+                                    <? if (Account::isAuthorized() && !empty($arResult["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
+                                        <div class="price__old text-nowrap">
+                                            <?=HogartHelpers::woPrice($arResult["PRICES"]["BASE"]["PRINT_VALUE"]);?> руб.
+                                        </div>
                                     <? endif; ?>
-                                    <i class="fa fa-<?=strtolower($arResult["PRICES"]["BASE"]["CURRENCY"])?>" aria-hidden="true"></i>
-                                    /
-                                    <?=$arResult['CATALOG_MEASURE_NAME']?>.
-                                    <? if(Account::isAuthorized() && !empty($arResult["PRICES"]["BASE"]["DISCOUNT_DIFF_PERCENT"])): ?>
-                                        <sup>*</sup>
-                                    <? endif; ?>
-                                </div>
                                 <? endif; ?>
                                 
                                 <!--Только для авторизованных-->
@@ -234,7 +238,7 @@ $this->EndViewTarget();
                                 <? endif; ?>
 
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 col-sm-12">
                                 <div class="quantity-wrapper">
                                 <? if($arResult["CATALOG_QUANTITY"] > 0): ?>
                                         <div class="icon-carTon grid-hide">
@@ -341,7 +345,7 @@ $this->EndViewTarget();
                                 <? endif; ?>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row brand-title__mobile">
                             <div class="col-md-12">
                                 <span class="brand-title">
                                     <? if (!empty($arResult["DISPLAY_PROPERTIES"]['collection'])): ?>
@@ -377,7 +381,7 @@ $this->EndViewTarget();
             </div>
         </div>
 
-        <div class="products-similar-tabs">
+        <div class="products-similar-tabs products-similar-tabs__mobile">
             <ul class="nav nav-tabs" role="tablist">
                 <? $tab_active = null; ?>
                 <? if(isset($arResult["buy_with_this"]["ITEMS"])): ?>
@@ -441,7 +445,7 @@ $this->EndViewTarget();
         </div>
 
     </div>
-    <div class="col-md-3 element-info">
+    <div class="col-md-3 element-info element-info__mobile">
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active"><a href="#properties" aria-controls="properties" role="tab" data-toggle="tab">Характеристики</a></li>
             <? if(count($arResult["DOCS"]) > 0): ?>
@@ -502,5 +506,152 @@ $this->EndViewTarget();
             </div>
             <? endif; ?>
         </div>
+    </div>
+
+    <div class="col-sm-12 info-mobile">
+        <ul class="info-mobile__navigation"  id="info-navigation-mobile" role="tablist" aria-multiselectable="true">
+            <? if (!empty($arResult["DISPLAY_PROPERTIES"]["collection"]["DETAIL_TEXT"])): ?>
+                <li class="info-mobile__item">
+                    <a
+                        class="info-mobile__link"
+                        role="tab"
+                        data-toggle="collapse"
+                        data-parent="#info-navigation-mobile"
+                        href="#mobile-info-description"
+                        aria-expanded="false"
+                        aria-controls="amenities"
+                        title="Описание"
+                    >Описание</a>
+                    <p id="mobile-info-description" role="tabpanel" class="info-mobile__description collapse panel-collapse">
+                        <?= $arResult["DISPLAY_PROPERTIES"]["collection"]["DETAIL_TEXT"] ?>
+                    </p>
+                </li>
+            <? endif ?>
+            <li class="info-mobile__item">
+                <a
+                    class="info-mobile__link"
+                    role="tab"
+                    data-toggle="collapse"
+                    data-parent="#info-navigation-mobile"
+                    href="#mobile-info-features"
+                    aria-expanded="false"
+                    aria-controls="amenities"
+                    title="Характеристики"
+                >Характеристики</a>
+                <ul id="mobile-info-features" role="tabpanel" class="info-mobile__description collapse panel-collapse">
+                    <li class="feature dotted">
+                        <span class="text-left">Ед. изм.</span>
+                        <span class="text-right"><?= $arResult["CATALOG_MEASURE_NAME"]?>.</span>
+                    </li>
+
+                    <? if($arResult["CUSTOM"]["BRAND_NAME"]): ?>
+                        <li class="feature dotted">
+                            <span class="text-left"><?=$arResult["DISPLAY_PROPERTIES"]["brand"]["NAME"]?></span>
+                            <span class="text-right"><?=$arResult["CUSTOM"]["BRAND_NAME"]?></span>
+                        </li>
+                    <? endif; ?>
+
+                    <? if(!empty($arResult['DISPLAY_PROPERTIES']['collection']['LINK_ELEMENT_VALUE'])): ?>
+                        <? $collection_element = current($arResult['DISPLAY_PROPERTIES']['collection']['LINK_ELEMENT_VALUE']) ?>
+                        <li class="feature dotted">
+                            <span class="text-left"><?=$arResult['DISPLAY_PROPERTIES']['collection']['NAME']?></span>
+                            <span class="text-right"><?=$collection_element['NAME']?></span>
+                        </li>
+                    <? endif; ?>
+
+                    <? foreach($arResult["PROPERTIES"] as $arProperty): ?>
+                        <? if (empty($arProperty["VALUE"])) continue; ?>
+                        <li class="feature dotted">
+                            <span class="text-left"><?=$arProperty["NAME"]?></span>
+                            <span class="text-right"><?=$arProperty["VALUE"]?></span>
+                        </li>
+                    <? endforeach; ?>
+                </ul>
+            </li>
+            <? if(isset($arResult["alternative"]["ITEMS"])): ?>
+                <li class="info-mobile__item">
+                    <a 
+                        class="info-mobile__link" 
+                        role="tab" 
+                        data-toggle="collapse" 
+                        data-parent="#info-navigation-mobile" 
+                        href="#mobile-info-alternative" 
+                        aria-expanded="false" 
+                        aria-controls="amenities" 
+                        title="Аналоги"
+                    >Аналоги</a>
+                    <div id="mobile-info-alternative" role="tabpanel" class="info-mobile__description collapse panel-collapse">
+                        <div role="tabpanel" class="tab-pane <?= ($tab_active == 'alternative' ? 'active' : '') ?>" id="alternative">
+                            <div id="com_<?= $alternativeComponentId ?>">
+                                <? $APPLICATION->ShowViewContent("alternative-items") ?>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            <? endif; ?>
+            <? if(isset($arResult["related"]["ITEMS"])): ?>
+                <li class="info-mobile__item">
+                    <a 
+                        class="info-mobile__link" 
+                        role="tab" 
+                        data-toggle="collapse" 
+                        data-parent="#info-navigation-mobile" 
+                        href="#mobile-info-items" 
+                        aria-expanded="false" 
+                        aria-controls="amenities" 
+                        title="Описание"
+                    >Принадлежности</a>
+                    <div id="mobile-info-items" role="tabpanel" class="info-mobile__description collapse panel-collapse">
+                        <div role="tabpanel" class="tab-pane <?= ($tab_active == 'related' ? 'active' : '') ?>" id="related">
+                            <div id="com_<?= $relatedComponentId ?>">
+                                <? $APPLICATION->ShowViewContent("related-items") ?>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            <? endif; ?>
+            <? if(isset($arResult["this_collection"]["ITEMS"])): ?>
+                <li class="info-mobile__item">
+                    <a 
+                        class="info-mobile__link" 
+                        role="tab" 
+                        data-toggle="collapse" 
+                        data-parent="#info-navigation-mobile" 
+                        href="#mobile-info-related" 
+                        aria-expanded="false" 
+                        aria-controls="amenities" 
+                        title="Описание"
+                    >Из этой серии</a>
+                    <div id="mobile-info-related" role="tabpanel" class="info-mobile__description collapse panel-collapse">
+                        <div role="tabpanel" class="tab-pane <?= ($tab_active == 'this_collection' ? 'active' : '') ?>" id="this_collection">
+                            <div id="com_<?= $collectionComponentId ?>">
+                                <? $APPLICATION->ShowViewContent("related-collection-items") ?>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            <? endif; ?>
+            <? if(isset($arResult["buy_with_this"]["ITEMS"])): ?>
+                <li class="info-mobile__item">
+                    <a 
+                        class="info-mobile__link" 
+                        role="tab" 
+                        data-toggle="collapse" 
+                        data-parent="#info-navigation-mobile" 
+                        href="#mobile-info-buymore" 
+                        aria-expanded="false" 
+                        aria-controls="amenities" 
+                        title="Принадлежности"
+                    >С этим покупают</a>
+                </li>
+                <div id="mobile-info-buymore" role="tabpanel" class="info-mobile__description collapse panel-collapse">
+                    <div role="tabpanel" class="tab-pane <?= ($tab_active == 'buy_with_this' ? 'active' : '') ?>" id="buy_with_this">
+                        <div id="com_<?= $buyWithThisComponentId ?>">
+                            <? $APPLICATION->ShowViewContent("buy-with-this-items") ?>
+                        </div>
+                    </div>
+                </div>
+            <? endif; ?>
+        </ul>
     </div>
 </div>

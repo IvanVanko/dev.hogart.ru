@@ -14,7 +14,7 @@ $this->setFrameMode(true);
 $page = $APPLICATION->GetCurDir(true);
 ?>
 <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-9 col-xs-12">
         <h3><?= $APPLICATION->GetTitle() ?></h3>
         <ul class="list-base-learn">
             <?foreach ($arResult["ITEMS"] as $arItem):
@@ -55,38 +55,41 @@ $page = $APPLICATION->GetCurDir(true);
         </ul>
         <?= $arResult["NAV_STRING"]; ?>
     </div>
-    <div class="col-md-3 aside">
-        <? if (!empty($arResult['FILTER']['BRANDS']) || (!empty($arResult["FILTER"]["DIRECTIONS"]) && LANGUAGE_ID != "en")): ?>
-            <form action="#" class="archive_filter">
-                <?if (!empty($arResult['FILTER']['BRANDS'])):?>
-                    <h3><?= GetMessage("Бренд") ?></h3>
-                    <div class="row breands hide-big-cnt" data-hide="Еще">
-                        <?foreach ($arResult['FILTER']['BRANDS'] as $key => $arBrand):?>
-                            <div data-brand-key="<?= $key ?>" class="col-md-6 checkbox <?= ($key > 3 ? "more" : "") ?>" style="margin-top: 0">
-                                <label>
-                                    <input <?= ($arBrand['CHECKED'] ? "checked" : "") ?> type="checkbox" name="brand[]" id="breands_<?=$key+1?>" value="<?=$arBrand['ID']?>"/>
-                                    <?=$arBrand['VALUE']?>
-                                </label>
-                            </div>
-                        <?endforeach;?>
-                        <? if ($key > 3): ?>
-                            <div class="col-sm-12">
-                                <span class="btn-more" onclick="__more(this)">Еще <i class="fa"></i></span>
-                                <script>
-                                    function __more (more) {
-                                        $('.more', $(more).parents('.breands')).animate({ height: "toggle" });
-                                        $(more).toggleClass('opened');
-                                    }
-                                </script>
-                            </div>
-                        <? endif; ?>
-                    </div>
-                <?endif;?>
-                <br/>
-                <button class="btn btn-primary"><?= GetMessage("Найти семинары") ?></button> 
-                <a href="<?= $page ?>" class="btn btn-link"><?= GetMessage("Сбросить запрос") ?></a>
-                <br/><br/>
-            </form>
-        <? endif; ?>
+    <div class="col-md-3 col-xs-12 aside aside-mobile">
+        <div class="filter-stock">
+            <? if (!empty($arResult['FILTER']['BRANDS']) || (!empty($arResult["FILTER"]["DIRECTIONS"]) && LANGUAGE_ID != "en")): ?>
+                <a class="filter-stock__link js-filter-stock-mobile" href="#" title=""></a>
+                <form action="#" class="archive_filter">
+                    <?if (!empty($arResult['FILTER']['BRANDS'])):?>
+                        <h3><?= GetMessage("Бренд") ?></h3>
+                        <div class="row breands hide-big-cnt" data-hide="Еще">
+                            <?foreach ($arResult['FILTER']['BRANDS'] as $key => $arBrand):?>
+                                <div data-brand-key="<?= $key ?>" class="col-md-6 checkbox checkbox-archive <?= ($key > 3 ? "more" : "") ?>" style="margin-top: 0">
+                                    <label>
+                                        <input <?= ($arBrand['CHECKED'] ? "checked" : "") ?> type="checkbox" name="brand[]" id="breands_<?=$key+1?>" value="<?=$arBrand['ID']?>"/>
+                                        <span class="checkbox-text"><?=$arBrand['VALUE']?></span>
+                                    </label>
+                                </div>
+                            <?endforeach;?>
+                            <? if ($key > 3): ?>
+                                <div class="col-sm-12">
+                                    <span class="btn-more" onclick="__more(this)">Еще <i class="fa"></i></span>
+                                    <script>
+                                        function __more (more) {
+                                            $('.more', $(more).parents('.breands')).animate({ height: "toggle" });
+                                            $(more).toggleClass('opened');
+                                        }
+                                    </script>
+                                </div>
+                            <? endif; ?>
+                        </div>
+                    <?endif;?>
+                    <br/>
+                    <button class="btn btn-primary"><?= GetMessage("Найти семинары") ?></button> 
+                    <a href="<?= $page ?>" class="btn btn-link"><?= GetMessage("Сбросить запрос") ?></a>
+                    <br/><br/>
+                </form>
+            <? endif; ?>
+        </div>
     </div>
 </div>

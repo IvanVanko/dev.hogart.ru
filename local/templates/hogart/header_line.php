@@ -6,6 +6,8 @@
  * @global $USER
  */
 use \Bitrix\Main\Localization\Loc;
+
+$authorized = $USER->IsAuthorized();
 ?>
 <header class="header-cnt">
     <div class="inner">
@@ -86,5 +88,21 @@ use \Bitrix\Main\Localization\Loc;
                 </div>
             <? endif;*/ ?>
         </nav>
+    </div>
+    <div class="header-mobile">
+        <a class="header-mobile__menu" href="#" title="">
+            <img src="/images/header-menu.svg" />
+        </a>
+        <div class="header-mobile__search">
+            <label for="input_search" class="header-mobile__search-label">
+                <img src="/images/header-search.svg" />
+            </label>
+            <input id="input_search" class="header-mobile__search-input active" placeholder="Артикул или наименование..." />
+        </div>
+        <? if ($authorized) {?>
+            <? $APPLICATION->IncludeComponent("hogart.lk:account.cart.add", "mobile", [
+                'CART_URL' => '/account/cart/'
+            ]); ?>
+        <?}?>
     </div>
 </header>
