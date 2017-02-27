@@ -180,6 +180,11 @@
     content: none;
 }
 
+.brand__detail-link {
+    display: block;
+    text-align: right;
+}
+
 @media(max-width: 768px) {
 
     .company .counter-company li > span img {
@@ -2132,5 +2137,9 @@
     .company-page .sert-slider-cnt li:before,
     .company-page .sert-slider-cnt li:after {
         content: none;
+    }
+
+    .brand__detail-link {
+        display: none;
     }
 }
