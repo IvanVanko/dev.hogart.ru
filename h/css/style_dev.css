@@ -180,6 +180,11 @@
     content: none;
 }
 
+.brand__detail-link {
+    display: block;
+    text-align: right;
+}
+
 @media(max-width: 768px) {
 
     .seminar__information--mobile {
@@ -2128,5 +2133,9 @@
     .company-page .sert-slider-cnt li:before,
     .company-page .sert-slider-cnt li:after {
         content: none;
+    }
+
+    .brand__detail-link {
+        display: none;
     }
 }
