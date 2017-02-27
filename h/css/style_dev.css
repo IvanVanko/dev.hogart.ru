@@ -145,14 +145,6 @@
     height: auto;
 }
 
-.learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover .content .inner {
-    opacity: 0;
-}
-
-.learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover .content .inner:hover {
-    opacity: 1;
-}
-
 .seminar__information--mobile {
     display: none;
 }
@@ -2031,6 +2023,14 @@
 
     .item-box .checkbox input {
         display: block !important;
+    }
+
+    .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover .content .inner {
+        opacity: 0;
+    }
+
+    .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover .content .inner:hover {
+        opacity: 1;
     }
 
     .learn-page .calendar-cnt .ui-datepicker-calendar .js-tooltipL-hover .content .inner:active {
