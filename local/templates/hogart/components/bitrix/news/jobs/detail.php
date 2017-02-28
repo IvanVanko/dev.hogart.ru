@@ -20,7 +20,7 @@ $vacancyName = $vacancy['NAME'];
 ?>
 <? if(!empty($arResult["VARIABLES"]["ELEMENT_CODE"])) { ?>
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-9 col-xs-12">
             <? $ElementID = $APPLICATION->IncludeComponent(
                 "kontora:element.detail",
                 "",
@@ -35,7 +35,7 @@ $vacancyName = $vacancy['NAME'];
                 $component
             ); ?>
         </div>
-        <div class="col-md-3 aside">
+        <div class="col-md-3 col-xs-12 aside aside-mobile">
             <? $APPLICATION->IncludeComponent(
                 "bitrix:form.result.new",
                 "",

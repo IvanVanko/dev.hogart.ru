@@ -76,6 +76,8 @@ class OrderRTU extends AbstractMethod
             $result = OrderRTUTable::createOrUpdateByField([
                 "guid_id" => $order_rtu->Ord_RTU_ID,
                 "number" => (string)$order_rtu->Ord_RTU_Number,
+                "status" => (int)$order_rtu->Ord_RTU_Status,
+                "refuse_reason" => (string)$order_rtu->Ord_ReasonForRefusal,
                 "rtu_date" => new DateTime((string)$order_rtu->Ord_RTU_Date, 'Y-m-d H:i:s'),
                 "delivery_type" => intval($order_rtu->Ord_RTU_Delivery),
                 "store_guid" => (string)$order_rtu->Ord_RTU_Warehouse_ID,

@@ -13,6 +13,7 @@ use Bitrix\Main\Entity\BooleanField;
 use Bitrix\Main\Entity\DateField;
 use Bitrix\Main\Entity\EnumField;
 use Bitrix\Main\Entity\Event;
+use Bitrix\Main\Entity\FloatField;
 use Bitrix\Main\Entity\IntegerField;
 use Bitrix\Main\Entity\ReferenceField;
 use Bitrix\Main\Entity\StringField;
@@ -71,6 +72,8 @@ class ContractTable extends AbstractEntity
             new BooleanField("perm_card"),
             new BooleanField("perm_cash"),
             new BooleanField("cash_control"),
+            new BooleanField("is_credit"),
+            new FloatField("sale_max_money"),
             new StringField("cash_limit"),
             new StringField("deferral"),
             new StringField("credit_limit"),

@@ -251,7 +251,7 @@ SQL;
             }
 
             $sheet = $objPHPExcel->createSheet($index);
-            $sheet->setTitle($companyName);
+            $sheet->setTitle(mb_substr($companyName, 0, 30));
 
             $headerNames = [];
 

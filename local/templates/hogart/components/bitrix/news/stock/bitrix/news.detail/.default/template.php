@@ -6,7 +6,7 @@ $date_to = !empty($arResult["DATE_ACTIVE_TO"]) ? FormatDate("d F", MakeTimeStamp
 ?>
 
 <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-9 col-xs-12">
         <div class="row vertical-align">
             <div class="col-md-10">
                 <h3><?= $arResult['NAME'] ?></h3>
@@ -64,15 +64,6 @@ $date_to = !empty($arResult["DATE_ACTIVE_TO"]) ? FormatDate("d F", MakeTimeStamp
             </li>
         </ul>
         <br>
-        <? $APPLICATION->IncludeFile(
-            "/local/include/share.php",
-            array(
-                "TITLE" => $arResult["NAME"],
-                "DESCRIPTION" => !empty($arResult["PREVIEW_TEXT"]) ? $arResult["PREVIEW_TEXT"] : $arResult["DETAIL_TEXT"],
-                "LINK" => $APPLICATION->GetCurPage(),
-                "IMAGE" => $share_img_src
-            )
-        ); ?>
         <? if (!empty($arResult["PROPERTIES"]["ORG"]["VALUE"])): ?>
             <h3>По всем вопросам вы можете обратиться:</h3>
             <?
@@ -174,8 +165,17 @@ $date_to = !empty($arResult["DATE_ACTIVE_TO"]) ? FormatDate("d F", MakeTimeStamp
                 </div>
             </div>
         <? endif; ?>
+        <? $APPLICATION->IncludeFile(
+            "/local/include/share.php",
+            array(
+                "TITLE" => $arResult["NAME"],
+                "DESCRIPTION" => !empty($arResult["PREVIEW_TEXT"]) ? $arResult["PREVIEW_TEXT"] : $arResult["DETAIL_TEXT"],
+                "LINK" => $APPLICATION->GetCurPage(),
+                "IMAGE" => $share_img_src
+            )
+        ); ?>
     </div>
-    <div class="col-md-3 aside">
+    <div class="col-md-3 col-xs-12 aside aside-mobile">
         <?
         $date_stock_end = FormatDate("d.m.Y", MakeTimeStamp($arResult['DATE_ACTIVE_TO']));
         $date_stock_end = strtotime($date_stock_end);

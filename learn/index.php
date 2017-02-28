@@ -3,7 +3,7 @@ require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetTitle("Обучение");
 ?>
 <div class="row">
-	<div class="col-md-9">
+	<div class="col-md-9 col-xs-12">
 		<div class="head-learn">
 			<h3><?$APPLICATION->ShowTitle()?></h3>
 			<ul class="var-view">
@@ -132,7 +132,7 @@ $APPLICATION->SetTitle("Обучение");
 			?>
 		</div>
 	</div>
-	<div class="col-md-3 aside">
+	<div class="col-md-3 col-xs-12 aside aside-mobile">
 		<ul class="right-menu" style="margin-top: 15px;">
 			<li>
 				<a href="/learn/archive-seminarov/" class="icon-base">

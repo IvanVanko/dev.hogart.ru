@@ -115,25 +115,62 @@ $(function () {
 
   $(document).on('recalculate', '.order-line', function (e) {
     var api = $('table[data-table]', this).dataTable().api();
-    var total = 0;
+    var totalOrder = 0, totalContract = 0, totalAccount = 0;
+
+    var maxSaleAccount = parseFloat($('[data-store] [data-account-credit-limit]').data('accountCreditLimit') || 0);
+    var maxSaleContract = parseFloat($('[data-contract-credit-limit]', this).data('contractCreditLimit') || 0);
+    var maxSaleOrder = parseFloat($('[data-sale-max]', this).data('saleMax') || 0);
+    var contractId = $(this).data('contractId');
 
     $.each(api.rows('.selected').data(), function (i, el) {
-      total += Math.round(el.total * 100) / 100;
+      totalOrder += Math.round(el.total * 100) / 100;
     });
-    total = Math.round(total * 100) / 100;
-    var max = $('[data-sale-max]', this).data('saleMax');
+
+    totalOrder = Math.round(totalOrder * 100) / 100;
 
     $('[data-sale-selected]', this)
-        .text($.fn.dataTable.render.number(' ', ',', 2, '', '').display(total))
+      .text($.fn.dataTable.render.number(' ', ',', 2, '', '').display(totalOrder))
+      .removeClass('color-danger')
+      .removeClass('color-primary')
+      .addClass('color-' + (totalOrder > maxSaleOrder ? 'danger' : 'primary'))
+      .end()
+      .removeClass('sale-granted')
+      .removeClass('selected')
+      .addClass(api.rows('.selected').count() ? 'selected' : '')
+      .addClass((totalOrder > maxSaleOrder || totalOrder == 0 ? '' : 'sale-granted'))
+    ;
+
+    if ($(this).data('credit')) {
+      $('[data-store] [data-order] table[data-table]').each(function (i, table) {
+        var cId = $(table).parents('.order-line').data('contractId');
+        var api = $(table).dataTable().api();
+        $.each(api.rows('.selected').data(), function (i, el) {
+          if (cId == contractId) {
+            totalContract += Math.round(el.total * 100) / 100;
+          }
+          totalAccount += Math.round(el.total * 100) / 100;
+        });
+      });
+
+      $('[data-store] [data-account-sale-selected]')
+        .text($.fn.dataTable.render.number(' ', ',', 2, '', '').display(totalAccount))
         .removeClass('color-danger')
         .removeClass('color-primary')
-        .addClass('color-' + (total > max ? 'danger' : 'primary'))
-        .end()
-        .removeClass('sale-granted')
-        .removeClass('selected')
-        .addClass(api.rows('.selected').count() ? 'selected' : '')
-        .addClass((total > max || total == 0 ? '' : 'sale-granted'))
-    ;
+        .addClass('color-' + (totalAccount > maxSaleAccount ? 'danger' : 'primary'))
+      ;
+
+      $('[data-store] [data-contract-id="' + contractId + '"] [data-contract-sale-selected]')
+        .text($.fn.dataTable.render.number(' ', ',', 2, '', '').display(totalContract))
+        .removeClass('color-danger')
+        .removeClass('color-primary')
+        .addClass('color-' + (totalContract > maxSaleContract ? 'danger' : 'primary'))
+      ;
+
+      if (maxSaleContract - totalContract <= 0 || maxSaleAccount - totalAccount <= 0) {
+        $(this).removeClass('sale-granted');
+      }
+
+    }
 
     var btn = $(this).parents('[data-store]').find('[data-rtu-create]');
     if (

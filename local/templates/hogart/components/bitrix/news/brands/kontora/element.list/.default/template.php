@@ -17,7 +17,7 @@ if (count($arResult["ITEMS"]) > 0):?>
             <? $brand_links["brand_letter_" . $first_letter] = $first_letter; ?>
         <ul class="brands-list row">
         <? endif; ?>
-            <li class="col-lg-2 col-md-3 col-sm-4 col-xs-6" id="<?= $this->GetEditAreaId($arItem['ID']) ?>">
+            <li class="col-lg-2 col-md-3 col-sm-4 col-xs-12" id="<?= $this->GetEditAreaId($arItem['ID']) ?>">
                 <a href="<?= $arItem['DETAIL_PAGE_URL'] ?>">
                     <span>
                         <? $pic = "/images/project_no_img.jpg"; ?>

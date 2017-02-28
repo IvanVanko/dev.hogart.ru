@@ -112,6 +112,9 @@ class OrderPaymentTable extends AbstractEntity implements IOrderEventNote
     {
         $note = new OrderEventNote();
         $payment = self::getRowById($entity_id);
+
+        if (!$payment['is_active']) return null;
+
         $note->setTitle(vsprintf(
             "Платеж №%s от %s на сумму <span class='money-" . strtolower($payment['currency_code']) . "'>%s</span>",
             [

@@ -513,3 +513,8 @@ span.twitter-typeahead .tt-dropdown-menu .empty-message {
   -o-animation: animate-to-5 1.5s infinite;
   animation: animate-to-5 1.5s infinite;
 }
+@media (max-width: 768px) {
+  .checkbox label {
+    color: #95c600;
+  }
+}

@@ -177,6 +177,18 @@ function tableBinds(table, element) {
       }
     }
   } );
+
+  table.on( 'responsive-display', function ( e, datatable, row, showHide, update ) {
+    if (showHide) {
+      $('tr.child [data-change-apply]', e.target).each(function (i, el) {
+        var input = $(el);
+        if ($(input).parents('.input-change-apply').length) {
+          $(input).parents('.input-change-apply').replaceWith(input);
+        }
+        $(input).changeApply();
+      });
+    }
+  } );
 }
 
 function quickCartAddSuggest (query, syncResults, asyncResults) {

@@ -3,7 +3,7 @@ require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetTitle("Комплексные решения");
 ?>
 <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-9 col-xs-12">
         <h3><? $APPLICATION->ShowTitle() ?></h3>
 
         <h4>— одно из основных направлений работы компании "Хогарт" на рынке поставок сантехнического, оборудования,
@@ -61,7 +61,7 @@ $APPLICATION->SetTitle("Комплексные решения");
             ); ?>
         </div>
     </div>
-    <div class="col-md-3 aside">
+    <div class="col-md-3 col-xs-12 aside aside-mobile">
         <h3><a href="/integrated-solutions/all_projects.php">Реализованные проекты</a></h3>
         <? $section_ids = BXHelper::getSections(array('ID' => 'ASC'), array('ACTIVE' => 'Y',
             'IBLOCK_ID' => '7'), false, array('ID'), true, 'ID'); ?>
