@@ -213,6 +213,78 @@
     margin: 0 auto;
 }
 
+.form__group {
+    display: inline-block;
+    vertical-align: top;
+    width: 50%;
+    padding-right: 10px;
+    margin: 0 0 15px !important
+}
+
+.form__group--right {
+    padding-left: 11px;
+    padding-right: 0;
+}
+
+.form__group.field.custom_label input {
+    margin: 0 !important;
+}
+
+.form__subscribe-news {
+    font-size: 0;
+}
+
+.form__group input {
+    height: 40px;
+    padding: 0 10px !important;
+    font-size: 15px;
+}
+
+.form__subscribe-news .checkbox label {
+    font-size: 13px;
+}
+
+.form__title {
+    font-size: 15px;
+    line-height: 17px;
+    margin-bottom: 10px;
+}
+
+.form__input-more {
+    display: none;
+    border-radius: 0;
+    box-shadow: none;
+    border: 1px solid #838383;
+    margin-left: 15px;
+    padding: 0 5px;
+    height: 25px;
+}
+
+.form__input-more--another {
+    display: inline-block;
+}
+
+.checkbox--subscribe {
+    height: 25px;
+}
+
+.checkbox--subscribe label {
+    line-height: 25px;
+}
+
+.form__checkbox-more[type=checkbox]:checked + .form__input-more {
+    display: inline-block;
+}
+
+.form__checkbox-more[type=checkbox]:checked + .form__input-label {
+    display: inline-block;
+}
+
+.form__input-label {
+    font-size: 13px;
+    display: none;
+}
+
 @media(max-width: 768px) {
 
     .brand-photo-thing {

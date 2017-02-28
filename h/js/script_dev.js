@@ -89,4 +89,14 @@ $ (document).on('ready', function() {
         event.stopPropagation();
     });
     $(".filter-stock").mCustomScrollbar();
-});        
+});
+
+$(document).ready(function(){
+    $("input#subscribe-news-more").change(function(){
+        if ($(this).is(':checked')) {
+            $('.js-checkbox-hide').show(100);
+        } else {
+            $('.js-checkbox-hide').hide(100); 
+        }
+    });
+})  
