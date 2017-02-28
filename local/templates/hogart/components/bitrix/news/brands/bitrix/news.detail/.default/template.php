@@ -1,7 +1,7 @@
 <? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die(); ?>
 
 <div class="row vertical-align">
-    <div class="col-md-10 col-sm-12 brand-detail__controls">
+    <div class="col-md-9 col-sm-12 brand-detail__controls">
         <h3 style="margin-top: 10px"><?= $arResult['NAME'] ?></h3>
         <div class="brand-controls controls text-right">
             <? if (!empty($arResult["PREV"])): ?>
@@ -20,9 +20,9 @@
             <? endif; ?>
         </div>
     </div>
-    <div class="col-md-2 text-right brand-documentation">
+    <div class="col-md-3 text-right brand-documentation">
         <div class="hogart-share text-right">
-            <a data-toggle="tooltip" data-placement="top" title="Документация" href="<?= SITE_DIR ?>documentation/<?= $arResult['CODE'] ?>/"><i class="fa fa-file-archive-o" aria-hidden="true"></i></a>
+            <a class="hogart-share__link-button" data-toggle="tooltip" data-placement="top" title="Документация" href="<?= SITE_DIR ?>documentation/<?= $arResult['CODE'] ?>/"><!-- <i class="fa fa-file-archive-o" aria-hidden="true"></i> -->Документация</a>
             <a data-toggle="tooltip" data-placement="top" href="#" class="js-popup-open"
                data-popup="#popup-subscribe" title="<?= GetMessage("Отправить на e-mail") ?>"><i
                     class="fa fa-envelope" aria-hidden="true"></i></a>
@@ -54,6 +54,11 @@
     </div>
     <div class="col-md-9 col-sm-12 brand-mobile__text">
         <?= $arResult['PREVIEW_TEXT'] ?>
+        <? if($arResult['DETAIL_TEXT']): ?>
+            <div class="brand__detail-link">
+                <a title="Подробнее"  href="#brand-detail">Подробнее >></a>
+            </div>
+        <? endif; ?>
     </div> 
 </div>
 
@@ -99,11 +104,6 @@
     <div class="row" style="margin-top: 20px;">
         <div class="col-md-12">
             <div class="brand-catalog__description">
-                <? if($arResult['DETAIL_TEXT']): ?>
-                    <div class="brand__detail-link">
-                        <a title="Подробнее"  href="#brand-detail">Подробнее >></a>
-                    </div>
-                <? endif; ?>
                 <a class="brand-catalog__accordion" data-toggle="collapse" data-parent="#accordion-brand" href="#brand-description" aria-expanded="true" title="Описание">
                     <span class="brand-catalog__control">
                         <span class="brand-catalog__plus">+</span >
@@ -212,11 +212,11 @@
 <? $this->SetViewTarget('brand-catalog') ?>
     <div class="title h4 text-uppercase">Каталог продукции <span class="brand-name"><?= $arResult['NAME'] ?></span></div>
     <? if (!empty($arResult['PARENT_SECTIONS']) && !empty($arResult['PRODUCT_SECTION_GROUPS']) && !empty($arResult['PRODUCT_GROUPS'])): ?>
-        <ul>
+        <ul class="brand-aside">
             <? foreach ($arResult['PARENT_SECTIONS'] as $arParentSection): ?>
-                <li>
-                    <a class="h4 text-uppercase" href="<?= $arParentSection['SECTION_PAGE_URL'] ?>"><?= $arParentSection['NAME'] ?></a>
-                    <ul>
+                <li class="brand-aside__item">
+                    <a class="brand-aside__title h4 text-uppercase" href="<?= $arParentSection['SECTION_PAGE_URL'] ?>"><?= $arParentSection['NAME'] ?></a>
+                    <ul class="brand-aside__submenu">
                         <? foreach ($arResult['PRODUCT_SECTION_GROUPS'][$arParentSection['ID']] as $arChildSection): ?>
                             <? $ch_id = $arChildSection['ID'] ?>
 
