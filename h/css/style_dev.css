@@ -185,10 +185,40 @@
     text-align: right;
 }
 
+.brand-aside__item {
+    margin-bottom: 15px;
+}
+
+.brand-aside__submenu li {
+    margin-bottom: 10px;
+}
+
+.brand-aside__title {
+    display: block;
+}
+
+.hogart-share a {
+    vertical-align: middle;
+}
+
+.hogart-share a.hogart-share__link-button {
+    border: 1px solid #82ad54;
+    padding: 2px 4px;
+}
+
+.brand-photo-thing {
+    width: 125px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
 @media(max-width: 768px) {
 
-    .company .counter-company li > span img {
-        max-width: none !important;
+    .brand-photo-thing {
+        width: 100%;
+        height: auto;
+        max-width: 100%;
     }
 
     .seminar__information--mobile {
