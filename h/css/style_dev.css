@@ -542,6 +542,10 @@
         color: #95c600;
     }
 
+    .navigation-sub-menu .catalog-mobile__column a:hover {
+        color: #000;
+    }
+
     .navigation-sub-menu li a:not(.not-line).active:before {
         width: 24px;
         height: 2px;
@@ -1001,6 +1005,10 @@
     .catalog_page .perechen .perechen-produts.grid > li ul.param li {
         position: relative;
         margin-bottom: 15px;
+    }
+
+    .catalog_page .perechen .perechen-produts.grid > li {
+        border-bottom: 1px solid #95c600;
     }
 
     .price-cnt {
@@ -2241,7 +2249,14 @@
         content: none;
     }
 
-    .brand__detail-link {
-        display: none;
+    .documentation__title {
+        margin-left: 20px;
+        font-size: 18px;
+    }
+
+    .documentation__label {
+        position: absolute !important;
+        left: 0;
+        top: 0;
     }
 }

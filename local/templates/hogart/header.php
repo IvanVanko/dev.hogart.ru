@@ -518,7 +518,7 @@ Loc::loadLanguageFile(__FILE__);
                                                 <li class="">
                                                     <a href="/contacts/salon-khogart-art-v-tsentre-dizayna-i-arkhitektury-artplay/">
                                                     <i class="fa fa-map-marker" aria-hidden="true"></i>
-                                                    Салоно ХОГАРТ_арт в ARTPLAY
+                                                    Салон ХОГАРТ_арт в ARTPLAY
                                                     </a>
                                                 </li>
                                                     <li class="">
