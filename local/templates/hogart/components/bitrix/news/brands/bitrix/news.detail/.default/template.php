@@ -114,6 +114,11 @@
                 <div id="brand-description" class="brand-catalog__content collapse panel-collapse in panel panel-default">
                     <div class="col-md-9 col-sm-12 brand-mobile__accordion-text">
                         <?= $arResult['PREVIEW_TEXT'] ?>
+                        <? if($arResult['DETAIL_TEXT']): ?>
+                            <div class="brand__detail-link">
+                                <a title="Подробнее"  href="#brand-detail">Подробнее >></a>
+                            </div>
+                        <? endif; ?>
                     </div>
                     <? foreach (['about_company' => "О компании", 'about_products' => "О продуктах и решениях"] as $gallery_key => $section_name): ?>
                         <? if (!empty($arResult["PROPERTIES"]["photogallery_" . $gallery_key]['VALUE']) || !empty($arResult["PROPERTIES"]["videogallery_" . $gallery_key]['VALUE'])): ?>
