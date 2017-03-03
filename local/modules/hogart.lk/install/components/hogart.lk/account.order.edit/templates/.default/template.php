@@ -89,7 +89,7 @@ $order = $arResult['order'];
                                             </thead>
                                             <tbody>
                                             <? foreach ($items as $k => $item): ?>
-                                                <tr class="<?= ($item['is_new'] ? 'new' : '') ?> <?= ($item['not_editable'] ? 'disabled' : '') ?>" id="<?= $item['guid_id'] ?>" data-guid="<?= $item['guid_id'] ?>">
+                                                <tr class="<?= ($item['is_new'] ? 'new' : '') ?> <?= ($item['not_editable'] || $item['ACTIVE'] == 'N' ? 'disabled' : '') ?>" id="<?= $item['guid_id'] ?>" data-guid="<?= $item['guid_id'] ?>">
                                                     <td><?= ($k + 1) ?></td>
                                                     <td></td>
                                                     <td class="text-nowrap"><?= $item['props']['sku']['VALUE'] ?></td>
@@ -101,7 +101,7 @@ $order = $arResult['order'];
                                                         <? endif; ?>
                                                     </td>
                                                     <td class="text-nowrap">
-                                                        <? if (!$item['not_editable']): ?>
+                                                        <? if (!$item['not_editable'] && $item['ACTIVE'] != 'N'): ?>
                                                         <input class="form-control input-sm"
                                                             id="quantity-<?= $item['guid_id'] ?>"
                                                             <?= Ajax::OnEvent(
@@ -127,7 +127,7 @@ $order = $arResult['order'];
                                                     <td><?= $order['measures'][$item['product']['MEASURE']] ?></td>
                                                     <td class="text-nowrap money-<?= strtolower($order['currency']['CURRENCY']) ?>"><?= $item['price'] ?></td>
                                                     <td class="text-center">
-                                                        <? if (!$item['not_editable']): ?>
+                                                        <? if (!$item['not_editable'] && $item['ACTIVE'] != 'N'): ?>
                                                         <input tabindex="-1" class="form-control input-sm"
                                                            id="discount-<?= $item['guid_id'] ?>"
                                                             <?= Ajax::OnEvent(

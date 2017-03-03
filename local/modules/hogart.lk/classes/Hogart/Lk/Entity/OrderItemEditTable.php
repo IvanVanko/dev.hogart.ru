@@ -239,6 +239,14 @@ class OrderItemEditTable extends AbstractEntity
             ]
         ]);
 
+        // new price check
+        $group_id = \CCatalogGroup::GetList([], ['BASE' => 'Y'])->Fetch()['ID'];
+        $new_price = GetCatalogProductPrice($row['item_id'], $group_id);
+
+        if ($new_price['PRICE'] != $row['price'] && $count > $row['count']) {
+            $count -= $row['count'];
+        }
+
         list($new_count, $default_count) = self::getDefaultCount($row['item_id'], $count);
         if ($new_count != $count) {
             new FlashWarning(vsprintf("Количество товара должно быть кратно <b>%s</b>", $default_count));
