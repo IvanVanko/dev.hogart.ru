@@ -26,13 +26,13 @@
                             <? $type = $arItem["PROPERTIES"]["type"]["VALUE"]; ?>
                             <li class="li-container head_sub" data-type="<?= $arItem["PROPERTIES"]["type"]["VALUE_XML_ID"] ?>">
                                 <div class="checkbox">
-                                    <label class="h3 pull-left">
+                                    <label class="h3 pull-left documentation__label">
                                         <input type="checkbox"
                                                name="doc_brands_<?= $i ?>"
                                                id="doc_brands_<?= $i ?>"
                                         > 
                                     </label>
-                                    <h3 class="pull-left" data-toggle="collapse" data-target="#<?= $arItem["PROPERTIES"]["type"]["VALUE_XML_ID"] ?>" aria-expanded="true" aria-controls="collapseTypes">
+                                    <h3 class="pull-left documentation__title" data-toggle="collapse" data-target="#<?= $arItem["PROPERTIES"]["type"]["VALUE_XML_ID"] ?>" aria-expanded="true" aria-controls="collapseTypes">
                                         <?= $type ?> (<?= $arResult['TYPE_COUNTS'][$type] ?>)
                                     </h3>
                                     <div class="clearfix"></div>

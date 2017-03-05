@@ -606,15 +606,25 @@ HTML;
     public static function createByCart($cart_id, $perm_reserve, $note)
     {
         global $DB;
-        $DB->StartTransaction();
 
         $cart = CartTable::getByPrimary($cart_id)->fetch();
         if (empty($cart['contract_id'])) {
             new FlashError("Не указан договор для создания заказа");
             return false;
         }
+
+        $contract = ContractTable::getRowById($cart['contract_id']);
+
+        if (strtotime($contract['end_date']) < time() && !$contract['prolongation']) {
+            new FlashError("Срок действия договора истек");
+            return false;
+        }
+
         $account = AccountTable::getAccountById($cart['account_id']);
         $cart = CartTable::getAccountCartList($cart['account_id'], $cart_id);
+
+        $DB->StartTransaction();
+
         $result = self::add([
             'contract_id' => $cart['contract_id'],
             'store_guid' => $cart['store_guid'],
