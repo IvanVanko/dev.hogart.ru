@@ -66,7 +66,9 @@ if ($account['id']) {
 
         $company['contracts'] = ContractTable::getByCompanyId($company['id']);
         $company['contacts'] = ContactRelationTable::getContactsByOwner($company['id'], ContactRelationTable::OWNER_TYPE_CLIENT_COMPANY);
-        $company['addresses'] = AddressTable::getByOwner($company['id'], AddressTable::OWNER_TYPE_CLIENT_COMPANY);
+        $company['addresses'] = AddressTable::getByOwner($company['id'], AddressTable::OWNER_TYPE_CLIENT_COMPANY, [
+            '=is_active' => true
+        ]);
         $company['payment_account'] = PaymentAccountRelationTable::getByOwner(
             $company['id'],
             PaymentAccountRelationTable::OWNER_TYPE_CLIENT_COMPANY,

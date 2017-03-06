@@ -39,12 +39,19 @@ if (!empty($account['id']) && !empty($_REQUEST)) {
             die();
             break;
         case 'add-address':
+        case 'edit-address':
             $address = json_decode($_POST['__address']);
             $count = count(AddressTable::getByOwner($_SESSION['current_company_id'], AddressTable::OWNER_TYPE_CLIENT_COMPANY)[AddressTypeTable::TYPE_DELIVERY]);
             if ($count + 1 > 10) {
                 new FlashError("Максимальное кол-во адресов ограничено 10 шт.");
                 break;
             }
+
+            if ($_REQUEST['action'] == 'edit-address') {
+                $old_address = AddressTable::getByField("guid_id", $_POST['id']);
+                $res = AddressTable::replace(array_merge($old_address, ['is_active' => false]));
+            }
+
             $address_type = AddressTypeTable::getByField('code', AddressTypeTable::TYPE_DELIVERY);
             $addressRes = AddressTable::replace([
                 'owner_id' => $_SESSION['current_company_id'],
@@ -491,11 +498,18 @@ if (!empty($account['id']) && !empty($_REQUEST)) {
     }
     if (!empty($_REQUEST['remove_address'])) {
         $address_type = AddressTypeTable::getByField('code', AddressTypeTable::TYPE_DELIVERY);
+
+        $guid_id = AddressTable::getUUID(
+            $_SESSION['current_company_id'],
+            ContactRelationTable::OWNER_TYPE_CLIENT_COMPANY,
+            $address_type["id"],
+            $_REQUEST['remove_address']
+        );
+
         AddressTable::delete([
-            "type_id" => $address_type["id"],
+            "guid_id" => $guid_id,
             "owner_id" => $_SESSION['current_company_id'],
-            "owner_type" => ContactRelationTable::OWNER_TYPE_CLIENT_COMPANY,
-            "fias_code" => $_REQUEST['remove_address']
+            "owner_type" => ContactRelationTable::OWNER_TYPE_CLIENT_COMPANY
         ]);
     }
 
