@@ -20,9 +20,15 @@
             $date_sem_start =(!empty($date_sem_start))?$date_sem_start:0;
 
             $now=date($DB->DateFormatToPHP(CSite::GetDateFormat("SHORT")), time());
+            $nowFull = date($DB->DateFormatToPHP(CSite::GetDateFormat("FULL")), time());
             $now=strtotime($now);
+
+
+			$activeToDate = strtotime($arItem['ACTIVE_TO']);
+
             ?>
-            <?if ($date_sem_start > $now):?>
+            <?if (($date_sem_start > $now) && (!$activeToDate || ($activeToDate > $nowFull))):?>
+
                 <li>
                     <?//$file = CFile::ResizeImageGet($arItem['PREVIEW_PICTURE']['ID'], array("width" => 101, "height" => 101), BX_RESIZE_IMAGE_EXACT);?>
                    
