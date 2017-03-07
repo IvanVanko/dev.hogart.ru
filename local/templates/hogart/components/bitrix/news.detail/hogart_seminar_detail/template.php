@@ -90,12 +90,12 @@
             <?= $arResult["PROPERTIES"]["program_txt"]["~VALUE"]['TEXT']; ?>
         <? endif; ?>
 
-        <? if (!empty($arResult['LECTORS'])): ?>
+        <? if (!empty($arResult['LECTURERS'])): ?>
             <div class="clearfix">
                 <h4 class="display-inline-block"><?= GetMessage($arResult["PROPERTIES"]["lecturer"]["NAME"]); ?></h4>
             </div>
             <ul class="learn-people-list">
-            <? foreach ($arResult['LECTORS'] as $key => $arItem): ?>
+            <? foreach ($arResult['LECTURERS'] as $key => $arItem): ?>
                 <li>
                     <?php $arLectorPicture = CFile::GetFileArray($arItem['DETAIL_PICTURE']); ?>
                     <? if(!empty($arLectorPicture['SRC']) && file_exists(realpath($_SERVER["DOCUMENT_ROOT"] . $arLectorPicture["SRC"]))): ?>
@@ -106,29 +106,36 @@
                     <span><?= $arItem['props']['company']['VALUE']; ?></span>
                     <span>–</span>
                     <i><?= $arItem['props']['status']['VALUE']; ?></i>
+                    <i><?= $arItem['props']['phone']['VALUE']; ?></i>
+                    <i><?= $arItem['props']['mail']['VALUE']; ?></i>
                 </li>
             <? endforeach; ?>
             </ul>
         <? endif; ?>
+		<?
 
-        <? if (!empty($arResult['ORGS']) and (!$seminarRegistrationClosed)): ?>
+        ?><? if (!empty($arResult['MANAGER']) and (!$seminarRegistrationClosed)): ?>
             <div class="clearfix">
                 <h4 class="display-inline-block"><?= $arResult["PROPERTIES"]["org"]["NAME"]; ?></h4>
             </div>
+
             <ul class="learn-people-list">
-                <? foreach ($arResult['ORGS'] as $key => $arItem): ?>
+                <? ?>
                     <li>
-                        <?php $arLectorPicture = CFile::GetFileArray($arItem['DETAIL_PICTURE']); ?>
+		
+                        <?php $arLectorPicture = CFile::GetFileArray($arResult['MANAGER']['DETAIL_PICTURE']); ?>
                         <? if(!empty($arLectorPicture['SRC']) && file_exists(realpath($_SERVER["DOCUMENT_ROOT"] . $arLectorPicture["SRC"]))): ?>
                             <?php $pic = CFile::ResizeImageGet($arLectorPicture, array("width" => 150, "height" => 150), BX_RESIZE_IMAGE_EXACT, true)['src']; ?>
                             <img src="<?= $pic ?>" alt=""/>
                         <? endif; ?>
-                        <h3><?= $arItem['NAME']; ?></h3>
-                        <span><?= $arItem['props']['company']['VALUE']; ?></span>
+                        <h3><?= $arResult['MANAGER']['NAME']; ?></h3>
+                        <span><?=$arResult['MANAGER']['props']['company']['VALUE']; ?></span>
                         <span>–</span>
-                        <i><?= $arItem['props']['status']['VALUE']; ?></i>
+                        <i><?=$arResult['MANAGER']['props']['status']['VALUE']; ?></i>
+						<i><?= $arItem['props']['phone']['VALUE']; ?></i>
+						<i><?= $arItem['props']['mail']['VALUE']; ?></i>
                     </li>
-                <? endforeach; ?>
+                <?  ?>
             </ul>
         <? endif; ?>
 

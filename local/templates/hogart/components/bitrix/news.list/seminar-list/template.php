@@ -24,8 +24,8 @@
             ?>
             <?if ($date_sem_start > $now):?>
                 <li>
-                    <?$file = CFile::ResizeImageGet($arItem['PREVIEW_PICTURE']['ID'], array("width" => 101, "height" => 101), BX_RESIZE_IMAGE_EXACT);?>
-                    <img src="<?= $file['src']; ?>" alt=""/>
+                    <?//$file = CFile::ResizeImageGet($arItem['PREVIEW_PICTURE']['ID'], array("width" => 101, "height" => 101), BX_RESIZE_IMAGE_EXACT);?>
+                   
                     <time class="top-time">
                         <? if ($arItem['PROPERTIES']['sem_start_date']['VALUE'] != ''): ?>
                             <? $date_from = FormatDate("d.m.Y", MakeTimeStamp($arItem['PROPERTIES']['sem_start_date']['VALUE'])); ?>
