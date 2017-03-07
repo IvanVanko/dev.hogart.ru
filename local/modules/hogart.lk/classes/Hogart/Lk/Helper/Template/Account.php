@@ -18,8 +18,7 @@ class Account
 
     public static function isAuthorized()
     {
-        global $USER;
-        return !empty(AccountTable::getAccountByUserID($USER->GetID()));
+        return !empty(self::getAccount());
     }
 
     public static function getAccountId()
@@ -30,6 +29,9 @@ class Account
             if (!empty($account)) {
                 self::$account_id = $account['id'];
                 self::$account = $account;
+            } else {
+                self::$account_id = false;
+                self::$account = false;
             }
         }
 

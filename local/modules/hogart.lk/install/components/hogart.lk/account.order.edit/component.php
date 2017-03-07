@@ -27,7 +27,7 @@ use Hogart\Lk\Exchange\SOAP\Client as SoapClient;
 Loc::loadMessages(__FILE__);
 
 global $USER, $CACHE_MANAGER;
-$account = AccountTable::getAccountByUserID($USER->GetID());
+$account = \Hogart\Lk\Helper\Template\Account::getAccount();
 $arParams['account'] = $account;
 
 if ($account['id']) {

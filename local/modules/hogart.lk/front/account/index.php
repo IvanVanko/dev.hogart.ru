@@ -14,7 +14,7 @@ use Hogart\Lk\Entity\CartItemTable;
 use Hogart\Lk\Entity\OrderTable;
 
 global $USER, $CACHE_MANAGER;
-$account = AccountTable::getAccountByUserID($USER->GetID());
+$account = \Hogart\Lk\Helper\Template\Account::getAccount();
 $count = CartItemTable::getAccountCartCount($account['id']);
 $orders = OrderTable::getByAccountCount($account['id'], OrderTable::STATE_NORMAL);
 if ($count) {

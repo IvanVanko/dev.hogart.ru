@@ -29,7 +29,7 @@ if (!$this->initComponentTemplate())
     return;
 
 global $USER, $APPLICATION, $CACHE_MANAGER;
-$account = AccountTable::getAccountByUserID($USER->GetID());
+$account = \Hogart\Lk\Helper\Template\Account::getAccount();
 
 // Юридические лица (они же компании)
 $account = AccountTable::getAccountById($account['id']);

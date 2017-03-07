@@ -475,7 +475,7 @@ if (!empty($account['id']) && !empty($_REQUEST)) {
         AccountTable::update($account['id'], [
             "main_contract_id" => intval($_REQUEST['fav_contract'])
         ]);
-        $account = AccountTable::getAccountByUserID($USER->GetID());
+        $account = \Hogart\Lk\Helper\Template\Account::getAccount();
     }
     if (!empty($_REQUEST['remove_company'])) {
         if (AccountCompanyRelationTable::isHaveAccess($account['id'], $_REQUEST['remove_company'], true)) {

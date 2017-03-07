@@ -147,13 +147,13 @@ if (!empty($account['id']) && !empty($_REQUEST)) {
         AccountTable::update($account['id'], [
             "main_store_id" => intval($_REQUEST['fav_store'])
         ]);
-        $account = AccountTable::getAccountByUserID($USER->GetID());
+        $account = \Hogart\Lk\Helper\Template\Account::getAccount();
     }
     if (!empty($_REQUEST['fav_manager'])) {
         AccountTable::update($account['id'], [
             "main_manager_id" => intval($_REQUEST['fav_manager'])
         ]);
-        $account = AccountTable::getAccountByUserID($USER->GetID());
+        $account = \Hogart\Lk\Helper\Template\Account::getAccount();
     }
     if (!empty($_REQUEST['remove_contact'])) {
         ContactRelationTable::delete([

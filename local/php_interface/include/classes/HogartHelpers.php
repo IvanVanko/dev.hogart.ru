@@ -161,7 +161,16 @@ class HogartHelpers {
     public static function getRangePropertyGroupsForFilter() {
         global $DB;
 
-        $dbResult = $DB->Query("SELECT DISTINCT bip.ID, bip.NAME, bip.CODE FROM b_iblock_property bip JOIN b_iblock_element_property biep ON bip.ID = biep.IBLOCK_PROPERTY_ID WHERE bip.PROPERTY_TYPE = 'N' AND bip.IBLOCK_ID = 1 AND biep.VALUE <> '' AND (bip.CODE LIKE '%min%' OR bip.CODE LIKE '%max%')");
+        $dbResult = $DB->Query("
+            SELECT 
+              DISTINCT bip.ID, bip.NAME, bip.CODE 
+              FROM b_iblock_property bip 
+              JOIN b_iblock_element_property biep ON bip.ID = biep.IBLOCK_PROPERTY_ID 
+              WHERE 1=1
+                AND bip.PROPERTY_TYPE = 'N' 
+                AND bip.IBLOCK_ID = 1 
+                -- AND biep.VALUE <> '' 
+                AND (bip.CODE LIKE '%min%' OR bip.CODE LIKE '%max%')");
         //$dbResult = $DB->Query("SELECT DISTINCT bip.ID, bip.NAME, bip.CODE FROM b_iblock_property bip WHERE bip.PROPERTY_TYPE = 'N' AND bip.IBLOCK_ID = 1 AND (bip.CODE LIKE '%min%' OR bip.CODE LIKE '%max%')");
         $range_groups = array();
         while ($next = $dbResult->GetNext()) {

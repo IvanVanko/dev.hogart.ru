@@ -47,7 +47,7 @@ $brands = BXHelper::getElementLinkEnum($arResult['DISPLAY_PROPERTIES']['brand'][
 $arResult['PRODUCT_PROPERTIES'] = $result_properties;
 
 global $USER;
-$account = \Hogart\Lk\Entity\AccountTable::getAccountByUserID($USER->GetID());
+$account = \Hogart\Lk\Helper\Template\Account::getAccount();
 $storeFilter = [
 ];
 
@@ -367,7 +367,7 @@ if ($arParams['STORES_FILTERED'] != 'Y') {
         }
     }
 
-    $account = \Hogart\Lk\Entity\AccountTable::getAccountByUserID($USER->GetID());
+    $account = \Hogart\Lk\Helper\Template\Account::getAccount();
     $storeFilter = [
     ];
 

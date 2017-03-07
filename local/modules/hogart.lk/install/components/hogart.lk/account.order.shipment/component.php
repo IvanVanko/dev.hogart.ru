@@ -27,7 +27,7 @@ use Hogart\Lk\Entity\ContactRelationTable;
 define("NO_SPECIAL_CHARS_CHAIN", true);
 
 global $USER, $CACHE_MANAGER;
-$account = AccountTable::getAccountByUserID($USER->GetID());
+$account = \Hogart\Lk\Helper\Template\Account::getAccount();
 $arParams['account'] = $account;
 
 if ($account['id']) {
