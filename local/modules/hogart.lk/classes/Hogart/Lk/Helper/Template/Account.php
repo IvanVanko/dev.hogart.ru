@@ -18,8 +18,7 @@ class Account
 
     public static function isAuthorized()
     {
-        global $USER;
-        return !empty(AccountTable::getAccountByUserID($USER->GetID()));
+        return !empty(self::getAccount());
     }
 
     public static function getAccountId()

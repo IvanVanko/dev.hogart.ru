@@ -239,7 +239,7 @@ while ($res = $arColls ->GetNext())
 $section_ids = array_unique($section_ids);
 
 global $USER;
-$account = \Hogart\Lk\Entity\AccountTable::getAccountByUserID($USER->GetID());
+$account = \Hogart\Lk\Helper\Template\Account::getAccount();
 $arParams['account'] = $account;
 $storeFilter = [
 ];
