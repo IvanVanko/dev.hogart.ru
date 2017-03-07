@@ -199,7 +199,8 @@ while ($arSect = $rsParentSection ->GetNext())
 }
 
 if (count($arResult["SUBS"]) == 1) {
-    LocalRedirect($arResult["SUBS"][0]["SECTION_PAGE_URL"]);
+    $sub = reset($arResult["SUBS"]);
+    LocalRedirect($sub["SECTION_PAGE_URL"]);
 }
 
 if ($arParams["DEPTH_LEVEL"] == 2 && !$arParams["IS_FILTERED"]) {
