@@ -29,7 +29,7 @@ if (!$this->initComponentTemplate())
     return;
 
 global $USER, $CACHE_MANAGER;
-$account = AccountTable::getAccountByUserID($USER->GetID());
+$account = \Hogart\Lk\Helper\Template\Account::getAccount();
 
 if ($account['id']) {
     if ($_REQUEST['item_id'] && Ajax::isAjax(Cart::init($this))) {

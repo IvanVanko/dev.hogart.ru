@@ -29,6 +29,9 @@ class Account
             if (!empty($account)) {
                 self::$account_id = $account['id'];
                 self::$account = $account;
+            } else {
+                self::$account_id = false;
+                self::$account = false;
             }
         }
 
