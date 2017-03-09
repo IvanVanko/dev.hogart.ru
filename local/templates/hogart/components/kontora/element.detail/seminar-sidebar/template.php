@@ -19,13 +19,14 @@
         <ul class="ul-file">
             <? foreach ($arResult["PROPERTIES"]["materials"]["DESCRIPTION"] as $key => $value):
                 $fileDetail = CFile::GetFileArray($arResult["PROPERTIES"]["materials"]['VALUE'][$key]);
+
                 $fileSize = $fileDetail['FILE_SIZE'];
                 $fileSize = $fileSize / 1024 / 1024;
                 $fileType = $fileDetail['CONTENT_TYPE'];
                 $fileType = explode('/', $fileType);
                 ?>
                 <li>
-                    <a href="<?= $fileDetail['SRC']; ?>"><?= $value ?></a>
+                    <a href="<?= $fileDetail['SRC']; ?>"><?=$fileDetail['ORIGINAL_NAME']?></a>
                     <span>— .<?= $fileType[1] ?>, <?= round($fileSize, 2) ?> mb</span>
                 </li>
             <? endforeach ?>
@@ -100,6 +101,7 @@
             array(
                 "FORM_ID" => $form_id,
                 "FORM_VALUES" => array(
+                    "SEMINAR_NAME" => $arResult['NAME'],
                     "SEMINAR_ID" => $arResult["ID"],
                     "SEMINAR_EAN_CODE" => $arResult['PROPERTIES']["sem_ean_id"]["VALUE"],
                     "HIDE_INPUTS" => false

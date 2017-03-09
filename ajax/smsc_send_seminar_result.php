@@ -1,11 +1,6 @@
 <?
-if((!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) &&
-        (empty($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest')) die();
-    else if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')
-        require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
-
-if ($_POST["sending_phone"]!='') {
-    include_once "smsc_api.php";
+if (isset($_POST["sending_phone"]) && !empty($_POST["sending_phone"])) {
+	include_once "smsc_api.php";
     $page_href = trim(stripslashes($_POST['page_href']));
     $phone = preg_replace("/( |\(|\))/","",$_POST["sending_phone"]);
     $seminar_name = trim(stripslashes($_POST['seminar_name']));

@@ -6,7 +6,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
 <?if (!empty($arResult['arrResults'])) {?>
     <?$this->SetViewTarget('SEMINAR_PREVIEW_TEXT');?>
         <h1>Вы успешно зарегистрированы на семинар
-            «<?=$arSeminars[$arResult['arrResults'][0]['SEMINAR_ID']][0]['NAME']?>»</h1>
+            «<?=$arSeminars[$arResult['arrResults'][0]['SEMINAR_ID']]['NAME']?>»</h1>
         <small>Спасибо, что обратились в нашу компанию! Ваша заявка на семинар принята. В ближайшее время с вами свяжется специалист для уточнения деталей.
         </small>
     <?$this->EndViewTarget();?>
@@ -75,10 +75,9 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
                 <a href="#" class="close"></a>
             </div>
             <? //include_once "/ajax/smsc_api.php";?>
-            <!--        <form action="/ajax/send_article.php" method="post">-->
-            <!--            <form action="/ajax/send.php" method="post">-->
+
             <form action="/ajax/smsc_send_seminar_result.php" method="post" class="ajax-userform submit-result-field">
-                <!--                send_sms_mail("79999999999", "Ваш пароль: 123");-->
+
                 <div class="inner submit-result hide">
                     <div class="submit-result-msg"></div>
                     <div>Отправить еще одно сообщение?</div>

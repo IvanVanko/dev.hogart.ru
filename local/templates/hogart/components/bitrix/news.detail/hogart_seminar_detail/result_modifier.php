@@ -25,7 +25,7 @@ while($ob = $res->GetNextElement()) {
     }
 }
 
-  file_put_contents($_SERVER['DOCUMENT_ROOT']."/log1.txt",var_export($arResult['MANAGER'],true), FILE_APPEND);
+
 # Для блока с навигацией между семинарами, около названия семинара
 # Строится только для семинаров с корректным sem_start_date
 # Без sem_start_date нельзя построить стабильную цепочку семинаров
