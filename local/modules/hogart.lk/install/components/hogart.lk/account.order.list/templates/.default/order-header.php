@@ -34,7 +34,7 @@ use Hogart\Lk\Helper\Template\Money;
 
             <? if ($order['history'] > 0 && in_array($order['state'], [OrderTable::STATE_ARCHIVE, OrderTable::STATE_NORMAL])): ?>
                 <sup>
-                    <span class="hidden-xs" style="padding-left: 5px;"><a href="/account/order/<?= $order['id'] ?>/history/" class="btn btn-warning btn-xs"><i class="fa fa-history"></i> История</a></span>
+                    <span class="hidden-xs" style="padding-left: 5px;"><a href="/account/order/<?= $order['id'] ?>/history/" class="btn btn-warning btn-xs" style="margin-bottom: 0"><i class="fa fa-history"></i> История</a></span>
                 </sup>
             <? endif; ?>
 
