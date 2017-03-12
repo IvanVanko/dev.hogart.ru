@@ -44,6 +44,7 @@
         var self = this;
 
         options = $.extend({
+            rnd: 20,
             strokeWidth: 4,
             strokeColor: getRandomColor()
         }, options);
@@ -62,7 +63,7 @@
 
             var points = getLinePoints($(startSelector), $(eElement), $(self));
 
-            var deltaX = 20 * (0.5 + ~~(Math.random() * 100) / 100);
+            var deltaX = options.rnd * (0.5 + ~~(Math.random() * 100) / 100);
             var deltaY = (points.endY - points.startY) * 0.15;
             var arc1 = 0; var arc2 = 1;
             if (points.startY < points.endY) {
