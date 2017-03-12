@@ -131,18 +131,24 @@
 }
 @media (max-width: 767px) {
   .timeline {
-    width: 100%;
+    width: 90%;
   }
   ul.timeline:before {
     left: 40px;
   }
   ul.timeline > li > .timeline-panel {
-    width: calc(100% - 90px);
+    width: calc(100% - 45px);
+  }
+  .timeline > li > .timeline-badge {
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    font-size: 1em;
   }
   ul.timeline > li > .timeline-badge {
-    left: 15px;
+    left: -2px;
     margin-left: 0;
-    top: 16px;
+    top: 28px;
   }
   ul.timeline > li > .timeline-panel {
     float: right;
