@@ -15,11 +15,15 @@ $(function () {
 
   $('[data-table]').each(function (i, t) {
     var dfd = $.Deferred();
+
     promises.push(dfd);
+
     var table = $(t).DataTable(DataTableOptions);
-    $(t).on( 'draw.dt', function () {
+
+    table.on( 'draw.dt', function () {
       dfd.resolve();
     } );
+
   });
 
   $.when.apply($, promises).done(function () {
