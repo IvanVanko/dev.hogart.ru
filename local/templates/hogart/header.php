@@ -67,7 +67,7 @@ Loc::loadLanguageFile(__FILE__);
     $APPLICATION->AddHeadScript("/h/js/docs.js");
     $APPLICATION->AddHeadScript("/h/js/learn.js");
     $APPLICATION->AddHeadScript("/h/js/right-sidebox-forms.js");
-    $APPLICATION->AddHeadScript("/h/js/retina.min.js");
+//    $APPLICATION->AddHeadScript("/h/js/retina.min.js");
     $APPLICATION->AddHeadScript("/h/js/jquery.mCustomScrollbar.concat.min.js");
     $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/vendor/parsley.min.js");
     $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/lib.js");

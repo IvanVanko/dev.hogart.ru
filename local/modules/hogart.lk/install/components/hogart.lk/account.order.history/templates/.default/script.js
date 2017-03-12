@@ -18,12 +18,11 @@ $(function () {
 
     promises.push(dfd);
 
-    var table = $(t).DataTable(DataTableOptions);
-
-    table.on( 'draw.dt', function () {
+    $(t).on( 'draw.dt', function () {
       dfd.resolve();
     } );
 
+    $(t).DataTable(DataTableOptions);
   });
 
   $.when.apply($, promises).done(function () {
