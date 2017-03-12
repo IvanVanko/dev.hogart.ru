@@ -32,7 +32,6 @@ $(function () {
       if (!$(el).attr('data-relation-history')) return true;
 
       $('#svg').relationHistory('#' + relationId, '#' + $(el).attr('id'), {
-        rnd: 10,
         strokeColor: $(el).attr('data-relation-history-color')
       })
     });
