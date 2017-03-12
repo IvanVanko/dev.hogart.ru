@@ -50,7 +50,7 @@ $order = $arResult['order'];
                 </div>
 
                 <div class="row">
-                    <div class="col-sm-12 pre-timeline">
+                    <div class="col-sm-12">
                         <ul class="timeline">
 
                             <?

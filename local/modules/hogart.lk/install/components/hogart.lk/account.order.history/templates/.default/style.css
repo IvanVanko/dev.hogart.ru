@@ -130,9 +130,6 @@
   margin-top: 5px;
 }
 @media (max-width: 767px) {
-  .pre-timeline {
-    padding-right: 30px;
-  }
   .timeline {
     width: 90%;
   }
