@@ -521,4 +521,7 @@ span.twitter-typeahead .tt-dropdown-menu .empty-message {
   span.twitter-typeahead .tt-suggestion {
     white-space: normal;
   }
+  .btn {
+    margin-bottom: 10px;
+  }
 }
