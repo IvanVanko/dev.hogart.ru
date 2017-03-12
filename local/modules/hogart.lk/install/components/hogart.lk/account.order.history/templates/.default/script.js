@@ -2,6 +2,14 @@
  * Created by gillbeits on 01/11/2016.
  */
 
+var DataTableOptions = {
+  info: false,
+  searching: false,
+  paging: false,
+  responsive: true,
+  fixedHeader: true
+};
+
 $(function () {
     $('[data-relation-history]').each(function (i, el) {
         var relationId = $(el).attr('data-relation-history');
@@ -11,4 +19,9 @@ $(function () {
             strokeColor: $(el).attr('data-relation-history-color')
         })
     });
+
+  $('[data-table]').each(function (i, t) {
+    var table = $(t).DataTable(DataTableOptions);
+  });
+
 });
