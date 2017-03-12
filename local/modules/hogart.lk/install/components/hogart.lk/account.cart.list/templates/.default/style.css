@@ -558,6 +558,7 @@ input[type="radio"] .styled:checked + label::after {
   }
   .cart-wrapper [data-cart] .cart-item-list-wrapper [data-item-group] .post-table-footer .add-item-simple,
   .empty-cart .post-table-footer .add-item-simple,
+  .empty-cart .post-table-footer .add-item-simple,
   .empty-cart .post-table-footer .add-item-simple {
     padding-left: 0;
     margin-bottom: 10px;
@@ -576,5 +577,8 @@ input[type="radio"] .styled:checked + label::after {
   }
   .cart-wrapper [data-cart] .cart-item-list-wrapper [data-item-group] .pre-table-header .category-name [name="item_group"] {
     margin-bottom: 10px;
+  }
+  .empty-cart .post-table-footer {
+    width: 90%;
   }
 }
