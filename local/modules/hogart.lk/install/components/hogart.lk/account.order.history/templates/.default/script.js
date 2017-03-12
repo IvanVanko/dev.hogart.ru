@@ -17,7 +17,7 @@ $(function () {
     var dfd = $.Deferred();
     promises.push(dfd);
     var table = $(t).DataTable(DataTableOptions);
-    $(table).on( 'draw.dt', function () {
+    $(t).on( 'draw.dt', function () {
       dfd.resolve();
     } );
   });
