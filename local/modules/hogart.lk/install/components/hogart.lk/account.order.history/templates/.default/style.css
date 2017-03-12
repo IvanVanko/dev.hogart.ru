@@ -131,7 +131,7 @@
 }
 @media (max-width: 767px) {
   .timeline {
-    width: calc(100% - 20px);
+    width: calc(100% - 35px);
   }
   ul.timeline:before {
     left: 10px;
