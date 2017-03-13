@@ -23,12 +23,12 @@
 use Hogart\Lk\Entity\OrderTable;
 use Hogart\Lk\Helper\Template\ViewNode;
 ?>
-<form action="<?= $APPLICATION->GetCurPage(false) ?>"  name="filter" method="get">
+<form action="<?= $APPLICATION->GetCurPage(false) ?>"  name="filter" method="get" class="filter-lk">
     <input type="hidden" name="action" value="filter">
     <input type="hidden" name="<?= BX_AJAX_PARAM_ID ?>" value="<?= $ordersNode->getId() ?>">
     <div class="row">
         <div class="col-sm-12">
-            <label>Период заказов</label>
+            <label class="filter-lk__title">Период заказов</label>
             <div class="form-group form-group-sm center-between">
                 <input type="text" name="date_from" class="form-control input-sm" value="<?= $_REQUEST['date_from'] ?>" placeholder="с">
                 <span style="padding: 0 5px;">&mdash;</span>
@@ -38,7 +38,7 @@ use Hogart\Lk\Helper\Template\ViewNode;
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <label>Номер заказа</label>
+            <label class="filter-lk__title">Номер заказа</label>
             <div class="form-group">
                 <input type="text" name="number" class="form-control input-sm" value="<?= $_REQUEST['number']?>" placeholder="Введите номер">
             </div>
@@ -47,7 +47,7 @@ use Hogart\Lk\Helper\Template\ViewNode;
     <? if ($arParams['STATE'] == OrderTable::STATE_NORMAL): ?>
     <div class="row">
         <div class="col-sm-12">
-            <label>Статус</label>
+            <label class="filter-lk__title">Статус</label>
             <div class="form-group">
 
                 <? foreach ([OrderTable::STATUS_NEW, OrderTable::STATUS_IN_WORK] as $status): ?>
@@ -65,7 +65,7 @@ use Hogart\Lk\Helper\Template\ViewNode;
     <? if (!empty($arResult['companies'])): ?>
     <div class="row">
         <div class="col-sm-12">
-            <label>Контрагент</label>
+            <label class="filter-lk__title">Контрагент</label>
             <div class="form-group">
                 <? foreach ($arResult['companies'] as $company): ?>
                     <div class="checkbox checkbox-primary">
@@ -82,7 +82,7 @@ use Hogart\Lk\Helper\Template\ViewNode;
     <? if (!empty($arResult['stores'])): ?>
     <div class="row">
         <div class="col-sm-12">
-            <label>Склад</label>
+            <label class="filter-lk__title">Склад</label>
             <div class="form-group">
                 <? foreach ($arResult['stores'] as $store): ?>
                     <div class="checkbox checkbox-primary">
@@ -98,7 +98,7 @@ use Hogart\Lk\Helper\Template\ViewNode;
     <? endif; ?>
     <div class="row">
         <div class="col-sm-12">
-            <label>Тип заказа</label>
+            <label class="filter-lk__title">Тип заказа</label>
             <div class="form-group">
             <? foreach ([OrderTable::TYPE_SALE, OrderTable::TYPE_PROMO] as $type): ?>
                 <div class="checkbox checkbox-primary">

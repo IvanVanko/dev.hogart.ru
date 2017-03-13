@@ -24,11 +24,12 @@ use Hogart\Lk\Entity\ContractTable;
 use Hogart\Lk\Helper\Template\Ajax;
 ?>
 <div class="row" data-loader-orders style="position: relative">
-    <div data-loader-wrapper="[data-loader-orders]" id="orders-list" class="col-sm-9 order-list">
+    <div data-loader-wrapper="[data-loader-orders]" id="orders-list" class="col-sm-9 col-xs-12 order-list">
         <? $ordersNode = Ajax::Start($component); ?>
         <? foreach ($arResult['orders'] as $k => $order): ?>
         <div class="row spacer-20 order-line" data-order-id="<?= $order['id'] ?>">
             <div class="col-sm-12">
+                <? $isListOfOrders = true; ?>
                 <? include dirname(__FILE__) . "/order-header.php" ?>
             </div>
         </div>
@@ -57,8 +58,11 @@ use Hogart\Lk\Helper\Template\Ajax;
         </div>
         <? Ajax::End($ordersNode->getId()); ?>
     </div>
-    <div class="col-sm-3 order-filter aside">
-        <? include __DIR__ . "/filter.php" ?>
+    <div class="col-sm-3 col-xs-12 order-filter aside aside-mobile">
+        <div class="filter-stock">
+            <a class="filter-stock__link js-filter-stock-mobile" href="#" title=""></a>
+            <? include __DIR__ . "/filter.php" ?>
+        </div>
     </div>
 </div>
 
