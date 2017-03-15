@@ -65,7 +65,7 @@ class Address extends AbstractMethod
             }
             $data = [
                 'owner_id' => $owner_id,
-                'owner_type' => $address->Adr_Owner_Type,
+                'owner_type' => (string)$address->Adr_Owner_Type,
                 'type_id' => $address_type['id'],
                 'postal_code' => (string)$address->Adr_ID_Index,
                 'region' => (string)$address->Adr_Region,
