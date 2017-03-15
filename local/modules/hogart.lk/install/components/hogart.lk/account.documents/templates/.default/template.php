@@ -295,7 +295,7 @@ use Hogart\Lk\Entity\AddressTable;
                                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                     </div>
                                     <div
-                                        <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('address-ajax', $address_node->getId(), ['remove_address' => $address['fias_code']], \Hogart\Lk\Helper\Template\Ajax::DIALOG_CONFIRMATION, [
+                                        <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('address-ajax', $address_node->getId(), ['remove_address' => $address['guid_id']], \Hogart\Lk\Helper\Template\Ajax::DIALOG_CONFIRMATION, [
                                             'title' => 'Подтверждение удаления адреса доставки',
                                             'confirmation' => 'Вы действительно хотите удалить адрес "' . $address['value'] . '"?'
                                         ]) ?>

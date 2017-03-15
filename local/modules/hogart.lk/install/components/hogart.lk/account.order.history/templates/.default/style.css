@@ -130,18 +130,25 @@
   margin-top: 5px;
 }
 @media (max-width: 767px) {
+  .timeline {
+    width: calc(100% - 35px);
+  }
   ul.timeline:before {
-    left: 40px;
+    left: 10px;
   }
   ul.timeline > li > .timeline-panel {
-    width: calc(10%);
-    width: -moz-calc(10%);
-    width: -webkit-calc(10%);
+    width: calc(100% - 45px);
+  }
+  .timeline > li > .timeline-badge {
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    font-size: 1em;
   }
   ul.timeline > li > .timeline-badge {
-    left: 15px;
+    left: -2px;
     margin-left: 0;
-    top: 16px;
+    top: 28px;
   }
   ul.timeline > li > .timeline-panel {
     float: right;
@@ -164,6 +171,12 @@
   top: 0;
   bottom: 0;
   width: 100%;
+}
+@media (max-width: 768px) {
+  #svg {
+    left: 0;
+    right: 0;
+  }
 }
 .link {
   text-decoration: underline !important;

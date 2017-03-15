@@ -19,21 +19,39 @@ use Hogart\Lk\Helper\Template\Money;
                     <?= OrderTable::showName($order) ?>
                 </span>
             </a>
-            <sup class="visible-xs-inline">
+            <sup class="hidden-xs">
                 <? if ($order['state'] == OrderTable::STATE_NORMAL): ?>
                     <span class="label label-default label-xs"><?= OrderTable::getStatusText($order['status']) ?></span>
                 <? endif; ?>
-                <span class="hidden-xs-inline label label-primary label-xs"><?= OrderTable::getTypeText($order['type']) ?></span>
+                <span class="label label-primary label-xs"><?= OrderTable::getTypeText($order['type']) ?></span>
             </sup>
 
             <? if (!$order['is_actual']): ?>
-                <sup>
+                <sup class="hidden-xs">
                     <span class="label label-danger label-xs">синхронизация</span>
                 </sup>
             <? endif; ?>
+
             <? if ($order['history'] > 0 && in_array($order['state'], [OrderTable::STATE_ARCHIVE, OrderTable::STATE_NORMAL])): ?>
-                <span style="padding-left: 5px;"><a href="/account/order/<?= $order['id'] ?>/history/" class="btn btn-warning btn-xs"><i class="fa fa-history"></i> История</a></span>
+                <sup>
+                    <span class="hidden-xs" style="padding-left: 5px;"><a href="/account/order/<?= $order['id'] ?>/history/" class="btn btn-warning btn-xs"><i class="fa fa-history"></i> История</a></span>
+                </sup>
             <? endif; ?>
+
+            <div class="visible-xs small" style="margin-top: 10px;">
+                <? if ($order['state'] == OrderTable::STATE_NORMAL): ?>
+                    <span class="label label-default label-xs"><?= OrderTable::getStatusText($order['status']) ?></span>
+                <? endif; ?>
+                <span class="label label-primary label-xs"><?= OrderTable::getTypeText($order['type']) ?></span>
+                <? if (!$order['is_actual']): ?>
+                    <span class="label label-danger label-xs">синхронизация</span>
+                <? endif; ?>
+                <? if ($order['history'] > 0 && in_array($order['state'], [OrderTable::STATE_ARCHIVE, OrderTable::STATE_NORMAL])): ?>
+                    <span style="padding-left: 5px;"><a href="/account/order/<?= $order['id'] ?>/history/" class="btn btn-warning btn-xs" style="margin-bottom: 0"><i class="fa fa-history"></i></a></span>
+                <? endif; ?>
+            </div>
+
+
         </h4>
         <div><?= $order['co_name'] ?></div>
         <div><?= ContractTable::showName($order, false, 'c_') ?></div>

@@ -517,6 +517,13 @@ span.twitter-typeahead .tt-dropdown-menu .empty-message {
   .checkbox label {
     color: #95c600;
   }
+  .dropdown-menu > li > a,
+  span.twitter-typeahead .tt-suggestion {
+    white-space: normal;
+  }
+  .btn {
+    margin-bottom: 10px;
+  }
 }
 .checkbox {
   padding-left: 20px;

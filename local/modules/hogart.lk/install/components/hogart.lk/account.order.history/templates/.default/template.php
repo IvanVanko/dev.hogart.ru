@@ -40,8 +40,29 @@ $order = $arResult['order'];
                                     <?= OrderTable::showName($order) ?>
                                 </span>
                             </a>
-                            <sup><span class="label label-primary"><?= OrderTable::getTypeText($order['type']) ?></span></sup>
-                            <sup><span class="label label-warning"><?= OrderTable::getStateText($order['state']) ?></span></sup>
+                            <sup class="hidden-xs">
+                                <? if ($order['state'] == OrderTable::STATE_NORMAL): ?>
+                                    <span class="label label-default label-xs"><?= OrderTable::getStatusText($order['status']) ?></span>
+                                <? endif; ?>
+                                <span class="label label-primary label-xs"><?= OrderTable::getTypeText($order['type']) ?></span>
+                            </sup>
+
+                            <? if (!$order['is_actual']): ?>
+                                <sup class="hidden-xs">
+                                    <span class="label label-danger label-xs">синхронизация</span>
+                                </sup>
+                            <? endif; ?>
+
+                            <div class="visible-xs small" style="margin-top: 10px;">
+                                <? if ($order['state'] == OrderTable::STATE_NORMAL): ?>
+                                    <span class="label label-default label-xs"><?= OrderTable::getStatusText($order['status']) ?></span>
+                                <? endif; ?>
+                                <span class="label label-primary label-xs"><?= OrderTable::getTypeText($order['type']) ?></span>
+                                <? if (!$order['is_actual']): ?>
+                                    <span class="label label-danger label-xs">синхронизация</span>
+                                <? endif; ?>
+                            </div>
+
                         </h4>
                         <div><?= $order['co_name'] ?></div>
                         <div><?= ContractTable::showName($order, false, 'c_') ?></div>

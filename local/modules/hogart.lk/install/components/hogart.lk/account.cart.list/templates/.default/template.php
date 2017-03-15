@@ -49,7 +49,7 @@ use Bitrix\Main\EventManager;
                 <div class="row post-table-footer vertical-align">
                     <div class="col-sm-8">
                         <div class="add-item-simple center-between">
-                            <div class="add-item-label text-nowrap">Быстрое добавление</div>
+                            <div class="hidden-xs add-item-label text-nowrap">Быстрое добавление</div>
                             <input required
                                 <?= Ajax::OnEvent(
                                     'typeaheadselect',
@@ -366,7 +366,7 @@ use Bitrix\Main\EventManager;
                                                     <div class="row vertical-align">
                                                         <div class="col-sm-8">
                                                             <div class="add-item-simple center-between">
-                                                                <div class="add-item-label text-nowrap">Быстрое добавление</div>
+                                                                <div class="hidden-xs add-item-label text-nowrap">Быстрое добавление</div>
                                                                 <input required
                                                                     <?= Ajax::OnEvent(
                                                                         'typeaheadselect',
