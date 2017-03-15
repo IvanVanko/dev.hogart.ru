@@ -11,6 +11,7 @@
 //        $seminarRegistrationClosed = true;
 //    }
 //}
+
 ?>
 
 <? if ($arParams["SEM_IS_CLOSED"]): ?>
@@ -26,13 +27,14 @@
                 $fileType = explode('/', $fileType);
                 ?>
                 <li>
-                    <a href="<?= $fileDetail['SRC']; ?>"><?=$fileDetail['ORIGINAL_NAME']?></a>
+                    <a href="<?= $fileDetail['SRC']; ?>"><?= $fileDetail['ORIGINAL_NAME'] ?></a>
                     <span>— .<?= $fileType[1] ?>, <?= round($fileSize, 2) ?> mb</span>
                 </li>
             <? endforeach ?>
         </ul>
     <? } ?>
     <? if (!empty($arResult['ORGS'])): ?>
+
         <h3>Об организаторе</h3>
         <div class="info-creator">
             <? if ($arResult['ORGS']['PREVIEW_PICTURE']) { ?>
@@ -95,23 +97,27 @@
         });
     </script>
     <? $form_id = "SEMINAR_REG_" . strtoupper(LANGUAGE_ID);
-        BXHelper::start_ajax_block();
-        $APPLICATION->IncludeFile(
-            "/local/include/seminar_form.php",
-            array(
-                "FORM_ID" => $form_id,
-                "FORM_VALUES" => array(
-                    "SEMINAR_NAME" => $arResult['NAME'],
-                    "SEMINAR_ID" => $arResult["ID"],
-                    "SEMINAR_EAN_CODE" => $arResult['PROPERTIES']["sem_ean_id"]["VALUE"],
-                    "HIDE_INPUTS" => false
-                ),
+    BXHelper::start_ajax_block();
+    $APPLICATION->IncludeFile(
+        "/local/include/seminar_form.php",
+        array(
+            "FORM_ID" => $form_id,
+            "FORM_VALUES" => array(
+                "SEMINAR_REGISTRATION_NUMBER" => "222222",
+                "SEMINAR_NAME" => $arResult['NAME'],
+                "SEMINAR_ORG" => $arResult['ORGS']['NAME'] . " " . $arResult['ORGS']['props']['mail']['VALUE'] . " " . $arResult['ORGS']['props']['phone']['VALUE'],
+                "SEMINAR_START" => $arResult['PROPERTIES']['sem_start_date']['VALUE'] . " " . $arResult['PROPERTIES']['time']['VALUE'],
+                "SEMINAR_ADRESS" => $arResult['PROPERTIES']['address']['VALUE'],
+                "SEMINAR_ID" => $arResult["ID"],
+                "SEMINAR_EAN_CODE" => $arResult['PROPERTIES']["sem_ean_id"]["VALUE"],
+                "HIDE_INPUTS" => false
             ),
-            array(
-                "SHOW_BORDER" => false
-            )
-        );
-        BXHelper::end_ajax_block(false, false, false, false);
+        ),
+        array(
+            "SHOW_BORDER" => false
+        )
+    );
+    BXHelper::end_ajax_block(false, false, false, false);
     ?>
     <a class="append-form trigger-border-bottom" href="#" data-clone-form><?= GetMessage("Добавить участника") ?></a>
     <button type="submit" class="btn btn-primary"
@@ -166,25 +172,31 @@
         });
     </script>
     <? $form_id = "SEMINAR_REG_" . strtoupper(LANGUAGE_ID);
-        BXHelper::start_ajax_block();
-        $APPLICATION->IncludeFile(
-            "/local/include/seminar_form.php",
-            array(
-                "FORM_ID" => $form_id,
-                "FORM_VALUES" => array(
-                    "SEMINAR_ID" => $arResult["ID"],
-                    "SEMINAR_EAN_CODE" => $arResult['PROPERTIES']["sem_ean_id"]["VALUE"],
-                    "HIDE_INPUTS" => false
-                ),
+    BXHelper::start_ajax_block();
+    $APPLICATION->IncludeFile(
+        "/local/include/seminar_form.php",
+        array(
+            "FORM_ID" => $form_id,
+            "FORM_VALUES" => array(
+                "SEMINAR_REGISTRATION_NUMBER" => "222222",
+                "SEMINAR_NAME" => $arResult['NAME'],
+                "SEMINAR_ORG" => $arResult['ORGS']['NAME'] . " " . $arResult['ORGS']['props']['mail']['VALUE'] . " " . $arResult['ORGS']['props']['phone']['VALUE'],
+                "SEMINAR_START" => $arResult['PROPERTIES']['sem_start_date']['VALUE'] . " " . $arResult['PROPERTIES']['time']['VALUE'],
+                "SEMINAR_ADRESS" => $arResult['PROPERTIES']['address']['VALUE'],
+                "SEMINAR_ID" => $arResult["ID"],
+                "SEMINAR_EAN_CODE" => $arResult['PROPERTIES']["sem_ean_id"]["VALUE"],
+                "HIDE_INPUTS" => false
             ),
-            array(
-                "SHOW_BORDER" => false
-            )
-        );
-        BXHelper::end_ajax_block(false, false, false, false);
+        ),
+        array(
+            "SHOW_BORDER" => false
+        )
+    );
+    BXHelper::end_ajax_block(false, false, false, false);
     ?>
-    <a class="append-form trigger-border-bottom" href="#" data-clone-form><?= GetMessage("Добавить участника") ?></a><br>
+    <a class="append-form trigger-border-bottom" href="#" data-clone-form><?= GetMessage("Добавить участника") ?></a>
+    <br>
     <button type="submit" class="btn btn-primary"
-            data-submit-form="<?= CStorage::getVar("seminar_form_name"); ?>"><?= GetMessage("Отправить")?>
+            data-submit-form="<?= CStorage::getVar("seminar_form_name"); ?>"><?= GetMessage("Отправить") ?>
     </button>
 <? endif; ?>

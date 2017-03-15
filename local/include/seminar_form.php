@@ -48,6 +48,10 @@ $APPLICATION->IncludeComponent(
             "SEMINAR_ID" => "data-clone=\"seminar_id\"",
             "SEMINAR_EAN_CODE" => "data-clone=\"seminar_ean_code\"",
             "SEMINAR_NAME" => "data-clone=\"seminar_name\"",
+            "SEMINAR_ORG" => "data-clone=\"seminar_org\"",
+            "SEMINAR_ADRESS" => "data-clone=\"seminar_adress\"",
+            "SEMINAR_START" => "data-clone=\"seminar_start\"",
+            "SEMINAR_REGISTRATION_NUMBER" => "data-clone=\"seminar_registration_number\"",
         ),
 
         "CUSTOM_WRAPPER_CSS" => array(

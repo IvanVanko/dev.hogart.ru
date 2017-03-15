@@ -87,6 +87,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
                                value="" size="0">
                     </div>
                     <input type="hidden" name="seminar_name" value="<?=$arSeminars[$s_id]['NAME']?>">
+                    <input type="hidden" name="seminar_registration_number" value="">
                     <input type="hidden" name="page_href" value="<?=$_SERVER['SERVER_NAME']."/learn/result.php?find_id=".$arFormResult['ID']?>">
                 </div>
                 <hr>
@@ -116,6 +117,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
                                value="" size="0">
                     </div>
                     <input type="hidden" name="seminar_name" value="<?=$arSeminars[$s_id]['NAME']?>">
+                    <input type="hidden" name="seminar_registration_number" value="">
                     <input type="hidden" name="page_href" value="<?=$_SERVER['SERVER_NAME']."/learn/result.php?find_id=".$arFormResult['ID']?>">
                 </div>
                 <hr>

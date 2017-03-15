@@ -193,12 +193,42 @@ class HogartHelpers {
     }
 
 
+    public static function generateSeminarRegistrationNumber () {
+        $valid_number = false;
+        CModule::IncludeModule('iblock');
+        $obElement = new CIBlockElement();
+        while (!$valid_number) {
+            $rand = rand(10000000, 99999999);
+            CModule::IncludeModule("form");
+            $FORM_ID = 5;
+            $arFields[] = array(
+                "CODE"              => "SEMINAR_REGISTRATION_NUMBER",       // код поля по которому фильтруем
+                "FILTER_TYPE"       => "text",       // фильтруем по числовому полю
+                "PARAMETER_NAME"    => "USER",          // по значению введенному с клавиатуры
+                "VALUE"    => $rand,          // по значению введенному с клавиатуры
+                "EXACT_MATCH"              => "Y"                // прямое совпадение со значением (не интервал)
+            );
+            $arFilter["FIELDS"] = $arFields;
+            $rsResults = CFormResult::GetList($FORM_ID,
+                ($by="s_timestamp"),
+                ($order="desc"),
+                $arFilter,
+                $is_filtered="true",
+                "Y");
+            $count = $obElement->GetList(array(), array('IBLOCK_ID' => SEMINAR_IBLOCK_ID ,'PROPERTY_sem_ean_id' => $rand, "ACTIVE" => "Y", "ACTIVE_DATE" => "Y"), array());
+            if (!intval($count)) {
+                $valid_number = $rand;
+            }
+        }
+        return $valid_number;
+    }
+
     public static function generateSeminarNumber () {
         $valid_number = false;
         CModule::IncludeModule('iblock');
         $obElement = new CIBlockElement();
         while (!$valid_number) {
-            $rand = rand(100000000, 999999999);
+            $rand = rand(10000000, 99999999);
             $count = $obElement->GetList(array(), array('IBLOCK_ID' => SEMINAR_IBLOCK_ID ,'PROPERTY_sem_ean_id' => $rand, "ACTIVE" => "Y", "ACTIVE_DATE" => "Y"), array());
             if (!intval($count)) {
                 $valid_number = $rand;

@@ -22,6 +22,7 @@
             FormatDate("d F Y", MakeTimeStamp($arResult['PROPERTIES']['sem_end_date']['VALUE']))
         );
     }
+
     $seminarDateTimeLabel = sprintf("<sup>%s</sup>", $seminarDateTimeLabel);
     if (!empty($arResult['PROPERTIES']['time']['VALUE'])) {
         $seminarDateTimeLabel .= sprintf("<span>/</span><sub>%s</sub>", $arResult['PROPERTIES']['time']['VALUE']);
@@ -30,7 +31,11 @@
             FormatDate("H:i", MakeTimeStamp($arResult['PROPERTIES']['sem_start_date']['VALUE'])));
     }
 
-    $seminarRegistrationClosed = false;
+    if (!empty($arResult['PROPERTIES']['end_time']['VALUE'])) {
+        $seminarDateTimeLabel .= sprintf("<sub>-%s</sub>", $arResult['PROPERTIES']['end_time']['VALUE']);
+    }
+
+$seminarRegistrationClosed = false;
     if (!empty($arResult['PROPERTIES']['sem_end_date']['VALUE'])) {
         if (DateTime::compareTwoEpochDates(
             time(),
@@ -39,6 +44,7 @@
         }
     }
 ?>
+
 <div class="row">
     <div class="col-md-9 col-xs-12">
         <div class="row vertical-align">
@@ -173,7 +179,7 @@
         <? endif; ?>
 
         <div class="col-md-3 col-xs-12 aside aside-mobile seminar__information--mobile">
-            <? $APPLICATION->IncludeComponent("kontora:element.detail", "seminar-sidebar", array(
+            <?  $APPLICATION->IncludeComponent("kontora:element.detail", "seminar-sidebar", array(
                 "CACHE_TIME" => 0,
                 "IBLOCK_ID" => $arParams["IBLOCK_ID"],
                 "CODE" => $_REQUEST["ELEMENT_CODE"],
@@ -181,7 +187,8 @@
                 "PROPERTY_CODE" => array("adress"),
                 "ADD_CHAIN_ITEM" => "N",
                 "SEM_IS_CLOSED" => $arResult["SEM_IS_CLOSED"],
-            ));?>
+            ));
+			?>
         </div>
 
         <? if ($arResult["SEM_IS_CLOSED"] && LANGUAGE_ID != "en"): ?>

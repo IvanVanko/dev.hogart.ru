@@ -1,7 +1,8 @@
-<?if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)	die();?>
+<? if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die(); ?>
 <?
 jsDump(mb_internal_encoding());
 $arSeminarsIds = array();
+
 
 foreach ($arResult['arrResults'] as &$arrResult) {
     $result_id = $arrResult['ID'];
@@ -20,11 +21,12 @@ foreach ($arResult['arrResults'] as &$arrResult) {
             } else if ($arAnswer['SID'] == 'SEMINAR_USER_LNAME') {
                 $seminar_user_last_name = $arAnswer['USER_TEXT'];
             } else if ($arAnswer['SID'] == 'SEMINAR_USER_MNAME') {
-                $seminar_user_mid_name = $arAnswer['USER_TEXT']; 
+                $seminar_user_mid_name = $arAnswer['USER_TEXT'];
             } else if ($arAnswer['SID'] == 'SEMINAR_USER_PHONE') {
-				$sending_phone = html_entity_decode($arAnswer['USER_TEXT']);
-				$seminar_user_phone = $arAnswer['USER_TEXT'];
-			} else if ($arAnswer['SID'] == 'SEMINAR_USER_CMP') {
+                $sending_phone = html_entity_decode($arAnswer['USER_TEXT']);
+                $seminar_user_phone = $arAnswer['USER_TEXT'];
+                $arrResult['SEND_PHONE'] = $sending_phone;
+            } else if ($arAnswer['SID'] == 'SEMINAR_USER_CMP') {
                 $arrResult['USER_COMPANY'] = $arAnswer['USER_TEXT'];
             } else if ($arAnswer['SID'] == 'SEMINAR_EAN_CODE') {
                 if (!isset($arrResult['BARCODE_BASE64']) && strlen($arAnswer['USER_TEXT']) == 12) {
@@ -34,7 +36,7 @@ foreach ($arResult['arrResults'] as &$arrResult) {
             }
         }
     }
-    $arrResult['USER_NAME'] = $seminar_user_name." ".$seminar_user_mid_name." ".$seminar_user_last_name;
+    $arrResult['USER_NAME'] = $seminar_user_name . " " . $seminar_user_mid_name . " " . $seminar_user_last_name;
 }
 
 
@@ -55,23 +57,27 @@ $elements = BXHelper::getElements(
         'PROPERTY_org.PROPERTY_phone',
         'PROPERTY_org.PROPERTY_mail',
         'PROPERTY_sem_start_date',
+        'PROPERTY_time',
         'PROPERTY_address'
     ), true, 'ID');
 
 $elements = $elements['RESULT'];
 
 foreach ($elements as &$arElement) {
-	        $seminar_name = $arElement['NAME'];
+
     if (!is_assoc($arElement)) {
+        //      $seminar_name = $arElement['NAME'];
         $arAddToElement = array();
         foreach ($arElement as $arElementVariant) {
+
             $arAddToElement['BRANDS'][] = $arElementVariant['PROPERTY_BRAND_NAME'];
             $arAddToElement['ORG_NAME'] = $arElementVariant['PROPERTY_ORG_NAME'];
             $arAddToElement['ORG_MAIL'] = $arElementVariant['PROPERTY_ORG_PROPERTY_MAIL_VALUE'];
             $arAddToElement['ORG_PHONE'] = $arElementVariant['PROPERTY_ORG_PROPERTY_PHONE_VALUE'];
+          
             $arAddToElement['ADDRESS'] = $arElementVariant['PROPERTY_ADDRESS_VALUE'];
             if (!isset($arAddToElement['DISPLAY_BEGIN_DATE'])) {
-                $arAddToElement['DISPLAY_BEGIN_DATE'] = FormatDate("d F Yг. / Время начала H:i", MakeTimeStamp($arElementVariant["PROPERTY_SEM_START_DATE_VALUE"]));
+                $arAddToElement['DISPLAY_BEGIN_DATE'] = FormatDate("d F Yг. / Время начала ", MakeTimeStamp($arElementVariant["PROPERTY_SEM_START_DATE_VALUE"])) . $arElementVariant["PROPERTY_TIME_VALUE"];
             }
             $lecturer_id = $arElementVariant['PROPERTY_LECTURER_VALUE'];
             if (!isset($arAddToElement['LECTURERS'][$lecturer_id])) {
@@ -84,6 +90,10 @@ foreach ($elements as &$arElement) {
         }
         $arAddToElement['BRANDS'] = array_unique($arAddToElement['BRANDS']);
         $arElement = $arElement + $arAddToElement;
+        $seminar_name = $arElement['NAME'];
+        $adress = $arAddToElement['ADDRESS'];
+        $start_time = $arAddToElement['DISPLAY_BEGIN_DATE'];
+        $org = $arAddToElement['ORG_NAME'] . " " . $arAddToElement['ORG_MAIL'] . " " . $arAddToElement['ORG_PHONE'];
     } else {
 
         $arElement['ORG_NAME'] = $arElement['PROPERTY_ORG_NAME'];
@@ -98,23 +108,31 @@ foreach ($elements as &$arElement) {
             'POST' => $arElement['PROPERTY_LECTURER_PROPERTY_STATUS_VALUE'],
             'COMPANY' => $arElement['PROPERTY_LECTURER_PROPERTY_COMPANY_VALUE'],
         );
+
     }
 }
-
-
-$url = 'http://'.$_SERVER['SERVER_NAME'] . '/ajax/smsc_send_seminar_result.php';
-$params = array(
-    'seminar_name' => $seminar_name, 
-    'page_href' => $_SERVER['SERVER_NAME']."/learn/result.php?find_id=" . $arrResult['SEMINAR_ID'],
-    'sending_phone' => $sending_phone
-);
-$result = file_get_contents($url, false, stream_context_create(array(
-    'http' => array(
-        'method'  => 'POST',
-        'header'  => 'Content-type: application/x-www-form-urlencoded',
-        'content' => http_build_query($params)
-    )
-)));
-
 $arResult['SEMINARS'] = $elements;
+if (!empty($arResult['arrResults'])) {
+
+    foreach ($arResult['arrResults'] as $arFormResult) {
+        $s_id = $arFormResult['SEMINAR_ID'];
+        $url = 'http://' . $_SERVER['SERVER_NAME'] . '/ajax/smsc_send_seminar_result.php';
+        $params = array(
+            'seminar_name' => $arResult['SEMINARS'][$s_id][0]['NAME'],
+            'org' => $arResult['SEMINARS'][$s_id]['ORG_NAME'] . " " . $arResult['SEMINARS'][$s_id]['ORG_MAIL'] . " " . $arResult['SEMINARS'][$s_id]['ORG_PHONE'],
+            'start_time' => $arResult['SEMINARS'][$s_id]['DISPLAY_BEGIN_DATE'],
+            'code' => $arFormResult['BARCODE'],
+            'adress' => $arResult['SEMINARS'][$s_id]['ADDRESS'],
+            'page_href' => $_SERVER['SERVER_NAME'] . "/learn/result/" . $arFormResult['ID'] . "/",
+            'sending_phone' => $arFormResult['SEND_PHONE']
+        );
+        $result = file_get_contents($url, false, stream_context_create(array(
+            'http' => array(
+                'method' => 'POST',
+                'header' => 'Content-type: application/x-www-form-urlencoded',
+                'content' => http_build_query($params)
+            )
+        )));
+    }
+}
 ?>

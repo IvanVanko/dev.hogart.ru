@@ -1984,7 +1984,6 @@ $(window).load(function () {
 
 
 function ajaxForm(ajaxForm, replace_html, callback, reload) {
-    console.log('azaza');
     var form_id = $(ajaxForm).data("id");
     var method = typeof $(ajaxForm).attr('method') !== 'undefined' ? $(ajaxForm).attr('method') : 'post';
     var dataType = typeof $(ajaxForm).attr('data-return-type') !== 'undefined' ? $(ajaxForm).attr('data-return-type') : 'html';
@@ -2049,11 +2048,12 @@ function initSubmitRegular(submit_form) {
                             if (!result_id) {
                                 result_id = $(result).filter('[name=result_id]').val();
                             }
-                            console.log(result_id);
-                            var result_url = $(submit_form).data('success-url') + "?find_id=" + result_id;
+
+                            var result_url = "/learn/result/" + result_id + "/";
                             if ($(submit_form).is('.result-redirect-timeout')) {
                                 setTimeout(function () {
                                     window.location.href = result_url
+                                    //window.location.href = result_url
                                 }, 500);
                             }
                             else {

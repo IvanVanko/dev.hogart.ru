@@ -3,10 +3,11 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
 
 <?//pr($arResult);?>
 <?$arSeminars = $arResult['SEMINARS'];?>
-<?if (!empty($arResult['arrResults'])) {?>
+<?if (!empty($arResult['arrResults'])) {
+    ?>
     <?$this->SetViewTarget('SEMINAR_PREVIEW_TEXT');?>
         <h1>Вы успешно зарегистрированы на семинар
-            «<?=$arSeminars[$arResult['arrResults'][0]['SEMINAR_ID']]['NAME']?>»</h1>
+            «<?=reset($arSeminars)[0]['NAME']?>»</h1>
         <small>Спасибо, что обратились в нашу компанию! Ваша заявка на семинар принята. В ближайшее время с вами свяжется специалист для уточнения деталей.
         </small>
     <?$this->EndViewTarget();?>
@@ -18,7 +19,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
 <?foreach ($arResult['arrResults'] as $arFormResult) {
     $s_id = $arFormResult['SEMINAR_ID'];?>
     <div class="green-line-registration">
-        <a target="__blank" href="/learn/result_print.php?find_id=<?=$arFormResult['ID']?>" class="icon-print black nohover"><span>Распечатать приглашение</span></a>
+        <a target="__blank" href="/learn/result_print.php?find_id=<?=$arFormResult['ID']?>/" class="icon-print black nohover"><span>Распечатать приглашение</span></a>
 
         <div class="right">
             <a href="#" class="icon-phone black nohover js-popup-open" data-popup="#seminar-result-phone<?=$arFormResult['ID']?>"><span>Отправить по смс</span></a>
@@ -89,6 +90,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
                                value="" size="0">
                     </div>
                     <input type="hidden" name="seminar_name" value="<?=$arSeminars[$s_id][0]['NAME']?>">
+                    <input type="hidden" name="seminar_registration_number" value="">
                     <input type="hidden" name="page_href" value="<?=$_SERVER['SERVER_NAME']."/learn/result.php?find_id=".$arFormResult['ID']?>">
                 </div>
                 <hr>
@@ -122,6 +124,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
                                value="" size="0">
                     </div>
                     <input type="hidden" name="seminar_name" value="<?=$arSeminars[$s_id][0]['NAME']?>">
+                    <input type="hidden" name="seminar_registration_number" value="">
                     <input type="hidden" name="page_href" value="<?=$_SERVER['SERVER_NAME']."/learn/result.php?find_id=".$arFormResult['ID']?>">
                 </div>
                 <hr>
