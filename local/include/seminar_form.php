@@ -8,6 +8,7 @@ if((!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) &&
         $APPLICATION->RestartBuffer();
     }
 
+
 $APPLICATION->IncludeComponent(
     "bitrix:form.result.new",
     "hogart_request",
@@ -46,6 +47,7 @@ $APPLICATION->IncludeComponent(
             "SEMINAR_USER_POST" => "data-clone=\"seminar_user_post\"",
             "SEMINAR_ID" => "data-clone=\"seminar_id\"",
             "SEMINAR_EAN_CODE" => "data-clone=\"seminar_ean_code\"",
+            "SEMINAR_NAME" => "data-clone=\"seminar_name\"",
         ),
 
         "CUSTOM_WRAPPER_CSS" => array(
