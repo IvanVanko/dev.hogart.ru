@@ -354,7 +354,7 @@ if (isset($templateData['TEMPLATE_THEME']))
 													<span class="bx-filter-btn-color-icon" style="background-image:url('<?=$ar["FILE"]["SRC"]?>');"></span>
 												<?endif?>
 											</span>
-											<span class="1bx-filter-param-text" title="<?=$ar["VALUE"];?>"><?=$ar["VALUE"];?><?
+											<span class="bx-filter-param-text" title="<?=$ar["VALUE"];?>"><?=$ar["VALUE"];?><?
 											if ($arParams["DISPLAY_ELEMENT_COUNT"] !== "N" && isset($ar["ELEMENT_COUNT"])):
 												?> (<span data-role="count_<?=$ar["CONTROL_ID"]?>"><? echo $ar["ELEMENT_COUNT"]; ?></span>)<?
 											endif;?></span>
@@ -441,7 +441,7 @@ if (isset($templateData['TEMPLATE_THEME']))
 														<?if (isset($ar["FILE"]) && !empty($ar["FILE"]["SRC"])):?>
 															<span class="bx-filter-btn-color-icon" style="background-image:url('<?=$ar["FILE"]["SRC"]?>');"></span>
 														<?endif?>
-														<span class="2bx-filter-param-text">
+														<span class="bx-filter-param-text">
 															<?=$ar["VALUE"]?>
 														</span>
 													<?
@@ -494,7 +494,7 @@ if (isset($templateData['TEMPLATE_THEME']))
 															<?if (isset($ar["FILE"]) && !empty($ar["FILE"]["SRC"])):?>
 																<span class="bx-filter-btn-color-icon" style="background-image:url('<?=$ar["FILE"]["SRC"]?>');"></span>
 															<?endif?>
-															<span class="3bx-filter-param-text">
+															<span class="bx-filter-param-text">
 																<?=$ar["VALUE"]?>
 															</span>
 														</label>
@@ -518,7 +518,7 @@ if (isset($templateData['TEMPLATE_THEME']))
 													id="<? echo "all_".$arCur["CONTROL_ID"] ?>"
 													onclick="smartFilter.click(this)"
 												/>
-												<span class="4bx-filter-param-text"><? echo GetMessage("CT_BCSF_FILTER_ALL"); ?></span>
+												<span class="bx-filter-param-text"><? echo GetMessage("CT_BCSF_FILTER_ALL"); ?></span>
 											</span>
 										</label>
 									</div>
@@ -534,7 +534,7 @@ if (isset($templateData['TEMPLATE_THEME']))
 														<? echo $ar["CHECKED"]? 'checked="checked"': '' ?>
 														onclick="smartFilter.click(this)"
 													/>
-													<span class="6bx-filter-param-text" title="<?=$ar["VALUE"];?>"><?=$ar["VALUE"];?><?
+													<span class="bx-filter-param-text" title="<?=$ar["VALUE"];?>"><?=$ar["VALUE"];?><?
 													if ($arParams["DISPLAY_ELEMENT_COUNT"] !== "N" && isset($ar["ELEMENT_COUNT"])):
 														?> (<span data-role="count_<?=$ar["CONTROL_ID"]?>"><? echo $ar["ELEMENT_COUNT"]; ?></span>)<?
 													endif;?></span>
@@ -585,7 +585,7 @@ if (isset($templateData['TEMPLATE_THEME']))
 								default://CHECKBOXES
 									?>
 									<? $_counter = 0; ?>
-									<? usort($arItem["VALUES"], function ($a, $b) { return $a["CHECKED"] < $b["CHECKED"]; }); ?>
+									<? //usort($arItem["VALUES"], function ($a, $b) { return $a["CHECKED"] < $b["CHECKED"]; }); ?>
 									<?foreach($arItem["VALUES"] as $val => $ar):?>
 										<div class="checkbox <?= (($_counter > 3 && !$ar["CHECKED"]) ? "more" : "")?>">
 											<label data-role="label_<?=$ar["CONTROL_ID"]?>" class="bx-filter-param-label <? echo $ar["DISABLED"] ? 'disabled': '' ?>" for="<? echo $ar["CONTROL_ID"] ?>">
@@ -599,7 +599,7 @@ if (isset($templateData['TEMPLATE_THEME']))
 														<? echo $ar["DISABLED"] ? 'disabled="disabled"': '' ?>
 														onclick="smartFilter.click(this)"
 													/>
-													<span class="7bx-filter-param-text" title="<?=$ar["VALUE"];?>"><?=$ar["VALUE"];?><?
+													<span class="bx-filter-param-text" title="<?=$ar["VALUE"];?>"><?=$ar["VALUE"];?><?
 													if ($arParams["DISPLAY_ELEMENT_COUNT"] !== "N" && isset($ar["ELEMENT_COUNT"])):
 														?> (<span data-role="count_<?=$ar["CONTROL_ID"]?>"><? echo $ar["ELEMENT_COUNT"]; ?></span>)<?
 													endif;?></span>
