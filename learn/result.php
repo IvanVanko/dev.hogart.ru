@@ -7,8 +7,8 @@ $APPLICATION->SetTitle("Заявка на посещение семинара");
     <?$APPLICATION->ShowViewContent('SEMINAR_PREVIEW_TEXT')?>
     <?$_REQUEST['set_filter'] = "Y";?>
     <?$APPLICATION->IncludeComponent(
-        "bitrix:form.result.list",
-        "hogart_seminar_result_list",
+        "hogart:form.result.list",
+        ".default",
         array(
             "WEB_FORM_ID" => "5",
             "SEF_MODE" => "N",

@@ -123,7 +123,7 @@ if (!empty($arResult['arrResults'])) {
             'start_time' => $arResult['SEMINARS'][$s_id]['DISPLAY_BEGIN_DATE'],
             'code' => $arFormResult['BARCODE'],
             'adress' => $arResult['SEMINARS'][$s_id]['ADDRESS'],
-            'page_href' => $_SERVER['SERVER_NAME'] . "/learn/result/" . $arFormResult['ID'] . "/",
+            'page_href' => $_SERVER['SERVER_NAME'] . "/learn/result.php?find_id=" . $arFormResult['ID'],
             'sending_phone' => $arFormResult['SEND_PHONE']
         );
         $result = file_get_contents($url, false, stream_context_create(array(

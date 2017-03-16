@@ -27,7 +27,7 @@
                 $fileType = explode('/', $fileType);
                 ?>
                 <li>
-                    <a href="<?= $fileDetail['SRC']; ?>"><?= $fileDetail['ORIGINAL_NAME'] ?></a>
+                    <a target="_blank" href="<?= $fileDetail['SRC']; ?>"><?= $fileDetail['ORIGINAL_NAME'] ?></a>
                     <span>— .<?= $fileType[1] ?>, <?= round($fileSize, 2) ?> mb</span>
                 </li>
             <? endforeach ?>
@@ -103,7 +103,7 @@
         array(
             "FORM_ID" => $form_id,
             "FORM_VALUES" => array(
-                "SEMINAR_REGISTRATION_NUMBER" => "222222",
+                "SEMINAR_REGISTRATION_NUMBER" => HogartHelpers::generateSeminarRegistrationNumber(),
                 "SEMINAR_NAME" => $arResult['NAME'],
                 "SEMINAR_ORG" => $arResult['ORGS']['NAME'] . " " . $arResult['ORGS']['props']['mail']['VALUE'] . " " . $arResult['ORGS']['props']['phone']['VALUE'],
                 "SEMINAR_START" => $arResult['PROPERTIES']['sem_start_date']['VALUE'] . " " . $arResult['PROPERTIES']['time']['VALUE'],
@@ -178,7 +178,7 @@
         array(
             "FORM_ID" => $form_id,
             "FORM_VALUES" => array(
-                "SEMINAR_REGISTRATION_NUMBER" => "222222",
+                "SEMINAR_REGISTRATION_NUMBER" => HogartHelpers::generateSeminarRegistrationNumber(),
                 "SEMINAR_NAME" => $arResult['NAME'],
                 "SEMINAR_ORG" => $arResult['ORGS']['NAME'] . " " . $arResult['ORGS']['props']['mail']['VALUE'] . " " . $arResult['ORGS']['props']['phone']['VALUE'],
                 "SEMINAR_START" => $arResult['PROPERTIES']['sem_start_date']['VALUE'] . " " . $arResult['PROPERTIES']['time']['VALUE'],

@@ -234,6 +234,8 @@ class HogartHelpers {
                 $valid_number = $rand;
             }
         }
+
+
         return $valid_number;
     }
 

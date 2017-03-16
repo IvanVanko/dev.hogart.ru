@@ -244,11 +244,8 @@ if ($arResult["JS_FILTER_PARAMS"]["SEF_SET_FILTER_URL"])
     $arResult["SEF_SET_FILTER_URL"] = $arResult["JS_FILTER_PARAMS"]["SEF_SET_FILTER_URL"];
     $arResult["SEF_DEL_FILTER_URL"] = $arResult["JS_FILTER_PARAMS"]["SEF_DEL_FILTER_URL"];
 }
+//echo "<pre>";
+//    print_r($arResult['ITEMS']);
+//echo "</pre>";
 
-usort($arResult['ITEMS'], function($a, $b){
-    if($b['DISPLAY_SORT'] == $a['DISPLAY_SORT']){
-        return $a['DISPLAY_EXPANDED'] == "Y" ? 1 : 0;
-    }
 
-    return $a['DISPLAY_SORT'] > $b['DISPLAY_SORT'] ? 1 : 0;
-});

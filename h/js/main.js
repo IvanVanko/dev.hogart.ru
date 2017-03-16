@@ -2035,6 +2035,7 @@ function initSubmitRegular(submit_form) {
             submitHandler: function (form) {
                 ajaxForm(form, false, function (result) {
                     if ($(result).find('[name=success]').val() || $(result).filter('[name=success]').val()) {
+                        console.log(result);
                         if ($(submit_form).is('.reload')) {
                             location.reload();
                         }
@@ -2049,7 +2050,7 @@ function initSubmitRegular(submit_form) {
                                 result_id = $(result).filter('[name=result_id]').val();
                             }
 
-                            var result_url = "/learn/result/" + result_id + "/";
+                            var result_url = "/learn/result.php?find_id=" + result_id;
                             if ($(submit_form).is('.result-redirect-timeout')) {
                                 setTimeout(function () {
                                     window.location.href = result_url

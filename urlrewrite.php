@@ -1,12 +1,12 @@
 <?
 $arUrlRewrite = array(
-    array(
-        "CONDITION" => "#^/learn/result/([0-9]+)/(\\?.*|$)#",
-      //  "RULE" => "find_SEMINAR_REG_RU_SEMINAR_REGISTRATION_NUMBER_USER_text=\$1",
-        "RULE" => "find_id=\$1",
-        "ID" => "",
-        "PATH" => "/learn/result.php"
-    ),
+//    array(
+//        "CONDITION" => "#^/learn/result/([0-9]+)/(\\?.*|$)#",
+//      //  "RULE" => "find_SEMINAR_REG_RU_SEMINAR_REGISTRATION_NUMBER_USER_text=\$1",
+//        "RULE" => "find_id=\$1",
+//        "ID" => "",
+//        "PATH" => "/learn/result.php"
+//    ),
     array(
         "CONDITION" => "#^/documentation/([\\w-_]+)/(\\?.*|\$)#",
         "RULE" => "ELEMENT_CODE=\$1",

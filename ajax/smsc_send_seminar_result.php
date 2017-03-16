@@ -1,6 +1,5 @@
 <?
 //file_put_contents($_SERVER['DOCUMENT_ROOT']."/log111.txt",var_export($_POST,true), FILE_APPEND);
-require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
 
 if (isset($_POST["sending_phone"]) && !empty($_POST["sending_phone"])) {
     include_once "smsc_api.php";
@@ -18,6 +17,7 @@ if (isset($_POST["sending_phone"]) && !empty($_POST["sending_phone"])) {
         'Адрес "' . $adress . '"' . "\n\n" .
         'Ваш код участника ' . $code . "\n\n" .
         'Организатор:' . $org . "\n";
+die;
     $r = send_sms($phone, $message);
 //        $_POST["translit"], $_POST["time"], 0,
 //        $_POST["flash"], $_POST["sender"]);
