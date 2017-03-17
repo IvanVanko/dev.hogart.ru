@@ -126,13 +126,13 @@ use Hogart\Lk\Entity\ReportTable;
                 </div>
             </div>
             <div class="row groups">
-                <div class="col-sm-5">
+                <div class="col-xs-6 col-sm-5">
                     <div class="row">
                         <div class="col-sm-12 text-center">
-                            <h6>Доступные для группировки поля</h6>
+                            <h6>Доступные группировки</h6>
                         </div>
                     </div>
-                    <ul class="list-group" id="available-group">
+                    <ul class="h6 list-group" id="available-group">
                         <li data-id="category" class="list-group-item">
                             <i class="fa fa-arrows"></i>
                             По категории
@@ -143,16 +143,16 @@ use Hogart\Lk\Entity\ReportTable;
                         </li>
                     </ul>
                 </div>
-                <div class="col-sm-2 text-center">
+                <div class="hidden-xs col-sm-2 text-center">
                     <h3><i class="fa fa-arrows-h"></i></h3>
                 </div>
-                <div class="col-sm-5">
+                <div class="col-xs-6 col-sm-5">
                     <div class="row">
                         <div class="col-sm-12 text-center">
                             <h6>Группировать по</h6>
                         </div>
                     </div>
-                    <ul class="list-group" id="enabled-group"></ul>
+                    <ul class="h6 list-group" id="enabled-group"></ul>
                 </div>
                 <input type="hidden" name="groups" value="">
             </div>
@@ -163,6 +163,7 @@ use Hogart\Lk\Entity\ReportTable;
             </div>
         </form>
     </div>
+    <div class="delimiter"></div>
     <div class="col-sm-3 order-filter aside">
         <h4>Последние 5 отчетов</h4>
         <? if (empty($arResult['reports'])): ?>
