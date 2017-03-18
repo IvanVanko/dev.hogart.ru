@@ -977,7 +977,7 @@ class ParsingModel {
             $productInBitrix = $el->GetList(array(), array('IBLOCK_ID' => 1, 'XML_ID' => $product_s->item_id), false, false, ['ID', 'XML_ID']);
             if($productInBitrix = $productInBitrix->GetNext()) {
                 $fil = array(
-                    'warehouse' => array("VALUE" => $product_s->warehouse ? '1' : '0'),
+                    'warehouse' => array("VALUE" => (bool)$product_s->warehouse),
                     'days_till_receive' => array("VALUE" => $product_s->days_till_receive),
                 );
                 $el->SetPropertyValuesEx($productInBitrix['ID'], 1, $fil);
