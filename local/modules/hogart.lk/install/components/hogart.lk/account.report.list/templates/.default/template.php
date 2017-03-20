@@ -163,7 +163,7 @@ use Hogart\Lk\Entity\ReportTable;
             </div>
         </form>
     </div>
-    <div class="delimiter"></div>
+    <div class="delimiter visible-xs    "></div>
     <div class="col-sm-3 order-filter aside">
         <h4>Последние 5 отчетов</h4>
         <? if (empty($arResult['reports'])): ?>
