@@ -102,7 +102,7 @@ $order = $arResult['order'];
                                                     </td>
                                                     <td class="text-nowrap">
                                                         <? if (!$item['not_editable'] && $item['ACTIVE'] != 'N'): ?>
-                                                        <input class="form-control input-sm"
+                                                        <input style="min-width: 62px;" class="form-control input-sm"
                                                             id="quantity-<?= $item['guid_id'] ?>"
                                                             <?= Ajax::OnEvent(
                                                                 'changeapply',
@@ -128,7 +128,7 @@ $order = $arResult['order'];
                                                     <td class="text-nowrap money-<?= strtolower($order['currency']['CURRENCY']) ?>"><?= $item['price'] ?></td>
                                                     <td class="text-center">
                                                         <? if (!$item['not_editable'] && $item['ACTIVE'] != 'N'): ?>
-                                                        <input tabindex="-1" class="form-control input-sm"
+                                                        <input style="min-width: 56px;" tabindex="-1" class="form-control input-sm"
                                                            id="discount-<?= $item['guid_id'] ?>"
                                                             <?= Ajax::OnEvent(
                                                                 'changeapply',
