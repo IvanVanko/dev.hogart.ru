@@ -148,7 +148,7 @@ $seminarRegistrationClosed = false;
         <? if (!empty($arResult['PROPERTIES']['address']['VALUE']) and !$seminarRegistrationClosed): ?>
             <h4><?= GetMessage("Адрес и контактная информация") ?></h4>
 
-            <p class="light">
+            <p class="light seminar__address">
                 <?= GetMessage("Адрес офиса") ?>: <?= $arResult['PROPERTIES']['address']['VALUE']; ?><br>
                 <? if (!empty($arResult['PROPERTIES']['map']['VALUE'])): ?>
                     <?

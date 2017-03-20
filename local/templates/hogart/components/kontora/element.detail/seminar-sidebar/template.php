@@ -15,7 +15,8 @@
 ?>
 
 <? if ($arParams["SEM_IS_CLOSED"]): ?>
-    <? if (!empty($arResult["PROPERTIES"]["materials"]["VALUE"])) { ?>
+    <? 
+	if (!empty($arResult["PROPERTIES"]["materials"]["VALUE"])) { ?>
         <h2><?= $arResult['PROPERTIES']['materials']['NAME']; ?></h2>
         <ul class="ul-file">
             <? foreach ($arResult["PROPERTIES"]["materials"]["DESCRIPTION"] as $key => $value):
@@ -96,8 +97,11 @@
             });
         });
     </script>
-    <? $form_id = "SEMINAR_REG_" . strtoupper(LANGUAGE_ID);
+    <? 
+
+	$form_id = "SEMINAR_REG_" . strtoupper(LANGUAGE_ID);
     BXHelper::start_ajax_block();
+	
     $APPLICATION->IncludeFile(
         "/local/include/seminar_form.php",
         array(
@@ -119,11 +123,13 @@
     );
     BXHelper::end_ajax_block(false, false, false, false);
     ?>
-    <a class="append-form trigger-border-bottom" href="#" data-clone-form><?= GetMessage("Добавить участника") ?></a>
-    <button type="submit" class="btn btn-primary"
+    <a class="append-form trigger-border-bottom seminar__btn" href="#" data-clone-form><?= GetMessage("Добавить участника") ?></a>
+    <button type="submit" class="btn btn-primary seminar__btn--primary"
             data-submit-form="<?= CStorage::getVar("seminar_form_name"); ?>"><?= GetMessage("Отправить") ?>
     </button>
-<? else: ?>
+<? else:
+
+ ?>
     <script type="text/javascript">
         $(document).ready(function () {
             $('.js-validation-empty.seminar').hide();
@@ -171,7 +177,9 @@
             });
         });
     </script>
-    <? $form_id = "SEMINAR_REG_" . strtoupper(LANGUAGE_ID);
+    <? 
+
+	$form_id = "SEMINAR_REG_" . strtoupper(LANGUAGE_ID);
     BXHelper::start_ajax_block();
     $APPLICATION->IncludeFile(
         "/local/include/seminar_form.php",
@@ -194,9 +202,9 @@
     );
     BXHelper::end_ajax_block(false, false, false, false);
     ?>
-    <a class="append-form trigger-border-bottom" href="#" data-clone-form><?= GetMessage("Добавить участника") ?></a>
+    <a class="append-form trigger-border-bottom seminar__btn" href="#" data-clone-form><?= GetMessage("Добавить участника") ?></a>
     <br>
-    <button type="submit" class="btn btn-primary"
+    <button type="submit" class="btn btn-primary seminar__btn--primary"
             data-submit-form="<?= CStorage::getVar("seminar_form_name"); ?>"><?= GetMessage("Отправить") ?>
     </button>
 <? endif; ?>

@@ -96,3 +96,4 @@ if (!empty($arResult['PROPERTIES']['sem_start_date']['VALUE']) or !empty($arResu
         $arResult['SEM_IS_CLOSED'] = false;
     }
 }
+

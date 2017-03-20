@@ -193,6 +193,42 @@ class HogartHelpers {
     }
 
 
+	 /**
+     * Получает ID свойства по его символьному коду и символьному коду информационного блока, которому принадлежит
+     * @param $IBlock_code
+     * @param $code
+     * @return bool|int
+     */
+    public static function getPropIDByCode($IBlock_code, $code) {
+        \CModule::IncludeModule('iblock');
+        $result = false;
+        $arOrder = array(
+            'timestamp_x' => 'DESC'
+        );
+        $arFilter = array(
+            'IBLOCK_CODE' => $IBlock_code,
+            'CODE' => $code
+        );
+        $obCache = new \CPHPCache;
+        $cache_id = 'PropIDByCode'.$IBlock_ID.$code;
+        $life_time = 60*60*24;
+        if ($obCache->InitCache($life_time, $cache_id))
+        {
+            $res = $obCache->GetVars();
+            $result = $res['result'];
+        }
+        elseif ($obCache->StartDataCache())
+        {
+            $cdbResult = \CIBlockProperty::GetList($arOrder, $arFilter);
+            if ($element = $cdbResult->GetNext()) {
+                $result = $element['ID'];
+            }
+            $obCache->EndDataCache(array(
+                'result' => $result,
+            ));
+        }
+        return $result;
+    }
     public static function generateSeminarRegistrationNumber () {
         $valid_number = false;
         CModule::IncludeModule('iblock');
@@ -202,11 +238,11 @@ class HogartHelpers {
             CModule::IncludeModule("form");
             $FORM_ID = 5;
             $arFields[] = array(
-                "CODE"              => "SEMINAR_REGISTRATION_NUMBER",       // код поля по которому фильтруем
-                "FILTER_TYPE"       => "text",       // фильтруем по числовому полю
-                "PARAMETER_NAME"    => "USER",          // по значению введенному с клавиатуры
-                "VALUE"    => $rand,          // по значению введенному с клавиатуры
-                "EXACT_MATCH"              => "Y"                // прямое совпадение со значением (не интервал)
+                "CODE"              => "SEMINAR_REGISTRATION_NUMBER",       
+                "FILTER_TYPE"       => "text",       
+                "PARAMETER_NAME"    => "USER",         
+                "VALUE"    			=> $rand,          
+                "EXACT_MATCH"       => "Y"                
             );
             $arFilter["FIELDS"] = $arFields;
             $rsResults = CFormResult::GetList($FORM_ID,
@@ -216,9 +252,10 @@ class HogartHelpers {
                 $is_filtered="true",
                 "Y");
             $count = $obElement->GetList(array(), array('IBLOCK_ID' => SEMINAR_IBLOCK_ID ,'PROPERTY_sem_ean_id' => $rand, "ACTIVE" => "Y", "ACTIVE_DATE" => "Y"), array());
-            if (!intval($count)) {
+
+		//	if (!intval($count)) {
                 $valid_number = $rand;
-            }
+        //    }
         }
         return $valid_number;
     }

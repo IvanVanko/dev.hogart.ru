@@ -58,6 +58,7 @@ $elements = BXHelper::getElements(
         'PROPERTY_org.PROPERTY_mail',
         'PROPERTY_sem_start_date',
         'PROPERTY_time',
+        'PROPERTY_end_time',
         'PROPERTY_address'
     ), true, 'ID');
 
@@ -100,8 +101,11 @@ foreach ($elements as &$arElement) {
         $arElement['ORG_MAIL'] = $arElement['PROPERTY_ORG_PROPERTY_MAIL_VALUE'];
         $arElement['ORG_PHONE'] = $arElement['PROPERTY_ORG_PROPERTY_PHONE_VALUE'];
         $arElement['ADDRESS'] = $arElement['PROPERTY_ADDRESS_VALUE'];
-        $arElement['DISPLAY_BEGIN_DATE'] = FormatDate("d F Yг. / Время начала H:i", MakeTimeStamp($arElement["PROPERTY_SEM_START_DATE_VALUE"]));
-        $arElement['BRANDS'] = array('PROPERTY_BRAND_NAME');
+	//	var_dump($arElement["PROPERTY_SEM_START_DATE_VALUE"]);
+			//die;
+		$arElement['DISPLAY_BEGIN_DATE'] = FormatDate("d F Yг. / Время начала ", MakeTimeStamp($arElement["PROPERTY_SEM_START_DATE_VALUE"])) . $arElement["PROPERTY_TIME_VALUE"];
+
+	$arElement['BRANDS'] = array('PROPERTY_BRAND_NAME');
         $lecturer_id = $arElement['PROPERTY_LECTURER_VALUE'];
         $arElement['LECTURERS'][$lecturer_id] = array(
             'NAME' => $arElement['PROPERTY_LECTURER_NAME'],
@@ -111,28 +115,71 @@ foreach ($elements as &$arElement) {
 
     }
 }
-$arResult['SEMINARS'] = $elements;
-if (!empty($arResult['arrResults'])) {
 
-    foreach ($arResult['arrResults'] as $arFormResult) {
-        $s_id = $arFormResult['SEMINAR_ID'];
-        $url = 'http://' . $_SERVER['SERVER_NAME'] . '/ajax/smsc_send_seminar_result.php';
-        $params = array(
-            'seminar_name' => $arResult['SEMINARS'][$s_id][0]['NAME'],
-            'org' => $arResult['SEMINARS'][$s_id]['ORG_NAME'] . " " . $arResult['SEMINARS'][$s_id]['ORG_MAIL'] . " " . $arResult['SEMINARS'][$s_id]['ORG_PHONE'],
-            'start_time' => $arResult['SEMINARS'][$s_id]['DISPLAY_BEGIN_DATE'],
-            'code' => $arFormResult['BARCODE'],
-            'adress' => $arResult['SEMINARS'][$s_id]['ADDRESS'],
-            'page_href' => $_SERVER['SERVER_NAME'] . "/learn/result.php?find_id=" . $arFormResult['ID'],
-            'sending_phone' => $arFormResult['SEND_PHONE']
-        );
-        $result = file_get_contents($url, false, stream_context_create(array(
-            'http' => array(
-                'method' => 'POST',
-                'header' => 'Content-type: application/x-www-form-urlencoded',
-                'content' => http_build_query($params)
-            )
-        )));
+
+
+$arResult['SEMINARS'] = $elements;
+
+if($arResult['FILE_SEND'] == '') {
+
+//  require_once $_SERVER['DOCUMENT_ROOT'] . "/local/include/lib/mPDF/Mpdf.php";
+
+
+//    $TEXT = "<h1 style='color:#000;'>Hello World</h1>";
+//    $mpdf = new Mpdf\Mpdf();
+//    $mpdf->WriteHTML($TEXT);
+//    $mpdf->Output();
+//
+//    die;
+
+    
+
+    if (!empty($arResult['arrResults'])) {
+
+        foreach ($arResult['arrResults'] as $arFormResult) {
+            $s_id = $arFormResult['SEMINAR_ID'];
+            $url = 'http://' . $_SERVER['SERVER_NAME'] . '/ajax/smsc_send_seminar_result.php';
+            $params = array(
+                'seminar_name' => reset($arResult['SEMINARS'])['NAME'],
+                'org' => $arResult['SEMINARS'][$s_id]['ORG_NAME'] . " " . $arResult['SEMINARS'][$s_id]['ORG_MAIL'] . " " . $arResult['SEMINARS'][$s_id]['ORG_PHONE'],
+                'start_time' => $arResult['SEMINARS'][$s_id]['DISPLAY_BEGIN_DATE'],
+                'code' => $arFormResult['BARCODE'],
+                'adress' => $arResult['SEMINARS'][$s_id]['ADDRESS'],
+               // 'page_href' => $_SERVER['SERVER_NAME'] . "/learn/result.php?find_id=" . $arFormResult['ID'],
+                'sending_phone' => $arFormResult['SEND_PHONE']
+            );
+            $result = file_get_contents($url, false, stream_context_create(array(
+                'http' => array(
+					'method' => 'POST',
+					'header' => 'Content-type: application/x-www-form-urlencoded',
+					'content' => http_build_query($params)
+				)
+            )));
+			$mail = array(
+				'SEMINAR_ORG' =>  $arResult['SEMINARS'][$s_id]['ORG_NAME'] . " " . $arResult['SEMINARS'][$s_id]['ORG_MAIL'] . " " . $arResult['SEMINARS'][$s_id]['ORG_PHONE'],
+				'SEMINAR_START' => $arResult['SEMINARS'][$s_id]['DISPLAY_BEGIN_DATE'],
+				'SEMINAR_ADRESS' => $arResult['SEMINARS'][$s_id]['ADDRESS'],
+				'SEMINAR_USER_EMAIL' => $arResult['arrAnswersSID'][$_REQUEST['find_id']]['SEMINAR_USER_EMAIL'][0]['USER_TEXT'],
+				'SEMINAR_NAME' => reset($arResult['SEMINARS'])['NAME']
+			);
+		
+			if(CEvent::Send(1210, 's1', $mail, "Y", 113)) {
+				$arVALUE[166] = "SENDING";
+				CFormResult::SetField($_REQUEST['find_id'], 'FILE_SEND', $arVALUE);
+			}
+		
+		}
+		
     }
+    
+
+   
 }
+
+
+
+
+
+
+
 ?>

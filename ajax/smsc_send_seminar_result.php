@@ -4,7 +4,7 @@
 if (isset($_POST["sending_phone"]) && !empty($_POST["sending_phone"])) {
     include_once "smsc_api.php";
 
-    $page_href = trim(stripslashes($_POST['page_href']));
+   // $page_href = trim(stripslashes($_POST['page_href']));
     $phone = preg_replace("/( |\(|\))/", "", $_POST["sending_phone"]);
     $seminar_name = trim(stripslashes($_POST['seminar_name']));
     $start_time = trim(stripslashes($_POST['start_time']));
@@ -17,7 +17,7 @@ if (isset($_POST["sending_phone"]) && !empty($_POST["sending_phone"])) {
         'Адрес "' . $adress . '"' . "\n\n" .
         'Ваш код участника ' . $code . "\n\n" .
         'Организатор:' . $org . "\n";
-die;
+
     $r = send_sms($phone, $message);
 //        $_POST["translit"], $_POST["time"], 0,
 //        $_POST["flash"], $_POST["sender"]);

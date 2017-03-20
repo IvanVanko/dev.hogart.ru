@@ -7,6 +7,9 @@ AddEventHandler("main", "OnEpilog", array("BasicHandlers", "OnEpilogHandler"));
 AddEventHandler("main", "OnBeforeEventAdd", array("BasicHandlers", "OnBeforeEventAddHandler"));
 
 class BasicHandlers {
+	
+	const REGEX_TIME = "/([01]?[0-9]|2[0-3]):[0-5][0-9]/";
+	
     function OnEpilogHandler() {
         global $APPLICATION;
         if(
@@ -67,38 +70,43 @@ class IBlockHandlers {
 
     private static function __throw_admin_exception($msg) {
         global $APPLICATION;
-        //$exception = new CAdminException();
-        //$exception->AddMessage(array("text" => $msg));
-        //$APPLICATION->ThrowException($exception);
         $APPLICATION->ThrowException($msg);
     }
 
+	/*
+	 * Проверка полей семинара
+	 *
+	 */
     private static function __check_seminars_fields($arParams) {
-        $arPropertiesNames = IBlockHandlers::__get_iblock_properties_names($arParams['IBLOCK_ID']);
-        $erMessages = Array();
-        $result = True;
+		global $APPLICATION;
+		
+		$erMessages = [];
+		$result = true;
+		$time = reset($arParams['PROPERTY_VALUES'][HogartHelpers::getPropIDByCode('seminars', 'time')])['VALUE'];
+		$end_time = reset($arParams['PROPERTY_VALUES'][HogartHelpers::getPropIDByCode('seminars', 'end_time')])['VALUE'];
 
-        // Проверка полей 'Время начала' и 'Время завершения'
-        foreach (Array('Время начала', 'Время завершения') as $k) {
-            if(!empty($arParams['PROPERTY_VALUES'][$arPropertiesNames[$k]]) and !empty(array_keys($arParams['PROPERTY_VALUES'][$arPropertiesNames[$k]]))) {
-                $k2 = array_keys($arParams['PROPERTY_VALUES'][$arPropertiesNames[$k]])[0];
-                $msg = "'" . $k . "' семинара должно быть в формате НН:MM";
-                if (preg_match('/(\d\d):(\d\d)/', $arParams['PROPERTY_VALUES'][$arPropertiesNames[$k]][$k2]['VALUE'], $m)) {
-                    $hour = (int) $m[1];
-                    $min = (int) $m[2];
-                    if ($hour < 0 or $hour > 23 or $min < 0 or $min > 59) {
-                        $erMessages[] = $msg;
-                        $result = False;
-                    }
-                } else {
-                    $erMessages[] = $msg;
-                    $result = False;
-                }
-            }
-        }
-        // Проверка полей 'Дата начала семинара' и 'Дата конца семинара'
+		if (!preg_match(BasicHandlers::REGEX_TIME, $time) || !preg_match(BasicHandlers::REGEX_TIME, $end_time)) {
+			$erMessages[] = "Формат начала и конца  семинара должен быть HH:MM";
+			$result = false;
+		}		
+		
+		$sem_start_date = reset($arParams['PROPERTY_VALUES'][HogartHelpers::getPropIDByCode('seminars', 'sem_start_date')])['VALUE'];
+		$sem_end_date = reset($arParams['PROPERTY_VALUES'][HogartHelpers::getPropIDByCode('seminars', 'sem_end_date')])['VALUE'];
 
-        IBlockHandlers::__throw_admin_exception(implode("\n", $erMessages));
+		if(strtotime($sem_start_date ." " .	$time) >= strtotime($sem_end_date ." " .	$end_time)){
+			$erMessages[] = "Дата начала семинара не может быть больше даты окончания";
+			$result = false;
+		}
+		
+		
+		$finish_seminar = reset($arParams['PROPERTY_VALUES'][HogartHelpers::getPropIDByCode('seminars', 'sem_registration_close_time')])['VALUE'];
+
+		if(!empty($finish_seminar) && (strtotime($sem_start_date ." " .	$time) > strtotime($finish_seminar))){
+			$erMessages[] = "Время закрытия регистрации не может быть больше его начала";
+			$result = false;
+		}
+		
+		IBlockHandlers::__throw_admin_exception(implode("\n", $erMessages));
         return $result;
     }
 
@@ -126,14 +134,17 @@ class IBlockHandlers {
         }
         return $code;
     }
-
+	
     public static function OnBeforeIBlockElementAddHandler(&$arParams) {
-        $iblock_name = IBlockHandlers::__get_iblock_name($arParams["IBLOCK_ID"]);
-
-        switch ($iblock_name) {
-            case "Семинары":
+		if (CModule::IncludeModule('iblock')){   
+			$resc = CIBlock::GetList(Array(), Array('CODE' => 'seminars'), false);
+			if ($arrc = $resc->Fetch())
+				$seminarIblockId=$arrc["ID"];
+		}
+        switch ($arParams["IBLOCK_ID"]) {
+            case $seminarIblockId:
                 if (!IBlockHandlers::__check_seminars_fields($arParams)) {
-                    return true;
+                    return false;
                 }
                 break;
 
@@ -171,16 +182,16 @@ class IBlockHandlers {
     }
 
     public static function OnBeforeIBlockElementUpdateHandler(&$arParams) {
-        $iblock_name = IBlockHandlers::__get_iblock_name($arParams["IBLOCK_ID"]);
-
-        switch ($iblock_name) {
-            case "Семинары":
+		if (CModule::IncludeModule('iblock')){   
+			$resc = CIBlock::GetList(Array(), Array('CODE' => 'seminars'), false);
+			if ($arrc = $resc->Fetch())
+				$seminarIblockId=$arrc["ID"];
+		}
+        switch ($arParams["IBLOCK_ID"]) {
+            case $seminarIblockId:
                 if (!IBlockHandlers::__check_seminars_fields($arParams)) {
                     return false;
                 }
-                break;
-
-            default:
                 break;
         }
 
@@ -785,7 +796,7 @@ class FormHandlers {
                                                                                                                                 'PROPERTY_sem_visitors_count',
                                                                                                                                 'PROPERTY_sem_start_date'), false);
                 $visitors_count = $seminar['RESULT'][0]['PROPERTY_SEM_VISITORS_COUNT_VALUE'];
-                $next_visitor_num = sprintf("%03d", ++$visitors_count);
+                $next_visitor_num = sprintf("%04d", ++$visitors_count);
                 $ean_visitor_num = $ean_seminar_num.$next_visitor_num;
                 $arrVALUES[$ean_request_key] = $ean_visitor_num;
                 $obElement->SetPropertyValuesEx($seminar['RESULT'][0]['ID'], SEMINAR_IBLOCK_ID, array('sem_visitors_count' => $visitors_count));
