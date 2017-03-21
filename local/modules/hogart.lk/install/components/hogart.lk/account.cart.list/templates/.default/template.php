@@ -265,7 +265,7 @@ use Bitrix\Main\EventManager;
                                                                 <? endif; ?>
                                                             </td>
                                                             <td class="text-nowrap">
-                                                                <input tabindex="<?= $ii + 1 ?>" class="form-control input-sm"
+                                                                <input style="min-width: 62px;" tabindex="<?= $ii + 1 ?>" class="form-control input-sm"
                                                                        id="quantity-<?= $item['guid_id'] ?>"
                                                                     <?= Ajax::OnEvent(
                                                                         'changeapply',
@@ -286,7 +286,7 @@ use Bitrix\Main\EventManager;
                                                             <td class="text-nowrap money-<?= strtolower($cart['currency']['CURRENCY']) ?>"><?= $item['price'] ?></td>
                                                             <? if (!empty($cart['contract_id'])) :?>
                                                             <td>
-                                                                <input tabindex="-1" class="form-control input-sm"
+                                                                <input style="min-width: 54px;" tabindex="-1" class="form-control input-sm"
                                                                        id="discount-<?= $item['guid_id'] ?>"
                                                                     <?= Ajax::OnEvent(
                                                                         'changeapply',

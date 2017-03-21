@@ -850,3 +850,9 @@ div.tree-multiselect div.title {
 div.tree-multiselect > div.selections {
   padding: 0 !important;
 }
+@media (max-width: 768px) {
+  .checkbox.checkbox-primary label {
+    color: #95c600 !important;
+    padding-left: 5px;
+  }
+}

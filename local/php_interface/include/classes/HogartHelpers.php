@@ -207,7 +207,7 @@ class HogartHelpers {
         CModule::IncludeModule('iblock');
         $obElement = new CIBlockElement();
         while (!$valid_number) {
-            $rand = rand(1, 999999999);
+            $rand = rand(100000000, 999999999);
             $count = $obElement->GetList(array(), array('IBLOCK_ID' => SEMINAR_IBLOCK_ID ,'PROPERTY_sem_ean_id' => $rand, "ACTIVE" => "Y", "ACTIVE_DATE" => "Y"), array());
             if (!intval($count)) {
                 $valid_number = $rand;

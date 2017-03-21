@@ -90,10 +90,7 @@ $APPLICATION->SetTitle("Обучение");
 					"SORT_BY2" => "SORT",
 					"SORT_ORDER2" => "ASC",
 					"FILTER_NAME" => "",
-					"FIELD_CODE" => array(
-						0 => "",
-						1 => "",
-					),
+					"FIELD_CODE" => ["ACTIVE_TO"],
 					"CHECK_DATES" => "Y",
 					"DETAIL_URL" => "",
 					"AJAX_MODE" => "N",

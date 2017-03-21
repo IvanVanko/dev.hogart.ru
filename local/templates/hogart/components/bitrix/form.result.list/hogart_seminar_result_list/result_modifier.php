@@ -2,6 +2,7 @@
 <?
 jsDump(mb_internal_encoding());
 $arSeminarsIds = array();
+
 foreach ($arResult['arrResults'] as &$arrResult) {
     $result_id = $arrResult['ID'];
     $seminar_user_name = "";
@@ -9,7 +10,6 @@ foreach ($arResult['arrResults'] as &$arrResult) {
     $seminar_user_last_name = "";
     foreach ($arResult['arrAnswers'][$result_id] as $arQuestion) {
         foreach ($arQuestion as $key => $arAnswer) {
-
             if ($arAnswer['SID'] == 'SEMINAR_ID') {
                 $seminar_id = $arAnswer['USER_TEXT'];
                 $arSeminarsIds[] = $seminar_id;
@@ -20,8 +20,11 @@ foreach ($arResult['arrResults'] as &$arrResult) {
             } else if ($arAnswer['SID'] == 'SEMINAR_USER_LNAME') {
                 $seminar_user_last_name = $arAnswer['USER_TEXT'];
             } else if ($arAnswer['SID'] == 'SEMINAR_USER_MNAME') {
-                $seminar_user_mid_name = $arAnswer['USER_TEXT'];
-            } else if ($arAnswer['SID'] == 'SEMINAR_USER_CMP') {
+                $seminar_user_mid_name = $arAnswer['USER_TEXT']; 
+            } else if ($arAnswer['SID'] == 'SEMINAR_USER_PHONE') {
+				$sending_phone = html_entity_decode($arAnswer['USER_TEXT']);
+				$seminar_user_phone = $arAnswer['USER_TEXT'];
+			} else if ($arAnswer['SID'] == 'SEMINAR_USER_CMP') {
                 $arrResult['USER_COMPANY'] = $arAnswer['USER_TEXT'];
             } else if ($arAnswer['SID'] == 'SEMINAR_EAN_CODE') {
                 if (!isset($arrResult['BARCODE_BASE64']) && strlen($arAnswer['USER_TEXT']) == 12) {
@@ -33,6 +36,7 @@ foreach ($arResult['arrResults'] as &$arrResult) {
     }
     $arrResult['USER_NAME'] = $seminar_user_name." ".$seminar_user_mid_name." ".$seminar_user_last_name;
 }
+
 
 $elements = BXHelper::getElements(
     array(),
@@ -55,7 +59,9 @@ $elements = BXHelper::getElements(
     ), true, 'ID');
 
 $elements = $elements['RESULT'];
+
 foreach ($elements as &$arElement) {
+	        $seminar_name = $arElement['NAME'];
     if (!is_assoc($arElement)) {
         $arAddToElement = array();
         foreach ($arElement as $arElementVariant) {
@@ -79,6 +85,7 @@ foreach ($elements as &$arElement) {
         $arAddToElement['BRANDS'] = array_unique($arAddToElement['BRANDS']);
         $arElement = $arElement + $arAddToElement;
     } else {
+
         $arElement['ORG_NAME'] = $arElement['PROPERTY_ORG_NAME'];
         $arElement['ORG_MAIL'] = $arElement['PROPERTY_ORG_PROPERTY_MAIL_VALUE'];
         $arElement['ORG_PHONE'] = $arElement['PROPERTY_ORG_PROPERTY_PHONE_VALUE'];
@@ -93,5 +100,21 @@ foreach ($elements as &$arElement) {
         );
     }
 }
+
+
+$url = 'http://'.$_SERVER['SERVER_NAME'] . '/ajax/smsc_send_seminar_result.php';
+$params = array(
+    'seminar_name' => $seminar_name, 
+    'page_href' => $_SERVER['SERVER_NAME']."/learn/result.php?find_id=" . $arrResult['SEMINAR_ID'],
+    'sending_phone' => $sending_phone
+);
+$result = file_get_contents($url, false, stream_context_create(array(
+    'http' => array(
+        'method'  => 'POST',
+        'header'  => 'Content-type: application/x-www-form-urlencoded',
+        'content' => http_build_query($params)
+    )
+)));
+
 $arResult['SEMINARS'] = $elements;
 ?>

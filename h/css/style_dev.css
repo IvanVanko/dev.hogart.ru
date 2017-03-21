@@ -285,6 +285,10 @@
     display: none;
 }
 
+.learn-people-list li {
+    vertical-align: top;
+}
+
 @media(max-width: 768px) {
 
     .brand-photo-thing {
@@ -1004,11 +1008,12 @@
 
     .catalog_page .perechen .perechen-produts.grid > li ul.param li {
         position: relative;
-        margin-bottom: 15px;
+        margin-bottom: 10px;
     }
 
     .catalog_page .perechen .perechen-produts.grid > li {
         border-bottom: 1px solid #95c600;
+        padding-bottom: 15px;
     }
 
     .price-cnt {
@@ -1082,6 +1087,10 @@
         display: block;
         margin-bottom: 10px;
         text-transform: uppercase;
+    }
+
+    .black.grid-hide.button-mobile   {
+        display: block !important;
     }
 
     .info-wrap .buy-btn.btn.btn-primary {
@@ -1205,7 +1214,8 @@
         font-size: 13px;
     }
 
-    .checkbox-text:before {
+    .checkbox-text:before,
+    .bx-filter-param-label:before  {
         content:"";
         position: absolute;
         left: 0;
@@ -1242,6 +1252,38 @@
 
     .checkbox span {
         color: #fff;
+    }
+
+    .checkbox.checkbox-primary label {
+        color: #fff;
+        padding-left: 5px;
+    }
+
+    .checkbox-primary label::before {
+        background: none;
+    }
+
+    .filter-lk .checkbox.checkbox-primary input {
+        display: inline-block;
+    }
+
+    .filter-lk .checkbox.checkbox-primary input[type="checkbox"]:checked + label:before {
+        background: none;
+        border-color: #fff;
+    }
+
+    .filter-lk .checkbox.checkbox-primary input[type="checkbox"]:checked + label:after {
+        content:"";
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        display: block;
+        width: 9px;
+        height: 5px;
+        transform: rotate(-45deg);
+        border: 1px solid #fff;
+        border-right: none;
+        border-top: none;
     }
 
     .filter-helpful__input,
@@ -1317,6 +1359,10 @@
 
     .hamburger-mobile__button {
         text-align: right;
+    }
+
+    .filter-mobile {
+        background: #2b2431;
     }
 
     .filter-mobile,
@@ -2258,5 +2304,21 @@
         position: absolute !important;
         left: 0;
         top: 0;
+    }
+
+    .filter-lk__title {
+        color: #fff;
+    }
+
+    .catalog_page .perechen .perechen-produts.grid > li .art {
+        height: auto;
+        margin-top: 0;
+        line-height: 22px;
+    }
+
+    .catalog_page .perechen .perechen-produts.grid > li h3 {
+        font-weight: normal;
+        height: auto;
+        line-height: 22px;
     }
 }
