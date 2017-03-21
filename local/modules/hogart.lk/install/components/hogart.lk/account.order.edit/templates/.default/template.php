@@ -209,7 +209,7 @@ $order = $arResult['order'];
                         <? endforeach; ?>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row spacer-20">
                     <div class="col-sm-12 comment">
                         <textarea
                             <?= Ajax::OnEvent(
@@ -228,6 +228,7 @@ $order = $arResult['order'];
                                 name="note" id="note" rows="2"><?= $order['note'] ?></textarea>
                     </div>
                 </div>
+                <div class="row"></div>
             </div>
             <div class="col-sm-3">
                 <div data-stick-block>

@@ -40,13 +40,13 @@ if ($account['id']) {
 
     $order = OrderTable::getRowById(intval($_REQUEST['order']));
 
-    try {
-        SoapClient::getInstance()->Order->blockOrder($order['guid_id'], $account['user_guid_id']);
-    } catch (\Exception $e) {
-        new FlashError($e->getMessage());
-        LocalRedirect('/account/order/' . intval($_REQUEST['order']) . '/');
-        return;
-    }
+//    try {
+//        SoapClient::getInstance()->Order->blockOrder($order['guid_id'], $account['user_guid_id']);
+//    } catch (\Exception $e) {
+//        new FlashError($e->getMessage());
+//        LocalRedirect('/account/order/' . intval($_REQUEST['order']) . '/');
+//        return;
+//    }
 
     if (!$order['is_actual']) {
         new FlashError("На данный момент заказ на синхронизации");
