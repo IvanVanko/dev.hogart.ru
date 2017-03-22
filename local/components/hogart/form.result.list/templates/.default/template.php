@@ -1,12 +1,13 @@
 <?
 if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
 
-<?$arSeminars = $arResult['SEMINARS'];?>
+<?$arSeminars = $arResult['SEMINARS'];
+?>
 <?if (!empty($arResult['arrResults'])) {
     ?>
     <?$this->SetViewTarget('SEMINAR_PREVIEW_TEXT');?>
     <h1>Вы успешно зарегистрированы на семинар
-        «<?=reset($arSeminars)['NAME']?>»</h1>
+        «<?=$arResult['SEMINAR_NAME']?>»</h1>
     <small>Спасибо, что обратились в нашу компанию! Ваша заявка на семинар принята. В ближайшее время с вами свяжется специалист для уточнения деталей.
     </small>
     <?$this->EndViewTarget();?>
@@ -41,7 +42,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
             <?}?>
         </div>
         <div class="col2">
-            <h2>Приглашение на семинар<br><?=$arSeminars[$s_id]['NAME']?></h2>
+            <h2>Приглашение на семинар<br><?=$arResult['SEMINAR_NAME']?></h2>
             <h3><?=$arFormResult['USER_NAME']?></h3>
 
             <div class="big-text"><?=$arFormResult['USER_COMPANY']?></div>
@@ -88,12 +89,12 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
                         <input type="text" class="inputtext clean-on-submit" name="sending_phone"
                                value="" size="0">
                     </div>
-                    <input type="hidden" name="seminar_name" value="<?=$arSeminars[$s_id][0]['NAME']?>">
-                    <input type="hidden" name="seminar_registration_number" value="">
+                    <input type="hidden" name="name" value="<?=$arFormResult['USER_NAME']?>">
+                    <input type="hidden" name="seminar_name" value="<?=$arResult['SEMINAR_NAME']?>">
                     <input type="hidden" name="start_time" value="<?=$arResult['SEMINARS'][$s_id]['DISPLAY_BEGIN_DATE']?>">
                     <input type="hidden" name="code" value="<?=$arFormResult['BARCODE']?>">
                     <input type="hidden" name="org" value="<?php echo $arResult['SEMINARS'][$s_id]['ORG_NAME'] . " " . $arResult['SEMINARS'][$s_id]['ORG_MAIL'] . " " . $arResult['SEMINARS'][$s_id]['ORG_PHONE'];?>">
-                    <input type="hidden" name="adress" value="">
+                    <input type="hidden" name="adress" value="<?=$arResult['SEMINARS'][$s_id]['ADDRESS']?>">
                     <input type="hidden" name="page_href" value="<?=$_SERVER['SERVER_NAME']."/learn/result.php?find_id=".$arFormResult['ID']?>">
                 </div>
                 <hr>
@@ -126,9 +127,12 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
                         <input type="text" class="inputtext clean-on-submit" name="email"
                                value="" size="0">
                     </div>
-                    <input type="hidden" name="seminar_name" value="<?=$arSeminars[$s_id][0]['NAME']?>">
-                    <input type="hidden" name="seminar_registration_number" value="">
-                    <input type="hidden" name="page_href" value="<?=$_SERVER['SERVER_NAME']."/learn/result.php?find_id=".$arFormResult['ID']?>">
+                   <input type="hidden" name="name" value="<?=$arFormResult['USER_NAME']?>">
+                   <input type="hidden" name="seminar_name" value="<?=$arResult['SEMINAR_NAME']?>">
+                    <input type="hidden" name="start_time" value="<?=$arResult['SEMINARS'][$s_id]['DISPLAY_BEGIN_DATE']?>">
+                    <input type="hidden" name="code" value="<?=$arFormResult['BARCODE']?>">
+                    <input type="hidden" name="org" value="<?php echo $arResult['SEMINARS'][$s_id]['ORG_NAME'] . " " . $arResult['SEMINARS'][$s_id]['ORG_MAIL'] . " " . $arResult['SEMINARS'][$s_id]['ORG_PHONE'];?>">
+                    <input type="hidden" name="adress" value="<?=$arResult['SEMINARS'][$s_id]['ADDRESS']?>">
                 </div>
                 <hr>
                 <div class="inner form-cont-box">

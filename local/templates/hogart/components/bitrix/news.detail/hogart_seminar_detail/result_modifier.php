@@ -67,8 +67,20 @@ if (!empty($arResult['PROPERTIES']['sem_start_date']['VALUE'])) {
 # 'Дата начала семинара' и 'Время начала'
 # Если у семинара нет даты начала, то это ошибка и регистрация на него закрыта всегда
 $arResult['SEM_IS_CLOSED'] = true;
-if (!empty($arResult['PROPERTIES']['sem_start_date']['VALUE']) or !empty($arResult['PROPERTIES']['sem_end_date']['VALUE'])) {
 
+
+if (!empty($arResult['PROPERTIES']['sem_start_date']['VALUE']) or !empty($arResult['PROPERTIES']['sem_end_date']['VALUE'])) {
+	if (!empty($arResult['PROPERTIES']['sem_registration_close_time']['VALUE'])) {
+		$seminar_start = strtotime($arResult['PROPERTIES']['sem_start_date']['VALUE'] ." ".$arResult['PROPERTIES']['time']['VALUE']);
+		$seminar_end = strtotime($arResult['PROPERTIES']['sem_end_date']['VALUE'] ." ".$arResult['PROPERTIES']['end_time']['VALUE']);
+		$seminar_close =  strtotime($arResult['PROPERTIES']['sem_registration_close_time']['VALUE']);
+		if (($seminar_close > time()) && ($seminar_close > $seminar_start) && ($seminar_end > time()) || (($seminar_start>time() && $seminar_close > time()))){
+			$arResult['SEM_IS_CLOSED'] = false;
+		}
+			
+	}
+
+/*
     $sem_registration_close = 2;
     if (!empty($arResult['PROPERTIES']['sem_registration_close_time'])) {
         if (!empty($arResult['PROPERTIES']['sem_registration_close_time']['VALUE'])) {
@@ -95,5 +107,6 @@ if (!empty($arResult['PROPERTIES']['sem_start_date']['VALUE']) or !empty($arResu
     if ($sem_end_date_epoch - time() >= $sem_registration_close * 3600) {
         $arResult['SEM_IS_CLOSED'] = false;
     }
+*/
 }
 

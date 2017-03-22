@@ -71,7 +71,7 @@ $APPLICATION->IncludeComponent(
         "CUSTOM_SUCCESS_URL" => "/learn/result.php",
         "HIDE_SUBMIT" => "Y",
 
-        "SUCCESS_MESSAGE" => "Спасибо, что обратились в нашу компанию! Ваша заявка на семинар принята. В ближайшее время с вами свяжется специалист для уточнения деталей."
+        "SUCCESS_MESSAGE" => ""
 
 
     )

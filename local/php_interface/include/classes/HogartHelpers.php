@@ -281,6 +281,11 @@ class HogartHelpers {
         return $base64_file;
     }
 
+	public static function generateBarCodeData ($code, $encoding = "ANY", $scale = 2, $mode = "code13") {
+        $base64_code = trim(shell_exec("php -f ".$_SERVER["DOCUMENT_ROOT"]."/ean2/barcode.php code=$code encoding=$encoding scale=$scale mode=$mode"));
+        return $base64_code;
+    }
+	
     public static function mergeRangePropertiesForItem (&$arProperties) {
         $arMergedProp = array();
         foreach ($arProperties as &$arProp) {

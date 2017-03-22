@@ -15,7 +15,8 @@
 ?>
 
 <? if ($arParams["SEM_IS_CLOSED"]): ?>
-    <? 
+    <h5>Регистрация завершена. По всем вопросам обращайтесь, пожалуйста, к организаторам мероприятия</h5>
+	<? 
 	if (!empty($arResult["PROPERTIES"]["materials"]["VALUE"])) { ?>
         <h2><?= $arResult['PROPERTIES']['materials']['NAME']; ?></h2>
         <ul class="ul-file">

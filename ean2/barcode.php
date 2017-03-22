@@ -46,17 +46,28 @@ function getvar($name){
 
 if (get_magic_quotes_gpc()){
     $code=stripslashes(getvar('code'));
+    $mode=stripslashes(getvar('mode'));
 } else {
     $code=getvar('code');
+    $mode=getvar('mode');
 }
 if (!$code) $code='123456789012';
 
 
-ob_start();
 
-barcode_print($code);
-$img = ob_get_clean();
+	file_put_contents("/www/projects/hogart.bx.oldschool.ru/htdocs/log21111.txt",var_export($mode,true), FILE_APPEND);
+	if($mode =='code13') {
+		$code13  = barcode_print($code, "ANY", "2",$mode);
+		echo $code13;
+	} else {
+		ob_start();
+		barcode_print($code, "ANY", "2",$mode);
+		$img = ob_get_clean();
 echo base64_encode($img);
+	}
+	
+
+
 /*
  * call
  * http://........./barcode.php?code=012345678901

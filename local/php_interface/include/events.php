@@ -98,14 +98,14 @@ class IBlockHandlers {
 			$result = false;
 		}
 		
-		
+		/*
 		$finish_seminar = reset($arParams['PROPERTY_VALUES'][HogartHelpers::getPropIDByCode('seminars', 'sem_registration_close_time')])['VALUE'];
 
 		if(!empty($finish_seminar) && (strtotime($sem_start_date ." " .	$time) > strtotime($finish_seminar))){
 			$erMessages[] = "Время закрытия регистрации не может быть больше его начала";
 			$result = false;
 		}
-		
+		*/
 		IBlockHandlers::__throw_admin_exception(implode("\n", $erMessages));
         return $result;
     }
@@ -798,7 +798,7 @@ class FormHandlers {
                 $visitors_count = $seminar['RESULT'][0]['PROPERTY_SEM_VISITORS_COUNT_VALUE'];
                 $next_visitor_num = sprintf("%04d", ++$visitors_count);
                 $ean_visitor_num = $ean_seminar_num.$next_visitor_num;
-                $arrVALUES[$ean_request_key] = $ean_visitor_num;
+                $arrVALUES[$ean_request_key] = HogartHelpers::generateBarCodeData($ean_visitor_num); 
                 $obElement->SetPropertyValuesEx($seminar['RESULT'][0]['ID'], SEMINAR_IBLOCK_ID, array('sem_visitors_count' => $visitors_count));
             }
         }
