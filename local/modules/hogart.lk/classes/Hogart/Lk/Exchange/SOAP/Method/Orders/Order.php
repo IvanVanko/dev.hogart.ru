@@ -109,7 +109,7 @@ class Order extends AbstractMethod
             }
             $DB->StartTransaction();
 
-            $old_data = OrderTable::getByField($order->Order_ID, 'guid_id');
+            $old_data = OrderTable::getByField('guid_id', $order->Order_ID);
 
             $new_data = [
                 'guid_id' => $order->Order_ID,
