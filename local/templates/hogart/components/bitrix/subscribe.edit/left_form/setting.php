@@ -41,18 +41,15 @@
           url: '/ajax/send_form_subscribe.php',
           data: msg,
           success: function(data) {
-            $('#results').html(data);
-          },
-          error:  function(xhr, str){
-			alert('Возникла ошибка: ' + xhr.responseCode);
-          }
+			$("#form_subscribe")[0].reset();
+          }    
         });
  
     }
 </script>
 <div class="js-validation-form">
 
-
+	<div style="color:red;" id="message_err"></div>
     <form class="form__subscribe-news" id = "form_subscribe" action="javascript:void(null);" onsubmit="form_subscribe()" method="post">
         <? echo bitrix_sessid_post(); ?>
         <div class="form__group field js-validation-empty">
@@ -85,7 +82,7 @@
                         <input type="checkbox"
                                id="s_<?= $itemValue["ID"] ?>"
                                name="RUB_ID[]"
-                               value="<?= $itemValue["ID"] ?>"<? if ($itemValue["CHECKED"]) echo " checked" ?>
+                               value="<?= $itemValue["NAME"] ?>"<? if ($itemValue["CHECKED"]) echo " checked" ?>
                         > <?= $itemValue["NAME"] ?>
                     </label>
                 </div>
