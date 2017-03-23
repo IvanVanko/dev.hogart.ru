@@ -24,9 +24,10 @@ foreach ($arResult['arrResults'] as &$arrResult) {
             } else if ($arAnswer['SID'] == 'SEMINAR_USER_CMP') {
                 $arrResult['USER_COMPANY'] = $arAnswer['USER_TEXT'];
             } else if ($arAnswer['SID'] == 'SEMINAR_EAN_CODE') {
-                if (!isset($arrResult['BARCODE_BASE64']) && strlen($arAnswer['USER_TEXT']) == 12) {
+               if (!isset($arrResult['BARCODE_BASE64']) && strlen($arAnswer['USER_TEXT']) === 13) {
+			
                     $arrResult['BARCODE'] = $arAnswer['USER_TEXT'];
-                    $arrResult['BARCODE_BASE64'] = HogartHelpers::generateBarCodeImageData($arAnswer['USER_TEXT']);
+                    $arrResult['BARCODE_BASE64'] = HogartHelpers::generateBarCodeImageData(substr($arAnswer['USER_TEXT'], 0, 12));
                 }
             }
         }
@@ -51,22 +52,36 @@ $elements = BXHelper::getElements(
         'PROPERTY_org.PROPERTY_phone',
         'PROPERTY_org.PROPERTY_mail',
         'PROPERTY_sem_start_date',
+		'PROPERTY_sem_end_date',
+        'PROPERTY_time',
+        'PROPERTY_end_time',
         'PROPERTY_address'
     ), true, 'ID');
 
 $elements = $elements['RESULT'];
+
 foreach ($elements as &$arElement) {
+
     if (!is_assoc($arElement)) {
+        //      $seminar_name = $arElement['NAME'];
         $arAddToElement = array();
         foreach ($arElement as $arElementVariant) {
+
             $arAddToElement['BRANDS'][] = $arElementVariant['PROPERTY_BRAND_NAME'];
             $arAddToElement['ORG_NAME'] = $arElementVariant['PROPERTY_ORG_NAME'];
             $arAddToElement['ORG_MAIL'] = $arElementVariant['PROPERTY_ORG_PROPERTY_MAIL_VALUE'];
             $arAddToElement['ORG_PHONE'] = $arElementVariant['PROPERTY_ORG_PROPERTY_PHONE_VALUE'];
+
             $arAddToElement['ADDRESS'] = $arElementVariant['PROPERTY_ADDRESS_VALUE'];
             if (!isset($arAddToElement['DISPLAY_BEGIN_DATE'])) {
-                $arAddToElement['DISPLAY_BEGIN_DATE'] = FormatDate("d F Yг. / Время начала H:i", MakeTimeStamp($arElementVariant["PROPERTY_SEM_START_DATE_VALUE"]));
-            }
+				$end_time_value = "";
+
+		if (!empty($arElementVariant['PROPERTY_SEM_START_DATE_VALUE']) && !empty($arElementVariant['PROPERTY_SEM_END_DATE_VALUE']))
+					$end_time_value = ($arElementVariant['PROPERTY_SEM_START_DATE_VALUE'] < $arElementVariant['PROPERTY_SEM_END_DATE_VALUE']) ? " - " . 
+				 FormatDate("d F Yг. ", MakeTimeStamp($arElementVariant["PROPERTY_SEM_END_DATE_VALUE"])) : "";
+                $arAddToElement['DISPLAY_BEGIN_DATE'] = FormatDate("d F Yг. ", MakeTimeStamp($arElementVariant["PROPERTY_SEM_START_DATE_VALUE"])) .$end_time_value ." / Время начала " . 
+				$arElementVariant["PROPERTY_TIME_VALUE"];
+		}
             $lecturer_id = $arElementVariant['PROPERTY_LECTURER_VALUE'];
             if (!isset($arAddToElement['LECTURERS'][$lecturer_id])) {
                 $arAddToElement['LECTURERS'][$lecturer_id] = array(
@@ -78,12 +93,27 @@ foreach ($elements as &$arElement) {
         }
         $arAddToElement['BRANDS'] = array_unique($arAddToElement['BRANDS']);
         $arElement = $arElement + $arAddToElement;
+        $seminar_name = $arElementVariant['NAME'];
+        $adress = $arAddToElement['ADDRESS'];
+        $start_time = $arAddToElement['DISPLAY_BEGIN_DATE'];
+        $org = $arAddToElement['ORG_NAME'] . " " . $arAddToElement['ORG_MAIL'] . " " . $arAddToElement['ORG_PHONE'];
     } else {
+        $seminar_name = $arElement['NAME'];
         $arElement['ORG_NAME'] = $arElement['PROPERTY_ORG_NAME'];
         $arElement['ORG_MAIL'] = $arElement['PROPERTY_ORG_PROPERTY_MAIL_VALUE'];
         $arElement['ORG_PHONE'] = $arElement['PROPERTY_ORG_PROPERTY_PHONE_VALUE'];
         $arElement['ADDRESS'] = $arElement['PROPERTY_ADDRESS_VALUE'];
-        $arElement['DISPLAY_BEGIN_DATE'] = FormatDate("d F Yг. / Время начала H:i", MakeTimeStamp($arElement["PROPERTY_SEM_START_DATE_VALUE"]));
+        //	var_dump($arElement["PROPERTY_SEM_START_DATE_VALUE"]);
+        //die;
+	    if (!isset($arElement['DISPLAY_BEGIN_DATE'])) {
+				$end_time_value = "";
+
+				if (!empty($arElement['PROPERTY_SEM_START_DATE_VALUE']) && !empty($arElement['PROPERTY_SEM_END_DATE_VALUE']))
+					$end_time_value = ($arElement['PROPERTY_SEM_START_DATE_VALUE'] < $arElement['PROPERTY_SEM_END_DATE_VALUE']) ? " - " . 
+				 FormatDate("d F Yг. ", MakeTimeStamp($arElement["PROPERTY_SEM_END_DATE_VALUE"])) : "";
+                $arElement['DISPLAY_BEGIN_DATE'] = FormatDate("d F Yг. ", MakeTimeStamp($arElement["PROPERTY_SEM_START_DATE_VALUE"])) .$end_time_value ." / Время начала " . 
+				$arElement["PROPERTY_TIME_VALUE"];
+            }
         $arElement['BRANDS'] = array('PROPERTY_BRAND_NAME');
         $lecturer_id = $arElement['PROPERTY_LECTURER_VALUE'];
         $arElement['LECTURERS'][$lecturer_id] = array(
@@ -91,7 +121,10 @@ foreach ($elements as &$arElement) {
             'POST' => $arElement['PROPERTY_LECTURER_PROPERTY_STATUS_VALUE'],
             'COMPANY' => $arElement['PROPERTY_LECTURER_PROPERTY_COMPANY_VALUE'],
         );
+
     }
 }
+
+
 $arResult['SEMINARS'] = $elements;
 ?>

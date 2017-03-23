@@ -585,7 +585,7 @@ if (isset($templateData['TEMPLATE_THEME']))
 								default://CHECKBOXES
 									?>
 									<? $_counter = 0; ?>
-									<? usort($arItem["VALUES"], function ($a, $b) { return $a["CHECKED"] < $b["CHECKED"]; }); ?>
+									<? //usort($arItem["VALUES"], function ($a, $b) { return $a["CHECKED"] < $b["CHECKED"]; }); ?>
 									<?foreach($arItem["VALUES"] as $val => $ar):?>
 										<div class="checkbox <?= (($_counter > 3 && !$ar["CHECKED"]) ? "more" : "")?>">
 											<label data-role="label_<?=$ar["CONTROL_ID"]?>" class="bx-filter-param-label <? echo $ar["DISABLED"] ? 'disabled': '' ?>" for="<? echo $ar["CONTROL_ID"] ?>">

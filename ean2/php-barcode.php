@@ -338,6 +338,7 @@ function barcode_outhtml($code, $bars, $scale = 1, $total_y = 0, $space = '') {
  *    array[text]     : text-positioning info
  */
 function barcode_encode_genbarcode($code, $encoding) {
+
     global $genbarcode_loc;
     /* delete EAN-13 checksum */
     if(preg_match("#^ean$#i", $encoding) && strlen($code) == 13) {
@@ -404,6 +405,7 @@ function barcode_encode_genbarcode($code, $encoding) {
  *    array[text]     : text-positioning info
  */
 function barcode_encode($code, $encoding) {
+
     global $genbarcode_loc;
     if(
         ((preg_match("#^ean$#i", $encoding)
@@ -452,8 +454,13 @@ function barcode_encode($code, $encoding) {
  */
 
 
-function barcode_print($code, $encoding = "ANY", $scale = 2, $mode = "png") {
+function barcode_print($code, $encoding = "ANY", $scale = 2, $mode) {
+
     $bars = barcode_encode($code, $encoding);
+
+	if($mode =='code13') {
+		return $bars['ean'];
+	}
     if(!$bars) {
         return;
     }
@@ -469,5 +476,7 @@ function barcode_print($code, $encoding = "ANY", $scale = 2, $mode = "png") {
     else {
         barcode_outimage($bars['text'], $bars['bars'], $scale, $mode);
     }
+	
+	
     return $bars;
 }
