@@ -155,7 +155,6 @@ $arResult['SEMINARS'] = $elements;
 $arResult['SEMINAR_NAME'] = $seminar_name;
 //$APPLICATION->RestartBuffer();
 
-
 if ($arResult['FILE_SEND'] == '') {
 
 //  require_once $_SERVER['DOCUMENT_ROOT'] . "/local/include/lib/mPDF/Mpdf.php";
@@ -173,7 +172,7 @@ if ($arResult['FILE_SEND'] == '') {
 
         foreach ($arResult['arrResults'] as $arFormResult) {
             $s_id = $arFormResult['SEMINAR_ID'];
-            $url = 'http://' . $_SERVER['SERVER_NAME'] . '/ajax/smsc_send_seminar_result.php';
+            $url = 'http://' . SITE_SERVER_NAME . '/ajax/smsc_send_seminar_result.php';
             $params = array(
                 'seminar_name' => $arResult['SEMINAR_NAME'],
                 'org' => $arResult['SEMINARS'][$s_id]['ORG_NAME'] . " " . $arResult['SEMINARS'][$s_id]['ORG_MAIL'] . " " . $arResult['SEMINARS'][$s_id]['ORG_PHONE'],
@@ -279,7 +278,7 @@ $html= json_encode(htmlspecialchars($html));
 				
             );
 		
-			exec_script('http://'.$_SERVER['SERVER_NAME'].'/ajax/mail_send_seminar_result.php', $mail);
+			exec_script('http://' . SITE_SERVER_NAME . '/ajax/mail_send_seminar_result.php', $mail);
 
         //    if ($mailResultId = CEvent::Send(1210, 's1', $mail, "Y", 113)) {
        //         $arVALUE[166] = "SENDING";
