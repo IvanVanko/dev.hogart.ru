@@ -1,4 +1,5 @@
 <?
+
 global $APPLICATION;
 if((!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) &&
         (empty($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest')) die();
@@ -7,6 +8,7 @@ if((!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) &&
         extract($_POST);
         $APPLICATION->RestartBuffer();
     }
+
 
 
 $APPLICATION->IncludeComponent(
@@ -48,6 +50,10 @@ $APPLICATION->IncludeComponent(
             "SEMINAR_ID" => "data-clone=\"seminar_id\"",
             "SEMINAR_EAN_CODE" => "data-clone=\"seminar_ean_code\"",
             "SEMINAR_NAME" => "data-clone=\"seminar_name\"",
+            "SEMINAR_ORG" => "data-clone=\"seminar_org\"",
+            "SEMINAR_ADRESS" => "data-clone=\"seminar_adress\"",
+            "SEMINAR_START" => "data-clone=\"seminar_start\"",
+            "SEMINAR_REGISTRATION_NUMBER" => "data-clone=\"seminar_registration_number\"",
         ),
 
         "CUSTOM_WRAPPER_CSS" => array(
@@ -65,7 +71,7 @@ $APPLICATION->IncludeComponent(
         "CUSTOM_SUCCESS_URL" => "/learn/result.php",
         "HIDE_SUBMIT" => "Y",
 
-        "SUCCESS_MESSAGE" => "Спасибо, что обратились в нашу компанию! Ваша заявка на семинар принята. В ближайшее время с вами свяжется специалист для уточнения деталей."
+        "SUCCESS_MESSAGE" => ""
 
 
     )

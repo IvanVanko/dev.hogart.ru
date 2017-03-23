@@ -1,20 +1,23 @@
 <? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die(); ?>
 <?php
-use Hogart\Lk\Helper\Common\DateTime;
+//use Hogart\Lk\Helper\Common\DateTime;
+//
+//$date_from = FormatDate("d.m.Y", MakeTimeStamp($arResult['PROPERTIES']['sem_start_date']['VALUE']));
+//$seminarRegistrationClosed = false;
+//if (!empty($arResult['PROPERTIES']['sem_end_date']['VALUE'])) {
+//    if (DateTime::compareTwoEpochDates(
+//            time(),
+//            DateTime::changeDateTimeWithOffset($arResult['PROPERTIES']['sem_end_date']['VALUE'], -DEFAULT_CLOSE_REGISTRATION_OFFSET)) == DateTime::$DATE_ONE_BIGGER ) {
+//        $seminarRegistrationClosed = true;
+//    }
+//}
 
-$date_from = FormatDate("d.m.Y", MakeTimeStamp($arResult['PROPERTIES']['sem_start_date']['VALUE']));
-$seminarRegistrationClosed = false;
-if (!empty($arResult['PROPERTIES']['sem_end_date']['VALUE'])) {
-    if (DateTime::compareTwoEpochDates(
-            time(),
-            DateTime::changeDateTimeWithOffset($arResult['PROPERTIES']['sem_end_date']['VALUE'], -DEFAULT_CLOSE_REGISTRATION_OFFSET)) == DateTime::$DATE_ONE_BIGGER ) {
-        $seminarRegistrationClosed = true;
-    }
-}
 ?>
 
-<? if ($seminarRegistrationClosed): ?>
-    <? if (!empty($arResult["PROPERTIES"]["materials"]["VALUE"])) { ?>
+<? if ($arParams["SEM_IS_CLOSED"]): ?>
+    <h5>Регистрация завершена. По всем вопросам обращайтесь, пожалуйста, к организаторам мероприятия</h5>
+	<? 
+	if (!empty($arResult["PROPERTIES"]["materials"]["VALUE"])) { ?>
         <h2><?= $arResult['PROPERTIES']['materials']['NAME']; ?></h2>
         <ul class="ul-file">
             <? foreach ($arResult["PROPERTIES"]["materials"]["DESCRIPTION"] as $key => $value):
@@ -26,27 +29,32 @@ if (!empty($arResult['PROPERTIES']['sem_end_date']['VALUE'])) {
                 $fileType = explode('/', $fileType);
                 ?>
                 <li>
-                    <a href="<?= $fileDetail['SRC']; ?>"><?=$fileDetail['ORIGINAL_NAME']?></a>
+                    <a target="_blank" href="<?= $fileDetail['SRC']; ?>"><?= $fileDetail['ORIGINAL_NAME'] ?></a>
                     <span>— .<?= $fileType[1] ?>, <?= round($fileSize, 2) ?> mb</span>
                 </li>
             <? endforeach ?>
         </ul>
     <? } ?>
     <? if (!empty($arResult['ORGS'])): ?>
+
         <h3>Об организаторе</h3>
         <div class="info-creator">
             <? if ($arResult['ORGS']['PREVIEW_PICTURE']) { ?>
                 <div class="photo">
                     <img src="<?
-                    $pic = CFile::ResizeImageGet($arResult['ORGS']['DETAIL_PICTURE'],
-                        array('width' => 250, 'height' => 320), BX_RESIZE_IMAGE_PROPORTIONAL, true, array());
+                    $pic = CFile::ResizeImageGet($arResult['ORGS']['PREVIEW_PICTURE'],
+                        array('width' => 150, 'height' => 320), BX_RESIZE_IMAGE_PROPORTIONAL, true, array());
                     echo $pic['src'];
                     ?>" alt=""/>
-                    <h3><?= $arResult['ORGS']['NAME']; ?></h3>
+ 
                 </div>
             <? } ?>
+			                   <h3><?= $arResult['ORGS']['NAME']; ?></h3>
             <div class="head"><?= $arResult['ORGS']['props']['status']['~VALUE']; ?>
                 / <?= $arResult['ORGS']['props']['company']['VALUE']; ?></div>
+
+						<i><?= $arResult['ORGS']['props']['phone']['VALUE']; ?></i><br/>
+						<i><?= $arResult['ORGS']['props']['mail']['VALUE']; ?></i>
         </div>
     <? endif; ?>
 <? elseif (empty($date_from) || $date_from == '01.01.1970'): ?>
@@ -94,30 +102,39 @@ if (!empty($arResult['PROPERTIES']['sem_end_date']['VALUE'])) {
             });
         });
     </script>
-    <? $form_id = "SEMINAR_REG_" . strtoupper(LANGUAGE_ID);
-        BXHelper::start_ajax_block();
-        $APPLICATION->IncludeFile(
-            "/local/include/seminar_form.php",
-            array(
-                "FORM_ID" => $form_id,
-                "FORM_VALUES" => array(
-                    "SEMINAR_NAME" => $arResult['NAME'],
-                    "SEMINAR_ID" => $arResult["ID"],
-                    "SEMINAR_EAN_CODE" => $arResult['PROPERTIES']["sem_ean_id"]["VALUE"],
-                    "HIDE_INPUTS" => false
-                ),
+    <? 
+
+	$form_id = "SEMINAR_REG_" . strtoupper(LANGUAGE_ID);
+    BXHelper::start_ajax_block();
+	
+    $APPLICATION->IncludeFile(
+        "/local/include/seminar_form.php",
+        array(
+            "FORM_ID" => $form_id,
+            "FORM_VALUES" => array(
+                "SEMINAR_REGISTRATION_NUMBER" => HogartHelpers::generateSeminarRegistrationNumber(),
+                "SEMINAR_NAME" => $arResult['NAME'],
+                "SEMINAR_ORG" => $arResult['ORGS']['NAME'] . " " . $arResult['ORGS']['props']['mail']['VALUE'] . " " . $arResult['ORGS']['props']['phone']['VALUE'],
+                "SEMINAR_START" => $arResult['PROPERTIES']['sem_start_date']['VALUE'] . " " . $arResult['PROPERTIES']['time']['VALUE'],
+                "SEMINAR_ADRESS" => $arResult['PROPERTIES']['address']['VALUE'],
+                "SEMINAR_ID" => $arResult["ID"],
+                "SEMINAR_EAN_CODE" => $arResult['PROPERTIES']["sem_ean_id"]["VALUE"],
+                "HIDE_INPUTS" => false
             ),
-            array(
-                "SHOW_BORDER" => false
-            )
-        );
-        BXHelper::end_ajax_block(false, false, false, false);
+        ),
+        array(
+            "SHOW_BORDER" => false
+        )
+    );
+    BXHelper::end_ajax_block(false, false, false, false);
     ?>
-    <a class="append-form trigger-border-bottom" href="#" data-clone-form><?= GetMessage("Добавить участника") ?></a>
-    <button type="submit" class="btn btn-primary"
+    <a class="append-form trigger-border-bottom seminar__btn" href="#" data-clone-form><?= GetMessage("Добавить участника") ?></a>
+    <button type="submit" class="btn btn-primary seminar__btn--primary"
             data-submit-form="<?= CStorage::getVar("seminar_form_name"); ?>"><?= GetMessage("Отправить") ?>
     </button>
-<? else: ?>
+<? else:
+
+ ?>
     <script type="text/javascript">
         $(document).ready(function () {
             $('.js-validation-empty.seminar').hide();
@@ -165,26 +182,34 @@ if (!empty($arResult['PROPERTIES']['sem_end_date']['VALUE'])) {
             });
         });
     </script>
-    <? $form_id = "SEMINAR_REG_" . strtoupper(LANGUAGE_ID);
-        BXHelper::start_ajax_block();
-        $APPLICATION->IncludeFile(
-            "/local/include/seminar_form.php",
-            array(
-                "FORM_ID" => $form_id,
-                "FORM_VALUES" => array(
-                    "SEMINAR_ID" => $arResult["ID"],
-                    "SEMINAR_EAN_CODE" => $arResult['PROPERTIES']["sem_ean_id"]["VALUE"],
-                    "HIDE_INPUTS" => false
-                ),
+    <? 
+
+	$form_id = "SEMINAR_REG_" . strtoupper(LANGUAGE_ID);
+    BXHelper::start_ajax_block();
+    $APPLICATION->IncludeFile(
+        "/local/include/seminar_form.php",
+        array(
+            "FORM_ID" => $form_id,
+            "FORM_VALUES" => array(
+                "SEMINAR_REGISTRATION_NUMBER" => HogartHelpers::generateSeminarRegistrationNumber(),
+                "SEMINAR_NAME" => $arResult['NAME'],
+                "SEMINAR_ORG" => $arResult['ORGS']['NAME'] . " " . $arResult['ORGS']['props']['mail']['VALUE'] . " " . $arResult['ORGS']['props']['phone']['VALUE'],
+                "SEMINAR_START" => $arResult['PROPERTIES']['sem_start_date']['VALUE'] . " " . $arResult['PROPERTIES']['time']['VALUE'],
+                "SEMINAR_ADRESS" => $arResult['PROPERTIES']['address']['VALUE'],
+                "SEMINAR_ID" => $arResult["ID"],
+                "SEMINAR_EAN_CODE" => $arResult['PROPERTIES']["sem_ean_id"]["VALUE"],
+                "HIDE_INPUTS" => false
             ),
-            array(
-                "SHOW_BORDER" => false
-            )
-        );
-        BXHelper::end_ajax_block(false, false, false, false);
+        ),
+        array(
+            "SHOW_BORDER" => false
+        )
+    );
+    BXHelper::end_ajax_block(false, false, false, false);
     ?>
-    <a class="append-form trigger-border-bottom" href="#" data-clone-form><?= GetMessage("Добавить участника") ?></a><br>
-    <button type="submit" class="btn btn-primary"
-            data-submit-form="<?= CStorage::getVar("seminar_form_name"); ?>"><?= GetMessage("Отправить")?>
+    <a class="append-form trigger-border-bottom seminar__btn" href="#" data-clone-form><?= GetMessage("Добавить участника") ?></a>
+    <br>
+    <button type="submit" class="btn btn-primary seminar__btn--primary"
+            data-submit-form="<?= CStorage::getVar("seminar_form_name"); ?>"><?= GetMessage("Отправить") ?>
     </button>
 <? endif; ?>

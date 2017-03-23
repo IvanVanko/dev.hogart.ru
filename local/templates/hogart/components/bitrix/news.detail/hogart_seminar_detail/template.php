@@ -22,6 +22,7 @@
             FormatDate("d F Y", MakeTimeStamp($arResult['PROPERTIES']['sem_end_date']['VALUE']))
         );
     }
+
     $seminarDateTimeLabel = sprintf("<sup>%s</sup>", $seminarDateTimeLabel);
     if (!empty($arResult['PROPERTIES']['time']['VALUE'])) {
         $seminarDateTimeLabel .= sprintf("<span>/</span><sub>%s</sub>", $arResult['PROPERTIES']['time']['VALUE']);
@@ -30,7 +31,11 @@
             FormatDate("H:i", MakeTimeStamp($arResult['PROPERTIES']['sem_start_date']['VALUE'])));
     }
 
-    $seminarRegistrationClosed = false;
+    if (!empty($arResult['PROPERTIES']['end_time']['VALUE'])) {
+        $seminarDateTimeLabel .= sprintf("<sub>-%s</sub>", $arResult['PROPERTIES']['end_time']['VALUE']);
+    }
+
+$seminarRegistrationClosed = false;
     if (!empty($arResult['PROPERTIES']['sem_end_date']['VALUE'])) {
         if (DateTime::compareTwoEpochDates(
             time(),
@@ -39,6 +44,7 @@
         }
     }
 ?>
+
 <div class="row">
     <div class="col-md-9 col-xs-12">
         <div class="row vertical-align">
@@ -97,7 +103,7 @@
             <ul class="learn-people-list">
             <? foreach ($arResult['LECTURERS'] as $key => $arItem): ?>
                 <li>
-                    <?php $arLectorPicture = CFile::GetFileArray($arItem['DETAIL_PICTURE']); ?>
+                    <?php $arLectorPicture = CFile::GetFileArray($arItem['PREVIEW_PICTURE']); ?>
                     <? if(!empty($arLectorPicture['SRC']) && file_exists(realpath($_SERVER["DOCUMENT_ROOT"] . $arLectorPicture["SRC"]))): ?>
                         <?php $pic = CFile::ResizeImageGet($arLectorPicture, array("width" => 150, "height" => 150), BX_RESIZE_IMAGE_EXACT, true)['src']; ?>
                         <img src="<?= $pic ?>" alt=""/>
@@ -123,7 +129,7 @@
                 <? ?>
                     <li>
 		
-                        <?php $arLectorPicture = CFile::GetFileArray($arResult['MANAGER']['DETAIL_PICTURE']); ?>
+                        <?php $arLectorPicture = CFile::GetFileArray($arResult['MANAGER']['PREVIEW_PICTURE']); ?>
                         <? if(!empty($arLectorPicture['SRC']) && file_exists(realpath($_SERVER["DOCUMENT_ROOT"] . $arLectorPicture["SRC"]))): ?>
                             <?php $pic = CFile::ResizeImageGet($arLectorPicture, array("width" => 150, "height" => 150), BX_RESIZE_IMAGE_EXACT, true)['src']; ?>
                             <img src="<?= $pic ?>" alt=""/>
@@ -142,7 +148,7 @@
         <? if (!empty($arResult['PROPERTIES']['address']['VALUE']) and !$seminarRegistrationClosed): ?>
             <h4><?= GetMessage("Адрес и контактная информация") ?></h4>
 
-            <p class="light">
+            <p class="light seminar__address">
                 <?= GetMessage("Адрес офиса") ?>: <?= $arResult['PROPERTIES']['address']['VALUE']; ?><br>
                 <? if (!empty($arResult['PROPERTIES']['map']['VALUE'])): ?>
                     <?
@@ -173,7 +179,7 @@
         <? endif; ?>
 
         <div class="col-md-3 col-xs-12 aside aside-mobile seminar__information--mobile">
-            <? $APPLICATION->IncludeComponent("kontora:element.detail", "seminar-sidebar", array(
+            <?  $APPLICATION->IncludeComponent("kontora:element.detail", "seminar-sidebar", array(
                 "CACHE_TIME" => 0,
                 "IBLOCK_ID" => $arParams["IBLOCK_ID"],
                 "CODE" => $_REQUEST["ELEMENT_CODE"],
@@ -181,7 +187,8 @@
                 "PROPERTY_CODE" => array("adress"),
                 "ADD_CHAIN_ITEM" => "N",
                 "SEM_IS_CLOSED" => $arResult["SEM_IS_CLOSED"],
-            ));?>
+            ));
+			?>
         </div>
 
         <? if ($arResult["SEM_IS_CLOSED"] && LANGUAGE_ID != "en"): ?>

@@ -1,14 +1,15 @@
 <?
 if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
 
-<?//pr($arResult);?>
-<?$arSeminars = $arResult['SEMINARS'];?>
-<?if (!empty($arResult['arrResults'])) {?>
+<?$arSeminars = $arResult['SEMINARS'];
+?>
+<?if (!empty($arResult['arrResults'])) {
+    ?>
     <?$this->SetViewTarget('SEMINAR_PREVIEW_TEXT');?>
-        <h1>Вы успешно зарегистрированы на семинар
-            «<?=$arSeminars[$arResult['arrResults'][0]['SEMINAR_ID']]['NAME']?>»</h1>
-        <small>Спасибо, что обратились в нашу компанию! Ваша заявка на семинар принята. В ближайшее время с вами свяжется специалист для уточнения деталей.
-        </small>
+    <h1>Вы успешно зарегистрированы на семинар
+        «<?=$arResult['SEMINAR_NAME']?>»</h1>
+    <small>Спасибо, что обратились в нашу компанию! Ваша заявка на семинар принята. В ближайшее время с вами свяжется специалист для уточнения деталей.
+    </small>
     <?$this->EndViewTarget();?>
 <?} else {?>
     <?$this->SetViewTarget('SEMINAR_PREVIEW_TEXT');?>
@@ -41,24 +42,23 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
             <?}?>
         </div>
         <div class="col2">
-            <h2>Приглашение на семинар<br><?=$arSeminars[$s_id]['NAME']?></h2>
-
+            <h2>Приглашение на семинар<br><?=$arResult['SEMINAR_NAME']?></h2>
             <h3><?=$arFormResult['USER_NAME']?></h3>
 
             <div class="big-text"><?=$arFormResult['USER_COMPANY']?></div>
-            <div class="row">
-                <div class="col2">
+            <div class="float-row">
+                <div class="col">
                     <h3>Дата и время</h3>
                     <span><?=$arSeminars[$s_id]['DISPLAY_BEGIN_DATE']?></span>
                 </div>
-                <div class="col2">
+                <div class="col">
                     <h3>Адрес</h3>
                     <span><?=$arSeminars[$s_id]['ADDRESS']?></span>
                 </div>
+                <div class="clearfix"></div>
             </div>
             <h3>Лекторы семинара</h3>
-
-            <p>
+            <p class="lectors">
                 <?$lectors_html_array = array();?>
                 <?foreach ($arSeminars[$s_id]['LECTURERS'] as $arLecture) {
                     $lectors_html_array[] = $arLecture["NAME"]." / "."<span class=\"company-reg\">".$arLecture["COMPANY"].", ".$arLecture["POST"]."</span>";
@@ -76,18 +76,25 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
                 <a href="#" class="close"></a>
             </div>
             <? //include_once "/ajax/smsc_api.php";?>
-            <!--        <form action="/ajax/send_article.php" method="post">-->
-            <!--            <form action="/ajax/send.php" method="post">-->
-            <form action="/ajax/smsc_send_seminar_result.php" method="post" class="ajax-userform">
-                <!--                send_sms_mail("79999999999", "Ваш пароль: 123");-->
+
+            <form action="/ajax/smsc_send_seminar_result.php" method="post" class="ajax-userform submit-result-field">
+
+                <div class="inner submit-result hide">
+                    <div class="submit-result-msg"></div>
+                    <div>Отправить еще одно сообщение?</div>
+                </div>
                 <div class="inner form-cont-box">
                     <div class="field custom_label phone">
                         <label for="sending_phone">телефон:<span class="form-required starrequired">*</span></label>
-                        <input type="text" class="inputtext" name="sending_phone"
+                        <input type="text" class="inputtext clean-on-submit" name="sending_phone"
                                value="" size="0">
                     </div>
-                    <input type="hidden" name="seminar_name" value="<?=$arSeminars[$s_id]['NAME']?>">
-                    <input type="hidden" name="seminar_registration_number" value="">
+                    <input type="hidden" name="name" value="<?=$arFormResult['USER_NAME']?>">
+                    <input type="hidden" name="seminar_name" value="<?=$arResult['SEMINAR_NAME']?>">
+                    <input type="hidden" name="start_time" value="<?=$arResult['SEMINARS'][$s_id]['DISPLAY_BEGIN_DATE']?>">
+                    <input type="hidden" name="code" value="<?=$arFormResult['BARCODE']?>">
+                    <input type="hidden" name="org" value="<?php echo $arResult['SEMINARS'][$s_id]['ORG_NAME'] . " " . $arResult['SEMINARS'][$s_id]['ORG_MAIL'] . " " . $arResult['SEMINARS'][$s_id]['ORG_PHONE'];?>">
+                    <input type="hidden" name="adress" value="<?=$arResult['SEMINARS'][$s_id]['ADDRESS']?>">
                     <input type="hidden" name="page_href" value="<?=$_SERVER['SERVER_NAME']."/learn/result.php?find_id=".$arFormResult['ID']?>">
                 </div>
                 <hr>
@@ -96,7 +103,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
                     <small>Поля, отмеченные * обязательны для заполнения.</small>
                 </div>
                 <div class="inner success" style="display: none;">
-                    Вы поделились ссылкой успешно!
+                    Вы поделились ссылкой успешно!!
                 </div>
             </form>
         </div>
@@ -107,18 +114,25 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
             <div class="head inner">
                 <h2>Отправить по Email</h2>
                 <a href="#" class="close"></a>
+
             </div>
-            <form action="/ajax/mail_send_seminar_result.php" method="post" class="ajax-userform">
-                <!--                send_sms_mail("79999999999", "Ваш пароль: 123");-->
+            <form action="/ajax/mail_send_seminar_result.php" method="post" class="ajax-userform submit-result-field">
+                <div class="inner submit-result hide">
+                    <div class="submit-result-msg"></div>
+                    <div>Отправить еще одно сообщение?</div>
+                </div>
                 <div class="inner form-cont-box">
                     <div class="field custom_label email">
                         <label for="email">email:<span class="form-required starrequired">*</span></label>
-                        <input type="text" class="inputtext" name="email"
+                        <input type="text" class="inputtext clean-on-submit" name="email"
                                value="" size="0">
                     </div>
-                    <input type="hidden" name="seminar_name" value="<?=$arSeminars[$s_id]['NAME']?>">
-                    <input type="hidden" name="seminar_registration_number" value="">
-                    <input type="hidden" name="page_href" value="<?=$_SERVER['SERVER_NAME']."/learn/result.php?find_id=".$arFormResult['ID']?>">
+                   <input type="hidden" name="name" value="<?=$arFormResult['USER_NAME']?>">
+                   <input type="hidden" name="seminar_name" value="<?=$arResult['SEMINAR_NAME']?>">
+                    <input type="hidden" name="start_time" value="<?=$arResult['SEMINARS'][$s_id]['DISPLAY_BEGIN_DATE']?>">
+                    <input type="hidden" name="code" value="<?=$arFormResult['BARCODE']?>">
+                    <input type="hidden" name="org" value="<?php echo $arResult['SEMINARS'][$s_id]['ORG_NAME'] . " " . $arResult['SEMINARS'][$s_id]['ORG_MAIL'] . " " . $arResult['SEMINARS'][$s_id]['ORG_PHONE'];?>">
+                    <input type="hidden" name="adress" value="<?=$arResult['SEMINARS'][$s_id]['ADDRESS']?>">
                 </div>
                 <hr>
                 <div class="inner form-cont-box">

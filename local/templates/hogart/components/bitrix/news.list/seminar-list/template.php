@@ -38,6 +38,10 @@
                             <?= $date_from; ?>
                         <? endif; ?>
                         <?= $arItem['PROPERTIES']['time']['VALUE']; ?>
+                       <?if (!empty($arItem['PROPERTIES']['end_time']['VALUE'])):?>
+                        -
+                        <?=$arItem['PROPERTIES']['end_time']['VALUE'];?>
+                       <? endif; ?>
                     </time>
                     <a href="<?= $arItem['DETAIL_PAGE_URL']; ?>"><h2><?= $arItem['NAME']; ?></h2></a>
 

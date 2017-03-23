@@ -499,3 +499,4 @@ function removeNodeByID($html, $id) {
     $res = html_entity_decode($dom->saveHTML());
     return $res;
 }
+

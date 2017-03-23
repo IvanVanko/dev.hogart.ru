@@ -1,4 +1,10 @@
 <?php
+
+header("Content-Security-Policy-Report-Only:
+script-src 'self' *.hogart.ru hogart.ru bitrix.info bootstrap-notify.remabledesigns.com cdn.rawgit.com cdnjs.cloudflare.com maps.google.com mc.yandex.ru googleapis.com google-analytics.com;
+connect-src 'self' *.hogart.ru hogart.ru bitrix.info hogart.ru;
+report-uri /csp-report.php");
+
 if(file_exists($_SERVER['DOCUMENT_ROOT'].'/local/php_interface/CCustomInit.php')){
 	require_once($_SERVER['DOCUMENT_ROOT'].'/local/php_interface/CCustomInit.php');
 }
