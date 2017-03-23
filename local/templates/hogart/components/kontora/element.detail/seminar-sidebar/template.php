@@ -42,15 +42,19 @@
             <? if ($arResult['ORGS']['PREVIEW_PICTURE']) { ?>
                 <div class="photo">
                     <img src="<?
-                    $pic = CFile::ResizeImageGet($arResult['ORGS']['DETAIL_PICTURE'],
-                        array('width' => 250, 'height' => 320), BX_RESIZE_IMAGE_PROPORTIONAL, true, array());
+                    $pic = CFile::ResizeImageGet($arResult['ORGS']['PREVIEW_PICTURE'],
+                        array('width' => 150, 'height' => 320), BX_RESIZE_IMAGE_PROPORTIONAL, true, array());
                     echo $pic['src'];
                     ?>" alt=""/>
-                    <h3><?= $arResult['ORGS']['NAME']; ?></h3>
+ 
                 </div>
             <? } ?>
+			                   <h3><?= $arResult['ORGS']['NAME']; ?></h3>
             <div class="head"><?= $arResult['ORGS']['props']['status']['~VALUE']; ?>
                 / <?= $arResult['ORGS']['props']['company']['VALUE']; ?></div>
+
+						<i><?= $arResult['ORGS']['props']['phone']['VALUE']; ?></i><br/>
+						<i><?= $arResult['ORGS']['props']['mail']['VALUE']; ?></i>
         </div>
     <? endif; ?>
 <? elseif (empty($date_from) || $date_from == '01.01.1970'): ?>
