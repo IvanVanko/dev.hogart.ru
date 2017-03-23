@@ -103,7 +103,7 @@ $seminarRegistrationClosed = false;
             <ul class="learn-people-list">
             <? foreach ($arResult['LECTURERS'] as $key => $arItem): ?>
                 <li>
-                    <?php $arLectorPicture = CFile::GetFileArray($arItem['DETAIL_PICTURE']); ?>
+                    <?php $arLectorPicture = CFile::GetFileArray($arItem['PREVIEW_PICTURE']); ?>
                     <? if(!empty($arLectorPicture['SRC']) && file_exists(realpath($_SERVER["DOCUMENT_ROOT"] . $arLectorPicture["SRC"]))): ?>
                         <?php $pic = CFile::ResizeImageGet($arLectorPicture, array("width" => 150, "height" => 150), BX_RESIZE_IMAGE_EXACT, true)['src']; ?>
                         <img src="<?= $pic ?>" alt=""/>
@@ -129,7 +129,7 @@ $seminarRegistrationClosed = false;
                 <? ?>
                     <li>
 		
-                        <?php $arLectorPicture = CFile::GetFileArray($arResult['MANAGER']['DETAIL_PICTURE']); ?>
+                        <?php $arLectorPicture = CFile::GetFileArray($arResult['MANAGER']['PREVIEW_PICTURE']); ?>
                         <? if(!empty($arLectorPicture['SRC']) && file_exists(realpath($_SERVER["DOCUMENT_ROOT"] . $arLectorPicture["SRC"]))): ?>
                             <?php $pic = CFile::ResizeImageGet($arLectorPicture, array("width" => 150, "height" => 150), BX_RESIZE_IMAGE_EXACT, true)['src']; ?>
                             <img src="<?= $pic ?>" alt=""/>

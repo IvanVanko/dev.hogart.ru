@@ -39,9 +39,29 @@
         $.ajax({
           type: 'POST',
           url: '/ajax/send_form_subscribe.php',
+		  dataType : "json",
           data: msg,
           success: function(data) {
-			$("#form_subscribe")[0].reset();
+			$("#message_err").html("");
+
+			if (typeof data.error !== 'undefined') {
+				if (data.error.length == 0) {
+					$("#form_subscribe")[0].reset();
+					setTimeout(function () {
+						$("#message_suc").html("");
+						$(".close").click();
+					}, 500);                	
+				}
+			}
+			
+			$.each(data.error, function(index, value) {
+				$("#message_err").append(value + "<br>");
+			});
+
+			$("#message_suc").append(data.success);
+
+//			  console.log();
+
           }    
         });
  
@@ -50,19 +70,20 @@
 <div class="js-validation-form">
 
 	<div style="color:red;" id="message_err"></div>
+	<div style="color:green;" id="message_suc"></div>
     <form class="form__subscribe-news" id = "form_subscribe" action="javascript:void(null);" onsubmit="form_subscribe()" method="post">
         <? echo bitrix_sessid_post(); ?>
         <div class="form__group field js-validation-empty">
             <label for="EMAIL">E-mail <font color="red"><span
                         class="form-required starrequired">*</span></font></label>
             <input placeholder="<?= GetMessage("subscr_auth_email") ?>" type="text" name="EMAIL"
-                   value="<?= $arResult["SUBSCRIPTION"]["EMAIL"] != "" ? $arResult["SUBSCRIPTION"]["EMAIL"] : $arResult["REQUEST"]["EMAIL"]; ?>"/>
+                   value=""/>
         </div>
         <div class="form__group form__group--right field custom_label phone js-validation-phone">
             <label for="PHONE"><?= GetMessage("Телефон") ?> <font color="red"><span
                         class="form-required starrequired">*</span></font></label>
             <input id="PHONE" placeholder="Введите ваш e-mail" type="text" name="entity[UF_SUBSCRIBER_PHONE]"
-                   value="<?= $arResult["SUBSCRIPTION"]["PHONE"] != "" ? $arResult["SUBSCRIPTION"]["PHONE"] : $arResult["REQUEST"]["PHONE"]; ?>"/>
+                   value=""/>
         </div>
         <div class="form__group field">
             <label for="subscribe-news-name">Имя:</label>
