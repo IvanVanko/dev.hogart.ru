@@ -9,16 +9,25 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTE
 
 		if (empty($_POST['EMAIL']))
 			$result['error'][] = "Введите E-mail";
+		elseif (!preg_match("/.+@.+\..+/i", $_POST['EMAIL'])) 
+			$result['error'][] = "Введите корректный E-mail";
+			
 		if (empty($arrRub) && empty($_POST['subscribe-news-more']))
-			$result['error'][] = "Выберите хотя бы одну рубрику";
+			$result['error'][] = "Выберите хотя бы одну сферу";
+		
 		if (empty($_POST['entity']['UF_SUBSCRIBER_PHONE']))
 			$result['error'][] = "Введите телефон";
+		elseif (strlen($_POST['entity']['UF_SUBSCRIBER_PHONE']) != 17) 
+			$result['error'][] = "Введите корректный телефон";
+		
 		if (!empty($_POST['subscribe-news-more']) && (empty($_POST['other'])))
 			$result['error'][] = "Введите прочее";
-
+		
+		
+		
 		$other = (!empty($_POST['subscribe-news-more'])) ? $_POST['other'] : "";
 		$arValues = [
-			"form_text_167" => $_POST['EMAIL'],
+			"form_text_174" => $_POST['EMAIL'],
 			"form_text_168" => $_POST['entity']['UF_SUBSCRIBER_PHONE'],
 			"form_text_169" => $_POST['subscribe-news-name'],
 			"form_text_170" => $_POST['subscribe-news-subname'],

@@ -96,21 +96,28 @@
         <div class="form__title">Что бы получать необходимую информацию, укажите</div>
         <div class="form__title">Сфера деятельности</div>
         <div id="subs-box">
-            <? foreach ($arResult["RUBRICS"] as $itemID => $itemValue): ?>
+            <? 
+			$RUBRICS = [
+				["ID"=>1,"NAME"=>"торговля"],
+				["ID"=>2,"NAME"=>"монтаж"],
+				["ID"=>3,"NAME"=>"проектирование"],
+				["ID"=>4,"NAME"=>"архитектура/дизайн"],
+			];
+			
+			foreach ($RUBRICS as $itemID => $itemValue): ?>
 
-                <div class="checkbox <?= ($itemValue["NAME"] == 'Все') ? 'all' : '' ?>">
+                <div class="checkbox">
                     <label>
                         <input type="checkbox"
                                id="s_<?= $itemValue["ID"] ?>"
                                name="RUB_ID[]"
-                               value="<?= $itemValue["NAME"] ?>"<? if ($itemValue["CHECKED"]) echo " checked" ?>
-                        > <?= $itemValue["NAME"] ?>
+                               value="<?= $itemValue["NAME"] ?>"> <?= $itemValue["NAME"] ?>
                     </label>
                 </div>
             <? endforeach; ?>
             <div class="checkbox checkbox--subscribe">
                 <label>
-                    <input class="form__checkbox-more" type="checkbox" id="subscribe-news-more" name="subscribe-news-more" value="<?= $itemValue["ID"] ?>" /> Прочее
+                    <input class="form__checkbox-more" type="checkbox" id="subscribe-news-more" name="subscribe-news-more" value="5" /> Прочее
                     <input class="form__input-more" type="text" id="" name="other" value="" />
                 </label>
             </div>
@@ -119,7 +126,7 @@
             <div class="form__title">Работаете с компанией Хогарт?</div>
             <div class="checkbox checkbox--subscribe">
                 <label>
-                    <input class="form__checkbox-more" type="checkbox" id="s_<?= $itemValue["ID"] ?>" name="RUB_ID[]" value="<?= $itemValue["ID"] ?>" /> Да
+                    <input class="form__checkbox-more" type="checkbox" id="s_5 ?>" name="RUB_ID[]" value="5" /> Да
                     <div class="form__input-label">, мой менеджер
                         <input class="form__input-more form__input-more--another" type="text" id="" name="meneger_yes" value="" />
                     </div>

@@ -290,6 +290,24 @@
     margin-bottom: 20px;
 }
 
+.light.seminar__address {
+    font-size: 13px;
+    font-weight: normal;
+}
+
+.seminar__btn {
+    border: 1px solid #82ad00;
+    border-radius: 2px;
+    display: inline-block;
+    padding: 7px;
+    vertical-align: top;
+    margin: 0;
+}
+
+.seminar__btn + .seminar__btn--primary {
+    float: right;
+}
+
 @media(max-width: 768px) {
 
     .brand-photo-thing {
