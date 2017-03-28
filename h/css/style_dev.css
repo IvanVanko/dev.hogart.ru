@@ -260,8 +260,8 @@
     height: 40px;
     position: absolute;
     right: 0;
-    top: -12px;
-    width: calc(50% - 15px);
+    top: -8px;
+    width: 65%
 }
 
 .form__input-more--another {
@@ -1309,6 +1309,7 @@
     #subs-box input,
     #checkbox-subscribe input {
         display: block;
+        width: calc(50% - 15px);
     }
 
     .filter-lk .checkbox.checkbox-primary input[type="checkbox"]:checked + label:after {
