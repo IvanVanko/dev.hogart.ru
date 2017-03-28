@@ -138,8 +138,8 @@ $seminarRegistrationClosed = false;
                         <span><?=$arResult['MANAGER']['props']['company']['VALUE']; ?></span>
                         <span>–</span>
                         <i><?=$arResult['MANAGER']['props']['status']['VALUE']; ?></i>
-						<i><?= $arItem['props']['phone']['VALUE']; ?></i>
-						<i><?= $arItem['props']['mail']['VALUE']; ?></i>
+						<i><?= $arResult['MANAGER']['props']['phone']['VALUE']; ?></i>
+						<i><?= $arResult['MANAGER']['props']['mail']['VALUE']; ?></i>
                     </li>
                 <?  ?>
             </ul>
