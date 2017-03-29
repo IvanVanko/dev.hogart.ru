@@ -3,25 +3,25 @@
 if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
 
 	if (isset($_POST['EMAIL']) &&(isset($_POST['entity']['UF_SUBSCRIBER_PHONE']))) {
-		file_put_contents($_SERVER['DOCUMENT_ROOT']."/log55.txt",var_export($_POST,true), FILE_APPEND);
+		$error['error'] = [];
 		$result['error'] = [];
 		$arrRub = $_POST['RUB_ID'];
 
 		if (empty($_POST['EMAIL']))
-			$result['error'][] = "Введите E-mail";
+			$error['error'][] = "Введите E-mail";
 		elseif (!preg_match("/.+@.+\..+/i", $_POST['EMAIL'])) 
-			$result['error'][] = "Введите корректный E-mail";
+			$error['error'][] = "Введите корректный E-mail";
 			
-		if (empty($arrRub) && empty($_POST['subscribe-news-more']))
-			$result['error'][] = "Выберите хотя бы одну сферу";
+	//	if (empty($arrRub) && empty($_POST['subscribe-news-more']))
+	//		$error['error'][] = "Выберите хотя бы одну сферу";
 		
 		if (empty($_POST['entity']['UF_SUBSCRIBER_PHONE']))
-			$result['error'][] = "Введите телефон";
+			$error['error'][] = "Введите телефон";
 		elseif (strlen($_POST['entity']['UF_SUBSCRIBER_PHONE']) != 17) 
-			$result['error'][] = "Введите корректный телефон";
+			$error['error'][] = "Введите корректный телефон";
 		
 		if (!empty($_POST['subscribe-news-more']) && (empty($_POST['other'])))
-			$result['error'][] = "Введите прочее";
+			$error['error'][] = "Введите прочее";
 		
 		
 		
@@ -39,7 +39,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTE
 		CModule::IncludeModule("form");
 	 
 		//если результат добавился в веб форму, передаем ID и поля
-		if (empty($result['error']) && $RESULT_ID = CFormResult::Add($FORM_ID, $arValues)) {
+		if (empty($error['error']) && $RESULT_ID = CFormResult::Add($FORM_ID, $arValues)) {
 			$result['success'] = "Сообщение отправлено";
 		} 
 		echo json_encode($result);

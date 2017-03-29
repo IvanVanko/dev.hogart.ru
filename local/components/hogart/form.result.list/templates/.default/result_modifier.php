@@ -81,7 +81,7 @@ $elements = BXHelper::getElements(
         'PROPERTY_time',
         'PROPERTY_end_time',
         'PROPERTY_address'
-    ), true, 'ID');
+    ), false, 'ID');
 
 $elements = $elements['RESULT'];
 

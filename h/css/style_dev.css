@@ -254,10 +254,14 @@
     display: none;
     border-radius: 0;
     box-shadow: none;
-    border: 1px solid #838383;
+    border: 1px solid #413f41;
     margin-left: 15px;
     padding: 0 5px;
-    height: 25px;
+    height: 40px;
+    position: absolute;
+    right: 0;
+    top: -8px;
+    width: 65%
 }
 
 .form__input-more--another {
@@ -266,6 +270,7 @@
 
 .checkbox--subscribe {
     height: 25px;
+    position: relative;
 }
 
 .checkbox--subscribe label {
@@ -309,6 +314,10 @@
 }
 
 @media(max-width: 768px) {
+
+    .popup-cnt .inner-cnt {
+        width: 100%;
+    }
 
     .brand-photo-thing {
         width: 100%;
@@ -1291,6 +1300,18 @@
         border-color: #fff;
     }
 
+    #subs-box label,
+    #checkbox-subscribe label {
+        color: #333;
+        position: static;
+    }
+
+    #subs-box input,
+    #checkbox-subscribe input {
+        display: block;
+        width: calc(50% - 15px);
+    }
+
     .filter-lk .checkbox.checkbox-primary input[type="checkbox"]:checked + label:after {
         content:"";
         position: absolute;
@@ -1760,7 +1781,7 @@
     }
 
     .news-subscribe {
-        display: none;
+        padding-top: 13px;
     }
 
     .controls {
