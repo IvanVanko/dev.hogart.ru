@@ -92,11 +92,42 @@ $ (document).on('ready', function() {
 });
 
 $(document).ready(function(){
-    $("input#subscribe-news-more").change(function(){
-        if ($(this).is(':checked')) {
-            $('.js-checkbox-hide').show(100);
-        } else {
-            $('.js-checkbox-hide').hide(100); 
-        }
+    $("input.subscribe-news-more-change").change(function(){
+
+		var flag = false;
+		$("input.subscribe-news-more-change").each(function() {
+			if ($(this)[0].checked) {
+				flag = true;
+			}
+		});
+		
+			if ($(this).is(':checked')) {
+				$('.js-checkbox-hide').show(100);
+			} else if (!flag) {
+				$('.js-checkbox-hide').hide(100); 
+			}
+	    });
+})
+
+$(document).ready(function(){
+    $(".js-slider-main-page").slick({
+        dots: true,
+        arrows: false,
+        infinite: true,
+        speed: 300,
+        slidesToShow: 1,
+        slidesToScroll: 1,
     });
-})  
+});
+
+
+$(document).ready(function(){
+    $(".js-slider-media-main-page").slick({
+        dots: false,
+        arrows: true,
+        infinite: true,
+        speed: 300,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+    });
+});
