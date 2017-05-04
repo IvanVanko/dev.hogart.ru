@@ -1,0 +1,80 @@
+.b-price-list {
+    padding-left: 0;
+}
+
+.b-price-list__item {
+    list-style: none;
+    margin-bottom: 20px;
+}
+
+.b-price-list__link {
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 25px;
+    width: calc(100% - 170px);
+    width: -webkit-calc(100% - 170px);
+}
+
+.b-price-list__link .icon-acrobat {
+    position: relative;
+    padding-left: 30px;
+    font-size: 18px;
+    line-height: 20px;
+}
+
+.b-price-list__link .icon-acrobat:before{
+    background-image: url("/images/select_equip_file.png");
+    background-repeat: no-repeat;
+    content: "";
+    height: 23px;
+    left: 0;
+    margin-top: -11px;
+    position: absolute;
+    top: 50%;
+    transition: all 0.3s ease 0s;
+    width: 19px;
+}
+
+.b-price-list__pdf {
+    display: block;
+}
+
+.b-price-list__title {
+    color: #95c600 !important;
+    font-size: 24px;
+    line-height: 26px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.b-price-list__information {
+    display: block;
+    font-size: 0;
+}
+
+.b-price-list__image {
+    display: inline-block;
+    vertical-align: top;
+    width: 170px;
+    padding-right: 20px;
+}
+
+.b-price-list__image img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+}
+
+@media(max-width: 767px) {
+
+    .b-price-list__image {
+        display: block;
+        text-align: center;
+    }
+
+    .b-price-list__link {
+        display: block;
+        width: 100%;
+    }
+}
