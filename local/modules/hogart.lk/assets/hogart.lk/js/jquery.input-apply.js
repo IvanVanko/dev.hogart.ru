@@ -19,9 +19,10 @@
         onBlurTrigger: 'changeapply'
       }, initData, options);
 
-      if (self.is(':input') && ((['text', 'number']).indexOf(self.attr('type')) != -1 || self.prop("tagName") == "TEXTAREA")) {
+
+      if (!self.data('_change_apply') && self.is(':input') && ((['text', 'number']).indexOf(self.attr('type')) != -1 || self.prop("tagName") == "TEXTAREA")) {
         var id = "applier_" + Math.random().toString().substr(2);
-        var container = $('<div class="input-change-apply" id="' + id + '"></div>');
+        var container = $('<div class="input-change-apply" applier-id="' + id + '"></div>');
         self.after(container);
         container.append(self.detach());
 
@@ -97,6 +98,8 @@
             discard.css('visibility', 'hidden');
           }
         });
+
+        self.data('_change_apply', true);
       }
     });
   };

@@ -26,7 +26,7 @@ if (!$this->initComponentTemplate())
     return;
 
 global $USER, $CACHE_MANAGER;
-$account = AccountTable::getAccountByUserID($USER->GetID());
+$account = \Hogart\Lk\Helper\Template\Account::getAccount();
 $logger = (new BitrixLogger($this->getName()));
 
 include (__DIR__ . "/proceed_request.php");

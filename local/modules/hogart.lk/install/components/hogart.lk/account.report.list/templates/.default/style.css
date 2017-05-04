@@ -513,6 +513,18 @@ span.twitter-typeahead .tt-dropdown-menu .empty-message {
   -o-animation: animate-to-5 1.5s infinite;
   animation: animate-to-5 1.5s infinite;
 }
+@media (max-width: 768px) {
+  .checkbox label {
+    color: #95c600;
+  }
+  .dropdown-menu > li > a,
+  span.twitter-typeahead .tt-suggestion {
+    white-space: normal;
+  }
+  .btn {
+    margin-bottom: 10px;
+  }
+}
 .checkbox {
   padding-left: 20px;
 }
@@ -837,4 +849,10 @@ div.tree-multiselect div.title {
 }
 div.tree-multiselect > div.selections {
   padding: 0 !important;
+}
+@media (max-width: 768px) {
+  .checkbox.checkbox-primary label {
+    color: #95c600 !important;
+    padding-left: 5px;
+  }
 }

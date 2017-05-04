@@ -128,13 +128,46 @@ class AddressTable extends AbstractEntityRelation implements IExchangeable
             }
         }
 
+        $type = AddressTypeTable::getRowById($fields['type_id']);
+        if ($type['code'] == AddressTypeTable::TYPE_DELIVERY && $fields['is_active'] != false) {
+
+            $fields['type_id'] = null;
+
+            $rows = self::getByOwner($fields['owner_id'], $fields['owner_type'], [
+                '=is_active' => true
+            ]);
+
+            $rows = $rows[AddressTypeTable::TYPE_DELIVERY];
+            $typeIds = [];
+            foreach ($rows as $row) {
+                $typeIds[] = $row['type_id'];
+            }
+
+            $typeIds = array_unique($typeIds);
+
+            $types = AddressTypeTable::getList([
+                'filter' => [
+                    '=code' => AddressTypeTable::TYPE_DELIVERY
+                ]
+            ])->fetchAll();
+
+            foreach ($types as $type) {
+                if (in_array($type['id'], $typeIds)) continue;
+
+                $fields['type_id'] = $type['id'];
+                break;
+            }
+        }
+
         $result->modifyFields([
+            'type_id' => $fields['type_id'],
             'guid_id' => self::getUUID(
                 $fields['owner_id'],
                 $fields['owner_type'],
                 $fields['type_id'],
                 $fields['fias_code'])
         ]);
+
         return $result;
     }
 

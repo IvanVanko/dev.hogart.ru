@@ -23,19 +23,19 @@ use Hogart\Lk\Exchange\SOAP\MethodException;
 abstract class AbstractEntityRelation extends AbstractEntity
 {
     /** Владелец - Аккаунт клиента */
-    const OWNER_TYPE_ACCOUNT = 1;
+    const OWNER_TYPE_ACCOUNT = "1";
     /** Владелец - Компания клиента */
-    const OWNER_TYPE_CLIENT_COMPANY = 2;
+    const OWNER_TYPE_CLIENT_COMPANY = "2";
     /** Владелец - Сотрудник компании */
-    const OWNER_TYPE_STAFF = 3;
+    const OWNER_TYPE_STAFF = "3";
     /** Владелец - Компания Хогарт */
-    const OWNER_TYPE_HOGART_COMPANY = 4;
+    const OWNER_TYPE_HOGART_COMPANY = "4";
     /** Владелец - Склад */
-    const OWNER_TYPE_STORE = 5;
+    const OWNER_TYPE_STORE = "5";
     /** Владелец - Контактное лицо */
-    const OWNER_TYPE_CONTACT = 6;
+    const OWNER_TYPE_CONTACT = "6";
     /** Владелец - Заявка на отгрузку */
-    const OWNER_TYPE_ORDER_RTU = 7;
+    const OWNER_TYPE_ORDER_RTU = "7";
 
     /**
      * Связи, используемые при запросах

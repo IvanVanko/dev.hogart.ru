@@ -84,7 +84,7 @@ class ContactInfo extends AbstractMethod
                 $result = ContactInfoTable::createOrUpdateByField([
                     'd_guid_id' => $info->Info_ID,
                     'owner_id' => $owner_id,
-                    'owner_type' => intval($info->Info_Owner_Type),
+                    'owner_type' => (string)$info->Info_Owner_Type,
                     'info_type' => intval($info->Info_Type),
                     'phone_kind' => intval($info->Info_PhoneKind),
                     'value' => (string)trim($value),

@@ -29,7 +29,7 @@ if (!$this->initComponentTemplate())
     return;
 
 global $USER, $APPLICATION, $CACHE_MANAGER;
-$account = AccountTable::getAccountByUserID($USER->GetID());
+$account = \Hogart\Lk\Helper\Template\Account::getAccount();
 
 // Юридические лица (они же компании)
 $account = AccountTable::getAccountById($account['id']);
@@ -66,7 +66,9 @@ if ($account['id']) {
 
         $company['contracts'] = ContractTable::getByCompanyId($company['id']);
         $company['contacts'] = ContactRelationTable::getContactsByOwner($company['id'], ContactRelationTable::OWNER_TYPE_CLIENT_COMPANY);
-        $company['addresses'] = AddressTable::getByOwner($company['id'], AddressTable::OWNER_TYPE_CLIENT_COMPANY);
+        $company['addresses'] = AddressTable::getByOwner($company['id'], AddressTable::OWNER_TYPE_CLIENT_COMPANY, [
+            '=is_active' => true
+        ]);
         $company['payment_account'] = PaymentAccountRelationTable::getByOwner(
             $company['id'],
             PaymentAccountRelationTable::OWNER_TYPE_CLIENT_COMPANY,

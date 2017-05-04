@@ -32,7 +32,7 @@ $page = $APPLICATION->GetCurDir(true);
                 ?>
                 <li id="<?=$this->GetEditAreaId($arItem['ID'])?>">
                     <?
-                    $file = CFile::ResizeImageGet($arItem['PREVIEW_PICTURE']['ID'], array('width'=>100, 'height'=>100), BX_RESIZE_IMAGE_EXACT, true);
+                    $file = CFile::ResizeImageGet($arItem['PREVIEW_PICTURE']['ID'], array('width'=>100, 'height'=>100), BX_RESIZE_IMAGE_PROPORTIONAL, true);
                     ?>
                     <img src="<?=$file['src']?>" alt=""/>
                     <a href="<?=$arItem['DETAIL_PAGE_URL']?>">

@@ -110,24 +110,28 @@ $(document).ready(function(){
 })
 
 $(document).ready(function(){
-    $(".js-slider-main-page").slick({
+    if (typeof $.fn.slick === 'function') {
+      $(".js-slider-main-page").slick({
         dots: true,
         arrows: false,
         infinite: true,
         speed: 300,
         slidesToShow: 1,
         slidesToScroll: 1,
-    });
+      });
+    }
 });
 
 
 $(document).ready(function(){
+  if (typeof $.fn.slick === 'function') {
     $(".js-slider-media-main-page").slick({
-        dots: false,
-        arrows: true,
-        infinite: true,
-        speed: 300,
-        slidesToShow: 3,
-        slidesToScroll: 1,
+      dots: false,
+      arrows: true,
+      infinite: true,
+      speed: 300,
+      slidesToShow: 3,
+      slidesToScroll: 1,
     });
+  }
 });

@@ -3,7 +3,7 @@ h4 {
   font-weight: 500 !important;
 }
 .img-title {
-  height: 400px;
+  max-height: 400px;
   overflow: hidden;
 }
 .img-title img {

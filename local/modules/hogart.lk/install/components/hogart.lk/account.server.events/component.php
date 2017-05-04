@@ -24,7 +24,7 @@ use Hogart\Lk\Helper\Template\FlashError;
 
 
 global $USER, $CACHE_MANAGER;
-$account = AccountTable::getAccountByUserID($USER->GetID());
+$account = \Hogart\Lk\Helper\Template\Account::getAccount();
 
 if ($account['id']) {
     ini_set('output_buffering', 'Off');

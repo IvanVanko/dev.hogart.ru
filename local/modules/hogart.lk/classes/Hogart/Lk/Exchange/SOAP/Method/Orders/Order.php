@@ -108,7 +108,10 @@ class Order extends AbstractMethod
                 continue;
             }
             $DB->StartTransaction();
-            $result = OrderTable::createOrUpdateByField([
+
+            $old_data = OrderTable::getByField('guid_id', $order->Order_ID);
+
+            $new_data = [
                 'guid_id' => $order->Order_ID,
                 'number' => $order->Order_Number,
                 'order_date' =>  new DateTime((string)$order->Order_Date, 'Y-m-d H:i:s'),
@@ -123,8 +126,11 @@ class Order extends AbstractMethod
                 'sale_max_money' => (float)$order->Order_Max_Monet_Sale,
                 'perm_reserve' => $order->Order_Reserve,
                 'is_active' => !$order->deletion_mark,
-                'is_actual' => true
-            ], 'guid_id');
+                'is_actual' => true,
+                'block_reason' => (string)$order->Order_ReasonForBlocking
+            ];
+
+            $result = OrderTable::createOrUpdateByField($new_data, 'guid_id');
 
             if ($result->getErrorCollection()->count()) {
                 $error = $result->getErrorCollection()->current();
@@ -161,7 +167,12 @@ class Order extends AbstractMethod
 
                     OrderEditTable::delete($result->getId());
 
-                    if (!$order->deletion_mark) {
+                    $order_diff = array_diff_assoc($old_data, $new_data);
+                    unset($order_diff['sale_granted']);
+                    unset($order_diff['sale_max_money']);
+                    unset($order_diff['block_reason']);
+
+                    if (!$order->deletion_mark && !empty($order_diff)) {
 
                         $message = new Message(
                             OrderTable::showName($result->getData()) . " обновлен!",

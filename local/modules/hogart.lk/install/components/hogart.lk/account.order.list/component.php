@@ -24,7 +24,7 @@ if (!$this->initComponentTemplate())
 Loc::loadMessages(__FILE__);
 
 global $USER, $CACHE_MANAGER;
-$account = AccountTable::getAccountByUserID($USER->GetID());
+$account = \Hogart\Lk\Helper\Template\Account::getAccount();
 $arParams['account'] = $account;
 
 $states = [

@@ -23,7 +23,7 @@ use Hogart\Lk\Helper\Mail\Event;
 define("NO_SPECIAL_CHARS_CHAIN", true);
 
 global $USER, $CACHE_MANAGER, $APPLICATION;
-$account = AccountTable::getAccountByUserID($USER->GetID());
+$account = \Hogart\Lk\Helper\Template\Account::getAccount();
 $arParams['account'] = $account;
 
 

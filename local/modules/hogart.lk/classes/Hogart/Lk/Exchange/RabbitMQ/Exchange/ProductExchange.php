@@ -83,6 +83,7 @@ class ProductExchange extends AbstractExchange
                 break;
             case 'stock':
                 $parse = $this->getParsingModel();
+                $parse->answer = true;
                 $parse->initWarehouse();
                 break;
             case 'index':

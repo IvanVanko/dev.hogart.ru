@@ -64,7 +64,7 @@ if ($arParams['USE_FILTER'] == 'Y') {
         $this->SetViewTarget("CATALOG_FILTER");
 
         global $USER;
-        $account = \Hogart\Lk\Entity\AccountTable::getAccountByUserID($USER->GetID());
+        $account = \Hogart\Lk\Helper\Template\Account::getAccount();
         $storeFilter = [
         ];
 

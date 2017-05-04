@@ -39,12 +39,21 @@ if (!empty($account['id']) && !empty($_REQUEST)) {
             die();
             break;
         case 'add-address':
+        case 'edit-address':
             $address = json_decode($_POST['__address']);
-            $count = count(AddressTable::getByOwner($_SESSION['current_company_id'], AddressTable::OWNER_TYPE_CLIENT_COMPANY)[AddressTypeTable::TYPE_DELIVERY]);
+            $count = count(AddressTable::getByOwner($_SESSION['current_company_id'], AddressTable::OWNER_TYPE_CLIENT_COMPANY, [
+                '=is_active' => true
+            ])[AddressTypeTable::TYPE_DELIVERY]);
             if ($count + 1 > 10) {
                 new FlashError("Максимальное кол-во адресов ограничено 10 шт.");
                 break;
             }
+
+            if ($_REQUEST['action'] == 'edit-address') {
+                $old_address = AddressTable::getByField("guid_id", $_POST['id']);
+                $res = AddressTable::replace(array_merge($old_address, ['is_active' => false]));
+            }
+
             $address_type = AddressTypeTable::getByField('code', AddressTypeTable::TYPE_DELIVERY);
             $addressRes = AddressTable::replace([
                 'owner_id' => $_SESSION['current_company_id'],
@@ -468,7 +477,7 @@ if (!empty($account['id']) && !empty($_REQUEST)) {
         AccountTable::update($account['id'], [
             "main_contract_id" => intval($_REQUEST['fav_contract'])
         ]);
-        $account = AccountTable::getAccountByUserID($USER->GetID());
+        $account = \Hogart\Lk\Helper\Template\Account::getAccount();
     }
     if (!empty($_REQUEST['remove_company'])) {
         if (AccountCompanyRelationTable::isHaveAccess($account['id'], $_REQUEST['remove_company'], true)) {
@@ -490,12 +499,10 @@ if (!empty($account['id']) && !empty($_REQUEST)) {
         ]);
     }
     if (!empty($_REQUEST['remove_address'])) {
-        $address_type = AddressTypeTable::getByField('code', AddressTypeTable::TYPE_DELIVERY);
         AddressTable::delete([
-            "type_id" => $address_type["id"],
+            "guid_id" => $_REQUEST['remove_address'],
             "owner_id" => $_SESSION['current_company_id'],
-            "owner_type" => ContactRelationTable::OWNER_TYPE_CLIENT_COMPANY,
-            "fias_code" => $_REQUEST['remove_address']
+            "owner_type" => ContactRelationTable::OWNER_TYPE_CLIENT_COMPANY
         ]);
     }
 

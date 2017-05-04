@@ -18,6 +18,20 @@ $_items = $items;
 <div class="row spacer"></div>
 <div class="row">
     <div class="col-sm-12 h5">
+        <b>Статус:</b>
+        <?= OrderRTUTable::getStatusText($order_rtu['status'])?>
+    </div>
+</div>
+<? if ($order_rtu['status'] == OrderRTUTable::STATUS_CANCEL): ?>
+    <div class="row">
+        <div class="col-sm-12 h5">
+            <b>Причина отклонения:</b>
+            <?= $order_rtu['refuse_reason'] ?>
+        </div>
+    </div>
+<? endif; ?>
+<div class="row">
+    <div class="col-sm-12 h5">
         <b>Тип доставки:</b>
         <?= OrderRTUTable::getDeliveryTypeText($order_rtu['delivery_type'])?>
     </div>

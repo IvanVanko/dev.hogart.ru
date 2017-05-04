@@ -35,6 +35,10 @@ class OrderRTUTable extends AbstractEntity implements IOrderEventNote, IExchange
     const DATE_INTERVAL_09_15 = 1;
     const DATE_INTERVAL_15_21 = 2;
 
+    const STATUS_ACTIVE = 0;
+    const STATUS_CANCEL = 1;
+
+
     /**
      * Returns DB table name for entity
      *
@@ -58,6 +62,14 @@ class OrderRTUTable extends AbstractEntity implements IOrderEventNote, IExchange
             new GuidField("guid_id"),
             new IntegerField("account_id"),
             new StringField("number"),
+            new EnumField("status", [
+                'values' => [
+                    self::STATUS_ACTIVE,
+                    self::STATUS_CANCEL,
+                ],
+                'default_value' => self::STATUS_ACTIVE,
+            ]),
+            new StringField("refuse_reason"),
             new DatetimeField("rtu_date"),
             new EnumField("delivery_type", [
                 'values' => [
@@ -98,6 +110,14 @@ class OrderRTUTable extends AbstractEntity implements IOrderEventNote, IExchange
             new Index('idx_guid_id', ['guid_id' => 36]),
             new Index('idx_is_active', ['is_active']),
         ];
+    }
+
+    public static function getStatusText($status)
+    {
+        return [
+            self::STATUS_ACTIVE => "Активна",
+            self::STATUS_CANCEL => "Отклонена",
+        ][$status];
     }
 
     public static function getDeliveryTypeText($delivery)
@@ -207,6 +227,9 @@ class OrderRTUTable extends AbstractEntity implements IOrderEventNote, IExchange
     public static function getOrderEventNote($entity_id, $event)
     {
         $order_rtu = self::getRTUOrder($entity_id);
+
+        if (!$order_rtu['is_active']) return null;
+
         $note = new OrderEventNote(
             self::showName($order_rtu)
         );

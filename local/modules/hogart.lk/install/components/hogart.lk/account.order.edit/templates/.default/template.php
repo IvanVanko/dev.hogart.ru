@@ -89,7 +89,7 @@ $order = $arResult['order'];
                                             </thead>
                                             <tbody>
                                             <? foreach ($items as $k => $item): ?>
-                                                <tr class="<?= ($item['is_new'] ? 'new' : '') ?> <?= ($item['not_editable'] ? 'disabled' : '') ?>" id="<?= $item['guid_id'] ?>" data-guid="<?= $item['guid_id'] ?>">
+                                                <tr class="<?= ($item['is_new'] ? 'new' : '') ?> <?= ($item['not_editable'] || $item['ACTIVE'] == 'N' ? 'disabled' : '') ?>" id="<?= $item['guid_id'] ?>" data-guid="<?= $item['guid_id'] ?>">
                                                     <td><?= ($k + 1) ?></td>
                                                     <td></td>
                                                     <td class="text-nowrap"><?= $item['props']['sku']['VALUE'] ?></td>
@@ -101,8 +101,8 @@ $order = $arResult['order'];
                                                         <? endif; ?>
                                                     </td>
                                                     <td class="text-nowrap">
-                                                        <? if (!$item['not_editable']): ?>
-                                                        <input class="form-control input-sm"
+                                                        <? if (!$item['not_editable'] && $item['ACTIVE'] != 'N'): ?>
+                                                        <input style="min-width: 62px;" class="form-control input-sm"
                                                             id="quantity-<?= $item['guid_id'] ?>"
                                                             <?= Ajax::OnEvent(
                                                                 'changeapply',
@@ -127,8 +127,8 @@ $order = $arResult['order'];
                                                     <td><?= $order['measures'][$item['product']['MEASURE']] ?></td>
                                                     <td class="text-nowrap money-<?= strtolower($order['currency']['CURRENCY']) ?>"><?= $item['price'] ?></td>
                                                     <td class="text-center">
-                                                        <? if (!$item['not_editable']): ?>
-                                                        <input tabindex="-1" class="form-control input-sm"
+                                                        <? if (!$item['not_editable'] && $item['ACTIVE'] != 'N'): ?>
+                                                        <input style="min-width: 56px;" tabindex="-1" class="form-control input-sm"
                                                            id="discount-<?= $item['guid_id'] ?>"
                                                             <?= Ajax::OnEvent(
                                                                 'changeapply',
@@ -209,7 +209,7 @@ $order = $arResult['order'];
                         <? endforeach; ?>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row spacer-20">
                     <div class="col-sm-12 comment">
                         <textarea
                             <?= Ajax::OnEvent(
@@ -228,6 +228,7 @@ $order = $arResult['order'];
                                 name="note" id="note" rows="2"><?= $order['note'] ?></textarea>
                     </div>
                 </div>
+                <div class="row"></div>
             </div>
             <div class="col-sm-3">
                 <div data-stick-block>

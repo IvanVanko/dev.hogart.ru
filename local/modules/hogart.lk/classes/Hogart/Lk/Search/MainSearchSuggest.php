@@ -40,11 +40,15 @@ class MainSearchSuggest extends AbstractSearch
 
     public function deleteItemFromIndex($id)
     {
-        return $this->client->delete([
-            'id' => $id,
-            'index' => $this->getIndexName(),
-            'type' => $this->getType()
-        ]);
+        try {
+            return $this->client->delete([
+                'id' => $id,
+                'index' => $this->getIndexName(),
+                'type' => $this->getType()
+            ]);
+        } catch (\Exception $e) {
+
+        }
     }
 
     /**

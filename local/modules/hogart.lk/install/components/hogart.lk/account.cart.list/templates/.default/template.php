@@ -49,7 +49,7 @@ use Bitrix\Main\EventManager;
                 <div class="row post-table-footer vertical-align">
                     <div class="col-sm-8">
                         <div class="add-item-simple center-between">
-                            <div class="add-item-label text-nowrap">Быстрое добавление</div>
+                            <div class="hidden-xs add-item-label text-nowrap">Быстрое добавление</div>
                             <input required
                                 <?= Ajax::OnEvent(
                                     'typeaheadselect',
@@ -265,7 +265,7 @@ use Bitrix\Main\EventManager;
                                                                 <? endif; ?>
                                                             </td>
                                                             <td class="text-nowrap">
-                                                                <input tabindex="<?= $ii + 1 ?>" class="form-control input-sm"
+                                                                <input style="min-width: 62px;" tabindex="<?= $ii + 1 ?>" class="form-control input-sm"
                                                                        id="quantity-<?= $item['guid_id'] ?>"
                                                                     <?= Ajax::OnEvent(
                                                                         'changeapply',
@@ -286,7 +286,7 @@ use Bitrix\Main\EventManager;
                                                             <td class="text-nowrap money-<?= strtolower($cart['currency']['CURRENCY']) ?>"><?= $item['price'] ?></td>
                                                             <? if (!empty($cart['contract_id'])) :?>
                                                             <td>
-                                                                <input tabindex="-1" class="form-control input-sm"
+                                                                <input style="min-width: 54px;" tabindex="-1" class="form-control input-sm"
                                                                        id="discount-<?= $item['guid_id'] ?>"
                                                                     <?= Ajax::OnEvent(
                                                                         'changeapply',
@@ -366,7 +366,7 @@ use Bitrix\Main\EventManager;
                                                     <div class="row vertical-align">
                                                         <div class="col-sm-8">
                                                             <div class="add-item-simple center-between">
-                                                                <div class="add-item-label text-nowrap">Быстрое добавление</div>
+                                                                <div class="hidden-xs add-item-label text-nowrap">Быстрое добавление</div>
                                                                 <input required
                                                                     <?= Ajax::OnEvent(
                                                                         'typeaheadselect',
@@ -442,7 +442,27 @@ use Bitrix\Main\EventManager;
                                             <li data-create-order-button>
                                                 <?= $create_order_button ?>
                                             </li>
+                                            <br><br>
                                             <? endif; ?>
+
+
+                                            <li data-delete-button>
+                                                <i class="fa fa-li fa-trash fa-lg text-danger" aria-hidden="true"></i>
+                                                <?= Ajax::Link(
+                                                    'Удалить выбранные товары',
+                                                    'carts',
+                                                    $carts_node->getId(),
+                                                    [
+                                                        'cart_id' => $cart['guid_id'],
+                                                        'item' => 'javascript:function(element) { return getSelectedCartRows(element); } ',
+                                                        'action' => 'delete_items',
+                                                        'new_item_group' => null,
+                                                        'quantity' => null,
+                                                        'item_id' => null,
+                                                        'new_order' => null
+                                                    ]
+                                                ) ?>
+                                            </li>
                                             <? if (!empty($cart['store_guid'])): ?>
                                                 <li data-store-check>
                                                     <i class="fa fa-li fa-remove fa-lg text-danger" aria-hidden="true"></i>
@@ -461,6 +481,22 @@ use Bitrix\Main\EventManager;
                                                     ) ?>
                                                 </li>
                                             <? endif; ?>
+                                            <li data-clear>
+                                                <i class="fa fa-li fa-remove fa-lg text-danger" aria-hidden="true"></i>
+                                                <?= Ajax::Link(
+                                                    'Удалить все товары',
+                                                    'carts',
+                                                    $carts_node->getId(),
+                                                    [
+                                                        'cart_id' => $cart['guid_id'],
+                                                        'action' => 'clear',
+                                                        'item' => null,
+                                                        'new_item_group' => null,
+                                                        'copy' => null
+                                                    ]
+                                                ) ?>
+                                            </li>
+                                            <br><br>
                                             <li data-reload>
                                                 <i class="fa fa-li fa-refresh fa-lg text-primary" aria-hidden="true"></i>
                                                 <?= Ajax::Link(
@@ -514,23 +550,6 @@ use Bitrix\Main\EventManager;
                                                         'template_vars' => ['cart' => $cart],
                                                         'dialog_keys' => [$cart['guid_id']],
                                                         'dialog_event_hogart.lk.openajaxlinkdialog' => 'openLinkEditItemGroupDialog',
-                                                    ]
-                                                ) ?>
-                                            </li>
-                                            <li data-delete-button>
-                                                <i class="fa fa-li fa-trash fa-lg text-danger" aria-hidden="true"></i>
-                                                <?= Ajax::Link(
-                                                    'Удалить строки',
-                                                    'carts',
-                                                    $carts_node->getId(),
-                                                    [
-                                                        'cart_id' => $cart['guid_id'],
-                                                        'item' => 'javascript:function(element) { return getSelectedCartRows(element); } ',
-                                                        'action' => 'delete_items',
-                                                        'new_item_group' => null,
-                                                        'quantity' => null,
-                                                        'item_id' => null,
-                                                        'new_order' => null
                                                     ]
                                                 ) ?>
                                             </li>

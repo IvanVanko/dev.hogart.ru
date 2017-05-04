@@ -19,7 +19,7 @@ $APPLICATION->SetTitle("Новости");
 		"USE_CATEGORIES" => "N",
 		"USE_FILTER" => "N",
 		"SORT_BY1" => "property_priority",
-		"SORT_ORDER1" => "asc",
+		"SORT_ORDER1" => "desc",
 		"SORT_BY2" => "active_from",
 		"SORT_ORDER2" => "desc",
 		"CHECK_DATES" => "N",

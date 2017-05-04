@@ -32,6 +32,8 @@ class OrderRTU extends AbstractPutRequest
                 "Ord_RTU_ID" => (string)$rtu['guid_id'],
                 "Ord_RTU_ID_Site" => $rtu['id'],
                 "Ord_RTU_Number" => (string)$rtu['number'],
+                "Ord_RTU_Status" => (int)$rtu['status'],
+                "Ord_ReasonForRefusal" => (string)$rtu['refuse_reason'],
                 "Ord_RTU_Date" => $rtu['rtu_date']->format('Y-m-d H:i:s'),
                 "Ord_RTU_Delivery" => $rtu['delivery_type'],
                 "Ord_RTU_Warehouse_ID" => $rtu['store_guid'],

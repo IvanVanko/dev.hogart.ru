@@ -272,7 +272,7 @@ use Hogart\Lk\Entity\AddressTable;
                         <div class="col-lg-2 col-sm-3 operations"></div>
                     </div>
                     <? foreach ($delivery_addresses as $address): ?>
-                        <div class="row vertical-align spacer contact" data-contract-id="<?= $address['fias_code'] ?>">
+                        <div class="row vertical-align spacer contact" data-address-code="<?= $address['fias_code'] ?>">
                             <div class="col-lg-10 col-sm-9"><strong class="pull-left visible-xs">Адрес:</strong> <?= AddressTable::getValue($address) ?></div>
                             <div class="col-lg-2 col-sm-3 operations">
                                 <strong class="pull-left visible-xs">Операции:</strong>
@@ -281,12 +281,12 @@ use Hogart\Lk\Entity\AddressTable;
                                         <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent(
                                             'contacts-ajax',
                                             $address_node->getId(),
-                                            ['edit_contact' => $address['id']],
+                                            ['edit_address' => $address['guid_id']],
                                             \Hogart\Lk\Helper\Template\Ajax::DIALOG_EDIT,
                                             [
                                                 'title' => 'Редактирование адреса',
                                                 'edit_action' => 'edit-address',
-                                                'edit_object' => $address,
+                                                'edit_object' => array_merge($address, ['id' => $address['guid_id']]),
                                                 'template_file' => __DIR__ . "/forms/address.php",
                                                 'dialog_event_opening' => 'openingAddressEdit'
                                             ]
@@ -295,7 +295,7 @@ use Hogart\Lk\Entity\AddressTable;
                                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                     </div>
                                     <div
-                                        <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('address-ajax', $address_node->getId(), ['remove_address' => $address['fias_code']], \Hogart\Lk\Helper\Template\Ajax::DIALOG_CONFIRMATION, [
+                                        <?= \Hogart\Lk\Helper\Template\Ajax::OnClickEvent('address-ajax', $address_node->getId(), ['remove_address' => $address['guid_id']], \Hogart\Lk\Helper\Template\Ajax::DIALOG_CONFIRMATION, [
                                             'title' => 'Подтверждение удаления адреса доставки',
                                             'confirmation' => 'Вы действительно хотите удалить адрес "' . $address['value'] . '"?'
                                         ]) ?>
