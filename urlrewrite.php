@@ -264,7 +264,13 @@ $arUrlRewrite = array(
         "RULE" => "",
         "ID" => "hogart.lk:account",
         "PATH" => "/local/modules/hogart.lk/front/account/index.php"
-    )
+    ),
+    array(
+        "CONDITION" => "#^/price/([\\w-_]+)/(\\?.*|\$)#",
+        "RULE" => "ELEMENT_CODE=\$1",
+        "ID" => "",
+        "PATH" => "/price/index.php",
+    ),
 
 
 );

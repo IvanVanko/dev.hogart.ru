@@ -47,6 +47,8 @@ Loc::loadLanguageFile(__FILE__);
     $APPLICATION->AddHeadScript("/local/assets/bootstrap/js/tooltip.js");
     $APPLICATION->AddHeadScript("/local/assets/bootstrap/js/alert.js");
     $APPLICATION->AddHeadScript("/local/assets/bootstrap/js/dropdown.js");
+    $APPLICATION->AddHeadScript("/local/assets/slick/slick/slick.min.js");
+    $APPLICATION->AddHeadScript("/local/assets/slick/slick/slick.js");
 
     $APPLICATION->SetAdditionalCSS("/h/css/houdini.min.css");
     $APPLICATION->AddHeadScript("/h/js/houdini.min.js");
@@ -67,13 +69,15 @@ Loc::loadLanguageFile(__FILE__);
     $APPLICATION->AddHeadScript("/h/js/docs.js");
     $APPLICATION->AddHeadScript("/h/js/learn.js");
     $APPLICATION->AddHeadScript("/h/js/right-sidebox-forms.js");
-    $APPLICATION->AddHeadScript("/h/js/retina.min.js");
+//    $APPLICATION->AddHeadScript("/h/js/retina.min.js");
     $APPLICATION->AddHeadScript("/h/js/jquery.mCustomScrollbar.concat.min.js");
     $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/vendor/parsley.min.js");
     $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/lib.js");
     $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/main.js");
     $APPLICATION->AddHeadScript("/h/js/script_dev.js");
     $APPLICATION->SetAdditionalCSS("/h/css/style_dev.css");
+    $APPLICATION->SetAdditionalCSS("/h/css/main-page.css");
+    $APPLICATION->SetAdditionalCSS("/h/css/price-list.css");
 
 
     $authorized = $USER->IsAuthorized();
@@ -284,257 +288,426 @@ Loc::loadLanguageFile(__FILE__);
     </div>
     <div class="perspective-layout">
         <? if ($APPLICATION->GetCurDir() == SITE_DIR): ?>
-        <div class="wrapper">
-            <? include __DIR__ . "/header_line.php" ?>
-            <div class="blur-main">
-                <aside class="main-sidebar js-fp">
-                    <div class="wrap js-fp">
-                        <div class="present-cnt js-fh js-fp">
-                            <a style="display: inline-block" href="<?= SITE_DIR ?>">
-                                <? if (LANGUAGE_ID == 'en'): ?>
-                                    <img src="/images/en-logo.png" class="logo" alt="Hogart"/>
-                                <? else: ?>
-                                    <img src="/images/logo.png" class="logo" alt="Hogart"/>
-                                <? endif; ?>
-                            </a>
-
-                            <div class="js-fh js-fhi">
-                                <?
-                                $newsIBlockId = (LANGUAGE_ID == 'en' ? '28' : '3');
-                                $propertyTagValuesRes = CIBlockProperty::GetPropertyEnum(CIBlockProperty::GetPropertyArray('tag', $newsIBlockId)['ORIG_ID']);
-                                $propertyTagValues = [];
-                                while (($propertyTagValue = $propertyTagValuesRes->GetNext())) {
-                                    $propertyTagValues[$propertyTagValue["XML_ID"]] = $propertyTagValue["ID"];
-                                }
-                                ?>
-                                <div class="content">
-                                    <? if ($APPLICATION->GetCurDir() == SITE_DIR) {
-                                        $date = new DateTime();
-                                        date_sub($date, date_interval_create_from_date_string('2 month'));
-                                        $APPLICATION->IncludeComponent("kontora:element.list", "main_news", array(
-                                            'IBLOCK_ID' => $newsIBlockId,
-                                            'FILTER' => array(
-                                                "PROPERTY_tag" => array($propertyTagValues['450e18f7257ca2e9d1202d8f58eb6ae8'], $propertyTagValues['19b9ef6f18390872303b696b849ee374']),
-                                                ">=DATE_ACTIVE_FROM" => date_format($date, 'd-m-Y') . " 00:00:00"
-                                            ),
-                                            "CHECK_PERMISSIONS" => "Y",
-                                            "CACHE_TYPE" => "A",
-                                            "CACHE_TIME" => "0",
-                                            "PROPS" => "Y",
-                                            'ORDER' => array('property_priority' => 'asc,nulls', 'active_from' => 'desc'),
-                                            'ELEMENT_COUNT' => 100,
-                                        ));
-                                    } ?>
-                                    <? $APPLICATION->IncludeComponent("bitrix:main.include", "", Array(
-                                        "AREA_FILE_SHOW" => "sect",
-                                        "AREA_FILE_SUFFIX" => "inc_main_sidebar",
-                                        "AREA_FILE_RECURSIVE" => "Y",
-                                        "EDIT_TEMPLATE" => "standard.php"
-                                    )); ?>
-                                </div>
-                                <div class="scroll-to-top"><?= GetMessage("Наверх") ?></div>
-                            </div>
-                            <? if ($APPLICATION->GetCurDir() == SITE_DIR) {
-                                $APPLICATION->IncludeComponent("kontora:element.list", "main_calendar", array(
-                                    'IBLOCK_ID' => $newsIBlockId,
-                                    'FILTER' => array('PROPERTY_tag' => array($propertyTagValues['160c3efcdbbba1bc7128cb336546694e'], $propertyTagValues['0e6085ec84e14cae3d60582f6107641b'])),
-                                ));
-                            } ?>
-                        </div>
-                    </div>
-                </aside>
-            </div>
-            <div class="credits">
-                <p class="address">
-                    <? $APPLICATION->IncludeComponent("bitrix:main.include", "", Array(
-                            "AREA_FILE_SHOW" => "sect",
-                            "AREA_FILE_SUFFIX" => "inc_footer",
-                            "AREA_FILE_RECURSIVE" => "Y",
-                            "EDIT_TEMPLATE" => "standard.php"
-                        )
-                    ); ?>
-                </p>
-                <a href="#" class="p_logo"></a>
-                <ul class="main-foot-menu">
-                    <li>
-                        <a href="<?= SITE_DIR ?>contacts/tsentralnyy-ofis-khogart-v-moskve-sklad-i-servisnaya-sluzhba/"><?= GetMessage("Склады и офисы") ?></a>
-                    </li>
-                </ul>
-            </div>
-            <div class="main-container">
-                <div class="container-inner">
-                    <ul class="main-navigation"  id="accordion-main" role="tablist" aria-multiselectable="true">
-                        <li class="main-navigation__item">
-                            <a class="main-navigation__link" data-toggle="collapse" data-parent="#accordion-main" href="#menu-about-company" aria-expanded="false" title="Хогарт">
-                                <div class="image">
-                                    <img src="/images/navigation-1.svg" alt="" title="" />
-                                </div>
-                                <span>Хогарт</span>
-                            </a>
-                            <ul id="menu-about-company" class="navigation-sub-menu collapse panel-collapse">
-                                <li class="catalog-mobile__column">
-                                    <a href="/company/" title="Вентиляция">О компании</a>
+            <div class="b-container">
+                <header class="b-header">
+                    <a class="b-header__logo" href="" title="">
+                        <img src="/images/m_logo.svg" alt="" title="" />
+                    </a>
+                    <div class="b-header__panel">
+                        <div class="b-header__main">
+                            <ul class="b-header__list">
+                                <li class="b-header__item">
+                                    <a class="b-header__link" href="/company/" title="О компании">О компании</a>
                                 </li>
-                                <li class="catalog-mobile__column">
-                                    <a title="Контакты" href="/contacts/tsentralnyy-ofis-khogart-v-moskve-sklad-i-servisnaya-sluzhba/">Контакты</a>
+                                <li class="b-header__item">
+                                    <a class="b-header__link" href="/stock/" title="Акции">Акции</a>
+                                </li>
+                                <li class="b-header__item">
+                                    <a class="b-header__link" href="/learn/" title="Обучение">Обучение</a>
+                                </li>
+                                <li class="b-header__item">
+                                    <a class="b-header__link" href="/integrated-solutions/all_projects.php" title="Объекты">Объекты</a>
+                                </li>
+                                <li class="b-header__item">
+                                    <a class="b-header__link" href="/services/" title="Сервис">Сервис</a>
+                                </li>
+                            </ul>
+                            <div class="b-catalog-main__search">
+                                <input type="text" id="" name="" class="b-catalog-main__input" placeholder="Артикул или наименование" />
+                                <a class="b-catalog-main__icon" href="#" title="">
+                                    <img src="/images/header-search.svg" alt="" title="" />
+                                </a>
+                            </div>
+                        </div>
+                        <a class="b-header__lk" href="#" title="Личный кабинет">Личный кабинет</a>
+                    </div>
+                    <div class="header-mobile">
+                        <a class="header-mobile__menu" href="#" title="">
+                            <img src="/images/header-menu.svg" />
+                        </a>
+                        <div class="header-mobile__search">
+                            <label for="input_search" class="header-mobile__search-label">
+                                <img src="/images/header-search.svg" />
+                            </label>
+                            <input id="input_search" class="header-mobile__search-input active" placeholder="Артикул или наименование..." />
+                        </div>
+                        <? if ($authorized) {?>
+                            <? $APPLICATION->IncludeComponent("hogart.lk:account.cart.add", "mobile", [
+                                'CART_URL' => '/account/cart/'
+                            ]); ?>
+                        <?}?>
+                    </div>  
+                </header>
+                <div class="b-wrapper">
+                    <main class="b-main">
+                        <div class="b-slider">
+                            <div class="b-slider__content b-slider__content--main js-slider-main-page">
+                                <div class="b-slider__item b-slider__item--main">
+                                    <img src="/images/banner-hogart-1.jpg" alt="" title="" />
+                                </div>
+                                <div class="b-slider__item b-slider__item--main">
+                                    <img src="/images/banner_hogart3.jpg" alt="" title="" />
+                                </div>
+                                <div class="b-slider__item b-slider__item--main">
+                                    <img src="/images/banner_hogart3.jpg" alt="" title="" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="b-catalog-main">
+                            <div class="b-catalog-main__title">
+                                <a href="/catalog/" class="b-title-link b-title-link--catalog" title="Каталог">Каталог</a>
+                                <div class="b-catalog-main__buttons">
+                                    <a href="/documentation/" class="b-catalog-main__button" title="Документация">Документация</a>
+                                    <a href="#" class="b-catalog-main__button" title="Прайс-лист">Прайс-лист</a>
+                                </div>
+                            </div>
+                            <ul class="b-catalog-main__list">
+                                <li class="b-catalog-main__item">
+                                    <a href="/catalog/#bx_cat_1381" class="b-catalog-main__link" title="Отопление">
+                                        <img src="/images/heating.png" alt="" title="" />
+                                        <span>Отопление</span>
+                                    </a>
+                                </li>
+                                <li class="b-catalog-main__item">
+                                    <a href="/catalog/#bx_cat_1383" class="b-catalog-main__link" title="Вентиляция">
+                                        <img src="/images/ventilation.png" alt="" title="" />
+                                        <span>Вентиляция</span>
+                                    </a>
+                                </li>
+                                <li class="b-catalog-main__item">
+                                    <a href="/catalog/#bx_cat_1382" class="b-catalog-main__link" title="Сантехника">
+                                        <img src="/images/sanitary.png" alt="" title="" />
+                                        <span>Сантехника</span>
+                                    </a>
+                                </li>
+                                <li class="b-catalog-main__item">
+                                    <a href="/catalog/#bx_cat_1380" class="b-catalog-main__link" title="Канализация">
+                                        <img src="/images/sewerage.png" alt="" title="" />
+                                        <span>Канализация</span>
+                                    </a>
+                                </li>
+                                <li class="b-catalog-main__item">
+                                    <a href="/catalog/#bx_cat_1379" class="b-catalog-main__link" title="Плитка">
+                                        <img src="/images/tile.png" alt="" title="" />
+                                        <span>Плитка</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="b-brands-main">
+                            <a href="/brands/" class="b-title-link" title="Бренды">Бренды</a>
+                            <ul class="b-brands-main__list">
+                                <li class="b-brands-main__item">
+                                    <a href="#" class="b-brands-main__link" title="">
+                                        <img src="/images/brand-1.jpg" alt="" title="" />
+                                    </a>
+                                </li>
+                                 <li class="b-brands-main__item">
+                                    <a href="#" class="b-brands-main__link" title="">
+                                        <img src="/images/brand-2.jpg" alt="" title="" />
+                                    </a>
+                                </li>
+                                 <li class="b-brands-main__item">
+                                    <a href="#" class="b-brands-main__link" title="">
+                                        <img src="/images/brand-1.jpg" alt="" title="" />
+                                    </a>
+                                </li>
+                                 <li class="b-brands-main__item">
+                                    <a href="#" class="b-brands-main__link" title="">
+                                        <img src="/images/brand-2.jpg" alt="" title="" />
+                                    </a>
+                                </li>
+                                 <li class="b-brands-main__item">
+                                    <a href="#" class="b-brands-main__link" title="">
+                                        <img src="/images/brand-1.jpg" alt="" title="" />
+                                    </a>
+                                </li>
+                                 <li class="b-brands-main__item">
+                                    <a href="#" class="b-brands-main__link" title="">
+                                        <img src="/images/brand-2.jpg" alt="" title="" />
+                                    </a>
+                                </li>
+                                 <li class="b-brands-main__item">
+                                    <a href="#" class="b-brands-main__link" title="">
+                                        <img src="/images/brand-1.jpg" alt="" title="" />
+                                    </a>
+                                </li>
+                                <li class="b-brands-main__item">
+                                    <a href="#" class="b-brands-main__link" title="Все бренды">Все бренды</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="b-slider">
+                            <a href="/integrated-solutions/all_projects.php" class="b-title-link" title="Референс-объекты">Референс-объекты</a>
+                            <div class="b-slider__content js-slider-media-main-page">
+                                <div class="b-slider__item">
+                                    <img src="/images/slider.jpg" alt="" title="" />
+                                </div>
+                                <div class="b-slider__item">
+                                    <img src="/images/slider.jpg" alt="" title="" />
+                                </div>
+                                <div class="b-slider__item">
+                                    <img src="/images/slider.jpg" alt="" title="" />
+                                </div>
+                                <div class="b-slider__item">
+                                    <img src="/images/slider.jpg" alt="" title="" />
+                                </div>
+                                <div class="b-slider__item">
+                                    <img src="/images/slider.jpg" alt="" title="" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="b-history">
+                            <a href="/company/" class="b-title-link" title="О компании">О компании</a>
+                            <p>Компания Хогарт, основанная в&nbsp;1996 году на&nbsp;сегодняшний день является одним из&nbsp;крупнейших поставщиков инженерных систем в&nbsp;области отопления, вентиляции и&nbsp;сантехники.</p>
+                            <p>Компания имеет собственный офисно-складской комплекс, два салона розничных продаж в&nbsp;Москве и&nbsp;офисно-складской комплекс в&nbsp;Санкт-Петербурге.</p>
+                            <p>За&nbsp;20&nbsp;лет работы нам доверили поставку оборудования более 50&nbsp;000 различных компаний. Компания &laquo;Хогарт&raquo; является членом апик и&nbsp;авок, активно содействуя развитию отрасли, вместе с&nbsp;другими ведущими игроками климатической отрасли.</p>
+                        </div>
+                    </main>
+                    <aside class="b-aside">
+                        <div class="b-contact-main">
+                            <ul class="b-contact-main__list">
+                                <li class="b-contact-main__item">
+                                    <a href="#" title="">
+                                        <i class="icon-baloon"></i>
+                                        <span>Москва</span>
+                                    </a>
+                                </li>
+                                <li class="b-contact-main__item b-contact-main__item--no-margin">
+                                    <a href="tel:84957034114" title="">+7 (495) 703-41-14</a>
+                                </li>
+                                <li class="b-contact-main__item">
+                                    <a href="mailto:vlad@htmlbook.ru" title="">info@hogart.ru</a>
+                                </li>
+                                <li class="b-contact-main__item">
+                                    <a href="#" title="Склады и офисы">Склады и офисы</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="b-news-main">
+                            <a href="/news/" class="b-title-link" title="Новости">Новости</a>
+                            <ul class="b-news-main__list">
+                                <li class="b-news-main__item">
+                                    <a href="#" title="" class="b-news-main__link">
+                                        <span>22.02.2017</span>
+                                        <h3>Поздравляем с&nbsp;23&nbsp;февраля!</h3>
+                                        <p>Поздравляем дорогих мужчин с&nbsp;Днем защитника Отечества</p>
+                                        <p>Желаем огромного благополучия, материального достатка, реализации в&nbsp;любимом деле, семейного тепла и&nbsp;успехов во&nbsp;всех начинаниях.</p>
+                                    </a>
+                                </li>
+                                <li class="b-news-main__item">
+                                    <a href="#" title="" class="b-news-main__link">
+                                        <span>22.02.2017</span>
+                                        <h3>Поздравляем с&nbsp;23&nbsp;февраля!</h3>
+                                        <p>Поздравляем дорогих мужчин с&nbsp;Днем защитника Отечества</p>
+                                        <p>Желаем огромного благополучия, материального достатка, реализации в&nbsp;любимом деле, семейного тепла и&nbsp;успехов во&nbsp;всех начинаниях.</p>
+                                    </a>
+                                </li>
+                                <li class="b-news-main__item">
+                                    <a href="#" title="" class="b-news-main__link">
+                                        <span>22.02.2017</span>
+                                        <h3>Поздравляем с&nbsp;23&nbsp;февраля!</h3>
+                                        <p>Поздравляем дорогих мужчин с&nbsp;Днем защитника Отечества</p>
+                                        <p>Желаем огромного благополучия, материального достатка, реализации в&nbsp;любимом деле, семейного тепла и&nbsp;успехов во&nbsp;всех начинаниях.</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </aside>
+                </div>
+                <ul class="main-navigation"  id="accordion-main" role="tablist" aria-multiselectable="true">
+                    <li class="main-navigation__item">
+                        <a class="main-navigation__link" data-toggle="collapse" data-parent="#accordion-main" href="#menu-about-company" aria-expanded="false" title="Хогарт">
+                            <div class="image">
+                                <img src="/images/navigation-1.svg" alt="" title="" />
+                            </div>
+                            <span>Хогарт</span>
+                        </a>
+                        <ul id="menu-about-company" class="navigation-sub-menu collapse panel-collapse">
+                            <li class="catalog-mobile__column">
+                                <a href="/company/" title="Вентиляция">О компании</a>
+                            </li>
+                            <li class="catalog-mobile__column">
+                                <a title="Контакты" href="/contacts/tsentralnyy-ofis-khogart-v-moskve-sklad-i-servisnaya-sluzhba/">Контакты</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="main-navigation__item">
+                        <a role="tab" class="main-navigation__link" data-toggle="collapse" data-parent="#accordion-main" href="#menu-product" aria-expanded="true" aria-controls="amenities" title="Продукция">
+                            <div class="image">
+                                <img src="/images/navigation-3.svg" alt="" title="" />
+                            </div>
+                            <span>Продукция</span>
+                        </a>
+                        <?
+                        $APPLICATION->IncludeComponent(
+                            "hogart:catalog.section.list",
+                            "mobile_main_page",
+                            array(
+                                "IBLOCK_TYPE" => "catalog",
+                                "IBLOCK_ID" => CATALOG_IBLOCK_ID,
+                                "CACHE_TYPE" => "A",
+                                "CACHE_TIME" => "36000000",
+                                "TOP_DEPTH" => "1",
+                            )
+                        );
+                        ?>
+                    </li>
+                    <li class="main-navigation__item">
+                        <a href="/brands/" title="Бренды">
+                            <div class="image">
+                                <img src="/images/brands.jpg" alt="" title="" />
+                            </div>
+                            <span>Бренды</span>
+                        </a>
+                    </li>
+                    <li class="main-navigation__item">
+                        <a href="/documentation/" title="Документация">
+                            <div class="image">
+                                <img src="/images/navigation-5.svg" alt="" title="" />
+                            </div>
+                            <span>Документация</span>
+                        </a>
+                    </li>
+                    <?php if ($authorized) {?>
+                        <li class="main-navigation__item">
+                            <a class="main-navigation__link" role="tab" data-toggle="collapse" data-parent="#accordion-main" href="#menu-lk" aria-expanded="false" aria-controls="amenities" title="Личный кабинет">
+                                <div class="image">
+                                    <img src="/images/navigation-6.svg" alt="" title="" />
+                                </div>
+                                <span>Личный кабинет</span>
+                            </a>
+                            <ul id="menu-lk" role="tabpanel" class="navigation-sub-menu collapse panel-collapse">
+                                <li>
+                                    <a class="not-line" href="/account/orders/active/" title="Заказы">
+                                        <div class="image">
+                                            <img src="/images/navigation-7.svg" alt="" title="" />
+                                        </div>
+                                        <span>Заказы</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="not-line" href="/account/reports/" title="Отчеты">
+                                        <div class="image">
+                                            <img src="/images/navigation-8.svg" alt="" title="" />
+                                        </div>
+                                        <span>Отчеты</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="not-line" href="/account/settings/" title="Настройки">
+                                        <div class="image">
+                                            <img src="/images/navigation-9.svg" alt="" title="" />
+                                        </div>
+                                        <span>Настройки</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="not-line" href="/account/documents/" title="Юридические лица">
+                                        <div class="image">
+                                            <img src="/images/navigation-10.svg" alt="" title="" />
+                                        </div>
+                                        <span>Юридические лица</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="not-line" href="?logout=yes" title="Выход">
+                                        <div class="image">
+                                            <img src="/images/navigation-11.svg" alt="" title="" />
+                                        </div>
+                                        <span>Выход</span>
+                                    </a>
                                 </li>
                             </ul>
                         </li>
-
+                    <?} else {?>
                         <li class="main-navigation__item">
-                            <a role="tab" class="main-navigation__link" data-toggle="collapse" data-parent="#accordion-main" href="#menu-product" aria-expanded="true" aria-controls="amenities" title="Продукция">
+                            <a href="/account/" title="Личный кабинет">
                                 <div class="image">
-                                    <img src="/images/navigation-3.svg" alt="" title="" />
+                                    <img src="/images/navigation-6.svg" alt="" title="" />
                                 </div>
-                                <span>Продукция</span>
-                            </a>
-                            <?
-                            $APPLICATION->IncludeComponent(
-                                "hogart:catalog.section.list",
-                                "mobile_main_page",
-                                array(
-                                    "IBLOCK_TYPE" => "catalog",
-                                    "IBLOCK_ID" => CATALOG_IBLOCK_ID,
-                                    "CACHE_TYPE" => "A",
-                                    "CACHE_TIME" => "36000000",
-                                    "TOP_DEPTH" => "1",
-                                )
-                            );
-                            ?>
-                        </li>
-                        <li class="main-navigation__item">
-                            <a href="/brands/" title="Бренды">
-                                <div class="image">
-                                    <img src="/images/navigation-4.svg" alt="" title="" />
-                                </div>
-                                <span>Бренды</span>
+                                <span>Личный кабинет</span>
                             </a>
                         </li>
-                        <li class="main-navigation__item">
-                            <a href="/documentation/" title="Документация">
-                                <div class="image">
-                                    <img src="/images/navigation-5.svg" alt="" title="" />
-                                </div>
-                                <span>Документация</span>
+                    <?}?>
+                </ul>
+                <footer class="b-footer">
+                    <div class="b-footer__copyright">© 2017, ООО «Хогарт», 117041 г. Москва, ул Поляны, 52
+                        <a href="" title="ОБратная связь">Обратная связь</a>
+                    </div>
+                    <ul class="b-social clearfix">
+                        <li class="b-social__item">
+                            <a class="b-social__link" href="" title="">
+                                <i class="icon"></i>
                             </a>
                         </li>
-                        <?php if ($authorized) {?>
-                            <li class="main-navigation__item">
-                                <a class="main-navigation__link" role="tab" data-toggle="collapse" data-parent="#accordion-main" href="#menu-lk" aria-expanded="false" aria-controls="amenities" title="Личный кабинет">
-                                    <div class="image">
-                                        <img src="/images/navigation-6.svg" alt="" title="" />
-                                    </div>
-                                    <span>Личный кабинет</span>
-                                </a>
-                                <ul id="menu-lk" role="tabpanel" class="navigation-sub-menu collapse panel-collapse">
-                                    <li>
-                                        <a class="not-line" href="/account/orders/active/" title="Заказы">
-                                            <div class="image">
-                                                <img src="/images/navigation-7.svg" alt="" title="" />
-                                            </div>
-                                            <span>Заказы</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="not-line" href="/account/reports/" title="Отчеты">
-                                            <div class="image">
-                                                <img src="/images/navigation-8.svg" alt="" title="" />
-                                            </div>
-                                            <span>Отчеты</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="not-line" href="/account/settings/" title="Настройки">
-                                            <div class="image">
-                                                <img src="/images/navigation-9.svg" alt="" title="" />
-                                            </div>
-                                            <span>Настройки</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="not-line" href="/account/documents/" title="Юридические лица">
-                                            <div class="image">
-                                                <img src="/images/navigation-10.svg" alt="" title="" />
-                                            </div>
-                                            <span>Юридические лица</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="not-line" href="?logout=yes" title="Выход">
-                                            <div class="image">
-                                                <img src="/images/navigation-11.svg" alt="" title="" />
-                                            </div>
-                                            <span>Выход</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        <?} else {?>
-                            <li class="main-navigation__item">
-                                <a href="/account/" title="Личный кабинет">
-                                    <div class="image">
-                                        <img src="/images/navigation-6.svg" alt="" title="" />
-                                    </div>
-                                    <span>Личный кабинет</span>
-                                </a>
-                            </li>
-                        <?}?>
+                        <li class="b-social__item">
+                            <a class="b-social__link" href="" title="">
+                                <i class="icon"></i>
+                            </a>
+                        </li>
+                        <li class="b-social__item">
+                            <a class="b-social__link" href="" title="">
+                                <i class="icon"></i>
+                            </a>
+                        </li>
                     </ul>
-                    <footer class="inner footer-mobile">
-                        <div class="credits-mobile">
-                            <a href="#" class="m_logo">
-                                <img src="/images/m_logo.svg" alt="" title="" />
+                    <div class="credits-mobile">
+                        <a href="#" class="m_logo">
+                            <img src="/images/m_logo.svg" alt="" title="" />
+                        </a>
+                        <div class="footer-mobile__right">
+                            <a href="#" title="" class="help js-help-main">
+                                <img src="/images/help.svg" alt="" title="" />
                             </a>
-                            <div class="footer-mobile__right">
-                                <a href="#" title="" class="help js-help-main">
-                                    <img src="/images/help.svg" alt="" title="" />
-                                </a>
-                                <div class="footer-menu-main" id="accordion-footer">
-                                    <div class="footer-menu__panel panel panel-default">
-                                        <a class="footer-menu__link" data-toggle="collapse" data-parent="#accordion-footer" href="#footer-contact" aria-expanded="false" title="Позвонить">Позвонить
-                                        </a>
-                                        <div id="footer-contact" class="footer-menu__content collapse panel-collapse">
-                                            <a class="footer-menu__tel" href="tel:84957881112" title="">+7 (495) 788-11-12</a>
-                                            <a class="footer-menu__tel" href="tel:88127034114" title="">+7 (812) 703-41-14</a>
-                                        </div>
-                                    </div>
-                                    <div class="footer-menu__panel panel panel-default">
-                                        <a class="footer-menu__link" data-toggle="collapse" data-parent="#accordion-footer" href="#footer-map" aria-expanded="false" title="Проехать">Проехать
-                                        </a>
-                                        <div id="footer-map" class="footer-menu__content collapse panel-collapse">
-                                            <ul class="contacts-list-mobile">
-                                                <li class=" active">
-                                                    <a href="/contacts/tsentralnyy-ofis-khogart-v-moskve-sklad-i-servisnaya-sluzhba/">
-                                                    <i class="fa fa-map-marker" aria-hidden="true"></i>
-                                                    Центральный офис "Хогарт" в Москве, склад и сервисная служба
-                                                    </a>
-                                                </li>
-                                                <li class="">
-                                                    <a href="/contacts/ofis-kompanii-khogart-v-sankt-peterburge/">
-                                                    <i class="fa fa-map-marker" aria-hidden="true"></i>
-                                                    Офис компании «Хогарт» в Санкт-Петербурге
-                                                    </a>
-                                                </li>
-                                                <li class="">
-                                                    <a href="/contacts/salon-khogart-art-v-tsentre-dizayna-i-arkhitektury-artplay/">
-                                                    <i class="fa fa-map-marker" aria-hidden="true"></i>
-                                                    Салон ХОГАРТ_арт в ARTPLAY
-                                                    </a>
-                                                </li>
-                                                    <li class="">
-                                                    <a href="/contacts/calon-khogart-art-na-ulitse-khamovnicheskiy-val/">
-                                                    <i class="fa fa-map-marker" aria-hidden="true"></i>
-                                                    Cалон «Хогарт арт» на улице Хамовнический Вал
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
+                            <div class="footer-menu-main" id="accordion-footer">
+                                <div class="footer-menu__panel panel panel-default">
+                                    <a class="footer-menu__link" data-toggle="collapse" data-parent="#accordion-footer" href="#footer-contact" aria-expanded="false" title="Позвонить">Позвонить
+                                    </a>
+                                    <div id="footer-contact" class="footer-menu__content collapse panel-collapse">
+                                        <a class="footer-menu__tel" href="tel:84957881112" title="">+7 (495) 788-11-12</a>
+                                        <a class="footer-menu__tel" href="tel:88127034114" title="">+7 (812) 703-41-14</a>
                                     </div>
                                 </div>
-                                <span class="address">© 2014, ООО «Хогарт»</span>
+                                <div class="footer-menu__panel panel panel-default">
+                                    <a class="footer-menu__link" data-toggle="collapse" data-parent="#accordion-footer" href="#footer-map" aria-expanded="false" title="Проехать">Проехать
+                                    </a>
+                                    <div id="footer-map" class="footer-menu__content collapse panel-collapse">
+                                        <ul class="contacts-list-mobile">
+                                            <li class=" active">
+                                                <a href="/contacts/tsentralnyy-ofis-khogart-v-moskve-sklad-i-servisnaya-sluzhba/">
+                                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                Центральный офис "Хогарт" в Москве, склад и сервисная служба
+                                                </a>
+                                            </li>
+                                            <li class="">
+                                                <a href="/contacts/ofis-kompanii-khogart-v-sankt-peterburge/">
+                                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                Офис компании «Хогарт» в Санкт-Петербурге
+                                                </a>
+                                            </li>
+                                            <li class="">
+                                                <a href="/contacts/salon-khogart-art-v-tsentre-dizayna-i-arkhitektury-artplay/">
+                                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                Салон ХОГАРТ_арт в ARTPLAY
+                                                </a>
+                                            </li>
+                                                <li class="">
+                                                <a href="/contacts/calon-khogart-art-na-ulitse-khamovnicheskiy-val/">
+                                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                Cалон «Хогарт арт» на улице Хамовнический Вал
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
+                            <span class="address">© 2014, ООО «Хогарт»</span>
                         </div>
-                    </footer>
+                    </div>
+                </footer>
+            </div>
         <? else: ?>
         <div class="container-fluid" style="overflow: hidden;">
         <div id="header-block" class="row fixed-block">

@@ -779,6 +779,11 @@ footer .p_logo {
   background-image: url(/images/oldschool-logo.svg);
   background-size: auto;
 }
+@media (max-width: 768px) {
+  .aside {
+    border-left: none;
+  }
+}
 .sections-list a {
   display: block;
   text-transform: uppercase;
