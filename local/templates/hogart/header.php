@@ -121,7 +121,9 @@ report-uri /csp-report.php");
 </div>
 
 <div class="perspective">
-    <a href="#" title="" class="hamburger-mobile__close"></a>
+    <a href="#" title="" class="hamburger-mobile__close">
+        <i class="close-mobile-menu fa fa-close"></i>
+    </a>
     <div class="hamburger-mobile__content">
         <div class="hamburger-mobile">
             <div class="hamburger-mobile__scroll">
@@ -200,19 +202,6 @@ report-uri /csp-report.php");
                             </div>
                             <span>Документация</span>
                         </a>
-                    </li>
-                    <li class="panel panel-default">
-                        <a class="main-navigation__link" data-toggle="collapse" data-parent="#accordion-hamburger" href="#hamburger-solution" aria-expanded="false" title="Комплексные решения">
-                            <div class="image">
-                                <img src="/images/puzzle.svg" alt="" title="" />
-                            </div>
-                            <span>Комплексные решения</span>
-                        </a>
-                        <ul id="hamburger-solution" class="navigation-sub-menu catalog-mobile--main panel-collapse collapse" "="" aria-expanded="false" style="">
-                            <li class="catalog-mobile__column">
-                                <a href="/integrated-solutions/all_projects.php" title="Реализованные проекты">Реализованные проекты</a>
-                            </li>
-                        </ul>
                     </li>
                     <li class="panel panel-default">
                         <a class="main-navigation__link" data-toggle="collapse" data-parent="#accordion-hamburger" href="#hamburger-teaching" aria-expanded="false" title="Обучение">
@@ -350,17 +339,19 @@ report-uri /csp-report.php");
                         <a class="b-header__search" href="javascript:void(0)" onclick="toggleSearch(this)" title="Поиск">
                             <i class="fa fa-search" aria-hidden="true"></i>
                         </a>
-                    </div>
-                    <div class="header-mobile">
-                        <a class="header-mobile__menu" href="#" title="">
-                            <img src="/images/header-menu.svg" />
-                        </a>
                         <? if ($authorized) {?>
-                            <? $APPLICATION->IncludeComponent("hogart.lk:account.cart.add", "mobile", [
-                                'CART_URL' => '/account/cart/'
-                            ]); ?>
+                            <div class="b-header__cart">
+                                <? $APPLICATION->IncludeComponent("hogart.lk:account.cart.add", "mobile", [
+                                    'CART_URL' => '/account/cart/'
+                                ]); ?>
+                            </div>
                         <?}?>
-                    </div>  
+                        <div class="header-mobile">
+                            <a class="header-mobile__menu color-black" href="javascript:void(0)" title="Мобильное меню">
+                                <i class="fa fa-bars" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
                 </header>
                 <div class="b-wrapper">
                     <main class="b-main">
