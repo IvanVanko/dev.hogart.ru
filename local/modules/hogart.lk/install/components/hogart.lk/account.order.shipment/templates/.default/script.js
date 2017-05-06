@@ -72,7 +72,7 @@ $(function () {
     useCurrent: false,
     useStrict: true,
     daysOfWeekDisabled: [0, 6],
-    minDate: moment().add(1, 'days')
+    minDate: moment().add(moment().format('HH') >= 16 ? 2 : 1, 'days')
   });
 
   $(document).on('input', 'input[name="quantity"]', function (e) {
