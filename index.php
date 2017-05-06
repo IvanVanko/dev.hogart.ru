@@ -4,6 +4,7 @@ $APPLICATION->SetPageProperty("keywords", "Хогарт - официальный
 $APPLICATION->SetPageProperty("description", "Хогарт - официальный сайт.");
 $APPLICATION->SetTitle("Хогарт - официальный сайт.");
 
+/*
 $APPLICATION->IncludeComponent("bitrix:menu","main",Array(
         "ROOT_MENU_TYPE" => "main", 
         "MAX_LEVEL" => "2", 
@@ -16,5 +17,8 @@ $APPLICATION->IncludeComponent("bitrix:menu","main",Array(
         "MENU_CACHE_USE_GROUPS" => "Y", 
         "MENU_CACHE_GET_VARS" => "" 
     )
-);?>
+);
+*/
+?>
+
 <?require($_SERVER['DOCUMENT_ROOT'].'/bitrix/footer.php');?>

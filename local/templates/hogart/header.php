@@ -4,6 +4,12 @@
 use \Bitrix\Main\Localization\Loc;
 
 Loc::loadLanguageFile(__FILE__);
+
+header("Content-Security-Policy-Report-Only:
+script-src 'self' *.hogart.ru hogart.ru bitrix.info bootstrap-notify.remabledesigns.com cdn.rawgit.com cdnjs.cloudflare.com maps.google.com mc.yandex.ru googleapis.com google-analytics.com;
+connect-src 'self' *.hogart.ru hogart.ru bitrix.info hogart.ru;
+report-uri /csp-report.php");
+
 ?>
 <!DOCTYPE html>
 <html data-lang="<?= LANGUAGE_ID ?>">
@@ -26,7 +32,7 @@ Loc::loadLanguageFile(__FILE__);
 
     $APPLICATION->AddHeadString("<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>");
     $APPLICATION->AddHeadString("<link href='http://fonts.googleapis.com/css?family=Roboto:900,700,500,400,300italic,300&subset=latin,cyrillic' rel='stylesheet' type='text/css'>");
-    $APPLICATION->AddHeadString("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css\">");
+    $APPLICATION->AddHeadString("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css\">");
     $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH . "/bootstrap.css");
     $APPLICATION->SetAdditionalCSS("/local/assets/fontello/css/animation.css");
     $APPLICATION->SetAdditionalCSS("/local/assets/fontello/css/fontello.css");
@@ -76,8 +82,10 @@ Loc::loadLanguageFile(__FILE__);
     $APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . "/js/main.js");
     $APPLICATION->AddHeadScript("/h/js/script_dev.js");
     $APPLICATION->SetAdditionalCSS("/h/css/style_dev.css");
-    $APPLICATION->SetAdditionalCSS("/h/css/main-page.css");
+    $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH . "/less/main-page.css");
     $APPLICATION->SetAdditionalCSS("/h/css/price-list.css");
+    $APPLICATION->AddHeadScript("/h/js/script_dev.js");
+    $APPLICATION->AddHeadScript('//cdnjs.cloudflare.com/ajax/libs/jquery.sticky/1.0.4/jquery.sticky.min.js', true);
 
 
     $authorized = $USER->IsAuthorized();
@@ -93,12 +101,24 @@ Loc::loadLanguageFile(__FILE__);
 
     <? $APPLICATION->ShowHead(); ?>
 </head>
-<? if ($APPLICATION->GetCurDir() == SITE_DIR): ?>
-<body class="index-page no-load">
-<? else: ?>
-<body class="<? $APPLICATION->ShowProperty("body_class") ?>">
-<? endif; ?>
-<? $APPLICATION->ShowPanel() ?>
+<body class="<? $APPLICATION->ShowProperty("body_class") ?>"><? $APPLICATION->ShowPanel() ?>
+
+<div id="search" class="header-search-overlay">
+    <form action="">
+        <div class="search-container">
+            <div class="b-catalog-main__search">
+                <input type="text" id="" name="" class="b-catalog-main__input" placeholder="Артикул или наименование" />
+                <a class="b-catalog-main__icon" href="#" title="">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </a>
+            </div>
+            <button class="btn btn-primary" type="submit" value="Искать">Искать</button>
+        </div>
+    </form>
+    <a class="close-overlay" href="javascript:void(0)" onclick="toggleSearch(this)" title="Закрыть">
+        <i class="fa fa-close" aria-hidden="true"></i>
+    </a>
+</div>
 
 <div class="perspective">
     <a href="#" title="" class="hamburger-mobile__close"></a>
@@ -289,7 +309,15 @@ Loc::loadLanguageFile(__FILE__);
     <div class="perspective-layout">
         <? if ($APPLICATION->GetCurDir() == SITE_DIR): ?>
             <div class="b-container">
+                <div class="sub-header__line">
+                    <a class="unstyled" href="tel:74957034114" title="Телефон">+7 (495) 703-41-14</a>
+                    <a class="unstyled" href="mailto:info@hogart.ru" title="">info@hogart.ru</a>
+                    <a class="unstyled" href="javascript:void(0)" title="Склады и офисы">
+                        <i class="fa fa-map-marker" aria-hidden="true"></i> Склады и офисы
+                    </a>
+                </div>
                 <header class="b-header">
+
                     <a class="b-header__logo" href="" title="">
                         <img src="/images/m_logo.svg" alt="" title="" />
                     </a>
@@ -300,37 +328,33 @@ Loc::loadLanguageFile(__FILE__);
                                     <a class="b-header__link" href="/company/" title="О компании">О компании</a>
                                 </li>
                                 <li class="b-header__item">
+                                    <a class="b-header__link" href="/company/news/" title="Новости">Новости</a>
+                                </li>
+                                <li class="b-header__item">
                                     <a class="b-header__link" href="/stock/" title="Акции">Акции</a>
+                                </li>
+                                <li class="b-header__item">
+                                    <a class="b-header__link" href="javascript:void(0)" title="Продукция">Продукция</a>
                                 </li>
                                 <li class="b-header__item">
                                     <a class="b-header__link" href="/learn/" title="Обучение">Обучение</a>
                                 </li>
                                 <li class="b-header__item">
-                                    <a class="b-header__link" href="/integrated-solutions/all_projects.php" title="Объекты">Объекты</a>
-                                </li>
-                                <li class="b-header__item">
                                     <a class="b-header__link" href="/services/" title="Сервис">Сервис</a>
                                 </li>
                             </ul>
-                            <div class="b-catalog-main__search">
-                                <input type="text" id="" name="" class="b-catalog-main__input" placeholder="Артикул или наименование" />
-                                <a class="b-catalog-main__icon" href="#" title="">
-                                    <img src="/images/header-search.svg" alt="" title="" />
-                                </a>
-                            </div>
                         </div>
-                        <a class="b-header__lk" href="#" title="Личный кабинет">Личный кабинет</a>
+                        <a class="b-header__lk" href="#" title="Личный кабинет">
+                            <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                        </a>
+                        <a class="b-header__search" href="javascript:void(0)" onclick="toggleSearch(this)" title="Поиск">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </a>
                     </div>
                     <div class="header-mobile">
                         <a class="header-mobile__menu" href="#" title="">
                             <img src="/images/header-menu.svg" />
                         </a>
-                        <div class="header-mobile__search">
-                            <label for="input_search" class="header-mobile__search-label">
-                                <img src="/images/header-search.svg" />
-                            </label>
-                            <input id="input_search" class="header-mobile__search-input active" placeholder="Артикул или наименование..." />
-                        </div>
                         <? if ($authorized) {?>
                             <? $APPLICATION->IncludeComponent("hogart.lk:account.cart.add", "mobile", [
                                 'CART_URL' => '/account/cart/'

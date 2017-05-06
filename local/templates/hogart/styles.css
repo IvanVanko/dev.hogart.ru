@@ -755,7 +755,7 @@ a[href^="mailto:"]:before {
   content: "\f0e0";
   margin-right: 5px;
 }
-a[href^="mailto:"]:hover {
+a[href^="mailto:"]:not(.unstyled):hover {
   color: #95c600 !important;
   text-decoration: underline !important;
 }
