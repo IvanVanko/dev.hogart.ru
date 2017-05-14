@@ -308,6 +308,10 @@
     float: right;
 }
 
+a.help {
+    display: none;
+}
+
 @media(max-width: 767px) {
 
     .popup-cnt .inner-cnt {
@@ -455,7 +459,7 @@
         min-width: 320px;
         width: 100%;
         padding: 0 15px;
-        height: auto;
+        height: auto !important;
     }
 
     #main-wrapper {
@@ -631,7 +635,7 @@
         border-radius: 100%;
         margin-bottom: 10px;
         position: fixed;
-        bottom: 50px;
+        bottom: 1rem;
         right: 15px;
         z-index: 2900;
     }
@@ -728,7 +732,6 @@
     }
 
     .header-mobile__cart .icon {
-        color: black;
         font-size: 3rem;
     }
 

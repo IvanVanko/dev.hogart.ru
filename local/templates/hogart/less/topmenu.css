@@ -1,0 +1,65 @@
+ul[data-depth="1"] {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+ul[data-depth="1"] li.item {
+  display: inline-block;
+  height: 100%;
+  line-height: 9rem;
+  vertical-align: middle;
+}
+.is-sticky ul[data-depth="1"] li.item {
+  line-height: 6rem;
+}
+ul[data-depth="1"] li.item a {
+  white-space: nowrap;
+}
+ul[data-depth="1"] li.item .fa-angle-right {
+  transition: transform .3s linear;
+  font-size: .8em;
+}
+ul[data-depth="1"] li.item:hover .fa-angle-right,
+ul[data-depth="1"] ul[data-depth] li.item:hover .fa-angle-right {
+  transform: rotate(90deg);
+}
+ul[data-depth="1"] li.item:hover ul[data-depth],
+ul[data-depth="1"] ul[data-depth] li.item:hover ul[data-depth] {
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(0%) translateY(0);
+  transition-delay: 0s;
+  transition-duration: .3s;
+}
+ul[data-depth="1"] ul[data-depth] {
+  position: absolute;
+  top: 100%;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateZ(0) translateY(10%);
+  transition: all 0.5s ease 0s, visibility 0s linear 0.5s;
+  list-style: none;
+  padding-left: 0;
+  background-color: white;
+  margin-left: -20px;
+  z-index: 10;
+  border: 1px solid #eee;
+  border-top: none;
+}
+ul[data-depth="1"] ul[data-depth] li.item {
+  display: block;
+  text-align: left;
+  padding: .5rem 1rem;
+  line-height: initial;
+}
+ul[data-depth="1"] ul[data-depth] li.item a {
+  padding: 0 20px;
+  font-size: 1.4rem;
+}
+@media (max-width: 1024px) {
+  ul[data-depth="1"] li.item {
+    line-height: 7rem;
+  }
+}

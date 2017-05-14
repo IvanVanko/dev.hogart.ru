@@ -1,6 +1,114 @@
 var app = {};
 app.init = function () {
-    return this;
+
+  var cities = [
+    {
+      name: 'Москва',
+      name_short: 'Мск',
+      value: 'msk',
+      email: 'info@hogart.ru',
+      phone: '74957881112',
+      url: '/contacts/tsentralnyy-ofis-khogart-v-moskve-sklad-i-servisnaya-sluzhba/'
+    },
+    {
+      name: 'Санкт-Петербург',
+      name_short: 'Спб',
+      value: 'spb',
+      email: 'info@spb.hogart.ru',
+      phone: '78127034114',
+      url: '/contacts/ofis-kompanii-khogart-v-sankt-peterburge/'
+    }
+  ];
+
+  var $selectCity = $('#select-city').selectize({
+    options: cities,
+    valueField: 'value',
+    labelField: 'name',
+    highlight: false
+  });
+
+  $selectCity[0].selectize.on("change", function (value) {
+    setCookie("city", value, 2592000);
+    var searchCity = cities.filter(function (city) { return value === city.value });
+    if (searchCity.length) {
+      changeSubHeader(searchCity[0])
+    }
+  });
+
+  var geocoder = new google.maps.Geocoder();
+
+  function selectCity(locality, code) {
+    var searchCity = cities.filter(function (city) { return (locality ? locality === city.name : code === city.value) });
+    if (searchCity.length) {
+      $selectCity[0].selectize.setValue(searchCity[0].value);
+    } else {
+      $selectCity[0].selectize.setValue("msk");
+    }
+  }
+
+  function changeSubHeader(searchCity) {
+    $('.sub-header__line .sub-phone')
+      .attr("href", "tel:" + searchCity.phone)
+      .html(searchCity.phone.replace(/(\d{1})(\d{3})(\d{3})(\d{2})(\d{2})(\d*)/, "+$1 ($2) $3-$4-$5 $6"))
+    ;
+    $('.sub-header__line .sub-email')
+      .attr("href", "mailto:" + searchCity.email)
+      .attr("title", searchCity.email)
+      .html(searchCity.email)
+    ;
+    $('.sub-header__line .sub-contact-url')
+      .attr("href", "" + searchCity.url)
+    ;
+  }
+
+  // if (navigator.geolocation && !getCookie('city')) {
+  //   navigator.geolocation.getCurrentPosition(function (position) {
+  //     var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+  //     geocoder.geocode({'location': latlng}, function(results, status) {
+  //       if (status === google.maps.GeocoderStatus.OK && results[0]) {
+  //         results[0].address_components.forEach(function (component) {
+  //           if (component.types[0] === 'locality') {
+  //             selectCity(component.long_name);
+  //             return false;
+  //           }
+  //         });
+  //       }
+  //     });
+  //   });
+  // } else {
+    selectCity(null, getCookie('city') || "msk");
+  // }
+
+  $('img.svg').each(function(){
+    var $img = $(this);
+    var imgID = $img.attr('id');
+    var imgClass = $img.attr('class');
+    var imgURL = $img.attr('src');
+
+    $.get(imgURL, function(data) {
+      // Get the SVG tag, ignore the rest
+      var $svg = jQuery(data).find('svg');
+
+      // Add replaced image's ID to the new SVG
+      if(typeof imgID !== 'undefined') {
+        $svg = $svg.attr('id', imgID);
+      }
+      // Add replaced image's classes to the new SVG
+      if(typeof imgClass !== 'undefined') {
+        $svg = $svg.attr('class', imgClass+' replaced-svg');
+      }
+
+      // Remove any invalid XML tags as per http://validator.w3.org
+      $svg = $svg.removeAttr('xmlns:a');
+
+      // Replace image with new SVG
+      $img.replaceWith($svg);
+
+    }, 'xml');
+
+  });
+
+  return this;
 };
 houdini.init({
     callbackAfter: function (toggle) {
@@ -28,133 +136,6 @@ Number.prototype.formatMoney = function (c, d, t) {
     return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
 };
 
-app.initFullHeight = function () {
-    setTimeout(function () {
-        var inner_height = 0;
-        $(".main-container .container-inner > .inner").each(function () {
-            inner_height += $(this).outerHeight();
-        });
-
-        var window_height = $(window).outerHeight() - 55;
-
-
-        $(".index-page .blur-main").height($(window).outerHeight());
-        $(".index-page .wrapper").height($(window).outerHeight());
-
-        // console.clear();
-        // console.log("Inner: " + inner_height);
-        // console.log("Window: " + window_height);
-        /* Murdoc:
-         * Решение для футера с маленькой высотой контентной области
-         * Скролинг правого блока при маленькой высоте контентной области
-         */
-
-        $("aside.sidebar").css({
-            overflow: "auto"
-        });
-
-        if (inner_height <= window_height - 55) {
-            $(".learn-head-link").parent().css({
-                position: "absolute",
-                bottom: "55px",
-                //width: "100%",
-                right: "0px",
-                'margin-right': "330px",
-                'margin-left': "235px",
-                left: "0px",
-                padding: "0px"
-            }).addClass("right");
-        }
-        else {
-            var window1024 = ($(window).outerWidth() < 1024) ? 1024 : $(window).outerWidth();
-            if ($("aside.sidebar").length) {
-                $(".learn-head-link").parent().css({
-                    position: "static",
-                    bottom: "auto",
-                    width: window1024 - 565,
-                    'margin-right': "0px",
-                    'margin-left': "0px",
-                }).removeClass("right");
-
-            }
-            else {
-                $(".learn-head-link").parent().css({
-                    position: "static",
-                    bottom: "auto",
-                    width: window1024 - 235,
-                    'margin-right': "0px",
-                    'margin-left': "0px",
-                }).removeClass("right");
-            }
-        }
-
-        if (inner_height <= window_height - 55) {
-            $(".main-container footer:not(.blockquote)").addClass("right");
-            if (!$('.presentation-main-page').length) {
-                $("footer:not(.blockquote) .p_logo").css({
-                    'position': 'relative',
-                    'right': '330px'
-                });
-                $("footer:not(.blockquote) span").css({
-                    'position': 'relative',
-                    'left': '220px'
-                });
-            }
-
-        }
-        else {
-            var window1024 = ($(window).outerWidth() < 1024) ? 1024 : $(window).outerWidth();
-            if ($("aside.sidebar").length) {
-                $(".main-container footer:not(.blockquote)").removeClass("right");
-
-                $(".learn-head-link").parent().css({
-                    position: "static",
-                    bottom: "auto",
-                    width: window1024 - 565,
-                    'margin-right': "0px",
-                    'margin-left': "0px",
-                }).removeClass("right");
-
-            }
-            else {
-                $(".main-container footer:not(.blockquote)").css({
-                    position: "static",
-                    bottom: "auto",
-                    width: window1024 - 235
-                }).removeClass("right");
-
-                $(".learn-head-link").parent().css({
-                    position: "static",
-                    bottom: "auto",
-                    width: window1024 - 235,
-                    'margin-right': "0px",
-                    'margin-left': "0px",
-                }).removeClass("right");
-            }
-            if (!$('.presentation-main-page').length) {
-                $("footer:not(.blockquote) .p_logo").css({
-                    'position': '',
-                    'right': ''
-                });
-                $("footer:not(.blockquote) span").css({
-                    'position': '',
-                    'left': ''
-                });
-            }
-            //
-            //$("aside.sidebar").css({overflow: "hidden"});
-            //
-            ////MURDOC: БЛЯ! :-(
-            //if ($("aside.sidebar .js-paralax-item").outerHeight() > $(window).outerHeight()) {
-            //    $("aside.sidebar").height($("aside.sidebar .js-paralax-item").outerHeight() + 25);
-            //} else {
-            //    $("aside.sidebar").height($(window).outerHeight() - 55);
-            //}
-        }
-    }, 10 / 10);
-
-    return this;
-};
 
 app.initViewIcoNextBack = function () {
     new ResizeSensor($('aside.sidebar > .js-paralax-item'), function () {
@@ -1416,8 +1397,9 @@ $(function () {
     fixSearch(3);
     fixSearch(2);
 
+
+
     app.init().
-    initFullHeight().
     initFullHeightParent().
     initFullDocument().
     initMenu().
@@ -1448,6 +1430,8 @@ $(function () {
 
     app.converter_properties($('.blur-main .main-sidebar'), $('.header-cnt'), 'width', 'padding-left');
     app.converter_properties($('.blur-main .main-sidebar'), $('.blur-main'), 'width', 'width');
+
+
     $('body').removeClass('no-load');
 });
 $(document).ready(function () {
@@ -1459,68 +1443,6 @@ $(document).ready(function () {
     }
     $('.zones h2.label').click(function () {
 
-    });
-    //todo andrew
-    $(window).resize(function () {
-        $(".main-container").css({
-            paddingLeft: "0px"
-        });
-        $(".index-page .main-container").css({
-            height: $(window).outerHeight() - 40,
-            paddingLeft: "0px",
-            overflow: "hidden"
-        });
-        $(".search-page .main-container").css({
-            height: $(window).outerHeight() - 40,
-            paddingLeft: "0px",
-            overflow: "hidden"
-        });
-        app.initFullHeight();
-    });
-    $(document).click(function () {
-        $(".main-container").css({
-            paddingLeft: "0px"
-        });
-        $(".index-page .main-container").css({
-            height: $(window).outerHeight() - 40,
-            paddingLeft: "0px",
-            overflow: "hidden"
-        });
-        $(".search-page .main-container").css({
-            height: $(window).outerHeight() - 40,
-            paddingLeft: "0px",
-            overflow: "hidden"
-        });
-        app.initFullHeight();
-        setTimeout(function () {
-            $(".main-container").css({
-                paddingLeft: "0px"
-            });
-            $(".index-page .main-container").css({
-                height: $(window).outerHeight() - 40,
-                paddingLeft: "0px",
-                overflow: "hidden"
-            });
-            $(".search-page .main-container").css({
-                height: $(window).outerHeight() - 40,
-                paddingLeft: "0px",
-                overflow: "hidden"
-            });
-            app.initFullHeight();
-        }, 100 / 10);
-    });
-    $(".main-container").css({
-        paddingLeft: "0px"
-    });
-    $(".index-page .main-container").css({
-        height: $(window).outerHeight() - 40,
-        paddingLeft: "0px",
-        overflow: "hidden"
-    });
-    $(".search-page .main-container").css({
-        height: $(window).outerHeight() - 40,
-        paddingLeft: "0px",
-        overflow: "hidden"
     });
 
     if ($('.js-company-slider').length) {

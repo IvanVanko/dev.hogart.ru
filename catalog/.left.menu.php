@@ -2,22 +2,36 @@
 global $APPLICATION;
 $aMenuLinks = [];
 
-if ($APPLICATION->GetCurDir() == SITE_DIR) {
-    $aMenuLinks[] = Array(
-        "Бренды",
-        "/brands/",
-        Array(),
-        Array(),
-        ""
-    );
+$aMenuLinks[] = Array(
+    "Каталог",
+    "/catalog/",
+    Array(),
+    Array(),
+    ""
+);
 
-    $aMenuLinks[] = Array(
-        "Документация",
-        "/documentation/",
-        Array(),
-        Array(),
-        ""
-    );
-}
+$aMenuLinks[] = Array(
+    "Прайс-лист",
+    "/price/",
+    Array(),
+    Array(),
+    ""
+);
+
+$aMenuLinks[] = Array(
+    "Бренды",
+    "/brands/",
+    Array(),
+    Array(),
+    ""
+);
+
+$aMenuLinks[] = Array(
+    "Документация",
+    "/documentation/",
+    Array(),
+    Array(),
+    ""
+);
 
 ?>

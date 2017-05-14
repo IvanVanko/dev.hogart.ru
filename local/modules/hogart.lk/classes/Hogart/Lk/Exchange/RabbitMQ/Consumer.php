@@ -49,9 +49,13 @@ class Consumer
             'login' => \COption::GetOptionString("hogart.lk", "RABBITMQ_LOGIN"),
             'password' => \COption::GetOptionString("hogart.lk", "RABBITMQ_PASSWORD")
         ]);
-        $this->connection->connect();
-        $this->channel = new \AMQPChannel($this->connection);
-        $this->logger = new LoggerCollection("RABBITMQ", new BitrixLogger());
+        try {
+            $this->connection->connect();
+            $this->channel = new \AMQPChannel($this->connection);
+            $this->logger = new LoggerCollection("RABBITMQ", new BitrixLogger());
+        } catch (\AMQPConnectionException $e) {
+
+        }
     }
 
     /**

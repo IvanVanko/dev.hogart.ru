@@ -22,6 +22,15 @@ class ComposerStaticInit2e3d87f6242949ae85ff81460c4b1298
         array (
             'Picqer\\Barcode\\' => 15,
         ),
+        'M' => 
+        array (
+            'MaxMind\\Db\\' => 11,
+            'MaxMind\\' => 8,
+        ),
+        'G' => 
+        array (
+            'GeoIp2\\' => 7,
+        ),
         'D' => 
         array (
             'Dompdf\\' => 7,
@@ -29,6 +38,10 @@ class ComposerStaticInit2e3d87f6242949ae85ff81460c4b1298
             'Doctrine\\Common\\Cache\\' => 22,
             'Doctrine\\Common\\' => 16,
             'DeviceDetector\\' => 15,
+        ),
+        'C' => 
+        array (
+            'Composer\\CaBundle\\' => 18,
         ),
     );
 
@@ -44,6 +57,18 @@ class ComposerStaticInit2e3d87f6242949ae85ff81460c4b1298
         'Picqer\\Barcode\\' => 
         array (
             0 => __DIR__ . '/..' . '/picqer/php-barcode-generator/src',
+        ),
+        'MaxMind\\Db\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/maxmind-db/reader/src/MaxMind/Db',
+        ),
+        'MaxMind\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/maxmind/web-service-common/src',
+        ),
+        'GeoIp2\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/geoip2/geoip2/src',
         ),
         'Dompdf\\' => 
         array (
@@ -64,6 +89,10 @@ class ComposerStaticInit2e3d87f6242949ae85ff81460c4b1298
         'DeviceDetector\\' => 
         array (
             0 => __DIR__ . '/..' . '/piwik/device-detector',
+        ),
+        'Composer\\CaBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/composer/ca-bundle/src',
         ),
     );
 

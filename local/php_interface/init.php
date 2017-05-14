@@ -95,6 +95,18 @@ $obInit->addFolder('');
 
 $obInit->Init();
 
+$contacts = [
+    524901 => [
+        'email' => 'info@hogart.ru',
+        'phone' => '74957881112'
+    ],
+    536203 => [
+        'email' => 'info@spb.hogart.ru',
+        'phone' => '78127034114'
+    ],
+];
+
+
 global $BX_MENU_CUSTOM;
 $BX_MENU_CUSTOM = new HogartCustomMenu();
 

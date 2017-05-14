@@ -33,6 +33,7 @@ $arResult["FORM_ACTION"] = htmlspecialcharsbx(str_replace("#SITE_DIR#", SITE_DIR
 $arResult["AJAX_PARAMS"] = \CAjax::GetComponentID($this->getName(), $this->getTemplateName(), md5(serialize($arResult["FORM_ACTION"])));
 
 if ($arResult["AJAX_PARAMS"] === $_POST["ajaxKey"]) {
+    session_write_close();
     $APPLICATION->RestartBuffer();
     header("Content-Type: application/json");
     echo json_encode(MainSearchSuggest::getInstance()->search($_REQUEST['q'], SITE_ID));
