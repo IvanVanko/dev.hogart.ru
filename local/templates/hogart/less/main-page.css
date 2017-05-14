@@ -466,6 +466,9 @@ body.index-page {
   color: #2c2432;
   transform: scale(1.05);
 }
+.b-catalog-main__link__mobile {
+  display: none;
+}
 .b-catalog-main__link img {
   display: block;
   height: 110px;
@@ -762,9 +765,15 @@ body.index-page {
 .footer-mobile__right {
   display: none;
 }
+.oldschool-logo {
+  max-width: 12rem;
+}
 .oldschool-logo a {
   text-decoration: none !important;
   color: #2c2432;
+  display: block;
+  width: 100%;
+  text-align: center;
 }
 .oldschool-logo a:hover,
 .oldschool-logo a:focus,
@@ -1030,7 +1039,13 @@ body.index-page {
     width: 40%;
     text-align: center;
   }
-  .b-catalog-main__list .b-catalog-main__link img {
+  .b-catalog-main__list .b-catalog-main__link {
+    display: none;
+  }
+  .b-catalog-main__list .b-catalog-main__link__mobile {
+    display: inline-block;
+  }
+  .b-catalog-main__list .b-catalog-main__link__mobile img {
     height: 5.5rem;
   }
   .b-news-main__list {
@@ -1048,7 +1063,7 @@ body.index-page {
   }
   footer.b-footer {
     position: relative !important;
-    padding: 0 15px 25px !important;
+    padding: 0 1rem 10rem !important;
     bottom: 0;
     left: 0;
     flex-direction: column;

@@ -59,6 +59,13 @@ $catalogMenu = $APPLICATION->IncludeComponent(
                             <? endif; ?>
                             <span><?= $catalogItem[0] ?></span>
                         </a>
+                        <a href="<?= preg_replace("%bx_cat%", "heating", $catalogItem[1]) ?>" class="b-catalog-main__link b-catalog-main__link__mobile" title="<?= $catalogItem[0] ?>">
+                            <? if (!empty($catalogItem[3]['ICON'])): ?>
+                                <? $file = CFile::ResizeImageGet($catalogItem[3]['ICON'], array('width' => 300, 'height' => 300), BX_RESIZE_IMAGE_EXACT, true); ?>
+                                <img src="<?= $file['src']; ?>" alt="<?= $catalogItem[0] ?>">
+                            <? endif; ?>
+                            <span><?= $catalogItem[0] ?></span>
+                        </a>
                     </li>
                 <? endforeach; ?>
             </ul>

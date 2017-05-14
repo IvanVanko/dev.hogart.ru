@@ -53,8 +53,7 @@ report-uri /csp-report.php");
     $APPLICATION->AddHeadScript("/local/assets/bootstrap/js/tooltip.js");
     $APPLICATION->AddHeadScript("/local/assets/bootstrap/js/alert.js");
     $APPLICATION->AddHeadScript("/local/assets/bootstrap/js/dropdown.js");
-    $APPLICATION->AddHeadScript("/local/assets/slick/slick/slick.min.js");
-    $APPLICATION->AddHeadScript("/local/assets/slick/slick/slick.js");
+    $APPLICATION->AddHeadScript("//cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.js", true);
 
     $APPLICATION->SetAdditionalCSS("/h/css/houdini.min.css");
     $APPLICATION->AddHeadScript("/h/js/houdini.min.js");

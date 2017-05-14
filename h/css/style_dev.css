@@ -1867,10 +1867,11 @@ a.help {
     .footer-menu-main {
         position: fixed;
         right: -100%;
-        bottom: 50px;
+        bottom: 0;
         transition: right 0.5s;
         z-index: 6000;
         width: 250px;
+        transform: translateY(-100%);
     }
 
     .footer-menu.active,

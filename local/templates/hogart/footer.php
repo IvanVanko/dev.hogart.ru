@@ -29,9 +29,54 @@ global $MESS;
 </div>
 
 
-<a href="#" title="" class="help js-help-main">
+<a href="javascript:void(0)" title="" class="help js-help-main">
     <img src="/images/help.svg" alt="" title="" />
 </a>
+
+<div class="footer-mobile__right">
+    <div class="footer-menu-main" id="accordion-footer">
+        <div class="footer-menu__panel panel panel-default">
+            <a class="footer-menu__link" data-toggle="collapse" data-parent="#accordion-footer" href="#footer-contact" aria-expanded="false" title="Позвонить">Позвонить
+            </a>
+            <div id="footer-contact" class="footer-menu__content collapse panel-collapse">
+                <a class="footer-menu__tel" href="tel:84957881112" title="">+7 (495) 788-11-12</a>
+                <a class="footer-menu__tel" href="tel:88127034114" title="">+7 (812) 703-41-14</a>
+            </div>
+        </div>
+        <div class="footer-menu__panel panel panel-default">
+            <a class="footer-menu__link" data-toggle="collapse" data-parent="#accordion-footer" href="#footer-map" aria-expanded="false" title="Проехать">Проехать
+            </a>
+            <div id="footer-map" class="footer-menu__content collapse panel-collapse">
+                <ul class="contacts-list-mobile">
+                    <li class=" active">
+                        <a href="/contacts/tsentralnyy-ofis-khogart-v-moskve-sklad-i-servisnaya-sluzhba/">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            Центральный офис "Хогарт" в Москве, склад и сервисная служба
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="/contacts/ofis-kompanii-khogart-v-sankt-peterburge/">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            Офис компании «Хогарт» в Санкт-Петербурге
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="/contacts/salon-khogart-art-v-tsentre-dizayna-i-arkhitektury-artplay/">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            Салон ХОГАРТ_арт в ARTPLAY
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="/contacts/calon-khogart-art-na-ulitse-khamovnicheskiy-val/">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            Cалон «Хогарт арт» на улице Хамовнический Вал
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="popup-cnt">
     <div class="inner-cnt" id="popup-os">
