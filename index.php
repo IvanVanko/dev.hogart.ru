@@ -79,7 +79,8 @@ $catalogMenu = $APPLICATION->IncludeComponent(
             'IBLOCK_ID' => (LANGUAGE_ID == 'en' ? '28' : '3'),
             'FILTER' => array(
                 ">=DATE_ACTIVE_FROM" => date_format($date, 'd-m-Y')." 00:00:00",
-                "PROPERTY_INDEX_SHOW" => "Y"
+                "PROPERTY_INDEX_SHOW" => "Y",
+                ">PREVIEW_PICTURE" => 0
             ),
             "CHECK_PERMISSIONS" => "Y",
             "CACHE_TYPE" => "A",
@@ -108,7 +109,8 @@ $catalogMenu = $APPLICATION->IncludeComponent(
             'IBLOCK_ID' => (LANGUAGE_ID == 'en' ? '34' : '6'),
             'FILTER' => array(
                 ">=DATE_ACTIVE_FROM" => date_format($date, 'd-m-Y')." 00:00:00",
-                "PROPERTY_INDEX_SHOW" => "Y"
+                "PROPERTY_INDEX_SHOW" => "Y",
+                ">PREVIEW_PICTURE" => 0
             ),
             "CHECK_PERMISSIONS" => "Y",
             "CACHE_TYPE" => "A",
