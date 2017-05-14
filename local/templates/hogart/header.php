@@ -347,11 +347,9 @@ report-uri /csp-report.php");
                         <i class="fa fa-search" aria-hidden="true"></i>
                     </a>
                     <? if ($authorized) {?>
-                        <div class="b-header__cart">
-                            <? $APPLICATION->IncludeComponent("hogart.lk:account.cart.add", "mobile", [
-                                'CART_URL' => '/account/cart/'
-                            ]); ?>
-                        </div>
+                        <? $APPLICATION->IncludeComponent("hogart.lk:account.cart.add", "mobile", [
+                            'CART_URL' => '/account/cart/'
+                        ]); ?>
                     <?}?>
                     <div class="header-mobile">
                         <a class="header-mobile__menu color-black" href="javascript:void(0)" title="Мобильное меню">
