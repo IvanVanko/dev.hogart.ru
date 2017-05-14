@@ -770,7 +770,7 @@ class ParsingModel {
             if(count($array_product_doc) and $_GET['V'] != 'Y' and $_GET['P'] != 'Y') {
                 foreach($array_product_doc as $product) {
                     if ((new CIBlockSection())->Update($product['id_b'], [
-                        "PICTURE" => $file_obj
+                        "UF_ICON" => $file_obj
                     ])) {
                         echo "Фото добавлено в раздел {$product['id_b']}: " . $name . "<br />";
                         if($this->answer) {

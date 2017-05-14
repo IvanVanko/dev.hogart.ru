@@ -115,7 +115,7 @@ $page = $APPLICATION->GetCurDir();
                         <? endforeach; ?>
                     </div>
                 <? endif; ?>
-                <a href="/company/news/" class="btn btn-link" title="Сбросить"> Сбросить 
+                <a href="/company/news/" class="btn btn-link" title="Сбросить"> Сбросить </a>
             </form>
         </div>
     </div>

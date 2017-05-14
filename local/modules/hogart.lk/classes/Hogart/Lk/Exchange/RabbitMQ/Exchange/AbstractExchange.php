@@ -33,7 +33,7 @@ abstract class AbstractExchange implements ExchangeInterface
      */
     public function __construct(Consumer $consumer = null)
     {
-        if (null !== $consumer) {
+        if (null !== $consumer && $consumer->getConnection()->isConnected()) {
             $this->useConsumer($consumer);
         }
     }
@@ -154,6 +154,10 @@ abstract class AbstractExchange implements ExchangeInterface
      */
     public function publish($message, $key, $flags = AMQP_NOPARAM, $attributes = [])
     {
+        if (empty($this->exchange)) {
+            return false;
+        }
+
         $attributes = array_merge([
             "delivery_mode" => 2,
             "timestamp" => time()

@@ -1,0 +1,25 @@
+@import (reference) "../../../../styles";
+
+#header-search {
+  height: 100%;
+  span.twitter-typeahead {
+    font-family: @font-family-serif;
+    font-size: @font-size-h5;
+    .tt-menu {
+      max-height: calc(~"100vh - 200%");
+      overflow-y: auto;
+      small {
+        font-size: @font-size-h6;
+      }
+      min-width: 100% !important;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      .suggest-item {
+        border-bottom: 1px dashed @brand-green;
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+}

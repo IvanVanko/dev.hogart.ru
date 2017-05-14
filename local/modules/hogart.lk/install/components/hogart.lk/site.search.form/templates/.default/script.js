@@ -5,22 +5,25 @@
 $(function () {
     function headerSearchSuggest (url, ajaxKey) {
         return function (query, syncResults, asyncResults) {
-
-            if ($.isPlainObject(window.headerSearchSuggestRequest)) {
+          if (window.headerSearchSuggestTimer) {
+            clearTimeout(window.headerSearchSuggestTimer);
+          }
+          window.headerSearchSuggestTimer = setTimeout(function () {
+              if ($.isPlainObject(window.headerSearchSuggestRequest)) {
                 window.headerSearchSuggestRequest.abort();
                 window.headerSearchSuggestRequest = null;
-            }
-            setTimeout(function () {
-                window.headerSearchSuggestRequest = $.ajax( { url: url + "?q=" + query, data: { ajaxKey: ajaxKey }, dataType: 'json', type: 'post' } );
-                window.headerSearchSuggestRequest.then( function ( data ) {
-                    if ($.isArray(data.hits.hits)) {
-                        var source = [];
-                        data.hits.hits.forEach(function (item) {
-                            source.push( item._source );
-                        });
-                        asyncResults(source);
-                    }
-                } );
+              }
+
+              window.headerSearchSuggestRequest = $.ajax( { url: url + "?q=" + query, data: { ajaxKey: ajaxKey }, dataType: 'json', type: 'post' } );
+              window.headerSearchSuggestRequest.then( function ( data ) {
+                  if ($.isArray(data.hits.hits)) {
+                      var source = [];
+                      data.hits.hits.forEach(function (item) {
+                          source.push( item._source );
+                      });
+                      asyncResults(source);
+                  }
+              } );
             }, 300)
         };
     }

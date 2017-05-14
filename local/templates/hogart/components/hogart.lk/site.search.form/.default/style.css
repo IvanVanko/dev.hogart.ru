@@ -1,0 +1,27 @@
+@media screen and (max-width: 767px) {
+}
+@media (min-width: 768px) {
+}
+#header-search {
+  height: 100%;
+}
+#header-search span.twitter-typeahead {
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 14px;
+}
+#header-search span.twitter-typeahead .tt-menu {
+  max-height: calc(100vh - 200%);
+  overflow-y: auto;
+  min-width: 100% !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+#header-search span.twitter-typeahead .tt-menu small {
+  font-size: 12px;
+}
+#header-search span.twitter-typeahead .tt-menu .suggest-item {
+  border-bottom: 1px dashed #95c600;
+}
+#header-search span.twitter-typeahead .tt-menu .suggest-item:last-child {
+  border-bottom: none;
+}

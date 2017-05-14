@@ -9,7 +9,9 @@ $this->setFrameMode(true);
 <div data-loader-wrapper="header.header-cnt" class="cart-counter2" id="<?= Cart::getContainer() ?>">
     <? $node = Ajax::Start($component, [], null, Cart::init($component)); ?>
     <a class="header-mobile__cart" href="<?= $arParams['CART_URL'] ?>">
-        <img src="/images/header-cart.svg" />
+        <span class="icon">
+            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+        </span>
         <span class="counter"><?= ($arResult['count']) ?></span>
     </a>
     <? Ajax::End($node->getId()) ?>

@@ -74,11 +74,6 @@
     display: none;
 }
 
-.perspective,
-.perspective-layout {
-    height: 100%;
-}
-
 .collection-table-mobile {
     display: none;
 }
@@ -313,7 +308,11 @@
     float: right;
 }
 
-@media(max-width: 768px) {
+a.help {
+    display: none;
+}
+
+@media(max-width: 767px) {
 
     .popup-cnt .inner-cnt {
         width: 100%;
@@ -460,7 +459,7 @@
         min-width: 320px;
         width: 100%;
         padding: 0 15px;
-        height: auto;
+        height: auto !important;
     }
 
     #main-wrapper {
@@ -474,7 +473,7 @@
 
     .main-navigation {
         list-style: none;
-        padding: 0 0 0 60px;
+        padding: 0 0 0 30px;
         display: block;
     }
 
@@ -636,7 +635,7 @@
         border-radius: 100%;
         margin-bottom: 10px;
         position: fixed;
-        bottom: 50px;
+        bottom: 1rem;
         right: 15px;
         z-index: 2900;
     }
@@ -711,28 +710,29 @@
     }
 
     .header-mobile__cart {
-        padding-top: 10px;
         float: right;
         position: relative;
     }
 
-    .header-mobile__cart span {
+    .header-mobile__cart span.counter {
         position: absolute;
-        top: 7px;
-        right: 0;
+        top: -.5rem;
+        right: -1rem;
         z-index: 1;
         color: white;
         background-color: #95c600;
-        width: 15px;
-        height: 15px;
+        width: 2rem;
+        height: 2rem;
         text-align: center;
         border-radius: 50%;
-        line-height: 1.2;
+        line-height: 2rem;
         font-weight: 500;
+        font-size: .8rem;
+        vertical-align: middle;
     }
 
-    .header-mobile__cart img {
-        width: 30px;
+    .header-mobile__cart .icon {
+        font-size: 3rem;
     }
 
     /*каталог*/
@@ -1351,56 +1351,6 @@
         width: 50%;
     }
 
-    .perspective.active .hamburger-mobile__close {
-        transform: translateX(-100%) translateZ(0px);
-    }
-
-    .perspective.active .hamburger-mobile__close:before,
-    .perspective.active .hamburger-mobile__close:after {
-        width: 25px;
-        height: 3px;
-    }
-    
-
-    .hamburger-mobile__close {
-        left: 100%;
-        position: absolute;
-        right: -45px;
-        top: 25px;
-        transform-origin: right center 0;
-        transform-style: preserve-3d;
-        transition: transform 0.5s linear 0s;
-        z-index: 9;
-        display: block;
-    }
-
-    .hamburger-mobile__close:before,
-    .hamburger-mobile__close:after {
-        content:"";
-        display: block;
-        background: #000;
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        margin: auto;
-        width: 0;
-        height: 0;
-    }
-
-    .hamburger-mobile__close:before {
-        transform: rotate(45deg);
-    }
-
-    .hamburger-mobile__close:after {
-        transform: rotate(-45deg);
-    }
-
-    .hamburger-mobile__button {
-        text-align: right;
-    }
-
     .filter-mobile {
         background: #2b2431;
     }
@@ -1491,52 +1441,9 @@
         border: none;
     }
 
-    .perspective {
-        backface-visibility: hidden;
-        perspective-origin: left center;
-        position: relative;
-        transition-duration: 0.5s;
-        z-index: 10;
-        height: auto;
-        height: 100%;
-        overflow-y: visible;
-        overflow-x: visible;
-    }
-
-    .perspective.active {
-        overflow: visible; 
-        perspective: 320px;
-        overflow-x: visible;
-    }
-
     .hamburger-mobile {
         display: block;
         position: relative;
-        background: #fff;
-    }
-
-    .perspective-layout {
-        backface-visibility: hidden;
-        background-color: white;
-        opacity: 1;
-        overflow: hidden;
-        padding-bottom: 0;
-        position: relative;
-        transition: all 0.5s linear 0s;
-        height: auto;
-    }
-
-    .perspective.active .hamburger-mobile {
-        right: 0;
-    }
-
-    .perspective.active .perspective-layout {
-        opacity: 0.75;
-        transform: translateZ(-160px) translateX(0.125%) rotateY(45deg);
-        transform-origin: left center 0;
-        max-width: 350px;
-        max-height: 554px;
-        overflow: hidden;
     }
 
     .perspective.active .filter-mobile__link {
@@ -1545,30 +1452,6 @@
 
     .perspective.active .perspective-layout .wrapper.js-fh {
         overflow: hidden !important;
-    }
-
-    .hamburger-mobile__content {
-        backface-visibility: hidden;
-        bottom: 0;
-        height: 0;
-        overflow: hidden;
-        left: 100%;
-        position: absolute;
-        right: -100%;
-        top: 0;
-        transform-origin: left center 0;
-        transform-style: preserve-3d;
-        transition: transform 0.5s ease-in-out 0s, height 0.5s ease-in-out 0s;
-        width: 100%;
-        z-index: 8;
-        top: 55px;
-    }
-    
-    .perspective.active .hamburger-mobile__content {
-        transform: translateX(-100%) translateZ(0px);
-        height: 100%;
-        overflow:visible;
-        padding-left: 120px;
     }
 
     .perspective.active #header-block.sticky + .row {
@@ -2360,5 +2243,28 @@
         font-weight: normal;
         height: auto;
         line-height: 22px;
+    }
+
+    .learn-people-list li img {
+        display: none;
+    }
+
+    .reg_page .reg-kupon {
+        overflow: visible;
+        padding: 0;
+    }
+
+    .reg_page .reg-kupon > .col1 {
+        float: none;
+        width: 100%;
+        position: static;
+        margin-bottom: 20px;
+    }
+
+    .reg_page .reg-kupon > .col2 {
+        padding-left: 0;
+        display: block;
+        float: none;
+        padding-bottom: 0;
     }
 }

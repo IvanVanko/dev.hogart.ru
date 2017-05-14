@@ -1167,6 +1167,7 @@ textarea {
 .main-container {
   height: 100%;
   position: relative;
+  padding: 2rem 3rem 0 3rem;
 }
 .main-container a:not(.btn) {
   color: #333;
@@ -1686,47 +1687,6 @@ footer.right {
   }
 }
 @media all and (max-height: 650px) {
-  body,
-  .index-page {
-    height: 650px !important;
-    overflow: visible !important;
-  }
-  .index-page .presentation-main-page {
-    height: 610px !important;
-  }
-  .blur-main {
-    top: 0 !important;
-  }
-  .main-container .sidebar {
-    top: 0 !important;
-  }
-  body > .wrapper,
-  .index-page .blur-main,
-  .blur-main .main-sidebar,
-  .blur-main .hide-block .hidden-menu,
-  .blur-main .main-sidebar .trigger-menu-cnt,
-  .blur-main .main-sidebar .present-cnt {
-    height: 650px !important;
-  }
-  .action_page .side_href,
-  .documentation_page .sticky.fixed,
-  .blur-main .hide-block .hidden-menu,
-  .credits {
-    position: absolute !important;
-  }
-  .header-cnt {
-    top: 0 !important;
-  }
-}
-@media all and (max-height: 650px) {
-  body,
-  .index-page {
-    height: 650px !important;
-    overflow: visible !important;
-  }
-  .index-page .presentation-main-page {
-    height: 610px !important;
-  }
   .blur-main {
     top: 0 !important;
   }

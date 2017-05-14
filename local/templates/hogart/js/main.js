@@ -2,9 +2,16 @@
 
 var hogartApp = {};
 $(function () {
-    hogartApp = new HogartApp();
-    hogartApp.init();
+  hogartApp = new HogartApp();
+  hogartApp.init();
+
+  $('header.b-header').sticky({zIndex: 999, wrapperClassName: 'header-sticky-wrapper'})
+
 });
+
+function toggleSearch(el) {
+  $('#search').toggleClass('show');
+}
 
 function HogartApp() {
 }
