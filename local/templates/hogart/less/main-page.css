@@ -681,10 +681,11 @@ body.index-page {
 }
 .b-brands-main__link img {
   width: 100%;
-  height: auto;
+  height: 3rem;
   display: block;
   margin: auto;
   filter: grayscale(100%);
+  object-fit: contain;
 }
 .b-title-link {
   font-family: "Roboto Condensed", sans-serif;
