@@ -676,7 +676,7 @@ body.index-page {
   transition: transform .3s linear;
 }
 .b-brands-main__item:hover {
-  transform: scale(1.05);
+  transform: scale(1.1);
 }
 .b-brands-main__link {
   display: block;
