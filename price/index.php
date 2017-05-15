@@ -33,7 +33,7 @@ $catalogMenu = $APPLICATION->IncludeComponent(
 
             <? foreach ($catalogMenu as $catalogItem): ?>
                 <li class="b-price-list__item">
-                    <a target="_blank" href="<?= $catalogItem[1] ?>" class="b-header__link" title="<?= $catalogItem[0] ?>">
+                    <a target="_blank" href="<?= $catalogItem[1] ?>" class="b-header__link b-price-list__title" title="<?= $catalogItem[0] ?>">
                         <span><?= $catalogItem[0] ?></span>
                     </a>
 
