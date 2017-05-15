@@ -95,7 +95,8 @@ $catalogMenu = $APPLICATION->IncludeComponent(
             "LINK" => SITE_DIR . "brands",
             'IBLOCK_ID' => BRAND_IBLOCK_ID,
             'FILTER' => array(
-                "ACTIVE" => "Y"
+                "ACTIVE" => "Y",
+                ">PROPERTY_INDEX_LOGO" => 0
             ),
             "CHECK_PERMISSIONS" => "Y",
             "CACHE_TYPE" => "A",

@@ -35,15 +35,15 @@ class Version201705130001 extends Version
         }
 
         if ($IblockHelper->addPropertyIfNotExists(BRAND_IBLOCK_ID, [
-            "CODE" => "LOGO",
-            "NAME" => "Логотип",
+            "CODE" => "INDEX_LOGO",
+            "NAME" => "Логотип на главной",
             "ACTIVE" => "Y",
             "WITH_DESCRIPTION" => "Y",
             "PROPERTY_TYPE" => "F",
             "FILE_TYPE" => "jpg, gif, png, jpeg, svg",
             "IS_REQUIRED" => "Y"
         ])) {
-            $this->outSuccess("Добавлено свойство \"Иконка для меню\" в Инфоблок \"Бренды\"");
+            $this->outSuccess("Добавлено свойство \"Иконка на главной\" в Инфоблок \"Бренды\"");
         }
 
         $userTypeEntityHelper = new UserTypeEntityHelper();
