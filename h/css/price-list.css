@@ -10,9 +10,7 @@
 .b-price-list__link {
     display: inline-block;
     vertical-align: top;
-    margin-top: 25px;
-    width: calc(100% - 170px);
-    width: -webkit-calc(100% - 170px);
+    margin-top: 2rem;
 }
 
 .b-price-list__link .icon-acrobat {
@@ -35,8 +33,23 @@
     width: 19px;
 }
 
+.b-price-list__link .download-link {
+    font-size: 18px;
+    margin-left: 10px;
+}
+
+.b-price-list__link .download-link:hover {
+ color: #95c600;
+}
+
 .b-price-list__pdf {
     display: block;
+    font-family: 'Roboto', sans-serif;
+    font-size: 11px;
+    line-height: 20px;
+    color: #95c600;
+    margin-top: 3px;
+    margin-bottom: 0;
 }
 
 .b-price-list__title {
