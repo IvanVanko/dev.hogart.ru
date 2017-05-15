@@ -53,7 +53,7 @@ $catalogMenu = $APPLICATION->IncludeComponent(
                                     <i class="download-link fa fa-download"></i>
                                 </span>
                                 <span class="h6 green b-price-list__pdf">
-                                    <?= ucfirst(explode('/', $priceFileMeta['type'])[1]) ?>, <?= convert($priceFileMeta['size']) ?>
+                                    - <?= ucfirst(explode('/', $priceFileMeta['type'])[1]) ?>, <?= convert($priceFileMeta['size']) ?>
                                 </span>
                             </a>
                         <? endif; ?>

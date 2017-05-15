@@ -32,7 +32,7 @@ $this->setFrameMode(true);
 								<i class="fa fa-download"></i> <span class="h5 color-black"><?=$arSection["UF_PRICE_LABEL"]?></span>
 							</a>
 							<span class="file-metadata">
-								- <?= ucfirst(explode('/', $priceFileMeta['type'])[1]) ?>, <?= convert($priceFileMeta['size']) ?>
+								<?= ucfirst(explode('/', $priceFileMeta['type'])[1]) ?>, <?= convert($priceFileMeta['size']) ?>
 							</span>
 						</span>
 					<? endif; ?>
