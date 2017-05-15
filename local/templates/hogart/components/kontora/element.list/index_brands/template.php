@@ -20,7 +20,7 @@ global $USER;
                 $file = CFile::ResizeImageGet($arItem['PROPERTIES']['INDEX_LOGO']['VALUE'], array('width' => 300, 'height' => 300), BX_RESIZE_IMAGE_EXACT, true);
                 ?>
                 <li id="<?= $this->GetEditAreaId($arItem['ID']); ?>" class="b-brands-main__item">
-                    <a href="javascript:void(0)" class="b-brands-main__link" title="">
+                    <a href="<?= $arItem['DETAIL_PAGE_URL'] ?>" class="b-brands-main__link" title="">
                         <img src="<?= $file['src'] ?>" alt="<?= $arItem['NAME'] ?>" title="<?= $arItem['NAME'] ?>" />
                     </a>
                 </li>
