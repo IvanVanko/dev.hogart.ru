@@ -48,7 +48,10 @@ if($this->StartResultCache())
 			"NAME",
 			"SECTION_PAGE_URL",
 			"PICTURE",
-            "UF_ICON"
+            "UF_ICON",
+            "UF_PRICE",
+            "UF_PRICE_LABEL",
+            "UF_PRICE_LIST_COVER"
 		));
 		if($arParams["IS_SEF"] !== "Y")
 			$rsSections->SetUrlTemplates("", $arParams["SECTION_URL"]);
@@ -62,7 +65,10 @@ if($this->StartResultCache())
 				"~NAME" => $arSection["~NAME"],
 				"~SECTION_PAGE_URL" => $arSection["~SECTION_PAGE_URL"],
 				"~PICTURE" => $arSection["~PICTURE"],
-				"UF_ICON" => $arSection["UF_ICON"]
+				"UF_ICON" => $arSection["UF_ICON"],
+				"UF_PRICE" => $arSection["UF_PRICE"],
+				"UF_PRICE_LABEL" => $arSection["UF_PRICE_LABEL"],
+				"UF_PRICE_LIST_COVER" => $arSection["UF_PRICE_LIST_COVER"]
 			);
 			$arResult["ELEMENT_LINKS"][$arSection["ID"]] = array();
 		}
@@ -104,7 +110,7 @@ if($arParams["IS_SEF"] === "Y")
 
 if(($arParams["ID"] > 0) && (intval($arVariables["SECTION_ID"]) <= 0) && CModule::IncludeModule("iblock"))
 {
-	$arSelect = array("ID", "IBLOCK_ID", "DETAIL_PAGE_URL", "IBLOCK_SECTION_ID", "UF_ICON");
+	$arSelect = array("ID", "IBLOCK_ID", "DETAIL_PAGE_URL", "IBLOCK_SECTION_ID", "UF_ICON", "UF_PRICE_LIST_COVER");
 	$arFilter = array(
 		"ID" => $arParams["ID"],
 		"ACTIVE" => "Y",
@@ -139,6 +145,9 @@ foreach($arResult["SECTIONS"] as $arSection)
 			"DEPTH_LEVEL" => $arSection["DEPTH_LEVEL"],
 			"PICTURE" => $arSection["~PICTURE"],
 			"ICON" => $arSection["UF_ICON"],
+			"PRICE" => $arSection["UF_PRICE"],
+			"PRICE_LABEL" => $arSection["UF_PRICE_LABEL"],
+			"PRICE_LIST_COVER" => $arSection["UF_PRICE_LIST_COVER"],
 		),
 	);
 }
