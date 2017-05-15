@@ -50,6 +50,9 @@
     color: #95c600;
     margin-top: 3px;
     margin-bottom: 0;
+    white-space: nowrap;
+    padding-left: 30px;
+    margin-left: 5px;
 }
 
 .b-price-list__title {
