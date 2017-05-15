@@ -759,6 +759,10 @@ body.index-page {
   display: inline-block;
   vertical-align: top;
   margin-bottom: 20px;
+  transition: transform .3s linear;
+  &:hover {
+    transform: scale(1.05);
+  }
 }
 
 .b-brands-main__link {
@@ -1007,11 +1011,6 @@ body.index-page {
     height: 38px;
     padding: 0 10px;
     line-height: 36px;
-  }
-
-  .b-brands-main__item {
-    width: calc(100% / 4);
-    width: -webkit-calc(100% / 4);
   }
 
   .b-brands-main__item:last-child .b-brands-main__link {

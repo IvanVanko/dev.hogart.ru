@@ -673,6 +673,10 @@ body.index-page {
   display: inline-block;
   vertical-align: top;
   margin-bottom: 20px;
+  transition: transform .3s linear;
+}
+.b-brands-main__item:hover {
+  transform: scale(1.05);
 }
 .b-brands-main__link {
   display: block;
@@ -879,10 +883,6 @@ body.index-page {
     height: 38px;
     padding: 0 10px;
     line-height: 36px;
-  }
-  .b-brands-main__item {
-    width: calc(25%);
-    width: -webkit-calc(25%);
   }
   .b-brands-main__item:last-child .b-brands-main__link {
     font-size: 16px;
