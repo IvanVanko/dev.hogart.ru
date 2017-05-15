@@ -1,5 +1,6 @@
 .b-price-list {
-    padding-left: 0;
+    padding-left: 2rem;
+    margin-top: 2rem;
 }
 
 .b-price-list__item {
