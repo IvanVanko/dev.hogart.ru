@@ -40,9 +40,9 @@ $catalogMenu = $APPLICATION->IncludeComponent(
                     <div class="b-price-list__information">
                         <? if (!empty($catalogItem[3]['PRICE_LIST_COVER'])): ?>
                             <? $file = CFile::ResizeImageGet($catalogItem[3]['PRICE_LIST_COVER'], array('width' => 300, 'height' => 424), BX_RESIZE_IMAGE_EXACT, true); ?>
-                            <div class="b-price-list__image">
+                            <a href="<?= CFile::GetPath($catalogItem[3]["PRICE"]); ?>" class="b-price-list__image">
                                 <img src="<?= $file['src']; ?>" alt="<?= $catalogItem[0] ?>">
-                            </div>
+                            </a>
                         <? endif; ?>
 
                         <? if(!empty($catalogItem[3]["PRICE"])): ?>
