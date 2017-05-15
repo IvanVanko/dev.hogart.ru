@@ -21,7 +21,11 @@
                     <li id="<?=$this->GetEditAreaId($arItem['ID'])?>">
                         <div class="img-wrap img-mobile">
                             <? if (!empty($arItem['PREVIEW_PICTURE']['SRC']) && file_exists($_SERVER["DOCUMENT_ROOT"] . $arItem['PREVIEW_PICTURE']['SRC'])): ?>
-                                <? $pic = $arItem['PREVIEW_PICTURE']['SRC']; ?>
+                                <?
+                                    $file = CFile::ResizeImageGet($arItem['PREVIEW_PICTURE']['ID'], array('width' => 380,
+                                        'height' => 215), BX_RESIZE_IMAGE_EXACT, true);
+                                    $pic = $file['src'];
+                                ?>
                             <? else: ?>
                                 <? $pic = "/images/project_no_img.jpg"; ?>
                             <? endif; ?>

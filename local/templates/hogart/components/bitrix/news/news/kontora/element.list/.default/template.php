@@ -34,10 +34,10 @@ $page = $APPLICATION->GetCurDir();
                     <li id="<?=$this->GetEditAreaId($arItem['ID'])?>"
                         <? if(!empty($arItem['PREVIEW_PICTURE']['SRC']) && file_exists($_SERVER["DOCUMENT_ROOT"] . "/" . $arItem['PREVIEW_PICTURE']['SRC'])): ?> style="padding-left: 150px; position: relative" <? endif; ?>>
                         <? if(!empty($arItem['PREVIEW_PICTURE']['SRC']) && file_exists($_SERVER["DOCUMENT_ROOT"] . "/" . $arItem['PREVIEW_PICTURE']['SRC'])):
-                            $file = CFile::ResizeImageGet($arItem['PREVIEW_PICTURE']['ID'], array('width' => 130,
-                                'height' => 130), BX_RESIZE_IMAGE_EXACT, true);
+                            $file = CFile::ResizeImageGet($arItem['PREVIEW_PICTURE']['ID'], array('width' => 380,
+                                'height' => 215), BX_RESIZE_IMAGE_EXACT, true);
                             ?>
-                            <img style="position: absolute; left: 0;" src="<?=$file['src'];?>"
+                            <img style="position: absolute; left: 0; top: 5px;" src="<?=$file['src'];?>"
                                  alt="<?=$arItem["NAME"]?>"/>
                         <? endif; ?>
 
