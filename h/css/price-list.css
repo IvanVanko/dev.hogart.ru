@@ -68,6 +68,8 @@
 .b-price-list__information {
     display: block;
     font-size: 0;
+    margin-left: 2rem;
+    margin-top: 2rem;
 }
 
 .b-price-list__image {
