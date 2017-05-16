@@ -14,7 +14,7 @@ $catalogMenu = $APPLICATION->IncludeComponent(
         "IBLOCK_TYPE" => "catalog",
         "IBLOCK_ID" => "1",
         "DEPTH_LEVEL" => "1",
-        "CACHE_TYPE" => "N",
+        "CACHE_TYPE" => "Y",
         "CACHE_TIME" => "3600",
         "INCLUDE_SUBSECTIONS" => "Y"
     ),
@@ -32,6 +32,7 @@ $catalogMenu = $APPLICATION->IncludeComponent(
 		<ul class="b-price-list">
 
             <? foreach ($catalogMenu as $catalogItem): ?>
+                <? if(empty($catalogItem[3]["PRICE"])) continue;?>
                 <li class="b-price-list__item">
                     <a target="_blank" href="<?= $catalogItem[1] ?>" class="b-header__link b-price-list__title" title="<?= $catalogItem[0] ?>">
                         <span><?= $catalogItem[0] ?></span>

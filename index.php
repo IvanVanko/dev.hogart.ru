@@ -4,24 +4,6 @@ $APPLICATION->SetPageProperty("keywords", "Хогарт - официальный
 $APPLICATION->SetPageProperty("description", "Хогарт - официальный сайт.");
 $APPLICATION->SetTitle("Хогарт - официальный сайт.");
 
-
-$catalogMenu = $APPLICATION->IncludeComponent(
-    "bitrix:menu.sections",
-    "",
-    array(
-        "IS_SEF" => "Y",
-        "SEF_BASE_URL" => "/catalog/",
-        "SECTION_PAGE_URL" => "#bx_cat_#SECTION_ID#",
-        "DETAIL_PAGE_URL" => "#SECTION_CODE#/#ELEMENT_ID#/",
-        "IBLOCK_TYPE" => "catalog",
-        "IBLOCK_ID" => "1",
-        "DEPTH_LEVEL" => "1",
-        "CACHE_TYPE" => "N",
-        "CACHE_TIME" => "3600",
-        "INCLUDE_SUBSECTIONS" => "Y"
-    ),
-    false
-);
 ?>
 
 <div class="b-wrapper">
@@ -49,26 +31,7 @@ $catalogMenu = $APPLICATION->IncludeComponent(
                     <a href="#" class="b-title-link b-title-link--catalog" title="Прайс-лист">Прайс-лист</a>
                 </h2>
             </div>
-            <ul class="b-catalog-main__list">
-                <? foreach ($catalogMenu as $catalogItem): ?>
-                    <li class="b-catalog-main__item">
-                        <a href="<?= $catalogItem[1] ?>" class="b-catalog-main__link" title="<?= $catalogItem[0] ?>">
-                            <? if (!empty($catalogItem[3]['ICON'])): ?>
-                                <? $file = CFile::ResizeImageGet($catalogItem[3]['ICON'], array('width' => 300, 'height' => 300), BX_RESIZE_IMAGE_EXACT, true); ?>
-                                <img src="<?= $file['src']; ?>" alt="<?= $catalogItem[0] ?>">
-                            <? endif; ?>
-                            <span><?= $catalogItem[0] ?></span>
-                        </a>
-                        <a href="<?= preg_replace("%bx_cat%", "heating", $catalogItem[1]) ?>" class="b-catalog-main__link b-catalog-main__link__mobile" title="<?= $catalogItem[0] ?>">
-                            <? if (!empty($catalogItem[3]['ICON'])): ?>
-                                <? $file = CFile::ResizeImageGet($catalogItem[3]['ICON'], array('width' => 300, 'height' => 300), BX_RESIZE_IMAGE_EXACT, true); ?>
-                                <img src="<?= $file['src']; ?>" alt="<?= $catalogItem[0] ?>">
-                            <? endif; ?>
-                            <span><?= $catalogItem[0] ?></span>
-                        </a>
-                    </li>
-                <? endforeach; ?>
-            </ul>
+            <? include($_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/catalog_menu.php'); ?>
         </div>
 
         <?

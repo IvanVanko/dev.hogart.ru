@@ -466,9 +466,6 @@ body.index-page {
   color: #2c2432;
   transform: scale(1.05);
 }
-.b-catalog-main__link__mobile {
-  display: none;
-}
 .b-catalog-main__link img {
   display: block;
   height: 110px;
@@ -1037,15 +1034,6 @@ body.index-page {
   .b-catalog-main__list .b-catalog-main__item {
     width: 40%;
     text-align: center;
-  }
-  .b-catalog-main__list .b-catalog-main__link {
-    display: none;
-  }
-  .b-catalog-main__list .b-catalog-main__link__mobile {
-    display: inline-block;
-  }
-  .b-catalog-main__list .b-catalog-main__link__mobile img {
-    height: 5.5rem;
   }
   .b-news-main__list {
     flex-direction: column;

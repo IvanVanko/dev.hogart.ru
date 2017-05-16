@@ -1,3 +1,55 @@
+@media screen and (max-width: 767px) {
+}
+@media (min-width: 768px) {
+}
+.bx-filter-parameters-box-container:before,
+.bx-filter-parameters-box-container:after {
+  content: " ";
+  display: table;
+}
+.bx-filter-parameters-box-container:after {
+  clear: both;
+}
+.bx-filter-parameters-box-container {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+.bx-filter-parameters-box-container .checkbox {
+  width: 50%;
+  float: left;
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+@media (min-width: 992px) {
+  .bx-filter-parameters-box-container .checkbox {
+    float: left;
+    width: 50%;
+  }
+}
+.bx-filter-parameters-box-container .checkbox + .checkbox {
+  margin-top: 0;
+}
+div.sections .b-catalog-main__list .b-catalog-main__item {
+  width: 11rem;
+  height: 11rem;
+  padding: 1rem;
+  text-align: center;
+}
+div.sections .b-catalog-main__list .b-catalog-main__item.active {
+  border: 1px solid #95c600;
+  border-radius: 2rem;
+}
+div.sections .b-catalog-main__list .b-catalog-main__item .b-catalog-main__link {
+  margin-top: 50%;
+  transform: translateY(-50%);
+}
+div.sections .b-catalog-main__list .b-catalog-main__item img {
+  height: 4rem;
+}
 div.sections .d-1 {
   margin-top: 20px;
 }
@@ -79,21 +131,18 @@ div.sections .depth-3 .title:after {
   white-space: nowrap;
   content: ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . ";
 }
-div.sections .depth-3 span.brand {
+div.sections .depth-3 span.brand:not(.hidden) {
   text-decoration: none;
   font-weight: 300;
 }
-div.sections .depth-3 span.brand:after {
+div.sections .depth-3 span.brand:not(.hidden) + span.brand:not(.hidden):before {
   content: "|";
   display: inline-block;
   position: relative;
   color: #95c600;
   font-weight: 700;
-  padding: 0 3px 0 6px;
+  padding: 0 6px 0 3px;
   font-size: 14px;
   line-height: 12px;
   height: 12px;
-}
-div.sections .depth-3 span.brand:last-child:after {
-  content: normal;
 }

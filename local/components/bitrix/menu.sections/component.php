@@ -148,6 +148,7 @@ foreach($arResult["SECTIONS"] as $arSection)
 			"PRICE" => $arSection["UF_PRICE"],
 			"PRICE_LABEL" => $arSection["UF_PRICE_LABEL"],
 			"PRICE_LIST_COVER" => $arSection["UF_PRICE_LIST_COVER"],
+			"SECTION_ID" => $arSection["ID"]
 		),
 	);
 }

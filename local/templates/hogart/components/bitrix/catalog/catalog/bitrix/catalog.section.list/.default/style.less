@@ -1,6 +1,48 @@
 @import (reference) "../../../../../../../variables";
+@import (reference) "../../../../../../../bootstrap";
+
+.bx-filter-parameters-box-container {
+  .make-row();
+  .checkbox {
+    .make-md-column(6);
+    width: 50%;
+    float: left;
+    position: relative;
+    min-height: 1px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-top: 0;
+    margin-bottom: 5px;
+
+    + .checkbox {
+      margin-top: 0;
+    }
+  }
+
+}
 
 div.sections {
+
+  .b-catalog-main__list {
+    .b-catalog-main__item {
+      width: 11rem;
+      height: 11rem;
+      padding: 1rem;
+      text-align: center;
+      &.active {
+        border: 1px solid @brand-green;
+        border-radius: 2rem;
+      }
+      .b-catalog-main__link {
+        margin-top: 50%;
+        transform: translateY(-50%);
+      }
+      img {
+        height: 4rem;
+      }
+    }
+  }
+
   .d {
     &-1 {
       margin-top: 20px;
@@ -85,22 +127,21 @@ div.sections {
                   ". . . . . . . . . . . . . . . . . . . . "
         }
       }
-      span.brand {
+      span.brand:not(.hidden) {
         text-decoration: none;
         font-weight: 300;
-        &:after {
-          content: "|";
-          display: inline-block;
-          position: relative;
-          color: @brand-green;
-          font-weight: 700;
-          padding: 0 3px 0 6px;
-          font-size: 14px;
-          line-height: 12px;
-          height: 12px;
-        }
-        &:last-child:after {
-          content: normal;
+        + span.brand:not(.hidden) {
+          &:before {
+            content: "|";
+            display: inline-block;
+            position: relative;
+            color: @brand-green;
+            font-weight: 700;
+            padding: 0 6px 0 3px;
+            font-size: 14px;
+            line-height: 12px;
+            height: 12px;
+          }
         }
       }
     }
