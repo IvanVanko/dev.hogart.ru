@@ -1,3 +1,7 @@
+@media screen and (max-width: 767px) {
+}
+@media (min-width: 768px) {
+}
 * {
   outline: none;
 }
@@ -655,6 +659,59 @@ body.index-page {
 }
 .b-brands-main {
   margin-bottom: 50px;
+}
+.brand-branch__title {
+  display: block;
+  text-align: center;
+  position: relative;
+  margin-bottom: 2rem;
+}
+.brand-branch__title > span {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  height: 1.6rem;
+}
+.brand-branch__title > span span.name {
+  color: #95c600;
+  font-size: 1.4rem;
+  font-family: "Roboto Condensed", sans-serif;
+  background-color: white;
+  padding: 0 1rem;
+}
+.brand-branch__title > span:before,
+.brand-branch__title > span:after {
+  display: inline-block;
+  width: 3rem;
+  content: '';
+  position: relative;
+  height: 100%;
+}
+.brand-branch__title > span:before {
+  background-image: -webkit-linear-gradient(left, rgba(255, 255, 255, 0.15) 0%, #ffffff 100%);
+  background-image: -o-linear-gradient(left, rgba(255, 255, 255, 0.15) 0%, #ffffff 100%);
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.15) 0%, #ffffff 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#26ffffff', endColorstr='#ffffffff', GradientType=1);
+}
+.brand-branch__title > span:after {
+  background-image: -webkit-linear-gradient(left, #ffffff 0%, rgba(255, 255, 255, 0.15) 100%);
+  background-image: -o-linear-gradient(left, #ffffff 0%, rgba(255, 255, 255, 0.15) 100%);
+  background-image: linear-gradient(to right, #ffffff 0%, rgba(255, 255, 255, 0.15) 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#26ffffff', GradientType=1);
+}
+.brand-branch__title:before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background-color: #95c600;
+  top: 50%;
+  z-index: 1;
+  display: block;
 }
 .b-brands-main__list {
   font-size: 0;

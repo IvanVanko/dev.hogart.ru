@@ -1,4 +1,5 @@
 @import (reference) "../variables";
+@import (reference) "../bootstrap";
 
 * {
   outline: none;
@@ -739,6 +740,54 @@ body.index-page {
 
 .b-brands-main {
   margin-bottom: 50px;
+}
+
+.brand-branch__title {
+  display: block;
+  text-align: center;
+  position: relative;
+  margin-bottom: 2rem;
+
+  > span {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    height: 1.6rem;
+    span.name {
+      color: @brand-green;
+      font-size: 1.4rem;
+      font-family: "Roboto Condensed", sans-serif;
+      background-color: white;
+      padding: 0 1rem;
+    }
+    &:before,
+    &:after {
+      display: inline-block;
+      width: 3rem;
+      content: '';
+      position: relative;
+      height: 100%;
+    }
+    &:before {
+      #gradient > .horizontal(rgba(255, 255, 255, .15), rgba(255, 255, 255, 1));
+    }
+    &:after {
+      #gradient > .horizontal(rgba(255, 255, 255, 1), rgba(255, 255, 255, .15));
+    }
+  }
+
+  &:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background-color: @brand-green;
+    top: 50%;
+    z-index: 1;
+    display: block;
+  }
 }
 
 .b-brands-main__list {

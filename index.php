@@ -68,6 +68,7 @@ $APPLICATION->SetTitle("Хогарт - официальный сайт.");
             "CACHE_TYPE" => "A",
             "CACHE_TIME" => "0",
             "PROPS" => "Y",
+            "ORDER" => ["NAME" => "ASC", "SORT" => "ASC"],
             'TITLE_NAME' => 'Бренды'
         ));
 
