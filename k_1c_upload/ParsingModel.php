@@ -269,7 +269,7 @@ class ParsingModel {
             if (!empty($value->branches)) {
                 $branches = [];
                 foreach ($value->branches as $branchId) {
-                    $bitrixBranch = $el->GetList([], ["XML_ID" => $branchId, "IBLOCK_ID" => CATALOG_IBLOCK_ID])->Fetch();
+                    $bitrixBranch = CIBlockSection::GetList([], ["XML_ID" => $branchId, "IBLOCK_ID" => CATALOG_IBLOCK_ID])->Fetch();
                     $branches[] = $bitrixBranch['ID'];
                 }
                 $arLoadProductArray['PROPERTY_VALUES']['BRANCH'] = $branches;
