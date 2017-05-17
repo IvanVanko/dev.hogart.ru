@@ -1,0 +1,32 @@
+@media screen and (max-width: 767px) {
+}
+@media (min-width: 768px) {
+}
+.carousel .carousel-control {
+  z-index: 4;
+}
+.carousel-control .icon-prev:before {
+  content: '';
+}
+.carousel-control .icon-next:before {
+  content: '';
+}
+.carousel-control .icon-prev {
+  margin-top: -30px;
+}
+.carousel-control .icon-next {
+  margin-top: -30px;
+}
+.carousel-control.right {
+  background-image: none;
+}
+.carousel-control.left {
+  background-image: none;
+}
+.carousel .item img {
+  width: 100%;
+}
+.carousel-indicators {
+  margin-bottom: 0 !important;
+  bottom: 0 !important;
+}

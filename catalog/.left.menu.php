@@ -3,7 +3,7 @@ global $APPLICATION;
 $aMenuLinks = [];
 
 $aMenuLinks[] = Array(
-    "Каталог",
+    "Каталог товаров",
     "/catalog/",
     Array(),
     Array(),
@@ -11,7 +11,7 @@ $aMenuLinks[] = Array(
 );
 
 $aMenuLinks[] = Array(
-    "Прайс-лист",
+    "Прайс-лист (pdf)",
     "/price/",
     Array(),
     Array(),

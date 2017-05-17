@@ -9,26 +9,29 @@ $APPLICATION->SetTitle("Хогарт - официальный сайт.");
 <div class="b-wrapper">
     <main class="b-main">
         <div class="b-slider">
-            <div class="b-slider__content b-slider__content--main js-slider-main-page">
-                <div class="b-slider__item b-slider__item--main">
-                    <img src="/images/banner-hogart-1.jpg" alt="" title="" />
-                </div>
-                <div class="b-slider__item b-slider__item--main">
-                    <img src="/images/banner_hogart3.jpg" alt="" title="" />
-                </div>
-                <div class="b-slider__item b-slider__item--main">
-                    <img src="/images/banner_hogart3.jpg" alt="" title="" />
-                </div>
-            </div>
+            <?$APPLICATION->IncludeComponent("bitrix:advertising.banner","bootstrap",Array(
+                    "BANNER_ID" => 1,
+                    "TYPE" => "index_top",
+                    "CACHE_TYPE" => "A",
+                    "NOINDEX" => "Y",
+                    "CACHE_TIME" => "3600",
+                    "BS_CYCLING" => "Y",
+                    "BS_INTERVAL" => 10000,
+                    "BS_WRAP" => "Y",
+                    "BS_BULLET_NAV" => "Y",
+                    "BS_EFFECT" => "slide",
+                    "BS_HIDE_FOR_PHONES" => "Y"
+                )
+            );?>
         </div>
 
 
         <div class="b-catalog-main">
             <div class="b-catalog-main__title">
                 <h2>
-                    <a href="/catalog/" class="b-title-link b-title-link--catalog" title="Каталог">Каталог</a>
+                    <a href="/catalog/" class="b-title-link b-title-link--catalog" title="Каталог">Каталог товаров</a>
                     <a href="/documentation/" class="b-title-link b-title-link--catalog" title="Документация">Документация</a>
-                    <a href="#" class="b-title-link b-title-link--catalog" title="Прайс-лист">Прайс-лист</a>
+                    <a href="/price/" class="b-title-link b-title-link--catalog" title="Прайс-лист">Прайс-лист (pdf)</a>
                 </h2>
             </div>
             <? include($_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/catalog_menu.php'); ?>
