@@ -84,6 +84,7 @@ $this->setFrameMode(true);
         </h3>
         <div class="bx-filter-parameters-box-container">
             <? foreach (array_values($arResult["BRANDS"]) as $k => $arItem): ?>
+                <? if (empty($arItem['CODE'])) continue; ?>
                 <div class="checkbox">
                     <label class="bx-filter-param-label" for="brand_<?= $arItem['CODE'] ?>">
                     <span class="bx-filter-input-checkbox">

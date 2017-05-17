@@ -22,7 +22,7 @@ foreach ($arResult['SECTIONS'] as &$arSection) {
         $arSection["BRANDS"] = $sectionsBrand[$arSection["ID"]] ? : [];
         if (!empty($arSection["BRANDS"])) {
             foreach ($arSection["BRANDS"] as $BRAND) {
-                if (!isset($arResult['BRANDS'][$BRAND['ID']]) && !empty($BRAND['CODE'])) {
+                if (!isset($arResult['BRANDS'][$BRAND['ID']])) {
                     $arResult['BRANDS'][$BRAND['ID']] = $BRAND;
                 }
                 $arResult['BRANDS'][$BRAND['ID']]['SECTIONS'][] = &$arSection;
