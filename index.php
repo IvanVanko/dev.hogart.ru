@@ -10,7 +10,6 @@ $APPLICATION->SetTitle("Хогарт - официальный сайт.");
     <main class="b-main">
         <div class="b-slider">
             <?$APPLICATION->IncludeComponent("bitrix:advertising.banner","bootstrap",Array(
-                    "BANNER_ID" => 1,
                     "TYPE" => "index_top",
                     "CACHE_TYPE" => "A",
                     "NOINDEX" => "Y",
