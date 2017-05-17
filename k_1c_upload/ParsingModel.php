@@ -265,6 +265,16 @@ class ParsingModel {
                 'IBLOCK_ID' => $BLOCK_ID,
                 "=XML_ID" => $value->id,
             ), false, false, array('ID'));
+
+            if (!empty($value->branches)) {
+                $branches = [];
+                foreach ($value->branches as $branchId) {
+                    $bitrixBranch = $el->GetList([], ["XML_ID" => $branchId, "IBLOCK_ID" => CATALOG_IBLOCK_ID])->Fetch();
+                    $branches[] = $bitrixBranch['ID'];
+                }
+                $arLoadProductArray['PROPERTY_VALUES']['BRANCH'] = $branches;
+            }
+
             //Если элемент уже существует, обновляем его или удаляем, при условии что флаг установлен
             if($arItem = $rsItems->GetNext()) {
                 //Удаляем из битрикса элемент
