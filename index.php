@@ -11,9 +11,9 @@ $APPLICATION->SetTitle("Хогарт - официальный сайт.");
         <div class="b-slider">
             <?$APPLICATION->IncludeComponent("bitrix:advertising.banner","bootstrap",Array(
                     "TYPE" => "index_top",
-                    "CACHE_TYPE" => "A",
+                    "CACHE_TYPE" => "N",
                     "NOINDEX" => "Y",
-                    "CACHE_TIME" => "3600",
+                    "CACHE_TIME" => "0",
                     "BS_CYCLING" => "Y",
                     "BS_INTERVAL" => 10000,
                     "BS_WRAP" => "Y",
