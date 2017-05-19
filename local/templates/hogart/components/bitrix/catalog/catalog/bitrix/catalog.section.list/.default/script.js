@@ -14,38 +14,43 @@ function toggleBrandFilter(input) {
     brandInputs.each(function (i, el) {
       $('.brand[data-code="' + $(el).data('code') + '"]').removeClass('hidden');
     });
+
+    $('.depth-3')
+      .addClass('hidden')
+      .find('.brand[data-code]:not(.hidden)')
+      .each(function (i, el) {
+        $(el).parents('.depth-3').removeClass('hidden')
+      });
+
+    $('.d-3')
+      .addClass('hidden')
+      .each(function (i, el) {
+        if ($('.depth-3:not(.hidden)', el).length) {
+          $(el).removeClass('hidden');
+        }
+      });
+
+    $('.d-2')
+      .addClass('hidden')
+      .each(function (i, el) {
+        if ($('.d-3[data-parent="' + $(el).data('id') + '"]:not(.hidden)').length) {
+          $(el).removeClass('hidden');
+        }
+      });
+
+    $('.d-1')
+      .addClass('hidden')
+      .each(function (i, el) {
+        if ($('.d-2[data-parent="' + $(el).data('id') + '"]:not(.hidden)').length) {
+          $(el).removeClass('hidden');
+        }
+      });
+
   } else {
     $('.brand[data-code]').removeClass('hidden');
+    $('.depth-3').removeClass('hidden');
+    $('.d-3').removeClass('hidden');
+    $('.d-2').removeClass('hidden');
+    $('.d-1').removeClass('hidden');
   }
-
-  $('.depth-3')
-    .addClass('hidden')
-    .find('.brand[data-code]:not(.hidden)')
-    .each(function (i, el) {
-      $(el).parents('.depth-3').removeClass('hidden')
-    });
-
-  $('.d-3')
-    .addClass('hidden')
-    .each(function (i, el) {
-      if ($('.depth-3:not(.hidden)', el).length) {
-        $(el).removeClass('hidden');
-      }
-    });
-
-  $('.d-2')
-    .addClass('hidden')
-    .each(function (i, el) {
-      if ($('.d-3[data-parent="' + $(el).data('id') + '"]:not(.hidden)').length) {
-        $(el).removeClass('hidden');
-      }
-    });
-
-  $('.d-1')
-    .addClass('hidden')
-    .each(function (i, el) {
-      if ($('.d-2[data-parent="' + $(el).data('id') + '"]:not(.hidden)').length) {
-        $(el).removeClass('hidden');
-      }
-    });
 }
