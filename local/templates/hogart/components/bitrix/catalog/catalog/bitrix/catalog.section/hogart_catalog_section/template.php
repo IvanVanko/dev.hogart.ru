@@ -131,18 +131,20 @@ $mobileHtml = ($arParams["IS_TABLE_VIEW"]) ? '<div class="col-md-9 collection-ta
                     <div class="collection-title"><?= $collection["NAME"] ?></div>
                     <div class="collection-text">
                         <? if (!empty($collection["PREVIEW_TEXT"])): ?>
-                            <div class="preview"><?= $collection["PREVIEW_TEXT"] ?></div>
+                            <div class="preview">
+                                <?= $collection["PREVIEW_TEXT"] ?>
+                                <? if (!empty($collection["DETAIL_TEXT"])): ?>
+                                    <a
+                                            href="#more-collection-<?= $collectionId ?>"
+                                            class="more-collection-desc"
+                                            role="button"
+                                            data-toggle="collapse"
+                                            aria-expanded="false">Далее&nbsp;>>
+                                    </a>
+                                <? endif; ?>
+                            </div>
                         <? endif; ?>
                         <? if (!empty($collection["DETAIL_TEXT"])): ?>
-                            <? if(!empty($collection["PREVIEW_TEXT"])): ?>
-                                <a
-                                        href="#more-collection-<?= $collectionId ?>"
-                                        class="more-collection-desc"
-                                        role="button"
-                                        data-toggle="collapse"
-                                        aria-expanded="false">Просмотреть&nbsp;>>
-                                </a>
-                            <? endif; ?>
                             <div id="more-collection-<?= $collectionId ?>" class="collapse">
                                 <?= $collection["DETAIL_TEXT"] ?>
                             </div>
