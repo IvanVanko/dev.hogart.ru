@@ -12,7 +12,7 @@ $this->setFrameMode(true);
             $this->AddEditAction($arSection['ID'], $arSection['EDIT_LINK'], $strSectionEdit);
             $this->AddDeleteAction($arSection['ID'], $arSection['DELETE_LINK'], $strSectionDelete, $arSectionDeleteParams);
         ?>
-        <? if($relative_level != $arSection["DEPTH_LEVEL"]): ?>
+        <? if($relative_level != $arSection["DEPTH_LEVEL"] || $arSection["DEPTH_LEVEL"] < 3): ?>
             <? if ($relative_level != 0): ?>
             </div></div>
             <? endif; ?>
