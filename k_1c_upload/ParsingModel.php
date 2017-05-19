@@ -2407,7 +2407,8 @@ class ParsingModel {
                 "XML_ID" => $value->id,
                 "PROPERTY_VALUES" => $props,
                 "NAME" => $value->name,
-                "DETAIL_TEXT" => $value->description,
+                "PREVIEW_TEXT" => $value->description,
+                "DETAIL_TEXT" => $value->description_more,
                 "ACTIVE" => "Y",
             );
 
