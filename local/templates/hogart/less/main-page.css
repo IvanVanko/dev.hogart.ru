@@ -85,7 +85,6 @@ body.index-page {
   transition: all .3s linear;
 }
 .b-header__logo img {
-  width: 100%;
   height: auto;
   max-height: 100%;
   object-fit: contain;
@@ -824,6 +823,7 @@ body.index-page {
 }
 .oldschool-logo {
   max-width: 12rem;
+  overflow: hidden;
 }
 .oldschool-logo a {
   text-decoration: none !important;
@@ -837,6 +837,9 @@ body.index-page {
 .oldschool-logo a:active {
   color: #2c2432;
   text-decoration: none !important;
+}
+.oldschool-logo svg {
+  height: 70px;
 }
 .oldschool-logo path {
   fill: #2c2432;

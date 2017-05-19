@@ -93,7 +93,7 @@ body.index-page {
   vertical-align: middle;
   transition: all .3s linear;
   img {
-    width: 100%;
+    //width: 100%;
     height: auto;
     max-height: 100%;
     object-fit: contain;
@@ -917,6 +917,7 @@ body.index-page {
 
 .oldschool-logo {
   max-width: 12rem;
+  overflow: hidden;
   a {
     text-decoration: none !important;
     color: @brand-black;
@@ -929,6 +930,9 @@ body.index-page {
       color: @brand-black;
       text-decoration: none !important;
     }
+  }
+  svg {
+    height: 70px;
   }
   path {
     fill: @brand-black;

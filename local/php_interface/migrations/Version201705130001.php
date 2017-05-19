@@ -46,6 +46,8 @@ class Version201705130001 extends Version
             $this->outSuccess("Добавлено свойство \"Иконка на главной\" в Инфоблок \"Бренды\"");
         }
 
+        $IblockHelper->deletePropertyIfExists(3, 'calendar');
+
         $userTypeEntityHelper = new UserTypeEntityHelper();
         $userTypeEntityHelper->addUserTypeEntityIfNotExists(
             "IBLOCK_" . CATALOG_IBLOCK_ID . "_SECTION",
