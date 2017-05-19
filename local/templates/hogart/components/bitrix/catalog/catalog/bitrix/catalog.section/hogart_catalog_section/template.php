@@ -143,11 +143,11 @@ $mobileHtml = ($arParams["IS_TABLE_VIEW"]) ? '<div class="col-md-9 collection-ta
                                     </a>
                                 <? endif; ?>
                             </div>
-                        <? endif; ?>
-                        <? if (!empty($collection["DETAIL_TEXT"])): ?>
-                            <div id="more-collection-<?= $collectionId ?>" class="collapse">
-                                <?= $collection["DETAIL_TEXT"] ?>
-                            </div>
+                            <? if (!empty($collection["DETAIL_TEXT"])): ?>
+                                <div id="more-collection-<?= $collectionId ?>" class="collapse">
+                                    <?= $collection["DETAIL_TEXT"] ?>
+                                </div>
+                            <? endif; ?>
                         <? endif; ?>
                     </div>
                 </div>
