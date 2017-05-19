@@ -794,6 +794,10 @@ a.help {
         margin-right: 10px;
     }
 
+    .panel-group .panel + .panel {
+        margin-top: 15px;
+    }
+
     .catalog-mobile .catalog-mobile__column a:before {
         content: none;
     }
