@@ -11,6 +11,9 @@
 .catalog_page .perechen .perechen-produts.list > li img {
   max-height: 220px;
 }
+.more-collection-desc[aria-expanded="true"] {
+  display: none;
+}
 .price-list a {
   transition: all .3s linear;
   font-family: "Roboto Condensed", sans-serif;
