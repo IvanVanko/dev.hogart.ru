@@ -121,171 +121,21 @@ report-uri /csp-report.php");
     <div class="hamburger-mobile__content">
         <div class="hamburger-mobile">
             <div class="hamburger-mobile__scroll">
-                <ul class="main-navigation main-navigation--hamburger panel-group"  id="accordion-hamburger" role="tablist" aria-multiselectable="true">
-                    <li class="panel panel-default">
-                        <a class="main-navigation__link" data-toggle="collapse" data-parent="#accordion-hamburger" href="#hamburger-about-company" aria-expanded="false" title="Хогарт">
-                            <div class="image">
-                                <img src="/images/navigation-1.svg" alt="" title="" />
-                            </div>
-                            <span>Хогарт</span>
-                        </a>
-                        <ul id="hamburger-about-company" class="navigation-sub-menu collapse panel-collapse">
-                            <li class="catalog-mobile__column">
-                                <a href="/company/" title="Вентиляция">О компании</a>
-                            </li>
-                            <li>
-                                <a href="/stock/" title="Акции">Акции</a>
-                            </li>
-                            <li>
-                                <a href="/company/news/" title="Новости">Новости</a>
-                            </li>
-                            <li>
-                                <a href="/company/comments/" title="Отзывы">Отзывы</a>
-                            </li>
-                            <li>
-                                <a href="/contacts/tsentralnyy-ofis-khogart-v-moskve-sklad-i-servisnaya-sluzhba/" title="Контакты">Контакты</a>
-                            </li>
-                            <li>
-                                <a href="/company/jobs/" title="Вакансии">Вакансии</a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="panel panel-default">
-                        <a role="tab" class="main-navigation__link" data-toggle="collapse" data-parent="#accordion-hamburger" href="#hamburger-product" aria-expanded="true" title="Продукция">
-                            <div class="image">
-                                <img src="/images/navigation-3.svg" alt="" title="">
-                            </div>
-                            <span>Продукция</span>
-                        </a>
-                        <ul id="hamburger-product" class="navigation-sub-menu catalog-mobile--main panel-collapse collapse in" "="" aria-expanded="true" style="">
-
-                            <li class="catalog-mobile__column">
-                                <a href="/catalog/#heating_1383" title="Вентиляция">Вентиляция</a>
-                            </li>
-                                
-                            <li class="catalog-mobile__column">
-                                <a href="/catalog/#heating_1380" title="Канализация">Канализация</a>
-                            </li>
-                                
-                            <li class="catalog-mobile__column">
-                                <a href="/catalog/#heating_1381" title="Отопление">Отопление</a>
-                            </li>
-                                
-                            <li class="catalog-mobile__column">
-                                <a href="/catalog/#heating_1379" title="Плитка">Плитка</a>
-                            </li>
-                                
-                            <li class="catalog-mobile__column">
-                                <a href="/catalog/#heating_1382" title="Сантехника">Сантехника</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="/brands/" title="Бренды">
-                            <div class="image">
-                                <img src="/images/navigation-4.svg" alt="" title="" />
-                            </div>
-                            <span>Бренды</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/documentation/" title="Документация">
-                            <div class="image">
-                                <img src="/images/navigation-5.svg" alt="" title="" />
-                            </div>
-                            <span>Документация</span>
-                        </a>
-                    </li>
-                    <li class="panel panel-default">
-                        <a class="main-navigation__link" data-toggle="collapse" data-parent="#accordion-hamburger" href="#hamburger-teaching" aria-expanded="false" title="Обучение">
-                            <div class="image">
-                                <img src="/images/open-book.svg" alt="" title="" />
-                            </div>
-                            <span>Обучение</span>
-                        </a>
-                        <ul id="hamburger-teaching" class="navigation-sub-menu catalog-mobile--main panel-collapse collapse" "="" aria-expanded="false" style="">
-                            <li class="catalog-mobile__column">
-                                <a href="/learn/" title="Семинары">Семинары</a>
-                            </li>
-                            <li class="catalog-mobile__column">
-                                <a href="/learn/archive-seminarov/" title="Архив семинаров">Архив семинаров</a>
-                            </li>
-                            <li class="catalog-mobile__column">
-                                <a href="/helpful-information/" title="Полезная информация">Полезная информация</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="/services/" title="Сервис">
-                            <div class="image">
-                                <img src="/images/repairing-service.svg" alt="" title="" />
-                            </div>
-                            <span>Сервис</span>
-                        </a>
-                    </li>
-                    <?php if ($authorized) {?>
-                        <li class="panel panel-default">
-                            <a class="main-navigation__link" data-toggle="collapse" data-parent="#accordion-hamburger" href="#gamburger-lk" aria-expanded="false" title="Личный кабинет">
-                                <div class="image">
-                                    <img src="/images/navigation-6.svg" alt="" title="" />
-                                </div>
-                                <span>Личный кабинет</span>
-                            </a>
-                            <ul id="gamburger-lk" class="navigation-sub-menu collapse panel-collapse">
-                                <li>
-                                    <a class="not-line" href="/account/orders/active/" title="Заказы">
-                                        <div class="image">
-                                            <img src="/images/navigation-7.svg" alt="" title="" />
-                                        </div>
-                                        <span>Заказы</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="not-line" href="/account/reports/" title="Отчеты">
-                                        <div class="image">
-                                            <img src="/images/navigation-8.svg" alt="" title="" />
-                                        </div>
-                                        <span>Отчеты</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="not-line" href="/account/settings/" title="Настройки">
-                                        <div class="image">
-                                            <img src="/images/navigation-9.svg" alt="" title="" />
-                                        </div>
-                                        <span>Настройки</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="not-line" href="/account/documents/" title="Юридические лица">
-                                        <div class="image">
-                                            <img src="/images/navigation-10.svg" alt="" title="" />
-                                        </div>
-                                        <span>Юридические лица</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="not-line" href="?logout=yes" title="Выход">
-                                        <div class="image">
-                                            <img src="/images/navigation-11.svg" alt="" title="" />
-                                        </div>
-                                        <span>Выход</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    <?} else {?>
-                        <li>
-                            <a href="/account/" title="Личный кабинет">
-                                <div class="image">
-                                    <img src="/images/navigation-6.svg" alt="" title="" />
-                                </div>
-                                <span>Личный кабинет</span>
-                            </a>
-                        </li>
-                    <?}?>
-                </ul>
+                <?
+                $APPLICATION->IncludeComponent("bitrix:menu", "top_menu__mobile", Array(
+                        "ROOT_MENU_TYPE" => "top",
+                        "MAX_LEVEL" => "2",
+                        "CHILD_MENU_TYPE" => "left",
+                        "USE_EXT" => "Y",
+                        "DELAY" => "N",
+                        "ALLOW_MULTI_SELECT" => "Y",
+                        "MENU_CACHE_TYPE" => "N",
+                        "MENU_CACHE_TIME" => "3600",
+                        "MENU_CACHE_USE_GROUPS" => "Y",
+                        "MENU_CACHE_GET_VARS" => "",
+                    )
+                );
+                ?>
             </div>
         </div>
     </div>

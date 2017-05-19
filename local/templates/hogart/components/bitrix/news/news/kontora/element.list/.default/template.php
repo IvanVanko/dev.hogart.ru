@@ -37,8 +37,10 @@ $page = $APPLICATION->GetCurDir();
                             $file = CFile::ResizeImageGet($arItem['PREVIEW_PICTURE']['ID'], array('width' => 380,
                                 'height' => 215), BX_RESIZE_IMAGE_EXACT, true);
                             ?>
-                            <img style="position: absolute; left: 0; top: 5px;" src="<?=$file['src'];?>"
-                                 alt="<?=$arItem["NAME"]?>"/>
+                            <a href="<?= $arItem["DETAIL_PAGE_URL"] ?>">
+                                <img style="position: absolute; left: 0; top: 5px;" src="<?=$file['src'];?>"
+                                     alt="<?=$arItem["NAME"]?>"/>
+                            </a>
                         <? endif; ?>
 
                         <div class="date">
@@ -58,7 +60,10 @@ $page = $APPLICATION->GetCurDir();
                             <h4>
                                 <a href="<?=$arItem["DETAIL_PAGE_URL"]?>"><?=$arItem["NAME"]?></a>
                             </h4>
-                            <p><?=$arItem["PREVIEW_TEXT"]?></p>
+                            <a href="<?= $arItem["DETAIL_PAGE_URL"] ?>">
+                                <p><?=$arItem["PREVIEW_TEXT"]?></p>
+                            </a>
+
                         <? } ?>
 
                         <? foreach($arItem["PROPERTIES"]["tag"]["VALUE"] as $key => $tag): ?>

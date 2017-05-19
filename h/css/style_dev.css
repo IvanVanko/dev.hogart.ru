@@ -514,8 +514,8 @@ a.help {
         width: 25px;
         display: inline-block;
         position: relative;
-        top: -3px;
         left: 0;
+        margin-left: 10px;
     }
 
     .main-navigation a div.image img {
@@ -526,7 +526,7 @@ a.help {
     .main-navigation a span {
         color: black;
         font-weight: 700;
-        font-size: 17px;
+        font-size: 2rem;
         margin-left: 10px;
     }
 
@@ -541,13 +541,19 @@ a.help {
 
     .navigation-sub-menu {
         list-style: none;
-        padding-left: 30px;
+        padding-left: 20px;
     }
 
     .navigation-sub-menu li a {
-        font-size: 17px;
-        padding-left: 30px;
+        font-size: 1.7rem;
+        padding-left: 10px;
         display: block;
+    }
+
+    .navigation-sub-menu li a span {
+        color: inherit;
+        font-weight: inherit;
+        font-size: inherit;
     }
 
     .navigation-sub-menu li {
@@ -560,13 +566,18 @@ a.help {
 
     .navigation-sub-menu li a:not(.not-line):before {
         content: '';
-        width: 2px;
+        width: 1px;
         height: 100%;
         background-color: #95c600;
         border-radius: 2px;
         display: inline-block;
         position: absolute;
-        left: 10px;
+        left: 0;
+    }
+
+    .catalog-mobile__column.panel {
+        box-shadow: none;
+        border: none;
     }
     
     .navigation-sub-menu .catalog-mobile__column a {
@@ -760,27 +771,40 @@ a.help {
 
     .catalog-mobile__column a[data-toggle="collapse"] {
         float: none;
-        display: inline-block;
+        display: inline-flex;
         border: none;
         font-size: 18px;
         line-height: 19px;
         position: relative;
         text-transform: none;
-        padding-left: 15px;
+        padding-left: 0;
         text-decoration: none !important;
         font-weight: bold;
+        align-items: center;
     }
 
-    .catalog-mobile__column a[data-toggle="collapse"]:before {
+    .catalog-mobile__column a:before {
         content: '';
         width: 2px;
         height: 24px;
         background-color: #95c600;
         border-radius: 2px;
         display: inline-block;
-        position: absolute;
-        left: 7px;
-        top: -2px;
+        left: 0;
+        margin-right: 10px;
+    }
+
+    .catalog-mobile .catalog-mobile__column a:before {
+        content: none;
+    }
+
+    .catalog-mobile ul {
+        padding-left: 10px;
+    }
+
+    .catalog-mobile__column a {
+        display: inline-flex;
+        align-items: center;
     }
 
     .catalog-mobile__column a[data-toggle="collapse"][aria-expanded="true"]:before {

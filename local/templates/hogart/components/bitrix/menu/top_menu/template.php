@@ -22,7 +22,7 @@
         ?>
 
             <? if (isset($arResult[$index + 1]) && min(2, floor($arItem["DEPTH_LEVEL"] / $arResult[$index + 1]["DEPTH_LEVEL"])) == 0 && $arItem["DEPTH_LEVEL"] !== 0): ?>
-                <? $arItem["LINK"] = 'javascript:void(0)'; ?>
+                <? /* $arItem["LINK"] = 'javascript:void(0)'; */ ?>
                 <? $arItem["TEXT"] = '<i class="fa fa-angle-right" aria-hidden="true"></i> ' . $arItem["TEXT"]; ?>
             <? endif; ?>
             <?= $str ?>

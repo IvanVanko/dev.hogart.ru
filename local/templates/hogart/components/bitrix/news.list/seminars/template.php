@@ -28,7 +28,10 @@
                     $obParser = new CTextParser;
                     $arItem["PREVIEW_TEXT"] = $obParser->html_cut($arItem["PREVIEW_TEXT"], 200);
                     ?>
-                    <?=$arItem["PREVIEW_TEXT"];?>
+                    <a href="<?= $arItem['DETAIL_PAGE_URL']; ?>">
+                        <?=$arItem["PREVIEW_TEXT"];?>
+                    </a>
+
                 </li>
             <?endif;?>
 

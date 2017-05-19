@@ -4,7 +4,9 @@ $aMenuLinks = Array(
 		"Компания",
 		"/company/",
 		Array(),
-		Array(),
+		Array(
+		    "mobile_menu_icon" => "/images/m_logo.svg"
+        ),
 		""
 	),
 	Array(
@@ -25,21 +27,27 @@ $aMenuLinks = Array(
 		"Продукция",
 		"/catalog/",
 		Array(),
-		Array(),
+		Array(
+		    "mobile_menu_icon" => "/images/navigation-3.svg"
+        ),
 		""
 	),
 	Array(
 		"Обучение",
 		"/learn/",
 		Array(),
-		Array(),
+		Array(
+		    "mobile_menu_icon" => "/images/open-book.svg"
+        ),
 		""
 	),
 	Array(
 		"Сервис",
 		"/services/",
 		Array(),
-		Array(),
+		Array(
+		    "mobile_menu_icon" => "/images/repairing-service.svg"
+        ),
 		""
 	),
 );

@@ -1039,8 +1039,8 @@ body.index-page {
     display: block;
   }
   .perspective .hamburger-mobile__content .hamburger-mobile__scroll {
-    margin-right: 7%;
-    margin-left: 26%;
+    margin-right: 5%;
+    margin-left: 15%;
     padding-left: 15%;
     padding-top: 10%;
     display: flex;
@@ -1130,5 +1130,8 @@ body.index-page {
   }
   .address {
     position: static !important;
+  }
+  .oldschool-logo svg {
+    height: auto;
   }
 }

@@ -29,8 +29,10 @@
                             <? else: ?>
                                 <? $pic = "/images/project_no_img.jpg"; ?>
                             <? endif; ?>
-                            <img title="<?=$arItem['NAME']?>"
-                                 src="<?= $pic ?>" alt=""/>
+                            <a href="<?= $arItem['DETAIL_PAGE_URL'] ?>">
+                                <img title="<?=$arItem['NAME']?>"
+                                     src="<?= $pic ?>" alt=""/>
+                            </a>
                         </div>
 
                         <div class="info-wrap">
@@ -56,9 +58,11 @@
                             else { ?>
                                 <a class="head" href="<?=$arItem['DETAIL_PAGE_URL']?>"><?=$arItem['NAME']?></a>
 
-                                <p>
-                                    <?=$arItem['PREVIEW_TEXT']?>
-                                </p>
+                                <a href="<?=$arItem['DETAIL_PAGE_URL']?>">
+                                    <p>
+                                        <?=$arItem['PREVIEW_TEXT']?>
+                                    </p>
+                                </a>
                             <? } ?>
                         </div>
                     </li>
