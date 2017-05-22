@@ -2282,6 +2282,19 @@ class ParsingModel {
             }
             $this->debug_memory();
 
+            $res = CPrice::GetList(array(), array(
+                "PRODUCT_ID" => $ELEMENT_ID,
+                "CATALOG_GROUP_ID" => 1
+            ));
+            if(!$res->Fetch()) {
+                CPrice::Add([
+                    "PRODUCT_ID" => $ELEMENT_ID,
+                    "CATALOG_GROUP_ID" => 1,
+                    "PRICE" => 0,
+                    "CURRENCY" => "RUB"
+                ]);
+            }
+
             $answer['StringItems'][] = $value->id;
             // обновляем информацию по HL-блоку с данными по еденицам измерения в упаковке
             if($ELEMENT_ID && isset($itemMeasures[$value->id]) && is_array($itemMeasures[$value->id]) && count($itemMeasures[$value->id]) > 0) {
