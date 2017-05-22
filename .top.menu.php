@@ -13,14 +13,18 @@ $aMenuLinks = Array(
 		"Новости",
 		"/company/news/",
 		Array(),
-		Array(),
+		Array(
+		    "fa_mobile_menu_icon" => "fa fa-newspaper-o"
+        ),
 		""
 	),
 	Array(
 		"Акции",
 		"/stock/",
 		Array(),
-		Array(),
+		Array(
+		    "fa_mobile_menu_icon" => "fa fa-bullhorn"
+        ),
 		""
 	),
 	Array(
@@ -28,7 +32,7 @@ $aMenuLinks = Array(
 		"/catalog/",
 		Array(),
 		Array(
-		    "mobile_menu_icon" => "/images/navigation-3.svg"
+		    "fa_mobile_menu_icon" => "fa fa-shopping-cart",
         ),
 		""
 	),
@@ -37,7 +41,7 @@ $aMenuLinks = Array(
 		"/learn/",
 		Array(),
 		Array(
-		    "mobile_menu_icon" => "/images/open-book.svg"
+		    "fa_mobile_menu_icon" => "fa fa-graduation-cap"
         ),
 		""
 	),
@@ -46,7 +50,7 @@ $aMenuLinks = Array(
 		"/services/",
 		Array(),
 		Array(
-		    "mobile_menu_icon" => "/images/repairing-service.svg"
+		    "fa_mobile_menu_icon" => "fa fa-cogs"
         ),
 		""
 	),

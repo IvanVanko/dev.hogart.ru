@@ -3,7 +3,7 @@
     <li class="panel catalog-mobile__column">
         <a  href="/account/orders/active/" title="Заказы">
             <div class="image">
-                <img src="/images/navigation-7.svg" alt="" title="" />
+                <i class="fa fa-list" aria-hidden="true"></i>
             </div>
             <span>Заказы</span>
         </a>
@@ -11,7 +11,7 @@
     <li class="panel catalog-mobile__column">
         <a  href="/account/reports/" title="Отчеты">
             <div class="image">
-                <img src="/images/navigation-8.svg" alt="" title="" />
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i>
             </div>
             <span>Отчеты</span>
         </a>
@@ -19,7 +19,7 @@
     <li class="panel catalog-mobile__column">
         <a  href="/account/settings/" title="Настройки">
             <div class="image">
-                <img src="/images/navigation-9.svg" alt="" title="" />
+                <i class="fa fa-cogs" aria-hidden="true"></i>
             </div>
             <span>Настройки</span>
         </a>
@@ -27,7 +27,7 @@
     <li class="panel catalog-mobile__column">
         <a  href="/account/documents/" title="Юридические лица">
             <div class="image">
-                <img src="/images/navigation-10.svg" alt="" title="" />
+                <i class="fa fa-users" aria-hidden="true"></i>
             </div>
             <span>Юридические лица</span>
         </a>
@@ -35,7 +35,7 @@
     <li class="panel catalog-mobile__column">
         <a  href="?logout=yes" title="Выход">
             <div class="image">
-                <img src="/images/navigation-11.svg" alt="" title="" />
+                <i class="fa fa-sign-out" aria-hidden="true"></i>
             </div>
             <span>Выход</span>
         </a>

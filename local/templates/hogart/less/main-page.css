@@ -838,9 +838,6 @@ body.index-page {
   color: #2c2432;
   text-decoration: none !important;
 }
-.oldschool-logo svg {
-  height: 70px;
-}
 .oldschool-logo path {
   fill: #2c2432;
 }
@@ -889,6 +886,11 @@ body.index-page {
 }
 .ya-share2__container_size_m .ya-share2__item_service_twitter .ya-share2__icon:before {
   content: "\f099";
+}
+@media all and (-ms-high-contrast: none) {
+  .oldschool-logo svg {
+    height: 70px;
+  }
 }
 @media (max-width: 1024px) {
   html {

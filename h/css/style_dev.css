@@ -511,6 +511,7 @@ a.help {
     }
 
     .main-navigation a div.image {
+        font-size: 2.4rem;
         width: 25px;
         display: inline-block;
         position: relative;
@@ -551,7 +552,6 @@ a.help {
     }
 
     .navigation-sub-menu li a span {
-        color: inherit;
         font-weight: inherit;
         font-size: inherit;
     }

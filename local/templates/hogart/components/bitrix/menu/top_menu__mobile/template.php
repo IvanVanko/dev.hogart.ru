@@ -7,7 +7,7 @@ global $USER, $APPLICATION;
     <li class="panel catalog-mobile__column">
         <a href="/" title="Главная">
             <div class="image">
-                <img src="/images/navigation-1.svg" />
+                <i class="fa fa-home" aria-hidden="true"></i>
             </div>
             <span>Главная</span>
         </a>
@@ -48,6 +48,12 @@ global $USER, $APPLICATION;
                     <img src="<?= $arItem['PARAMS']['mobile_menu_icon'] ?>" />
                 </div>
             <? endif; ?>
+
+            <? if (!empty($arItem['PARAMS']['fa_mobile_menu_icon'])): ?>
+                <div class="image">
+                    <i class="<?= $arItem['PARAMS']['fa_mobile_menu_icon'] ?>" aria-hidden="true"></i>
+                </div>
+            <? endif; ?>
             <span><?= $arItem["TEXT"] ?></span>
         </a>
         <? $depth_level = $arItem["DEPTH_LEVEL"]; ?>
@@ -62,7 +68,7 @@ global $USER, $APPLICATION;
         <? if ($USER->IsAuthorized()): ?>
             <a class="main-navigation__link" data-toggle="collapse" data-parent="#accordion-hamburger" href="#gamburger-lk" aria-expanded="false" title="Личный кабинет">
                 <div class="image">
-                    <img src="/images/navigation-6.svg" alt="" title="" />
+                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
                 </div>
                 <span>Личный кабинет</span>
             </a>
@@ -70,7 +76,7 @@ global $USER, $APPLICATION;
         <? else: ?>
             <a href="/account/" title="Личный кабинет">
                 <div class="image">
-                    <img src="/images/navigation-6.svg" alt="" title="" />
+                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
                 </div>
                 <span>Личный кабинет</span>
             </a>

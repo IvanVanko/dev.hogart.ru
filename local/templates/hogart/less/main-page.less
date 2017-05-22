@@ -931,9 +931,6 @@ body.index-page {
       text-decoration: none !important;
     }
   }
-  svg {
-    height: 70px;
-  }
   path {
     fill: @brand-black;
   }
@@ -998,6 +995,11 @@ body.index-page {
   }
 }
 
+@media all and (-ms-high-contrast:none) {
+  .oldschool-logo svg {
+    height: 70px;
+  }
+}
 
 @media(max-width: 1024px) {
 
