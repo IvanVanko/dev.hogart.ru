@@ -18,8 +18,8 @@ $this->setFrameMode(true);
 use \Hogart\Lk\Helper\Template\Account;
 ?>
 <?
-if (count($arResult["ITEMS"])==0)
-LocalRedirect('/catalog/index.php');
+//if (count($arResult["ITEMS"])==0)
+//LocalRedirect('/catalog/index.php');
 ?>
 <? if(!empty($arResult['PARENT_PARENT_SECTION']["UF_PRICE"])): ?>
 <div class="text-right">
