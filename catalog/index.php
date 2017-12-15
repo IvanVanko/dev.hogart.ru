@@ -24,7 +24,6 @@ else {
 //    };
 }
 ?>
-
 <? if($show_component) { ?>
     <? $APPLICATION->IncludeComponent(
         "bitrix:catalog",
