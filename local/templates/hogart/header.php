@@ -160,22 +160,28 @@ report-uri /csp-report.php");
                     <div class="b-header__main">
 
                         <?
-                        $APPLICATION->IncludeComponent("bitrix:menu", "top_menu", Array(
-                                "ROOT_MENU_TYPE" => "top",
-                                "MAX_LEVEL" => "2",
-                                "CHILD_MENU_TYPE" => "left",
-                                "USE_EXT" => "Y",
-                                "DELAY" => "N",
-                                "ALLOW_MULTI_SELECT" => "Y",
-                                "MENU_CACHE_TYPE" => "N",
-                                "MENU_CACHE_TIME" => "3600",
-                                "MENU_CACHE_USE_GROUPS" => "Y",
-                                "MENU_CACHE_GET_VARS" => "",
-                                "CLASS" => "b-header__list",
-                                "ITEM_CLASS" => "b-header__item",
-                                "LINK_CLASS" => "b-header__link"
-                            )
-                        );
+                        $APPLICATION->IncludeComponent(
+	"bitrix:menu", 
+	"top_menu", 
+	array(
+		"ROOT_MENU_TYPE" => "top",
+		"MAX_LEVEL" => "2",
+		"CHILD_MENU_TYPE" => "left",
+		"USE_EXT" => "Y",
+		"DELAY" => "N",
+		"ALLOW_MULTI_SELECT" => "Y",
+		"MENU_CACHE_TYPE" => "A",
+		"MENU_CACHE_TIME" => "3600",
+		"MENU_CACHE_USE_GROUPS" => "Y",
+		"MENU_CACHE_GET_VARS" => array(
+		),
+		"CLASS" => "b-header__list",
+		"ITEM_CLASS" => "b-header__item",
+		"LINK_CLASS" => "b-header__link",
+		"COMPONENT_TEMPLATE" => "top_menu"
+	),
+	false
+);
                         ?>
                     </div>
                     <div class="lk-container">
@@ -208,3 +214,9 @@ report-uri /csp-report.php");
                 </div>
             </header>
             <div class="container-fluid main-container">
+<?$APPLICATION->IncludeComponent("bitrix:breadcrumb","",Array(
+        "START_FROM" => "0", 
+        "PATH" => "", 
+        "SITE_ID" => "s1" 
+    )
+);?>

@@ -1,6 +1,5 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 $this->setFrameMode(true);
-
 ?>
 <div class="col-md-9 sections">
     <? include($_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/catalog_menu.php'); ?>

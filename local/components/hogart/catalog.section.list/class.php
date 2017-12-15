@@ -34,6 +34,7 @@ class CCatalogSectionList extends CBitrixComponent
         if ($obCache->InitCache($this->arParams['CACHE_TIME'], $cacheId, self::CACHE_DIR)) {
             $this->arResult = $obCache->GetVars();
         } elseif ($obCache->StartDataCache()) {
+
             $brandRes = CIBlockElement::GetList([], ['IBLOCK_ID' => BRAND_IBLOCK_ID]);
             $brands = [];
             while (($brandElement = $brandRes->Fetch())) {

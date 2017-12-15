@@ -2,6 +2,7 @@
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
     die();
 }
+
 /** @var array $arParams */
 /** @var array $arResult */
 /** @global CMain $APPLICATION */
@@ -14,10 +15,12 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
-
 use \Hogart\Lk\Helper\Template\Account;
 ?>
-
+<?
+if (count($arResult["ITEMS"])==0)
+LocalRedirect('/catalog/index.php');
+?>
 <? if(!empty($arResult['PARENT_PARENT_SECTION']["UF_PRICE"])): ?>
 <div class="text-right">
     <? $priceFileMeta = CFile::MakeFileArray($arResult['PARENT_PARENT_SECTION']["UF_PRICE"]) ?>

@@ -2,6 +2,8 @@
 /** @var array $templateData */
 /** @var @global CMain $APPLICATION */
 global $APPLICATION;
+if (count($arResult["ITEMS"])==0)
+LocalRedirect('/catalog/index.php');
 
 CModule::IncludeModule("iblock");
 $res = CIBlockSection::GetByID($arResult["IBLOCK_SECTION_ID"]);

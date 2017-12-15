@@ -27,7 +27,9 @@ if($parentSection) {
     $APPLICATION->AddChainItem($parentSection["NAME"], $parentSection["SECTION_PAGE_URL"]);
     $APPLICATION->AddChainItem($arResult["NAME"], "");
 }
-
+if (is_object($this->__template))
+{
 $this->__template->SetViewTarget("catalog_tab_cnt");
 echo $arResult['ELEMENTS_COUNT'];
 $this->__template->EndViewTarget();
+}

@@ -429,7 +429,9 @@ if ($section["DEPTH_LEVEL"] == 1): ?>
 
             $APPLICATION->arAdditionalChain[0] = [
                 'TITLE' => $APPLICATION->arAdditionalChain[0]["TITLE"],
-                'LINK' => $arParams["SEF_FOLDER"] . "#bx_cat_" . $chain_section["ID"]
+//                'LINK' => $arParams["SEF_FOLDER"] . "#bx_cat_" . $chain_section["ID"]
+
+		'LINK' => $arParams["SEF_FOLDER"] . "/?SECTION_ID=" . $chain_section["ID"]
             ];
             $GLOBALS['CATALOG_CURRENT_SECTION_ID'] = $intSectionID;
             ?>

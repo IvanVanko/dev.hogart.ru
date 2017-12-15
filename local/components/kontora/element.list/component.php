@@ -13,6 +13,10 @@ if(!isset($arParams['GROUP_BY'])) {
 }
 
 $arSelect = (isset($arParams['SELECT']) && !empty($arParams['SELECT'])) ? $arParams['SELECT'] : array();
+if (!is_array($arSelect))
+	$arSelect = array($arSelect);
+$arParams['SELECT'] = $arSelect;
+
 $arOrder = (isset($arParams['ORDER']) && !empty($arParams['ORDER'])) ? $arParams['ORDER'] : array('sort' => 'asc');
 $arNavParams = (isset($arParams['ELEMENT_COUNT']) && !empty($arParams['ELEMENT_COUNT'])) ? array("nPageSize" => $arParams["ELEMENT_COUNT"]) : false;
 $arNavigation = CDBResult::GetNavParams($arNavParams);
@@ -24,7 +28,9 @@ if(!empty($arParams['FILTER'])) {
     $arFilter = array_merge($arFilter, $arParams['FILTER']);
 }
 
-if($this->StartResultCache(false, [($arParams["CACHE_GROUPS"]==="N"? false: $USER->GetGroups()), $arNavParams, $arNavigation, $arFilter])) {
+if($this->StartResultCache(false, [($arParams["CACHE_GROUPS"]==="N"? false: $USER->GetGroups()), $arNavParams, $arNavigation, $arFilter])) 
+//if($this->StartResultCache())
+{
     if(!CModule::IncludeModule("iblock")) {
         $this->AbortResultCache();
         ShowError(GetMessage("IBLOCK_MODULE_NOT_INSTALLED"));
@@ -33,6 +39,9 @@ if($this->StartResultCache(false, [($arParams["CACHE_GROUPS"]==="N"? false: $USE
 
     $arResult['ITEMS'] = array();
     $arResult["ELEMENTS"] = array();
+
+
+
     $res = CIBlockElement::GetList($arOrder, $arFilter, $arParams['GROUP_BY'], $arNavParams, $arSelect);
     while($ob = $res->GetNextElement()) {
         $arFields = $ob->GetFields();
@@ -70,3 +79,4 @@ if($this->StartResultCache(false, [($arParams["CACHE_GROUPS"]==="N"? false: $USE
     $this->IncludeComponentTemplate();
     return $arResult["ELEMENTS"];
 }
+?>

@@ -316,6 +316,7 @@ BXHelper::addCachedKeys($this->__component, array(
     'SUBS',
     'PARENT_PARENT_SECTION_ID',
     'DEPTH_LEVEL',
+'PARENT_PARENT_SECTION',
     'CUSTOM_META'
 ), $arResult);
 

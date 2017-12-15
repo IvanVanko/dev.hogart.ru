@@ -24,10 +24,41 @@ if (empty($SECTION_ID)) {
 }
 
 ?>
+<?
+$detect = new Mobile_Detect;
+if( $detect->isMobile()){
+
+?>
+
+<!-- блок категорий для мобильной версии -->
+<div class="container-main">
+    <?
+$APPLICATION->IncludeComponent(
+        "hogart:catalog.section.list",
+        "mobile",
+        array(
+            "IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
+            "IBLOCK_ID" => $arParams["IBLOCK_ID"],
+            "CACHE_TYPE" => $arParams["CACHE_TYPE"],
+            "CACHE_TIME" => $arParams["CACHE_TIME"],
+            "TOP_DEPTH" => $arParams["SECTION_TOP_DEPTH"],
+        ),
+        $component,
+        array("HIDE_ICONS" => "Y")
+);
+    ?>
+</div>
+<?
+}
+else
+{
+
+?>
 
 <div class="row catalog-hide">
 	<!-- блок категорий -->
     <?
+
     $APPLICATION->IncludeComponent(
         "bitrix:catalog.section.list",
         "",
@@ -52,21 +83,6 @@ if (empty($SECTION_ID)) {
     );
     ?>
 </div>
-<!-- блок категорий для мобильной версии -->
-<div class="container-main">
-    <?
-    $APPLICATION->IncludeComponent(
-        "hogart:catalog.section.list",
-        "mobile",
-        array(
-            "IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
-            "IBLOCK_ID" => $arParams["IBLOCK_ID"],
-            "CACHE_TYPE" => $arParams["CACHE_TYPE"],
-            "CACHE_TIME" => $arParams["CACHE_TIME"],
-            "TOP_DEPTH" => $arParams["SECTION_TOP_DEPTH"],
-        ),
-        $component,
-        array("HIDE_ICONS" => "Y")
-    );
-    ?>
-</div>
+<?
+}
+?>

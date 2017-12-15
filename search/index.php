@@ -90,18 +90,23 @@ if(isset($_REQUEST['section_id'])) {
                 $GLOBALS['arrFilter']["ID"] = $ids;
             }
 
-            $APPLICATION->IncludeComponent("kontora:element.list", "search", array(
-                "IBLOCK_ID" => CATALOG_IBLOCK_ID,
-                "ELEMENT_COUNT" => 21,
-                "NAV" => 'Y',
-                'FILTER' => $GLOBALS['arrFilter'],
-                'PROPS' => 'N',
-                'SELECT' => array('ID',
-                                  'DETAIL_PAGE_URL',
-                                  'NAME',
-                                  'CATALOG_GROUP_1',
-                                  'PREVIEW_PICTURE'),
-            )); ?>
+            $APPLICATION->IncludeComponent(
+	"kontora:element.list", 
+	"search", 
+	array(
+		"IBLOCK_ID" => CATALOG_IBLOCK_ID,
+		"ELEMENT_COUNT" => "21",
+		"NAV" => "Y",
+		"FILTER" => $GLOBALS["arrFilter"],
+		"PROPS" => "N",
+		"SELECT" => "PREVIEW_PICTURE",
+		
+		"COMPONENT_TEMPLATE" => "search",
+		"CACHE_TYPE" => "A",
+		"CACHE_TIME" => "3600"
+	),
+	false
+); ?>
         </div>
 
         <div class="js-tab-item" data-id="#doc_tab">
